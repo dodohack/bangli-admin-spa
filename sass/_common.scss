@@ -1,0 +1,19 @@
+/* Reset list style */
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+li {
+  list-style: none;
+  display: inline-block;
+}
+
+a {
+  text-decoration: none;
+}
+
+.float-right {
+  float: right;
+}

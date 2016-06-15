@@ -1,0 +1,68 @@
+<div class="row footer">
+    <div class="col-xl-4 footer-column">
+        <h4>购物指南</h4>
+        <ul>
+            <li><a href="">买前必读</a></li>
+            <li><a href="">购物流程</a></li>
+            <li><a href="">为什么选择葫芦娃</a></li>
+            <li><a href="">正品保证</a></li>
+            <li><a href="">关于关税</a></li>
+        </ul>
+    </div>
+
+    <div class="col-xl-4 footer-column">
+        <h4>配送方式</h4>
+        <ul>
+            <li><a href="">国际快递费率</a></li>
+            <li><a href="">国际快递查询</a></li>
+            <li><a href="">关于国际快递</a></li>
+        </ul>
+    </div>
+
+    <div class="col-xl-4 footer-column">
+        <h4>售后服务</h4>
+        <ul>
+            <li><a href="">联系客服</a></li>
+            <li><a href="">退换货政策</a></li>
+            <li><a href="">验货签收</a></li>
+        </ul>
+    </div>
+
+    <div class="col-xl-4 footer-column footer-barcode">
+        <img src="http://cdn.huluwa.uk/images/qrcode_huluwauk.jpg">
+        <p>微信公众号二维码</p>
+    </div>
+
+    <div class="col-xl-8 footer-column">
+        <div class="col-xl-24">
+            <p>咨询热线(英国)</p>
+            <p>(+44) (0)1923 800439</p>
+            <p>(英国时间周一至周五9:00-18:00)</p>
+        </div>
+        <div class="col-xl-24">
+            <p>咨询热线(中国)</p>
+            <p>(+86) 400 168 3887</p>
+            <p>(中国时间周一至周五9:00-18:00)</p>
+        </div>
+        <div class="col-xl-24">
+            <p>客服QQ: 10004708</p>
+            <p>客服邮箱: service@huluwa.uk</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-24 footer-company">
+        <ul>
+            <li *ngFor="let menu of menus">
+                <a [routerLink]="[menu.url]">{{ menu.name }}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-xl-24 footer-final">
+        <p>Copyright @ Bangli Ltd, 2014-2016. All rights reserved. Registered in London. Company Number: 09123456</p>
+        <p>未经允许,严禁转载,法律必究!</p>
+        <p>ICP NUMBER</p>
+    </div>
+</div>

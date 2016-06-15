@@ -1,0 +1,35 @@
+/* Style sheet for header component */
+
+.header {
+
+  height: 7rem;
+  margin-bottom: $grid-gutter-width / 2;
+
+  .search-wrapper {
+    padding-top: 2.5rem;
+  }
+
+  .search-box {
+    .input-search {
+      border: 2px solid $color-logo-blue;
+      border-radius: 0;
+      transition: border-color .3s linear;
+
+      &:focus {
+        border-color: $color-logo-lightgreen;
+      }
+    }
+
+    .btn-search {
+      color: white;
+      background-color: $color-logo-bule;
+      border: 2px solid $color-logo-blue;
+      border-radius: 0;
+
+      &:hover {
+        background-color: $color-logo-lightgreen;
+        border-color: $color-logo-lightgreen;
+      }
+    }
+  }
+}
