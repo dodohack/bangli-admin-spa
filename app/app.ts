@@ -20,9 +20,9 @@ import { AnalysisPage }    from './pages/analysis.ts';
 
 import { CommentPage }  from './pages/comment.ts';
 import { CsPage } from './pages/cs.ts';
-import { EmailPage }    from './pages/Email.ts';
+import { EmailPage }    from './pages/email.ts';
 
-import { MigrationPage }  from './pages/Migration.ts';
+import { MigrationPage }  from './pages/migration.ts';
 import { ModalPage } from './pages/modal.ts';
 import { OrderPage }    from './pages/order.ts';
 
