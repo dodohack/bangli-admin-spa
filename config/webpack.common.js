@@ -9,7 +9,7 @@ module.exports = {
         'polyfills': './app/polyfills.ts',
         'vendor': './app/vendor.ts',
         'app': './app/main.ts',
-        'style': './sass/style.scss'
+        'style': './sass/admin.scss'
     },
 
     resolve: {

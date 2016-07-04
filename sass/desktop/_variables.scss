@@ -1,0 +1,44 @@
+
+/*
+ * Disable bootstrap responsive
+ */
+
+// Grid breakpoints
+//
+// Define the minimum and maximum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+
+$grid-breakpoints: (
+  // Extra small screen / phone
+  xs: 0,
+  // Small screen / phone
+  sm: 1px,
+  // Medium screen / tablet
+  md: 2px,
+  // Large screen / desktop
+  lg: 3px,
+  // Extra large screen / wide desktop
+  xl: 4px
+);
+
+// Fix the width to 1140px + 60px padding;
+.container {
+  width: 1140px !important;
+  min-width: 1140px !important;
+  max-width: 1140px !important;
+}
+
+
+/*
+ * Overwrite default bootstrap style
+ */
+
+// No border radius on input
+$input-border-radius: 0 !important;
+
+// No border radius on card
+$card-border-radius: 0;
+
+// Transparent input group addon background
+$input-group-addon-bg: transparent !important;
+$input-group-addon-border-color: transparent !important;

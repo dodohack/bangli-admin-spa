@@ -1,0 +1,23 @@
+
+// Variables, some overwrite bootstrap, font-awesome
+@import "variables";
+@import "admin/variables";
+
+// Import bootstrap
+@import "node_modules/bootstrap/scss/bootstrap";
+
+// Import font-awesome
+@import "node_modules/font-awesome/scss/font-awesome";
+
+@import "html";
+
+@import "admin/html";
+@import "admin/nav";
+@import "admin/menu";
+@import "admin/content";
+@import "admin/list";
+@import "admin/footer";
+
+@import "admin/editor";
+
+

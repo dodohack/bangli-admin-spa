@@ -1,0 +1,28 @@
+/*
+ * _content.scss
+ * Defines the basic style for all admin content
+ */
+
+body {
+    background: $admin-body-bg;
+}
+
+ .admin-wrapper {
+    top: $admin-wrapper-top;
+    left: $admin-wrapper-left;
+    position: absolute;
+    overflow: hidden;
+
+    .container {
+        background-color: $admin-container-bg;
+    }
+ }
+
+/* Toggle style of vertical menu */
+.full-body {
+    .admin-wrapper {
+        left: $admin-wrapper-left-full;
+    }
+}
+
+

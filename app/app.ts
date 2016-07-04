@@ -9,30 +9,48 @@ import { Observable }                     from 'rxjs/Observable';
 // Add the RxJS operators we need in this app.
 import './rxjs-operators';
 
-import { MenuService }      from './service/menu.service';
+//import { MenuService }      from './service/menu.service';
 
-import { TopbarComponent }  from './components/topbar.ts';
-import { HeaderComponent }  from './components/header.ts';
+import { MenuComponent }  from './components/menu.ts';
+//import { HeaderComponent }  from './components/header.ts';
 import { FooterComponent }  from './components/footer.ts';
 
-import { HomePage }     from './pages/home.ts';
-import { LoginPage }    from './pages/login.ts';
-import { RegisterPage } from './pages/register.ts';
-import { AccountPage }  from './pages/account.ts';
-import { ProductsPage } from './pages/products.ts';
-import { Page }    from './pages/page.ts'
+import { AffiliatePage }     from './pages/affiliate.ts';
+import { AnalysisPage }    from './pages/analysis.ts';
+
+import { CommentPage }  from './pages/comment.ts';
+import { CsPage } from './pages/cs.ts';
+import { EmailPage }    from './pages/Email.ts';
+
+import { MigrationPage }  from './pages/Migration.ts';
+import { ModalPage } from './pages/modal.ts';
+import { OrderPage }    from './pages/order.ts';
+
+import { PicturePage }  from './pages/picture.ts';
+import { ProductPage } from './pages/product.ts';
+import { SeoPage }    from './pages/seo.ts';
+
+import { SettingPage }  from './pages/setting.ts';
+import { UserPage } from './pages/user.ts';
+import { VoucherPage }    from './pages/voucher.ts';
+import { WechatPage }     from './pages/wechat.ts'
+import {PagesPage} from "./pages/pages";
+import {MenuService} from "./service/menu.service";
+import {TopicPage} from "./pages/topic";
+import {HomePage} from "./pages/home";
+import {PostPage} from "./pages/post";
 
 @Component({
     selector: 'huluwa-pc-app',
     templateUrl: 'app/app.html',
     directives: [
         ROUTER_DIRECTIVES,
-        HeaderComponent,
-        TopbarComponent,
+        MenuComponent,
         FooterComponent,
     ],
     providers: [MenuService]
 })
+
 @RouteConfig([
     {
         path: '/',
@@ -41,31 +59,98 @@ import { Page }    from './pages/page.ts'
         useAsDefault: true
     },
     {
-        path: '/account',
-        name: 'Account',
-        component: AccountPage
+        path: '/affiliate',
+        name: 'Affiliate',
+        component: AffiliatePage
     },
     {
-        path: '/login',
-        name: 'Login',
-        component: LoginPage
+        path: '/analysis',
+        name: 'Analysis',
+        component: AnalysisPage
     },
     {
-        path: '/register',
-        name: 'Register',
-        component: RegisterPage
+        path: '/post',
+        name: 'Post',
+        component: PostPage
     },
     {
-        path: '/products',
-        name: 'Products',
-        component: ProductsPage
+        path: '/topic',
+        name: 'Topic',
+        component: TopicPage
     },
     {
-        path: '/page/:slug',
-        name: 'Page',
-        component: Page
+        path: '/pages',
+        name: 'Pages',
+        component: PagesPage
+    },
+    {
+        path: '/comment',
+        name: 'Comment',
+        component: CommentPage
+    },
+    {
+        path: '/cs',
+        name: 'Cs',
+        component: CsPage
+    },
+    {
+        path: '/email',
+        name: 'Email',
+        component: EmailPage
+    },
+    {
+        path: '/migration',
+        name: 'Migration',
+        component: MigrationPage
+    },
+    {
+        path: '/modal',
+        name: 'Modal',
+        component: ModalPage
+    },
+    {
+        path: '/order',
+        name: 'Order',
+        component: OrderPage
+    },
+    {
+        path: '/picture',
+        name: 'Picture',
+        component: PicturePage
+    },
+    {
+        path: '/product',
+        name: 'Product',
+        component: ProductPage
+    },
+    {
+        path: '/seo',
+        name: 'Seo',
+        component: SeoPage
+    },
+    {
+        path: '/setting',
+        name: 'Setting',
+        component: SettingPage
+    },
+    {
+        path: '/user',
+        name: 'User',
+        component: UserPage
+    },
+    {
+        path: '/voucher',
+        name: 'Voucher',
+        component: VoucherPage
+    },
+    {
+        path: '/wechat',
+        name: 'Wechat',
+        component: WechatPage
     }
 ])
+
+
 export class App {
 
     menus: Observable<string[]>;

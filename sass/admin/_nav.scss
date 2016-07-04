@@ -1,0 +1,6 @@
+/* 
+ * Show dropdown menu on hover, not on click
+ */
+ul.nav li.dropdown:hover > div.dropdown-menu {
+    display: block;    
+}

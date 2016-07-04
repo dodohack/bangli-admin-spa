@@ -1,0 +1,25 @@
+/*
+ * _components.scss
+ * 
+ * Defines global style for all standard HTML tags
+ */
+
+
+/* Small font */
+.small {
+    font-size: 80%;
+}
+
+/* Grey */
+.grey {
+    color: grey;
+}
+
+.float-right {
+    float: right;
+}
+
+/* Logo font color */
+.light-blue {
+    color: $light-blue;
+}

@@ -1,0 +1,26 @@
+.login-box {
+    border: 3px solid $light-blue;
+
+    /* Fixed width for font-awesome icon on input group */
+    .input-group-addon {
+
+        /* Overwrite default bootstrap style */
+        padding-left: 0 !important;
+
+        i {
+            width: 18px;
+        }
+
+    }
+
+    .login-box-row {
+        padding: 0.75rem 0;
+    }
+
+    .login-box-social-login {
+        float: right;
+        i {
+            padding-left: 1rem;
+        }
+    }
+}
