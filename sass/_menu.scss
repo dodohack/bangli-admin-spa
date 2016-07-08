@@ -5,15 +5,15 @@
 
 /* Common style for v and h menu */
 .admin-menu {
-    color: $admin-menu-color;
+    color: $menu-color;
 
     a {
-        color: $admin-menu-color;
+        color: $menu-color;
 
         &:hover {
             text-decoration: none !important;
             color: $light-blue;
-            background-color: $admin-menu-hover-bg;
+            background-color: $menu-hover-bg;
         }
     }
 }
@@ -22,8 +22,8 @@
 .admin-h-menu-wrap {
     position: fixed;
     width: 100%;
-    height: $admin-h-menu-height;
-    background: $admin-menu-bg;
+    height: $h-menu-height;
+    background: $menu-bg;
     z-index: 999;
 
     .admin-h-menu-inner {
@@ -48,10 +48,10 @@
 .admin-v-menu-wrap {
 
     position: fixed;
-    top: $admin-v-menu-top;
-    width: $admin-v-menu-width;
+    top: $v-menu-top;
+    width: $v-menu-width;
     bottom: 0px;
-    background-color: $admin-menu-bg;
+    background-color: $menu-bg;
     z-index: 999;
     overflow: hidden;
 
@@ -67,8 +67,8 @@
             a {
                 display: block;
                 width: 100%;
-                height: $admin-v-menu-height;
-                line-height: $admin-v-menu-height;
+                height: $v-menu-height;
+                line-height: $v-menu-height;
                 overflow: hidden;
   
                 /* Padding between menu icon and text */
@@ -82,11 +82,11 @@
         .toggle-v-menu {
             cursor: pointer;
             text-align: center;
-            background-color: $admin-v-menu-toggle-bg;
+            background-color: $v-menu-toggle-bg;
 
             a {
-                height: $admin-v-menu-height-small;
-                line-height: $admin-v-menu-height-small;
+                height: $v-menu-height-small;
+                line-height: $v-menu-height-small;
             }
         }
     }
@@ -95,7 +95,7 @@
 /* Toggle style of vertical menu */
 .full-body {
     .admin-v-menu-wrap {
-        width: $admin-v-icon-menu-width;
+        width: $v-icon-menu-width;
 
         .menu-text {
             display: none;

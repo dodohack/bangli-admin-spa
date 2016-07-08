@@ -5,7 +5,7 @@ import { Jsonp, URLSearchParams } from '@angular/http';
 import { Observable }  from 'rxjs/Observable';
 
 //Global constants
-import constants = require('../constants');
+import apis = require('../app.api');
 
 @Injectable()
 export class PageService {
@@ -15,10 +15,11 @@ export class PageService {
     public getPage(slug) {
         let params = new URLSearchParams;
         params.set('callback', 'JSONP_CALLBACK');
-        
+        /*
         return this.jsonp
-            .get(constants.api_page + '/' + slug, { search: params })
+            .get(apis.api_page + '/' + slug, { search: params })
             .map(res => res.json());
+            */
     }
 }
 

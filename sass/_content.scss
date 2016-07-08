@@ -4,24 +4,24 @@
  */
 
 body {
-    background: $admin-body-bg;
+    background: $body-bg;
 }
 
  .admin-wrapper {
-    top: $admin-wrapper-top;
-    left: $admin-wrapper-left;
+    top: $content-wrapper-top;
+    left: $content-wrapper-left;
     position: absolute;
     overflow: hidden;
 
     .container {
-        background-color: $admin-container-bg;
+        background-color: $container-bg;
     }
  }
 
 /* Toggle style of vertical menu */
 .full-body {
     .admin-wrapper {
-        left: $admin-wrapper-left-full;
+        left: $content-wrapper-left-full;
     }
 }
 

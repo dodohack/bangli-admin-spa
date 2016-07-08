@@ -5,11 +5,12 @@
 import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router-deprecated';
 
+
 @Component({
-    templateUrl: 'app/pages/pages.html',
+    templateUrl: 'app/pages/dashboard.html',
     directives: [ROUTER_DIRECTIVES]
 })
-export class PagesPage
+export class DashboardPage
 {
     constructor() {}
 }

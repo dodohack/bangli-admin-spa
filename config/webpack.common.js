@@ -7,9 +7,9 @@ var helpers = require('./helpers');
 module.exports = {
     entry: {
         'polyfills': './app/polyfills.ts',
-        'vendor': './app/vendor.ts',
-        'app': './app/main.ts',
-        'style': './sass/admin.scss'
+        'vendor':    './app/vendor.ts',
+        'app':       './app/main.ts',
+        'style':     './sass/style.scss'
     },
 
     resolve: {

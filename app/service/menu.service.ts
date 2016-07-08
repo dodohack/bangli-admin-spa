@@ -1,11 +1,11 @@
 /* Get all the frontend menus from api server */
 
-import { Injectable } from '@angular/core';
-import { Jsonp, URLSearchParams } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Injectable }               from '@angular/core';
+import { Jsonp, URLSearchParams }   from '@angular/http';
+import { Observable }               from 'rxjs/Observable';
 
-//Global constants
-import constants = require('../constants');
+/* RESTful API */
+import { API } from '../app.api';
 
 @Injectable()
 export class MenuService {
@@ -18,7 +18,7 @@ export class MenuService {
         params.set('callback', 'JSONP_CALLBACK');
 
         return this.jsonp
-            .get(constants.api_pc_fe_menu, { search: params })
+            .get(API.menu, { search: params })
             .map(res => res.json());
     }
 }

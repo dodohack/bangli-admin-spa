@@ -1,22 +1,63 @@
 /*
- * _variables.scss
- * Defines common variables and overwrite default bootstrap variables
- *
+ * Variables for admin dashboard
  */
-
 
 /*
- * Common variables
+ * Disable bootstrap responsive
  */
+
+// Grid breakpoints
+//
+// Define the minimum and maximum dimensions at which your layout will change,
+// adapting to different screen sizes, for use in media queries.
+
+$grid-breakpoints: (
+  // Extra small screen / phone
+  xs: 0,
+  // Small screen / phone
+  sm: 1px,
+  // Medium screen / tablet
+  md: 2px,
+  // Large screen / desktop
+  lg: 3px,
+  // Extra large screen / wide desktop
+  xl: 4px
+);
+
+// Fix the width of backend;
+.container {
+  width: 1000px !important;
+  min-width: 1000px !important;
+  max-width: 1000px !important;
+  padding: 1rem !important;
+  margin: 1rem !important;
+}
 
 // The color of logo font
 $light-blue: #7BD3DB;
 
+// Overwrite default font-awesome variable
+$fa-font-path: "/fonts";
 
 
-/*
- * Overwrite default font-awesome variable
- */
+// Admin menu color and bg
+$menu-color: #ffffff;
+$menu-bg: #383838;
+$menu-hover-bg: #808080;
+$v-menu-toggle-bg: #707070;
+$body-bg: #eeeeee;
+$container-bg: #ffffff;
 
- // Path to font-awesome fonts
- $fa-font-path: "/fonts";
+// Horizental and vertical admin menu size and padding
+$h-menu-height: 1.75rem;
+$v-menu-top: $h-menu-height;
+$v-menu-width: 8rem;
+$v-icon-menu-width: 3.5rem;
+$v-menu-height: 2.5rem;
+$v-menu-height-small: 2.0rem;
+
+
+$content-wrapper-top: 1.75rem;
+$content-wrapper-left: 8rem;
+$content-wrapper-left-full: 3.5rem;
+

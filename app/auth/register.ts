@@ -1,15 +1,15 @@
 /**
- * Created by wanghuan on 2016/6/20.
+ * This is the register page for backend
  */
 
 import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
-    templateUrl: 'app/pages/wechat.html',
+    templateUrl: 'app/auth/register.html',
     directives: [ROUTER_DIRECTIVES]
 })
-export class WechatPage
+export class RegisterPage
 {
     constructor() {}
 }

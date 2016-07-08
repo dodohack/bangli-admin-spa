@@ -1,15 +1,15 @@
 /**
- * Created by wanghuan on 2016/6/20.
+ * This is the component for page list page
  */
 
 import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
-    templateUrl: 'app/pages/wechat.html',
+    templateUrl: 'app/pages/page_list.html',
     directives: [ROUTER_DIRECTIVES]
 })
-export class WechatPage
+export class PageListPage
 {
     constructor() {}
 }

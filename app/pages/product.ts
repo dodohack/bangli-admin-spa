@@ -1,9 +1,9 @@
 /**
- * Created by wanghuan on 2016/6/20.
+ * This is the component for single product editing page
  */
 
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
     templateUrl: 'app/pages/product.html',

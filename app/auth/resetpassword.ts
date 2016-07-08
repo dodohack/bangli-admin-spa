@@ -1,15 +1,15 @@
 /**
- * Created by wanghuan on 2016/6/20.
+ * This is the password reset page
  */
 
 import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
-    templateUrl: 'app/pages/wechat.html',
+    templateUrl: 'app/auth/resetpassword.html',
     directives: [ROUTER_DIRECTIVES]
 })
-export class WechatPage
+export class ResetPasswordPage
 {
     constructor() {}
 }

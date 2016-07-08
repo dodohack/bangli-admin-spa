@@ -1,9 +1,9 @@
 /**
- * Created by wanghuan on 2016/6/20.
+ * This is the single post edit page component
  */
 
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router-deprecated';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
     templateUrl: 'app/pages/post.html',
