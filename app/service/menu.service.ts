@@ -1,15 +1,16 @@
-/* Get all the frontend menus from api server */
+/**
+ * Get dashboard menus from API server
+ */
 
 import { Injectable }               from '@angular/core';
 import { Jsonp, URLSearchParams }   from '@angular/http';
-import { Observable }               from 'rxjs/Observable';
+//import { Observable }               from 'rxjs/Observable';
 
-/* RESTful API */
 import { API } from '../app.api';
 
 @Injectable()
 export class MenuService {
-    public menus : Observable<string[]>;
+    //public menus : Observable<string[]>;
 
     constructor(private jsonp: Jsonp) {}
 
