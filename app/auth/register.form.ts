@@ -3,7 +3,7 @@
  */
 
 import { Component }         from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { NgForm }            from '@angular/forms';
 import { Observable }        from 'rxjs/Observable';
@@ -23,7 +23,14 @@ export class RegisterForm
     error = new RegisterError('', '', '');
     model = new Register('', '', '', '', API.register_callback);
 
-    constructor(private http: Http, private authService: AuthService) {}
+    constructor(private http: Http,
+                private router: Router,
+                private authService: AuthService)
+    {
+        /* Redirect user if already logged in */
+        if (this.authService.isLoggedIn())
+            this.router.navigate(['/']);
+    }
 
     /* POST data to auth server */
     postRegister()

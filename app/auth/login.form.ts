@@ -3,7 +3,7 @@
  */
 
 import { Component }         from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { NgForm }            from '@angular/forms';
 import { Observable }        from 'rxjs/Observable';
@@ -25,7 +25,13 @@ export class LoginForm
     model = new Login('', '');
 
     constructor(private http: Http,
-                private authService: AuthService) {}
+                private router: Router,
+                private authService: AuthService)
+    {
+        /* Redirect user if already logged in */
+        if (this.authService.isLoggedIn())
+            this.router.navigate(['/']);
+    }
 
     /* POST data to auth server */
     postLogin()
