@@ -1,15 +1,34 @@
 /**
- * This is the register page for backend
+ * This is the definition of the input of a register form
  */
 
-import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+export class Register {
+    constructor(
+      public name: string,
+      public email: string,
+      public password: string,
+      public password_confirmation: string,
+      public callback: string
+    ){ }
 
-@Component({
-    templateUrl: 'app/auth/register.html',
-    directives: [ROUTER_DIRECTIVES]
-})
-export class RegisterPage
-{
-    constructor() {}
+    /* Return stringified string for form post */
+    public stringify() : string {
+        return 'name=' + this.name + '&email=' + this.email +
+                '&password=' + this.password + '&password_confirmation=' +
+                this.password_confirmation + '&callback=' + this.callback;
+    }
+}
+
+export class RegisterError {
+    constructor(
+        public name: string,
+        public email: string,
+        public password: string
+    ) {}
+
+    public reset() {
+        this.name = '';
+        this.email = '';
+        this.password = '';
+    }
 }

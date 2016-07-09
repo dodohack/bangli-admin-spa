@@ -1,0 +1,78 @@
+<!-- Register page template -->
+
+<div class="center-block login">
+    <div class="card card-block login-box">
+        <div class="login-box-row">
+            <a [routerLink]="['/login']" class="small float-right">登录</a>
+            <h4>注册</h4>
+        </div>
+
+        <!--
+        TODO: Ref https://auth0.com/blog/2016/05/03/angular2-series-forms-and-custom-validation/
+        TODO: for advanced form validation
+        -->
+        <div *ngIf="error.name != ''" class="alert alert-danger">
+            {{ error.name }}
+        </div>
+        <div *ngIf="error.email != ''" class="alert alert-danger">
+            {{ error.email }}
+        </div>
+        <div *ngIf="error.password != ''" class="alert alert-danger">
+            {{ error.password }}
+        </div>
+
+        <form class="form-horizontal" role="form" (ngSubmit)="onSubmit()"
+              #registerForm="ngForm" action="http://alpha-auth.bangli.uk/register">
+
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-user fa-lg"></i>
+                    </span>
+                    <input type="text" class="form-control" [(ngModel)]="model.name"
+                           name="name" placeholder="用户名" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-envelope fa-lg"></i>
+                    </span>
+                    <input type="email" class="form-control" [(ngModel)]="model.email"
+                           name="email" placeholder="邮箱" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-lock fa-lg"></i>
+                    </span>
+                    <input type="password" class="form-control" [(ngModel)]="model.password"
+                           name="password" placeholder="密码" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa-lock fa-lg"></i>
+                    </span>
+                    <input type="password" class="form-control" [(ngModel)]="model.password_confirmation"
+                           name="password_confirmation" placeholder="确认密码" required>
+                </div>
+            </div>
+
+            <div class="login-box-row">
+                <!-- Application endpoint to receive register notice sent out from auth server -->
+                <input type="hidden" [(ngModel)]="model.callback"
+                       name="callback" value="http://alpha-api.huluwa.uk/register">
+                <button type="submit" class="btn btn-block btn-warning-outline"
+                [disabled]="!registerForm.form.valid">注册</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>

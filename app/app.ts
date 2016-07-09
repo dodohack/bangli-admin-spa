@@ -12,12 +12,15 @@ import { MenuService }       from './service/menu.service';
 
 import { MenuComponent }     from './components/menu';
 
+//import { RegisterForm } from './auth/register.form';
+
 @Component({
     selector: 'huluwa-admin',
     templateUrl: 'app/app.html',
     directives: [
         ROUTER_DIRECTIVES,
         MenuComponent,
+        //RegisterForm,
     ],
     providers: [MenuService]
 })

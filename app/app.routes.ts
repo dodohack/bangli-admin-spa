@@ -4,9 +4,11 @@ import { AuthGuard }         from './auth/guard';
 import { AuthService }       from './service/auth.service';
 
 import { LoginPage }         from './auth/login';
-import { RegisterPage }      from './auth/register';
+
 import { LostPasswordPage }  from './auth/lostpassword';
 import { ResetPasswordPage } from './auth/resetpassword';
+
+import { RegisterPage }      from './pages/register';
 
 import { AffiliatePage } from './pages/affiliate';
 import { AnalysisPage }  from './pages/analysis';
@@ -39,39 +41,40 @@ export const routes: RouterConfig = [
     {path: 'lost-password', component: LostPasswordPage},
     {path: 'reset-password', component: ResetPasswordPage},
 
-    {
-        path: '',
-        component: DashboardPage,
-        /* Guard the route so only authenticated user can access */
-        canActivate: [AuthGuard],
-        children: [
-            //{ path: 'affiliate',  component: AffiliatePage },
-            //{ path: 'analysis',   component: AnalysisPage },
-            //{ path: 'comment', component: },
-            //{ path: 'cs', component: },
+    /**
+     * FIXME: Grouped routes(children) is not working, it may caused by using
+     * webpack with angular, see https://github.com/angular/angular/issues/9631
+     * for detail.
+     */
+    /* Guard the route so only authenticated user can access */
 
-            {path: 'emails/:status', component: EmailListPage},
-            {path: 'email/:id', component: EmailPage},
+    {path: '', component: DashboardPage, canActivate: [AuthGuard]},
 
-            {path: 'migrations', component: MigrationPage},
+    //{ path: 'affiliate',  component: AffiliatePage },
+    //{ path: 'analysis',   component: AnalysisPage },
+    //{ path: 'comment', component: },
+    //{ path: 'cs', component: },
 
-            {path: 'orders/:status', component: OrderListPage},
-            {path: 'order/:id', component: OrderPage},
+    {path: 'emails/:status', component: EmailListPage, canActivate: [AuthGuard]},
+    {path: 'email/:id', component: EmailPage, canActivate: [AuthGuard]},
 
-            {path: 'pages/:status', component: PageListPage},
-            {path: 'page/:id', component: PagePage},
+    {path: 'migrations', component: MigrationPage, canActivate: [AuthGuard]},
 
-            //{ path: 'picture', component: },
+    {path: 'orders/:status', component: OrderListPage, canActivate: [AuthGuard]},
+    {path: 'order/:id', component: OrderPage, canActivate: [AuthGuard]},
 
-            {path: 'posts/:status', component: PostListPage},
-            {path: 'post/:id', component: PostPage},
+    {path: 'pages/:status', component: PageListPage, canActivate: [AuthGuard]},
+    {path: 'page/:id', component: PagePage, canActivate: [AuthGuard]},
 
-            {path: 'products/:status', component: ProductListPage},
-            {path: 'product/:id', component: ProductPage}
-        ]
-    }
+    //{ path: 'picture', component: },
+
+    {path: 'posts/:status', component: PostListPage, canActivate: [AuthGuard]},
+    {path: 'post/:id', component: PostPage, canActivate: [AuthGuard]},
+
+    {path: 'products/:status', component: ProductListPage, canActivate: [AuthGuard]},
+    {path: 'product/:id', component: ProductPage, canActivate: [AuthGuard]},
 ];
 
 export const APP_ROUTER_PROVIDERS = [
-    provideRouter(routes), AuthGuard, AuthService
+    provideRouter(routes) , AuthGuard, AuthService
 ];

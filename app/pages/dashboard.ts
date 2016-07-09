@@ -3,12 +3,10 @@
  */
 
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router-deprecated';
 
 
 @Component({
-    templateUrl: 'app/pages/dashboard.html',
-    directives: [ROUTER_DIRECTIVES]
+    templateUrl: 'app/pages/dashboard.html'
 })
 export class DashboardPage
 {

@@ -1,0 +1,12 @@
+/*
+ * Common css for all forms
+ */
+
+/* Angular2 form style for valid/invalid input */
+.ng-touched.ng-invalid[required] {
+  border-color: red;
+}
+
+.ng-touched.ng-valid {
+  border-color: green;
+}
