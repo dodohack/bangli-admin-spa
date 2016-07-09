@@ -4,12 +4,11 @@
 
 import { Component }         from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import { Http, Headers, Response, RequestOptions } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { NgForm }            from '@angular/forms';
 import { Observable }        from 'rxjs/Observable';
 
 import { Register, RegisterError }  from './register';
-import { Token }                    from './token';
 import { API }                      from '../app.api';
 
 @Component({
