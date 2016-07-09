@@ -33,6 +33,26 @@ $grid-breakpoints: (
   margin: 1rem !important;
 }
 
+
+/*
+ * Overwrite default bootstrap style
+ */
+
+// No border radius on input
+$input-border-radius: 0 !important;
+
+// No border radius on card
+$card-border-radius: 0;
+
+// Transparent input group addon background
+$input-group-addon-bg: transparent !important;
+$input-group-addon-border-color: transparent !important;
+
+
+/*
+ * Customized variables
+ */
+
 // The color of logo font
 $light-blue: #7BD3DB;
 

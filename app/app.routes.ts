@@ -1,5 +1,8 @@
 import { provideRouter, RouterConfig } from '@angular/router';
 
+import { AuthGuard }         from './auth/guard';
+import { AuthService }       from './service/auth.service';
+
 import { LoginPage }         from './auth/login';
 import { RegisterPage }      from './auth/register';
 import { LostPasswordPage }  from './auth/lostpassword';
@@ -30,39 +33,45 @@ import { VoucherPage }   from './pages/voucher';
 import { WechatPage }    from './pages/wechat';
 
 export const routes: RouterConfig = [
-    { path: '',                 component: DashboardPage },
 
-    { path: 'login',            component: LoginPage },
-    { path: 'register',         component: RegisterPage },
-    { path: 'lost-password',    component: LostPasswordPage },
-    { path: 'reset-password',   component: ResetPasswordPage },
+    {path: 'login', component: LoginPage},
+    {path: 'register', component: RegisterPage},
+    {path: 'lost-password', component: LostPasswordPage},
+    {path: 'reset-password', component: ResetPasswordPage},
 
-    //{ path: 'affiliate',  component: AffiliatePage },
-    //{ path: 'analysis',   component: AnalysisPage },
-    //{ path: 'comment', component: },
-    //{ path: 'cs', component: },
+    {
+        path: '',
+        component: DashboardPage,
+        /* Guard the route so only authenticated user can access */
+        canActivate: [AuthGuard],
+        children: [
+            //{ path: 'affiliate',  component: AffiliatePage },
+            //{ path: 'analysis',   component: AnalysisPage },
+            //{ path: 'comment', component: },
+            //{ path: 'cs', component: },
 
-    { path: 'emails/:status',   component: EmailListPage },
-    { path: 'email/:id',        component: EmailPage },
+            {path: 'emails/:status', component: EmailListPage},
+            {path: 'email/:id', component: EmailPage},
 
-    { path: 'migration',        component: MigrationPage },
+            {path: 'migrations', component: MigrationPage},
 
-    { path: 'orders/:status',   component: OrderListPage },
-    { path: 'order/:id',        component: OrderPage },
+            {path: 'orders/:status', component: OrderListPage},
+            {path: 'order/:id', component: OrderPage},
 
-    { path: 'pages/:status',    component: PageListPage },
-    { path: 'page/:id',         component: PagePage },
+            {path: 'pages/:status', component: PageListPage},
+            {path: 'page/:id', component: PagePage},
 
-    //{ path: 'picture', component: },
+            //{ path: 'picture', component: },
 
-    { path: 'posts/:status',    component: PostListPage },
-    { path: 'post/:id',         component: PostPage },
+            {path: 'posts/:status', component: PostListPage},
+            {path: 'post/:id', component: PostPage},
 
-    { path: 'products/:status', component: ProductListPage },
-    { path: 'product/:id',      component: ProductPage },
-
+            {path: 'products/:status', component: ProductListPage},
+            {path: 'product/:id', component: ProductPage}
+        ]
+    }
 ];
 
 export const APP_ROUTER_PROVIDERS = [
-    provideRouter(routes)
+    provideRouter(routes), AuthGuard, AuthService
 ];
