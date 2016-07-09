@@ -3,12 +3,12 @@ import { provideRouter, RouterConfig } from '@angular/router';
 import { AuthGuard }         from './auth/guard';
 import { AuthService }       from './service/auth.service';
 
-import { LoginPage }         from './auth/login';
-
 import { LostPasswordPage }  from './auth/lostpassword';
 import { ResetPasswordPage } from './auth/resetpassword';
 
+import { LoginPage }         from './pages/login';
 import { RegisterPage }      from './pages/register';
+import { LogoutComponent }   from './auth/logout.component';
 
 import { AffiliatePage } from './pages/affiliate';
 import { AnalysisPage }  from './pages/analysis';
@@ -37,6 +37,7 @@ import { WechatPage }    from './pages/wechat';
 export const routes: RouterConfig = [
 
     {path: 'login', component: LoginPage},
+    {path: 'logout', component: LogoutComponent},
     {path: 'register', component: RegisterPage},
     {path: 'lost-password', component: LostPasswordPage},
     {path: 'reset-password', component: ResetPasswordPage},

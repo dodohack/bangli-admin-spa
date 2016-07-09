@@ -8,6 +8,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { NgForm }            from '@angular/forms';
 import { Observable }        from 'rxjs/Observable';
 
+import { AuthService }              from '../service/auth.service';
 import { Register, RegisterError }  from './register';
 import { API }                      from '../app.api';
 
@@ -21,18 +22,18 @@ export class RegisterForm
     jwt: any;
     error = new RegisterError('', '', '');
     model = new Register('', '', '', '', API.register_callback);
-    submitted = false;
 
-
-    constructor(private http: Http) {}
+    constructor(private http: Http, private authService: AuthService) {}
 
     /* POST data to auth server */
-    postRegister() {
-        let body = this.model.stringify();
+    postRegister()
+    {
+        /* Form a http post data */
+        let body    = this.model.stringify();
         let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
         let options = new RequestOptions({ headers: headers });
 
-        /* Post form data and convert server response to JSON format */
+        /* Post data and convert server response to JSON format */
         return this.http.post(API.register, body, options)
                    .map(res => res.json())
                    .catch(error => {
@@ -41,26 +42,26 @@ export class RegisterForm
                    });
     }
 
-    /* Triggered when form submit happens */
-    onSubmit() {
+    /* Triggered when user clicks on submit button */
+    onSubmit()
+    {
         /* Reset the error message */
         this.error.reset();
 
-        this.postRegister()
-            .subscribe(
+        this.postRegister().subscribe(
                 data  => {
                     this.jwt = data['token'];
-                    this.submitted = true;
                 },
                 error => {
                     error['name'] ? this.error['name'] = error['name'] : false;
                     error['email'] ? this.error['email'] = error['email'] : false;
                     error['password'] ? this.error['password'] = error['password'] : false;
-                    console.error(error);
+                    //console.error(error);
                 },
-                ()    => { console.log("REGISTER DONE!"); }
+                ()    => {
+                    /* Login user in when everything is ok */
+                    this.authService.login(this.jwt);
+                }
             );
     }
-
-    get diagnostic() { return this.error['name']; }
 }

@@ -15,6 +15,8 @@ export const API = {
     /* Authentication */
     register: auth_base + '/register',
     register_callback: base + '/register',
+    /* NOTE: there is no login_callback endpoint on api server */
+    login: auth_base + '/login',
 
     /* Menus */
     menu: base + '/admin/menu',

@@ -1,16 +1,15 @@
 /**
- * This is the login page for backend
+ * This is the definition of the input of a login form
  */
 
-import { Component }         from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-import { NgForm }            from '@angular/forms';
+export class Login {
 
-@Component({
-    templateUrl: 'app/auth/login.html',
-    directives: [ROUTER_DIRECTIVES]
-})
-export class LoginPage
-{
-    constructor() {}
+    constructor(public email: string, public password: string){ }
+
+    /* Return stringified string for form post */
+    public stringify() : string
+    {
+        return 'email=' + this.email + '&password=' + this.password;
+    }
 }
+

@@ -22,15 +22,15 @@
         </div>
 
         <form class="form-horizontal" role="form" (ngSubmit)="onSubmit()"
-              #registerForm="ngForm" action="http://alpha-auth.bangli.uk/register">
+              #registerForm="ngForm">
 
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon">
                         <i class="fa fa-user fa-lg"></i>
                     </span>
-                    <input type="text" class="form-control" [(ngModel)]="model.name"
-                           name="name" placeholder="用户名" required>
+                    <input type="text" class="form-control" required
+                           [(ngModel)]="model.name" name="name" placeholder="用户名">
                 </div>
             </div>
 
@@ -66,10 +66,9 @@
 
             <div class="login-box-row">
                 <!-- Application endpoint to receive register notice sent out from auth server -->
-                <input type="hidden" [(ngModel)]="model.callback"
-                       name="callback" value="http://alpha-api.huluwa.uk/register">
+                <input type="hidden" [(ngModel)]="model.callback" name="callback">
                 <button type="submit" class="btn btn-block btn-warning-outline"
-                [disabled]="!registerForm.form.valid">注册</button>
+                        [disabled]="!registerForm.form.valid">注册</button>
             </div>
 
         </form>
