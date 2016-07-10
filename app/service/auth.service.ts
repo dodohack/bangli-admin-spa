@@ -27,6 +27,7 @@ export class AuthService
             return false;
 
         /* TODO: check JWT expiration */
+        console.log("AuthService::isLoggedIn: TODO: check JWT expiration");
 
         return true;
     }
@@ -37,7 +38,7 @@ export class AuthService
     public login(jwt: string)
     {
         localStorage.setItem('jwt', jwt);
-        //console.log("LOGIN DONE!");
+        //console.log("LOGIN DONE, JWT: " + jwt);
         this.router.navigate(['/']);
     }
 
@@ -49,5 +50,13 @@ export class AuthService
         localStorage.removeItem('jwt');
         //console.log("LOGOUT DONE!");
         this.router.navigate(['/login']);
+    }
+
+    /**
+     * Return JWT token
+     */
+    public getJwt()
+    {
+        return localStorage.getItem('jwt');
     }
 }
