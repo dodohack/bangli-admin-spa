@@ -1,6 +1,7 @@
 <!-- This is the template page for all pages -->
-<!--<menu></menu>-->
+
+<div *ngIf="isLoggedIn">
+    <!-- Only show the menu when user is logged in -->
+    <menu></menu>
+</div>
 <router-outlet></router-outlet>
-
-
-

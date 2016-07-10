@@ -8,11 +8,10 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 // Add the RxJS operators we need in this app.
 import './rxjs-operators';
 
+import { AuthService }       from './service/auth.service';
 import { MenuService }       from './service/menu.service';
 
 import { MenuComponent }     from './components/menu';
-
-//import { RegisterForm } from './auth/register.form';
 
 @Component({
     selector: 'huluwa-admin',
@@ -20,11 +19,15 @@ import { MenuComponent }     from './components/menu';
     directives: [
         ROUTER_DIRECTIVES,
         MenuComponent,
-        //RegisterForm,
     ],
     providers: [MenuService]
 })
-export class App {
+export class App
+{
+    constructor(private authService: AuthService) {}
 
-    constructor() {}
+    get isLoggedIn()
+    {
+        return this.authService.isLoggedIn();
+    }
 }
