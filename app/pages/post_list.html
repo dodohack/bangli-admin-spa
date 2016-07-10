@@ -1,7 +1,140 @@
-<div class="admin-wrapper">
+<div class="editor-page-header">
+    <a class="btn btn-secondary" [routerLink]="['/post/new']">新建文章</a>
 
-    <div class="container">
-        <h2>This is Post list page </h2>
+    <button class="btn btn-secondary">详简列表切换</button>
+
+    <form class="form-inline pull-xs-right">
+        <input class="form-control" type="text" placeholder="搜索">
+        <button class="btn btn-secondary" type="submit">搜索</button>
+    </form>
+
+    <h2 class="title">文章列表</h2>
+</div>
+
+<ul class="nav nav-tabs list-nav">
+    <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/posts']">全部</a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/posts/author/myid']">我的</a>
+    </li>
+
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown"
+           aria-haspopup="true" aria-expanded="false">作者</a>
+
+        <div class="dropdown-menu">
+            <a class="dropdown-item" [routerLink]="['/posts/author/id']">作者名字A</a>
+            <a class="dropdown-item" [routerLink]="['/posts/author/id']">作者名字B</a>
+            <a class="dropdown-item" [routerLink]="['/posts/author/id']">作者名字C</a>
+        </div>
+    </li>
+
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+           aria-haspopup="true" aria-expanded="false">编辑</a>
+
+        <div class="dropdown-menu">
+            <a class="dropdown-item" [routerLink]="['/posts/editor/id']">编辑名字A</a>
+            <a class="dropdown-item" [routerLink]="['/posts/editor/id']">编辑名字B</a>
+            <a class="dropdown-item" [routerLink]="['/posts/editor/id']">编辑名字C</a>
+        </div>
+    </li>
+
+    <!-- Various post status tabs -->
+    <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/posts/status/xyz']">发布</a>
+        <a class="nav-link" [routerLink]="['/posts/status/xyz']">置顶</a>
+        <a class="nav-link" [routerLink]="['/posts/status/xyz']">草稿</a>
+        <a class="nav-link" [routerLink]="['/posts/status/xyz']">待审</a>
+        <a class="nav-link" [routerLink]="['/posts/status/xyz']">回收站</a>
+    </li>
+</ul>
+
+<form class="form-group">
+
+    <!-- Filter toolbar -->
+    <div class="row filter-toolbar">
+        <div class="col-md-3">
+            <select class="c-select select-sm">
+                <option value="0" selected>批量操作</option>
+                <option value="x">移到回收站</option>
+                <option value="y">标记</option>
+            </select>
+            <button type="submit" class="btn btn-secondary btn-sm">应用</button>
+        </div>
+
+        <div class="col-md-6">
+            <select class="c-select select-sm">
+                <option value="0" selected>全部日期</option>
+                <option value="x">2016年5月</option>
+                <option value="y">2016年4月</option>
+                <option value="y">2016年3月</option>
+            </select>
+            <select class="c-select select-sm">
+                <option value="0" selected>所有分类</option>
+                <option value="x">分类1</option>
+                <option value="y">分类2</option>
+                <option value="y">分类3</option>
+            </select>
+            <select class="c-select select-sm">
+                <option value="0" selected>所有专题</option>
+                <option value="x">专题1</option>
+                <option value="y">专题2</option>
+                <option value="y">专题3</option>
+            </select>
+            <button type="submit" class="btn btn-secondary btn-sm">筛选</button>
+        </div>
+
+        <div class="col-md-3">
+            <div class="input-group input-group-sm">
+                <span class="input-group-btn">
+                    <a type="submit" class="btn btn-secondary" [routerLink]=""><i class="fa fa-angle-double-left"></i>第一页</a>
+                    <a type="submit" class="btn btn-secondary" [routerLink]=""><i class="fa fa-angle-left"></i>上一页</a>
+                </span>
+                <input type="text" class="form-control" placeholder="当前x/y页">
+                <span class="input-group-btn">
+                    <a type="submit" class="btn btn-secondary" [routerLink]=""><i class="fa fa-angle-right"></i>下一页</a>
+                    <a type="submit" class="btn btn-secondary" [routerLink]=""><i class="fa fa-angle-double-right"></i>末页</a>
+                </span>
+            </div>
+        </div>
+
     </div>
 
-</div>
+    <!-- Post list table -->
+    <table class="table table-hover" style="font-size: 85%;">
+        <thead class="thead-default">
+            <tr>
+                <th width="4%"><input type="checkbox"></th>
+                <th width="30%">标题</th>
+                <th width="5%">类型</th>
+                <th width="5%">作者</th>
+                <th width="5%">编辑</th>
+                <th width="10%">分类</th>
+                <th width="10%">前端日期</th>
+                <th width="10%">发布日期</th>
+                <th width="6%">阅读量</th>
+                <th width="5%"><i class="fa fa-comments" data-toggle="tooltip" data-placement="bottom" title="评论"></i></th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <!-- FIXME: *ngFor -->
+                <tr class="table-warning">
+                    <td><input type="checkbox"></td>
+                    <td>文章标题文章标题</td>
+                    <td>文章类型</td>
+                    <td>作者A</td>
+                    <td>编辑A</td>
+                    <td>文章分类A</td>
+                    <td>2010-11-11 11:11:00</td>
+                    <td>2010-11-11 11:11:00</td>
+                    <td>1234</td>
+                    <td>5</td>
+                </tr>
+        </tbody>
+    </table>
+
+</form>

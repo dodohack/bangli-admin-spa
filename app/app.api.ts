@@ -3,7 +3,7 @@
  */
 
 /* This should be https://api.huluwa.uk in product env */
-const base: string = 'http://alpha-api.bangli.uk';
+const base: string = 'http://alpha-api.huluwa.uk';
 
 /* Authentication server */
 const auth_base: string = 'http://alpha-auth.bangli.uk';

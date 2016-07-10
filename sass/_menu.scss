@@ -3,6 +3,12 @@
  * Defines the style of the horizental and vertical menu in admin panel.
  */
 
+/* Style for <menu></menu> */
+menu {
+    margin: 0;
+    padding: 0;
+}
+
 /* Common style for v and h menu */
 .admin-menu {
     color: $menu-color;
