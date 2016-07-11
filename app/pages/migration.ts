@@ -76,11 +76,15 @@ export class MigrationPage
             .map(res => res.json())
             .subscribe(
                 res   => {
+                    /* TODO: Remove it */
+                    console.log(res);
                     this.status  = JSON.stringify(res);
                     this.isRunning = !this.isRunning;
                     this.message = '数据移植完毕,服务器返回了以下信息';
                 },
                 error => {
+                    /* TODO: Remove it */
+                    console.error(error);
                     this.status  = error;
                     this.isRunning = !this.isRunning;
                     this.message = '数据移植出错,服务器返回了以下信息';
