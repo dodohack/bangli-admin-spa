@@ -3,20 +3,26 @@
  */
 
 /* This should be https://api.huluwa.uk in product env */
-const base: string = 'http://alpha-api.huluwa.uk';
+const base: string = 'http://localhost:5000';
 
 /* Authentication server */
-const auth_base: string = 'http://alpha-auth.bangli.uk';
+const auth_base: string = 'http://localhost:10000';
 
-export const API = {
+/* Application server APIs */
+export const APP = {
     /* Endpoint */
     endpoint: base,
 
-    /* Authentication */
-    register: auth_base + '/register',
+    /* Base migration url of API server */
+    migrate_base: base + '/admin/migrate',
+
+    /* Initial migration with empty user table */
+    migrate_user_stage1: base + '/migrate/user',
+    /* Incremental migration */
+    migrate_user_stage2: base + '/admin/migrate/user',
+
+    /* Authentication callback with JWT token */
     register_callback: base + '/register',
-    /* NOTE: there is no login_callback endpoint on api server */
-    login: auth_base + '/login',
 
     /* Menus */
     menu: base + '/admin/menu',
@@ -27,3 +33,12 @@ export const API = {
     /* Order, param: order_id */
     //order:  base + '/admin/order',
 };
+
+/* Authentication server APIs */
+export const AUTH = {
+    endpoint: auth_base,
+
+    /* Authentcation with email/password */
+    register: auth_base + '/register',
+    login: auth_base + '/login',
+}

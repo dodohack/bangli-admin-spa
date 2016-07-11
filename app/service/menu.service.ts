@@ -8,7 +8,7 @@ import { Jsonp, Headers, URLSearchParams }   from '@angular/http';
 
 import { AuthService } from './auth.service';
 
-import { API } from '../app.api';
+import { APP } from '../app.api';
 
 @Injectable()
 export class MenuService {
@@ -27,7 +27,7 @@ export class MenuService {
         //let headers = new Headers({'Authorization': 'Bearer ' + localStorage.getItem('jwt')});
 
         return this.jsonp
-            .get(API.menu, {search: params})
+            .get(APP.menu, {search: params})
             .map(res => res.json());
     }
 }

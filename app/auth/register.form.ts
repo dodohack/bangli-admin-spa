@@ -10,7 +10,7 @@ import { Observable }        from 'rxjs/Observable';
 
 import { AuthService }              from '../service/auth.service';
 import { Register, RegisterError }  from './register';
-import { API }                      from '../app.api';
+import { APP, AUTH }                      from '../app.api';
 
 @Component({
     selector: 'register-form',
@@ -21,7 +21,7 @@ export class RegisterForm
 {
     jwt: any;
     error = new RegisterError('', '', '');
-    model = new Register('', '', '', '', API.register_callback);
+    model = new Register('', '', '', '', APP.register_callback);
 
     constructor(private http: Http,
                 private router: Router,
@@ -41,7 +41,7 @@ export class RegisterForm
         let options = new RequestOptions({ headers: headers });
 
         /* Post data and convert server response to JSON format */
-        return this.http.post(API.register, body, options)
+        return this.http.post(AUTH.register, body, options)
                    .map(res => res.json())
                    .catch(error => {
                        error = error.json();

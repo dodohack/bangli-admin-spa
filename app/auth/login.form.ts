@@ -11,7 +11,7 @@ import { Observable }        from 'rxjs/Observable';
 import { AuthService } from '../service/auth.service';
 
 import { Login } from './login';
-import { API }   from '../app.api';
+import { APP, AUTH }   from '../app.api';
 
 @Component({
     selector: 'login-form',
@@ -23,6 +23,7 @@ export class LoginForm
     jwt: any;
     error = '';
     model = new Login('', '');
+    stage1_migration_url = APP.migrate_user_stage1;
 
     constructor(private http: Http,
                 private router: Router,
@@ -42,7 +43,7 @@ export class LoginForm
         let options = new RequestOptions({ headers: headers });
         
         /* Post data and convert server response to JSON format */
-        return this.http.post(API.login, body, options)
+        return this.http.post(AUTH.login, body, options)
                    .map(res => res.json())
                    .catch(error => {
                        error = error.json();

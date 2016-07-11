@@ -5,17 +5,23 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="btn-toolbar" role="toolbar">
-                    <a type="button" class="btn btn-primary" href="/admin/migrations/users">移植用户表</a>
-                    <a type="button" class="btn btn-primary" href="/admin/migrations/pictures">移植图片表</a>
-                    <a type="button" class="btn btn-primary" href="/admin/migrations/posts">移植文章表</a>
-                    <a type="button" class="btn btn-primary" href="/admin/migrations/products">移植产品表</a>
-                    <a type="button" class="btn btn-primary" href="/admin/migrations/orders">移植订单表</a>
+                    <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUser()">移植基本用户表</button>
+                    <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUserData()">移植用户数据表</button>
+                    <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateAttachment()">移植附件表</button>
+                    <button class="btn btn-primary" [disabled]="isRunning" (click)="migratePost()">移植文章表</button>
+                    <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateProduct()">移植产品表</button>
+                    <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateOrder()">移植订单表</button>
                 </div>
             </div>
+        </div>
 
-            <br/>
-            <br/>
-            <br/>
+        <div class="row">
+            <div class="col-md-12">
+                <br>
+                <br>
+                <h4>{{ message }}</h4>
+                <p>{{ status }}</p>
+            </div>
         </div>
     </div>
 </div>
