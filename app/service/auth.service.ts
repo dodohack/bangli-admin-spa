@@ -12,6 +12,8 @@
 import { Injectable } from '@angular/core';
 import { Router }     from '@angular/router';
 
+var jwtDecode = require('jwt-decode');
+
 @Injectable()
 export class AuthService
 {
@@ -26,8 +28,16 @@ export class AuthService
         if (jwt == '' || jwt == null)
             return false;
 
-        /* TODO: check JWT expiration */
-        console.log("AuthService::isLoggedIn: TODO: check JWT expiration");
+        /* Get decoded payload */
+        let decoded = jwtDecode(jwt);
+        /* Get current unix timestamp in second */
+        let now = Math.floor(Date.now()/1000);
+
+        /* Token expired, remove it and return false */
+        if (decoded.exp < now) {
+            localStorage.removeItem('jwt');
+            return false;
+        }
 
         return true;
     }
