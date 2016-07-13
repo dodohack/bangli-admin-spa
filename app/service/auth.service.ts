@@ -131,9 +131,14 @@ export class AuthService
 
     /**
      * Return user name
+     * FIXME: If this class is not singleton, we can't do this, see
+     * http://stackoverflow.com/questions/34376854/delegation-eventemitter-or-observable-in-angular2/35568924#35568924
+     * for better solution.
      */
     public getName()
     {
-        return this.decoded_jwt.name;
+        console.log(this.decoded_jwt);
+        return 'dodo123';
+        //return this.decoded_jwt.aud;
     }
 }

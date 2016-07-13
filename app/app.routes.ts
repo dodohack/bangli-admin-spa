@@ -78,6 +78,12 @@ export const routes: RouterConfig = [
 
     {path: 'products/:status', component: ProductListPage, canActivate: [AuthGuard]},
     {path: 'product/:id', component: ProductPage, canActivate: [AuthGuard]},
+
+    /* FIXME: Need to redirect route 'users' to a previous stored route
+     * matches following pattern. So that when nav back through sidebar, we can
+     * always view the last state of users page.
+     */
+    {path: 'users/:role/:page/:count', component: UserPage, canActivate: [AuthGuard]},
 ];
 
 export const APP_ROUTER_PROVIDERS = [

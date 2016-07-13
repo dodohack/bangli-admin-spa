@@ -1,5 +1,5 @@
 /**
- * Created by wanghuan on 2016/6/20.
+ * Display list of users
  */
 
 import { Component } from '@angular/core';

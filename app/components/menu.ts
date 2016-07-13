@@ -15,11 +15,16 @@ export class MenuComponent implements OnInit {
     topbar_menus:  any;
     sidebar_menus: any;
 
-    username: string;
-
-    constructor(private menuService: MenuService,
-                private authService: AuthService) {
-        this.username = authService.getName();
+    /* username: string; */
+    /**
+     * FIXME: We can't create a authService object and get the stored jwt.aud from
+     * it, see
+     * http://stackoverflow.com/questions/34376854/delegation-eventemitter-or-observable-in-angular2/35568924#35568924
+     * for better solution.
+     */
+    constructor(private menuService: MenuService/*,
+                private authService: AuthService*/) {
+        //this.username = authService.getName();
     }
 
     ngOnInit() { this.getMenus(); }
