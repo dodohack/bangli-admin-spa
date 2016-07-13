@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
 import { MenuService }       from '../service/menu.service';
-
+import { AuthService }       from '../service/auth.service';
 
 @Component({
     selector: 'menu',
@@ -15,7 +15,12 @@ export class MenuComponent implements OnInit {
     topbar_menus:  any;
     sidebar_menus: any;
 
-    constructor(private menuService: MenuService) {}
+    username: string;
+
+    constructor(private menuService: MenuService,
+                private authService: AuthService) {
+        this.username = authService.getName();
+    }
 
     ngOnInit() { this.getMenus(); }
 

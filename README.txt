@@ -7,6 +7,14 @@ This admin backend app is based on Angular2 and Bootstrap4, it communicates betw
 the users and the api servers. user authentication is done with
 auth.bangli.uk by using JWT(JSON Web Token).
 
+The source code of this project is located at 'app', here is the explain of
+how the folders are grouped:
+
+app/auth: authentication related pages
+app/components: templates commonly used by many other page templates
+app/pages: page templates
+app/service: data providers, retrieve from and send data to servers.
+
 # DEVELOPMENT #
 
 *. Run git pull and npm install

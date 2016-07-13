@@ -4,13 +4,11 @@
 
 import { Component }         from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import { NgForm }            from '@angular/forms';
-import { Observable }        from 'rxjs/Observable';
 
 import { AuthService }              from '../service/auth.service';
-import { Register, RegisterError }  from './register';
-import { APP, AUTH }                      from '../app.api';
+import { Register, RegisterError }  from './form';
+import { APP }                from '../app.api';
 
 @Component({
     selector: 'register-form',
@@ -20,33 +18,15 @@ import { APP, AUTH }                      from '../app.api';
 export class RegisterForm
 {
     jwt: any;
-    error = new RegisterError('', '', '');
-    model = new Register('', '', '', '', APP.register_callback);
+    error    = new RegisterError('', '', '');
+    register = new Register('', '', '', '', APP.register_callback);
 
-    constructor(private http: Http,
-                private router: Router,
+    constructor(private router: Router,
                 private authService: AuthService)
     {
         /* Redirect user if already logged in */
         if (this.authService.isLoggedIn())
             this.router.navigate(['/']);
-    }
-
-    /* POST data to auth server */
-    postRegister()
-    {
-        /* Form a http post data */
-        let body    = this.model.stringify();
-        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
-        let options = new RequestOptions({ headers: headers });
-
-        /* Post data and convert server response to JSON format */
-        return this.http.post(AUTH.register, body, options)
-                   .map(res => res.json())
-                   .catch(error => {
-                       error = error.json();
-                       return Observable.throw(error);
-                   });
     }
 
     /* Triggered when user clicks on submit button */
@@ -55,7 +35,7 @@ export class RegisterForm
         /* Reset the error message */
         this.error.reset();
 
-        this.postRegister().subscribe(
+        this.authService.postRegister(this.register).subscribe(
                 data  => {
                     this.jwt = data['token'];
                 },

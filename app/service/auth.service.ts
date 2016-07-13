@@ -15,8 +15,8 @@ import { Http, Headers, RequestOptions } from '@angular/http'
 
 import { Observable } from 'rxjs/Observable';
 
-import {Login}        from "../auth/login";
-import {AUTH}         from "../app.api";
+import {Login, Register}  from "../auth/form";
+import {AUTH}             from "../app.api";
 
 var jwtDecode = require('jwt-decode');
 
@@ -72,17 +72,6 @@ export class AuthService
     }
 
     /**
-     * FIXME: We should move user register logic from register.form.ts to here
-     * Register user
-     */
-    public register()
-    {
-
-        /* TODO: Call this on user registration success */
-        this.login();
-    }
-
-    /**
      *  Logout user and redirect user to login page
      */
     public logout()
@@ -113,6 +102,26 @@ export class AuthService
     }
 
     /**
+     * Send user register credentials to sso server and retain jwt.
+     * This should be only called for user registration.
+     */
+    public postRegister(form: Register)
+    {
+        /* Form a http post data */
+        let body    = form.stringify();
+        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+        let options = new RequestOptions({ headers: headers });
+
+        /* Post data and convert server response to JSON format */
+        return this.http.post(AUTH.register, body, options)
+            .map(res => res.json())
+            .catch(error => {
+                error = error.json();
+                return Observable.throw(error);
+            });
+    }
+
+    /**
      * Return JWT token
      */
     public getJwt()
@@ -125,6 +134,6 @@ export class AuthService
      */
     public getName()
     {
-
+        return this.decoded_jwt.name;
     }
 }

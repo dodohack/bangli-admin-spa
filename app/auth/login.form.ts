@@ -8,7 +8,7 @@ import { NgForm }            from '@angular/forms';
 
 import { AuthService } from '../service/auth.service';
 
-import { Login } from './login';
+import { Login } from './form';
 import { APP }   from '../app.api';
 
 @Component({
@@ -20,7 +20,7 @@ export class LoginForm
 {
     jwt: any;
     error = '';
-    model = new Login('', '');
+    form = new Login('', '');
     stage1_migration_url = APP.migrate_user_stage1;
 
     constructor(private router: Router,
@@ -37,14 +37,12 @@ export class LoginForm
         /* Reset error massage */
         this.error = '';
 
-        this.authService.postLogin(this.model).subscribe(
+        this.authService.postLogin(this.form).subscribe(
             data  => {
                 this.jwt = data['token'];
             },
             error => {
-                /** FIXME: Always return this error message,
-                 * server will return 404 and 422(email address invalid) error code
-                 */
+                /* FIXME: Always return this error message */
                 this.error = "邮箱或密码错误!";
                 //console.error(error['error']);
             },
