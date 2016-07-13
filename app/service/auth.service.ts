@@ -11,13 +11,22 @@
  */
 import { Injectable } from '@angular/core';
 import { Router }     from '@angular/router';
+import { Http, Headers, RequestOptions } from '@angular/http'
+
+import { Observable } from 'rxjs/Observable';
+
+import {Login}        from "../auth/login";
+import {AUTH}         from "../app.api";
 
 var jwtDecode = require('jwt-decode');
 
 @Injectable()
 export class AuthService
 {
-    constructor(private router: Router) {}
+    private decoded_jwt;
+    private jwt;
+
+    constructor(private router: Router, private http: Http) {}
 
     /**
      *  Check if current user logged or not
@@ -43,13 +52,34 @@ export class AuthService
     }
 
     /**
+     * FIXME: We should move user login logic from login.form.ts to here
      * Login user with given JWT and redirect user to dashboard
      */
     public login(jwt: string)
     {
+        this.jwt = jwt;
+        /* Initial decoded jwt */
+        this.decoded_jwt = jwtDecode(jwt);
+
+        /*
+         * Remember user login so they don't need to re-login after restart the
+         * browser.
+         */
         localStorage.setItem('jwt', jwt);
-        //console.log("LOGIN DONE, JWT: " + jwt);
+
+        /* Redirect user to dashboard */
         this.router.navigate(['/']);
+    }
+
+    /**
+     * FIXME: We should move user register logic from register.form.ts to here
+     * Register user
+     */
+    public register()
+    {
+
+        /* TODO: Call this on user registration success */
+        this.login();
     }
 
     /**
@@ -63,10 +93,38 @@ export class AuthService
     }
 
     /**
+     * Send user login credentials to sso server and retain jwt
+     * This should only be called when user explicitly submit the login form.
+     */
+    public postLogin(form: Login)
+    {
+        /* Form a http post data */
+        let body    = form.stringify();
+        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+        let options = new RequestOptions({ headers: headers });
+
+        /* Post data and convert server response to JSON format */
+        return this.http.post(AUTH.login, body, options)
+            .map(res => res.json())
+            .catch(error => {
+                error = error.json();
+                return Observable.throw(error);
+            });
+    }
+
+    /**
      * Return JWT token
      */
     public getJwt()
     {
         return localStorage.getItem('jwt');
+    }
+
+    /**
+     * Return user name
+     */
+    public getName()
+    {
+
     }
 }

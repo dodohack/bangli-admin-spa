@@ -4,14 +4,12 @@
 
 import { Component }         from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import { NgForm }            from '@angular/forms';
-import { Observable }        from 'rxjs/Observable';
 
 import { AuthService } from '../service/auth.service';
 
 import { Login } from './login';
-import { APP, AUTH }   from '../app.api';
+import { APP }   from '../app.api';
 
 @Component({
     selector: 'login-form',
@@ -25,8 +23,7 @@ export class LoginForm
     model = new Login('', '');
     stage1_migration_url = APP.migrate_user_stage1;
 
-    constructor(private http: Http,
-                private router: Router,
+    constructor(private router: Router,
                 private authService: AuthService)
     {
         /* Redirect user if already logged in */
@@ -34,30 +31,13 @@ export class LoginForm
             this.router.navigate(['/']);
     }
 
-    /* POST data to auth server */
-    postLogin()
-    {
-        /* Form a http post data */
-        let body    = this.model.stringify();
-        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
-        let options = new RequestOptions({ headers: headers });
-        
-        /* Post data and convert server response to JSON format */
-        return this.http.post(AUTH.login, body, options)
-                   .map(res => res.json())
-                   .catch(error => {
-                       error = error.json();
-                       return Observable.throw(error);
-                   });
-    }
-    
     /* Triggered when user clicks on submit button */
     onSubmit()
     {
         /* Reset error massage */
         this.error = '';
-        
-        this.postLogin().subscribe(
+
+        this.authService.postLogin(this.model).subscribe(
             data  => {
                 this.jwt = data['token'];
             },
