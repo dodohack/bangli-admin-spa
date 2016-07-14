@@ -18,8 +18,8 @@ import { APP }                from '../app.api';
 export class RegisterForm
 {
     jwt: any;
-    error    = new RegisterError('', '', '');
-    register = new Register('', '', '', '', APP.register_callback);
+    error = new RegisterError('', '', '');
+    form  = new Register('', '', '', '', APP.register_callback);
 
     constructor(private router: Router,
                 private authService: AuthService)
@@ -35,7 +35,7 @@ export class RegisterForm
         /* Reset the error message */
         this.error.reset();
 
-        this.authService.postRegister(this.register).subscribe(
+        this.authService.postRegister(this.form).subscribe(
                 data  => {
                     this.jwt = data['token'];
                 },
