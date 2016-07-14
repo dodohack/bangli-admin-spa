@@ -13,6 +13,12 @@ import { MenuService }       from './service/menu.service';
 
 import { MenuComponent }     from './components/menu';
 
+/**
+ * Inject globally used DI at top level, so we can use the singleton everywhere,
+ * see singleton service at
+ * https://angular.io/docs/ts/latest/guide/dependency-injection.html
+ * for detail.
+ */
 @Component({
     selector: 'huluwa-admin',
     templateUrl: 'app/app.html',
@@ -20,14 +26,9 @@ import { MenuComponent }     from './components/menu';
         ROUTER_DIRECTIVES,
         MenuComponent,
     ],
-    providers: [MenuService]
+    providers: [MenuService, AuthService]
 })
 export class App
 {
-    constructor(private authService: AuthService) {}
-
-    get isLoggedIn()
-    {
-        return this.authService.isLoggedIn();
-    }
+    constructor() {}
 }
