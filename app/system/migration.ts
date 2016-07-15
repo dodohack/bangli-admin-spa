@@ -10,7 +10,7 @@ import { APP } from '../app.api';
 import { AuthService } from '../service/auth.service';
 
 @Component({
-    templateUrl: 'app/pages/migration.html',
+    templateUrl: 'app/system/migration.html',
     directives: [ROUTER_DIRECTIVES]
 })
 export class MigrationPage

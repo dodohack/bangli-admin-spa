@@ -6,33 +6,15 @@ import { AuthService }       from './service/auth.service';
 import { LostPasswordPage }  from './auth/lostpassword';
 import { ResetPasswordPage } from './auth/resetpassword';
 
-import { LoginPage }         from './pages/login';
-import { RegisterPage }      from './pages/register';
-import { LogoutComponent }   from './auth/logout.component';
+import { LoginPage }         from './auth/login';
+import { RegisterPage }      from './auth/register';
+import { LogoutComponent }   from './auth/logout';
 
-import { AffiliatePage } from './pages/affiliate';
-import { AnalysisPage }  from './pages/analysis';
-import { CommentPage }   from './pages/comment';
-import { CsPage }        from './pages/cs';
-import { DashboardPage } from './pages/dashboard';
-import { EmailListPage } from './pages/email_list';
-import { EmailPage }     from './pages/email';
-import { MigrationPage } from './pages/migration';
-import { OrderListPage } from './pages/order_list';
-import { OrderPage }     from './pages/order';
-import { PageListPage }  from './pages/page_list';
-import { PagePage }      from './pages/page';
-import { PicturePage }   from './pages/picture';
-import { PostListPage }  from './pages/post_list';
-import { PostPage }      from './pages/post';
-import { ProductListPage } from './pages/product_list';
-import { ProductPage }   from './pages/product';
-import { SeoPage }       from './pages/seo';
-import { SettingPage }   from './pages/setting';
-import { TopicPage }     from './pages/topic';
-import { UsersPage }      from './pages/users';
-import { VoucherPage }   from './pages/voucher';
-import { WechatPage }    from './pages/wechat';
+import { DashboardPage } from './dashboard/dashboard';
+import { PostsPage }     from './cms/posts';
+import { PostPage }      from './cms/post';
+import { MigrationPage } from './system/migration';
+import { UsersPage }     from './users/users';
 
 export const routes: RouterConfig = [
 
@@ -50,35 +32,35 @@ export const routes: RouterConfig = [
     /* Guard the route so only authenticated user can access */
 
     {path: '', component: DashboardPage, canActivate: [AuthGuard]},
-
-    //{ path: 'affiliate',  component: AffiliatePage },
-    //{ path: 'analysis',   component: AnalysisPage },
-    //{ path: 'comment', component: },
-    //{ path: 'cs', component: },
+    /*
+    { path: 'affiliate',  component: AffiliatePage },
+    { path: 'analysis',   component: AnalysisPage },
+    { path: 'comment', component: },
+    { path: 'cs', component: },
 
     {path: 'emails/:status', component: EmailListPage, canActivate: [AuthGuard]},
     {path: 'email/:id', component: EmailPage, canActivate: [AuthGuard]},
-
+*/
     {path: 'migrations', component: MigrationPage, canActivate: [AuthGuard]},
-
+/*
     {path: 'orders/:status', component: OrderListPage, canActivate: [AuthGuard]},
     {path: 'order/:id', component: OrderPage, canActivate: [AuthGuard]},
 
     {path: 'pages/:status', component: PageListPage, canActivate: [AuthGuard]},
     {path: 'page/:id', component: PagePage, canActivate: [AuthGuard]},
-
+    */
     //{ path: 'picture', component: },
 
-    {path: 'posts', component: PostListPage, canActivate: [AuthGuard]},
+    {path: 'posts', component: PostsPage, canActivate: [AuthGuard]},
     /*
     FIXME: children route is bugged due to webpack, see previous FIXME.
     {path: 'posts/:status', component: PostListPage, canActivate: [AuthGuard]},
     */
     {path: 'post/:id', component: PostPage, canActivate: [AuthGuard]},
-
+/*
     {path: 'products/:status', component: ProductListPage, canActivate: [AuthGuard]},
     {path: 'product/:id', component: ProductPage, canActivate: [AuthGuard]},
-
+*/
     /* FIXME: Need to redirect route 'users' to a previous stored route
      * matches following pattern. So that when nav back through sidebar, we can
      * always view the last state of users page.

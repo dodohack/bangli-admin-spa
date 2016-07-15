@@ -5,10 +5,10 @@
 import { Component }         from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
-import { RegisterForm }      from '../auth/register.form';
+import { RegisterForm }      from './register.form';
 
 @Component({
-    templateUrl: 'app/pages/register.html',
+    templateUrl: 'app/auth/register.html',
     directives: [ROUTER_DIRECTIVES, RegisterForm]
 })
 export class RegisterPage

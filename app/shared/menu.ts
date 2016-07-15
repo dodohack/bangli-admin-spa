@@ -5,8 +5,8 @@ import { MenuService }       from '../service/menu.service';
 import { AuthService }       from '../service/auth.service';
 
 @Component({
-    selector: 'menu',
-    templateUrl: 'app/components/menu.html',
+    selector: 'dashboard-menu',
+    templateUrl: 'app/shared/menu.html',
     directives: [ROUTER_DIRECTIVES]
 })
 export class MenuComponent implements OnInit {

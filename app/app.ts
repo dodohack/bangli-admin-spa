@@ -11,7 +11,7 @@ import './rxjs-operators';
 import { AuthService }       from './service/auth.service';
 import { MenuService }       from './service/menu.service';
 
-import { MenuComponent }     from './components/menu';
+import { MenuComponent }     from './shared/menu';
 
 /**
  * Inject globally used DI at top level, so we can use the singleton everywhere,

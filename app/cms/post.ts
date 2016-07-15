@@ -1,15 +1,15 @@
 /**
- * This is the component for page list page
+ * This is the single post edit page component
  */
 
 import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
-    templateUrl: 'app/pages/page_list.html',
+    templateUrl: 'app/cms/post.html',
     directives: [ROUTER_DIRECTIVES]
 })
-export class PageListPage
+export class PostPage
 {
     constructor() {}
 }
