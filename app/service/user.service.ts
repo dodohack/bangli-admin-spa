@@ -12,7 +12,8 @@ import { APP } from '../app.api';
 @Injectable()
 export class UserService
 {
-    usersPerPage: any;
+    /* Number of users per page */
+    perPage: any;
     params: URLSearchParams;
 
     /**
@@ -26,31 +27,30 @@ export class UserService
         /* Set up common JSONP request arguments */
         this.params = new URLSearchParams;
         this.params.set('callback', 'JSONP_CALLBACK');
-        /*
-         * FIXME: We should have a commonlized position to always set this
-         * parameter: token.
-         */
-        if (this.authService.isLoggedIn())
-            this.params.append('token', this.authService.getJwt());
+        this.params.set('token', this.authService.getJwt());
 
-        /* Init number of users showing per list */
-        this.setUsersPerPage(20);
+        /* Init number of users showing per list if there is none */
+        this.perPage = localStorage.getItem('usersPerPage');
+        if (!this.perPage)
+            this.setUsersPerPage(30);
     }
 
     /**
-     * User preference: set number of users should be displayed per page
+     * Set number of users displayed per page
      */
     public setUsersPerPage(count)
     {
-        /* Count must be between [10, 200] */
-        this.usersPerPage = count < 10 ? 10 : (count > 200 ? 200 : count);
-
-        localStorage.setItem('usersPerPage', this.usersPerPage);
+        /* Count must be between [1, 200] */
+        this.perPage = count < 1 ? 1 : (count > 200 ? 200 : count);
+        localStorage.setItem('usersPerPage', this.perPage);
     }
 
+    /**
+     * Get number of users displayed per page
+     */
     public getUsersPerPage()
     {
-        this.usersPerPage = localStorage.getItem('usersPerPage');
+        return this.perPage;
     }
     
     /**
@@ -65,10 +65,8 @@ export class UserService
             .map(res => res.json());
     }
 
-    public getUsers(role, page, count) {
-
-        if (count)
-            this.params.append('count', count);
+    public getUsers(role, page) {
+        this.params.set('count', this.perPage);
 
         /* FIXME: This is not working as we can't see any header is with the request */
         //let headers = new Headers({'Authorization': 'Bearer ' + localStorage.getItem('jwt')});

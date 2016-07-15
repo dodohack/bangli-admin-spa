@@ -32,14 +32,14 @@ export class UsersPage implements OnInit
 
     /**
      * Initialize the page, we should only put DI initializition into ctor.
+     * If no role/page is setting from URL segment, we will display the first
+     * page of all customers by default.
      */
     ngOnInit()
     {
-        console.log("ngOnInit is called");
-        /* FIXME: We should get this from URLSegment and form model */
         this.role = 'customer';
         this.page = '1';
-        this.count = '20';
+        this.count = this.userService.getUsersPerPage();
 
         this.getRolesMenu();
 
@@ -71,14 +71,23 @@ export class UsersPage implements OnInit
      */
     private getUsersList()
     {
-        this.userService.getUsers(this.role, this.page, this.count)
+        this.userService.getUsers(this.role, this.page)
             .subscribe(
                 json => {
                     this.total = json['total'];
-                    this.count = json['per_page'];
+                    //this.count = json['per_page'];
                     this.users = json['data'];
                 },
                 error => console.error(error)
             );
+    }
+
+    /**
+     * Set number of users displayed per list
+     */
+    public setUsersPerPage()
+    {
+        this.userService.setUsersPerPage(this.count);
+        this.getUsersList();
     }
 }

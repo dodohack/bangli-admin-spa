@@ -3,6 +3,11 @@
         <h2>用户信息</h2>
         <p>Current role: {{ role }}</p>
         <p>Current page: {{ page }}</p>
+        <form class="form-horizontal" role="form" (ngSubmit)="setUsersPerPage()"
+              #settingForm="ngForm">
+                <input type="text" class="form-control" required [(ngModel)]="count" name="count">
+                <button type="submit" class="btn btn-secondary" [disabled]="!settingForm.form.valid">更新</button>
+        </form>
         <p>We should get the url segment, and use it as paramters to request
             api endpoint http://api/users/{role}/{page}/{count}<br>
             {count} shouldn't be used as paramter, it should be set in variables<br>
