@@ -52,6 +52,8 @@ export const routes: RouterConfig = [
     //{ path: 'picture', component: },
 
     {path: 'posts', component: PostsPage, canActivate: [AuthGuard]},
+    {path: 'posts/:filter/:cond/:page', component: PostsPage, canActivate: [AuthGuard]},
+    
     /*
     FIXME: children route is bugged due to webpack, see previous FIXME.
     {path: 'posts/:status', component: PostListPage, canActivate: [AuthGuard]},

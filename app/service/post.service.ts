@@ -1,5 +1,5 @@
 /**
- * Get user/users from API server
+ * Get post/posts from API server
  */
 
 import { Injectable }               from '@angular/core';
@@ -10,9 +10,9 @@ import { AuthService } from './auth.service';
 import { APP } from '../app.api';
 
 @Injectable()
-export class UserService
+export class PostService
 {
-    /* Number of users per page */
+    /* Number of posts per page */
     perPage: any;
     params: URLSearchParams;
 
@@ -30,49 +30,46 @@ export class UserService
         this.params.set('token', this.authService.getJwt());
 
         /* Init number of users showing per list if there is none */
-        this.perPage = localStorage.getItem('usersPerPage');
+        this.perPage = localStorage.getItem('postsPerPage');
         if (!this.perPage)
-            this.setUsersPerPage(30);
+            this.setPostsPerPage(30);
     }
 
     /**
-     * Set number of users displayed per page
+     * Set number of posts displayed per page
      */
-    public setUsersPerPage(count)
+    public setPostsPerPage(count)
     {
         /* Count must be between [1, 200] */
         this.perPage = count < 1 ? 1 : (count > 200 ? 200 : count);
-        localStorage.setItem('usersPerPage', this.perPage);
+        localStorage.setItem('postsPerPage', this.perPage);
     }
 
     /**
-     * Get number of users displayed per page
+     * Get number of posts displayed per page
      */
-    public getUsersPerPage()
+    public getPostsPerPage()
     {
         return this.perPage;
     }
-    
-    /**
-     * Retrive user roles and number of users for each role.
-     */
-    public getRoles() {
-        /* FIXME: This is not working as we can't see any header is with the request */
-        //let headers = new Headers({'Authorization': 'Bearer ' + localStorage.getItem('jwt')});
 
+    /**
+     * Retrieve posts list page menu
+     */
+    public getPostsMenu() {
         return this.jsonp
-            .get(APP.menu_users, {search: this.params})
+            .get(APP.menu_posts, {search: this.params})
             .map(res => res.json());
     }
 
-    public getUsers(role, page) {
+    public getPosts(filter, condition, cur_page) {
         this.params.set('per_page', this.perPage);
 
         /* FIXME: This is not working as we can't see any header is with the request */
         //let headers = new Headers({'Authorization': 'Bearer ' + localStorage.getItem('jwt')});
 
-        /* Setup endpoint /admin/users/{role}/{page} and send request to it */
-        let endpoint = APP.users + '/' + role + '/' + page;
+        /* Setup endpoint and send request to it */
+        let endpoint = APP.posts + '/' + filter + '/' + condition + '/' + cur_page;
         return this.jsonp
             .get(endpoint, {search: this.params})
             .map(res => res.json());

@@ -92,15 +92,12 @@
 
                 <div class="col-md-3">
                     <div class="input-group input-group-sm">
-                        <span class="input-group-btn">
-                            <a type="submit" class="btn btn-secondary" [routerLink]=""><i class="fa fa-angle-double-left"></i>第一页</a>
-                            <a type="submit" class="btn btn-secondary" [routerLink]=""><i class="fa fa-angle-left"></i>上一页</a>
-                        </span>
-                        <input type="text" class="form-control" placeholder="当前x/y页">
-                        <span class="input-group-btn">
-                            <a type="submit" class="btn btn-secondary" [routerLink]=""><i class="fa fa-angle-right"></i>下一页</a>
-                            <a type="submit" class="btn btn-secondary" [routerLink]=""><i class="fa fa-angle-double-right"></i>末页</a>
-                        </span>
+                         <span class="input-group-btn">
+                             <a class="btn btn-secondary" [routerLink]="['/posts', filter, condition, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
+                             <a class="btn btn-secondary" [routerLink]="['/posts', filter, condition, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
+                             <a class="btn btn-secondary" [routerLink]="['/posts', filter, condition, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
+                             <a class="btn btn-secondary" [routerLink]="['/posts', filter, condition, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
+                         </span>
                     </div>
                 </div>
 
@@ -124,19 +121,18 @@
                 </thead>
 
                 <tbody>
-                <!-- FIXME: *ngFor -->
-                        <tr class="table-warning">
-                            <td><input type="checkbox"></td>
-                            <td>文章标题文章标题</td>
-                            <td>文章类型</td>
-                            <td>作者A</td>
-                            <td>编辑A</td>
-                            <td>文章分类A</td>
-                            <td>2010-11-11 11:11:00</td>
-                            <td>2010-11-11 11:11:00</td>
-                            <td>1234</td>
-                            <td>5</td>
-                        </tr>
+                <tr *ngFor="let post of posts">
+                    <th scope="row"><input type="checkbox"></th>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.post_type }}</td>
+                    <td>{{ post.author_id }}</td>
+                    <td>{{ post.editor_id }}</td>
+                    <td>文章分类</td>
+                    <td>{{ post.fake_published_at }}</td>
+                    <td>{{ post.published_at }}</td>
+                    <td>0</td>
+                    <td>0</td>
+                </tr>
                 </tbody>
             </table>
 
