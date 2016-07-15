@@ -7,7 +7,7 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { NgForm }            from '@angular/forms';
 
 import { AuthService }              from '../service/auth.service';
-import { Register, RegisterError }  from './form';
+import { Register, RegisterError }  from '../datatype/register';
 import { APP }                from '../app.api';
 
 @Component({

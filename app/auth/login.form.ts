@@ -8,7 +8,7 @@ import { NgForm }            from '@angular/forms';
 
 import { AuthService } from '../service/auth.service';
 
-import { Login } from './form';
+import { Login } from '../datatype/login';
 import { APP }   from '../app.api';
 
 @Component({
