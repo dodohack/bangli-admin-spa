@@ -25,10 +25,15 @@ import { MenuComponent }     from './components/menu';
     directives: [
         ROUTER_DIRECTIVES,
         MenuComponent,
-    ],
-    providers: [MenuService, AuthService]
+    ]
 })
 export class App
 {
-    constructor() {}
+    constructor(private menuService: MenuService,
+                private authService: AuthService) {}
+
+    get isLoggedIn()
+    {
+        return this.authService.isLoggedIn();
+    }
 }

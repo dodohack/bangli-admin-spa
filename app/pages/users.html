@@ -1,6 +1,8 @@
 <div class="admin-wrapper">
     <div class="container">
         <h2>用户信息</h2>
+        <p>Current role: {{ role }}</p>
+        <p>Current page: {{ page }}</p>
         <p>We should get the url segment, and use it as paramters to request
             api endpoint http://api/users/{role}/{page}/{count}<br>
             {count} shouldn't be used as paramter, it should be set in variables<br>
@@ -9,14 +11,9 @@
 
         <!-- User role filter -->
         <ul class="nav nav-tabs list-nav">
-            <li class="nav-item">
-                <!-- Show page 1 of all registered users -->
-                <a class="nav-link" [routerLink]="['/users/customers/1']">所有用户</a>
-            </li>
-
             <li *ngFor="let role of roles" class="nav-item">
                 <!-- Link to first page of given role of customers -->
-                <a class="nav-link" [routerLink]="['/users/' + role.role + '/1']">{{ role.role }} ({{ role.count }})</a>
+                <a class="nav-link" [routerLink]="['/users', role.role, '1']">{{ role.role }} ({{ role.count }})</a>
             </li>
         </ul>
 

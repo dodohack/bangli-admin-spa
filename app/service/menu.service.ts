@@ -14,7 +14,9 @@ import { APP } from '../app.api';
 export class MenuService {
     //public menus : Observable<string[]>;
 
-    constructor(private jsonp: Jsonp, private authService: AuthService) {}
+    constructor(private jsonp: Jsonp, private authService: AuthService) {
+        console.log("MenuService Object Created");
+    }
 
     public getMenus() {
         let params = new URLSearchParams;

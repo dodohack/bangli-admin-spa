@@ -26,7 +26,9 @@ export class AuthService
     private decoded_jwt;
     private jwt;
 
-    constructor(private router: Router, private http: Http) {}
+    constructor(private router: Router, private http: Http) {
+        console.log("AuthService Object Created!");
+    }
 
     /**
      *  Check if current user logged or not

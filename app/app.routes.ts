@@ -30,7 +30,7 @@ import { ProductPage }   from './pages/product';
 import { SeoPage }       from './pages/seo';
 import { SettingPage }   from './pages/setting';
 import { TopicPage }     from './pages/topic';
-import { UserPage }      from './pages/user';
+import { UsersPage }      from './pages/users';
 import { VoucherPage }   from './pages/voucher';
 import { WechatPage }    from './pages/wechat';
 
@@ -83,8 +83,8 @@ export const routes: RouterConfig = [
      * matches following pattern. So that when nav back through sidebar, we can
      * always view the last state of users page.
      */
-    {path: 'users', component: UserPage, canActivate: [AuthGuard]},
-    {path: 'users/:role/:page/:count', component: UserPage, canActivate: [AuthGuard]},
+    {path: 'users', component: UsersPage, canActivate: [AuthGuard]},
+    {path: 'users/:role/:page', component: UsersPage, canActivate: [AuthGuard]},
 ];
 
 export const APP_ROUTER_PROVIDERS = [
