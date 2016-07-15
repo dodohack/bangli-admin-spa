@@ -66,7 +66,7 @@ export class UserService
     }
 
     public getUsers(role, page) {
-        this.params.set('count', this.perPage);
+        this.params.set('per_page', this.perPage);
 
         /* FIXME: This is not working as we can't see any header is with the request */
         //let headers = new Headers({'Authorization': 'Bearer ' + localStorage.getItem('jwt')});
