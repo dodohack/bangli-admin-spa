@@ -1,6 +1,4 @@
-
 <div class="admin-wrapper">
-
     <div class="container">
         <h2>用户信息</h2>
         <p>We should get the url segment, and use it as paramters to request
@@ -8,8 +6,45 @@
             {count} shouldn't be used as paramter, it should be set in variables<br>
             and be sent such as {role}/{page}?count=20 ???<br>
         </p>
-    </div>
 
+        <!-- User role filter -->
+        <ul class="nav nav-tabs list-nav">
+            <li class="nav-item">
+                <!-- Show page 1 of all registered users -->
+                <a class="nav-link" [routerLink]="['/users/customers/1']">所有用户</a>
+            </li>
+
+            <li *ngFor="let role of roles" class="nav-item">
+                <!-- Link to first page of given role of customers -->
+                <a class="nav-link" [routerLink]="['/users/' + role.role + '/1']">{{ role.role }} ({{ role.count }})</a>
+            </li>
+        </ul>
+
+        <!-- List of users -->
+        <table class="table">
+            <thead class="thead-default">
+            <tr>
+                <th><input type="checkbox"></th>
+                <th>用户名</th>
+                <th>昵称</th>
+                <th>邮箱</th>
+                <th>注册时间</th>
+                <th>订单数量</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of users">
+                <th scope="row"><input type="checkbox"></th>
+                <td>{{ user.name }}</td>
+                <td>{{ user.nicename }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.created_at }}</td>
+                <td>xyz</td>
+            </tr>
+            </tbody>
+        </table>
+
+    </div>
 </div>
 
 

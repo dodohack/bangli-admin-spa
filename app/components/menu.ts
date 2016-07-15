@@ -27,9 +27,7 @@ export class MenuComponent implements OnInit {
         //this.username = authService.getName();
     }
 
-    ngOnInit() { this.getMenus(); }
-
-    getMenus() {
+    ngOnInit() {
         this.menuService.getMenus()
             .subscribe(
                 menus => {
@@ -37,6 +35,6 @@ export class MenuComponent implements OnInit {
                     this.sidebar_menus = menus['admin-sidebar'];
                 },
                 error => console.error(error)
-            )
+            );
     }
 }

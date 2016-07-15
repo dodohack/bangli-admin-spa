@@ -27,6 +27,11 @@ export const APP = {
     /* Menus */
     menu: base + '/admin/menu',
 
+    /* List of users */
+    users: base + '/admin/users',
+    /* List of user page menu */
+    user_menu: base + '/admin/menu/users',
+
     /* List of orders */
     //orders: base + '/admin/orders',
 

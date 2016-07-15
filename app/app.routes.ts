@@ -83,6 +83,7 @@ export const routes: RouterConfig = [
      * matches following pattern. So that when nav back through sidebar, we can
      * always view the last state of users page.
      */
+    {path: 'users', component: UserPage, canActivate: [AuthGuard]},
     {path: 'users/:role/:page/:count', component: UserPage, canActivate: [AuthGuard]},
 ];
 

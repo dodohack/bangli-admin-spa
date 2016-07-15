@@ -20,6 +20,10 @@ export class MenuService {
         let params = new URLSearchParams;
         params.set('callback', 'JSONP_CALLBACK');
 
+        /*
+         * FIXME: We should have a commonlized position to always set this
+         * parameter: token.
+         */
         if (this.authService.isLoggedIn())
             params.append('token', this.authService.getJwt());
 
