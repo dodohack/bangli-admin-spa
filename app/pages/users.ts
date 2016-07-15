@@ -5,6 +5,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 
+import { Pagination }  from '../datatype/pagination';
+
 import { UserService } from '../service/user.service';
 
 @Component({
@@ -14,14 +16,11 @@ import { UserService } from '../service/user.service';
 })
 export class UsersPage implements OnInit
 {
-    /* Total number of users of given group */
-    total: any;
+    /* Pagination related variables of the list */
+    pagination = new Pagination(0, 1, 0, 0, 0, 0, 0, 0, 0);
+
     /* Which group of users is currently showing */
-    role: any;
-    /* Current page index of user list */
-    page: any;
-    /* Count of users per page */
-    count: any;
+    current_role: any;
     /* The list of users, array */
     users: any;
     /* User roles and number of users each role */
@@ -37,18 +36,18 @@ export class UsersPage implements OnInit
      */
     ngOnInit()
     {
-        this.role = 'customer';
-        this.page = '1';
-        this.count = this.userService.getUsersPerPage();
+        this.current_role = 'customer';
+        this.pagination.current_page = 1;
+        this.pagination.per_page = this.userService.getUsersPerPage();
 
         this.getRolesMenu();
 
         /* Get URL segments and update user list */
         this.route.params.subscribe(
             segment => {
-                this.role = segment['role'] ? segment['role'] : 'customer';
-                /* (+) converts string 'id' to a number */
-                this.page = segment['page'] ? +segment['page'] : 1;
+                this.current_role = segment['role'] ? segment['role'] : 'customer';
+                /* '+' magically converts string to number */
+                this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
                 /* Update user list when URL changes */
                 this.getUsersList();
             }
@@ -71,12 +70,24 @@ export class UsersPage implements OnInit
      */
     private getUsersList()
     {
-        this.userService.getUsers(this.role, this.page)
+        this.userService.getUsers(this.current_role, this.pagination.current_page)
             .subscribe(
                 json => {
-                    this.total = json['total'];
-                    //this.count = json['per_page'];
+                    /* '+' magically converts string to number */
+                    this.pagination.total = +json['total'];
+                    this.pagination.per_page = +json['per_page'];
+                    this.pagination.current_page = +json['current_page'];
+                    this.pagination.last_page = +json['last_page'];
+                    this.pagination.from = +json['from'];
+                    this.pagination.to = +json['to'];
                     this.users = json['data'];
+
+                    this.pagination.pre_page =
+                        this.pagination.current_page > 1 ?
+                        this.pagination.current_page - 1 : this.pagination.current_page;
+                    this.pagination.next_page =
+                        this.pagination.current_page < this.pagination.last_page ?
+                        this.pagination.current_page + 1 : this.pagination.last_page;
                 },
                 error => console.error(error)
             );
@@ -87,7 +98,7 @@ export class UsersPage implements OnInit
      */
     public setUsersPerPage()
     {
-        this.userService.setUsersPerPage(this.count);
+        this.userService.setUsersPerPage(this.pagination.per_page);
         this.getUsersList();
     }
 }

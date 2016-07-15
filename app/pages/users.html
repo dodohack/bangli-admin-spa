@@ -1,18 +1,11 @@
 <div class="admin-wrapper">
     <div class="container">
-        <h2>用户信息</h2>
-        <p>Current role: {{ role }}</p>
-        <p>Current page: {{ page }}</p>
+        <h2>用户信息: {{ role }}, 当前页码: {{ page }}</h2>
         <form class="form-horizontal" role="form" (ngSubmit)="setUsersPerPage()"
               #settingForm="ngForm">
-                <input type="text" class="form-control" required [(ngModel)]="count" name="count">
+                <input type="text" class="form-control" required [(ngModel)]="pagination.per_page" name="per_page">
                 <button type="submit" class="btn btn-secondary" [disabled]="!settingForm.form.valid">更新</button>
         </form>
-        <p>We should get the url segment, and use it as paramters to request
-            api endpoint http://api/users/{role}/{page}/{count}<br>
-            {count} shouldn't be used as paramter, it should be set in variables<br>
-            and be sent such as {role}/{page}?count=20 ???<br>
-        </p>
 
         <!-- User role filter -->
         <ul class="nav nav-tabs list-nav">
@@ -21,6 +14,16 @@
                 <a class="nav-link" [routerLink]="['/users', role.role, '1']">{{ role.role }} ({{ role.count }})</a>
             </li>
         </ul>
+
+        <!-- Pagniation -->
+        <div class="input-group input-group-sm">
+            <span class="input-group-btn">
+                <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
+                <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
+                <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
+                <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
+            </span>
+        </div>
 
         <!-- List of users -->
         <table class="table">
