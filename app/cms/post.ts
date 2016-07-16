@@ -59,20 +59,21 @@ export class PostPage implements OnInit
                 private postService: PostService) {}
 
     ngOnInit() {
-        /* Initialze editor content */
         this.route.params.subscribe(
             segment => {
                 /* Get post id from URL segment */
+                console.log("Post::ngOnInit called");
                 this.id = segment['id'] ? +segment['id'] : 0;
-                this.getPost();
             }
         );
+
+        /* Initialze editor content */
+        this.getPost();
     }
 
     onFroalaModelChanged(event: any) {
         setTimeout(() => {
             this.text = event;
-            console.log(this.text);
         });
     }
 
