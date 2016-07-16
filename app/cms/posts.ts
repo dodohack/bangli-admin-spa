@@ -33,8 +33,14 @@ export class PostsPage implements OnInit
     /* The menu of this page */
     menus: any;
 
-    /* Authors */
+    /* Author/Editor/Mgr/Admin by role */
+    people: any;
+    /* Author/Editor/Mgr/Admin by id */
+    peopleById: any;
+    /* Author by id */
     authors: any;
+    /* Editor by id */
+    editors: any;
 
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
@@ -57,13 +63,19 @@ export class PostsPage implements OnInit
          * TODO: the subscribe to service layer, so that we only have network
          * TODO: access once.
          */
-        if (!this.authors) {
-            console.log("Initialize PostsPage::authors");
-            this.userService.authors.subscribe(
-                authors => this.authors = authors,
-                error => console.error(error)
-            );
-        }
+        this.userService.authors.subscribe(
+            people => {
+                /*
+                 * TODO: regroup authors to multiple form:
+                 * 1. object index by id used to get author/editor nicename
+                 *    efficiently
+                 * 2. Divide into author group and editor/shop_mgr/admin group
+                 *    so we can use these 2 groups as filters.
+                 */
+                this.people = people;
+            },
+            error => console.error(error)
+        );
 
         /* Get URL segments and update user list */
         this.route.params.subscribe(
@@ -96,12 +108,12 @@ export class PostsPage implements OnInit
     public getNicenameById($id)
     {
         /* Loop over different group of users(admin, manager, editor, author) */
-        for (let group in this.authors) {
+        for (let group in this.people) {
             /* Loop over users in each group */
-            for (let idx in this.authors[group])
+            for (let idx in this.people[group])
             {
-                if (this.authors[group][idx].id == $id)
-                    return this.authors[group][idx].nicename;
+                if (this.people[group][idx].id == $id)
+                    return this.people[group][idx].nicename;
             }
         }
     }

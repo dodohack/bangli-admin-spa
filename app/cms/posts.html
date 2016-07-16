@@ -25,7 +25,7 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">作者</a>
+                   aria-haspopup="true" aria-expanded="false">作者()</a>
 
                 <div class="dropdown-menu">
                     <a class="dropdown-item" [routerLink]="['/posts/author/id']">作者名字A</a>
@@ -48,9 +48,17 @@
             <!-- Various post status tabs -->
             <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/posts/status/xyz']">发布</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/posts/status/xyz']">置顶</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/posts/status/xyz']">草稿</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/posts/status/xyz']">待审</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" [routerLink]="['/posts/status/xyz']">回收站</a>
             </li>
         </ul>
@@ -123,7 +131,7 @@
                 <tbody>
                 <tr *ngFor="let post of posts">
                     <th scope="row"><input type="checkbox"></th>
-                    <td>{{ post.title }}</td>
+                    <td><a [routerLink]="['/post', post.id ]">{{ post.title }}</a></td>
                     <td>{{ postType[post.post_type] }}</td>
                     <td>{{ getNicenameById(post.author_id) }}</td>
                     <td>{{ getNicenameById(post.editor_id) }}</td>
