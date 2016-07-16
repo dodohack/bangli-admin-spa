@@ -124,9 +124,9 @@
                 <tr *ngFor="let post of posts">
                     <th scope="row"><input type="checkbox"></th>
                     <td>{{ post.title }}</td>
-                    <td>{{ post.post_type }}</td>
-                    <td>{{ post.author_id }}</td>
-                    <td>{{ post.editor_id }}</td>
+                    <td>{{ postType[post.post_type] }}</td>
+                    <td>{{ getNicenameById(post.author_id) }}</td>
+                    <td>{{ getNicenameById(post.editor_id) }}</td>
                     <td>文章分类</td>
                     <td>{{ post.fake_published_at }}</td>
                     <td>{{ post.published_at }}</td>

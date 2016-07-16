@@ -13,6 +13,7 @@ import { APP_ROUTER_PROVIDERS } from './app.routes';
 /* Inject these service globally, so the can be used anywhere as a singleton */
 import { MenuService } from './service/menu.service';
 import { AuthService } from './service/auth.service';
+import { UserService } from './service/user.service';
 
 if (process.env.ENV === 'production') {
     enableProdMode();
@@ -21,7 +22,7 @@ if (process.env.ENV === 'production') {
 bootstrap(App, [
     APP_ROUTER_PROVIDERS,
     HTTP_PROVIDERS, JSONP_PROVIDERS,
-    MenuService, AuthService,
+    MenuService, AuthService, UserService,
     disableDeprecatedForms(), provideForms()
 ])
 .catch((err: any) => console.error(err));

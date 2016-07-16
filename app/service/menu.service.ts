@@ -4,7 +4,7 @@
 
 import { Injectable }               from '@angular/core';
 import { Jsonp, Headers, URLSearchParams }   from '@angular/http';
-//import { Observable }               from 'rxjs/Observable';
+import { Observable }               from 'rxjs/Observable';
 
 import { AuthService } from './auth.service';
 
@@ -12,13 +12,13 @@ import { APP } from '../app.api';
 
 @Injectable()
 export class MenuService {
-    //public menus : Observable<string[]>;
+    public menus : Observable<string[]>;
 
     constructor(private jsonp: Jsonp, private authService: AuthService) {
         console.log("MenuService Object Created");
     }
 
-    public getMenus() {
+     public getMenus() {
         let params = new URLSearchParams;
         params.set('callback', 'JSONP_CALLBACK');
 
@@ -32,7 +32,11 @@ export class MenuService {
         /* FIXME: This is not working as we can't see any header is with the request */
         //let headers = new Headers({'Authorization': 'Bearer ' + localStorage.getItem('jwt')});
 
-        return this.jsonp
+         /*
+          * FIXME: We shouldn't call this at every time, this should be stored
+          * into a data memeber.
+          */
+         return this.jsonp
             .get(APP.menu, {search: params})
             .map(res => res.json());
     }

@@ -10,8 +10,7 @@ import { UserService } from '../service/user.service';
 
 @Component({
     templateUrl: 'app/users/users.html',
-    directives: [ROUTER_DIRECTIVES],
-    providers: [UserService]
+    directives: [ROUTER_DIRECTIVES]
 })
 export class UsersPage implements OnInit
 {
@@ -58,7 +57,7 @@ export class UsersPage implements OnInit
      */
     private getRolesMenu()
     {
-        this.userService.getRoles().subscribe(
+        this.userService.roles.subscribe(
             json  => this.roles = json,
             error => console.error(error)
         );

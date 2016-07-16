@@ -4,9 +4,9 @@
 
 import { Injectable }               from '@angular/core';
 import { Jsonp, URLSearchParams }   from '@angular/http';
+import { Observable }               from 'rxjs/Observable';
 
 import { AuthService } from './auth.service';
-
 import { APP } from '../app.api';
 
 @Injectable()
@@ -16,6 +16,11 @@ export class UserService
     perPage: any;
     params: URLSearchParams;
 
+    /* Users can edit post */
+    authors: Observable<string[]>;
+    /* List of user roles */
+    roles: Observable<string[]>;
+
     /**
      * Initialize common code in constructor, as we can't have ngOnInit
      * in injectable service.
@@ -24,6 +29,7 @@ export class UserService
      */
     constructor(private jsonp: Jsonp, private authService: AuthService)
     {
+        console.log("UserService initialized.");
         /* Set up common JSONP request arguments */
         this.params = new URLSearchParams;
         this.params.set('callback', 'JSONP_CALLBACK');
@@ -33,6 +39,10 @@ export class UserService
         this.perPage = localStorage.getItem('usersPerPage');
         if (!this.perPage)
             this.setUsersPerPage(30);
+
+        /* Initial observables */
+        this.getUsersCanEditPosts();
+        this.getRoles();
     }
 
     /**
@@ -52,29 +62,47 @@ export class UserService
     {
         return this.perPage;
     }
+
     
     /**
      * Retrive user roles and number of users for each role.
      */
-    public getRoles() {
+    private getRoles()
+    {
         /* FIXME: This is not working as we can't see any header is with the request */
         //let headers = new Headers({'Authorization': 'Bearer ' + localStorage.getItem('jwt')});
 
-        return this.jsonp
+        this.roles = this.jsonp
             .get(APP.menu_users, {search: this.params})
             .map(res => res.json());
     }
 
-    public getUsers(role, page) {
+    /**
+     * Retrieve a list of users of given role and current page of the list
+     */
+    public getUsers(cur_role, cur_page)
+    {
         this.params.set('per_page', this.perPage);
 
         /* FIXME: This is not working as we can't see any header is with the request */
         //let headers = new Headers({'Authorization': 'Bearer ' + localStorage.getItem('jwt')});
 
         /* Setup endpoint /admin/users/{role}/{page} and send request to it */
-        let endpoint = APP.users + '/' + role + '/' + page;
+        let endpoint = APP.users + '/' + cur_role + '/' + cur_page;
         return this.jsonp
             .get(endpoint, {search: this.params})
             .map(res => res.json());
+    }
+
+    /**
+     * Return all users who can at least edit their posts, so we will use
+     * this data in many locations such as post list, post editing page, etc.
+     * users includes: author, editor, shop_manager, admin, etc
+     */    
+    private getUsersCanEditPosts()
+    {
+        this.authors = this.jsonp
+            .get(APP.authors, {search: this.params})
+            .map(res => res.json()).share();
     }
 }

@@ -32,6 +32,9 @@ export const APP = {
     /* Users list page filter menu */
     menu_users: base + '/admin/menu/users',
 
+    /* Get users who can edit a post, includes author, editor, shop_manager etc */
+    authors: base + '/admin/authors',
+
     /* List of posts */
     posts: base + '/admin/posts',
     /* Posts list page filter menu */
