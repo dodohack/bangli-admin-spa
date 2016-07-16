@@ -21,13 +21,6 @@ export class PostPage implements OnInit
     editor: any;
 
     options: any = {
-        /*
-         * Save the content
-         */
-        saveParam: 'content',
-        saveURL: '/admin/api/ajax/saveCmsPost',
-        saveMethod: 'POST',
-
         /* Past in WYSIWYG edit in plain text */
         pastePlain: true,
 
@@ -36,13 +29,6 @@ export class PostPage implements OnInit
 
         /* Toolbars */
         toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline',
-            'fontSize', 'color',
-            'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent',
-            'indent', 'insertHR', 'insertLink',
-            'insertImage', 'insertVideo', 'insertFile',
-            'insertTable', 'undo', 'redo', 'clearFormatting', 'html'],
-
-        toolbarButtonsMD: ['fullscreen', 'bold', 'italic', 'underline',
             'fontSize', 'color',
             'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent',
             'indent', 'insertHR', 'insertLink',
@@ -71,13 +57,19 @@ export class PostPage implements OnInit
         this.getPost();
     }
 
+    /**
+     * This function is somehow bugged
+     * @param event
+     */
     onFroalaModelChanged(event: any) {
         setTimeout(() => {
             this.text = event;
+            console.log("onFroalaModelChanged");
         });
     }
 
     onEditorInitialized(event?: any) {
+        console.log("onEditorInitialized");
         this.editor = FroalaEditorCompnoent.getFroalaInstance();
         this.editor.on('froalaEditor.focus', (e, editor) => {
             console.log("editor is focused");

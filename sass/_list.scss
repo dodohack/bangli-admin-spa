@@ -2,11 +2,26 @@
  * Style used by all kind of list pages, such as products, orders, posts.
  */
 
-.list-nav {
+.list-toolbar {
     font-size: 80%;
-    margin-bottom: 1rem;
+    height: 2rem;
+    clear: both;
+}
+/* links of fast-edit, delete, preview etc */
+.row-actions {
+    color: grey;
+
+    /* This prevents skid when there is not enough space to show this */
+    position: relative;
+    left: -9999em;
+
+    span.trash a {
+        color: red;
+    }
 }
 
-.filter-toolbar {
-    margin-bottom: 1rem;
+tr:hover {
+    .row-actions {
+        position: static;
+    }
 }

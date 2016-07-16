@@ -105,14 +105,13 @@ export class PostsPage implements OnInit
      * Return user display name by given ID
      * @param $id
      */
-    public getNicenameById($id)
+    public getNicenameById(id)
     {
         /* Loop over different group of users(admin, manager, editor, author) */
         for (let group in this.people) {
             /* Loop over users in each group */
-            for (let idx in this.people[group])
-            {
-                if (this.people[group][idx].id == $id)
+            for (let idx in this.people[group]) {
+                if (this.people[group][idx].id == id)
                     return this.people[group][idx].nicename;
             }
         }
@@ -134,12 +133,6 @@ export class PostsPage implements OnInit
     {
 
     }
-
-    public getPostCategories()
-    {
-
-    }
-
 
     /**
      * Get a list of users

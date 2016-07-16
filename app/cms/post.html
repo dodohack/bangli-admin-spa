@@ -6,11 +6,9 @@
 
             <!-- Display current post url if any -->
             <div class="float-right">
-                <h5>
-                    <span class="label label-default">
-                        URL: http://www.huluwa.uk/{{id}}.html
-                    </span>
-                </h5>
+                <span class="label label-default">
+                    URL: http://www.huluwa.uk/{{id}}.html
+                </span>
             </div>
 
             <a class="btn btn-secondary btn-sm" [routerLink]="['/posts']">
@@ -18,6 +16,7 @@
             </a>
         </div>
 
+        <!-- Post title and main buttons -->
         <div class="form-group">
             <div class="input-group">
                 <input type="text" name="title" class="form-control" placeholder="文章标题"
@@ -33,9 +32,46 @@
             </div>
         </div>
 
+        <!-- Froala Editor -->
         <froala [froalaOptions]="options"
                 [froalaData]="text" (model)="onFroalaModelChanged($event)"
                 (editorInitialized)="onEditorInitialized()"></froala>
+
+        <!-- Post category, tag etc -->
+        <div class="form-group">
+            <div class="label-group">
+                <span class="label label-default">分类: </span>
+                <span class="label label-warning">分类1</span>
+                <span class="label label-warning">分类2</span>
+            </div>
+
+            <div class="label-group">
+                <span class="label label-default">专题: </span>
+                <span class="label label-warning">专题1</span>
+                <span class="label label-warning">专题2</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- author -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-danger">Action</button>
+                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Separated link</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>
