@@ -74,4 +74,15 @@ export class PostService
             .get(endpoint, {search: this.params})
             .map(res => res.json());
     }
+
+    /**
+     * Return the detail of given post id
+     * @param id
+     */
+    public getPost(id) {
+        let endpoint = APP.post + '/' + id;
+        return this.jsonp
+            .get(endpoint, {search: this.params})
+            .map(res => res.json());
+    }
 }

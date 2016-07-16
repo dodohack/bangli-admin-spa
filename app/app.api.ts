@@ -39,6 +39,8 @@ export const APP = {
     posts: base + '/admin/posts',
     /* Posts list page filter menu */
     menu_posts: base + '/admin/menu/posts',
+    /* Single post */
+    post: base + '/admin/post',
 
     /* List of orders */
     //orders: base + '/admin/orders',

@@ -3,20 +3,24 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-import {FroalaEditorCompnoent} from "ng2-froala-editor/ng2-froala-editor";
+import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
+import { PostService } from '../service/post.service';
 
 @Component({
     templateUrl: 'app/cms/post.html',
-    directives: [ROUTER_DIRECTIVES, FroalaEditorCompnoent]
+    directives: [ROUTER_DIRECTIVES, FroalaEditorCompnoent],
+    providers: [PostService]
 })
 export class PostPage implements OnInit
 {
-    text: string = '<div>Hey this is Froala Editor</div>';
+    id: number;
+    title: string;
+    text: string;
     editor: any;
 
-    froalaOptions: any = {
+    options: any = {
         /*
          * Save the content
          */
@@ -51,12 +55,25 @@ export class PostPage implements OnInit
         language: 'zh_cn'
     };
 
-    constructor() {}
+    constructor(private route: ActivatedRoute,
+                private postService: PostService) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        /* Initialze editor content */
+        this.route.params.subscribe(
+            segment => {
+                /* Get post id from URL segment */
+                this.id = segment['id'] ? +segment['id'] : 0;
+                this.getPost();
+            }
+        );
+    }
 
     onFroalaModelChanged(event: any) {
-        setTimeout(() => this.text = event);
+        setTimeout(() => {
+            this.text = event;
+            console.log(this.text);
+        });
     }
 
     onEditorInitialized(event?: any) {
@@ -64,5 +81,15 @@ export class PostPage implements OnInit
         this.editor.on('froalaEditor.focus', (e, editor) => {
             console.log("editor is focused");
         });
+    }
+
+    private getPost()
+    {
+        this.postService.getPost(this.id).subscribe(
+            json => {
+                this.title = json['title'];
+                this.text  = json['content'];
+            }
+        )
     }
 }
