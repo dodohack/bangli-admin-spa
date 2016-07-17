@@ -17,7 +17,7 @@
     <ul class="nav navbar-nav">
         <li *ngFor="let role of roles" class="nav-item">
             <!-- Link to first page of given role of customers -->
-            <a class="nav-link" [routerLink]="['/users', role.role, '1']">{{ role.role }} ({{ role.count }})</a>
+            <a class="nav-link" [routerLink]="['/users', role.role, '1']">{{ userRole[role.role] }} ({{ role.count }})</a>
         </li>
     </ul>
     <form class="form-inline pull-xs-right">

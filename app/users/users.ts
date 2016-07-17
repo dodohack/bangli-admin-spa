@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 
 import { Pagination }  from '../datatype/pagination';
+import { UserRole }    from '../datatype/userrole';
 import { UserService } from '../service/user.service';
 
 @Component({
@@ -16,6 +17,8 @@ export class UsersPage implements OnInit
 {
     /* Pagination related variables of the list */
     pagination = new Pagination(0, 1, 0, 0, 0, 0, 0, 0, 0);
+
+    userRole = new UserRole();
 
     /* Which group of users is currently showing */
     current_role: any;
