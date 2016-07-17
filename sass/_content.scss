@@ -4,26 +4,21 @@
  */
 
 body {
-    background: $body-bg;
+  background:  #eeeeee;
 }
 
- .admin-wrapper {
-    top: $content-wrapper-top;
-    left: $content-wrapper-left;
-    position: absolute;
-    overflow: hidden;
+.content {
+  padding: 3rem 1rem;
+  margin-left: 7rem; /* $sidebar-width - 1rem */
+  background:  #ffffff;
+}
 
-    .container {
-        background-color: $container-bg;
-    }
- }
+.full_content {
+  margin-left: 2rem;
+}
+
 
 /* Toggle style of vertical menu */
-.full-body {
-    .admin-wrapper {
-        left: $content-wrapper-left-full;
-    }
-}
 
 .page-header {
   padding: 0.25rem 0 1rem;
@@ -40,7 +35,14 @@ body {
 .page-sub-menu {
   background-color: #e3f2fd;
   margin-bottom: 0.5rem;
+  font-size: 90%;
 }
+
+input.input-sm {
+  font-size: 90%;
+  padding: 0.3rem 0.5rem;
+}
+
 
 .label-group {
   display: inline-block;

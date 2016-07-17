@@ -51,7 +51,9 @@ export const routes: RouterConfig = [
     */
     //{ path: 'picture', component: },
 
+    /* FIXME: Use children routes */
     {path: 'posts', component: PostsPage, canActivate: [AuthGuard]},
+    {path: 'posts/:filter/:cond',       component: PostsPage, canActivate: [AuthGuard]},
     {path: 'posts/:filter/:cond/:page', component: PostsPage, canActivate: [AuthGuard]},
     
     /*

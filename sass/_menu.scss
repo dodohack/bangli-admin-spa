@@ -3,18 +3,18 @@
  * Defines the style of the horizental and vertical menu in admin panel.
  */
 
-/* Style for <menu></menu> */
-menu {
-    margin: 0;
-    padding: 0;
-}
-
-/* Common style for v and h menu */
-.admin-menu {
-    color: $menu-color;
+.topbar, .sidebar {
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        height: 100%;
+    }
 
     a {
-        color: $menu-color;
+        color: white;
+        position: relative;
+        letter-spacing: 1px;
 
         &:hover {
             text-decoration: none !important;
@@ -24,87 +24,64 @@ menu {
     }
 }
 
-/* Horizental menu style */
-.admin-h-menu-wrap {
+/* sidebar menu */
+.sidebar {
     position: fixed;
-    width: 100%;
-    height: $h-menu-height;
+    top: $topbar-height;
+    bottom: 0;
+    left: 0;
+    width: $sidebar-width;
     background: $menu-bg;
-    z-index: 999;
+    overflow-y: hidden;
 
-    .admin-h-menu-inner {
-        padding: 0.125rem 0.5rem;
-
-        .menu-item {
-            display: inline-block;
-            padding: 0 0.5rem;
-
-            a {
-                /* Padding between menu icon and text */
-                i {
-                    padding: 0 0.25rem;
-                }
-            }
-        }
-
+    li {
+        display: block;
     }
-}
 
-/* Vertical menu style */
-.admin-v-menu-wrap {
+    a {
+        display: block;
+        height: 2rem;
+        line-height: 2rem;
 
-    position: fixed;
-    top: $v-menu-top;
-    width: $v-menu-width;
-    bottom: 0px;
-    background-color: $menu-bg;
-    z-index: 999;
-    overflow: hidden;
-
-    .menu-list {
-        padding: 0;
-        list-style: none;
-        height: 100%;
-        overflow: hidden;
-
-        .menu-item {
-
-            /* Vertical menu specific style */
-            a {
-                display: block;
-                width: 100%;
-                height: $v-menu-height;
-                line-height: $v-menu-height;
-                overflow: hidden;
-  
-                /* Padding between menu icon and text */
-                i {
-                    width: 2.5rem;
-                    padding: 0 0.75rem;
-                }
-            }
-        }
-
-        .toggle-v-menu {
+        &.toggle {
+            /* Sidebar toggle */
             cursor: pointer;
             text-align: center;
-            background-color: $v-menu-toggle-bg;
+            background: #808080;
+        }
 
-            a {
-                height: $v-menu-height-small;
-                line-height: $v-menu-height-small;
-            }
+        i {
+            width: 2.5rem;
+            padding: 0 0.75rem;
         }
     }
 }
 
-/* Toggle style of vertical menu */
-.full-body {
-    .admin-v-menu-wrap {
-        width: $v-icon-menu-width;
+.icon_sidebar {
+    width: 2.85rem;
+}
 
-        .menu-text {
-            display: none;
+/* Topbar */
+.topbar {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: $topbar-height;
+    padding-right: 1rem;
+    background: $menu-bg;
+
+    li {
+        display: inline-block;
+        margin-left: 1rem;
+    }
+
+    a {
+        height: $topbar-height;
+        line-height: $topbar-height;
+        padding: 0.3rem 0.25rem;
+
+        i {
+            padding-right: 0.25rem;
         }
     }
 }

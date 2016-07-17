@@ -7,8 +7,10 @@ import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 
 import { Pagination }  from '../datatype/pagination';
 import { PostType }    from '../datatype/posttype';
+import { PostStatus }  from '../datatype/poststatus';
+
 import { PostService } from '../service/post.service';
-import { UserService } from '../service/user.service';
+
 
 @Component({
     templateUrl: 'app/cms/posts.html',
@@ -23,30 +25,33 @@ export class PostsPage implements OnInit
     /* PostType for editors */
     postType = new PostType;
 
+    /* PostStatus */
+    postStatus = new PostStatus;
+
     /* Posts filters: any, author, editor, status */
     filter: any;
     condition: any;
 
-    /* The list of users, array */
+    /* The list of posts, array */
     posts: any;
 
     /* The menu of this page */
     menus: any;
-
-    /* Author/Editor/Mgr/Admin by role */
-    people: any;
-    /* Author/Editor/Mgr/Admin by id */
-    peopleById: any;
-    /* Author by id */
+    /* Authors object */
     authors: any;
-    /* Editor by id */
+    numAuthors: number;
+    /* Editors object */
     editors: any;
+    numEditors: number;
+    /* Categories object */
+    categories: any;
+    /* Post status object */
+    status: any;
 
     /* Checkbox group for selected posts */
     checkedAll: boolean = false;
 
     constructor(private route: ActivatedRoute,
-                private userService: UserService,
                 private postService: PostService) {}
 
     /**
@@ -59,26 +64,7 @@ export class PostsPage implements OnInit
         this.pagination.current_page = 1;
         this.pagination.per_page = this.postService.getPostsPerPage();
 
-        //this.getPostsMenu();
-
-        /* Get author/editor/etc */
-        /* TODO: As this kind of data is available globally, we can move
-         * TODO: the subscribe to service layer, so that we only have network
-         * TODO: access once.
-         */
-        this.userService.authors.subscribe(
-            people => {
-                /*
-                 * TODO: regroup authors to multiple form:
-                 * 1. object index by id used to get author/editor nicename
-                 *    efficiently
-                 * 2. Divide into author group and editor/shop_mgr/admin group
-                 *    so we can use these 2 groups as filters.
-                 */
-                this.people = people;
-            },
-            error => console.error(error)
-        );
+        this.getPostsMenu();
 
         /* Get URL segments and update user list */
         this.route.params.subscribe(
@@ -99,7 +85,16 @@ export class PostsPage implements OnInit
     private getPostsMenu()
     {
         this.postService.getPostsMenu().subscribe(
-            json  => this.menus = json,
+            json  => {
+                this.menus = json;
+                this.authors = json['authors'];
+                this.editors = json['editors'];
+                this.categories = json['categories'];
+                this.status = json['status'];
+                this.numAuthors = this.authors.length;
+                this.numEditors = this.editors.length;
+                console.log(this.authors);
+            },
             error => console.error(error)
         );
     }
@@ -108,33 +103,12 @@ export class PostsPage implements OnInit
      * Return user display name by given ID
      * @param $id
      */
-    public getNicenameById(id)
+    private getNicenameById(id)
     {
-        /* Loop over different group of users(admin, manager, editor, author) */
-        for (let group in this.people) {
-            /* Loop over users in each group */
-            for (let idx in this.people[group]) {
-                if (this.people[group][idx].id == id)
-                    return this.people[group][idx].nicename;
-            }
+        for (let i = 0; i < this.numAuthors; i++) {
+            if (this.authors[i].id == id)
+                return this.authors[i].nicename;
         }
-    }
-
-    public getAuthors() {
-
-    }
-
-    public getEditors() {
-
-    }
-
-    public getStatus() {
-
-    }
-
-    public getPostTypes()
-    {
-
     }
 
     /**

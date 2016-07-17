@@ -5,7 +5,7 @@ import { MenuService }       from '../service/menu.service';
 import { AuthService }       from '../service/auth.service';
 
 @Component({
-    selector: 'dashboard-menu',
+    selector: 'topbar-sidebar',
     templateUrl: 'app/shared/menu.html',
     directives: [ROUTER_DIRECTIVES]
 })
@@ -14,6 +14,8 @@ export class MenuComponent implements OnInit {
     /* Topbar menu and sidebar menu */
     topbar_menus:  any;
     sidebar_menus: any;
+
+    toggle: boolean;
 
     /* username: string; */
     /**
@@ -28,6 +30,8 @@ export class MenuComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.initSidebarToggle();
+
         this.menuService.getMenus()
             .subscribe(
                 menus => {
@@ -36,5 +40,35 @@ export class MenuComponent implements OnInit {
                 },
                 error => console.error(error)
             );
+    }
+
+    /**
+     * Initialize sidebar toggle states
+     */
+    initSidebarToggle()
+    {
+        this.toggle = true;
+        
+        let v = localStorage.getItem('toggle');
+        if (v === null) {
+            this.toggle = false;
+            localStorage.setItem('toggle', '0');
+        } else if (v === '0') {
+            this.toggle = false;
+        }
+    }
+
+    /**
+     * Toggle sidebar betwen icon menu and text menu
+     * localStorage only stores string, so use '0' and '1' as false and true.
+     */
+    toggleSidebar($event)
+    {
+        this.toggle = !this.toggle;
+        
+        if (this.toggle)
+            localStorage.setItem('toggle', '1');
+        else
+            localStorage.setItem('toggle', '0');
     }
 }

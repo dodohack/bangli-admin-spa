@@ -1,77 +1,70 @@
-<!-- -->
-<div class="admin-wrapper">
-    <div class="container">
+<div class="page-header">
+    <!-- Display current post url if any -->
+    <div class="float-right">
+        <span class="label label-default">
+            URL: http://www.huluwa.uk/{{id}}.html
+        </span>
+    </div>
 
-        <div class="editor-page-header">
+    <a class="btn btn-secondary btn-sm" [routerLink]="['/posts']">
+        <i class="fa fa-navicon"></i>返回文章列表
+    </a>
+</div>
 
-            <!-- Display current post url if any -->
-            <div class="float-right">
-                <span class="label label-default">
-                    URL: http://www.huluwa.uk/{{id}}.html
-                </span>
-            </div>
+<!-- Post title and main buttons -->
+<div class="form-group">
+    <div class="input-group">
+        <input type="text" name="title" class="form-control" placeholder="文章标题"
+               [(ngModel)]="title">
+        <span class="input-group-btn">
+            <a type="button" class="btn btn-warning" target="_blank"
+               href="http://www.huluwa.uk/{{id}}.html"><i class="fa fa-external-link"></i> 预览</a>
+            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> 保存</button>
+            <!-- Only display these 2 buttons for editors and above -->
+            <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i> 审稿</button>
+            <button type="submit" class="btn btn-danger"><i class="fa fa-smile-o"></i> 发布</button>
+        </span>
+    </div>
+</div>
 
-            <a class="btn btn-secondary btn-sm" [routerLink]="['/posts']">
-                <i class="fa fa-navicon"></i>返回文章列表
-            </a>
-        </div>
+<!-- Froala Editor -->
+<froala [froalaOptions]="options"
+        [froalaData]="text" (model)="onFroalaModelChanged($event)"
+        (editorInitialized)="onEditorInitialized()"></froala>
 
-        <!-- Post title and main buttons -->
-        <div class="form-group">
-            <div class="input-group">
-                <input type="text" name="title" class="form-control" placeholder="文章标题"
-                       [(ngModel)]="title">
-                <span class="input-group-btn">
-                    <a type="button" class="btn btn-warning" target="_blank"
-                       href="http://www.huluwa.uk/{{id}}.html"><i class="fa fa-external-link"></i> 预览</a>
-                    <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> 保存</button>
-                    <!-- Only display these 2 buttons for editors and above -->
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i> 审稿</button>
-                    <button type="submit" class="btn btn-danger"><i class="fa fa-smile-o"></i> 发布</button>
-                </span>
-            </div>
-        </div>
+<!-- Post category, tag etc -->
+<div class="form-group">
+    <div class="label-group">
+        <span class="label label-default">分类: </span>
+        <span class="label label-warning">分类1</span>
+        <span class="label label-warning">分类2</span>
+    </div>
 
-        <!-- Froala Editor -->
-        <froala [froalaOptions]="options"
-                [froalaData]="text" (model)="onFroalaModelChanged($event)"
-                (editorInitialized)="onEditorInitialized()"></froala>
+    <div class="label-group">
+        <span class="label label-default">专题: </span>
+        <span class="label label-warning">专题1</span>
+        <span class="label label-warning">专题2</span>
+    </div>
+</div>
 
-        <!-- Post category, tag etc -->
-        <div class="form-group">
-            <div class="label-group">
-                <span class="label label-default">分类: </span>
-                <span class="label label-warning">分类1</span>
-                <span class="label label-warning">分类2</span>
-            </div>
-
-            <div class="label-group">
-                <span class="label label-default">专题: </span>
-                <span class="label label-warning">专题1</span>
-                <span class="label label-warning">专题2</span>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- author -->
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-danger">Action</button>
-                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Separated link</a>
-                        </div>
-                    </div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-md-12">
+            <!-- author -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger">Action</button>
+                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Separated link</a>
                 </div>
             </div>
         </div>
-
     </div>
 </div>
+

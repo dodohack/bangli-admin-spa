@@ -17,6 +17,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { Login }     from "../datatype/login";
 import { Register }  from "../datatype/register";
+import { Payload }   from "../datatype/payload";
 import { AUTH }      from "../app.api";
 
 var jwtDecode = require('jwt-decode');
@@ -24,7 +25,7 @@ var jwtDecode = require('jwt-decode');
 @Injectable()
 export class AuthService
 {
-    private decoded_jwt;
+    private decoded_jwt = new Payload('', 0, 0, 0, '', '', '');
     private jwt;
 
     constructor(private router: Router, private http: Http) {
@@ -140,8 +141,6 @@ export class AuthService
      */
     public getName()
     {
-        console.log(this.decoded_jwt);
-        return 'dodo123';
-        //return this.decoded_jwt.aud;
+        return this.decoded_jwt.aud;
     }
 }

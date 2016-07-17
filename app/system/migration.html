@@ -1,27 +1,23 @@
-<div class="admin-wrapper">
-    <div class="container">
-        <h2>数据库移植</h2>
+<h2>数据库移植</h2>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="btn-toolbar" role="toolbar">
-                    <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUser()">移植基本用户表</button>
-                    <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUserData()">移植用户数据表</button>
-                    <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateAttachment()">移植附件表</button>
-                    <button class="btn btn-primary" [disabled]="isRunning" (click)="migratePost()">移植文章表</button>
-                    <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateProduct()">移植产品表</button>
-                    <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateOrder()">移植订单表</button>
-                </div>
-            </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="btn-toolbar" role="toolbar">
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUser()">移植基本用户表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUserData()">移植用户数据表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateAttachment()">移植附件表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migratePost()">移植文章表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateProduct()">移植产品表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateOrder()">移植订单表</button>
         </div>
+    </div>
+</div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <br>
-                <br>
-                <h4>{{ message }}</h4>
-                <p>{{ status }}</p>
-            </div>
-        </div>
+<div class="row">
+    <div class="col-md-12">
+        <br>
+        <br>
+        <h4>{{ message }}</h4>
+        <p>{{ status }}</p>
     </div>
 </div>

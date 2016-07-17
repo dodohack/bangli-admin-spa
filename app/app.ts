@@ -36,4 +36,15 @@ export class App
     {
         return this.authService.isLoggedIn();
     }
+
+    /**
+     * FIXME: This function shouldn't be here
+     */
+    get isSidebarToggled()
+    {
+        if (localStorage.getItem('toggle') === '1')
+            return true;
+
+        return false;
+    }
 }

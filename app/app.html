@@ -1,7 +1,13 @@
 <!-- This is the template page for all pages -->
+<div class="container-fluid" style="min-width: 768px; max-width: 1400px;">
 
-<div *ngIf="isLoggedIn">
-    <!-- Only show the menu when user is logged in -->
-    <dashboard-menu></dashboard-menu>
+    <!-- Fixed topbar and sidebar -->
+    <div *ngIf="isLoggedIn">
+        <topbar-sidebar></topbar-sidebar>
+    </div>
+
+    <!-- Content -->
+    <div class="content" [class.full_content]="isSidebarToggled">
+        <router-outlet></router-outlet>
+    </div>
 </div>
-<router-outlet></router-outlet>

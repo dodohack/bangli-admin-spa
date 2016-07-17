@@ -1,47 +1,38 @@
 <!-- Dashboard topbar -->
-<div class="admin-menu admin-h-menu-wrap">
-    <div class="admin-h-menu-inner">
-
-        <div class="menu-item">
+<div class="topbar">
+    <ul>
+        <li>
             <a href="http://www.huluwa.uk" target="_blank"><i class="fa fa-home">首页</i></a>
-        </div>
+        </li>
 
-        <div *ngFor="let menu of topbar_menus" class="menu-item {{ menu.style_class }}">
+        <li *ngFor="let menu of topbar_menus" class="{{ menu.style_class }}">
             <a [routerLink]="[menu.url]">
                 <i class="{{ menu.icon_class }}"></i>{{ menu.name }}
             </a>
-        </div>
+        </li>
 
-        <div class="menu-item float-right">
+        <li class="float-right">
             <a [routerLink]="['/logout']">
                 <i class="fa fa-arrow-circle-o-right"></i>退出
             </a>
-        </div>
+        </li>
 
-        <div class="menu-item float-right">
+        <li class="float-right">
             <a [routerLink]="['/user/id']">
                 <i class="fa fa-user"></i>somename
             </a>
-        </div>
-
-    </div>
+        </li>
+    </ul>
 </div>
 
-
 <!-- Dashboard sidebar -->
-<div class="admin-menu admin-v-menu-wrap">
-    <ul class="menu-list">
-
-        <!-- Sidebar toggle -->
-        <li class="menu-item toggle-v-menu">
-            <a id="toggleVerticalMenu"><i class="fa fa-ellipsis-v"></i></a>
-        </li>
-
-        <li *ngFor="let menu of sidebar_menus" class="menu-item">
-            <a [routerLink]="[menu.url]" data-toggle="tooltip"
-               data-placement="right" title="{{ menu.name }}">
+<div class="sidebar" [class.icon_sidebar]="toggle">
+    <a class="toggle" (click)="toggleSidebar($event)"><i class="fa fa-ellipsis-v"></i></a>
+    <ul>
+        <li *ngFor="let menu of sidebar_menus">
+            <a [routerLink]="[menu.url]" title="{{ menu.name }}">
                 <i class="{{ menu.icon_class }}"></i>
-                <span class="menu-text">{{ menu.name }}</span>
+                <span *ngIf="!toggle">{{ menu.name }}</span>
             </a>
         </li>
     </ul>

@@ -1,68 +1,63 @@
-<div class="admin-wrapper">
-    <div class="container">
-        <div class="page-header">
-            <h1 class="title">
-                用户信息
-                <a class="page-title-action btn btn-sm btn-info-outline" [routerLink]="['/post/new']">新增用户</a>
-            </h1>
-            <!--
-        <form class="form-horizontal" role="form" (ngSubmit)="setUsersPerPage()"
-              #settingForm="ngForm">
-                <input type="text" class="form-control" required [(ngModel)]="pagination.per_page" name="per_page">
-                <button type="submit" class="btn btn-secondary" [disabled]="!settingForm.form.valid">更新</button>
-        </form>
-        -->
-        </div>
-
-        <!-- User role filter -->
-        <nav class="navbar page-sub-menu">
-            <ul class="nav navbar-nav">
-                <li *ngFor="let role of roles" class="nav-item">
-                    <!-- Link to first page of given role of customers -->
-                    <a class="nav-link" [routerLink]="['/users', role.role, '1']">{{ role.role }} ({{ role.count }})</a>
-                </li>
-            </ul>
-            <form class="form-inline pull-xs-right">
-                <input class="form-control" type="text" placeholder="搜索">
-                <button class="btn btn-success-outline" type="submit">搜索</button>
-            </form>
-        </nav>
-
-        <!-- Pagniation -->
-        <div class="input-group input-group-sm">
-            <span class="input-group-btn">
-                <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
-                <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
-                <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
-                <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
-            </span>
-        </div>
-
-        <!-- List of users -->
-        <table class="table">
-            <thead class="thead-default">
-            <tr>
-                <th><input type="checkbox"></th>
-                <th>用户名</th>
-                <th>昵称</th>
-                <th>邮箱</th>
-                <th>注册时间</th>
-                <th>订单数量</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let user of users">
-                <th scope="row"><input type="checkbox"></th>
-                <td>{{ user.name }}</td>
-                <td>{{ user.nicename }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.created_at }}</td>
-                <td>xyz</td>
-            </tr>
-            </tbody>
-        </table>
-
-    </div>
+ <div class="page-header">
+    <h1 class="title">
+        用户信息
+        <a class="page-title-action btn btn-sm btn-info-outline" [routerLink]="['/post/new']">新增用户</a>
+    </h1>
+    <!--
+<form class="form-horizontal" role="form" (ngSubmit)="setUsersPerPage()"
+      #settingForm="ngForm">
+        <input type="text" class="form-control" required [(ngModel)]="pagination.per_page" name="per_page">
+        <button type="submit" class="btn btn-secondary" [disabled]="!settingForm.form.valid">更新</button>
+</form>
+-->
 </div>
+
+<!-- User role filter -->
+<nav class="navbar page-sub-menu">
+    <ul class="nav navbar-nav">
+        <li *ngFor="let role of roles" class="nav-item">
+            <!-- Link to first page of given role of customers -->
+            <a class="nav-link" [routerLink]="['/users', role.role, '1']">{{ role.role }} ({{ role.count }})</a>
+        </li>
+    </ul>
+    <form class="form-inline pull-xs-right">
+        <input class="form-control" type="text" placeholder="搜索">
+        <button class="btn btn-success-outline" type="submit">搜索</button>
+    </form>
+</nav>
+
+<!-- Pagniation -->
+<div class="input-group input-group-sm">
+    <span class="input-group-btn">
+        <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
+        <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
+        <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
+        <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
+    </span>
+</div>
+
+<!-- List of users -->
+<table class="table">
+    <thead class="thead-default">
+    <tr>
+        <th><input type="checkbox"></th>
+        <th>用户名</th>
+        <th>昵称</th>
+        <th>邮箱</th>
+        <th>注册时间</th>
+        <th>订单数量</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+        <th scope="row"><input type="checkbox"></th>
+        <td>{{ user.name }}</td>
+        <td>{{ user.nicename }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.created_at }}</td>
+        <td>xyz</td>
+    </tr>
+    </tbody>
+</table>
 
 
