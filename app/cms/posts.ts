@@ -42,6 +42,9 @@ export class PostsPage implements OnInit
     /* Editor by id */
     editors: any;
 
+    /* Checkbox group for selected posts */
+    checkedAll: boolean = false;
+
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
                 private postService: PostService) {}
@@ -159,8 +162,26 @@ export class PostsPage implements OnInit
                         this.pagination.current_page < this.pagination.last_page ?
                         this.pagination.current_page + 1 : this.pagination.last_page;
                 },
-                error => console.error(error)
+                error => console.error(error),
+                ()    => {
+                    /*
+                     * Add checkbox data to each posts
+                     *
+                     * FIXME: This actually should be placed into ngOnInit, but
+                     * we don't know the member of the model returned from API
+                     * server yet, so we can only access them when this.posts
+                     * is fully initialized.
+                     */
+                    this.initCheckbox();
+                }
             );
+    }
+
+    private initCheckbox() {
+        let length = this.posts.length;
+        for (let i = 0; i < length; i++) {
+            this.posts[i].checked = false;
+        }
     }
 
     /**
@@ -172,4 +193,18 @@ export class PostsPage implements OnInit
         /* Update the list view */
         this.getPostsList();
     }
+
+
+    /**
+     * Toggle all checkbox
+     */
+    private checkboxAll()
+    {
+        this.checkedAll = !this.checkedAll;
+        let length = this.posts.length;
+        for (let i = 0; i < length; i++) {
+            this.posts[i].checked = this.checkedAll;
+        }
+    }
+    
 }

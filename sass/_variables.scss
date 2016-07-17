@@ -48,10 +48,12 @@ $card-border-radius: 0;
 $input-group-addon-bg: transparent !important;
 $input-group-addon-border-color: transparent !important;
 
+// Table padding for .table th, .table td.
+$table-cell-padding: 0.5rem;
 
-/*
- * Customized variables
- */
+  /*
+   * Customized variables
+   */
 
 // The color of logo font
 $light-blue: #7BD3DB;
