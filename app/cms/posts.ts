@@ -181,6 +181,7 @@ export class PostsPage implements OnInit
         let length = this.posts.length;
         for (let i = 0; i < length; i++) {
             this.posts[i].checked = false;
+            this.posts[i].editing = false;
         }
     }
 
@@ -206,5 +207,18 @@ export class PostsPage implements OnInit
             this.posts[i].checked = this.checkedAll;
         }
     }
-    
+
+    /**
+     * Change current table row to editable mode if double click on this
+     * row is detected.
+     * 
+     * @param $event  - mouse double click event
+     * @param i       - index of table row, starts from 0 
+     */
+    private fastEditCurrentPost($event, i)
+    {
+        this.posts[i].editing = !this.posts[i].editing;
+        console.log("double clicked detected: " + i);
+        console.log($event);
+    }
 }
