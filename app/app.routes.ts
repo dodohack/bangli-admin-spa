@@ -16,6 +16,8 @@ import { ProductsPage }  from './shop/products';
 import { ProductPage }   from './shop/product';
 import { OrdersPage }    from './shop/orders';
 import { OrderPage }     from './shop/order';
+import { VouchersPage }  from './shop/vouchers';
+import { VoucherPage }   from './shop/voucher';
 
 import { PostsPage }     from './cms/posts';
 import { PostPage }      from './cms/post';
@@ -90,6 +92,25 @@ export const routes: RouterConfig = [
         children: [
             { path: '', pathMatch: 'full', redirectTo: 'new' },
             { path: ':id', component: OrderPage }
+        ]
+    },
+
+    {
+        path: 'vouchers',
+        canActivate: [AuthGuard],
+        children: [
+            { path: '', pathMatch: 'full', redirectTo: 'all/all/1' },
+            { path: ':filter/:cond', redirectTo: ':filter/:cond/1' },
+            { path: ':filter/:cond/:page ', component: VouchersPage }
+        ]
+    },
+
+    {
+        path: 'voucher',
+        canActivate: [AuthGuard],
+        children: [
+            { path: '', pathMatch: 'full', redirectTo: 'new' },
+            { path: ':id', component: VoucherPage }
         ]
     },
 
