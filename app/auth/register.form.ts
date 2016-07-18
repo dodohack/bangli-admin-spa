@@ -25,7 +25,7 @@ export class RegisterForm
                 private authService: AuthService)
     {
         /* Redirect user if already logged in */
-        if (this.authService.isLoggedIn())
+        if (this.authService.isLoggedIn)
             this.router.navigate(['/']);
     }
 

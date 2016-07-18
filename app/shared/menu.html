@@ -26,13 +26,13 @@
 </div>
 
 <!-- Dashboard sidebar -->
-<div class="sidebar" [class.icon_sidebar]="toggle">
-    <a class="toggle" (click)="toggleSidebar($event)"><i class="fa fa-ellipsis-v"></i></a>
+<div class="sidebar" [class.icon_sidebar]="menuService.toggle">
+    <a class="toggle" (click)="menuService.toggleSidebar($event)"><i class="fa fa-ellipsis-v"></i></a>
     <ul>
         <li *ngFor="let menu of sidebar_menus">
             <a [routerLink]="[menu.url]" title="{{ menu.name }}">
                 <i class="{{ menu.icon_class }}"></i>
-                <span *ngIf="!toggle">{{ menu.name }}</span>
+                <span *ngIf="!menuService.toggle">{{ menu.name }}</span>
             </a>
         </li>
     </ul>

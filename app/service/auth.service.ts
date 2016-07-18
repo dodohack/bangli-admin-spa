@@ -33,21 +33,19 @@ export class AuthService
     }
 
     /**
-     *  Check if current user logged or not
+     *  Gettter: Check if current user logged or not
      */
-    public isLoggedIn(): boolean
+    get isLoggedIn(): boolean
     {
-        let jwt = localStorage.getItem('jwt');
-        if (jwt == '' || jwt == null)
+        if (this.jwt == '' || this.jwt == null)
             return false;
 
-        /* Get decoded payload */
-        let decoded = jwtDecode(jwt);
         /* Get current unix timestamp in second */
         let now = Math.floor(Date.now()/1000);
 
         /* Token expired, remove it and return false */
-        if (decoded.exp < now) {
+        if (this.decoded_jwt.exp < now) {
+            this.jwt = null;
             localStorage.removeItem('jwt');
             return false;
         }
@@ -58,6 +56,7 @@ export class AuthService
     /**
      * FIXME: We should move user login logic from login.form.ts to here
      * Login user with given JWT and redirect user to dashboard
+     * This function called on both register success and login success
      */
     public login(jwt: string)
     {
