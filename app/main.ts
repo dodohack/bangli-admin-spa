@@ -4,6 +4,7 @@ import { bootstrap }    from '@angular/platform-browser-dynamic';
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { disableDeprecatedForms, provideForms } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 
 import { App } from './app';
 import { APP_ROUTER_PROVIDERS } from './app.routes';
@@ -20,7 +21,7 @@ if (process.env.ENV === 'production') {
 bootstrap(App, [
     APP_ROUTER_PROVIDERS,
     HTTP_PROVIDERS, JSONP_PROVIDERS,
-    MenuService, AuthService, UserService,
+    Title, MenuService, AuthService, UserService,
     provide(PLATFORM_DIRECTIVES,
         {
             useValue: [ROUTER_DIRECTIVES],

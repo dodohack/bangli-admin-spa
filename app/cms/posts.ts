@@ -4,6 +4,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Title }          from '@angular/platform-browser';
 
 import { Pagination }  from '../datatype/pagination';
 import { PostType }    from '../datatype/posttype';
@@ -51,7 +52,8 @@ export class PostsPage implements OnInit
     checkedAll: boolean = false;
 
     constructor(private route: ActivatedRoute,
-                private postService: PostService) {}
+                private postService: PostService,
+                private titleService: Title) {}
 
     /**
      * Initialize the page, we should only put DI initializition into ctor.
@@ -60,6 +62,9 @@ export class PostsPage implements OnInit
      */
     ngOnInit()
     {
+        /* Set document title */
+        this.titleService.setTitle('文章列表 - 葫芦娃管理平台');
+
         this.pagination.current_page = 1;
         this.pagination.per_page = this.postService.getPostsPerPage();
 

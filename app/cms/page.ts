@@ -2,12 +2,18 @@
  * This is the component for single page
  */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Title }             from '@angular/platform-browser';
 
 @Component({
     templateUrl: 'app/cms/page.html'
 })
-export class PagePage
+export class PagePage implements OnInit
 {
-    constructor() {}
+    constructor(private titleService: Title) {}
+
+    ngOnInit()
+    {
+        this.titleService.setTitle('编辑文档 - 葫芦娃管理平台');
+    }
 }

@@ -2,12 +2,18 @@
  * This is the component for single order
  */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Title }             from '@angular/platform-browser';
 
 @Component({
-    templateUrl: 'app/pages/order.html'
+    templateUrl: 'app/shop/order.html'
 })
-export class OrderPage
+export class OrderPage implements OnInit
 {
-    constructor() {}
+    constructor(private titleService: Title) {}
+
+    ngOnInit()
+    {
+        this.titleService.setTitle('编辑订单 - 葫芦娃管理平台');
+    }
 }

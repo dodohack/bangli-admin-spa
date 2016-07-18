@@ -1,20 +1,19 @@
 /**
- * 
+ * This is the component for a single newsletter
  */
 
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 
 @Component({
-    templateUrl: 'app/cms/topic.html'
+    templateUrl: 'app/email/newsletter.html'
 })
-
-export class TopicPage implements OnInit
+export class NewsletterPage implements OnInit
 {
     constructor(private titleService: Title) {}
 
     ngOnInit()
     {
-        this.titleService.setTitle('编辑专题 - 葫芦娃管理平台');
+        this.titleService.setTitle('Newsletter - 葫芦娃管理平台');
     }
 }

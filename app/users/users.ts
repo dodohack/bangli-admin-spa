@@ -3,7 +3,8 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute }    from '@angular/router';
+import { Title }             from '@angular/platform-browser';
 
 import { Pagination }  from '../datatype/pagination';
 import { UserRole }    from '../datatype/userrole';
@@ -27,7 +28,8 @@ export class UsersPage implements OnInit
     roles: any;
 
     constructor(private route: ActivatedRoute,
-                private userService: UserService) {}
+                private userService: UserService,
+                private titleService: Title) {}
 
     /**
      * Initialize the page, we should only put DI initializition into ctor.
@@ -36,6 +38,8 @@ export class UsersPage implements OnInit
      */
     ngOnInit()
     {
+        this.titleService.setTitle('用户列表 - 葫芦娃管理平台');
+
         this.current_role = 'customer';
         this.pagination.current_page = 1;
         this.pagination.per_page = this.userService.getUsersPerPage();
