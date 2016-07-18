@@ -97,7 +97,7 @@ export class PostsPage implements OnInit
                 this.status = json['status'];
                 this.numAuthors = this.authors.length;
                 this.numEditors = this.editors.length;
-                console.log(this.authors);
+                //console.log(this.authors);
             },
             error => console.error(error)
         );
@@ -110,8 +110,12 @@ export class PostsPage implements OnInit
     private getNicenameById(id)
     {
         for (let i = 0; i < this.numAuthors; i++) {
-            if (this.authors[i].id == id)
-                return this.authors[i].nicename;
+            if (this.authors[i].id == id) {
+                if (this.authors[i].nicename == null)
+                    return this.authors[i].name;
+                else
+                    return this.authors[i].nicename;
+            }
         }
     }
 
@@ -196,7 +200,7 @@ export class PostsPage implements OnInit
     private fastEditCurrentPost($event, i)
     {
         this.posts[i].editing = !this.posts[i].editing;
-        console.log("double clicked detected: " + i);
-        console.log($event);
+        //console.log("double clicked detected: " + i);
+        //console.log($event);
     }
 }
