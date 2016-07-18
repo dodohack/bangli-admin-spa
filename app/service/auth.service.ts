@@ -30,6 +30,10 @@ export class AuthService
 
     constructor(private router: Router, private http: Http) {
         console.log("AuthService Object Created!");
+
+        this.jwt = localStorage.getItem('jwt');
+        if (this.jwt !== '' && this.jwt !== null)
+            this.decoded_jwt = jwtDecode(this.jwt);
     }
 
     /**
