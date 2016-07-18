@@ -3,7 +3,7 @@
  */
 
 import { Component }         from '@angular/core';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgForm }            from '@angular/forms';
 
 import { AuthService }              from '../service/auth.service';
@@ -12,8 +12,7 @@ import { APP }                from '../app.api';
 
 @Component({
     selector: 'register-form',
-    templateUrl: 'app/auth/register.form.html',
-    directives: [ROUTER_DIRECTIVES]
+    templateUrl: 'app/auth/register.form.html'
 })
 export class RegisterForm
 {

@@ -3,15 +3,14 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { Pagination }  from '../datatype/pagination';
 import { UserRole }    from '../datatype/userrole';
 import { UserService } from '../service/user.service';
 
 @Component({
-    templateUrl: 'app/users/users.html',
-    directives: [ROUTER_DIRECTIVES]
+    templateUrl: 'app/users/users.html'
 })
 export class UsersPage implements OnInit
 {

@@ -51,11 +51,16 @@ export const routes: RouterConfig = [
     */
     //{ path: 'picture', component: },
 
-    /* FIXME: Use children routes */
-    {path: 'posts', component: PostsPage, canActivate: [AuthGuard]},
-    {path: 'posts/:filter/:cond',       component: PostsPage, canActivate: [AuthGuard]},
-    {path: 'posts/:filter/:cond/:page', component: PostsPage, canActivate: [AuthGuard]},
-    
+    {
+        path: 'posts',
+        canActivate: [AuthGuard],
+        children: [
+            { path: '', pathMatch: 'full', redirectTo: 'all/all/1' },
+            { path: ':filter/:cond', redirectTo: ':filter/:cond/1' },
+            { path: ':filter/:cond/:page', component: PostsPage }
+        ]
+    },
+
     /*
     FIXME: children route is bugged due to webpack, see previous FIXME.
     {path: 'posts/:status', component: PostListPage, canActivate: [AuthGuard]},
@@ -65,12 +70,20 @@ export const routes: RouterConfig = [
     {path: 'products/:status', component: ProductListPage, canActivate: [AuthGuard]},
     {path: 'product/:id', component: ProductPage, canActivate: [AuthGuard]},
 */
-    /* FIXME: Need to redirect route 'users' to a previous stored route
-     * matches following pattern. So that when nav back through sidebar, we can
-     * always view the last state of users page.
-     */
-    {path: 'users', component: UsersPage, canActivate: [AuthGuard]},
-    {path: 'users/:role/:page', component: UsersPage, canActivate: [AuthGuard]},
+    {
+        /**
+         * /users path, UsersPage only will be initialized once for all
+         * routes/sub-routes, this prevent page load while switching between
+         * different routes.
+         */
+        path: 'users',
+        canActivate: [AuthGuard],
+        children: [
+            { path: '', pathMatch: 'full', redirectTo: 'customer/1' },
+            { path: ':role', redirectTo: ':role/1' },
+            { path: ':role/:page', component: UsersPage }
+        ]
+    }
 ];
 
 export const APP_ROUTER_PROVIDERS = [

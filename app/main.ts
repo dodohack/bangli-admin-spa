@@ -1,10 +1,8 @@
 // Imports for loading & configuring the in-memory web api
-import { enableProdMode } from '@angular/core';
-import { XHRBackend }     from '@angular/http';
-
-// The usual bootstrapping imports
+import { enableProdMode, provide, PLATFORM_DIRECTIVES } from '@angular/core';
 import { bootstrap }    from '@angular/platform-browser-dynamic';
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import { disableDeprecatedForms, provideForms } from '@angular/forms';
 
 import { App } from './app';
@@ -23,6 +21,11 @@ bootstrap(App, [
     APP_ROUTER_PROVIDERS,
     HTTP_PROVIDERS, JSONP_PROVIDERS,
     MenuService, AuthService, UserService,
+    provide(PLATFORM_DIRECTIVES,
+        {
+            useValue: [ROUTER_DIRECTIVES],
+            multi: true
+        }),
     disableDeprecatedForms(), provideForms()
 ])
 .catch((err: any) => console.error(err));

@@ -3,11 +3,9 @@
  */
 
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 
 @Component({
-    templateUrl: 'app/auth/lostpassword.html',
-    directives: [ROUTER_DIRECTIVES]
+    templateUrl: 'app/auth/lostpassword.html'
 })
 export class LostPasswordPage
 {

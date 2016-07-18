@@ -1,13 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 
 import { MenuService }       from '../service/menu.service';
 import { AuthService }       from '../service/auth.service';
 
 @Component({
     selector: 'topbar-sidebar',
-    templateUrl: 'app/shared/menu.html',
-    directives: [ROUTER_DIRECTIVES]
+    templateUrl: 'app/shared/menu.html'
 })
 export class MenuComponent implements OnInit {
 

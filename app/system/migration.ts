@@ -3,15 +3,13 @@
  */
 
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Http, URLSearchParams }   from '@angular/http';
 
 import { APP } from '../app.api';
 import { AuthService } from '../service/auth.service';
 
 @Component({
-    templateUrl: 'app/system/migration.html',
-    directives: [ROUTER_DIRECTIVES]
+    templateUrl: 'app/system/migration.html'
 })
 export class MigrationPage
 {

@@ -3,7 +3,7 @@
  */
 
 import { Component }         from '@angular/core';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { NgForm }            from '@angular/forms';
 
 import { AuthService } from '../service/auth.service';
@@ -13,8 +13,7 @@ import { APP }   from '../app.api';
 
 @Component({
     selector: 'login-form',
-    templateUrl: 'app/auth/login.form.html',
-    directives: [ROUTER_DIRECTIVES]
+    templateUrl: 'app/auth/login.form.html'
 })
 export class LoginForm
 {

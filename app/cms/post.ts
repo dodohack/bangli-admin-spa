@@ -3,14 +3,14 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
 import { PostService } from '../service/post.service';
 
 @Component({
     templateUrl: 'app/cms/post.html',
-    directives: [ROUTER_DIRECTIVES, FroalaEditorCompnoent],
+    directives: [FroalaEditorCompnoent],
     providers: [PostService]
 })
 export class PostPage implements OnInit

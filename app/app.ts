@@ -3,7 +3,6 @@
  */
 
 import { Component }         from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 
 // Add the RxJS operators we need in this app.
 import './rxjs-operators';
@@ -23,7 +22,6 @@ import { MenuComponent }     from './shared/menu';
     selector: 'huluwa-admin',
     templateUrl: 'app/app.html',
     directives: [
-        ROUTER_DIRECTIVES,
         MenuComponent,
     ]
 })

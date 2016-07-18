@@ -3,7 +3,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { Pagination }  from '../datatype/pagination';
 import { PostType }    from '../datatype/posttype';
@@ -14,7 +14,6 @@ import { PostService } from '../service/post.service';
 
 @Component({
     templateUrl: 'app/cms/posts.html',
-    directives: [ROUTER_DIRECTIVES],
     providers: [PostService]
 })
 export class PostsPage implements OnInit

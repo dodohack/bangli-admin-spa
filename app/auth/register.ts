@@ -3,13 +3,12 @@
  */
 
 import { Component }         from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 
 import { RegisterForm }      from './register.form';
 
 @Component({
     templateUrl: 'app/auth/register.html',
-    directives: [ROUTER_DIRECTIVES, RegisterForm]
+    directives: [RegisterForm]
 })
 export class RegisterPage
 {
