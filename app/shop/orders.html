@@ -10,17 +10,16 @@
 <nav class="navbar page-sub-menu">
     <ul class="nav navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/orders/all/all']">全部</a>
+            <a class="nav-link" [routerLink]="['/orders/all']">全部</a>
         </li>
 
         <!-- Various order status tabs -->
-        <!--
-        <li *ngFor="let s of allStatus" class="nav-item">
-            <a class="nav-link" [routerLink]="['/orders/status', s.status]">
-                {{ orderStatus[s.status] }}（{{ s.count }}）
+        <li *ngFor="let menu of menus" class="nav-item">
+            <a class="nav-link" [routerLink]="['/orders', menu.status]">
+                {{ orderStatus[menu.status] }}<span style="color:grey;">（{{ menu.count }}）</span>
             </a>
         </li>
-        -->
+
     </ul>
 
     <form class="form-inline pull-xs-right">

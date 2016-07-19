@@ -7,6 +7,7 @@ import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
 import { Pagination }   from '../datatype/pagination';
+import { OrderStatus }    from '../datatype/orderstatus';
 
 import { OrderService } from '../service/order.service';
 
@@ -18,6 +19,9 @@ export class OrdersPage implements OnInit
 {
     /* Pagination related variables of the list */
     pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
+
+    /* PostType for editors */
+    orderStatus = new OrderStatus;
 
     menus: any;
     /* Current order status of the listed orders */
@@ -59,7 +63,8 @@ export class OrdersPage implements OnInit
     {
         this.orderService.getOrdersMenu().subscribe(
             json => {
-              this.menus = json;
+                this.menus = json;
+                console.log(this.menus);
             },
             error => console.error(error)
         );
