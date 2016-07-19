@@ -43,10 +43,11 @@ export const APP = {
     post: base + '/admin/post',
 
     /* List of orders */
-    //orders: base + '/admin/orders',
-
-    /* Order, param: order_id */
-    //order:  base + '/admin/order',
+    orders: base + '/admin/orders',
+    /* Orders list page filter menu */
+    menu_orders: base + '/admin/menu/orders',
+    /* Single order */
+    order:  base + '/admin/order',
 };
 
 /* Authentication server APIs */

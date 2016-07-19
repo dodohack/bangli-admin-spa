@@ -3,8 +3,8 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Title }          from '@angular/platform-browser';
+import { ActivatedRoute }    from '@angular/router';
+import { Title }             from '@angular/platform-browser';
 
 import { Pagination }  from '../datatype/pagination';
 import { PostType }    from '../datatype/posttype';
@@ -20,7 +20,7 @@ import { PostService } from '../service/post.service';
 export class PostsPage implements OnInit
 {   
     /* Pagination related variables of the list */
-    pagination = new Pagination(0, 1, 0, 0, 0, 0, 0, 0, 0);
+    pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
 
     /* PostType for editors */
     postType = new PostType;
@@ -48,7 +48,7 @@ export class PostsPage implements OnInit
     /* Post status object */
     status: any;
 
-    /* Checkbox group for selected posts */
+    /* If select all checkbox is checked or not */
     checkedAll: boolean = false;
 
     constructor(private route: ActivatedRoute,
@@ -65,19 +65,18 @@ export class PostsPage implements OnInit
         /* Set document title */
         this.titleService.setTitle('文章列表 - 葫芦娃管理平台');
 
-        this.pagination.current_page = 1;
         this.pagination.per_page = this.postService.getPostsPerPage();
 
         this.getPostsMenu();
 
-        /* Get URL segments and update user list */
+        /* Get URL segments and update the list */
         this.route.params.subscribe(
             segment => {
-                this.filter = segment['filter'] ? segment['filter'] : 'any';
-                this.condition = segment['cond'] ? segment['cond'] : 'any';
+                this.filter = segment['filter'] ? segment['filter'] : 'all';
+                this.condition = segment['cond'] ? segment['cond'] : 'all';
                 /* '+' magically converts string to number */
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
-                /* Update user list when URL changes */
+                /* Update post list when URL changes */
                 this.getPostsList();
             }
         );
@@ -159,6 +158,9 @@ export class PostsPage implements OnInit
             );
     }
 
+    /**
+     * Add extra entries to the post
+     */
     private initCheckbox() {
         let length = this.posts.length;
         for (let i = 0; i < length; i++) {

@@ -13,12 +13,14 @@
             <a class="nav-link" [routerLink]="['/orders/all/all']">全部</a>
         </li>
 
-        <!-- Various post status tabs -->
-        <li *ngFor="let s of status" class="nav-item">
+        <!-- Various order status tabs -->
+        <!--
+        <li *ngFor="let s of allStatus" class="nav-item">
             <a class="nav-link" [routerLink]="['/orders/status', s.status]">
                 {{ orderStatus[s.status] }}（{{ s.count }}）
             </a>
         </li>
+        -->
     </ul>
 
     <form class="form-inline pull-xs-right">
@@ -41,10 +43,10 @@
     </div>
 
     <div class="float-right paginator">
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/orders', filter, condition, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/orders', filter, condition, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/orders', filter, condition, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/orders', filter, condition, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
+        <a class="btn btn-sm btn-secondary" [routerLink]="['/orders', status, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
+        <a class="btn btn-sm btn-secondary" [routerLink]="['/orders', status, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
+        <a class="btn btn-sm btn-secondary" [routerLink]="['/orders', status, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
+        <a class="btn btn-sm btn-secondary" [routerLink]="['/orders', status, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
     </div>
 </div>
 
@@ -73,25 +75,25 @@
     <template ngFor let-order [ngForOf]="orders" let-i="index">
 
         <!-- order information short version -->
-        <tr id="{{i}}" (dblclick)="displayExtraDetail($event, i)">
+        <tr id="{{i}}" (dblclick)="fastEditCurrentOrder($event, i)">
             <td><input type="checkbox" name="order[]" [(ngModel)]="order.checked"></td>
             <td><strong><a [routerLink]="['/order', order.id ]">{{ order.id }}</a></strong></td>
             <td><i class="fa fa-circle-o"></i></td>
             <td><i class="fa fa-comment"></i></td>
             <td>
                 <!-- 下单用户, 点击弹出model显示此用户信息,不用切换到用户页面, 因为查看用户信息不是重点 -->
-                {{ order.user.name }}
+                {{ order.customer.name }}
                 <div>
-                    <span>{{ order.user.email }}</span>
+                    <span>{{ order.customer.email }}</span>
                 </div>
             </td>
-            <td>{{ order.count }}</td>
+            <td>{{ orderItemCount(order) }}</td>
             <td>{{ order.created_at }}</td>
-            <td>{{ order.amount }}</td>
+            <td>{{ order.currency}} {{ order.total / 100 }}</td>
             <td>
                 {{ order.postage }}
                 <div>
-                    <span>{{ order.tracking }}</span>
+                    <span>{{ orderTracking(order) }}</span>
                     <!-- Here should have input conditionally displayed -->
                 </div>
             </td>
