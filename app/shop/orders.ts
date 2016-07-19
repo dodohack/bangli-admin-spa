@@ -75,20 +75,8 @@ export class OrdersPage implements OnInit
         this.orderService.getOrders(this.status, this.pagination.current_page)
             .subscribe(
                 json => {
-                    this.pagination.total = +json['total'];
-                    this.pagination.per_page = +json['per_page'];
-                    this.pagination.current_page = +json['current_page'];
-                    this.pagination.last_page = +json['last_page'];
-                    this.pagination.from = +json['from'];
-                    this.pagination.to = +json['to'];
                     this.orders = json['data'];
-
-                    this.pagination.pre_page =
-                        this.pagination.current_page > 1 ?
-                        this.pagination.current_page - 1 : this.pagination.current_page;
-                    this.pagination.next_page =
-                        this.pagination.current_page < this.pagination.last_page ?
-                        this.pagination.current_page + 1 : this.pagination.last_page;
+                    this.pagination.setup(json);
                 },
                 error => console.error(error),
                 ()    => {

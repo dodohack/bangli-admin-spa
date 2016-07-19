@@ -23,4 +23,26 @@ export class Pagination {
         /* Items of current page ends to, in total */
         public to: number
     ){ }
+
+    /**
+     * Setup pagination from given json data returned from API server
+     * @param json
+     */
+    public setup(json)
+    {
+        /* '+' magically converts string to number */
+        this.total = +json['total'];
+        this.per_page = +json['per_page'];
+        this.current_page = +json['current_page'];
+        this.last_page = +json['last_page'];
+        this.from = +json['from'];
+        this.to = +json['to'];
+
+        this.pre_page =
+            this.current_page > 1 ?
+            this.current_page - 1 : this.current_page;
+        this.next_page =
+            this.current_page < this.last_page ?
+            this.current_page + 1 : this.last_page;
+    }
 }

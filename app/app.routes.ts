@@ -59,9 +59,9 @@ export const routes: RouterConfig = [
         path: 'products',
         canActivate: [AuthGuard],
         children: [
-            { path: '', pathMatch: 'full', redirectTo: 'all/all/1' },
-            { path: ':filter/:cond', redirectTo: ':filter/:cond/1' },
-            { path: ':filter/:cond/:page', component: ProductsPage }
+            { path: '', pathMatch: 'full', redirectTo: 'all/1' },
+            { path: ':status', redirectTo: ':status/1' },
+            { path: ':status/:page', component: ProductsPage }
         ]
     },
     {

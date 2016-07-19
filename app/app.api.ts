@@ -48,6 +48,13 @@ export const APP = {
     menu_orders: base + '/admin/menu/orders',
     /* Single order */
     order:  base + '/admin/order',
+
+    /* List of products */
+    products: base + '/admin/products',
+    /* Products list page filter menu */
+    menu_products: base + '/admin/menu/products',
+    /* Single product */
+    product:  base + '/admin/product',
 };
 
 /* Authentication server APIs */

@@ -1,2 +1,151 @@
-<h2>Product list management page</h2>
+<div class="page-header">
+    <h1 class="title">
+        商品
+        <a class="page-title-action btn btn-sm btn-info-outline" [routerLink]="['/product/new']">添加商品</a>
+        <button class="page-title-action btn btn-sm btn-info-outline float-right">详简切换</button>
+    </h1>
+</div>
 
+<!-- sub menu -->
+<nav class="navbar page-sub-menu">
+    <ul class="nav navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/products/all']">全部</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link">我的</a>
+        </li>
+
+        <!-- Various post status tabs -->
+        <li *ngFor="let menu of menus" class="nav-item">
+            <a class="nav-link" [routerLink]="['/products/status', menu.status]">
+                {{ menu.status }}<span style="color: grey;">（{{ menu.count }}）</span>
+            </a>
+        </li>
+    </ul>
+
+    <form class="form-inline pull-xs-right">
+        <input class="form-control input-sm" type="text" placeholder="搜索商品">
+        <button class="btn btn-sm btn-success-outline" type="submit">搜索</button>
+    </form>
+</nav>
+
+<!-- Filter toolbar -->
+<div class="list-toolbar">
+    <div class="float-left bulk-actions">
+        <select class="c-select select-sm">
+            <option value="0" selected>批量操作</option>
+            <option value="x">移到回收站</option>
+            <option value="y">批量修改</option>
+        </select>
+        <button type="submit" class="btn btn-secondary btn-sm">应用</button>
+    </div>
+
+    <div class="float-left filters">
+        <select class="c-select select-sm">
+            <option value="0" selected>全部日期</option>
+            <option value="x">2016年5月</option>
+            <option value="y">2016年4月</option>
+            <option value="y">2016年3月</option>
+        </select>
+        <select class="c-select select-sm">
+            <option value="0" selected>所有分类</option>
+            <option value="x">分类1</option>
+            <option value="y">分类2</option>
+            <option value="y">分类3</option>
+        </select>
+        <button type="submit" class="btn btn-secondary btn-sm">筛选</button>
+    </div>
+
+    <div class="float-right paginator">
+        <a class="btn btn-sm btn-secondary" [routerLink]="['/products', status, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
+        <a class="btn btn-sm btn-secondary" [routerLink]="['/products', status, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
+        <a class="btn btn-sm btn-secondary" [routerLink]="['/products', status, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
+        <a class="btn btn-sm btn-secondary" [routerLink]="['/products', status, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
+    </div>
+</div>
+
+<!-- Post list table -->
+<table class="table table-hover" style="font-size: 85%;">
+    <thead class="thead-default">
+    <tr>
+        <th width="2%"></th>
+        <th width="2%">
+            <input type="checkbox" name="selectedAll"
+                   [(ngModel)]="checkedAll" (change)="checkboxAll()">
+        </th>
+        <th width="5%">图片</th>
+        <th width="25%">名称</th>
+        <th width="8%">SKU</th>
+        <th width="8%">库存</th>
+        <th width="6%">销量</th>
+        <th width="8%">价格</th>
+        <th width="10%">分类</th>
+        <th width="12%">年龄段</th>
+        <th width="12%">更新日期</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <!-- table row of product -->
+    <template ngFor let-product [ngForOf]="products" let-i="index">
+
+        <!-- Also loop over product variations -->
+        <!--<template ngFor let-variation [ngForOf]="variations(product)" let-j="index">-->
+
+            <!-- displaying, some columns only display once for a product has multiple variations -->
+            <tr *ngIf="!product.editing" id="{{i}}" (dblclick)="fastEditCurrentProduct($event, i)">
+                <th><span *ngIf="j == 0">{{i+1}}</span></th>
+                <td><input *ngIf="j == 0" type="checkbox" name="product[]" [(ngModel)]="product.checked"></td>
+                <td><span *ngIf="j == 0">{{ product.image_id }}</span></td>
+                <td>
+                    <strong *ngIf="j == 0"><a [routerLink]="['/product', product.id ]">{{ product.title }}</a></strong>
+                    <div *ngIf="j == 0" class="row-actions">
+                        <span class="trash"><a>删除</a> | </span>
+                        <span><a href="http://www.huluwa.uk/product/{{product.guid}}" target="_blank">查看</a></span>
+                    </div>
+                </td>
+                <td><span *ngIf="j == 0">{{ product.sku }}</span></td>
+                <td>
+                    <span>实际库存: xxx</span>
+                    <div>
+                        <span>显示库存: xxx</span>
+                    </div>
+                </td>
+                <td> xxx </td>
+                <td>£ xxx </td>
+                <td><span *ngIf="j == 0"><a *ngFor="let cat of product.categories" [routerLink]="['/category', cat.id]">{{ cat.name }} </a></span></td>
+                <td>{{ product.min_age }} - {{ product.max_age }}</td>
+                <td>{{ product.updated_at }}</td>
+            </tr>
+            <!-- Editing -->
+            <tr *ngIf="product.editing" id="edit-{{i}}" (dblclick)="fastEditCurrentProduct($event, i)">
+                <td colspan="10">
+                    <h5>快速编辑</h5>
+                    <label>
+                        <span class="title">标题</span>
+                            <span class="input-text-wrap">
+                                <input type="text" name="title" [(ngModel)]="product.title">
+                            </span>
+                    </label>
+                    <label>
+                        <span class="title">编辑</span>
+                            <span class="input-text-wrap">
+                                <input type="text" name="editor_id" [(ngModel)]="post.editor_id">
+                            </span>
+                    </label>
+                    <label>
+                        <span class="title">分类</span>
+                            <span *ngFor="let cat of product.categories">
+                                <input type="checkbox" name="category[]">{{ cat.name }}
+                            </span>
+                    </label>
+                </td>
+            </tr>
+
+        <!--</template>-->
+    </template>
+
+    </tbody>
+</table>

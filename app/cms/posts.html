@@ -135,7 +135,7 @@
                     <span>{{ getNicenameById(post.editor_id) }}</span>
                     <div><span class="label label-default">{{ postType[post.post_type] }}</span></div>
                 </td>
-                <td><span *ngFor="let cat of post.categories"><a [routerLink]="['/category', cat.id]">{{ cat.name }}</a>, </span></td>
+                <td><span *ngFor="let cat of post.categories"><a [routerLink]="['/cms/category', cat.id]">{{ cat.name }}</a>, </span></td>
                 <td>{{ post.fake_published_at }}</td>
                 <td>{{ post.published_at }}</td>
                 <td>0</td>
