@@ -1,0 +1,45 @@
+/**
+ * Stylesheet for attachment management
+ */
+
+.drop-zone {
+  border: 4px dashed #dddddd;
+  background: #efefef;
+  text-align: center;
+  padding-top: 1rem;
+  margin: 2rem 0;
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+.file-over {
+  border: 4px dashed #bbbbbb;
+  background: #dddddd;
+}
+
+.attachments {
+  font-size: 0;
+
+  .attachment {
+    margin: 0;
+    width: 16.66%;
+    display: inline-block;
+    overflow: hidden;
+  }
+
+  figure {
+    margin: 0;
+    padding: 4px;
+  }
+
+  img {
+    border: none;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    background: grey;
+    transition: transform .2s ease-in-out, -webkit-transform .2s ease-in-out;
+  }
+}
