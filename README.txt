@@ -7,6 +7,12 @@ This admin backend app is based on Angular2 and Bootstrap4, it communicates betw
 the users and the api servers. user authentication is done with
 auth.bangli.uk by using JWT(JSON Web Token).
 
+##############################################################################
+There are lots of 3 party libraries we are using, especially useful ones
+includes ng2-file-upload, n2g-dragular, ng2-bootstrap, ng2-charts etc, they
+are located at: https://github.com/valor-software/ng2-plans
+##############################################################################
+
 The source code of this project is located at 'app', here is the explain of
 how the folders are grouped:
 

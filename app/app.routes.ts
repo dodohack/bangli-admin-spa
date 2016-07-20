@@ -12,6 +12,8 @@ import { LogoutComponent }   from './auth/logout';
 
 import { DashboardPage } from './dashboard/dashboard';
 
+import { ImagesPage }     from './attachment/images';
+
 import { ProductsPage }  from './shop/products';
 import { ProductPage }   from './shop/product';
 import { OrdersPage }    from './shop/orders';
@@ -43,14 +45,11 @@ export const routes: RouterConfig = [
     {path: 'lost-password', component: LostPasswordPage},
     {path: 'reset-password', component: ResetPasswordPage},
 
-    /**
-     * FIXME: Grouped routes(children) is not working, it may caused by using
-     * webpack with angular, see https://github.com/angular/angular/issues/9631
-     * for detail.
-     */
     /* Guard the route so only authenticated user can access */
 
     {path: '', component: DashboardPage, canActivate: [AuthGuard]},
+
+    {path: 'pictures', component: ImagesPage, canActivate: [AuthGuard]},
 
     {
         /**
