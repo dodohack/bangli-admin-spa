@@ -4,6 +4,8 @@
  */
 
 .topbar, .sidebar {
+    z-index: 999;
+
     ul {
         margin: 0;
         padding: 0;
