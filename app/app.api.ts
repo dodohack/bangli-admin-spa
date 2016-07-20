@@ -42,6 +42,13 @@ export const APP = {
     /* Single post */
     post: base + '/admin/post',
 
+    /* List of topics */
+    topics: base + '/admin/topics',
+    /* Topics list page filter menu */
+    menu_topics: base + '/admin/menu/topics',
+    /* Single topic */
+    topic: base + '/admin/topic',
+
     /* List of orders */
     orders: base + '/admin/orders',
     /* Orders list page filter menu */

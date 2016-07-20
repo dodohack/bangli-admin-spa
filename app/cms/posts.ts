@@ -65,7 +65,7 @@ export class PostsPage implements OnInit
         /* Set document title */
         this.titleService.setTitle('文章列表 - 葫芦娃管理平台');
 
-        this.pagination.per_page = this.postService.getPostsPerPage();
+        this.pagination.per_page = this.postService.perPage;
 
         this.getPostsMenu();
 
@@ -119,7 +119,7 @@ export class PostsPage implements OnInit
     }
 
     /**
-     * Get a list of users
+     * Get a list of posts?
      */
     private getPostsList()
     {
@@ -157,7 +157,7 @@ export class PostsPage implements OnInit
     }
 
     /**
-     * Set number of users displayed per list
+     * Set number of posts displayed per list
      */
     public setPostsPerPage()
     {

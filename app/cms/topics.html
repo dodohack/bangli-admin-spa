@@ -1,2 +1,158 @@
-<h2>This is topic list</h2>
+<div class="page-header">
+    <h1 class="title">
+        专题
+        <a class="page-title-action btn btn-sm btn-info-outline" [routerLink]="['/topic/new']">新建专题</a>
+        <button class="page-title-action btn btn-sm btn-info-outline float-right">详简切换</button>
+    </h1>
+</div>
 
+<!-- sub menu -->
+<nav class="navbar page-sub-menu">
+    <ul class="nav navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/topics/all/all']">全部</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link">我的</a>
+        </li>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+               aria-haspopup="true" aria-expanded="false">编辑（{{ numEditors }}）</a>
+
+            <div class="dropdown-menu">
+                <a *ngFor="let editor of editors; let i=index" class="dropdown-item"
+                   [routerLink]="['/topics/editor', editor.id]">
+                    {{ i+1 }}. {{ editor.nicename }}（{{ editor.name }}）
+                </a>
+            </div>
+        </li>
+
+        <!-- Various topic status tabs -->
+        <li *ngFor="let s of status" class="nav-item">
+            <a class="nav-link" [routerLink]="['/topics/status', s.status]">
+                {{ topicStatus[s.status] }}（{{ s.count }}）
+            </a>
+        </li>
+    </ul>
+
+    <form class="form-inline pull-xs-right">
+        <input class="form-control input-sm" type="text" placeholder="搜索">
+        <button class="btn btn-sm btn-success-outline" type="submit">搜索</button>
+    </form>
+</nav>
+
+<!-- Filter toolbar -->
+<div class="list-toolbar">
+    <div class="float-left bulk-actions">
+        <select class="c-select select-sm">
+            <option value="0" selected>批量操作</option>
+            <option value="x">移到回收站</option>
+            <option value="y">批量修改</option>
+        </select>
+        <button type="submit" class="btn btn-secondary btn-sm">应用</button>
+    </div>
+
+    <div class="float-left filters">
+        <select class="c-select select-sm">
+            <option value="0" selected>全部日期</option>
+            <option value="x">2016年5月</option>
+            <option value="y">2016年4月</option>
+            <option value="y">2016年3月</option>
+        </select>
+        <select class="c-select select-sm">
+            <option value="0" selected>所有分类</option>
+            <option value="x">分类1</option>
+            <option value="y">分类2</option>
+            <option value="y">分类3</option>
+        </select>
+        <select class="c-select select-sm">
+            <option value="0" selected>所有专题</option>
+            <option value="x">专题1</option>
+            <option value="y">专题2</option>
+            <option value="y">专题3</option>
+        </select>
+        <button type="submit" class="btn btn-secondary btn-sm">筛选</button>
+    </div>
+
+    <div class="float-right paginator">
+        <a class="btn btn-sm btn-secondary" [routerLink]="['/topics', filter, condition, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
+        <a class="btn btn-sm btn-secondary" [routerLink]="['/topics', filter, condition, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
+        <a class="btn btn-sm btn-secondary" [routerLink]="['/topics', filter, condition, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
+        <a class="btn btn-sm btn-secondary" [routerLink]="['/topics', filter, condition, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
+    </div>
+</div>
+
+<!-- Topic list table -->
+<table class="table table-hover" style="font-size: 85%;">
+    <thead class="thead-default">
+    <tr>
+        <th width="2%"></th>
+        <th width="2%">
+            <input type="checkbox" name="selectedAll"
+                   [(ngModel)]="checkedAll" (change)="checkboxAll()">
+        </th>
+        <th width="14%">标题</th>
+        <th width="8%">编辑</th>
+        <th width="18%">分类</th>
+        <th width="12%">修改日期</th>
+        <th width="6%">view</th>
+        <th width="4%"><i class="fa fa-comments" title="评论"></i></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <!-- table row of topic -->
+    <template ngFor let-topic [ngForOf]="topics" let-i="index">
+        <!-- displaying -->
+        <tr *ngIf="!topic.editing" id="{{i}}" (dblclick)="fastEditCurrentTopic($event, i)">
+            <th>{{i+1}}</th>
+            <td><input type="checkbox" name="topic[]" [(ngModel)]="topic.checked"></td>
+            <td>
+                <strong><a [routerLink]="['/topic', topic.id ]">{{ topic.title }}</a></strong>
+                <div class="row-actions">
+                    <span class="trash"><a>删除</a> | </span>
+                    <span><a href="http://www.huluwa.uk/topic/{{topic.guid}}" target="_blank">查看</a></span>
+                </div>
+            </td>
+            <td>{{ getNicenameById(topic.editor_id) }}</td>
+            <td><span *ngFor="let cat of topic.categories"><a [routerLink]="['/cms/category', cat.id]">{{ cat.name }}</a>, </span></td>
+            <td>{{ topic.updated_at }}</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <!-- Editing -->
+        <tr *ngIf="topic.editing" id="edit-{{i}}" (dblclick)="fastEditCurrentTopic($event, i)">
+            <td colspan="10">
+                <h5>快速编辑</h5>
+                <label>
+                    <span class="title">标题</span>
+                        <span class="input-text-wrap">
+                            <input type="text" name="title" [(ngModel)]="topic.title">
+                        </span>
+                </label>
+                <label>
+                    <span class="title">编辑</span>
+                        <span class="input-text-wrap">
+                            <input type="text" name="editor_id" [(ngModel)]="topic.editor_id">
+                        </span>
+                </label>
+                <label>
+                    <span class="title">分类</span>
+                        <span *ngFor="let cat of topic.categories">
+                            <input type="checkbox" name="category[]">{{ cat.name }}
+                        </span>
+                </label>
+
+                <label>
+                    <span class="title">状态</span>
+                        <span class="input-text-wrap">
+                            <input type="text" name="status" [(ngModel)]="topic.status">
+                        </span>
+                </label>
+            </td>
+        </tr>
+    </template>
+    </tbody>
+</table>
