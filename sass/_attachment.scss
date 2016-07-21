@@ -3,11 +3,11 @@
  */
 
 .drop-zone {
-  border: 4px dashed #dddddd;
+  border: 2px dashed #dddddd;
   background: #efefef;
   text-align: center;
   padding-top: 1rem;
-  margin: 2rem 0;
+  margin-bottom: 1rem;
 
   h2 {
     font-size: 1.5rem;
@@ -42,4 +42,22 @@
     background: grey;
     transition: transform .2s ease-in-out, -webkit-transform .2s ease-in-out;
   }
+}
+
+.right-side-bar {
+  z-index: 999;
+  padding: 0.5rem;
+  position: fixed;
+  top: $topbar-height;
+  bottom: 0;
+  right: -350px;
+  width: 350px;
+  background: #FFFFFF;
+  box-shadow: -5px 0px 5px #888;
+
+  transition: .3s ease-in-out;
+}
+
+.show-right-side-bar {
+  right: 0;
 }

@@ -13,10 +13,15 @@ const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
 })
 export class ImagesPage
 {
+    public hideRightBar:boolean = true;
     public uploader:FileUploader = new FileUploader({url: URL});
     public hasDropZoneOver:boolean = false;
 
     public fileOverBase(e:any):void {
         this.hasDropZoneOver = e;
+    }
+
+    public toggleRightBar(e:any):void {
+        this.hideRightBar = !this.hideRightBar;
     }
 }

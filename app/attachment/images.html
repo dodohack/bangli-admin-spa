@@ -1,7 +1,7 @@
 <div class="page-header">
     <h1 class="title">
         图片管理
-        <button class="btn btn-sm btn-info-outline">上传图片</button>
+        <a class="btn btn-sm btn-info-outline" (click)="toggleRightBar($event)"><span *ngIf="hideRightBar">上传图片</span><span *ngIf="!hideRightBar">隐藏上传</span></a>
     </h1>
 </div>
 
@@ -40,84 +40,7 @@
     </form>
 </nav>
 
-<!-- Image uploader area -->
-<div class="uploader-area">
 
-    <!-- drop zone -->
-    <div ng2FileDrop [ngClass]="{'file-over': hasDropZoneOver}"
-         (fileOver)="fileOverBase($event)" [uploader]="uploader" class="well drop-zone">
-
-        <h2>把图片拖到此处上传</h2>
-        <p>或</p>
-        <p><a class="btn btn-secondary">选择图片</a></p>
-        <p>当前图片个数: {{ uploader?.queue?.length }}</p>
-    </div>
-
-    <!-- Uploading list table -->
-    <table class="table">
-        <thead>
-        <tr>
-            <th width="50%">文件名</th>
-            <th>文件大小</th>
-            <th>进度</th>
-            <th>状态</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let item of uploader.queue">
-            <td><strong>{{ item?.file?.name }}</strong></td>
-            <td>0.00 MB</td>
-            <td>
-                <div class="progress" style="margin-bottom: 0;">
-                    <div class="progress-bar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
-                </div>
-            </td>
-            <td class="text-center">
-                <span *ngIf="item.isSuccess"><i class="fa fa-check"></i></span>
-                <span *ngIf="item.isCancel"><i class="fa fa-ban"></i></span>
-                <span *ngIf="item.isError"><i class="fa fa-close"></i></span>
-            </td>
-            <td>
-                <button type="button" class="btn btn-success btn-sm"
-                        (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
-                    <span class="fa fa-upload"></span> 上传
-                </button>
-                <button type="button" class="btn btn-warning btn-sm"
-                        (click)="item.cancel()" [disabled]="!item.isUploading">
-                    <span class="fa fa-ban"></span> 取消
-                </button>
-                <button type="button" class="btn btn-danger btn-sm"
-                        (click)="item.remove()">
-                    <span class="fa fa-trash"></span> 删除
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-    <div>
-        <div>
-            Queue progress:
-            <div class="progress" style="">
-                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
-            </div>
-        </div>
-        <button type="button" class="btn btn-success"
-                (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-            <span class="fa fa-upload"></span> 全部上传
-        </button>
-        <button type="button" class="btn btn-warning"
-                (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-            <span class="fa fa-ban"></span> 全部取消
-        </button>
-        <button type="button" class="btn btn-danger"
-                (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-            <span class="fa fa-trash"></span> 全部删除
-        </button>
-    </div>
-
-</div>
 
 <!-- Image list -->
 <!-- FIXME: The image may looks like bit small if white space is too large at both side -->
@@ -176,5 +99,87 @@
         <figure>
             <img src="http://www.huluwa.uk/wp-content/uploads/2016/07/Comvita-Childrens-Lemon-Honey-Lollipops-450x338.jpg">
         </figure>
+    </div>
+</div>
+
+<!-- Uploader -->
+<div class="right-side-bar" [class.show-right-side-bar]="!hideRightBar">
+
+    <!-- Drop zone -->
+    <div ng2FileDrop [ngClass]="{'file-over': hasDropZoneOver}"
+         (fileOver)="fileOverBase($event)" [uploader]="uploader" class="well drop-zone">
+
+        <h2>把图片拖到此处上传</h2>
+        <p>或</p>
+        <p><a class="btn btn-secondary">选择图片</a></p>
+        <p>当前图片个数: {{ uploader?.queue?.length }}</p>
+    </div>
+
+    <!-- Image uploader area -->
+    <div class="uploader-area">
+        <!-- Uploading list table -->
+        <table class="table">
+            <thead>
+            <tr>
+                <th width="50%">文件名</th>
+                <th>文件大小</th>
+                <th>进度</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let item of uploader.queue">
+                <td><strong>{{ item?.file?.name }}</strong></td>
+                <td>0.00 MB</td>
+                <td>
+                    <div class="progress" style="margin-bottom: 0;">
+                        <div class="progress-bar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                    </div>
+                </td>
+                <td class="text-center">
+                    <span *ngIf="item.isSuccess"><i class="fa fa-check"></i></span>
+                    <span *ngIf="item.isCancel"><i class="fa fa-ban"></i></span>
+                    <span *ngIf="item.isError"><i class="fa fa-close"></i></span>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-success btn-sm"
+                            (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                        <span class="fa fa-upload"></span> 上传
+                    </button>
+                    <button type="button" class="btn btn-warning btn-sm"
+                            (click)="item.cancel()" [disabled]="!item.isUploading">
+                        <span class="fa fa-ban"></span> 取消
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm"
+                            (click)="item.remove()">
+                        <span class="fa fa-trash"></span> 删除
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div>
+            <div>
+                Queue progress:
+                <div class="progress" style="">
+                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-success"
+                    (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                <span class="fa fa-upload"></span> 全部上传
+            </button>
+            <button type="button" class="btn btn-warning"
+                    (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                <span class="fa fa-ban"></span> 全部取消
+            </button>
+            <button type="button" class="btn btn-danger"
+                    (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                <span class="fa fa-trash"></span> 全部删除
+            </button>
+        </div>
+
     </div>
 </div>
