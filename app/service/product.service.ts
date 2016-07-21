@@ -83,4 +83,13 @@ export class ProductService
             .get(endpoint, {search: this.params})
             .map(res => res.json());
     }
+
+    /**
+     * Return all product categories
+     */
+    public getCategories() {
+        return this.jsonp
+            .get(APP.product_cats, {search: this.params})
+            .map(res => res.json());
+    }
 }

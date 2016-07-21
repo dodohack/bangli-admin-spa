@@ -1,0 +1,12 @@
+<h2>Product category list and management in single page</h2>
+
+<ul>
+    <!-- Loop root cat: categories which parent_id is 0 -->
+    <li *ngFor="let cat of roots">
+        {{ cat.name }}(ID: {{ cat.id }})
+        <!-- Find if there is any categories indexed with current category id -->
+        <ul *ngIf="hasSubCat(cat.id)">
+            <li>Has sub cat</li>
+        </ul>
+    </li>
+</ul>

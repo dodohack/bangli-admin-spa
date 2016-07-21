@@ -62,6 +62,8 @@ export const APP = {
     menu_products: base + '/admin/menu/products',
     /* Single product */
     product:  base + '/admin/product',
+    /* Product categories */
+    product_cats: base + '/admin/categories/product',
 };
 
 /* Authentication server APIs */

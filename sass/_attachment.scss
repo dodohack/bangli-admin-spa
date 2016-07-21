@@ -15,7 +15,7 @@
 }
 
 .file-over {
-  border: 4px dashed #bbbbbb;
+  border: 2px dashed #bbbbbb;
   background: #dddddd;
 }
 
@@ -53,11 +53,10 @@
   right: -350px;
   width: 350px;
   background: #FFFFFF;
-  box-shadow: -5px 0px 5px #888;
-
   transition: .3s ease-in-out;
 }
 
 .show-right-side-bar {
   right: 0;
+  box-shadow: -5px 0px 5px #888;
 }

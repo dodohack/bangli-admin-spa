@@ -34,6 +34,8 @@ import { NewsletterPage }     from './email/newsletter';
 import { EmailTemplatesPage } from './email/templates';
 import { EmailTemplatePage }  from './email/template';
 
+import { ProductCategoriesPage } from './system/product-categories';
+
 import { MigrationPage } from './system/migration';
 import { UsersPage }     from './users/users';
 
@@ -74,7 +76,8 @@ export const routes: RouterConfig = [
             { path: ':id', component: ProductPage },
         ]
     },
-
+    {path: 'categories/product', component: ProductCategoriesPage, canActivate: [AuthGuard]},
+    
     {
         path: 'orders',
         canActivate: [AuthGuard],
