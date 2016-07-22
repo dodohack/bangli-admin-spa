@@ -50,8 +50,9 @@
   position: fixed;
   top: $topbar-height;
   bottom: 0;
-  right: -350px;
-  width: 350px;
+  right: -450px;
+  width: 450px;
+  overflow-y: auto;
   background: #FFFFFF;
   transition: .3s ease-in-out;
 }

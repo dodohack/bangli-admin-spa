@@ -3,10 +3,12 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Title }             from '@angular/platform-browser';
+import { ActivatedRoute }    from '@angular/router';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
 import { PostService } from '../service/post.service';
+import forEach = require("core-js/fn/array/for-each");
 
 @Component({
     templateUrl: 'app/cms/post.html',
@@ -15,10 +17,17 @@ import { PostService } from '../service/post.service';
 })
 export class PostPage implements OnInit
 {
-    id: number;
+    id: number = 0;
     title: string;
     text: string;
     editor: any;
+    hideRightBar: boolean = true;
+
+    /* All product categories */
+    categories: any;
+    /* Root categories */
+    roots: any;
+    keys: any;
 
     options: any = {
         /* Past in WYSIWYG edit in plain text */
@@ -42,9 +51,12 @@ export class PostPage implements OnInit
     };
 
     constructor(private route: ActivatedRoute,
-                private postService: PostService) {}
+                private postService: PostService,
+                private titleService: Title) {}
 
     ngOnInit() {
+        this.titleService.setTitle('编辑文章 - 葫芦娃');
+
         this.route.params.subscribe(
             segment => {
                 /* Get post id from URL segment */
@@ -54,7 +66,10 @@ export class PostPage implements OnInit
         );
 
         /* Initialze editor content */
-        this.getPost();
+        this.initPost();
+
+        /* Initial categories */
+        this.initPostCategories();
     }
 
     /**
@@ -76,8 +91,14 @@ export class PostPage implements OnInit
         });
     }
 
-    private getPost()
+    /**
+     * Initial the post, only when we have a valid id
+     */
+    private initPost()
     {
+        if (!this.id)
+            return;
+
         this.postService.getPost(this.id).subscribe(
             json => {
                 this.title = json['title'];
@@ -85,4 +106,103 @@ export class PostPage implements OnInit
             }
         )
     }
+
+    private initPostCategories()
+    {
+        this.postService.getCategories().subscribe(
+            json  => {
+                this.categories = json;
+                this.roots = this.categories[0];
+                //console.log(this.categories);
+                this.keys = Object.keys(this.categories);
+            },
+            error => console.error(error)
+        );
+    }
+
+
+    /**
+     * Filter post categories for matched user input 
+     */
+    private filterPostCategories(str: string)
+    {
+        this.postService.getCategories()
+            .map(res => {
+                let parentIds = [];
+                this.keys = Object.keys(res);
+
+                /* loop over 'parent_id' grouped categories */
+                this.keys.forEach(function(key) {
+                    let cats = res[key];
+
+                    let length = cats.length;
+
+                    for (let j = 0; j < length; j++) {
+                        /* Default to hide everything */
+                        cats[j].hidden = true;
+                        if (cats[j].name.includes(str) ||
+                            cats[j].slug.includes(str)) {
+                            /* Show matched search */
+                            cats[j].hidden = false;
+                            /* Also record the parent id, so we don't hide parent list */
+                            parentIds.push(cats[j].parent_id);
+                        }
+                    }
+                });
+
+                /* Do not hide parent if children is not hidden */
+                this.keys.forEach(function(key){
+                    let cats = res[key];
+                    let length = cats.length;
+
+                    for (let j = 0; j < length; j++) {
+                        /* Check if we can find the parent id that should not be hidden */
+                        if (parentIds.indexOf(cats[j].id) != -1) {
+                            cats[j].hidden = false;
+                        }
+                    }
+                });
+
+                console.log("FILTERED RESULT: ");
+                console.log(res);
+                return res;
+            })
+            .subscribe(
+                json  => {
+                    this.categories = json;
+                    this.roots = this.categories[0];
+                    this.keys  = Object.keys(this.categories);
+                    //console.log(this.categories);
+                },
+                error => console.error(error)
+            );
+    }
+    
+
+    /**
+     * If given category id has a sub category
+     * @param id
+     */
+    private hasSubCat(id: string)
+    {
+        if (this.keys.indexOf(id.toString()) != -1)
+            return true;
+        return false;
+    }
+
+
+    /**
+     * Return a array of categories with same parentId
+     * @param parentId
+     */
+    private subCats(parentId)
+    {
+        return this.categories[parentId];
+    }
+
+    private toggleRightBar(e: any): void 
+    {
+        this.hideRightBar = !this.hideRightBar;
+    }
+
 }

@@ -41,6 +41,8 @@ export const APP = {
     menu_posts: base + '/admin/menu/posts',
     /* Single post */
     post: base + '/admin/post',
+    /* CMS categories */
+    cms_cats: base + '/admin/categories/cms',
 
     /* List of topics */
     topics: base + '/admin/topics',

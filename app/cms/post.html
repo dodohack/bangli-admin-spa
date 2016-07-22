@@ -11,6 +11,9 @@
         <a class="page-title-action btn btn-info-outline btn-sm" [routerLink]="['/posts']">
             <i class="fa fa-backward"></i> 返回列表
         </a>
+        <a class="page-title-action btn btn-info-outline btn-sm" (click)="toggleRightBar($event)">
+            <span *ngIf="hideRightBar">显示侧栏</span><span *ngIf="!hideRightBar">隐藏侧栏</span>
+        </a>
     </h1>
 </div>
 
@@ -50,24 +53,47 @@
     </div>
 </div>
 
-<div class="form-group">
-    <div class="row">
-        <div class="col-md-12">
-            <!-- author -->
-            <div class="btn-group">
-                <button type="button" class="btn btn-danger">Action</button>
-                <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Separated link</a>
-                </div>
-            </div>
-        </div>
+<!-- Right side bar -->
+<div class="right-side-bar" [class.show-right-side-bar]="!hideRightBar">
+    <div>
+        <h2>文章选项</h2>
+        <a class="btn btn-danger-outline btn-sm" (click)="toggleRightBar($event)">
+            隐藏侧栏
+        </a>
     </div>
-</div>
 
+    <ul>
+        <!-- Loop root cat: categories which parent_id is 0 -->
+        <!-- FIXME: This is only a temp solution which supports 3 levels of tree -->
+        <!-- FIXME: Fix this after we have finished UI work -->
+        <!-- REF: Angular recursive directives:
+         http://stackoverflow.com/questions/36522394/best-approach-to-create-recursive-treeview-dynamically-from-data-api
+         -->
+        <div class="form-group">
+            <label>搜索分类: </label>
+            <input class="form-control" #box (keyup)="filterPostCategories(box.value)">
+        </div>
+
+        <template ngFor let-cat [ngForOf]="roots">
+            <li *ngIf="!cat.hidden">
+                {{ cat.name }} | {{ cat.slug }} | (ID: {{ cat.id }})
+                <ul *ngIf="hasSubCat(cat.id)">
+                    <template ngFor let-sub [ngForOf]="subCats(cat.id)">
+                        <li *ngIf="!sub.hidden">
+                            {{ sub.name }} | {{ sub.slug }} | (ID: {{sub.id}})
+                            <ul *ngIf="hasSubCat(sub.id)">
+                                <template ngFor let-s [ngForOf]="subCats(sub.id)">
+                                    <li *ngIf="!s.hidden">
+                                        {{ s.name }} | {{ s.slug }} | (ID: {{s.id}})
+                                    </li>
+                                </template>
+                            </ul>
+                        </li>
+                    </template>
+                </ul>
+            </li>
+        </template>
+
+        <div class="alert alert-danger">FIXME: This filtering is only support 2 level filtering now</div>
+    </ul>
+</div>

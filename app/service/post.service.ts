@@ -8,6 +8,7 @@ import { Jsonp, URLSearchParams }   from '@angular/http';
 import { AuthService } from './auth.service';
 
 import { APP } from '../app.api';
+import {Observable} from "rxjs/Rx";
 
 @Injectable()
 export class PostService
@@ -75,6 +76,15 @@ export class PostService
         let endpoint = APP.post + '/' + id;
         return this.jsonp
             .get(endpoint, {search: this.params})
+            .map(res => res.json());
+    }
+
+    /**
+     * Return all cms categories
+     */
+    public getCategories() {
+        return this.jsonp
+            .get(APP.cms_cats, {search: this.params})
             .map(res => res.json());
     }
 }

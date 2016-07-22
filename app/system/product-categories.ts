@@ -36,7 +36,6 @@ export class ProductCategoriesPage implements OnInit
                 this.categories = json;
                 this.roots = this.categories[0];
                 this.indices = Object.keys(this.categories);
-                console.log(this.indices.indexOf('0'));
             },
             error => console.error(error)
         );
@@ -48,9 +47,7 @@ export class ProductCategoriesPage implements OnInit
      */
     private hasSubCat(id: string)
     {
-        /* FIXME: This indices contains array of string, but id is a number ?? */
-        console.log('hasSubCat: ' + id);
-        if (this.indices.indexOf(id) != -1)
+        if (this.indices.indexOf(id.toString()) != -1)
             return true;
         return false;
     }
@@ -59,7 +56,7 @@ export class ProductCategoriesPage implements OnInit
      * Return a array of categories with same parentId
      * @param parentId
      */
-    private getSubCat(parentId)
+    private subCats(parentId)
     {
         return this.categories[parentId];
     }
