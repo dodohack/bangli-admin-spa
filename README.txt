@@ -36,3 +36,9 @@ app/service: data providers, retrieve from and send data to servers.
 *. Have fun.
 
 # DEPLOY #
+
+
+# REF #
+Here lists various of useful links for this project:
+
+Recursive Tree Directive: http://www.syntaxsuccess.com/viewarticle/recursive-treeview-in-angular-2.0
