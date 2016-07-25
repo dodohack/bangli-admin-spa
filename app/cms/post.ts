@@ -7,12 +7,22 @@ import { Title }             from '@angular/platform-browser';
 import { ActivatedRoute }    from '@angular/router';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
+import { HtmlDropdownComponent } from '../components/html-dropdown.component';
 import { PostService } from '../service/post.service';
+
+// FIXME: Remove 'forEach', as it is 10x slower than 'for'
 import forEach = require("core-js/fn/array/for-each");
+
+// TODO: Move this into folder models
+interface Author {
+    id: number;
+    name: string;
+    avatar: string;
+}
 
 @Component({
     templateUrl: 'app/cms/post.html',
-    directives: [FroalaEditorCompnoent],
+    directives: [FroalaEditorCompnoent, HtmlDropdownComponent],
     providers: [PostService]
 })
 export class PostPage implements OnInit
@@ -22,6 +32,10 @@ export class PostPage implements OnInit
     text: string;
     editor: any;
     hideRightBar: boolean = true;
+
+    /* TODO: Used to test html-dropdown.component */
+    authors: Author[];
+    author: Author;
 
     /* All product categories */
     categories: any;
@@ -52,7 +66,30 @@ export class PostPage implements OnInit
 
     constructor(private route: ActivatedRoute,
                 private postService: PostService,
-                private titleService: Title) {}
+                private titleService: Title) {
+        this.author = null;
+        this.authors = [
+            {
+                id: 1,
+                name: "Joanna",
+                avatar: "joanna-avatar.jpg"
+            },
+            {
+                id: 2,
+                name: "Kim",
+                avatar: "kim-avatar.jpg"
+            },
+            {
+                id: 3,
+                name: "Sarah",
+                avatar: "sarah-avatar.jpg"
+            }
+        ];
+    }
+
+    clearSelection() : void {
+        this.author = null;
+    }
 
     ngOnInit() {
         this.titleService.setTitle('编辑文章 - 葫芦娃');

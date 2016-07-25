@@ -3,30 +3,41 @@
  */
 
 import { Component }         from '@angular/core';
-
-// Add the RxJS operators we need in this app.
-import './rxjs-operators';
+import { Router }            from '@angular/router';
 
 import { AuthService }       from './service/auth.service';
-import { MenuService }       from './service/menu.service';
 
-import { MenuComponent }     from './shared/menu';
+import { AuthComponent }     from './authentication';
+import { BackendComponent }  from './backend';
 
-/**
- * Inject globally used DI at top level, so we can use the singleton everywhere,
- * see singleton service at
- * https://angular.io/docs/ts/latest/guide/dependency-injection.html
- * for detail.
- */
 @Component({
     selector: 'huluwa-admin',
-    templateUrl: 'app/app.html',
-    directives: [
-        MenuComponent,
-    ]
+    template:
+    `
+    <!-- User registration/login/reset-password etc -->
+    <div *ngIf="!isLoggedIn">
+        <authentication></authentication>
+    </div>
+    <div *ngIf="isLoggedIn">
+        <!-- Guarded backend entry point-->
+        <backend></backend>
+    </div>
+    `,
+    directives: [AuthComponent, BackendComponent]
 })
 export class App
 {
-    constructor(private menuService: MenuService,
-                private authService: AuthService) {}
+    constructor(private authService: AuthService,
+                private router: Router) {
+
+        // Redirect un-authenticated user to login page
+        // TODO: Check user permission as well
+        if (!this.authService.isLoggedIn) {
+            this.router.navigate(['/login']);
+        }
+    }
+
+    get isLoggedIn() {
+        return this.authService.isLoggedIn;
+    }
 }

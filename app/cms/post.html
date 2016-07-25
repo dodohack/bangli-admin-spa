@@ -53,6 +53,24 @@
     </div>
 </div>
 
+<p>
+    <strong>Dropdown menu</strong>: {{ author?.name || "无作者" }}
+    &mdash;
+    <a (click)="clearSelection()">Clear selection</a>
+</p>
+<html-dropdown
+        [items]="authors"
+        [(value)]="author"
+        placeholder="选择作者">
+
+    <template let-author="item">
+        <img [src]="( './img/' + author.avatar )" />
+        <span class="name">
+            {{ author.name }}
+        </span>
+    </template>
+</html-dropdown>
+
 <!-- Right side bar -->
 <div class="right-side-bar" [class.show-right-side-bar]="!hideRightBar">
     <div>

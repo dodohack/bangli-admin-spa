@@ -21,12 +21,8 @@ if (process.env.ENV === 'production') {
 bootstrap(App, [
     APP_ROUTER_PROVIDERS,
     HTTP_PROVIDERS, JSONP_PROVIDERS,
-    Title, MenuService, AuthService, UserService,
-    provide(PLATFORM_DIRECTIVES,
-        {
-            useValue: [ROUTER_DIRECTIVES],
-            multi: true
-        }),
+    Title, AuthService, UserService,
+    { provide: PLATFORM_DIRECTIVES, useValue: [ROUTER_DIRECTIVES], multi: true },
     disableDeprecatedForms(), provideForms()
 ])
 .catch((err: any) => console.error(err));

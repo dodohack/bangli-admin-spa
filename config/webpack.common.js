@@ -18,6 +18,17 @@ module.exports = {
     },
 
     module: {
+        /* Do not parse legacy packages such as: jquery, froala */
+        /* FIXME: This code works, but webpack forces to add extra wrapper to
+         * generated file.
+         */
+        /*
+        noParse: [
+            /node_modules[\/\\]jquery[\/\\]dist[\/\\]jquery\.min\.js$/,
+            /froala2[\/\\].*\.js$/
+        ],
+        */
+
         loaders: [
             {
                 test: /\.ts$/,
