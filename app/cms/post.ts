@@ -4,8 +4,10 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
-import { ActivatedRoute }    from '@angular/router';
+import { ActivatedRoute, CanDeactivate }  from '@angular/router';
+
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
+import { FROALA_OPTIONS } from '../models/froala.option';
 
 import { HtmlDropdownComponent } from '../components/html-dropdown.component';
 import { PostService } from '../service/post.service';
@@ -25,7 +27,7 @@ interface Author {
     directives: [FroalaEditorCompnoent, HtmlDropdownComponent],
     providers: [PostService]
 })
-export class PostPage implements OnInit
+export class PostPage implements OnInit, CanDeactivate
 {
     id: number = 0;
     title: string;
@@ -43,26 +45,8 @@ export class PostPage implements OnInit
     roots: any;
     keys: any;
 
-    options: any = {
-        /* Past in WYSIWYG edit in plain text */
-        pastePlain: true,
-
-        /* Editor height in pixel */
-        height: 600,
-
-        /* Toolbars */
-        toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline',
-            'fontSize', 'color',
-            'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent',
-            'indent', 'insertHR', 'insertLink',
-            'insertImage', 'insertVideo', 'insertFile',
-            'insertTable', 'undo', 'redo', 'clearFormatting', 'html'],
-
-        toolbarSticky: false,
-
-        /* Language */
-        language: 'zh_cn'
-    };
+    /* Froala editor options */
+    options: any = FROALA_OPTIONS;
 
     constructor(private route: ActivatedRoute,
                 private postService: PostService,
@@ -242,4 +226,10 @@ export class PostPage implements OnInit
         this.hideRightBar = !this.hideRightBar;
     }
 
+
+    // Return true if everything is saved, else return false.
+    canDeactivate()
+    {
+        return ga
+    }
 }

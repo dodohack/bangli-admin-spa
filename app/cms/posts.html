@@ -49,10 +49,7 @@
         </li>
     </ul>
 
-    <form class="form-inline pull-xs-right">
-        <input class="form-control input-sm" type="text" placeholder="搜索">
-        <button class="btn btn-sm btn-success-outline" type="submit">搜索</button>
-    </form>
+    <search-box></search-box>
 </nav>
 
 <!-- Filter toolbar -->
@@ -68,12 +65,6 @@
 
     <div class="float-left filters">
         <select class="c-select select-sm">
-            <option value="0" selected>全部日期</option>
-            <option value="x">2016年5月</option>
-            <option value="y">2016年4月</option>
-            <option value="y">2016年3月</option>
-        </select>
-        <select class="c-select select-sm">
             <option value="0" selected>所有分类</option>
             <option value="x">分类1</option>
             <option value="y">分类2</option>
@@ -85,15 +76,14 @@
             <option value="y">专题2</option>
             <option value="y">专题3</option>
         </select>
+
+        <date-filter></date-filter>
         <button type="submit" class="btn btn-secondary btn-sm">筛选</button>
     </div>
 
-    <div class="float-right paginator">
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/posts', filter, condition, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/posts', filter, condition, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/posts', filter, condition, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/posts', filter, condition, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
-    </div>
+
+
+    <paginator></paginator>
 </div>
 
 <!-- Post list table -->

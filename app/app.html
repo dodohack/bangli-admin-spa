@@ -1,13 +1,13 @@
 <!-- This is the template page for all pages -->
 <div class="container-fluid" style="min-width: 768px; max-width: 1400px;">
-
-    <!-- Fixed topbar and sidebar -->
-    <div *ngIf="authService.isLoggedIn">
-        <topbar-sidebar></topbar-sidebar>
+    <div *ngIf="isLoggedIn">
+        <topbar></topbar>
+        <sidebar></sidebar>
     </div>
 
-    <!-- Content -->
-    <div class="content" [class.full_content]="menuService.toggle">
+    <div [class.content]="isLoggedIn"
+         [class.login]="!isLoggedIn"
+         [class.full-width]="isLoggedIn && menuService.toggle">
         <router-outlet></router-outlet>
     </div>
 </div>

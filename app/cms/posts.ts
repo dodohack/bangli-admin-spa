@@ -12,10 +12,13 @@ import { PostStatus }  from '../datatype/poststatus';
 
 import { PostService } from '../service/post.service';
 
+import { PaginatorComponent, DateFilterComponent, SearchBoxComponent } from '../components';
+
 
 @Component({
     templateUrl: 'app/cms/posts.html',
-    providers: [PostService]
+    directives: [ PaginatorComponent, DateFilterComponent, SearchBoxComponent ]
+    p PostService ]
 })
 export class PostsPage implements OnInit
 {   

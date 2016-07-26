@@ -34,3 +34,9 @@
 .light-blue {
     color: $light-blue;
 }
+
+/* Test activated anchor via routerLinkActive directive */
+a.active {
+    color: red !important;
+    background: grey !important;
+}

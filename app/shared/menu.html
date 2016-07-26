@@ -6,20 +6,20 @@
         </li>
 
         <li *ngFor="let menu of topbar_menus" class="{{ menu.style_class }}">
-            <a [routerLink]="[menu.url]">
+            <a [routerLink]="[menu.url]" routerLinkActive="active">
                 <i class="{{ menu.icon_class }}"></i>{{ menu.name }}
             </a>
         </li>
 
         <li class="float-right">
-            <a [routerLink]="['/logout']">
-                <i class="fa fa-arrow-circle-o-right"></i>退出
+            <a [routerLink]="['/logout']" routerLinkActive="active">
+                <i class="fa fa-arrow-circle-o-right"></i>退出 (test actived)
             </a>
         </li>
 
         <li class="float-right">
-            <a [routerLink]="['/user/id']">
-                <i class="fa fa-user"></i>somename
+            <a [routerLink]="['/user/id']" routerLinkActive="active">
+                <i class="fa fa-user"></i>删掉数据库里面的后台目录，所有数据直接存储在客户端，不需要从数据库读取。somename (test actived)
             </a>
         </li>
     </ul>
@@ -30,7 +30,7 @@
     <a class="toggle" (click)="menuService.toggleSidebar($event)"><i class="fa fa-ellipsis-v"></i></a>
     <ul>
         <li *ngFor="let menu of sidebar_menus">
-            <a [routerLink]="[menu.url]" title="{{ menu.name }}">
+            <a [routerLink]="[menu.url]" title="{{ menu.name }}" routerLinkActive="active">
                 <i class="{{ menu.icon_class }}"></i>
                 <span *ngIf="!menuService.toggle">{{ menu.name }}</span>
             </a>

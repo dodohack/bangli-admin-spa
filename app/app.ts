@@ -6,28 +6,19 @@ import { Component }         from '@angular/core';
 import { Router }            from '@angular/router';
 
 import { AuthService }       from './service/auth.service';
-
-import { AuthComponent }     from './authentication';
-import { BackendComponent }  from './backend';
+import { MenuService }       from './service/menu.service';
+import { MenuComponent }     from './shared/menu';
 
 @Component({
     selector: 'huluwa-admin',
-    template:
-    `
-    <!-- User registration/login/reset-password etc -->
-    <div *ngIf="!isLoggedIn">
-        <authentication></authentication>
-    </div>
-    <div *ngIf="isLoggedIn">
-        <!-- Guarded backend entry point-->
-        <backend></backend>
-    </div>
-    `,
-    directives: [AuthComponent, BackendComponent]
+    templateUrl: './app.html',
+    directives: [MenuComponent],
+    providers: [MenuService]
 })
 export class App
 {
     constructor(private authService: AuthService,
+                private menuService: MenuService,
                 private router: Router) {
 
         // Redirect un-authenticated user to login page
