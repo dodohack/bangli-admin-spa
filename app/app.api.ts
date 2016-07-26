@@ -75,4 +75,4 @@ export const AUTH = {
     /* Authentcation with email/password */
     register: auth_base + '/register',
     login: auth_base + '/login',
-}
+};

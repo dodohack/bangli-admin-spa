@@ -6,24 +6,39 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
-import { Pagination }  from '../datatype/pagination';
+import { Pagination }  from '../models/pagination';
 import { PostType }    from '../datatype/posttype';
 import { PostStatus }  from '../datatype/poststatus';
 
 import { PostService } from '../service/post.service';
 
-import { PaginatorComponent, DateFilterComponent, SearchBoxComponent } from '../components';
+import {
+    PaginatorComponent, DateFilterComponent,
+    SearchBoxComponent, ListPageHeaderComponent } from '../components';
 
 
 @Component({
     templateUrl: 'app/cms/posts.html',
-    directives: [ PaginatorComponent, DateFilterComponent, SearchBoxComponent ]
-    p PostService ]
+    directives: [
+        PaginatorComponent,
+        DateFilterComponent,
+        SearchBoxComponent,
+        ListPageHeaderComponent
+    ],
+    providers: [ PostService ]
 })
 export class PostsPage implements OnInit
 {   
     /* Pagination related variables of the list */
     pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
+
+    /* Parameter to <paginator>, post list page url with filter and condition */
+    base = 'post/list';
+    baseUrl: string;
+
+    /* Parameter to <list-page-header> */
+    pageTitle = '文章';
+    newItemUrl = 'post/new';
 
     /* PostType for editors */
     postType = new PostType;
@@ -77,6 +92,7 @@ export class PostsPage implements OnInit
             segment => {
                 this.filter = segment['filter'] ? segment['filter'] : 'all';
                 this.condition = segment['cond'] ? segment['cond'] : 'all';
+                this.baseUrl = this.base + '/' + this.filter + '/' + this.condition;
                 /* '+' magically converts string to number */
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
                 /* Update post list when URL changes */

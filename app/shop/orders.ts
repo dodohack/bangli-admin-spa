@@ -6,19 +6,25 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
-import { Pagination }   from '../datatype/pagination';
+import { Pagination }   from '../models/pagination';
 import { OrderStatus }    from '../datatype/orderstatus';
 
 import { OrderService } from '../service/order.service';
+import {PaginatorComponent} from "../components/paginator.component";
+import {SearchBoxComponent} from "../components/search-box.component";
 
 @Component({
     templateUrl: 'app/shop/orders.html',
+    directives: [ PaginatorComponent, SearchBoxComponent ],
     providers: [OrderService]
 })
 export class OrdersPage implements OnInit
 {
     /* Pagination related variables of the list */
     pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
+
+    base = 'order/list';
+    baseUrl: string;
 
     /* PostType for editors */
     orderStatus = new OrderStatus;
@@ -49,6 +55,7 @@ export class OrdersPage implements OnInit
         this.route.params.subscribe(
             segment => {
                 this.status = segment['status'] ? segment['status'] : 'all';
+                this.baseUrl = this.base + '/' + this.status;
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
                 /* Update order list when URL changes */
                 this.getOrdersList();

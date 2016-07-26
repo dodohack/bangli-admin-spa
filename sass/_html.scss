@@ -2,6 +2,20 @@
  * Defines basic style for html tags used by backend
  */
 
+body {
+    background:  #eeeeee;
+}
+
+.content {
+    padding: 3rem 1rem;
+    margin-left: 8rem;
+    background:  #ffffff;
+}
+
+.full-width {
+    margin-left: 3rem;
+}
+
 .select-sm {
     padding: .2rem 1.75rem .2rem .75rem;
     border-radius: .3rem;
@@ -35,8 +49,38 @@
     color: $light-blue;
 }
 
+/* Toggle style of vertical menu */
+
+.page-header {
+    padding: 0.25rem 0 1rem;
+
+    h1.title {
+        font-size: 28px;
+        .page-title-action {
+            font-size: 12px;
+        }
+    }
+}
+
+
+.page-sub-menu {
+    background-color: #e3f2fd;
+    margin-bottom: 0.5rem;
+    font-size: 90%;
+}
+
+input.input-sm {
+    font-size: 90%;
+    padding: 0.3rem 0.5rem;
+}
+
+
+.label-group {
+    display: inline-block;
+    padding-right: 2rem;
+}
+
 /* Test activated anchor via routerLinkActive directive */
-a.active {
-    color: red !important;
+.sidebar a.active {
     background: grey !important;
 }

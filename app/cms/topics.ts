@@ -6,18 +6,28 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
-import { Pagination }  from '../datatype/pagination';
+import { Pagination }  from '../models/pagination';
 import { PostStatus }  from '../datatype/poststatus';
 
 import { TopicService } from '../service/topic.service';
+import { PaginatorComponent, ListPageHeaderComponent } from "../components";
 
 @Component({
     templateUrl: 'app/cms/topics.html',
+    directives: [ PaginatorComponent, ListPageHeaderComponent ],
     providers: [TopicService]
 })
 export class TopicsPage implements OnInit {
     /* Pagination related variables of the list */
     pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
+
+    /* Parameter to <paginator> */
+    base = 'topic/list';
+    baseUrl: string;
+
+    /* Parameter to <list-page-header> */
+    pageTitle = '专题';
+    newItemUrl = 'topic/new';
 
     /* TopicStatus translation, the same as PostStatus */
     topicStatus = new PostStatus;
@@ -65,6 +75,7 @@ export class TopicsPage implements OnInit {
             segment => {
                 this.filter = segment['filter'] ? segment['filter'] : 'all';
                 this.condition = segment['cond'] ? segment['cond'] : 'all';
+                this.baseUrl = this.base + '/' + this.filter + '/' + this.condition;
                 /* '+' magically converts string to number */
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
                 /* Update post list when URL changes */

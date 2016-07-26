@@ -22,10 +22,7 @@
 
     </ul>
 
-    <form class="form-inline pull-xs-right">
-        <input class="form-control input-sm" type="text" placeholder="搜索订单">
-        <button class="btn btn-sm btn-success-outline" type="submit">搜索</button>
-    </form>
+    <search-box></search-box>
 </nav>
 
 <!-- Filter toobar -->
@@ -41,12 +38,7 @@
         <button type="submit" class="btn btn-secondary btn-sm">应用</button>
     </div>
 
-    <div class="float-right paginator">
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/orders', status, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/orders', status, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/orders', status, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/orders', status, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
-    </div>
+    <paginator [baseUrl]="baseUrl" [pagination]="pagination"></paginator>
 </div>
 
 <!-- Order list table -->

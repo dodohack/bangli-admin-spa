@@ -8,7 +8,7 @@ import { FILE_UPLOAD_DIRECTIVES, FileUploader } from 'ng2-file-upload';
 const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
 
 @Component({
-    templateUrl: 'app/attachment/images.html',
+    templateUrl: 'app/gallery/images.html',
     directives: [FILE_UPLOAD_DIRECTIVES]
 })
 export class ImagesPage

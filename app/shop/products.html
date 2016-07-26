@@ -1,10 +1,7 @@
-<div class="page-header">
-    <h1 class="title">
-        商品
-        <a class="page-title-action btn btn-sm btn-info-outline" [routerLink]="['/product/new']">添加商品</a>
-        <button class="page-title-action btn btn-sm btn-info-outline float-right">详简切换</button>
-    </h1>
-</div>
+<list-page-header
+        [pageTitle]="pageTitle"
+        [newItemUrl]="newItemUrl">
+</list-page-header>
 
 <!-- sub menu -->
 <nav class="navbar page-sub-menu">
@@ -25,10 +22,7 @@
         </li>
     </ul>
 
-    <form class="form-inline pull-xs-right">
-        <input class="form-control input-sm" type="text" placeholder="搜索商品">
-        <button class="btn btn-sm btn-success-outline" type="submit">搜索</button>
-    </form>
+    <search-box></search-box>
 </nav>
 
 <!-- Filter toolbar -->
@@ -58,12 +52,7 @@
         <button type="submit" class="btn btn-secondary btn-sm">筛选</button>
     </div>
 
-    <div class="float-right paginator">
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/products', status, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/products', status, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/products', status, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/products', status, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
-    </div>
+    <paginator [baseUrl]="baseUrl" [pagination]="pagination"></paginator>
 </div>
 
 <!-- Post list table -->

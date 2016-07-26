@@ -1,21 +1,9 @@
-<div class="page-header">
-    <!-- Display current post url if any -->
-    <div class="float-right">
-        <span class="label label-default">
-            URL: http://www.huluwa.uk/{{id}}.html
-        </span>
-    </div>
+<editor-page-header
+        [pageTitle]="pageTitle"
+        [previewUrl]="previewUrl"
+        [backUrl]="backUrl">
+</editor-page-header>
 
-    <h1 class="title">
-        编辑文章
-        <a class="page-title-action btn btn-info-outline btn-sm" [routerLink]="['/posts']">
-            <i class="fa fa-backward"></i> 返回列表
-        </a>
-        <a class="page-title-action btn btn-info-outline btn-sm" (click)="toggleRightBar($event)">
-            <span *ngIf="hideRightBar">显示侧栏</span><span *ngIf="!hideRightBar">隐藏侧栏</span>
-        </a>
-    </h1>
-</div>
 
 <!-- Post title and main buttons -->
 <div class="form-group">

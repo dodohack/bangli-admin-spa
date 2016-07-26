@@ -6,19 +6,17 @@ import { Component }         from '@angular/core';
 import { Router }            from '@angular/router';
 
 import { AuthService }       from './service/auth.service';
-import { MenuService }       from './service/menu.service';
-import { MenuComponent }     from './shared/menu';
+import { SidebarComponent }  from './components/sidebar.component';
+import { TopbarComponent }   from './components/topbar.component';
 
 @Component({
     selector: 'huluwa-admin',
-    templateUrl: './app.html',
-    directives: [MenuComponent],
-    providers: [MenuService]
+    templateUrl: './app/app.html',
+    directives: [TopbarComponent, SidebarComponent]
 })
 export class App
 {
     constructor(private authService: AuthService,
-                private menuService: MenuService,
                 private router: Router) {
 
         // Redirect un-authenticated user to login page

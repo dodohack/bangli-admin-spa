@@ -6,19 +6,35 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
-import { Pagination }        from '../datatype/pagination';
+import { Pagination }        from '../models/pagination';
 //import { ProductStatus }   from '../datatype/productstatus';
 
 import { ProductService }    from '../service/product.service';
+import {
+    PaginatorComponent, SearchBoxComponent,
+    ListPageHeaderComponent} from "../components";
 
 @Component({
     templateUrl: 'app/shop/products.html',
-    providers: [ProductService]
+    directives: [
+        PaginatorComponent,
+        SearchBoxComponent,
+        ListPageHeaderComponent
+    ],
+    providers: [ ProductService ]
 })
 export class ProductsPage implements OnInit
 {
     /* Pagination related variables of the list */
     pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
+
+    /* <paginator> parameter */
+    base = 'product/list';
+    baseUrl: string;
+
+    /* <list-page-header> parameter */
+    pageTitle = '商品';
+    newItemUrl = 'product/new';
 
     menus: any;
     /* Current order status of the listed orders */
@@ -48,6 +64,7 @@ export class ProductsPage implements OnInit
         this.route.params.subscribe(
             segment => {
                 this.status = segment['status'] ? segment['status'] : 'all';
+                this.baseUrl = this.base + '/' + this.status;
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
                 /* Update order list when URL changes */
                 this.getProductsList();

@@ -1,10 +1,7 @@
-<div class="page-header">
-    <h1 class="title">
-        专题
-        <a class="page-title-action btn btn-sm btn-info-outline" [routerLink]="['/topic/new']">新建专题</a>
-        <button class="page-title-action btn btn-sm btn-info-outline float-right">详简切换</button>
-    </h1>
-</div>
+<list-page-header
+        [pageTitle]="pageTitle"
+        [newItemUrl]="newItemUrl">
+</list-page-header>
 
 <!-- sub menu -->
 <nav class="navbar page-sub-menu">
@@ -76,12 +73,7 @@
         <button type="submit" class="btn btn-secondary btn-sm">筛选</button>
     </div>
 
-    <div class="float-right paginator">
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/topics', filter, condition, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/topics', filter, condition, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/topics', filter, condition, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
-        <a class="btn btn-sm btn-secondary" [routerLink]="['/topics', filter, condition, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
-    </div>
+    <paginator [baseUrl]="baseUrl" [pagination]="pagination"></paginator>
 </div>
 
 <!-- Topic list table -->

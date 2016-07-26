@@ -6,17 +6,22 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
-import { Pagination }  from '../datatype/pagination';
+import { Pagination }  from '../models/pagination';
 import { UserRole }    from '../datatype/userrole';
 import { UserService } from '../service/user.service';
+import {PaginatorComponent} from "../components/paginator.component";
 
 @Component({
-    templateUrl: 'app/users/users.html'
+    templateUrl: 'app/user/users.html',
+    directives: [ PaginatorComponent ]
 })
 export class UsersPage implements OnInit
 {
     /* Pagination related variables of the list */
     pagination = new Pagination(0, 1, 0, 0, 0, 0, 0, 0, 0);
+
+    base = 'user/list';
+    baseUrl: string;
 
     userRole = new UserRole();
 
@@ -50,6 +55,7 @@ export class UsersPage implements OnInit
         this.route.params.subscribe(
             segment => {
                 this.current_role = segment['role'] ? segment['role'] : 'customer';
+                this.baseUrl = this.base + '/' + this.current_role;
                 /* '+' magically converts string to number */
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
                 /* Update user list when URL changes */

@@ -1,10 +1,7 @@
-<div class="page-header">
-    <h1 class="title">
-        文章
-        <a class="page-title-action btn btn-sm btn-info-outline" [routerLink]="['/post/new']">新建文章</a>
-        <button class="page-title-action btn btn-sm btn-info-outline float-right">详简切换</button>
-    </h1>
-</div>
+<list-page-header
+        [pageTitle]="pageTitle"
+        [newItemUrl]="newItemUrl">
+</list-page-header>
 
 <!-- sub menu -->
 <nav class="navbar page-sub-menu">
@@ -83,7 +80,7 @@
 
 
 
-    <paginator></paginator>
+    <paginator [baseUrl]="baseUrl" [pagination]="pagination"></paginator>
 </div>
 
 <!-- Post list table -->

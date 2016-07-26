@@ -9,7 +9,8 @@ import { ActivatedRoute, CanDeactivate }  from '@angular/router';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 import { FROALA_OPTIONS } from '../models/froala.option';
 
-import { HtmlDropdownComponent } from '../components/html-dropdown.component';
+import { HtmlDropdownComponent, EditorPageHeaderComponent } from '../components';
+
 import { PostService } from '../service/post.service';
 
 // FIXME: Remove 'forEach', as it is 10x slower than 'for'
@@ -24,16 +25,25 @@ interface Author {
 
 @Component({
     templateUrl: 'app/cms/post.html',
-    directives: [FroalaEditorCompnoent, HtmlDropdownComponent],
+    directives: [
+        FroalaEditorCompnoent,
+        HtmlDropdownComponent,
+        EditorPageHeaderComponent
+    ],
     providers: [PostService]
 })
-export class PostPage implements OnInit, CanDeactivate
+export class PostPage implements OnInit//, CanDeactivate
 {
     id: number = 0;
     title: string;
     text: string;
     editor: any;
     hideRightBar: boolean = true;
+
+    /* Parameters to <editor-page-header> */
+    pageTitle  = "文章";
+    previewUrl = "dummy";
+    backUrl    = "post";
 
     /* TODO: Used to test html-dropdown.component */
     authors: Author[];
@@ -228,8 +238,10 @@ export class PostPage implements OnInit, CanDeactivate
 
 
     // Return true if everything is saved, else return false.
+    /*
     canDeactivate()
     {
-        return ga
+      return false;
     }
+    */
 }

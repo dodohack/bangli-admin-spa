@@ -62,11 +62,13 @@ export class ProductPage implements OnInit
             segment => {
                 /* Get product id from URL segment */
                 this.id = segment['id'] ? +segment['id'] : 0;
+                if (this.id > 0) {
+                    /* Initialze editor content */
+                    this.initProduct();
+                }
             }
         );
 
-        /* Initialze editor content */
-        this.initProduct();
 
         /* Initial categories */
         this.createProductCategories();

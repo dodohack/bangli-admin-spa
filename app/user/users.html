@@ -26,15 +26,7 @@
     </form>
 </nav>
 
-<!-- Pagniation -->
-<div class="input-group input-group-sm">
-    <span class="input-group-btn">
-        <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.first_page]"><i class="fa fa-angle-double-left"></i></a>
-        <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.pre_page]"><i class="fa fa-angle-left"></i></a>
-        <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.next_page]"><i class="fa fa-angle-right"></i></a>
-        <a class="btn btn-secondary" [routerLink]="['/users', current_role, pagination.last_page]"><i class="fa fa-angle-double-right"></i></a>
-    </span>
-</div>
+<paginator [baseUrl]="baseUrl" [pagination]="pagination"></paginator>
 
 <!-- List of users -->
 <table class="table">
