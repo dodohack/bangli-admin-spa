@@ -5,3 +5,8 @@
 ul.nav li.dropdown:hover > div.dropdown-menu {
   display: block;
 }
+
+/* Overwrite small button left-right padding from 0.75 to 0.5 */
+.btn-sm, .btn-group-sm > .btn {
+  padding: 0.25rem 0.5rem;
+}

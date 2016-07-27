@@ -1,0 +1,26 @@
+
+/* includes selected categories, tags and topics */
+.tag-cloud {
+  margin-bottom: 1rem;
+
+  .cloud-group {
+    display: inline-block;
+    padding-right: 1rem;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      display: inline-block;
+      list-style: none;
+
+      li {
+        cursor: pointer;
+        margin-left: 0.5rem;
+
+        &:hover {
+          background-color: #00ee00;
+        }
+      }
+    }
+  }
+}

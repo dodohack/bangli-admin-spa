@@ -2,6 +2,10 @@
  *
  */
 
+import { Category } from './category';
+import { Tag }      from './tag';
+import { Topic }    from './topic';
+
 export const PostTypeTranslation = {
     creative      : '原创',
     semi_creative : '伪原创',
@@ -27,7 +31,22 @@ export class PostStatus {
 
 export class Post {
     id: number;
+    editor_id: number;
+    author_id: number;
+    /* TODO: Should have a image_url as well */
+    image_id: number;
+    status: string;
+    post_type: string;
+    categories: Category[];
+    tags: Tag[];
+    topics: Topic[];
     title: string;
     description: string;
     content: string;
+    /* Frontend display use */
+    fake_published_at: string;
+    /* Backend management use */
+    published_at: string;
+    created_at: string;
+    updated_at: string;
 }

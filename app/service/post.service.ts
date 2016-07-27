@@ -6,7 +6,7 @@ import { Injectable }               from '@angular/core';
 import { Jsonp, URLSearchParams }   from '@angular/http';
 import {Observable} from "rxjs/Observable";
 
-import { PostStatus }  from '../models/post';
+import { PostStatus, Category }  from '../models';
 import { AuthService } from './auth.service';
 import { APP } from '../app.api';
 
@@ -19,6 +19,9 @@ export class PostService
 
     /* Post status */
     statuses: Observable<PostStatus[]>;
+
+    /* Available categories */
+    categories: Observable<Category[]>;
 
     /**
      * Initialize common code in constructor, as we can't have ngOnInit
@@ -39,6 +42,7 @@ export class PostService
             this.setPostsPerPage(30);
         
         this.initStatuses();
+        this.initCategories();
     }
 
     /**
@@ -87,8 +91,8 @@ export class PostService
     /**
      * Return all cms categories
      */
-    public getCategories() {
-        return this.jsonp
+    private initCategories() {
+        this.categories = this.jsonp
             .get(APP.cms_cats, {search: this.params})
             .map(res => res.json());
     }

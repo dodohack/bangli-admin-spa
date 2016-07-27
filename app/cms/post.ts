@@ -11,7 +11,7 @@ import { FROALA_OPTIONS } from '../models/froala.option';
 
 import { HtmlDropdownComponent, EditorPageHeaderComponent } from '../components';
 
-import { User } from '../models/user';
+import { User, Post, Category, Tag, Topic } from '../models';
 import { PostService, UserService } from '../service';
 
 // FIXME: Remove 'forEach', as it is 10x slower than 'for'
@@ -28,11 +28,10 @@ import forEach = require("core-js/fn/array/for-each");
 })
 export class PostPage implements OnInit//, CanDeactivate
 {
-    id: number = 0;
-    title: string;
-    text: string;
+    /* The post we are current editing */
+    post = new Post;
+
     froalaEditor: any;
-    hideRightBar: boolean = true;
 
     /* Parameters to <editor-page-header> */
     pageTitle  = "文章";
@@ -41,9 +40,7 @@ export class PostPage implements OnInit//, CanDeactivate
 
     /* TODO: Used to test html-dropdown.component */
     authors: User[];
-    author: User;
     editors: User[];
-    editor: User;
 
     /* All product categories */
     categories: any;
@@ -54,6 +51,8 @@ export class PostPage implements OnInit//, CanDeactivate
     /* Froala editor options */
     options: any = FROALA_OPTIONS;
 
+    hideRightBar = true;
+
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
                 private postService: PostService,
@@ -61,17 +60,26 @@ export class PostPage implements OnInit//, CanDeactivate
     }
 
     clearSelection() : void {
-        this.author = null;
-        this.editor = null;
+        this.post.author_id = null;
+        this.post.editor_id = null;
     }
 
     ngOnInit() {
         this.titleService.setTitle('编辑文章 - 葫芦娃');
 
-        this.author = null;
-        this.editor = null;
+        this.initAuthors();
 
-        /* Retrieve authors and editors */
+        this.initPostId();
+
+        this.initPost();
+
+        this.initPostCategories();
+    }
+
+    /**
+     * Retrieve available authors and editors
+     */
+    private initAuthors() {
         this.userService.authors.subscribe(
             authors => {
                 this.authors = authors;
@@ -79,20 +87,46 @@ export class PostPage implements OnInit//, CanDeactivate
                 this.editors = authors.filter(people => people.role != 'author');
             }
         );
+    }
 
+    /**
+     * Post ID should be available before initializing a post
+     */
+    private initPostId() {
         this.route.params.subscribe(
             segment => {
                 /* Get post id from URL segment */
-                console.log("Post::ngOnInit called");
-                this.id = segment['id'] ? +segment['id'] : 0;
+                this.post.id = segment['id'] ? +segment['id'] : 0;
             }
         );
+    }
 
-        /* Initialze editor content */
-        this.initPost();
+    /**
+     * Initialize the post, only when we have a valid id
+     */
+    private initPost()
+    {
+        if (!this.post.id)
+            return;
 
-        /* Initial categories */
-        this.initPostCategories();
+        this.postService.getPost(this.post.id)
+            .subscribe(post => this.post = post);
+    }
+
+    /**
+     * Initialize all available categories
+     */
+    private initPostCategories()
+    {
+        this.postService.categories.subscribe(
+            json  => {
+                this.categories = json;
+                this.roots = this.categories[0];
+                //console.log(this.categories);
+                this.keys = Object.keys(this.categories);
+            },
+            error => console.error(error)
+        );
     }
 
     /**
@@ -101,7 +135,7 @@ export class PostPage implements OnInit//, CanDeactivate
      */
     onFroalaModelChanged(event: any) {
         setTimeout(() => {
-            this.text = event;
+            this.post.content = event;
             console.log("onFroalaModelChanged");
         });
     }
@@ -115,71 +149,42 @@ export class PostPage implements OnInit//, CanDeactivate
     }
 
     /**
-     * Initial the post, only when we have a valid id
-     */
-    private initPost()
-    {
-        if (!this.id)
-            return;
-
-        this.postService.getPost(this.id).subscribe(
-            json => {
-                this.title = json['title'];
-                this.text  = json['content'];
-            }
-        )
-    }
-
-    private initPostCategories()
-    {
-        this.postService.getCategories().subscribe(
-            json  => {
-                this.categories = json;
-                this.roots = this.categories[0];
-                //console.log(this.categories);
-                this.keys = Object.keys(this.categories);
-            },
-            error => console.error(error)
-        );
-    }
-
-
-    /**
      * Filter post categories for matched user input 
      */
     private filterPostCategories(str: string)
     {
-        this.postService.getCategories()
-            .map(res => {
+        /*
+        this.postService.categories.map(
+            res => {
                 let parentIds = [];
                 this.keys = Object.keys(res);
 
-                /* loop over 'parent_id' grouped categories */
+                // loop over 'parent_id' grouped categories
                 this.keys.forEach(function(key) {
                     let cats = res[key];
 
                     let length = cats.length;
 
                     for (let j = 0; j < length; j++) {
-                        /* Default to hide everything */
+                        // Default to hide everything
                         cats[j].hidden = true;
                         if (cats[j].name.includes(str) ||
                             cats[j].slug.includes(str)) {
-                            /* Show matched search */
+                            // Show matched search
                             cats[j].hidden = false;
-                            /* Also record the parent id, so we don't hide parent list */
+                            // Also record the parent id, so we don't hide parent list
                             parentIds.push(cats[j].parent_id);
                         }
                     }
                 });
 
-                /* Do not hide parent if children is not hidden */
+                // Do not hide parent if children is not hidden
                 this.keys.forEach(function(key){
                     let cats = res[key];
                     let length = cats.length;
 
                     for (let j = 0; j < length; j++) {
-                        /* Check if we can find the parent id that should not be hidden */
+                        // Check if we can find the parent id that should not be hidden
                         if (parentIds.indexOf(cats[j].id) != -1) {
                             cats[j].hidden = false;
                         }
@@ -199,8 +204,8 @@ export class PostPage implements OnInit//, CanDeactivate
                 },
                 error => console.error(error)
             );
+         */
     }
-    
 
     /**
      * If given category id has a sub category
@@ -223,11 +228,43 @@ export class PostPage implements OnInit//, CanDeactivate
         return this.categories[parentId];
     }
 
-    private toggleRightBar(e: any): void 
+    /**
+     * Toggle right panel
+     */
+    private toggleRightBar(): void
     {
         this.hideRightBar = !this.hideRightBar;
     }
 
+    /**
+     * Remove category from current post
+     * @param e
+     */
+    private removeCat(e: Category): void
+    {
+        let i = this.post.categories.indexOf(e);
+        this.post.categories.splice(i, 1);
+    }
+
+    /**
+     * Remove topic from current post
+     * @param e
+     */
+    private removeTopic(e: Topic): void
+    {
+        let i = this.post.topics.indexOf(e);
+        this.post.topics.splice(i, 1);
+    }
+
+    /**
+     * Remove tag from current post
+     * @param e
+     */
+    private removeTag(e: Tag): void
+    {
+        let i = this.post.tags.indexOf(e);
+        this.post.tags.splice(i, 1);
+    }
 
     // Return true if everything is saved, else return false.
     /*
