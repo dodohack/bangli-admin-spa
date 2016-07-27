@@ -4,11 +4,11 @@
 
 import { Injectable }               from '@angular/core';
 import { Jsonp, URLSearchParams }   from '@angular/http';
+import {Observable} from "rxjs/Observable";
 
+import { PostStatus }  from '../models/post';
 import { AuthService } from './auth.service';
-
 import { APP } from '../app.api';
-import {Observable} from "rxjs/Rx";
 
 @Injectable()
 export class PostService
@@ -16,6 +16,9 @@ export class PostService
     /* Number of posts per page */
     perPage: any;
     params: URLSearchParams;
+
+    /* Post status */
+    statuses: Observable<PostStatus[]>;
 
     /**
      * Initialize common code in constructor, as we can't have ngOnInit
@@ -34,6 +37,8 @@ export class PostService
         this.perPage = localStorage.getItem('postsPerPage');
         if (!this.perPage)
             this.setPostsPerPage(30);
+        
+        this.initStatuses();
     }
 
     /**
@@ -47,11 +52,11 @@ export class PostService
     }
 
     /**
-     * Retrieve posts list page menu
+     * Retrieve statuses of posts from API server
      */
-    public getPostsMenu() {
-        return this.jsonp
-            .get(APP.menu_posts, {search: this.params})
+    private initStatuses() {
+        this.statuses = this.jsonp
+            .get(APP.post_statuses, {search: this.params})
             .map(res => res.json());
     }
 

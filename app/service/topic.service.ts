@@ -4,10 +4,11 @@
 
 import { Injectable }               from '@angular/core';
 import { Jsonp, URLSearchParams }   from '@angular/http';
+import { Observable }               from "rxjs/Observable";
 
+import { PostStatus }  from '../models/post';
 import { AuthService } from './auth.service';
-
-import { APP } from '../app.api';
+import { APP }         from '../app.api';
 
 @Injectable()
 export class TopicService
@@ -15,6 +16,9 @@ export class TopicService
     /* Number of topics per page */
     perPage: any;
     params: URLSearchParams;
+
+    /* Statuses of all topics */
+    statuses: Observable<PostStatus[]>;
 
     /**
      * Initialize common code in constructor, as we can't have ngOnInit
@@ -33,6 +37,8 @@ export class TopicService
         this.perPage = localStorage.getItem('postsPerPage');
         if (!this.perPage)
             this.setTopicsPerPage(30);
+        
+        this.initStatuses();
     }
 
     /**
@@ -46,11 +52,11 @@ export class TopicService
     }
 
     /**
-     * Retrieve topics list page menu
+     * Retrieve statuses of topics from API server
      */
-    public getTopicsMenu() {
-        return this.jsonp
-            .get(APP.menu_topics, {search: this.params})
+    private initStatuses() {
+        this.statuses = this.jsonp
+            .get(APP.topic_statuses, {search: this.params})
             .map(res => res.json());
     }
 

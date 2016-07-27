@@ -6,6 +6,7 @@ import { Injectable }               from '@angular/core';
 import { Jsonp, URLSearchParams }   from '@angular/http';
 import { Observable }               from 'rxjs/Observable';
 
+import { User }        from '../models/user';
 import { AuthService } from './auth.service';
 import { APP } from '../app.api';
 
@@ -16,8 +17,9 @@ export class UserService
     perPage: any;
     params: URLSearchParams;
 
-    /* Users can edit post */
-    authors: Observable<string[]>;
+    /* Authors and Editors */
+    authors: Observable<User[]>;
+    //editors: Observable<User[]>;
     /* List of user roles */
     roles: Observable<string[]>;
 
@@ -41,7 +43,8 @@ export class UserService
             this.setUsersPerPage(30);
 
         /* Initial observables */
-        this.getUsersCanEditPosts();
+        this.initAuthors();
+        //this.initEditors();
         this.getRoles();
     }
 
@@ -99,10 +102,19 @@ export class UserService
      * this data in many locations such as post list, post editing page, etc.
      * users includes: author, editor, shop_manager, admin, etc
      */    
-    private getUsersCanEditPosts()
+    private initAuthors()
     {
         this.authors = this.jsonp
             .get(APP.authors, {search: this.params})
-            .map(res => res.json()).share();
+            .map(res => res.json());
     }
+
+    /*
+    private initEditors()
+    {
+        this.editors = this.jsonp
+            .get(APP.editors, {search: this.params})
+            .map(res => res.json());
+    }
+    */
 }

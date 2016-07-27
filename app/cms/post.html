@@ -4,15 +4,12 @@
         [backUrl]="backUrl">
 </editor-page-header>
 
-
 <!-- Post title and main buttons -->
 <div class="form-group">
     <div class="input-group">
         <input type="text" name="title" class="form-control" placeholder="文章标题"
                [(ngModel)]="title">
         <span class="input-group-btn">
-            <a type="button" class="btn btn-warning" target="_blank"
-               href="http://www.huluwa.uk/{{id}}.html"><i class="fa fa-external-link"></i> 预览</a>
             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> 保存</button>
             <!-- Only display these 2 buttons for editors and above -->
             <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i> 审稿</button>
@@ -52,9 +49,9 @@
         placeholder="选择作者">
 
     <template let-author="item">
-        <img [src]="( './img/' + author.avatar )" />
+        <!--<img [src]="( './img/' + author.avatar )" />-->
         <span class="name">
-            {{ author.name }}
+            {{ author.name }} | {{ author.nicename }}
         </span>
     </template>
 </html-dropdown>

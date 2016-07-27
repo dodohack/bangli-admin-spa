@@ -6,17 +6,25 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
-import { Pagination }   from '../models/pagination';
-import { OrderStatus }    from '../datatype/orderstatus';
+import { Pagination }     from '../models/pagination';
+import { OrderStatus }    from '../models/order';
 
 import { OrderService } from '../service/order.service';
-import {PaginatorComponent} from "../components/paginator.component";
-import {SearchBoxComponent} from "../components/search-box.component";
+import {
+    PaginatorComponent, DateFilterComponent,
+    SearchBoxComponent, ListPageHeaderComponent,
+    ListPageMenuComponent } from "../components";
 
 @Component({
     templateUrl: 'app/shop/orders.html',
-    directives: [ PaginatorComponent, SearchBoxComponent ],
-    providers: [OrderService]
+    directives: [
+        PaginatorComponent,
+        DateFilterComponent,
+        SearchBoxComponent,
+        ListPageHeaderComponent,
+        ListPageMenuComponent
+    ],
+    providers: [ OrderService ]
 })
 export class OrdersPage implements OnInit
 {
@@ -26,10 +34,12 @@ export class OrdersPage implements OnInit
     base = 'order/list';
     baseUrl: string;
 
-    /* PostType for editors */
-    orderStatus = new OrderStatus;
+    /* <list-page-header> parameter */
+    pageTitle = '订单';
+    newItemUrl = 'order/new';
 
-    menus: any;
+    /* Statuses of all orders */
+    statuses: OrderStatus[];
     /* Current order status of the listed orders */
     status: any;
 
@@ -49,7 +59,7 @@ export class OrdersPage implements OnInit
 
         this.pagination.per_page = this.orderService.getOrdersPerPage();
 
-        this.getOrdersMenu();
+        this.initOrderStatuses();
         
         /* Get URL segments and update the list */
         this.route.params.subscribe(
@@ -64,16 +74,15 @@ export class OrdersPage implements OnInit
     }
 
     /**
-     * Get orders list page menu
+     * Get orders statuses
      */
-    private getOrdersMenu()
+    private initOrderStatuses()
     {
-        this.orderService.getOrdersMenu().subscribe(
+        this.orderService.statuses.subscribe(
             json => {
-                this.menus = json;
-                console.log(this.menus);
-            },
-            error => console.error(error)
+                this.statuses = json;
+                console.log("Initialize order status: ", this.statuses);
+            }
         );
     }
     

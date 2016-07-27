@@ -1,31 +1,14 @@
-<div class="page-header">
-    <h1 class="title">
-        订单
-        <a class="page-title-action btn btn-sm btn-info-outline" [routerLink]="['/order/new']">新增订单</a>
-        <button class="page-title-action btn btn-sm btn-info-outline float-right">详简切换</button>
-    </h1>
-</div>
+<list-page-header [pageTitle]="pageTitle" [newItemUrl]="newItemUrl">
+</list-page-header>
 
 <!-- sub menu -->
 <nav class="navbar page-sub-menu">
-    <ul class="nav navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/orders/all']">全部</a>
-        </li>
-
-        <!-- Various order status tabs -->
-        <li *ngFor="let menu of menus" class="nav-item">
-            <a class="nav-link" [routerLink]="['/orders', menu.status]">
-                {{ orderStatus[menu.status] }}<span style="color:grey;">（{{ menu.count }}）</span>
-            </a>
-        </li>
-
-    </ul>
-
+    <list-page-menu [baseUrl]="baseUrl"
+                    [statuses]="statuses"></list-page-menu>
     <search-box></search-box>
 </nav>
 
-<!-- Filter toobar -->
+<!-- Filter toolbar -->
 <div class="list-toolbar">
     <div class="float-left bulk-actions">
         <select class="c-select select-sm">

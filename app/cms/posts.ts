@@ -6,15 +6,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
-import { Pagination }  from '../models/pagination';
-import { PostType }    from '../datatype/posttype';
-import { PostStatus }  from '../datatype/poststatus';
-
-import { PostService } from '../service/post.service';
-
+import { User, Pagination, PostStatus } from '../models';
+import { PostService, UserService } from '../service';
 import {
     PaginatorComponent, DateFilterComponent,
-    SearchBoxComponent, ListPageHeaderComponent } from '../components';
+    SearchBoxComponent, ListPageHeaderComponent,
+    ListPageMenuComponent } from '../components';
 
 
 @Component({
@@ -23,7 +20,8 @@ import {
         PaginatorComponent,
         DateFilterComponent,
         SearchBoxComponent,
-        ListPageHeaderComponent
+        ListPageHeaderComponent,
+        ListPageMenuComponent
     ],
     providers: [ PostService ]
 })
@@ -40,11 +38,8 @@ export class PostsPage implements OnInit
     pageTitle = '文章';
     newItemUrl = 'post/new';
 
-    /* PostType for editors */
-    postType = new PostType;
-
-    /* PostStatus */
-    postStatus = new PostStatus;
+    /* Post status */
+    statuses: PostStatus[];
 
     /* Posts filters: any, author, editor, status */
     filter: any;
@@ -53,23 +48,21 @@ export class PostsPage implements OnInit
     /* The list of posts, array */
     posts: any;
 
-    /* The menu of this page */
-    menus: any;
     /* Authors object */
-    authors: any;
-    numAuthors: number;
+    authors: User[];
     /* Editors object */
-    editors: any;
-    numEditors: number;
+    editors: User[];
+    
     /* Categories object */
     categories: any;
     /* Post status object */
     status: any;
-
+    
     /* If select all checkbox is checked or not */
     checkedAll: boolean = false;
 
     constructor(private route: ActivatedRoute,
+                private userService: UserService,
                 private postService: PostService,
                 private titleService: Title) {}
 
@@ -85,7 +78,16 @@ export class PostsPage implements OnInit
 
         this.pagination.per_page = this.postService.perPage;
 
-        this.getPostsMenu();
+        this.initPostStatuses();
+
+        /* Retrieve authors and editors */
+        this.userService.authors.subscribe(
+            authors => {
+                this.authors = authors;
+                /* Editors are users can edit any posts */
+                this.editors = authors.filter(people => people.role != 'author');
+            }
+        );
 
         /* Get URL segments and update the list */
         this.route.params.subscribe(
@@ -104,18 +106,11 @@ export class PostsPage implements OnInit
     /**
      * Get posts list page menu
      */
-    private getPostsMenu()
+    private initPostStatuses()
     {
-        this.postService.getPostsMenu().subscribe(
+        this.postService.statuses.subscribe(
             json  => {
-                this.menus = json;
-                this.authors = json['authors'];
-                this.editors = json['editors'];
-                this.categories = json['categories'];
-                this.status = json['status'];
-                this.numAuthors = this.authors.length;
-                this.numEditors = this.editors.length;
-                //console.log(this.authors);
+                this.statuses = json;
             },
             error => console.error(error)
         );
@@ -127,7 +122,7 @@ export class PostsPage implements OnInit
      */
     private getNicenameById(id)
     {
-        for (let i = 0; i < this.numAuthors; i++) {
+        for (let i = 0; i < this.authors.length; i++) {
             if (this.authors[i].id == id) {
                 if (this.authors[i].nicename == null)
                     return this.authors[i].name;

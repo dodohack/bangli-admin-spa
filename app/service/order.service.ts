@@ -4,10 +4,12 @@
 
 import { Injectable }               from '@angular/core';
 import { Jsonp, URLSearchParams }   from '@angular/http';
+import {Observable} from "rxjs/Observable";
 
+import { OrderStatus } from '../models/order';
 import { AuthService } from './auth.service';
-
 import { APP } from '../app.api';
+
 
 @Injectable()
 export class OrderService
@@ -15,6 +17,9 @@ export class OrderService
     /* Number of posts per page */
     perPage: any;
     params: URLSearchParams;
+    
+    /* Order statuses */
+    statuses: Observable<OrderStatus[]>;
 
     /**
      * Initialize common code in constructor, as we can't have ngOnInit
@@ -31,6 +36,8 @@ export class OrderService
         this.perPage = localStorage.getItem('ordersPerPage');
         if (!this.perPage)
             this.setOrdersPerPage(30);
+        
+        this.statuses = this.initStatuses();
     }
 
     /**
@@ -52,11 +59,11 @@ export class OrderService
     }
 
     /**
-     * Retrieve posts list page menu
+     * Retrieve statuses of all orders
      */
-    public getOrdersMenu() {
+    public initStatuses() {
         return this.jsonp
-            .get(APP.menu_orders, {search: this.params})
+            .get(APP.order_statuses, {search: this.params})
             .map(res => res.json());
     }
 

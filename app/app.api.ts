@@ -34,11 +34,13 @@ export const APP = {
 
     /* Get users who can edit a post, includes author, editor, shop_manager etc */
     authors: base + '/admin/authors',
+    /* Get users who can edit all posts, includes editor, shop_manager etc */
+    editors: base + '/admin/editors',
 
     /* List of posts */
     posts: base + '/admin/posts',
-    /* Posts list page filter menu */
-    menu_posts: base + '/admin/menu/posts',
+    /* List of post statuses */
+    post_statuses: base + '/admin/posts/statuses',
     /* Single post */
     post: base + '/admin/post',
     /* CMS categories */
@@ -47,21 +49,21 @@ export const APP = {
     /* List of topics */
     topics: base + '/admin/topics',
     /* Topics list page filter menu */
-    menu_topics: base + '/admin/menu/topics',
+    topic_statuses: base + '/admin/topics/statuses',
     /* Single topic */
     topic: base + '/admin/topic',
 
     /* List of orders */
     orders: base + '/admin/orders',
-    /* Orders list page filter menu */
-    menu_orders: base + '/admin/menu/orders',
+    /* List of order statuses */
+    order_statuses: base + '/admin/orders/statuses',
     /* Single order */
     order:  base + '/admin/order',
 
     /* List of products */
     products: base + '/admin/products',
     /* Products list page filter menu */
-    menu_products: base + '/admin/menu/products',
+    product_statuses: base + '/admin/products/statuses',
     /* Single product */
     product:  base + '/admin/product',
     /* Product categories */

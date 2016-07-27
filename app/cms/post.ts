@@ -11,17 +11,11 @@ import { FROALA_OPTIONS } from '../models/froala.option';
 
 import { HtmlDropdownComponent, EditorPageHeaderComponent } from '../components';
 
-import { PostService } from '../service/post.service';
+import { User } from '../models/user';
+import { PostService, UserService } from '../service';
 
 // FIXME: Remove 'forEach', as it is 10x slower than 'for'
 import forEach = require("core-js/fn/array/for-each");
-
-// TODO: Move this into folder models
-interface Author {
-    id: number;
-    name: string;
-    avatar: string;
-}
 
 @Component({
     templateUrl: 'app/cms/post.html',
@@ -30,14 +24,14 @@ interface Author {
         HtmlDropdownComponent,
         EditorPageHeaderComponent
     ],
-    providers: [PostService]
+    providers: [ PostService ]
 })
 export class PostPage implements OnInit//, CanDeactivate
 {
     id: number = 0;
     title: string;
     text: string;
-    editor: any;
+    froalaEditor: any;
     hideRightBar: boolean = true;
 
     /* Parameters to <editor-page-header> */
@@ -46,8 +40,10 @@ export class PostPage implements OnInit//, CanDeactivate
     backUrl    = "post";
 
     /* TODO: Used to test html-dropdown.component */
-    authors: Author[];
-    author: Author;
+    authors: User[];
+    author: User;
+    editors: User[];
+    editor: User;
 
     /* All product categories */
     categories: any;
@@ -59,34 +55,30 @@ export class PostPage implements OnInit//, CanDeactivate
     options: any = FROALA_OPTIONS;
 
     constructor(private route: ActivatedRoute,
+                private userService: UserService,
                 private postService: PostService,
                 private titleService: Title) {
-        this.author = null;
-        this.authors = [
-            {
-                id: 1,
-                name: "Joanna",
-                avatar: "joanna-avatar.jpg"
-            },
-            {
-                id: 2,
-                name: "Kim",
-                avatar: "kim-avatar.jpg"
-            },
-            {
-                id: 3,
-                name: "Sarah",
-                avatar: "sarah-avatar.jpg"
-            }
-        ];
     }
 
     clearSelection() : void {
         this.author = null;
+        this.editor = null;
     }
 
     ngOnInit() {
         this.titleService.setTitle('编辑文章 - 葫芦娃');
+
+        this.author = null;
+        this.editor = null;
+
+        /* Retrieve authors and editors */
+        this.userService.authors.subscribe(
+            authors => {
+                this.authors = authors;
+                /* Editors are users can edit any posts */
+                this.editors = authors.filter(people => people.role != 'author');
+            }
+        );
 
         this.route.params.subscribe(
             segment => {
@@ -116,8 +108,8 @@ export class PostPage implements OnInit//, CanDeactivate
 
     onEditorInitialized(event?: any) {
         console.log("onEditorInitialized");
-        this.editor = FroalaEditorCompnoent.getFroalaInstance();
-        this.editor.on('froalaEditor.focus', (e, editor) => {
+        this.froalaEditor = FroalaEditorCompnoent.getFroalaInstance();
+        this.froalaEditor.on('froalaEditor.focus', (e, editor) => {
             console.log("editor is focused");
         });
     }

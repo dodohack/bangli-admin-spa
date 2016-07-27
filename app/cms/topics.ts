@@ -7,15 +7,26 @@ import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
 import { Pagination }  from '../models/pagination';
-import { PostStatus }  from '../datatype/poststatus';
+import { PostStatus }  from '../models/post';
 
+import { UserService }  from '../service/user.service';
 import { TopicService } from '../service/topic.service';
-import { PaginatorComponent, ListPageHeaderComponent } from "../components";
+
+import {
+    PaginatorComponent, DateFilterComponent,
+    SearchBoxComponent, ListPageHeaderComponent ,
+    ListPageMenuComponent } from "../components";
 
 @Component({
     templateUrl: 'app/cms/topics.html',
-    directives: [ PaginatorComponent, ListPageHeaderComponent ],
-    providers: [TopicService]
+    directives: [
+        PaginatorComponent,
+        DateFilterComponent,
+        SearchBoxComponent,
+        ListPageHeaderComponent,
+        ListPageMenuComponent
+    ],
+    providers: [ TopicService ]
 })
 export class TopicsPage implements OnInit {
     /* Pagination related variables of the list */
@@ -30,7 +41,7 @@ export class TopicsPage implements OnInit {
     newItemUrl = 'topic/new';
 
     /* TopicStatus translation, the same as PostStatus */
-    topicStatus = new PostStatus;
+    statuses: PostStatus[];
 
     /* Posts filters: any, editor, status */
     filter:any;
@@ -39,36 +50,37 @@ export class TopicsPage implements OnInit {
     /* The list of topics, array */
     topics:any;
 
-    /* The menu of this page */
-    menus:any;
     /* Editors object */
     editors:any;
-    numEditors:number;
+
     /* Categories object */
     categories:any;
+
     /* Post status object */
-    status:any;
+    status: any;
 
     /* If select all checkbox is checked or not */
     checkedAll:boolean = false;
 
     constructor(private route:ActivatedRoute,
-                private topicService:TopicService,
-                private titleService:Title) {
-    }
+                private userService: UserService,
+                private topicService: TopicService,
+                private titleService:Title) {}
 
     /**
      * Initialize the page, we should only put DI initializition into ctor.
      * If no role/page is setting from URL segment, we will display the first
      * page of all customers by default.
      */
-    ngOnInit() {
+    ngOnInit()
+    {
         /* Set document title */
         this.titleService.setTitle('文章列表 - 葫芦娃管理平台');
 
         this.pagination.per_page = this.topicService.perPage;
 
-        this.getTopicsMenu();
+        this.initTopicStatuses();
+        this.initEditors();
 
         /* Get URL segments and update the list */
         this.route.params.subscribe(
@@ -85,17 +97,21 @@ export class TopicsPage implements OnInit {
     }
 
     /**
+     * Get list of editors
+     */
+    private initEditors() {
+        this.userService.authors.subscribe(
+            authors =>
+                this.editors = authors.filter(people => people.role != 'author')
+        );
+    }
+
+    /**
      * Get topics list page menu
      */
-    private getTopicsMenu() {
-        this.topicService.getTopicsMenu().subscribe(
-            json => {
-                this.menus = json;
-                this.editors = json['editors'];
-                this.categories = json['categories'];
-                this.status = json['status'];
-                this.numEditors = this.editors.length;
-            },
+    private initTopicStatuses() {
+        this.topicService.statuses.subscribe(
+            statuses => this.statuses = statuses,
             error => console.error(error)
         );
     }
@@ -105,7 +121,7 @@ export class TopicsPage implements OnInit {
      * @param id
      */
     private getNicenameById(id) {
-        for (let i = 0; i < this.numEditors; i++) {
+        for (let i = 0; i < this.editors.length; i++) {
             if (this.editors[i].id == id) {
                 if (this.editors[i].nicename == null)
                     return this.editors[i].name;

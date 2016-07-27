@@ -6,20 +6,19 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
-import { Pagination }        from '../models/pagination';
-//import { ProductStatus }   from '../datatype/productstatus';
-
-import { ProductService }    from '../service/product.service';
+import { Pagination, User, Product, ProductStatus } from '../models';
+import { ProductService, UserService } from '../service';
 import {
     PaginatorComponent, SearchBoxComponent,
-    ListPageHeaderComponent} from "../components";
+    ListPageHeaderComponent, ListPageMenuComponent } from "../components";
 
 @Component({
     templateUrl: 'app/shop/products.html',
     directives: [
         PaginatorComponent,
         SearchBoxComponent,
-        ListPageHeaderComponent
+        ListPageHeaderComponent,
+        ListPageMenuComponent
     ],
     providers: [ ProductService ]
 })
@@ -36,29 +35,33 @@ export class ProductsPage implements OnInit
     pageTitle = '商品';
     newItemUrl = 'product/new';
 
-    menus: any;
+    /* Statuses of all products */
+    statuses: ProductStatus[];
+
     /* Current order status of the listed orders */
     status: any;
 
     /* The list of products */
-    products: any;
+    products: Product[];
+    
+    /* Editors object */
+    editors: User[];
 
     /* If select all checkbox is checked or not */
     checkedAll: boolean = false;
 
-    j = 0;
-
     constructor(private route: ActivatedRoute,
+                private userService: UserService,
                 private productService: ProductService,
                 private titleService: Title) {}
 
     ngOnInit()
     {
         this.titleService.setTitle('订单列表 - 葫芦娃管理平台');
-
         this.pagination.per_page = this.productService.getProductsPerPage();
 
-        this.getProductsMenu();
+        this.initProductStatuses();
+        this.initEditors();
 
         /* Get URL segments and update the list */
         this.route.params.subscribe(
@@ -73,14 +76,23 @@ export class ProductsPage implements OnInit
     }
 
     /**
+     * Get editors
+     */
+    private initEditors()
+    {
+        this.userService.authors.subscribe(
+            authors =>
+                this.editors = authors.filter(people => people.role != 'author')
+        );
+    }
+
+    /**
      * Get products list page menu
      */
-    private getProductsMenu()
+    private initProductStatuses()
     {
-        this.productService.getProductsMenu().subscribe(
-            json => {
-                this.menus = json;
-            },
+        this.productService.statuses.subscribe(
+            json => this.statuses = json,
             error => console.error(error)
         );
     }
