@@ -84,3 +84,8 @@ input.input-sm {
 .sidebar a.active {
     background: grey !important;
 }
+
+a.disabled {
+    color: grey;
+    cursor: not-allowed;
+}

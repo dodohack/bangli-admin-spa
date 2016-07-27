@@ -31,8 +31,10 @@ export class OrdersPage implements OnInit
     /* Pagination related variables of the list */
     pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
 
-    base = 'order/list';
-    baseUrl: string;
+    /* Parameter to <list-page-menu> */
+    baseUrl = 'order/list';
+    /* Parameter to <paginator> */
+    deepUrl: string;
 
     /* <list-page-header> parameter */
     pageTitle = '订单';
@@ -65,7 +67,7 @@ export class OrdersPage implements OnInit
         this.route.params.subscribe(
             segment => {
                 this.status = segment['status'] ? segment['status'] : 'all';
-                this.baseUrl = this.base + '/' + this.status;
+                this.deepUrl = this.baseUrl + '/' + this.status;
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
                 /* Update order list when URL changes */
                 this.getOrdersList();
@@ -79,10 +81,7 @@ export class OrdersPage implements OnInit
     private initOrderStatuses()
     {
         this.orderService.statuses.subscribe(
-            json => {
-                this.statuses = json;
-                console.log("Initialize order status: ", this.statuses);
-            }
+            json => this.statuses = json
         );
     }
     

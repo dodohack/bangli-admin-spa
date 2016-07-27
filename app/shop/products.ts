@@ -27,9 +27,10 @@ export class ProductsPage implements OnInit
     /* Pagination related variables of the list */
     pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
 
+    /* <list-page-menu> parameter */
+    baseUrl = 'product/list';
     /* <paginator> parameter */
-    base = 'product/list';
-    baseUrl: string;
+    deepUrl: string;
 
     /* <list-page-header> parameter */
     pageTitle = '商品';
@@ -67,7 +68,7 @@ export class ProductsPage implements OnInit
         this.route.params.subscribe(
             segment => {
                 this.status = segment['status'] ? segment['status'] : 'all';
-                this.baseUrl = this.base + '/' + this.status;
+                this.deepUrl = this.baseUrl + '/' + this.status;
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
                 /* Update order list when URL changes */
                 this.getProductsList();

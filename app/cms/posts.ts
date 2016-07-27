@@ -30,10 +30,12 @@ export class PostsPage implements OnInit
     /* Pagination related variables of the list */
     pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
 
-    /* Parameter to <paginator>, post list page url with filter and condition */
     base = 'post/list';
-    baseUrl: string;
-
+    /* Parameter to <list-page-menu> */
+    baseUrl = 'post/list/status';
+    /* Parameter to <paginator> */
+    deepUrl: string;
+    
     /* Parameter to <list-page-header> */
     pageTitle = '文章';
     newItemUrl = 'post/new';
@@ -94,7 +96,7 @@ export class PostsPage implements OnInit
             segment => {
                 this.filter = segment['filter'] ? segment['filter'] : 'all';
                 this.condition = segment['cond'] ? segment['cond'] : 'all';
-                this.baseUrl = this.base + '/' + this.filter + '/' + this.condition;
+                this.deepUrl = this.base + '/' + this.filter + '/' + this.condition;
                 /* '+' magically converts string to number */
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
                 /* Update post list when URL changes */

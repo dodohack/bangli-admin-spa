@@ -17,6 +17,7 @@ export const shopRoutes: RouterConfig = [
 
             /* List of products */
             { path: '', pathMatch: 'full', redirectTo: 'list/all/1' },
+            { path: 'list',         redirectTo: 'list/all/1' },
             { path: 'list/:status', redirectTo: 'list/:status/1' },
             { path: 'list/:status/:page', component: ProductsPage },
 
@@ -37,6 +38,7 @@ export const shopRoutes: RouterConfig = [
 
             /* List of orders */
             { path: '', pathMatch: 'full', redirectTo: 'list/all/1' },
+            { path: 'list',         redirectTo: 'list/all/1' },
             { path: 'list/:status', redirectTo: 'list/:status/1' },
             { path: 'list/:status/:page', component: OrdersPage },
 

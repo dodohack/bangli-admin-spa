@@ -32,9 +32,10 @@ export class TopicsPage implements OnInit {
     /* Pagination related variables of the list */
     pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
 
+    /* Parameter to <list-page-menu> */
+    baseUrl = 'topic/list';
     /* Parameter to <paginator> */
-    base = 'topic/list';
-    baseUrl: string;
+    deepUrl: string;
 
     /* Parameter to <list-page-header> */
     pageTitle = '专题';
@@ -87,7 +88,7 @@ export class TopicsPage implements OnInit {
             segment => {
                 this.filter = segment['filter'] ? segment['filter'] : 'all';
                 this.condition = segment['cond'] ? segment['cond'] : 'all';
-                this.baseUrl = this.base + '/' + this.filter + '/' + this.condition;
+                this.deepUrl = this.baseUrl + '/' + this.filter + '/' + this.condition;
                 /* '+' magically converts string to number */
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
                 /* Update post list when URL changes */

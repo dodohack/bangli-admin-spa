@@ -19,7 +19,9 @@ export const cmsRoutes: RouterConfig = [
 
             /* List of posts */
             { path: '', pathMatch: 'full', redirectTo: 'list/all/all/1' },
-            { path: 'list/:filter/:cond', redirectTo: 'list/:filter/:cond/1' },
+            { path: 'list',                redirectTo: 'list/all/all/1' },
+            { path: 'list/status',         redirectTo: 'list/all/all/1' },
+            { path: 'list/:filter/:cond',  redirectTo: 'list/:filter/:cond/1' },
             { path: 'list/:filter/:cond/:page', component: PostsPage },
 
             /* Single post */
@@ -38,7 +40,9 @@ export const cmsRoutes: RouterConfig = [
 
             /* List of topics */
             { path: '', pathMatch: 'full', redirectTo: 'list/all/all/1' },
-            { path: 'list/:filter/:cond', redirectTo: 'list/:filter/:cond/1' },
+            { path: 'list',                redirectTo: 'list/all/all/1' },
+            { path: 'list/status',         redirectTo: 'list/all/all/1' },
+            { path: 'list/:filter/:cond',  redirectTo: 'list/:filter/:cond/1' },
             { path: 'list/:filter/:cond/:page', component: TopicsPage },
 
             /* Single topic */
@@ -57,7 +61,9 @@ export const cmsRoutes: RouterConfig = [
 
             /* List of pages */
             { path: '', pathMatch: 'full', redirectTo: 'list/all/all/1' },
-            { path: 'list/:filter/:cond', redirectTo: 'list/:filter/:cond/1' },
+            { path: 'list',                redirectTo: 'list/all/all/1' },
+            { path: 'list/status',         redirectTo: 'list/all/all/1' },
+            { path: 'list/:filter/:cond',  redirectTo: 'list/:filter/:cond/1' },
             { path: 'list/:filter/:cond/:page', component: PagesPage },
 
             /* Single page */
