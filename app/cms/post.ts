@@ -9,13 +9,14 @@ import { TAB_DIRECTIVES } from 'ng2-bootstrap';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 import { FROALA_OPTIONS } from '../models/froala.option';
 
-import { HtmlDropdownComponent, EditorPageHeaderComponent } from '../components';
+import { 
+    HtmlDropdownComponent, 
+    EditorPageHeaderComponent, 
+    CategoryTreeComponent,
+    TagCloudComponent } from '../components';
 
 import { User, Post, Category, Tag, Topic } from '../models';
 import { PostService, UserService } from '../service';
-
-// FIXME: Remove 'forEach', as it is 10x slower than 'for'
-import forEach = require("core-js/fn/array/for-each");
 
 let template = require('./post.html');
 @Component({
@@ -24,7 +25,9 @@ let template = require('./post.html');
         TAB_DIRECTIVES,
         FroalaEditorCompnoent,
         HtmlDropdownComponent,
-        EditorPageHeaderComponent
+        EditorPageHeaderComponent,
+        CategoryTreeComponent,
+        TagCloudComponent
     ],
     providers: [ PostService ]
 })
@@ -44,16 +47,16 @@ export class PostPage implements OnInit//, CanDeactivate
     authors: User[];
     editors: User[];
 
-    /* All product categories */
-    categories: any;
-    /* Root categories */
-    roots: any;
-    keys: any;
+    /* All post categories */
+    categories: Category[];
+    /* All post tags */
+    tags: Tag[];
 
     /* Froala editor options */
     options: any = FROALA_OPTIONS;
 
     hideRightBar = true;
+    showFilter   = true;
 
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
@@ -73,9 +76,11 @@ export class PostPage implements OnInit//, CanDeactivate
 
         this.initPostId();
 
-        this.initPost();
+        this.initCategories();
 
-        this.initPostCategories();
+        this.initTags();
+
+        this.initPost();
     }
 
     /**
@@ -112,24 +117,73 @@ export class PostPage implements OnInit//, CanDeactivate
             return;
 
         this.postService.getPost(this.post.id)
-            .subscribe(post => this.post = post);
+            .subscribe(post => {
+                this.post = post;
+                /* Till now, this.categories should be ready */
+                if (this.post.categories)
+                    this.updateCategoryCheckStatus(this.categories);
+            });
     }
 
     /**
      * Initialize all available categories
      */
-    private initPostCategories()
+    private initCategories()
     {
-        this.postService.categories.subscribe(
-            json  => {
-                this.categories = json;
-                this.roots = this.categories[0];
-                //console.log(this.categories);
-                this.keys = Object.keys(this.categories);
-            },
-            error => console.error(error)
-        );
+        this.postService.categories
+            .subscribe(json => this.categories = json);
     }
+    
+    private initTags()
+    {
+        this.postService.tags
+            .subscribe(json => this.tags = json);
+    }
+
+    /**
+     * Set categories to checked status based on the value of post.categories
+     */
+    private updateCategoryCheckStatus(categories: Category[])
+    {
+        for (let i in categories) {
+            if (categories[i].children) {
+                this.updateCategoryCheckStatus(categories[i].children);
+            } else {
+                for (let j in this.post.categories) {
+                    if (categories[i].id == this.post.categories[j].id) {
+                        categories[i].checked = true;
+                    }
+                }
+            }
+
+        }
+    }
+
+    /*
+    private parseTree(roots: Category[], subs: Category[]) {
+        for (let s in subs) {
+            let idx = 0;
+            for (let r in roots) {
+
+                if (roots[r].children) {
+                    this.parseTree(roots[r].children, subs);
+                }
+
+                if (subs[s] === undefined)
+                    continue;
+
+                if (roots[r].id === subs[s].parent_id) {
+                    roots[r].children = [subs[s]];
+                    // Remove from the list
+                    subs.splice(idx, 1);
+                }
+
+            }
+            idx++;
+        }
+
+    }
+    */
 
     /**
      * This function is somehow bugged
@@ -213,23 +267,26 @@ export class PostPage implements OnInit//, CanDeactivate
      * If given category id has a sub category
      * @param id
      */
+    /*
     private hasSubCat(id: string)
     {
         if (this.keys.indexOf(id.toString()) != -1)
             return true;
         return false;
     }
-
+*/
 
     /**
      * Return a array of categories with same parentId
      * @param parentId
      */
+    /*
     private subCats(parentId)
     {
         return this.categories[parentId];
     }
-
+*/
+    
     /**
      * Toggle right panel
      */
@@ -239,34 +296,67 @@ export class PostPage implements OnInit//, CanDeactivate
     }
 
     /**
-     * Remove category from current post
+     * Add selected category to current post
      * @param e
      */
+    private checkCat(e: Category): void
+    {
+        if (e.checked)
+            this.post.categories.push(e);
+        else {
+            let i = this.post.categories.indexOf(e);
+            this.post.categories.splice(i, 1);
+        }
+    }
+
+    /**
+     * Add selected tag to current post
+     * @param e
+     */
+    private checkTag(e: Tag): void
+    {
+        if (e.checked)
+            this.post.tags.push(e);
+        else {
+            let i = this.post.tags.indexOf(e);
+            this.post.tags.splice(i, 1);
+        }
+    }
+    
+    /**
+     * Remove category from current post, also deselect the cat from the cat list
+     * @param e
+     */
+    /*
     private removeCat(e: Category): void
     {
         let i = this.post.categories.indexOf(e);
         this.post.categories.splice(i, 1);
     }
-
+    */
     /**
      * Remove topic from current post
      * @param e
      */
+    /*
     private removeTopic(e: Topic): void
     {
         let i = this.post.topics.indexOf(e);
         this.post.topics.splice(i, 1);
     }
+    */
 
     /**
      * Remove tag from current post
      * @param e
      */
+    /*
     private removeTag(e: Tag): void
     {
         let i = this.post.tags.indexOf(e);
         this.post.tags.splice(i, 1);
     }
+    */
 
     // Return true if everything is saved, else return false.
     /*

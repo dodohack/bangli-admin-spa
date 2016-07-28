@@ -3,9 +3,13 @@
  */
 
 export class Category {
-    public id;
-    public parent_id;
-    public slug;
-    public name;
-    public description;
+    id: number;
+    parent_id: number;
+    slug: string;
+    name: string;
+    description: string;
+
+    hidden: boolean;
+    checked: boolean;
+    children: Category[];
 }

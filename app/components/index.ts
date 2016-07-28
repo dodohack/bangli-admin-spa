@@ -5,6 +5,8 @@ import { ListPageHeaderComponent } from './list-page-header.component';
 import { ListPageMenuComponent } from './list-page-menu.component';
 import { EditorPageHeaderComponent } from './editor-page-header.component';
 import { HtmlDropdownComponent } from './html-dropdown.component';
+import { CategoryTreeComponent } from './category-tree.component';
+import { TagCloudComponent } from './tag-cloud.component';
 
 export {
     HtmlDropdownComponent,
@@ -13,5 +15,7 @@ export {
     SearchBoxComponent,
     ListPageHeaderComponent,
     ListPageMenuComponent,
-    EditorPageHeaderComponent
+    EditorPageHeaderComponent,
+    CategoryTreeComponent,
+    TagCloudComponent
 };

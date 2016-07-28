@@ -1,9 +1,9 @@
 
 /* includes selected categories, tags and topics */
-.tag-cloud {
+.post-tags {
   margin-bottom: 1rem;
 
-  .cloud-group {
+  .post-tag-group {
     display: inline-block;
     padding-right: 1rem;
 
@@ -22,5 +22,60 @@
         }
       }
     }
+  }
+}
+
+/* Right sidebar */
+
+.right-side-bar {
+  z-index: 999;
+  padding: 0.5rem;
+  position: fixed;
+  top: $topbar-height;
+  bottom: 0;
+  right: -400px;
+  width: 400px;
+  background: #FFFFFF;
+  transition: .3s ease-in-out;
+}
+
+.show-right-side-bar {
+  right: 0;
+  box-shadow: -5px 0px 5px #888;
+}
+
+.tab-content {
+  height: 100%;
+  overflow-y: scroll;
+}
+
+.nav-tabs {
+  margin-bottom: 0.25rem;
+
+  a.active {
+    background-color: #f3f3f3 !important;
+  }
+}
+
+.tree-view, .tag-cloud {
+  list-style: none;
+}
+
+.tree-item, .tag-item {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.tag-cloud {
+  padding-left: 0;
+}
+
+.tag-item {
+  font-size: 85%;
+  cursor: pointer;
+  &:hover {
+    background-color: grey;
   }
 }

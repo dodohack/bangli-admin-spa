@@ -19,41 +19,42 @@
 </div>
 
 <!-- Post category, tag etc -->
-<div class="tag-cloud">
-    <div class="cloud-group">
+<div class="post-tags">
+    <div class="post-tag-group">
         <span class="label label-warning">文章分类</span>
         <ul *ngIf="post.categories && post.categories.length <= 0">
             <li class="label label-pill label-default" (click)="toggleRightBar()">选择分类</li>
         </ul>
         <ul *ngIf="post.categories && post.categories.length > 0">
             <li *ngFor="let cat of post.categories" class="label label-pill label-primary"
-                (click)="removeCat(cat)">
+                (click)="toggleRightBar()">
+                <!-- Was removeCat(cat), but we need passing Observable into ChildView -->
                 {{ cat.name }} x
             </li>
         </ul>
     </div>
 
-    <div class="cloud-group">
+    <div class="post-tag-group">
         <span class="label label-warning">专题</span>
         <ul *ngIf="post.topics && post.topics.length <= 0">
             <li class="label label-pill label-default" (click)="toggleRightBar()">选择专题</li>
         </ul>
         <ul *ngIf="post.topics && post.topics.length > 0">
             <li *ngFor="let topic of post.topics" class="label label-pill label-primary"
-                (click)="removeTopic(topic)">
+                (click)="toggleRightBar()">
                 {{ topic.name }} x
             </li>
         </ul>
     </div>
 
-    <div class="cloud-group">
+    <div class="post-tag-group">
         <span class="label label-warning">标签</span>
         <ul *ngIf="post.tags && post.tags.length <= 0">
             <li class="label label-pill label-default" (click)="toggleRightBar()">选择标签</li>
         </ul>
         <ul *ngIf="post.tags && post.tags.length > 0">
             <li *ngFor="let tag of post.tags" class="label label-pill label-primary"
-                (click)="removeTag(tag)">
+                (click)="toggleRightBar()">
                 {{ tag.name }} x
             </li>
         </ul>
@@ -85,53 +86,16 @@
 
 <!-- Right side bar -->
 <div class="right-side-bar" [class.show-right-side-bar]="!hideRightBar">
-    <div>
-        <a class="btn btn-danger-outline btn-sm" (click)="toggleRightBar($event)">
-            隐藏侧栏
-        </a>
-    </div>
-
     <tabset [justified]="true">
         <tab heading="分类">
-            文章分类过滤器+选择列表
-            <ul>
-                <!-- Loop root cat: categories which parent_id is 0 -->
-                <!-- FIXME: This is only a temp solution which supports 3 levels of tree -->
-                <!-- FIXME: Fix this after we have finished UI work -->
-                <!-- REF: Angular recursive directives:
-                 http://stackoverflow.com/questions/36522394/best-approach-to-create-recursive-treeview-dynamically-from-data-api
-                 -->
-                <div class="form-group">
-                    <label>搜索分类: </label>
-                    <input class="form-control" #box (keyup)="filterPostCategories(box.value)">
-                </div>
-
-                <template ngFor let-cat [ngForOf]="roots">
-                    <li *ngIf="!cat.hidden">
-                        {{ cat.name }} | {{ cat.slug }} | (ID: {{ cat.id }})
-                        <ul *ngIf="hasSubCat(cat.id)">
-                            <template ngFor let-sub [ngForOf]="subCats(cat.id)">
-                                <li *ngIf="!sub.hidden">
-                                    {{ sub.name }} | {{ sub.slug }} | (ID: {{sub.id}})
-                                    <ul *ngIf="hasSubCat(sub.id)">
-                                        <template ngFor let-s [ngForOf]="subCats(sub.id)">
-                                            <li *ngIf="!s.hidden">
-                                                {{ s.name }} | {{ s.slug }} | (ID: {{s.id}})
-                                            </li>
-                                        </template>
-                                    </ul>
-                                </li>
-                            </template>
-                        </ul>
-                    </li>
-                </template>
-
-                <div class="alert alert-danger">FIXME: This filtering is only support 2 level filtering now</div>
-            </ul>
+            <category-tree [isTreeRoot]="showFilter"
+                           [categories]="categories"
+                           (checkEvent)="checkCat($event)">
+            </category-tree>
         </tab>
 
         <tab heading="标签">
-            文章标签过滤器+标签云
+            <tag-cloud [tags]="tags" (checkEvent)="checkTag($event)"></tag-cloud>
         </tab>
         <tab heading="专题">
             文章专题过滤器+选择列表

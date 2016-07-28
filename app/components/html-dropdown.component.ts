@@ -9,6 +9,7 @@ import { Input, Output } from "@angular/core";
  * REF: http://www.bennadel.com/blog/3116-using-an-item-template-with-an-html-dropdown-menu-component-in-angular-2-rc-3.htm
  */
 
+let template = require('./html-dropdown.html');
 @Component({
     selector: "html-dropdown",
     queries: {
@@ -17,36 +18,7 @@ import { Input, Output } from "@angular/core";
     host: {
         "[class.is-open]": "isShowingItems"
     },
-    template:
-    `
-    <div (click)="toggleItems()" class="dropdown-root" [ngSwitch]="!! value">
-        <div *ngSwitchCase="true" class="dropdown-item-content">
-            
-            <template
-                [ngTemplateOutlet]="itemTemplate"
-                [ngOutletContext]="{ item: value, index: -1 }">
-            </template>
-        </div>
-        <div *ngSwitchCase="false" class="placeholder">
-            
-            {{ placeholder || "Nothing Selected" }}
-        </div>
-    </div>
-    <ul *ngIf="isShowingItems" class="dropdown-items">
-        <li 
-            *ngFor="let item of items ; let i = index ;" 
-            (click)="selectItem( item )"
-            class="dropdown-item">
-            <div class="dropdown-item-content">
-            
-                <template 
-                    [ngTemplateOutlet]="itemTemplate"
-                    [ngOutletContext]="{ item: item, index: i }">
-                </template>
-            </div>
-        </li>
-    </ul>
-    `
+    template: template
 })
 export class HtmlDropdownComponent {
 

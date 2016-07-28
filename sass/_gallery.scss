@@ -43,21 +43,3 @@
     transition: transform .2s ease-in-out, -webkit-transform .2s ease-in-out;
   }
 }
-
-.right-side-bar {
-  z-index: 999;
-  padding: 0.5rem;
-  position: fixed;
-  top: $topbar-height;
-  bottom: 0;
-  right: -450px;
-  width: 450px;
-  overflow-y: auto;
-  background: #FFFFFF;
-  transition: .3s ease-in-out;
-}
-
-.show-right-side-bar {
-  right: 0;
-  box-shadow: -5px 0px 5px #888;
-}

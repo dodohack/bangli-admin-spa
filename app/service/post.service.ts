@@ -4,9 +4,9 @@
 
 import { Injectable }               from '@angular/core';
 import { Jsonp, URLSearchParams }   from '@angular/http';
-import {Observable} from "rxjs/Observable";
+import { Observable } from "rxjs/Observable";
 
-import { PostStatus, Category }  from '../models';
+import { PostStatus, Category, Tag }  from '../models';
 import { AuthService } from './auth.service';
 import { APP } from '../app.api';
 
@@ -22,6 +22,9 @@ export class PostService
 
     /* Available categories */
     categories: Observable<Category[]>;
+
+    /* Available tags */
+    tags: Observable<Tag[]>;
 
     /**
      * Initialize common code in constructor, as we can't have ngOnInit
@@ -43,6 +46,7 @@ export class PostService
         
         this.initStatuses();
         this.initCategories();
+        this.initTags();
     }
 
     /**
@@ -94,6 +98,15 @@ export class PostService
     private initCategories() {
         this.categories = this.jsonp
             .get(APP.cms_cats, {search: this.params})
+            .map(res => res.json());
+    }
+
+    /**
+     * Return all cms tags
+     */
+    private initTags() {
+        this.tags = this.jsonp
+            .get(APP.cms_tags, {search: this.params})
             .map(res => res.json());
     }
 }

@@ -1,0 +1,27 @@
+<div (click)="toggleItems()" class="dropdown-root" [ngSwitch]="!! value">
+    <div *ngSwitchCase="true" class="dropdown-item-content">
+
+        <template
+                [ngTemplateOutlet]="itemTemplate"
+                [ngOutletContext]="{ item: value, index: -1 }">
+        </template>
+    </div>
+    <div *ngSwitchCase="false" class="placeholder">
+
+        {{ placeholder || "Nothing Selected" }}
+    </div>
+</div>
+<ul *ngIf="isShowingItems" class="dropdown-items">
+    <li
+            *ngFor="let item of items ; let i = index ;"
+            (click)="selectItem( item )"
+            class="dropdown-item">
+        <div class="dropdown-item-content">
+
+            <template
+                    [ngTemplateOutlet]="itemTemplate"
+                    [ngOutletContext]="{ item: item, index: i }">
+            </template>
+        </div>
+    </li>
+</ul>
