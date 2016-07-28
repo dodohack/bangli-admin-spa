@@ -3,7 +3,12 @@
  */
 
 export class Topic {
-    public id;
-    public slug;
-    public name;
+    id: number;
+    editor_id: number;
+    status: string;
+    guid: string;
+    title: string;
+    content: string;
+    created_at: string;
+    updated_at: string;
 }

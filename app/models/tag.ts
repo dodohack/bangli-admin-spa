@@ -3,7 +3,8 @@
  */
 
 export class Tag {
-    public id;
-    public slug;
-    public name;
+    id: number;
+    slug: string;
+    name: string;
+    description: string;
 }
