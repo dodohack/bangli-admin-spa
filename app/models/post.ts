@@ -41,7 +41,7 @@ export class Post {
     tags: Tag[];
     topics: Topic[];
     title: string;
-    description: string;
+    excerpt: string;
     content: string;
     /* Frontend display use */
     fake_published_at: string;

@@ -9,7 +9,7 @@ export class ProductStatus {
 export class Product {
     id: number;
     title: string;
-    description: string;
+    excerpt: string;
     content: string;
 
     checked: boolean;
