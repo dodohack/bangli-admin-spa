@@ -86,44 +86,57 @@
 <!-- Right side bar -->
 <div class="right-side-bar" [class.show-right-side-bar]="!hideRightBar">
     <div>
-        <h2>文章选项</h2>
         <a class="btn btn-danger-outline btn-sm" (click)="toggleRightBar($event)">
             隐藏侧栏
         </a>
     </div>
 
-    <ul>
-        <!-- Loop root cat: categories which parent_id is 0 -->
-        <!-- FIXME: This is only a temp solution which supports 3 levels of tree -->
-        <!-- FIXME: Fix this after we have finished UI work -->
-        <!-- REF: Angular recursive directives:
-         http://stackoverflow.com/questions/36522394/best-approach-to-create-recursive-treeview-dynamically-from-data-api
-         -->
-        <div class="form-group">
-            <label>搜索分类: </label>
-            <input class="form-control" #box (keyup)="filterPostCategories(box.value)">
-        </div>
+    <tabset [justified]="true">
+        <tab heading="分类">
+            文章分类过滤器+选择列表
+            <ul>
+                <!-- Loop root cat: categories which parent_id is 0 -->
+                <!-- FIXME: This is only a temp solution which supports 3 levels of tree -->
+                <!-- FIXME: Fix this after we have finished UI work -->
+                <!-- REF: Angular recursive directives:
+                 http://stackoverflow.com/questions/36522394/best-approach-to-create-recursive-treeview-dynamically-from-data-api
+                 -->
+                <div class="form-group">
+                    <label>搜索分类: </label>
+                    <input class="form-control" #box (keyup)="filterPostCategories(box.value)">
+                </div>
 
-        <template ngFor let-cat [ngForOf]="roots">
-            <li *ngIf="!cat.hidden">
-                {{ cat.name }} | {{ cat.slug }} | (ID: {{ cat.id }})
-                <ul *ngIf="hasSubCat(cat.id)">
-                    <template ngFor let-sub [ngForOf]="subCats(cat.id)">
-                        <li *ngIf="!sub.hidden">
-                            {{ sub.name }} | {{ sub.slug }} | (ID: {{sub.id}})
-                            <ul *ngIf="hasSubCat(sub.id)">
-                                <template ngFor let-s [ngForOf]="subCats(sub.id)">
-                                    <li *ngIf="!s.hidden">
-                                        {{ s.name }} | {{ s.slug }} | (ID: {{s.id}})
-                                    </li>
-                                </template>
-                            </ul>
-                        </li>
-                    </template>
-                </ul>
-            </li>
-        </template>
+                <template ngFor let-cat [ngForOf]="roots">
+                    <li *ngIf="!cat.hidden">
+                        {{ cat.name }} | {{ cat.slug }} | (ID: {{ cat.id }})
+                        <ul *ngIf="hasSubCat(cat.id)">
+                            <template ngFor let-sub [ngForOf]="subCats(cat.id)">
+                                <li *ngIf="!sub.hidden">
+                                    {{ sub.name }} | {{ sub.slug }} | (ID: {{sub.id}})
+                                    <ul *ngIf="hasSubCat(sub.id)">
+                                        <template ngFor let-s [ngForOf]="subCats(sub.id)">
+                                            <li *ngIf="!s.hidden">
+                                                {{ s.name }} | {{ s.slug }} | (ID: {{s.id}})
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </li>
+                            </template>
+                        </ul>
+                    </li>
+                </template>
 
-        <div class="alert alert-danger">FIXME: This filtering is only support 2 level filtering now</div>
-    </ul>
+                <div class="alert alert-danger">FIXME: This filtering is only support 2 level filtering now</div>
+            </ul>
+        </tab>
+
+        <tab heading="标签">
+            文章标签过滤器+标签云
+        </tab>
+        <tab heading="专题">
+            文章专题过滤器+选择列表
+        </tab>
+    </tabset>
+
+
 </div>

@@ -9,9 +9,10 @@ import { AuthService }       from './service/auth.service';
 import { SidebarComponent }  from './components/sidebar.component';
 import { TopbarComponent }   from './components/topbar.component';
 
+let template = require('./app.html');
 @Component({
     selector: 'huluwa-admin',
-    templateUrl: './app/app.html',
+    template: template,
     directives: [TopbarComponent, SidebarComponent]
 })
 export class App

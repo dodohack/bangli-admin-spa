@@ -5,8 +5,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 
+let template = require('./index.html');
 @Component({
-    templateUrl: 'app/email/index.html'
+    template: template
 })
 export class EmailHomePage implements OnInit
 {

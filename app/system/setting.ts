@@ -4,8 +4,9 @@
 
 import { Component } from '@angular/core';
 
+let template = require('./setting.html');
 @Component({
-    templateUrl: 'app/pages/setting.html'
+    template: template
 })
 export class SettingPage
 {

@@ -9,8 +9,9 @@ import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
 import { ProductService } from '../service/product.service';
 
+let template = require('./product.html');
 @Component({
-    templateUrl: 'app/shop/product.html',
+    template: template,
     directives: [FroalaEditorCompnoent],
     providers: [ProductService]
 })

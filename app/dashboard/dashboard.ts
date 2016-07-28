@@ -4,9 +4,9 @@
 
 import { Component } from '@angular/core';
 
-
+let template = require('./dashboard.html');
 @Component({
-    templateUrl: 'app/dashboard/dashboard.html'
+    template: template
 })
 export class DashboardPage
 {

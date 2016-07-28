@@ -5,7 +5,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 import { ActivatedRoute, CanDeactivate }  from '@angular/router';
-
+import { TAB_DIRECTIVES } from 'ng2-bootstrap';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 import { FROALA_OPTIONS } from '../models/froala.option';
 
@@ -17,9 +17,11 @@ import { PostService, UserService } from '../service';
 // FIXME: Remove 'forEach', as it is 10x slower than 'for'
 import forEach = require("core-js/fn/array/for-each");
 
+let template = require('./post.html');
 @Component({
-    templateUrl: 'app/cms/post.html',
+    template: template,
     directives: [
+        TAB_DIRECTIVES,
         FroalaEditorCompnoent,
         HtmlDropdownComponent,
         EditorPageHeaderComponent

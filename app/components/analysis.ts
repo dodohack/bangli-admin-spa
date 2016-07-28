@@ -5,8 +5,9 @@
 import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
+let template = require('./analysis.html');
 @Component({
-    templateUrl: 'app/pages/analysis.html',
+    template: template,
     directives: [ROUTER_DIRECTIVES]
 })
 export class AnalysisPage

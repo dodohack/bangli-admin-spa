@@ -5,8 +5,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 
+let template = require('./voucher.html');
 @Component({
-    templateUrl: 'app/shop/voucher.html'
+    template: template
 })
 export class VoucherPage implements OnInit
 {

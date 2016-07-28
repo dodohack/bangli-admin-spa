@@ -5,8 +5,9 @@
 import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
+let template = require('./seo.html');
 @Component({
-    templateUrl: 'app/pages/seo.html',
+    template: template,
     directives: [ROUTER_DIRECTIVES]
 })
 export class SeoPage

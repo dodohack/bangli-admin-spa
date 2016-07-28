@@ -5,6 +5,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 
+let template = require('./newsletter.html');
 @Component({
     templateUrl: 'app/email/newsletter.html'
 })

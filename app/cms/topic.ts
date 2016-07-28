@@ -5,8 +5,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 
+let template = require('./topic.html');
 @Component({
-    templateUrl: 'app/cms/topic.html'
+    template: template
 })
 
 export class TopicPage implements OnInit

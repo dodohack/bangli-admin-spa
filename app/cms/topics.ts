@@ -17,8 +17,9 @@ import {
     SearchBoxComponent, ListPageHeaderComponent ,
     ListPageMenuComponent } from "../components";
 
+let template = require('./topics.html');
 @Component({
-    templateUrl: 'app/cms/topics.html',
+    template: template,
     directives: [
         PaginatorComponent,
         DateFilterComponent,

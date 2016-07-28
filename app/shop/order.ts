@@ -5,8 +5,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 
+let template = require('./order.html');
 @Component({
-    templateUrl: 'app/shop/order.html'
+    template: template
 })
 export class OrderPage implements OnInit
 {

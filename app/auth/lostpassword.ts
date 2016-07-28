@@ -4,8 +4,9 @@
 
 import { Component } from '@angular/core';
 
+let template = require('./lostpassword.html');
 @Component({
-    templateUrl: 'app/auth/lostpassword.html'
+    template: template
 })
 export class LostPasswordPage
 {

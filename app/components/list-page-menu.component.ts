@@ -6,16 +6,15 @@ import { Component, Input } from '@angular/core';
     `
     <ul class="nav navbar-nav">
         <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/', baseUrl]">全部</a>
+            <a class="nav-link" [routerLink]="['/', baseUrl]" routerLinkActive="active">全部</a>
         </li>
         
         <li *ngIf="byMe">
-            <a class="nav-link">我的</a>
+            <a class="nav-link" routerLinkActive="active">我的</a>
         </li>
   
         <li *ngIf="authors" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-               aria-haspopup="true" aria-expanded="false">作者（{{ authors.length }}）</a>
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">作者（{{ authors.length }}）</a>
 
             <div class="dropdown-menu">
                 <a *ngFor="let author of authors; let i=index" class="dropdown-item"
@@ -26,8 +25,7 @@ import { Component, Input } from '@angular/core';
         </li>
 
         <li *ngIf="editors" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-               aria-haspopup="true" aria-expanded="false">编辑（{{ editors.length }}）</a>
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">编辑（{{ editors.length }}）</a>
 
             <div class="dropdown-menu">
                 <a *ngFor="let editor of editors; let i=index" class="dropdown-item"
@@ -39,7 +37,7 @@ import { Component, Input } from '@angular/core';
 
         <!-- Various order status tabs -->
         <li *ngFor="let status of statuses" class="nav-item">
-            <a class="nav-link" [routerLink]="['/', baseUrl, status.status]">
+            <a class="nav-link" [routerLink]="['/', baseUrl, status.status]" routerLinkActive="active">
                 {{ status.status }}<span style="color:grey;">（{{ status.count }}）</span>
             </a>
         </li>

@@ -6,8 +6,9 @@ import { Title }                from '@angular/platform-browser';
 
 import { ProductService }       from '../service/product.service';
 
+let template = require('./product-categories.html');
 @Component({
-    templateUrl: 'app/system/product-categories.html',
+    template: template,
     providers: [ProductService]
 })
 export class ProductCategoriesPage implements OnInit

@@ -13,9 +13,9 @@ import {
     SearchBoxComponent, ListPageHeaderComponent,
     ListPageMenuComponent } from '../components';
 
-
+let template = require('./posts.html');
 @Component({
-    templateUrl: 'app/cms/posts.html',
+    template: template,
     directives: [
         PaginatorComponent,
         DateFilterComponent,
@@ -124,6 +124,9 @@ export class PostsPage implements OnInit
      */
     private getNicenameById(id)
     {
+        if (!this.authors)
+            return;
+        
         for (let i = 0; i < this.authors.length; i++) {
             if (this.authors[i].id == id) {
                 if (this.authors[i].nicename == null)

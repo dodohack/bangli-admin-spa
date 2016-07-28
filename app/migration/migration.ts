@@ -8,8 +8,9 @@ import { Http, URLSearchParams }   from '@angular/http';
 import { APP } from '../app.api';
 import { AuthService } from '../service/auth.service';
 
+let template = require('./migration.html');
 @Component({
-    templateUrl: 'app/migration/migration.html'
+    template: template
 })
 export class MigrationPage
 {

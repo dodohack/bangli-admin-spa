@@ -5,8 +5,9 @@
 import { Component } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 
+let template = require('./comment.html');
 @Component({
-    templateUrl: 'app/pages/comment.html',
+    template: template,
     directives: [ROUTER_DIRECTIVES]
 })
 export class CommentPage

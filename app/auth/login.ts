@@ -9,8 +9,9 @@ import { AuthService } from '../service/auth.service';
 import { Login }       from '../datatype/login';
 import { APP }         from '../app.api';
 
+let template = require('./login.html');
 @Component({
-    templateUrl: 'app/auth/login.html'
+    template: template
 })
 export class LoginPage
 {

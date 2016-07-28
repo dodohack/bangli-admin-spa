@@ -12,8 +12,9 @@ import {
     PaginatorComponent, SearchBoxComponent,
     ListPageHeaderComponent, ListPageMenuComponent } from "../components";
 
+let template = require('./products.html');
 @Component({
-    templateUrl: 'app/shop/products.html',
+    template: template,
     directives: [
         PaginatorComponent,
         SearchBoxComponent,

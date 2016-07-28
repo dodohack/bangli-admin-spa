@@ -11,8 +11,9 @@ import { UserRole }    from '../datatype/userrole';
 import { UserService } from '../service/user.service';
 import {PaginatorComponent} from "../components/paginator.component";
 
+let template = require('./users.html');
 @Component({
-    templateUrl: 'app/user/users.html',
+    template: template,
     directives: [ PaginatorComponent ]
 })
 export class UsersPage implements OnInit

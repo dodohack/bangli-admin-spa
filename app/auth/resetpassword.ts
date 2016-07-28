@@ -4,8 +4,9 @@
 
 import { Component } from '@angular/core';
 
+let template = require('./resetpassword.html');
 @Component({
-    templateUrl: 'app/auth/resetpassword.html'
+    template: template
 })
 export class ResetPasswordPage
 {

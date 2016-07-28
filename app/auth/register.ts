@@ -9,8 +9,9 @@ import { AuthService }              from '../service/auth.service';
 import { Register, RegisterError }  from '../datatype/register';
 import { APP }                      from '../app.api';
 
+let template = './register.html';
 @Component({
-    templateUrl: 'app/auth/register.html'
+    template: template
 })
 export class RegisterPage
 {
