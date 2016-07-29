@@ -70,6 +70,10 @@
 
 .tag-cloud, .topic-cloud {
   padding-left: 0;
+
+  li.active {
+    background-color: grey;
+  }
 }
 
 .tag-item, .topic-item {

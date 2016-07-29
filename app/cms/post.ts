@@ -62,6 +62,8 @@ export class PostPage implements OnInit//, CanDeactivate
     hideRightBar = true;
     showFilter   = true;
 
+    tabs = {'cat': false, 'tag': false, 'topic': false};
+
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
                 private postService: PostService,
@@ -128,6 +130,10 @@ export class PostPage implements OnInit//, CanDeactivate
                 /* Till now, this.categories should be ready */
                 if (this.post.categories)
                     this.updateCategoryCheckStatus(this.categories);
+                if (this.post.tags)
+                    this.updateTagCheckStatus();
+                if (this.post.topics)
+                    this.updateTopicCheckStatus();
             });
     }
 
@@ -168,6 +174,30 @@ export class PostPage implements OnInit//, CanDeactivate
                 }
             }
 
+        }
+    }
+
+    private updateTagCheckStatus()
+    {
+        for (let i in this.post.tags) {
+            for (let j in this.tags) {
+                if (this.post.tags[i].id == this.tags[j].id) {
+                    this.tags[j].checked = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    private updateTopicCheckStatus()
+    {
+        for (let i in this.post.topics) {
+            for (let j in this.topics) {
+                if (this.post.topics[i].id == this.topics[j].id) {
+                    this.topics[j].checked = true;
+                    break;
+                }
+            } 
         }
     }
 
@@ -302,9 +332,14 @@ export class PostPage implements OnInit//, CanDeactivate
     /**
      * Toggle right panel
      */
-    private toggleRightBar(): void
+    private toggleRightBar(str: string): void
     {
         this.hideRightBar = !this.hideRightBar;
+        for (let t in this.tabs) {
+            this.tabs[t] = false;
+        }
+        /* Active corresponding tab */
+        this.tabs[str] = true;
     }
 
     /**
