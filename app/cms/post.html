@@ -42,7 +42,7 @@
         <ul *ngIf="post.topics && post.topics.length > 0">
             <li *ngFor="let topic of post.topics" class="label label-pill label-primary"
                 (click)="toggleRightBar()">
-                {{ topic.name }} x
+                {{ topic.title }} x
             </li>
         </ul>
     </div>
@@ -97,8 +97,9 @@
         <tab heading="标签">
             <tag-cloud [tags]="tags" (checkEvent)="checkTag($event)"></tag-cloud>
         </tab>
+
         <tab heading="专题">
-            文章专题过滤器+选择列表
+            <topic-cloud [topics]="topics" (checkEvent)="checkTopic($event)"></topic-cloud>
         </tab>
     </tabset>
 

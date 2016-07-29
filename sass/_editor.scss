@@ -57,22 +57,22 @@
   }
 }
 
-.tree-view, .tag-cloud {
+.tree-view, .tag-cloud, .topic-cloud {
   list-style: none;
 }
 
-.tree-item, .tag-item {
+.tree-item, .tag-item, .topic-cloud {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
 }
 
-.tag-cloud {
+.tag-cloud, .topic-cloud {
   padding-left: 0;
 }
 
-.tag-item {
+.tag-item, .topic-item {
   font-size: 85%;
   cursor: pointer;
   &:hover {

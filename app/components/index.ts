@@ -7,6 +7,7 @@ import { EditorPageHeaderComponent } from './editor-page-header.component';
 import { HtmlDropdownComponent } from './html-dropdown.component';
 import { CategoryTreeComponent } from './category-tree.component';
 import { TagCloudComponent } from './tag-cloud.component';
+import { TopicCloudComponent } from './topic-cloud.component';
 
 export {
     HtmlDropdownComponent,
@@ -17,5 +18,6 @@ export {
     ListPageMenuComponent,
     EditorPageHeaderComponent,
     CategoryTreeComponent,
-    TagCloudComponent
+    TagCloudComponent,
+    TopicCloudComponent
 };

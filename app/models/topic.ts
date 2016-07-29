@@ -11,4 +11,7 @@ export class Topic {
     content: string;
     created_at: string;
     updated_at: string;
+
+    hidden: boolean;
+    checked: boolean;
 }

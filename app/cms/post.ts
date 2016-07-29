@@ -13,7 +13,8 @@ import {
     HtmlDropdownComponent, 
     EditorPageHeaderComponent, 
     CategoryTreeComponent,
-    TagCloudComponent } from '../components';
+    TagCloudComponent,
+    TopicCloudComponent } from '../components';
 
 import { User, Post, Category, Tag, Topic } from '../models';
 import { PostService, UserService } from '../service';
@@ -27,7 +28,8 @@ let template = require('./post.html');
         HtmlDropdownComponent,
         EditorPageHeaderComponent,
         CategoryTreeComponent,
-        TagCloudComponent
+        TagCloudComponent,
+        TopicCloudComponent
     ],
     providers: [ PostService ]
 })
@@ -51,6 +53,8 @@ export class PostPage implements OnInit//, CanDeactivate
     categories: Category[];
     /* All post tags */
     tags: Tag[];
+    /* All topics available to post */
+    topics: Topic[];
 
     /* Froala editor options */
     options: any = FROALA_OPTIONS;
@@ -79,6 +83,8 @@ export class PostPage implements OnInit//, CanDeactivate
         this.initCategories();
 
         this.initTags();
+
+        this.initTopics();
 
         this.initPost();
     }
@@ -138,6 +144,12 @@ export class PostPage implements OnInit//, CanDeactivate
     {
         this.postService.tags
             .subscribe(json => this.tags = json);
+    }
+
+    private initTopics()
+    {
+        this.postService.topics
+            .subscribe(json => this.topics = json);
     }
 
     /**
@@ -322,7 +334,21 @@ export class PostPage implements OnInit//, CanDeactivate
             this.post.tags.splice(i, 1);
         }
     }
-    
+
+    /**
+     * Add selected topic to current post
+     * @param e
+     */
+    private checkTopic(e: Topic): void
+    {
+        if (e.checked)
+            this.post.topics.push(e);
+        else {
+            let i = this.post.topics.indexOf(e);
+            this.post.topics.splice(i, 1);
+        }
+    }
+
     /**
      * Remove category from current post, also deselect the cat from the cat list
      * @param e

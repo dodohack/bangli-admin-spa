@@ -47,6 +47,8 @@ export const APP = {
     cms_cats: base + '/admin/categories/cms',
     /* CMS tags */
     cms_tags: base + '/admin/tags/cms',
+    /* CMS topics available to post */
+    cms_topics: base + '/admin/topics/cms',
 
     /* List of topics */
     topics: base + '/admin/topics',
