@@ -3,10 +3,10 @@
  */
 
 import { Injectable }               from '@angular/core';
-import { Jsonp, URLSearchParams }   from '@angular/http';
+import { Jsonp, Http, Headers, RequestOptions, URLSearchParams }   from '@angular/http';
 import { Observable } from "rxjs/Observable";
 
-import { PostStatus, Category, Tag, Topic }  from '../models';
+import { PostStatus, Category, Post, Tag, Topic }  from '../models';
 import { AuthService } from './auth.service';
 import { APP } from '../app.api';
 
@@ -35,7 +35,8 @@ export class PostService
      * @param jsonp
      * @param authService
      */
-    constructor(private jsonp: Jsonp, private authService: AuthService)
+    constructor(private jsonp: Jsonp, private http: Http,
+                private authService: AuthService)
     {
         /* Set up common JSONP request arguments */
         this.params = new URLSearchParams;
@@ -94,6 +95,36 @@ export class PostService
         return this.jsonp
             .get(endpoint, {search: this.params})
             .map(res => res.json());
+    }
+
+    /**
+     * Save post to database
+     * TODO: Filter out non-dirty columns
+     */
+    public savePost(post: Post) {
+        let endpoint = APP.post + '/' + post.id;
+        let body = JSON.stringify(post);
+        let headers = new Headers({ 'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('jwt')});
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.post(endpoint, body, options)
+            .map(res => res.json() || {});
+    }
+
+    /**
+     * Save post to localStorage
+     * @param post
+     */
+    public autoSave(post: Post) {
+        localStorage.setItem('post', JSON.stringify(post));
+    }
+
+    public loadAutoSave(): Post {
+        let post = localStorage.getItem('post');
+        if (post) {
+            return JSON.parse(post);
+        }
     }
 
     /**

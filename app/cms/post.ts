@@ -77,6 +77,8 @@ export class PostPage implements OnInit//, CanDeactivate
 
     ngOnInit() {
         this.titleService.setTitle('编辑文章 - 葫芦娃');
+        
+        this.cleanPostDirtyMask();
 
         this.initAuthors();
 
@@ -89,6 +91,10 @@ export class PostPage implements OnInit//, CanDeactivate
         this.initTopics();
 
         this.initPost();
+    }
+
+    private cleanPostDirtyMask() {
+        this.post.cleanDirtyBit();
     }
 
     /**
@@ -348,6 +354,7 @@ export class PostPage implements OnInit//, CanDeactivate
      */
     private checkCat(e: Category): void
     {
+        this.post.dirtyCat = true;
         if (e.checked)
             this.post.categories.push(e);
         else {
@@ -362,6 +369,7 @@ export class PostPage implements OnInit//, CanDeactivate
      */
     private checkTag(e: Tag): void
     {
+        this.post.dirtyTag = true;
         if (e.checked)
             this.post.tags.push(e);
         else {
@@ -376,6 +384,7 @@ export class PostPage implements OnInit//, CanDeactivate
      */
     private checkTopic(e: Topic): void
     {
+        this.post.dirtyTopic = true;
         if (e.checked)
             this.post.topics.push(e);
         else {
@@ -426,4 +435,36 @@ export class PostPage implements OnInit//, CanDeactivate
       return false;
     }
     */
+
+    /**
+     * Save the post
+     */
+    private save()
+    {
+        console.log("SAVING POST: ", this.post);
+        this.postService.savePost(this.post)
+            .subscribe(
+                status => console.log("POST SAVING STATUS: ", status),
+                error => console.log("POST SAVING ERROR: ", error),
+                () => console.log("POST SAVING FINISHED")
+            );
+    }
+
+    /**
+     * Change the post status to 'pending' and save it
+     */
+    private save2Review()
+    {
+        this.post.status = 'pending';
+        this.save();
+    }
+
+    /**
+     * Change the post status to 'publish' and save it
+     */
+    private publish()
+    {
+        this.post.status = 'public';
+        this.save();
+    }
 }
