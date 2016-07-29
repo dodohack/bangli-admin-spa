@@ -441,7 +441,6 @@ export class PostPage implements OnInit//, CanDeactivate
      */
     private save()
     {
-        console.log("SAVING POST: ", this.post);
         this.postService.savePost(this.post)
             .subscribe(
                 status => console.log("POST SAVING STATUS: ", status),

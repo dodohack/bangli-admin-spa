@@ -104,12 +104,15 @@ export class PostService
     public savePost(post: Post) {
         let endpoint = APP.post + '/' + post.id;
         let body = JSON.stringify(post);
+
+        console.log("SAVING POST: ", body);
+
         let headers = new Headers({ 'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem('jwt')});
         let options = new RequestOptions({ headers: headers });
 
-        return this.http.post(endpoint, body, options)
-            .map(res => res.json() || {});
+        return this.http.post(endpoint, body, options);
+            //.map(res => res.json() || {});
     }
 
     /**
