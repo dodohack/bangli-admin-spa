@@ -1,16 +1,15 @@
 
 /* includes selected categories, tags and topics */
 .post-tags {
-  margin-bottom: 1rem;
 
   .post-tag-group {
-    display: inline-block;
+    display: inline;
     padding-right: 1rem;
 
     ul {
       margin: 0;
       padding: 0;
-      display: inline-block;
+      display: inline;
       list-style: none;
 
       li {
@@ -90,7 +89,7 @@
 }
 
 /* Author, editor and post type wrapper */
-.post-meta-wrapper {
+.post-meta-wrapper, .post-ctt-wrapper {
   margin-bottom: 1rem;
   background: #eeeeee;
   padding: 0.5rem;
@@ -99,4 +98,9 @@
   .post-meta-item {
     margin-right: 1rem;
   }
+}
+
+.post-ctt-wrapper {
+  padding: 0.4rem 0.5rem 0.5rem;
+  white-space: normal;
 }

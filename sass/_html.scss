@@ -80,6 +80,36 @@ input.input-sm {
     padding-right: 2rem;
 }
 
+.label-primary-outline {
+    border: 1px solid $label-primary-bg;
+    color: $label-primary-bg;
+}
+
+.label-warning-outline {
+    border: 1px solid $label-warning-bg;
+    color: $label-warning-bg;
+}
+
+.label-danger-outline {
+    border: 1px solid $label-danger-bg;
+    color: $label-danger-bg;
+}
+
+.label-default-outline {
+    border: 1px solid $label-default-bg;
+    color: $label-default-bg;
+}
+
+.label-success-outline {
+    border: 1px solid $label-success-bg;
+    color: $label-success-bg;
+}
+
+.label-info-outline {
+    border: 1px solid $label-info-bg;
+    color: $label-info-bg;
+}
+
 /* Test activated anchor via routerLinkActive directive */
 .sidebar a.active {
     background: grey !important;
