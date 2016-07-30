@@ -93,9 +93,39 @@
             <!-- Editing -->
             <tr *ngIf="post.editing" class="fast-edit-form" id="edit-{{i}}">
                 <td colspan="10">
-                    <fast-edit-post-form [post]="post"></fast-edit-post-form>
+                    <fast-edit-post-form [post]="post" (toggle)="toggleRightBar($event)"></fast-edit-post-form>
                 </td>
             </tr>
         </template>
     </tbody>
 </table>
+
+
+<!-- Right side bar -->
+<div class="right-side-bar" [class.show-right-side-bar]="!hideRightBar">
+    <tabset [justified]="true" *ngIf="!hideRightBar">
+        <tab heading="分类" [active]="tabs['cat']"
+             (select)="tabs['cat'] = true" (deselect)="tabs['cat'] = false">
+            <category-tree [isTreeRoot]="showFilter"
+                           [categories]="categories"
+                           (checkEvent)="checkCat($event)">
+            </category-tree>
+        </tab>
+
+        <tab heading="标签" [active]="tabs['tag']"
+             (select)="tabs['tag'] = true" (deselect)="tabs['tag'] = false">
+            <tag-cloud [tags]="tags" (checkEvent)="checkTag($event)"></tag-cloud>
+        </tab>
+
+        <tab heading="专题" [active]="tabs['topic']"
+             (select)="tabs['topic'] = true" (deselect)="tabs['topic'] = false">
+            <topic-cloud [topics]="topics" (checkEvent)="checkTopic($event)"></topic-cloud>
+        </tab>
+    </tabset>
+</div>
+
+<!-- Alerts area, fixed at left bottom -->
+<div class="alert-area" *ngIf="alerts && alerts.length">
+    <alert *ngFor="let alert of alerts; let i = index" [type]="alert.type"
+           dismissOnTimeout="1000">{{alert?.msg}}</alert>
+</div>

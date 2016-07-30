@@ -5,16 +5,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 import { ActivatedRoute, CanDeactivate }  from '@angular/router';
-import { TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
+import { TYPEAHEAD_DIRECTIVES, TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 import { FROALA_OPTIONS } from '../models/froala.option';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 import { 
     HtmlDropdownComponent, 
     EditorPageHeaderComponent, 
     CategoryTreeComponent,
     TagCloudComponent,
-    TopicCloudComponent } from '../components';
+    TopicCloudComponent,
+    PostCttCloudComponent } from '../components';
 
 import { User, Post, Category, Tag, Topic } from '../models';
 import { PostService, UserService } from '../service';
@@ -25,12 +28,14 @@ let template = require('./post.html');
     directives: [
         AlertComponent,
         TAB_DIRECTIVES,
+        TYPEAHEAD_DIRECTIVES,
         FroalaEditorCompnoent,
         HtmlDropdownComponent,
         EditorPageHeaderComponent,
         CategoryTreeComponent,
         TagCloudComponent,
-        TopicCloudComponent
+        TopicCloudComponent,
+        PostCttCloudComponent
     ],
     providers: [ PostService ]
 })
@@ -45,6 +50,9 @@ export class PostPage implements OnInit
     pageTitle  = "文章";
     previewUrl = "dummy";
     backUrl    = "post";
+    
+    authorName: string;
+    editorName: string;
 
     /* TODO: Used to test html-dropdown.component */
     authors: User[];
@@ -55,6 +63,7 @@ export class PostPage implements OnInit
     /* All post tags */
     tags: Tag[];
     /* All topics available to post */
+    /* TODO: topic cloud should be optimized if the number is large */
     topics: Topic[];
 
     /* Froala editor options */
@@ -96,6 +105,7 @@ export class PostPage implements OnInit
         this.initPost();
     }
 
+
     private cleanPostDirtyMask() {
         this.post.dirtyCat = false;
         this.post.dirtyTag = false;
@@ -119,12 +129,12 @@ export class PostPage implements OnInit
         this.userService.authors.subscribe(
             authors => {
                 this.authors = authors;
+                console.log("Authors: ", this.authors);
                 /* Editors are users can edit any posts */
                 this.editors = authors.filter(people => people.role != 'author');
             }
         );
     }
-
     /**
      * Post ID should be available before initializing a post
      */
@@ -268,6 +278,14 @@ export class PostPage implements OnInit
         });
     }
 
+    onSelectAuthor(e: any) {
+        console.log("Author selected: ", e.item.nicename);
+    }
+
+    onSelectEditor(e: any) {
+        console.log("Editor selected: ", e.item.nicename);
+    }
+
     /**
      * Filter post categories for matched user input 
      */
@@ -354,14 +372,14 @@ export class PostPage implements OnInit
     /**
      * Toggle right panel
      */
-    private toggleRightBar(str: string): void
+    private toggleRightBar(event): void
     {
         this.hideRightBar = !this.hideRightBar;
         for (let t in this.tabs) {
             this.tabs[t] = false;
         }
         /* Active corresponding tab */
-        this.tabs[str] = true;
+        this.tabs[event] = true;
     }
 
     /**

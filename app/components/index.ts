@@ -9,6 +9,7 @@ import { HtmlDropdownComponent } from './html-dropdown.component';
 import { CategoryTreeComponent } from './category-tree.component';
 import { TagCloudComponent } from './tag-cloud.component';
 import { TopicCloudComponent } from './topic-cloud.component';
+import { PostCttCloudComponent } from './post-ctt-cloud.component';
 
 export {
     HtmlDropdownComponent,
@@ -21,5 +22,6 @@ export {
     EditorPageHeaderComponent,
     CategoryTreeComponent,
     TagCloudComponent,
-    TopicCloudComponent
+    TopicCloudComponent,
+    PostCttCloudComponent
 };

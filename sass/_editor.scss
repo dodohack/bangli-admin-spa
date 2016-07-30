@@ -25,6 +25,11 @@
   }
 }
 
+/* Froala editor */
+.fr-box {
+  margin-bottom: 2rem;
+}
+
 /* Right sidebar */
 
 .right-side-bar {
@@ -81,5 +86,17 @@
   cursor: pointer;
   &:hover {
     background-color: grey;
+  }
+}
+
+/* Author, editor and post type wrapper */
+.post-meta-wrapper {
+  margin-bottom: 1rem;
+  background: #eeeeee;
+  padding: 0.5rem;
+  white-space: nowrap;
+
+  .post-meta-item {
+    margin-right: 1rem;
   }
 }

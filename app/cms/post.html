@@ -11,78 +11,100 @@
                [(ngModel)]="post.title">
         <span class="input-group-btn">
             <button class="btn btn-success" (click)="save()" [disabled]="!isPostDirty()"><i class="fa fa-save"></i> 保存</button>
+
             <!-- Only display these 2 buttons for editors and above -->
-            <button class="btn btn-primary" (click)="save2Review()" [disabled]="!isPostDirty() && post.status === 'pending'"><i class="fa fa-eye"></i> 提交审稿</button>
-            <button class="btn btn-danger" (click)="publish()" [disabled]="!isPostDirty() && post.status === 'publish'"><i class="fa fa-smile-o"></i> 发布</button>
+            <button class="btn btn-primary" (click)="save2Review()"
+                    [disabled]="!isPostDirty() && (post.status === 'pending' || post.status === 'publish')">
+                <i class="fa fa-eye"></i> 提交审稿
+            </button>
+
+            <button class="btn btn-danger" (click)="save2Draft()" *ngIf="post.status === 'publish'">
+                <i class="fa fa-edit"></i>保存为草稿
+            </button>
+
+            <button class="btn btn-danger" (click)="publish()" *ngIf="post.status !== 'publish'"
+                    [disabled]="!isPostDirty() && post.status === 'publish'">
+                <i class="fa fa-smile-o"></i> 发布
+            </button>
         </span>
     </div>
 </div>
 
-<!-- Post category, tag etc -->
-<div class="post-tags">
-    <div class="post-tag-group">
-        <span class="label label-warning">文章分类</span>
-        <ul *ngIf="post.categories && post.categories.length <= 0">
-            <li class="label label-pill label-default" (click)="toggleRightBar('cat')">选择分类</li>
-        </ul>
-        <ul *ngIf="post.categories && post.categories.length > 0">
-            <li *ngFor="let cat of post.categories" class="label label-pill label-primary"
-                (click)="toggleRightBar('cat')">
-                <!-- Was removeCat(cat), but we need passing Observable into ChildView -->
-                {{ cat.name }} x
-            </li>
-        </ul>
+<div class="row">
+    <div class="col-xs-10">
+        <!-- Post category, tag, topic etc -->
+        <post-ctt-cloud [post]="post" (toggle)="toggleRightBar($event)"></post-ctt-cloud>
     </div>
 
-    <div class="post-tag-group">
-        <span class="label label-warning">专题</span>
-        <ul *ngIf="post.topics && post.topics.length <= 0">
-            <li class="label label-pill label-default" (click)="toggleRightBar('topic')">选择专题</li>
-        </ul>
-        <ul *ngIf="post.topics && post.topics.length > 0">
-            <li *ngFor="let topic of post.topics" class="label label-pill label-primary"
-                (click)="toggleRightBar('topic')">
-                {{ topic.title }} x
-            </li>
-        </ul>
-    </div>
-
-    <div class="post-tag-group">
-        <span class="label label-warning">标签</span>
-        <ul *ngIf="post.tags && post.tags.length <= 0">
-            <li class="label label-pill label-default" (click)="toggleRightBar('tag')">选择标签</li>
-        </ul>
-        <ul *ngIf="post.tags && post.tags.length > 0">
-            <li *ngFor="let tag of post.tags" class="label label-pill label-primary"
-                (click)="toggleRightBar('tag')">
-                {{ tag.name }} x
-            </li>
-        </ul>
+    <div class="col-xs-2">
+        <span class="label label-default float-right">文章状态: {{ post.status }}</span>
     </div>
 </div>
+
+<!-- Post meta data -->
+<div class="form-inline post-meta-wrapper">
+    <div class="form-group post-meta-item">
+        <label>作者</label>
+        <select class="c-select form-control" [(ngModel)]="post.author_id">
+            <option [value]="author.id"
+                    *ngFor="let author of authors">{{ author.nicename }}</option>
+        </select>
+    </div>
+
+    <div class="form-group post-meta-item">
+        <label>编辑</label>
+        <select class="c-select form-control" [(ngModel)]="post.editor_id">
+            <option [value]="editor.id"
+                    *ngFor="let editor of editors">{{ editor.nicename }}</option>
+        </select>
+    </div>
+
+    <div class="form-group post-meta-item">
+        <label>文章类型</label>
+        <select class="c-select form-control" [(ngModel)]="post.post_type">
+            <option value="creative">原创</option>
+            <option value="creative">原创</option>
+            <option value="creative">原创</option>
+            <!--
+            <option [value]="postType"
+                    *ngFor="let postType of postTypes">{{ postType }}</option>
+                    -->
+        </select>
+    </div>
+
+    <div class="form-group post-meta-item">
+        <label>发布时间</label>
+        <select class="c-select form-control" [(ngModel)]="post.post_type">
+            <option value="creative">原创</option>
+            <option value="creative">原创</option>
+            <option value="creative">原创</option>
+            <!--
+            <option [value]="postType"
+                    *ngFor="let postType of postTypes">{{ postType }}</option>
+                    -->
+        </select>
+    </div>
+</div>
+
 
 <!-- Froala Editor -->
 <froala [froalaOptions]="options"
         [froalaData]="post.content" (model)="onFroalaModelChanged($event)"
         (editorInitialized)="onEditorInitialized()"></froala>
 
-<p>
-    <strong>Dropdown menu</strong>: {{ author?.name || "无作者" }}
-    &mdash;
-    <a (click)="clearSelection()">Clear selection</a>
-</p>
-<html-dropdown
-        [items]="authors"
-        [(value)]="author"
-        placeholder="选择作者">
+<div class="row">
+    <div class="col-xs-8">
+        <textarea rows="3">
+            摘要
+        </textarea>
+    </div>
+    <div class="col-xs-4">
+        <div style="width: 300px; height: 300px; border: 3px solid green;">
+            缩略图
+        </div>
+    </div>
+</div>
 
-    <template let-author="item">
-        <!--<img [src]="( './img/' + author.avatar )" />-->
-        <span class="name">
-            {{ author.name }} | {{ author.nicename }}
-        </span>
-    </template>
-</html-dropdown>
 
 <!-- Right side bar -->
 <div class="right-side-bar" [class.show-right-side-bar]="!hideRightBar">

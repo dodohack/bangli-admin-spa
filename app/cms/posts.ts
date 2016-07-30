@@ -5,24 +5,33 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
+import { TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
 
-import { User, Pagination, PostStatus } from '../models';
 import { PostService, UserService } from '../service';
+import { User, Post, Category, Tag, Topic,
+    Pagination, PostStatus } from '../models';
 import {
     PaginatorComponent, DateFilterComponent,
     SearchBoxComponent, ListPageHeaderComponent,
-    ListPageMenuComponent, FastEditPostFormComponent } from '../components';
+    ListPageMenuComponent, FastEditPostFormComponent,
+    CategoryTreeComponent, TagCloudComponent,
+    TopicCloudComponent } from '../components';
 
 let template = require('./posts.html');
 @Component({
     template: template,
     directives: [
+        AlertComponent,
+        TAB_DIRECTIVES,
         PaginatorComponent,
         DateFilterComponent,
         SearchBoxComponent,
         ListPageHeaderComponent,
         ListPageMenuComponent,
-        FastEditPostFormComponent
+        FastEditPostFormComponent,
+        CategoryTreeComponent,
+        TagCloudComponent,
+        TopicCloudComponent
     ],
     providers: [ PostService ]
 })
@@ -56,13 +65,25 @@ export class PostsPage implements OnInit
     /* Editors object */
     editors: User[];
     
-    /* Categories object */
-    categories: any;
+    /* All post categories, tags, topics */
+    categories: Category[];
+    tags: Tag[];
+    /* TODO: topic cloud should be optimized if the number is large */
+    topics: Topic[];
+
     /* Post status object */
     status: any;
     
     /* If select all checkbox is checked or not */
     checkedAll: boolean = false;
+
+    /* Right bar related */
+    hideRightBar = true;
+    showFilter   = true;
+    tabs = {'cat': false, 'tag': false, 'topic': false};
+
+    /* Alert message */
+    alerts = Array<Object>();
 
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
@@ -74,8 +95,7 @@ export class PostsPage implements OnInit
      * If no role/page is setting from URL segment, we will display the first
      * page of all customers by default.
      */
-    ngOnInit()
-    {
+    ngOnInit() {
         /* Set document title */
         this.titleService.setTitle('文章列表 - 葫芦娃管理平台');
 
@@ -83,7 +103,34 @@ export class PostsPage implements OnInit
 
         this.initPostStatuses();
 
-        /* Retrieve authors and editors */
+        this.initAuthors();
+
+        this.initCategories();
+
+        this.initTags();
+
+        this.initTopics();
+
+        this.initPostsList();
+    }
+
+    /**
+     * Get posts list page menu
+     */
+    private initPostStatuses()
+    {
+        this.postService.statuses.subscribe(
+            json  => {
+                this.statuses = json;
+            },
+            error => console.error(error)
+        );
+    }
+
+    /**
+     * Retrieve available authors and editors
+     */
+    private initAuthors() {
         this.userService.authors.subscribe(
             authors => {
                 this.authors = authors;
@@ -91,7 +138,10 @@ export class PostsPage implements OnInit
                 this.editors = authors.filter(people => people.role != 'author');
             }
         );
+    }
 
+    private initPostsList()
+    {
         /* Get URL segments and update the list */
         this.route.params.subscribe(
             segment => {
@@ -107,16 +157,24 @@ export class PostsPage implements OnInit
     }
 
     /**
-     * Get posts list page menu
+     * Initialize all available categories
      */
-    private initPostStatuses()
+    private initCategories()
     {
-        this.postService.statuses.subscribe(
-            json  => {
-                this.statuses = json;
-            },
-            error => console.error(error)
-        );
+        this.postService.categories
+            .subscribe(json => this.categories = json);
+    }
+
+    private initTags()
+    {
+        this.postService.tags
+            .subscribe(json => this.tags = json);
+    }
+
+    private initTopics()
+    {
+        this.postService.topics
+            .subscribe(json => this.topics = json);
     }
 
     /**
@@ -212,4 +270,21 @@ export class PostsPage implements OnInit
         //console.log("double clicked detected: " + i);
         //console.log($event);
     }
+
+    /**
+     * Toggle right panel
+     */
+    private toggleRightBar(str: string): void
+    {
+        this.hideRightBar = !this.hideRightBar;
+        for (let t in this.tabs) {
+            this.tabs[t] = false;
+        }
+        // Active corresponding tab
+        this.tabs[str] = true;
+    }
+
+    private checkCat(e: Category): void {}
+    private checkTag(e: Tag): void {}
+    private checkTopic(e: Topic): void {}
 }
