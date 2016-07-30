@@ -99,13 +99,41 @@ export class PostService
 
     /**
      * Save post to database
-     * TODO: Filter out non-dirty columns
      */
     public savePost(post: Post) {
         let endpoint = APP.post + '/' + post.id;
-        let body = JSON.stringify(post);
+
+        /*
+         * FIXME: Should we create a copy of post when modifing it, instead of
+         * doing it here.
+         */
+        let newPost = new Post;
+
+        newPost.id = post.id;
+        if (post.dirtyCat)
+            newPost.categories = post.categories;
+        if (post.dirtyTag)
+            newPost.tags = post.tags;
+        if (post.dirtyTopic)
+            newPost.topics = post.topics;
+        if (post.dirtyContent)
+            newPost.content = post.content;
+        if (post.dirtyOthers) {
+            newPost.editor_id = post.editor_id;
+            newPost.author_id = post.author_id;
+            newPost.image_id  = post.image_id;
+            newPost.status    = post.status;
+            newPost.post_type = post.post_type;
+            newPost.title     = post.title;
+            newPost.excerpt   = post.excerpt;
+            newPost.fake_published_at = post.fake_published_at;
+        }
+
+        let body = JSON.stringify(newPost);
 
         console.log("SAVING POST: ", body);
+
+        /* TODO: Do not send request if nothing is dirty */
 
         let headers = new Headers({ 'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + localStorage.getItem('jwt')});

@@ -55,13 +55,4 @@ export class Post {
     dirtyTopic: boolean;
     dirtyContent: boolean;
     dirtyOthers: boolean; /* All other columns except those listed above */
-
-    cleanDirtyBit()
-    {
-        this.dirtyCat = false;
-        this.dirtyTag = false;
-        this.dirtyTopic = false;
-        this.dirtyContent = false;
-        this.dirtyOthers = false;
-    }
 }

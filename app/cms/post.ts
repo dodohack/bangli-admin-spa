@@ -94,7 +94,19 @@ export class PostPage implements OnInit//, CanDeactivate
     }
 
     private cleanPostDirtyMask() {
-        this.post.cleanDirtyBit();
+        this.post.dirtyCat = false;
+        this.post.dirtyTag = false;
+        this.post.dirtyTopic = false;
+        this.post.dirtyContent = false;
+        this.post.dirtyOthers = false;
+    }
+
+    private isPostDirty() {
+        return this.post.dirtyCat ||
+            this.post.dirtyTag ||
+            this.post.dirtyTopic ||
+            this.post.dirtyContent ||
+            this.post.dirtyOthers;
     }
 
     /**
@@ -240,6 +252,7 @@ export class PostPage implements OnInit//, CanDeactivate
     onFroalaModelChanged(event: any) {
         setTimeout(() => {
             this.post.content = event;
+            this.post.dirtyContent = true;
             console.log("onFroalaModelChanged");
         });
     }
@@ -349,84 +362,54 @@ export class PostPage implements OnInit//, CanDeactivate
     }
 
     /**
+     * Template function used by category-tree/tag-cloud/topic-cloud checkbox
+     * @param e
+     * @param input
+     * @param dirty
+     */
+    private check<T>(e: T, input: Array<T>): Array<T> {
+
+        let output = Array<T>();
+
+        if (e['checked'])
+            output = [...input, e];
+        else {
+            for (let i in input) {
+                if (input[i]['id'] !== e['id']) {
+                    output.push(input[i]);
+                }
+            }
+        }
+
+        return output;
+    }
+
+    /**
      * Add selected category to current post
      * @param e
      */
-    private checkCat(e: Category): void
-    {
-        this.post.dirtyCat = true;
-        if (e.checked)
-            this.post.categories.push(e);
-        else {
-            let i = this.post.categories.indexOf(e);
-            this.post.categories.splice(i, 1);
-        }
+    private checkCat(e: Category): void {
+        this.post.dirtyCat   = true;
+        this.post.categories = this.check(e, this.post.categories);
     }
 
     /**
      * Add selected tag to current post
      * @param e
      */
-    private checkTag(e: Tag): void
-    {
+    private checkTag(e: Tag): void {
         this.post.dirtyTag = true;
-        if (e.checked)
-            this.post.tags.push(e);
-        else {
-            let i = this.post.tags.indexOf(e);
-            this.post.tags.splice(i, 1);
-        }
+        this.post.tags     = this.check(e, this.post.tags);
     }
 
     /**
      * Add selected topic to current post
      * @param e
      */
-    private checkTopic(e: Topic): void
-    {
+    private checkTopic(e: Topic): void {
         this.post.dirtyTopic = true;
-        if (e.checked)
-            this.post.topics.push(e);
-        else {
-            let i = this.post.topics.indexOf(e);
-            this.post.topics.splice(i, 1);
-        }
+        this.post.topics = this.check(e, this.post.topics);
     }
-
-    /**
-     * Remove category from current post, also deselect the cat from the cat list
-     * @param e
-     */
-    /*
-    private removeCat(e: Category): void
-    {
-        let i = this.post.categories.indexOf(e);
-        this.post.categories.splice(i, 1);
-    }
-    */
-    /**
-     * Remove topic from current post
-     * @param e
-     */
-    /*
-    private removeTopic(e: Topic): void
-    {
-        let i = this.post.topics.indexOf(e);
-        this.post.topics.splice(i, 1);
-    }
-    */
-
-    /**
-     * Remove tag from current post
-     * @param e
-     */
-    /*
-    private removeTag(e: Tag): void
-    {
-        let i = this.post.tags.indexOf(e);
-        this.post.tags.splice(i, 1);
-    }
-    */
 
     // Return true if everything is saved, else return false.
     /*
@@ -441,11 +424,15 @@ export class PostPage implements OnInit//, CanDeactivate
      */
     private save()
     {
+        /* Don't trigger post if post is not dirty*/
+        if (!this.isPostDirty())
+            return;
+
         this.postService.savePost(this.post)
             .subscribe(
                 status => console.log("POST SAVING STATUS: ", status),
                 error => console.log("POST SAVING ERROR: ", error),
-                () => console.log("POST SAVING FINISHED")
+                () => this.cleanPostDirtyMask()
             );
     }
 
@@ -454,6 +441,9 @@ export class PostPage implements OnInit//, CanDeactivate
      */
     private save2Review()
     {
+        if (this.post.status != 'pending')
+            this.post.dirtyOthers = true;
+
         this.post.status = 'pending';
         this.save();
     }
@@ -463,6 +453,9 @@ export class PostPage implements OnInit//, CanDeactivate
      */
     private publish()
     {
+        if (this.post.status != 'publish')
+            this.post.dirtyOthers = true;
+
         this.post.status = 'public';
         this.save();
     }
