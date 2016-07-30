@@ -10,10 +10,10 @@
         <input type="text" name="title" class="form-control" placeholder="文章标题"
                [(ngModel)]="post.title">
         <span class="input-group-btn">
-            <button class="btn btn-success" (click)="save()"><i class="fa fa-save"></i> 保存</button>
+            <button class="btn btn-success" (click)="save()" [disabled]="!isPostDirty()"><i class="fa fa-save"></i> 保存</button>
             <!-- Only display these 2 buttons for editors and above -->
-            <button class="btn btn-primary" (click)="save2Review()"><i class="fa fa-eye"></i> 提交审稿</button>
-            <button class="btn btn-danger" (click)="publish()"><i class="fa fa-smile-o"></i> 发布</button>
+            <button class="btn btn-primary" (click)="save2Review()" [disabled]="!isPostDirty() && post.status === 'pending'"><i class="fa fa-eye"></i> 提交审稿</button>
+            <button class="btn btn-danger" (click)="publish()" [disabled]="!isPostDirty() && post.status === 'publish'"><i class="fa fa-smile-o"></i> 发布</button>
         </span>
     </div>
 </div>
@@ -105,4 +105,10 @@
             <topic-cloud [topics]="topics" (checkEvent)="checkTopic($event)"></topic-cloud>
         </tab>
     </tabset>
+</div>
+
+<!-- Alerts area, fixed at left bottom -->
+<div class="alert-area" *ngIf="alerts && alerts.length">
+    <alert *ngFor="let alert of alerts; let i = index" [type]="alert.type"
+           dismissOnTimeout="2000">{{alert?.msg}}</alert>
 </div>

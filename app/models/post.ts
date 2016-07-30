@@ -12,7 +12,15 @@ export const PostTypeTranslation = {
     integration   : '整理',
     review        : '审稿'
 };
-
+/* Name conflict
+export const PostStatus = {
+    publish  : 'publish',
+    featured : 'featured',
+    pending  : 'pending',
+    draft    : 'draft',
+    trash    : 'trash'
+};
+*/
 export const PostStatusTranslation = {
     publish  : '发布',
     featured : '置顶',

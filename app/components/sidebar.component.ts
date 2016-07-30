@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
-import { SidebarMenus }       from '../models/sidebar-menus';
-import { AuthService }       from '../service/auth.service';
+import { SidebarMenus } from '../models/sidebar-menus';
 
 @Component({
     selector: 'sidebar',

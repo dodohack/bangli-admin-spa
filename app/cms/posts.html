@@ -17,7 +17,7 @@
         <select class="c-select select-sm">
             <option value="0" selected>批量操作</option>
             <option value="x">移到回收站</option>
-            <option value="y">标记</option>
+            <option value="y">批量修改</option>
         </select>
         <button type="submit" class="btn btn-secondary btn-sm">应用</button>
     </div>
@@ -69,7 +69,7 @@
         <!-- table row of post -->
         <template ngFor let-post [ngForOf]="posts" let-i="index">
             <!-- displaying -->
-            <tr *ngIf="!post.editing" id="{{i}}" (dblclick)="fastEditCurrentPost($event, i)">
+            <tr id="{{i}}" (dblclick)="fastEditCurrentPost($event, i)">
                 <th>{{i+1}}</th>
                 <td><input type="checkbox" name="post[]" [(ngModel)]="post.checked"></td>
                 <td>
@@ -91,46 +91,9 @@
                 <td>0</td>
             </tr>
             <!-- Editing -->
-            <tr *ngIf="post.editing" id="edit-{{i}}" (dblclick)="fastEditCurrentPost($event, i)">
+            <tr *ngIf="post.editing" class="fast-edit-form" id="edit-{{i}}">
                 <td colspan="10">
-                    <h5>快速编辑</h5>
-                    <label>
-                        <span class="title">标题</span>
-                        <span class="input-text-wrap">
-                            <input type="text" name="title" [(ngModel)]="post.title">
-                        </span>
-                    </label>
-                    <label>
-                        <span class="title">作者</span>
-                        <span class="input-text-wrap">
-                            <input type="text" name="author_id" [(ngModel)]="post.author_id">
-                        </span>
-                    </label>
-                    <label>
-                        <span class="title">编辑</span>
-                        <span class="input-text-wrap">
-                            <input type="text" name="editor_id" [(ngModel)]="post.editor_id">
-                        </span>
-                    </label>
-                    <label>
-                        <span class="title">分类</span>
-                        <span *ngFor="let cat of post.categories">
-                            <input type="checkbox" name="category[]">{{ cat.name }}
-                        </span>
-                    </label>
-                    <label>
-                        <span class="title">前端日期</span>
-                        <span class="input-text-wrap">
-                            <input type="text" name="fake_published_at" [(ngModel)]="post.fake_published_at">
-                        </span>
-                    </label>
-
-                    <label>
-                        <span class="title">文章状态</span>
-                        <span class="input-text-wrap">
-                            <input type="text" name="status" [(ngModel)]="post.status">
-                        </span>
-                    </label>
+                    <fast-edit-post-form [post]="post"></fast-edit-post-form>
                 </td>
             </tr>
         </template>

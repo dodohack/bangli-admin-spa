@@ -11,7 +11,7 @@ import { PostService, UserService } from '../service';
 import {
     PaginatorComponent, DateFilterComponent,
     SearchBoxComponent, ListPageHeaderComponent,
-    ListPageMenuComponent } from '../components';
+    ListPageMenuComponent, FastEditPostFormComponent } from '../components';
 
 let template = require('./posts.html');
 @Component({
@@ -21,7 +21,8 @@ let template = require('./posts.html');
         DateFilterComponent,
         SearchBoxComponent,
         ListPageHeaderComponent,
-        ListPageMenuComponent
+        ListPageMenuComponent,
+        FastEditPostFormComponent
     ],
     providers: [ PostService ]
 })

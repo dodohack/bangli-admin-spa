@@ -5,7 +5,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 import { ActivatedRoute, CanDeactivate }  from '@angular/router';
-import { TAB_DIRECTIVES } from 'ng2-bootstrap';
+import { TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 import { FROALA_OPTIONS } from '../models/froala.option';
 
@@ -23,6 +23,7 @@ let template = require('./post.html');
 @Component({
     template: template,
     directives: [
+        AlertComponent,
         TAB_DIRECTIVES,
         FroalaEditorCompnoent,
         HtmlDropdownComponent,
@@ -33,7 +34,7 @@ let template = require('./post.html');
     ],
     providers: [ PostService ]
 })
-export class PostPage implements OnInit//, CanDeactivate
+export class PostPage implements OnInit
 {
     /* The post we are current editing */
     post = new Post;
@@ -63,6 +64,8 @@ export class PostPage implements OnInit//, CanDeactivate
     showFilter   = true;
 
     tabs = {'cat': false, 'tag': false, 'topic': false};
+
+    alerts = Array<Object>();
 
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
@@ -430,9 +433,13 @@ export class PostPage implements OnInit//, CanDeactivate
 
         this.postService.savePost(this.post)
             .subscribe(
-                status => console.log("POST SAVING STATUS: ", status),
-                error => console.log("POST SAVING ERROR: ", error),
-                () => this.cleanPostDirtyMask()
+                success => {
+                    this.alerts.push({type: 'success', msg: '保存成功'});
+                    this.cleanPostDirtyMask();
+                },
+                error => {
+                    this.alerts.push({type: 'danger', msg: '保存失败'});
+                }
             );
     }
 
@@ -456,7 +463,7 @@ export class PostPage implements OnInit//, CanDeactivate
         if (this.post.status != 'publish')
             this.post.dirtyOthers = true;
 
-        this.post.status = 'public';
+        this.post.status = 'publish';
         this.save();
     }
 }
