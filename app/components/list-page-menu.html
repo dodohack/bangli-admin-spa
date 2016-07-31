@@ -8,7 +8,7 @@
     </li>
 
     <li *ngIf="authors" class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">作者（{{ authors.length }}）</a>
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">作者<span style="color:grey">（{{ authors.length }}）</span></a>
 
         <div class="dropdown-menu">
             <a *ngFor="let author of authors; let i=index" class="dropdown-item"
@@ -19,7 +19,7 @@
     </li>
 
     <li *ngIf="editors" class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">编辑（{{ editors.length }}）</a>
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">编辑<span style="color: grey">（{{ editors.length }}）</span></a>
 
         <div class="dropdown-menu">
             <a *ngFor="let editor of editors; let i=index" class="dropdown-item"
@@ -32,7 +32,7 @@
     <!-- Various order status tabs -->
     <li *ngFor="let status of statuses" class="nav-item">
         <a class="nav-link" [routerLink]="['/', baseUrl, status.status]" routerLinkActive="active">
-            {{ status.status }}<span style="color:grey;">（{{ status.count }}）</span>
+            {{ postStatusTrans[status.status] }}<span style="color:grey;">（{{ status.count }}）</span>
         </a>
     </li>
 </ul>

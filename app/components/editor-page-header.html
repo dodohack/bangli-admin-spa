@@ -2,6 +2,9 @@
     <!-- Display current post url if any -->
     <div class="float-right" *ngIf="previewUrl">
         <span class="label label-default-outline">
+            文章状态: {{ postStatusTranslation[postStatus] }}
+        </span>
+        <span class="label label-default-outline">
             预览: <a href="{{previewUrl}}" target="_blank">{{ previewUrl }}</a>
         </span>
     </div>

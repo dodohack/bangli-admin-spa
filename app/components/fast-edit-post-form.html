@@ -9,37 +9,32 @@
 
         <div class="col-xs-1">
             <label>作者</label>
-            <input type="text" class="form-control input-sm" placeholder="文章作者"
-                   name="author_id" [(ngModel)]="post.author_id">
+            <select name="author_id" class="c-select c-select-sm" [(ngModel)]="post.author_id">
+                <option [value]="author.id"
+                        *ngFor="let author of authors">{{ author.nicename }}</option>
+            </select>
         </div>
 
         <div class="col-xs-1">
             <label>编辑</label>
-            <input type="text" class="form-control input-sm" placeholder="文章编辑"
-                   name="editor_id" [(ngModel)]="post.editor_id">
+            <select name="editor_id" class="c-select c-select-sm" [(ngModel)]="post.editor_id">
+                <option [value]="editor.id"
+                        *ngFor="let editor of editors">{{ editor.nicename }}</option>
+            </select>
         </div>
 
         <div class="col-xs-2">
             <label>状态</label>
-            <select class="form-control">
-                <option selected>{{ post.status }}</option>
-                <option>publish</option>
-                <option>featured</option>
-                <option>pending</option>
-                <option>draft</option>
-                <option>trash</option>
+            <select name="post_status" class="c-select c-select-sm" [(ngModel)]="post.status">
+                <option [value]="ps.key" *ngFor="let ps of postStatus">{{ ps.name }}</option>
             </select>
         </div>
 
         <div class="col-xs-2">
             <label>发布时间(use date picker)</label>
-            <input type="text" name="fake_published_at" [(ngModel)]="post.fake_published_at">
+            <input name="fake_published_at" type="text" name="fake_published_at" [(ngModel)]="post.fake_published_at">
         </div>
 
-        <div class="col-xs-2">
-            <button class="btn btn-danger-outline btn-sm">取消</button>
-            <button class="btn btn-primary-outline btn-sm">保存</button>
-        </div>
     </div>
 
     <div class="row">
@@ -55,3 +50,12 @@
         </div>
     </div>
 </form>
+
+<!-- TODO: Serialize form instead of manually get elements -->
+<!-- TODO: We are going to do the same in single post editing page as well -->
+<div class="row">
+    <div class="col-xs-12">
+        <button class="btn btn-danger-outline btn-sm" (click)="cancelEditing($event)">取消</button>
+        <button class="btn btn-primary-outline btn-sm float-right">保存</button>
+    </div>
+</div>

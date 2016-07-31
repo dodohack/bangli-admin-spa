@@ -10,6 +10,8 @@ import { TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
 import { PostService, UserService } from '../service';
 import { User, Post, Category, Tag, Topic,
     Pagination, PostStatus } from '../models';
+import { POST_TYPE_TRANS, POST_STATUS, POST_STATUS_TRANS } from '../models';
+
 import {
     PaginatorComponent, DateFilterComponent,
     SearchBoxComponent, ListPageHeaderComponent,
@@ -50,6 +52,10 @@ export class PostsPage implements OnInit
     pageTitle = '文章';
     newItemUrl = 'post/new';
 
+    postTypeTrans: any;
+    postStatus: any;
+    postStatusTrans: any;
+
     /* Post status */
     statuses: PostStatus[];
 
@@ -88,7 +94,11 @@ export class PostsPage implements OnInit
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
                 private postService: PostService,
-                private titleService: Title) {}
+                private titleService: Title) {
+        this.postStatus = POST_STATUS;
+        this.postStatusTrans = POST_STATUS_TRANS;
+        this.postTypeTrans   = POST_TYPE_TRANS;
+    }
 
     /**
      * Initialize the page, we should only put DI initializition into ctor.
@@ -264,11 +274,19 @@ export class PostsPage implements OnInit
      * @param $event  - mouse double click event
      * @param i       - index of table row, starts from 0 
      */
-    private fastEditCurrentPost($event, i)
+    private fastEditing($event, i)
     {
-        this.posts[i].editing = !this.posts[i].editing;
-        //console.log("double clicked detected: " + i);
-        //console.log($event);
+        this.posts[i].editing = true;
+    }
+
+    /**
+     * TODO: Restore this.posts[i] to old status
+     * @param $event
+     * @param i
+     */
+    private cancelFastEditing($event, i)
+    {
+        this.posts[i].editing = false;
     }
 
     /**

@@ -20,6 +20,7 @@ import {
     PostCttCloudComponent } from '../components';
 
 import { User, Post, Category, Tag, Topic } from '../models';
+import { POST_TYPE } from '../models';
 import { PostService, UserService } from '../service';
 
 let template = require('./post.html');
@@ -43,6 +44,7 @@ export class PostPage implements OnInit
 {
     /* The post we are current editing */
     post = new Post;
+    postType: any;
 
     froalaEditor: any;
 
@@ -80,6 +82,7 @@ export class PostPage implements OnInit
                 private userService: UserService,
                 private postService: PostService,
                 private titleService: Title) {
+        this.postType = POST_TYPE;
     }
 
     clearSelection() : void {
@@ -470,6 +473,18 @@ export class PostPage implements OnInit
             this.post.dirtyOthers = true;
 
         this.post.status = 'pending';
+        this.save();
+    }
+
+    /**
+     * Change post status from other to 'draft' and save it
+     */
+    private save2Draft()
+    {
+        if (this.post.status != 'draft')
+            this.post.dirtyOthers = true;
+
+        this.post.status = 'draft';
         this.save();
     }
 

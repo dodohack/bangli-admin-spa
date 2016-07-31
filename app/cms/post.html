@@ -1,32 +1,39 @@
 <editor-page-header
         [pageTitle]="pageTitle"
         [previewUrl]="previewUrl"
-        [backUrl]="backUrl">
+        [backUrl]="backUrl"
+        [postStatus]="post.status">
 </editor-page-header>
 
 <!-- Post title and main buttons -->
-<div class="form-group">
-    <div class="input-group">
-        <input type="text" name="title" class="form-control" placeholder="文章标题"
-               [(ngModel)]="post.title">
-        <span class="input-group-btn">
-            <button class="btn btn-success" (click)="save()" [disabled]="!isPostDirty()"><i class="fa fa-save"></i> 保存</button>
+<div class="row post-title">
+    <div class="col-xs-7 col-sm-7 col-md-8">
+        <div class="input-group">
+            <span class="input-group-addon">标题</span>
+            <input type="text" name="title" class="form-control" placeholder="文章标题"
+                   [(ngModel)]="post.title">
+        </div>
+    </div>
 
-            <!-- Only display these 2 buttons for editors and above -->
-            <button class="btn btn-primary" (click)="save2Review()"
-                    [disabled]="!isPostDirty() && (post.status === 'pending' || post.status === 'publish')">
-                <i class="fa fa-eye"></i> 提交审稿
-            </button>
+    <div class="col-xs-5 col-sm-5 col-md-4">
+        <div class="float-right">
+        <button class="btn btn-sm btn-success-outline" (click)="save()" [disabled]="!isPostDirty()">保存</button>
 
-            <button class="btn btn-danger" (click)="save2Draft()" *ngIf="post.status === 'publish'">
-                <i class="fa fa-edit"></i>保存为草稿
-            </button>
+        <!-- Only display these 2 buttons for editors and above -->
+        <button class="btn btn-sm btn-primary-outline" (click)="save2Review()"
+                [disabled]="!isPostDirty() && (post.status === 'pending' || post.status === 'publish')">
+            提交审稿
+        </button>
 
-            <button class="btn btn-danger" (click)="publish()" *ngIf="post.status !== 'publish'"
-                    [disabled]="!isPostDirty() && post.status === 'publish'">
-                <i class="fa fa-smile-o"></i> 发布
-            </button>
-        </span>
+        <button class="btn btn-sm btn-danger-outline" (click)="save2Draft()" *ngIf="post.status === 'publish'">
+            保存为草稿
+        </button>
+
+        <button class="btn btn-sm btn-danger-outline" (click)="publish()" *ngIf="post.status !== 'publish'"
+                [disabled]="!isPostDirty() && post.status === 'publish'">
+            发布
+        </button>
+        </div>
     </div>
 </div>
 
@@ -57,30 +64,14 @@
     <div class="form-group post-meta-item">
         <span class="label label-warning-outline">文章类型</span>
         <select class="c-select c-select-sm form-control" [(ngModel)]="post.post_type">
-            <option value="creative">原创</option>
-            <option value="creative">原创</option>
-            <option value="creative">原创</option>
-            <!--
-            <option [value]="postType"
-                    *ngFor="let postType of postTypes">{{ postType }}</option>
-                    -->
+            <option [value]="pt.key" *ngFor="let pt of postType">{{ pt.name }}</option>
         </select>
     </div>
 
     <div class="form-group post-meta-item">
-        <span class="label label-warning-outline">发布时间</span>
-        <select class="c-select c-select-sm form-control" [(ngModel)]="post.post_type">
-            <option value="creative">原创</option>
-            <option value="creative">原创</option>
-            <option value="creative">原创</option>
-            <!--
-            <option [value]="postType"
-                    *ngFor="let postType of postTypes">{{ postType }}</option>
-                    -->
-        </select>
+        <span class="label label-warning-outline">前端显示时间</span>
+        <input class="form-control input-sm" [(ngModel)]="post.fake_published_at">
     </div>
-
-    <span class="label label-default-outline float-right">文章状态: {{ post.status }}</span>
 </div>
 
 
@@ -91,9 +82,10 @@
 
 <div class="row">
     <div class="col-xs-8">
-        <textarea rows="3">
-            摘要
-        </textarea>
+        <div class="form-group">
+            <label>摘要</label>
+            <textarea class="form-control" rows="3"></textarea>
+        </div>
     </div>
     <div class="col-xs-4">
         <div style="width: 300px; height: 300px; border: 3px solid green;">
