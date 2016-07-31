@@ -9,7 +9,7 @@
             <li *ngFor="let cat of post.categories" class="label label-pill label-primary-outline"
                 (click)="toggleRightBar('cat')">
                 <!-- Was removeCat(cat), but we need passing Observable into ChildView -->
-                <input type="hidden" name="categories[]" [ngModel]="cat.id">
+                <input type="checkbox" [(ngModel)]="cat.selected">
                 {{ cat.name }} x
             </li>
         </ul>

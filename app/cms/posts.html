@@ -14,12 +14,12 @@
 <!-- Filter toolbar -->
 <div class="list-toolbar">
     <div class="float-left bulk-actions">
-        <select class="c-select select-sm">
-            <option value="0" selected>批量操作</option>
-            <option value="x">移到回收站</option>
-            <option value="y">批量修改</option>
+        <select class="c-select c-select-sm" [(ngModel)]="bulkAction" [disabled]="!isAnyPostChecked()">
+            <option value="none">批量操作</option>
+            <option value="deleting">移到回收站</option>
+            <option value="editing">批量修改</option>
         </select>
-        <button type="submit" class="btn btn-secondary btn-sm">应用</button>
+        <button class="btn btn-secondary btn-sm" (click)="applyBulkAction()" [disabled]="!isAnyPostChecked()">应用</button>
     </div>
 
     <div class="float-left filters">
@@ -39,8 +39,6 @@
         <date-filter></date-filter>
         <button type="submit" class="btn btn-secondary btn-sm">筛选</button>
     </div>
-
-
 
     <paginator [baseUrl]="deepUrl" [pagination]="pagination"></paginator>
 </div>
@@ -66,6 +64,19 @@
     </thead>
 
     <tbody>
+        <!-- Fast batch editing -->
+        <tr *ngIf="bulkEditing" class="fast-edit-form">
+            <td colspan="10">
+                <fast-edit-post-form [posts]="posts"
+                                     [authors]="authors"
+                                     [editors]="editors"
+                                     (toggle)="toggleRightBar($event)"
+                                     (cancel)="cancelBulkEditing($event)"
+                                     (submit)="onSubmit($event)">
+                </fast-edit-post-form>
+            </td>
+        </tr>
+
         <!-- table row of post -->
         <template ngFor let-post [ngForOf]="posts" let-i="index">
             <!-- displaying -->
@@ -90,14 +101,15 @@
                 <td>0</td>
                 <td>0</td>
             </tr>
-            <!-- Editing -->
+            <!-- Fast edit single post -->
             <tr *ngIf="post.editing" class="fast-edit-form" id="edit-{{i}}">
                 <td colspan="10">
                     <fast-edit-post-form [post]="post"
                                          [authors]="authors"
                                          [editors]="editors"
-                                         (toggle)="toggleRightBar($event)"
-                                         (cancel)="cancelFastEditing($event, i)">
+                                         (toggle)="toggleRightBar($event, i)"
+                                         (cancel)="cancelFastEditing($event, i)"
+                                         (submit)="onSubmit($event, i)">
                     </fast-edit-post-form>
                 </td>
             </tr>

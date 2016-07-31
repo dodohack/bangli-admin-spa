@@ -43,7 +43,7 @@ let template = require('./post.html');
 export class PostPage implements OnInit
 {
     /* The post we are current editing */
-    post = new Post;
+    post = new Post(-1, -1, -1, -1, '', '', '', []);
     postType: any;
 
     froalaEditor: any;
@@ -110,19 +110,12 @@ export class PostPage implements OnInit
 
 
     private cleanPostDirtyMask() {
-        this.post.dirtyCat = false;
-        this.post.dirtyTag = false;
-        this.post.dirtyTopic = false;
         this.post.dirtyContent = false;
-        this.post.dirtyOthers = false;
     }
 
     private isPostDirty() {
-        return this.post.dirtyCat ||
-            this.post.dirtyTag ||
-            this.post.dirtyTopic ||
-            this.post.dirtyContent ||
-            this.post.dirtyOthers;
+        console.log("TODO: Remove me and use form.dirty instead");
+        return this.post.dirtyContent;
     }
 
     /**
@@ -413,7 +406,6 @@ export class PostPage implements OnInit
      * @param e
      */
     private checkCat(e: Category): void {
-        this.post.dirtyCat   = true;
         this.post.categories = this.check(e, this.post.categories);
     }
 
@@ -422,7 +414,6 @@ export class PostPage implements OnInit
      * @param e
      */
     private checkTag(e: Tag): void {
-        this.post.dirtyTag = true;
         this.post.tags     = this.check(e, this.post.tags);
     }
 
@@ -431,7 +422,6 @@ export class PostPage implements OnInit
      * @param e
      */
     private checkTopic(e: Topic): void {
-        this.post.dirtyTopic = true;
         this.post.topics = this.check(e, this.post.topics);
     }
 
@@ -469,9 +459,6 @@ export class PostPage implements OnInit
      */
     private save2Review()
     {
-        if (this.post.status != 'pending')
-            this.post.dirtyOthers = true;
-
         this.post.status = 'pending';
         this.save();
     }
@@ -481,9 +468,6 @@ export class PostPage implements OnInit
      */
     private save2Draft()
     {
-        if (this.post.status != 'draft')
-            this.post.dirtyOthers = true;
-
         this.post.status = 'draft';
         this.save();
     }
@@ -493,9 +477,6 @@ export class PostPage implements OnInit
      */
     private publish()
     {
-        if (this.post.status != 'publish')
-            this.post.dirtyOthers = true;
-
         this.post.status = 'publish';
         this.save();
     }

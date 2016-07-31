@@ -6,7 +6,7 @@ import { Category } from '../models';
     template:
     `
     <div *ngIf="isTreeRoot" class="filter-wrapper">
-         <input placeholder="过滤" type="text" class="form-control" 
+         <input placeholder="过滤" type="text" class="form-control"
          #box (keyup)="filterTree(box.value)">
     </div>
     <ul *ngIf="categories" class="tree-view">
@@ -51,7 +51,7 @@ export class CategoryTreeComponent {
     {
         for (let i in this.categories)
         {
-            /* Set initial state */
+            // Set initial state
             this.categories[i].hidden = true;
 
             if (this.categories[i].name.includes(str) ||

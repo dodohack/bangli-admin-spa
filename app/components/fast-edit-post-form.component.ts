@@ -1,7 +1,7 @@
 /**
  * This is the form template used to in fast editing a post in post list
  */
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, AfterContentInit } from '@angular/core';
 import { NgForm }    from '@angular/forms';
 
 import { User, Post } from '../models';
@@ -14,12 +14,19 @@ let template = require('./fast-edit-post-form.html');
     template: template,
     directives: [ PostCttCloudComponent ]
 })
-export class FastEditPostFormComponent {
+export class FastEditPostFormComponent implements AfterContentInit {
     postStatus: any;
 
-    /* Post information needs to modify */
+    /* An temporary post holds common part of bulk editing posts */
+    tempPost = new Post(-1, -1, -1, -1, '', '', '', []);
+
+    /* Post information needs to modify, optional */
     @Input()
     post: Post;
+
+    /* List of posts, optional */
+    @Input()
+    posts: Post[];
     
     @Input()
     authors: User[];
@@ -32,9 +39,15 @@ export class FastEditPostFormComponent {
 
     @Output()
     cancel = new EventEmitter();
-    
+
     constructor() {
         this.postStatus = POST_STATUS;
+    }
+
+    ngAfterContentInit() {
+        if (this.posts) {
+            this.initTempPost();
+        }
     }
     
     toggleRightBar(event) {
@@ -43,5 +56,15 @@ export class FastEditPostFormComponent {
 
     cancelEditing(event) {
         this.cancel.emit(event);
+    }
+
+    /* FIXME: Parent component automatically get a (submit) event, is that
+     * because we click the 'submit' button of the form? */
+    onSubmit(event) {}
+
+
+    private initTempPost() {
+        // Abstract common part from this.posts into this.tempPost
+        //this.tempPost = Post.abstractCommonPartFromPosts(this.posts);
     }
 }

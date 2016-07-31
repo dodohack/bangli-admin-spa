@@ -64,7 +64,7 @@ export class PostsPage implements OnInit
     condition: any;
 
     /* The list of posts, array */
-    posts: any;
+    posts: Post[];
 
     /* Authors object */
     authors: User[];
@@ -82,6 +82,9 @@ export class PostsPage implements OnInit
     
     /* If select all checkbox is checked or not */
     checkedAll: boolean = false;
+    /* If is bulk action */
+    bulkAction: string = 'none';
+    bulkEditing: boolean = false;
 
     /* Right bar related */
     hideRightBar = true;
@@ -261,10 +264,24 @@ export class PostsPage implements OnInit
     private checkboxAll()
     {
         this.checkedAll = !this.checkedAll;
-        let length = this.posts.length;
-        for (let i = 0; i < length; i++) {
+
+        for (let i = 0; i < this.posts.length; i++) {
             this.posts[i].checked = this.checkedAll;
         }
+    }
+    
+    private isAnyPostChecked()
+    {
+        /* In case posts is not initialzied */
+        if (!this.posts)
+            return false;
+
+        for (let i = 0; i < this.posts.length; i++) {
+            if (this.posts[i].checked)
+                return true;
+        }
+        
+        return false;
     }
 
     /**
@@ -288,18 +305,55 @@ export class PostsPage implements OnInit
     {
         this.posts[i].editing = false;
     }
+    
+    private cancelBulkEditing($event)
+    {
+        this.bulkEditing = false;
+    }
+
+    private onSubmit($event, i)
+    {
+        this.postService.savePost(this.posts[i])
+            .subscribe(
+                success => {
+                    this.alerts.push({type: 'success', msg: '保存成功'});
+                    this.posts[i].editing = false;
+                },
+                error => {
+                    this.alerts.push({type: 'danger', msg: '保存失败'});
+                }
+            );
+    }
 
     /**
      * Toggle right panel
      */
     private toggleRightBar(str: string): void
     {
+        /*
+         * Initialize selected categories/tags/topics for given post
+         */
+        
+                
         this.hideRightBar = !this.hideRightBar;
         for (let t in this.tabs) {
             this.tabs[t] = false;
         }
         // Active corresponding tab
         this.tabs[str] = true;
+    }
+
+    private applyBulkAction() {
+        console.log("bulk action apply: ", this.bulkAction);
+        if (this.bulkAction === 'editing') {
+            this.bulkEditing = true;
+            return;
+        }
+
+        if (this.bulkAction === 'deleting')
+        {
+            console.log("Delete selected posts");
+        }
     }
 
     private checkCat(e: Category): void {}
