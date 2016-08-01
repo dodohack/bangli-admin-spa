@@ -18,24 +18,23 @@ export class PostService
     params: URLSearchParams;
 
     /* Post status */
-    statuses: Observable<PostStatus[]>;
-
+    statuses: PostStatus[];
     /* Available categories */
-    categories: Observable<Category[]>;
-
+    categories: Category[];
     /* Available tags */
-    tags: Observable<Tag[]>;
-
+    tags: Tag[];
     /* Available topics to post */
-    topics: Observable<Topic[]>;
+    topics: Topic[];
 
     /**
      * Initialize common code in constructor, as we can't have ngOnInit
      * in injectable service.
      * @param jsonp
+     * @param http
      * @param authService
      */
-    constructor(private jsonp: Jsonp, private http: Http,
+    constructor(private jsonp: Jsonp, 
+                private http: Http,
                 private authService: AuthService)
     {
         /* Set up common JSONP request arguments */
@@ -62,15 +61,6 @@ export class PostService
         /* Count must be between [1, 200] */
         this.perPage = count < 1 ? 1 : (count > 200 ? 200 : count);
         localStorage.setItem('postsPerPage', this.perPage);
-    }
-
-    /**
-     * Retrieve statuses of posts from API server
-     */
-    private initStatuses() {
-        this.statuses = this.jsonp
-            .get(APP.post_statuses, {search: this.params})
-            .map(res => res.json());
     }
 
     public getPosts(filter, condition, cur_page) {
@@ -128,29 +118,42 @@ export class PostService
     }
 
     /**
-     * Return all cms categories
+     * Retrieve statuses of posts from API server
+     */
+    private initStatuses() {
+        this.jsonp
+            .get(APP.post_statuses, {search: this.params})
+            .map(res => res.json())
+            .subscribe(statuses => this.statuses = statuses);
+    }
+
+    /**
+     * Init all cms categories
      */
     private initCategories() {
-        this.categories = this.jsonp
+        this.jsonp
             .get(APP.cms_cats, {search: this.params})
-            .map(res => res.json());
+            .map(res => res.json())
+            .subscribe(cats => this.categories = cats);
     }
 
     /**
-     * Return all cms tags
+     * Init all cms tags
      */
     private initTags() {
-        this.tags = this.jsonp
+        this.jsonp
             .get(APP.cms_tags, {search: this.params})
-            .map(res => res.json());
+            .map(res => res.json())
+            .subscribe(tags => this.tags = tags);
     }
 
     /**
-     * Return all cms topics available to post
+     * Init all cms topics available to post
      */
     private initTopics() {
-        this.topics = this.jsonp
+        this.jsonp
             .get(APP.cms_topics, {search: this.params})
-            .map(res => res.json());
+            .map(res => res.json())
+            .subscribe(topics => this.topics = topics);
     }
 }

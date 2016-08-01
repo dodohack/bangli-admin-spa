@@ -6,19 +6,23 @@ import { Injectable }               from '@angular/core';
 import { Jsonp, URLSearchParams }   from '@angular/http';
 import { Observable }               from 'rxjs/Observable';
 
-import { ProductStatus } from '../models';
+import { Category, Tag, ProductStatus } from '../models';
 import { AuthService } from './auth.service';
 import { APP } from '../app.api';
 
 @Injectable()
 export class ProductService
 {
+
+    /* Statuses of all products */
+    statuses: ProductStatus[];
+    /* Product categories and tags */
+    categories: Category[];
+    tags: Tag[];
+    
     /* Number of posts per page */
     perPage: any;
     params: URLSearchParams;
-
-    /* Statuses of all products */
-    statuses: Observable<ProductStatus[]>;
 
     /**
      * Initialize common code in constructor, as we can't have ngOnInit
@@ -37,6 +41,8 @@ export class ProductService
             this.setProductsPerPage(30);
 
         this.initStatuses();
+        this.initCategories();
+        this.initTags();
     }
 
     /**
@@ -55,15 +61,6 @@ export class ProductService
     public getProductsPerPage()
     {
         return this.perPage;
-    }
-
-    /**
-     * Retrieve status esof all products
-     */
-    private initStatuses() {
-        this.statuses = this.jsonp
-            .get(APP.product_statuses, {search: this.params})
-            .map(res => res.json());
     }
 
     public getProducts(status, cur_page) {
@@ -90,12 +87,34 @@ export class ProductService
             .map(res => res.json());
     }
 
+
+    /**
+     * Retrieve statuses of all products
+     */
+    private initStatuses() {
+        this.jsonp
+            .get(APP.product_statuses, {search: this.params})
+            .map(res => res.json())
+            .subscribe(statuses => this.statuses = statuses);
+    }
+
     /**
      * Return all product categories
      */
-    public getCategories() {
-        return this.jsonp
+    private initCategories() {
+        this.jsonp
             .get(APP.product_cats, {search: this.params})
-            .map(res => res.json());
+            .map(res => res.json())
+            .subscribe(cats => this.categories = cats);
     }
+
+    /**
+     * Return all product tags
+     */
+    private initTags() {
+        this.jsonp
+            .get(APP.product_tags, {search: this.params})
+            .map(res => res.json())
+            .subscribe(tags => this.tags = tags);
+    }    
 }

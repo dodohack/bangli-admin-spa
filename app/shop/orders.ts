@@ -41,8 +41,6 @@ export class OrdersPage implements OnInit
     pageTitle = '订单';
     newItemUrl = 'order/new';
 
-    /* Statuses of all orders */
-    statuses: OrderStatus[];
     /* Current order status of the listed orders */
     status: any;
 
@@ -56,14 +54,11 @@ export class OrdersPage implements OnInit
                 private orderService: OrderService,
                 private titleService: Title) {}
 
-    ngOnInit()
-    {
+    ngOnInit() {
         this.titleService.setTitle('订单列表 - 葫芦娃管理平台');
 
         this.pagination.per_page = this.orderService.getOrdersPerPage();
 
-        this.initOrderStatuses();
-        
         /* Get URL segments and update the list */
         this.route.params.subscribe(
             segment => {
@@ -76,20 +71,9 @@ export class OrdersPage implements OnInit
         );
     }
 
-    get zh() {
-        return zh_CN.order;
-    }
+    get zh() { return zh_CN.order; }
+    get statuses() { return this.orderService.statuses; }
 
-    /**
-     * Get orders statuses
-     */
-    private initOrderStatuses()
-    {
-        this.orderService.statuses.subscribe(
-            json => this.statuses = json
-        );
-    }
-    
     private getOrdersList()
     {
         this.orderService.getOrders(this.status, this.pagination.current_page)

@@ -5,75 +5,67 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 import { ActivatedRoute }    from '@angular/router';
+import { TYPEAHEAD_DIRECTIVES, TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
+import { FROALA_OPTIONS } from '../models/froala.option';
+import { Observable } from 'rxjs/Observable';
 
-import { ProductService } from '../service/product.service';
+import {
+    EditorPageHeaderComponent,
+    CategoryTreeComponent,
+    TagCloudComponent } from '../components';
+
+import { User, Product, Category, Tag } from '../models';
+import { ProductService, UserService } from '../service';
+import { zh_CN } from '../localization';
+
 
 let template = require('./product.html');
 @Component({
     template: template,
-    directives: [FroalaEditorCompnoent],
-    providers: [ProductService]
+    directives: [
+        AlertComponent,
+        TAB_DIRECTIVES,
+        TYPEAHEAD_DIRECTIVES,
+        FroalaEditorCompnoent,
+        EditorPageHeaderComponent,
+        CategoryTreeComponent,
+        TagCloudComponent
+    ],
+    providers: [ ProductService ]
 })
 export class ProductPage implements OnInit
 {
-    id: number;
-    title: string;
-    text: string;
-    editor: any;
-    guid: string;
-    hideRightBar: boolean = true;
+    /* Editor page header input */
+    pageTitle = "商品";
+    previewUrl = "dummy";
+    backUrl   = "product";
 
-    /* All product categories */
-    categories: any;
-    /* Root categories */
-    roots: any;
-    /* Indices of categories, indicate how many groups of cats we have */
-    keys: any;
+    froalaEditor: any;
+    
+    product = new Product;
 
-    options: any = {
-        /* Past in WYSIWYG edit in plain text */
-        pastePlain: true,
-
-        /* Editor height in pixel */
-        height: 600,
-
-        /* Toolbars */
-        toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline',
-            'fontSize', 'color',
-            'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent',
-            'indent', 'insertHR', 'insertLink',
-            'insertImage', 'insertVideo', 'insertFile',
-            'insertTable', 'undo', 'redo', 'clearFormatting', 'html'],
-
-        toolbarSticky: false,
-
-        /* Language */
-        language: 'zh_cn'
-    };
-
+    hideRightBar = true;
+    tabs = { 'cat': false, 'tag': false };
+    
+    alerts = Array<Object>();
+    
     constructor(private route: ActivatedRoute,
+                private userService: UserService,
                 private productService: ProductService,
                 private titleService: Title) {}
 
     ngOnInit() {
         this.titleService.setTitle('编辑商品 - 葫芦娃');
-
-        this.route.params.subscribe(
-            segment => {
-                /* Get product id from URL segment */
-                this.id = segment['id'] ? +segment['id'] : 0;
-                if (this.id > 0) {
-                    /* Initialze editor content */
-                    this.initProduct();
-                }
-            }
-        );
-
-
-        /* Initial categories */
-        this.createProductCategories();
+        this.initProduct();
     }
+
+    get zh() { return zh_CN.product };
+    /* Froala editor options */
+    get froalaOptions () { return FROALA_OPTIONS; }
+    get editors() { return this.userService.editors; }
+    get categories() { return this.productService.categories; }
+    get tags()       { return this.productService.tags; }
 
     /**
      * This function is somehow bugged
@@ -81,119 +73,73 @@ export class ProductPage implements OnInit
      */
     onFroalaModelChanged(event: any) {
         setTimeout(() => {
-            this.text = event;
+            this.product.content = event;
             console.log("onFroalaModelChanged");
         });
     }
 
     onEditorInitialized(event?: any) {
         console.log("onEditorInitialized");
-        this.editor = FroalaEditorCompnoent.getFroalaInstance();
-        this.editor.on('froalaEditor.focus', (e, editor) => {
+        this.froalaEditor = FroalaEditorCompnoent.getFroalaInstance();
+        this.froalaEditor.on('froalaEditor.focus', (e, editor) => {
             console.log("editor is focused");
         });
     }
 
     private initProduct()
     {
-        this.productService.getProduct(this.id).subscribe(
-            json => {
-                this.title = json['title'];
-                this.text  = json['content'];
-                this.guid  = json['guid'];
+        this.route.params.subscribe(
+            segment => {
+                /* Get product id from URL segment */
+                this.product.id = segment['id'] ? +segment['id'] : 0;
             }
-        )
-    }
-
-    private createProductCategories()
-    {
-        this.productService.getCategories().subscribe(
-            json  => {
-                this.categories = json;
-                this.roots = this.categories[0];
-                this.keys = Object.keys(this.categories);
-            },
-            error => console.error(error)
         );
+
+        if (this.product.id) {
+            this.productService.getProduct(this.product.id).subscribe(
+                product => {
+                    this.product = product;
+                    /* Till now, categories and tags should be ready */
+                    if (this.product.categories)
+                        this.updateCategoryCheckStatus(this.categories);
+                    if (this.product.tags)
+                        this.updateTagCheckStatus();
+                }
+            )
+        } else {
+            // TODO: Create a new product
+        }
     }
 
     /**
-     * Filter product categories for matched user input
+     * Set categories to checked status based on the value of post.categories
      */
-    private filterProductCategories(str: string)
+    private updateCategoryCheckStatus(categories: Category[])
     {
-        this.productService.getCategories()
-            .map(res => {
-                let parentIds = [];
-                this.keys = Object.keys(res);
-
-                /* loop over 'parent_id' grouped categories */
-                this.keys.forEach(function(key) {
-                    let cats = res[key];
-
-                    let length = cats.length;
-
-                    for (let j = 0; j < length; j++) {
-                        /* Default to hide everything */
-                        cats[j].hidden = true;
-                        if (cats[j].name.includes(str) ||
-                            cats[j].slug.includes(str)) {
-                            /* Show matched search */
-                            console.log("SEARCHING: " + str + ", from name: " + cats[j].name + cats[j].slug);
-                            cats[j].hidden = false;
-                            /* Also record the parent id, so we don't hide parent list */
-                            parentIds.push(cats[j].parent_id);
-                        }
+        for (let i in categories) {
+            if (categories[i].children) {
+                this.updateCategoryCheckStatus(categories[i].children);
+            } else {
+                for (let j in this.product.categories) {
+                    if (categories[i].id == this.product.categories[j].id) {
+                        categories[i].checked = true;
                     }
-                });
+                }
+            }
 
-                /* Do not hide parent if children is not hidden */
-                this.keys.forEach(function(key){
-                    let cats = res[key];
-                    let length = cats.length;
-
-                    for (let j = 0; j < length; j++) {
-                        /* Check if we can find the parent id that should not be hidden */
-                        if (parentIds.indexOf(cats[j].id) != -1) {
-                            console.log("Changing " + cats[j].name + " to display");
-                            cats[j].hidden = false;
-                        }
-                    }
-                });
-
-                console.log("FILTERED RESULT: ");
-                console.log(res);
-                return res;
-            })
-            .subscribe(
-                json  => {
-                    this.categories = json;
-                    this.roots = this.categories[0];
-                    this.keys  = Object.keys(this.categories);
-                    //console.log(this.categories);
-                },
-                error => console.error(error)
-            );
+        }
     }
 
-    /**
-     * If given category id has a sub category
-     * @param id
-     */
-    private hasSubCat(id: string)
+    private updateTagCheckStatus()
     {
-        if (this.keys.indexOf(id.toString()) != -1)
-            return true;
-        return false;
-    }
-
-    /**
-     * Return a array of categories with same parentId
-     * @param parentId
-     */
-    private subCats(parentId)
-    {
-        return this.categories[parentId];
+        for (let i in this.product.tags) {
+            for (let j in this.tags) {
+                if (this.product.tags[i].id == this.tags[j].id) {
+                    this.tags[j].checked = true;
+                    break;
+                }
+            }
+        }
     }
 
     private toggleRightBar(e: any): void {

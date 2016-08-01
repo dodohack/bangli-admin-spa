@@ -72,6 +72,8 @@ export const APP = {
     product:  base + '/admin/product',
     /* Product categories */
     product_cats: base + '/admin/categories/product',
+    /* Product tags */
+    product_tags: base + '/admin/tags/product',
 };
 
 /* Authentication server APIs */

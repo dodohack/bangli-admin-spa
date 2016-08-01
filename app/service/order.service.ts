@@ -4,7 +4,6 @@
 
 import { Injectable }               from '@angular/core';
 import { Jsonp, URLSearchParams }   from '@angular/http';
-import {Observable} from "rxjs/Observable";
 
 import { OrderStatus } from '../models/order';
 import { AuthService } from './auth.service';
@@ -19,7 +18,7 @@ export class OrderService
     params: URLSearchParams;
     
     /* Order statuses */
-    statuses: Observable<OrderStatus[]>;
+    statuses: OrderStatus[];
 
     /**
      * Initialize common code in constructor, as we can't have ngOnInit
@@ -36,8 +35,8 @@ export class OrderService
         this.perPage = localStorage.getItem('ordersPerPage');
         if (!this.perPage)
             this.setOrdersPerPage(30);
-        
-        this.statuses = this.initStatuses();
+
+        this.initStatuses();
     }
 
     /**
@@ -56,15 +55,6 @@ export class OrderService
     public getOrdersPerPage()
     {
         return this.perPage;
-    }
-
-    /**
-     * Retrieve statuses of all orders
-     */
-    public initStatuses() {
-        return this.jsonp
-            .get(APP.order_statuses, {search: this.params})
-            .map(res => res.json());
     }
 
     public getOrders(status, cur_page) {
@@ -91,5 +81,16 @@ export class OrderService
         return this.jsonp
             .get(endpoint, {search: this.params})
             .map(res => res.json());
+    }
+
+
+    /**
+     * Retrieve statuses of all orders
+     */
+    private initStatuses() {
+        this.jsonp
+            .get(APP.order_statuses, {search: this.params})
+            .map(res => res.json())
+            .subscribe(statuses => this.statuses = statuses);
     }
 }

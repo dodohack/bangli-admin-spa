@@ -17,11 +17,12 @@ export class UserService
     perPage: any;
     params: URLSearchParams;
 
-    /* Authors and Editors */
-    authors: Observable<User[]>;
-    //editors: Observable<User[]>;
-    /* List of user roles */
-    roles: Observable<string[]>;
+    /* Authors list */
+    authors: User[];
+    /* Editors list */
+    editors: User[];
+    /* List of user roles(used in user list page) */
+    roles: string[];
 
     /**
      * Initialize common code in constructor, as we can't have ngOnInit
@@ -43,9 +44,8 @@ export class UserService
             this.setUsersPerPage(30);
 
         /* Initial observables */
-        this.initAuthors();
-        //this.initEditors();
-        this.getRoles();
+        this.initAuthorEditors();
+        this.initRoles();
     }
 
     /**
@@ -66,20 +66,6 @@ export class UserService
         return this.perPage;
     }
 
-    
-    /**
-     * Retrive user roles and number of users for each role.
-     */
-    private getRoles()
-    {
-        /* FIXME: This is not working as we can't see any header is with the request */
-        //let headers = new Headers({'Authorization': 'Bearer ' + localStorage.getItem('jwt')});
-
-        this.roles = this.jsonp
-            .get(APP.menu_users, {search: this.params})
-            .map(res => res.json());
-    }
-
     /**
      * Retrieve a list of users of given role and current page of the list
      */
@@ -98,23 +84,34 @@ export class UserService
     }
 
     /**
+     * Retrive user roles and number of users for each role.
+     */
+    private initRoles()
+    {
+        /* FIXME: This is not working as we can't see any header is with the request */
+        //let headers = new Headers({'Authorization': 'Bearer ' + localStorage.getItem('jwt')});
+
+        this.jsonp
+            .get(APP.menu_users, {search: this.params})
+            .map(res => res.json())
+            .subscribe(json => this.roles = json);
+    }
+
+    /**
      * Return all users who can at least edit their posts, so we will use
      * this data in many locations such as post list, post editing page, etc.
      * users includes: author, editor, shop_manager, admin, etc
-     */    
-    private initAuthors()
+     */
+    private initAuthorEditors()
     {
-        this.authors = this.jsonp
+        this.jsonp
             .get(APP.authors, {search: this.params})
-            .map(res => res.json());
+            .map(res => res.json())
+            .subscribe( authors => {
+                this.authors = authors;
+                this.editors = authors.filter(p => p.role != 'author');
+                });
     }
 
-    /*
-    private initEditors()
-    {
-        this.editors = this.jsonp
-            .get(APP.editors, {search: this.params})
-            .map(res => res.json());
-    }
-    */
+
 }

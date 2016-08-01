@@ -1,21 +1,9 @@
-<div class="page-header">
-    <!-- Display current product url if any -->
-    <div class="float-right">
-        <span class="label label-default">
-            URL: http://www.huluwa.uk/product/{{ guid }}
-        </span>
-    </div>
-
-    <h1 class="title">
-        编辑产品
-        <a class="page-title-action btn btn-info-outline btn-sm" [routerLink]="['/products']">
-            <i class="fa fa-backward"></i> 返回列表
-        </a>
-        <a class="page-title-action btn btn-info-outline btn-sm" (click)="toggleRightBar($event)">
-            <span *ngIf="hideRightBar">显示侧栏</span><span *ngIf="!hideRightBar">隐藏侧栏</span>
-        </a>
-    </h1>
-</div>
+<editor-page-header
+        [pageTitle]="pageTitle"
+        [previewUrl]="previewUrl"
+        [backUrl]="backUrl"
+        [postStatus]="product.status">
+</editor-page-header>
 
 <!-- Product title and main buttons -->
 <div class="form-group">
@@ -34,8 +22,8 @@
 </div>
 
 <!-- Froala Editor -->
-<froala [froalaOptions]="options"
-        [froalaData]="text" (model)="onFroalaModelChanged($event)"
+<froala [froalaOptions]="froalaOptions"
+        [froalaData]="product.content" (model)="onFroalaModelChanged($event)"
         (editorInitialized)="onEditorInitialized()"></froala>
 
 <!-- Product category, tag etc -->

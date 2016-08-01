@@ -39,20 +39,14 @@ export class ProductsPage implements OnInit
     pageTitle = '商品';
     newItemUrl = 'product/new';
 
-    /* Statuses of all products */
-    statuses: ProductStatus[];
-
     /* Current order status of the listed orders */
     status: any;
 
     /* The list of products */
     products: Product[];
-    
-    /* Editors object */
-    editors: User[];
 
     /* If select all checkbox is checked or not */
-    checkedAll: boolean = false;
+    checkedAll = false;
 
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
@@ -63,9 +57,6 @@ export class ProductsPage implements OnInit
     {
         this.titleService.setTitle('订单列表 - 葫芦娃管理平台');
         this.pagination.per_page = this.productService.getProductsPerPage();
-
-        this.initProductStatuses();
-        this.initEditors();
 
         /* Get URL segments and update the list */
         this.route.params.subscribe(
@@ -79,31 +70,9 @@ export class ProductsPage implements OnInit
         );
     }
     
-    get zh() {
-        return zh_CN.product;
-    }
-    
-    /**
-     * Get editors
-     */
-    private initEditors()
-    {
-        this.userService.authors.subscribe(
-            authors =>
-                this.editors = authors.filter(people => people.role != 'author')
-        );
-    }
-
-    /**
-     * Get products list page menu
-     */
-    private initProductStatuses()
-    {
-        this.productService.statuses.subscribe(
-            json => this.statuses = json,
-            error => console.error(error)
-        );
-    }
+    get zh() { return zh_CN.product; }
+    get editors() { return this.userService.editors; }
+    get statuses() { return this.productService.statuses; }
 
     private getProductsList()
     {

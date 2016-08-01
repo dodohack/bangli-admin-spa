@@ -2,7 +2,7 @@
  * Defines payload of decoded JWT
  */
 
-export class Payload
+export class JwtPayLoad
 {
     constructor(public iss: string,
                 public iat: number,

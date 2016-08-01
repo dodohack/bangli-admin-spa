@@ -36,4 +36,12 @@ export const zh_CN = {
         refunded: '已退款',
         trash: '回收站'
     },
+
+    user: {
+        customer:      '注册用户',
+        administrator: '管理员',
+        shop_manager:  '店长',
+        editor:        '编辑',
+        author:        '作者'
+    }
 };

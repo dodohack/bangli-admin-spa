@@ -1,32 +1,23 @@
- <div class="page-header">
-    <h1 class="title">
-        用户信息
-        <a class="page-title-action btn btn-sm btn-info-outline" [routerLink]="['/user/new']">新增用户</a>
-    </h1>
-    <!--
-<form class="form-horizontal" role="form" (ngSubmit)="setUsersPerPage()"
-      #settingForm="ngForm">
-        <input type="text" class="form-control" required [(ngModel)]="pagination.per_page" name="per_page">
-        <button type="submit" class="btn btn-secondary" [disabled]="!settingForm.form.valid">更新</button>
-</form>
--->
-</div>
+<list-page-header [pageTitle]="pageTitle" [newItemUrl]="newItemUrl">
+</list-page-header>
 
 <!-- User role filter -->
 <nav class="navbar page-sub-menu">
+
     <ul class="nav navbar-nav">
-        <li *ngFor="let role of roles" class="nav-item">
+        <li *ngFor="let role of userRoles" class="nav-item">
             <!-- Link to first page of given role of customers -->
-            <a class="nav-link" [routerLink]="['/users', role.role, '1']">{{ userRole[role.role] }} ({{ role.count }})</a>
+            <a class="nav-link" [routerLink]="['/users', role.role, '1']">{{ zh[role.role] }} ({{ role.count }})</a>
         </li>
     </ul>
-    <form class="form-inline pull-xs-right">
-        <input class="form-control input-sm" type="text" placeholder="搜索">
-        <button class="btn btn-sm btn-success-outline" type="submit">搜索</button>
-    </form>
+
+    <search-box></search-box>
 </nav>
 
-<paginator [baseUrl]="baseUrl" [pagination]="pagination"></paginator>
+<!-- Filter toolbar -->
+<div class="list-toolbar">
+    <paginator [baseUrl]="baseUrl" [pagination]="pagination"></paginator>
+</div>
 
 <!-- List of users -->
 <table class="table">

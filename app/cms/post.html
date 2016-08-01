@@ -64,7 +64,7 @@
     <div class="form-group post-meta-item">
         <span class="label label-warning-outline">文章类型</span>
         <select class="c-select c-select-sm form-control" [(ngModel)]="post.post_type">
-            <option [value]="pt.key" *ngFor="let pt of postType">{{ pt.name }}</option>
+            <option [value]="pt" *ngFor="let pt of POST_TYPES">{{ zh[pt] }}</option>
         </select>
     </div>
 
@@ -76,7 +76,7 @@
 
 
 <!-- Froala Editor -->
-<froala [froalaOptions]="options"
+<froala [froalaOptions]="froalaOptions"
         [froalaData]="post.content" (model)="onFroalaModelChanged($event)"
         (editorInitialized)="onEditorInitialized()"></froala>
 

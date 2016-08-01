@@ -6,10 +6,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
-import { Pagination }  from '../models/pagination';
-import { UserRole }    from '../datatype/userrole';
-import { UserService } from '../service/user.service';
-import {PaginatorComponent} from "../components/paginator.component";
+import { User, Pagination }  from '../models';
+import { UserService } from '../service';
+import { PaginatorComponent } from "../components";
+import { zh_CN }    from '../localization';
 
 let template = require('./users.html');
 @Component({
@@ -24,14 +24,15 @@ export class UsersPage implements OnInit
     base = 'user/list';
     baseUrl: string;
 
-    userRole = new UserRole();
+    /* Parameter to <list-page-header> */
+    pageTitle = '用户';
+    newItemUrl = 'user/new';
 
     /* Which group of users is currently showing */
     current_role: any;
+
     /* The list of users, array */
-    users: any;
-    /* User roles and number of users each role */
-    roles: any;
+    users: User[];
 
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
@@ -50,8 +51,6 @@ export class UsersPage implements OnInit
         this.pagination.current_page = 1;
         this.pagination.per_page = this.userService.getUsersPerPage();
 
-        this.getRolesMenu();
-
         /* Get URL segments and update user list */
         this.route.params.subscribe(
             segment => {
@@ -65,16 +64,8 @@ export class UsersPage implements OnInit
         );
     }
 
-    /**
-     * Get user roles and number of users per role
-     */
-    private getRolesMenu()
-    {
-        this.userService.roles.subscribe(
-            json  => this.roles = json,
-            error => console.error(error)
-        );
-    }
+    get zh() { return zh_CN.user; }
+    get userRoles() { return this.userService.roles; }
 
     /**
      * Get a list of users

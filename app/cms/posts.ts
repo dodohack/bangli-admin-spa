@@ -52,26 +52,12 @@ export class PostsPage implements OnInit
     pageTitle = '文章';
     newItemUrl = 'post/new';
 
-    /* Post status */
-    statuses: PostStatus[];
-
     /* Posts filters: any, author, editor, status */
     filter: any;
     condition: any;
 
     /* The list of posts, array */
     posts: Post[];
-
-    /* Authors object */
-    authors: User[];
-    /* Editors object */
-    editors: User[];
-    
-    /* All post categories, tags, topics */
-    categories: Category[];
-    tags: Tag[];
-    /* TODO: topic cloud should be optimized if the number is large */
-    topics: Topic[];
 
     /* Post status object */
     status: any;
@@ -96,12 +82,6 @@ export class PostsPage implements OnInit
                 private titleService: Title) {
     }
 
-    /* Localization, have to wrapper it as template only access component local
-     * methods/properties */
-    get zh() {
-        return zh_CN.post;
-    }
-
     /**
      * Initialize the page, we should only put DI initializition into ctor.
      * If no role/page is setting from URL segment, we will display the first
@@ -113,44 +93,19 @@ export class PostsPage implements OnInit
 
         this.pagination.per_page = this.postService.perPage;
 
-        this.initPostStatuses();
-
-        this.initAuthors();
-
-        this.initCategories();
-
-        this.initTags();
-
-        this.initTopics();
-
         this.initPostsList();
     }
 
-    /**
-     * Get posts list page menu
-     */
-    private initPostStatuses()
-    {
-        this.postService.statuses.subscribe(
-            json  => {
-                this.statuses = json;
-            },
-            error => console.error(error)
-        );
-    }
+    /* Localization, have to wrapper it as template only access 
+     * component local methods/properties */
+    get zh() { return zh_CN.post; }
+    get authors() { return this.userService.authors; }
+    get editors() { return this.userService.editors; }
 
-    /**
-     * Retrieve available authors and editors
-     */
-    private initAuthors() {
-        this.userService.authors.subscribe(
-            authors => {
-                this.authors = authors;
-                /* Editors are users can edit any posts */
-                this.editors = authors.filter(people => people.role != 'author');
-            }
-        );
-    }
+    get statuses() { return this.postService.statuses; }
+    get categories() { return this.postService.categories; }
+    get tags() { return this.postService.tags; }
+    get topics() { return this.postService.topics; }
 
     private initPostsList()
     {
@@ -166,27 +121,6 @@ export class PostsPage implements OnInit
                 this.getPostsList();
             }
         );
-    }
-
-    /**
-     * Initialize all available categories
-     */
-    private initCategories()
-    {
-        this.postService.categories
-            .subscribe(json => this.categories = json);
-    }
-
-    private initTags()
-    {
-        this.postService.tags
-            .subscribe(json => this.tags = json);
-    }
-
-    private initTopics()
-    {
-        this.postService.topics
-            .subscribe(json => this.topics = json);
     }
 
     /**

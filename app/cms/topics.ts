@@ -6,16 +6,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
-import { Pagination }  from '../models/pagination';
-import { PostStatus }  from '../models/post';
-
-import { UserService }  from '../service/user.service';
-import { TopicService } from '../service/topic.service';
-
+import { Topic, Category, Pagination, PostStatus }  from '../models';
+import { UserService, PostService, TopicService }  from '../service';
 import {
     PaginatorComponent, DateFilterComponent,
     SearchBoxComponent, ListPageHeaderComponent ,
     ListPageMenuComponent } from "../components";
+
+import { zh_CN } from '../localization';
 
 let template = require('./topics.html');
 @Component({
@@ -27,14 +25,14 @@ let template = require('./topics.html');
         ListPageHeaderComponent,
         ListPageMenuComponent
     ],
-    providers: [ TopicService ]
+    providers: [ TopicService, PostService ]
 })
 export class TopicsPage implements OnInit {
     /* Pagination related variables of the list */
     pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
 
     /* Parameter to <list-page-menu> */
-    baseUrl = 'topic/list';
+    baseUrl = 'topic/list';3
     /* Parameter to <paginator> */
     deepUrl: string;
 
@@ -50,13 +48,7 @@ export class TopicsPage implements OnInit {
     condition:any;
 
     /* The list of topics, array */
-    topics:any;
-
-    /* Editors object */
-    editors:any;
-
-    /* Categories object */
-    categories:any;
+    topics: Topic[];
 
     /* Post status object */
     status: any;
@@ -67,6 +59,7 @@ export class TopicsPage implements OnInit {
     constructor(private route:ActivatedRoute,
                 private userService: UserService,
                 private topicService: TopicService,
+                private postService: PostService,
                 private titleService:Title) {}
 
     /**
@@ -82,7 +75,6 @@ export class TopicsPage implements OnInit {
         this.pagination.per_page = this.topicService.perPage;
 
         this.initTopicStatuses();
-        this.initEditors();
 
         /* Get URL segments and update the list */
         this.route.params.subscribe(
@@ -98,15 +90,9 @@ export class TopicsPage implements OnInit {
         );
     }
 
-    /**
-     * Get list of editors
-     */
-    private initEditors() {
-        this.userService.authors.subscribe(
-            authors =>
-                this.editors = authors.filter(people => people.role != 'author')
-        );
-    }
+    get zh() { return zh_CN.post; };
+    get editors() { return this.userService.editors; };
+    get categories() { return this.postService.categories; };
 
     /**
      * Get topics list page menu

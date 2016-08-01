@@ -1,3 +1,6 @@
+import { Category } from './category';
+import { Tag } from './tag';
+
 export class ProductStatus {
     /* Number of product in current status */
     count: number;
@@ -45,6 +48,9 @@ export class Product {
     variations: ProductVariation[];
     created_at: string;
     updated_at: string;
+
+    categories: Category[];
+    tags: Tag[];
 
     checked: boolean;
     editing: boolean;

@@ -12,7 +12,6 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
 import { 
-    HtmlDropdownComponent, 
     EditorPageHeaderComponent, 
     CategoryTreeComponent,
     TagCloudComponent,
@@ -20,8 +19,9 @@ import {
     PostCttCloudComponent } from '../components';
 
 import { User, Post, Category, Tag, Topic } from '../models';
-import { POST_TYPE } from '../models';
+import { POST_TYPES } from '../models';
 import { PostService, UserService } from '../service';
+import { zh_CN } from '../localization';
 
 let template = require('./post.html');
 @Component({
@@ -31,7 +31,6 @@ let template = require('./post.html');
         TAB_DIRECTIVES,
         TYPEAHEAD_DIRECTIVES,
         FroalaEditorCompnoent,
-        HtmlDropdownComponent,
         EditorPageHeaderComponent,
         CategoryTreeComponent,
         TagCloudComponent,
@@ -44,7 +43,6 @@ export class PostPage implements OnInit
 {
     /* The post we are current editing */
     post = new Post(-1, -1, -1, -1, '', '', '', []);
-    postType: any;
 
     froalaEditor: any;
 
@@ -52,24 +50,6 @@ export class PostPage implements OnInit
     pageTitle  = "文章";
     previewUrl = "dummy";
     backUrl    = "post";
-    
-    authorName: string;
-    editorName: string;
-
-    /* TODO: Used to test html-dropdown.component */
-    authors: User[];
-    editors: User[];
-
-    /* All post categories */
-    categories: Category[];
-    /* All post tags */
-    tags: Tag[];
-    /* All topics available to post */
-    /* TODO: topic cloud should be optimized if the number is large */
-    topics: Topic[];
-
-    /* Froala editor options */
-    options: any = FROALA_OPTIONS;
 
     hideRightBar = true;
     showFilter   = true;
@@ -81,33 +61,35 @@ export class PostPage implements OnInit
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
                 private postService: PostService,
-                private titleService: Title) {
-        this.postType = POST_TYPE;
-    }
-
-    clearSelection() : void {
-        this.post.author_id = null;
-        this.post.editor_id = null;
-    }
+                private titleService: Title) {}
 
     ngOnInit() {
         this.titleService.setTitle('编辑文章 - 葫芦娃');
         
         this.cleanPostDirtyMask();
 
-        this.initAuthors();
-
         this.initPostId();
-
-        this.initCategories();
-
-        this.initTags();
-
-        this.initTopics();
 
         this.initPost();
     }
 
+    get froalaOptions() {return FROALA_OPTIONS; }
+    /* Post type enum(kind of) */
+    get POST_TYPES() { return POST_TYPES; }
+    
+    /* Localization for cms post */
+    get zh() { return zh_CN.post; }
+    get authors() { return this.userService.authors; }
+    get editors() { return this.userService.editors; }
+
+    get categories() { return this.postService.categories; }
+    get tags()       { return this.postService.tags; }
+    get topics()     { return this.postService.topics; }
+
+    clearSelection() : void {
+        this.post.author_id = null;
+        this.post.editor_id = null;
+    }
 
     private cleanPostDirtyMask() {
         this.post.dirtyContent = false;
@@ -117,20 +99,7 @@ export class PostPage implements OnInit
         console.log("TODO: Remove me and use form.dirty instead");
         return this.post.dirtyContent;
     }
-
-    /**
-     * Retrieve available authors and editors
-     */
-    private initAuthors() {
-        this.userService.authors.subscribe(
-            authors => {
-                this.authors = authors;
-                console.log("Authors: ", this.authors);
-                /* Editors are users can edit any posts */
-                this.editors = authors.filter(people => people.role != 'author');
-            }
-        );
-    }
+    
     /**
      * Post ID should be available before initializing a post
      */
@@ -162,27 +131,6 @@ export class PostPage implements OnInit
                 if (this.post.topics)
                     this.updateTopicCheckStatus();
             });
-    }
-
-    /**
-     * Initialize all available categories
-     */
-    private initCategories()
-    {
-        this.postService.categories
-            .subscribe(json => this.categories = json);
-    }
-    
-    private initTags()
-    {
-        this.postService.tags
-            .subscribe(json => this.tags = json);
-    }
-
-    private initTopics()
-    {
-        this.postService.topics
-            .subscribe(json => this.topics = json);
     }
 
     /**
