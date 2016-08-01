@@ -17,9 +17,19 @@ The source code of this project is located at 'app', here is the explain of
 how the folders are grouped:
 
 app/auth: authentication related pages
+app/cms: Content management system, includes posts, pages, topics.
 app/components: templates commonly used by many other page templates
-app/pages: page templates
-app/service: data providers, retrieve from and send data to servers.
+app/dashboard: Admin home page
+app/datatype: DEPRECATED, moved to models
+app/email: Email system management
+app/gallery: Images, files uploading and management system
+app/localization: i18n localization, Only zh_CN is supported currently.
+app/migration: A simple page used to send common to api server to do wordpress
+               migration job.
+app/models: Definition of models
+app/service: Data providers, retrieve from and send data to servers.
+app/shop: Core business, products, shop orders, vouchers related.
+app/user: User management module.
 
 # DEVELOPMENT #
 
