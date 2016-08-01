@@ -14,6 +14,8 @@ export const POST_TYPE = [
     {key: 'review',        name: '审稿'}
 ];
 
+export const POST_STATUSES = ['public', 'featured', 'pending', 'draft', 'trash'];
+
 export const POST_STATUS = [
     {key: 'publish',  name: '已发布'},
     {key: 'featured', name: '置顶'},

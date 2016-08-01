@@ -6,7 +6,8 @@
     <list-page-menu
             [baseUrl]="baseUrl" [byMe]=""
             [editors]="editors"
-            [statuses]="statuses"></list-page-menu>
+            [statuses]="statuses"
+            [localization]="zh"></list-page-menu>
 
     <search-box></search-box>
 </nav>
@@ -70,18 +71,18 @@
         <!--<template ngFor let-variation [ngForOf]="variations(product)" let-j="index">-->
 
             <!-- displaying, some columns only display once for a product has multiple variations -->
-            <tr *ngIf="!product.editing" id="{{i}}" (dblclick)="fastEditCurrentProduct($event, i)">
-                <th><span *ngIf="j == 0">{{i+1}}</span></th>
-                <td><input *ngIf="j == 0" type="checkbox" name="product[]" [(ngModel)]="product.checked"></td>
-                <td><span *ngIf="j == 0">{{ product.image_id }}</span></td>
+            <tr id="{{i}}" (dblclick)="fastEditCurrentProduct($event, i)">
+                <th>{{i+1}}</th>
+                <td><input type="checkbox" name="product[]" [(ngModel)]="product.checked"></td>
+                <td>{{ product.image_id }}</td>
                 <td>
-                    <strong *ngIf="j == 0"><a [routerLink]="['/product', product.id ]">{{ product.title }}</a></strong>
-                    <div *ngIf="j == 0" class="row-actions">
+                    <strong><a [routerLink]="['/product', product.id ]">{{ product.title }}</a></strong>
+                    <div class="row-actions">
                         <span class="trash"><a>删除</a> | </span>
                         <span><a href="http://www.huluwa.uk/product/{{product.guid}}" target="_blank">查看</a></span>
                     </div>
                 </td>
-                <td><span *ngIf="j == 0">{{ product.sku }}</span></td>
+                <td>{{ product.sku }}</td>
                 <td>
                     <span>实际库存: xxx</span>
                     <div>
@@ -90,32 +91,22 @@
                 </td>
                 <td> xxx </td>
                 <td>£ xxx </td>
-                <td><span *ngIf="j == 0"><a *ngFor="let cat of product.categories" [routerLink]="['/category', cat.id]">{{ cat.name }} </a></span></td>
+                <td><a *ngFor="let cat of product.categories" [routerLink]="['/category', cat.id]">{{ cat.name }} </a></td>
                 <td>{{ product.min_age }} - {{ product.max_age }}</td>
                 <td>{{ product.updated_at }}</td>
             </tr>
-            <!-- Editing -->
-            <tr *ngIf="product.editing" id="edit-{{i}}" (dblclick)="fastEditCurrentProduct($event, i)">
+            <!-- Fast editing -->
+            <tr *ngIf="product.editing" class="fast-edit-form" id="edit-{{i}}">
                 <td colspan="10">
-                    <h5>快速编辑</h5>
-                    <label>
-                        <span class="title">标题</span>
-                            <span class="input-text-wrap">
-                                <input type="text" name="title" [(ngModel)]="product.title">
-                            </span>
-                    </label>
-                    <label>
-                        <span class="title">编辑</span>
-                            <span class="input-text-wrap">
-                                <input type="text" name="editor_id" [(ngModel)]="post.editor_id">
-                            </span>
-                    </label>
-                    <label>
-                        <span class="title">分类</span>
-                            <span *ngFor="let cat of product.categories">
-                                <input type="checkbox" name="category[]">{{ cat.name }}
-                            </span>
-                    </label>
+                    <!--
+                    <fast-edit-post-form [post]="post"
+                                         [authors]="authors"
+                                         [editors]="editors"
+                                         (toggle)="toggleRightBar($event, i)"
+                                         (cancel)="cancelFastEditing($event, i)"
+                                         (submit)="onSubmit($event, i)">
+                    </fast-edit-post-form>
+                    -->
                 </td>
             </tr>
 

@@ -12,6 +12,8 @@ import {
     PaginatorComponent, SearchBoxComponent,
     ListPageHeaderComponent, ListPageMenuComponent } from "../components";
 
+import { zh_CN } from '../localization';
+
 let template = require('./products.html');
 @Component({
     template: template,
@@ -76,7 +78,11 @@ export class ProductsPage implements OnInit
             }
         );
     }
-
+    
+    get zh() {
+        return zh_CN.product;
+    }
+    
     /**
      * Get editors
      */

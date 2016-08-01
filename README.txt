@@ -24,7 +24,7 @@ app/datatype: DEPRECATED, moved to models
 app/email: Email system management
 app/gallery: Images, files uploading and management system
 app/localization: i18n localization, Only zh_CN is supported currently.
-app/migration: A simple page used to send common to api server to do wordpress
+app/migration: A simple page used to send command to api server to do wordpress
                migration job.
 app/models: Definition of models
 app/service: Data providers, retrieve from and send data to servers.

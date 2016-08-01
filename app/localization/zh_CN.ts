@@ -4,7 +4,7 @@
 
 export const zh_CN = {
     post: {
-        /* Post/product status */
+        /* Post status */
         publish: '已发布',
         featured: '置顶',
         pending: '待审',
@@ -16,6 +16,15 @@ export const zh_CN = {
         semi_creative: '伪原创',
         integration: '整理',
         review: '审稿'
+    },
+
+    product: {
+        /* Product status */
+        publish: '已发布',
+        featured: '置顶',
+        pending: '待审',
+        draft: '草稿',
+        trash: '回收站'
     },
 
     order: {

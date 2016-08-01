@@ -29,10 +29,9 @@ export class ListPageMenuComponent {
     @Input()
     editors: string;
 
-    constructor() {
-    }
+    @Input() 
+    localization: any;
     
-    get zh() {
-        return zh_CN.post;
+    constructor() {
     }
 }

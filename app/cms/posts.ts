@@ -6,19 +6,18 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 import { TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
-import { zh_CN } from '../localization';
 
 import { PostService, UserService } from '../service';
 import { User, Post, Category, Tag, Topic,
     Pagination, PostStatus } from '../models';
-import { POST_STATUS } from '../models';
-
 import {
     PaginatorComponent, DateFilterComponent,
     SearchBoxComponent, ListPageHeaderComponent,
     ListPageMenuComponent, FastEditPostFormComponent,
     CategoryTreeComponent, TagCloudComponent,
     TopicCloudComponent } from '../components';
+
+import { zh_CN } from '../localization';
 
 let template = require('./posts.html');
 @Component({
@@ -52,8 +51,6 @@ export class PostsPage implements OnInit
     /* Parameter to <list-page-header> */
     pageTitle = '文章';
     newItemUrl = 'post/new';
-
-    postStatus: any;
 
     /* Post status */
     statuses: PostStatus[];
@@ -97,7 +94,6 @@ export class PostsPage implements OnInit
                 private userService: UserService,
                 private postService: PostService,
                 private titleService: Title) {
-        this.postStatus = POST_STATUS;
     }
 
     /* Localization, have to wrapper it as template only access component local

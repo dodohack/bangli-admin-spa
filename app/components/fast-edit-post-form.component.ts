@@ -5,8 +5,10 @@ import { Component, Input, Output, EventEmitter, AfterContentInit } from '@angul
 import { NgForm }    from '@angular/forms';
 
 import { User, Post } from '../models';
-import { POST_STATUS } from '../models';
+import { POST_STATUSES } from '../models';
 import { PostCttCloudComponent } from './post-ctt-cloud.component';
+
+import { zh_CN } from '../localization';
 
 let template = require('./fast-edit-post-form.html');
 @Component({
@@ -15,7 +17,6 @@ let template = require('./fast-edit-post-form.html');
     directives: [ PostCttCloudComponent ]
 })
 export class FastEditPostFormComponent implements AfterContentInit {
-    postStatus: any;
 
     /* An temporary post holds common part of bulk editing posts */
     tempPost = new Post(-1, -1, -1, -1, '', '', '', []);
@@ -41,9 +42,16 @@ export class FastEditPostFormComponent implements AfterContentInit {
     cancel = new EventEmitter();
 
     constructor() {
-        this.postStatus = POST_STATUS;
+    }
+    
+    get POST_STATUSES() {
+        return POST_STATUSES;
     }
 
+    get zh() {
+        return zh_CN.post;
+    }
+    
     ngAfterContentInit() {
         if (this.posts) {
             this.initTempPost();

@@ -6,14 +6,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 
-import { Pagination }     from '../models/pagination';
-import { OrderStatus }    from '../models/order';
-
+import { OrderStatus, Pagination }     from '../models';
 import { OrderService } from '../service/order.service';
 import {
     PaginatorComponent, DateFilterComponent,
     SearchBoxComponent, ListPageHeaderComponent,
     ListPageMenuComponent } from "../components";
+
+import { zh_CN }    from '../localization';
 
 let template = require('./orders.html');
 @Component({
@@ -74,6 +74,10 @@ export class OrdersPage implements OnInit
                 this.getOrdersList();
             }
         );
+    }
+
+    get zh() {
+        return zh_CN.order;
     }
 
     /**
