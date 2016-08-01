@@ -8,8 +8,6 @@ import { ActivatedRoute, CanDeactivate }  from '@angular/router';
 import { TYPEAHEAD_DIRECTIVES, TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 import { FROALA_OPTIONS } from '../models/froala.option';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 
 import { 
     EditorPageHeaderComponent, 
@@ -68,8 +66,6 @@ export class PostPage implements OnInit
         
         this.cleanPostDirtyMask();
 
-        this.initPostId();
-
         this.initPost();
     }
 
@@ -99,24 +95,19 @@ export class PostPage implements OnInit
         console.log("TODO: Remove me and use form.dirty instead");
         return this.post.dirtyContent;
     }
-    
-    /**
-     * Post ID should be available before initializing a post
-     */
-    private initPostId() {
-        this.route.params.subscribe(
-            segment => {
-                /* Get post id from URL segment */
-                this.post.id = segment['id'] ? +segment['id'] : 0;
-            }
-        );
-    }
 
     /**
      * Initialize the post, only when we have a valid id
      */
     private initPost()
     {
+        this.route.params.subscribe(
+            segment => {
+                /* Get post id from URL segment */
+                this.post.id = segment['id'] ? +segment['id'] : 0;
+            }
+        );
+
         if (!this.post.id)
             return;
 

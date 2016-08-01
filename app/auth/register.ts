@@ -6,7 +6,7 @@ import { Component }         from '@angular/core';
 import { Router }            from '@angular/router';
 
 import { AuthService }              from '../service/auth.service';
-import { Register, RegisterError }  from '../datatype/register';
+import { Register, RegisterError }  from '../models';
 import { APP }                      from '../app.api';
 
 let template = './register.html';

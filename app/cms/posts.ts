@@ -79,8 +79,7 @@ export class PostsPage implements OnInit
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
                 private postService: PostService,
-                private titleService: Title) {
-    }
+                private titleService: Title) { }
 
     /**
      * Initialize the page, we should only put DI initializition into ctor.
@@ -102,10 +101,10 @@ export class PostsPage implements OnInit
     get authors() { return this.userService.authors; }
     get editors() { return this.userService.editors; }
 
-    get statuses() { return this.postService.statuses; }
+    get statuses()   { return this.postService.statuses; }
     get categories() { return this.postService.categories; }
-    get tags() { return this.postService.tags; }
-    get topics() { return this.postService.topics; }
+    get tags()       { return this.postService.tags; }
+    get topics()     { return this.postService.topics; }
 
     private initPostsList()
     {

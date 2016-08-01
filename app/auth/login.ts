@@ -5,8 +5,8 @@
 import { Component }       from '@angular/core';
 import { Router }          from '@angular/router';
 
-import { AuthService } from '../service/auth.service';
-import { Login }       from '../datatype/login';
+import { AuthService } from '../service';
+import { Login }       from '../models';
 import { APP }         from '../app.api';
 
 let template = require('./login.html');
