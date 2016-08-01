@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { POST_STATUS_TRANS } from '../models';
+import { zh_CN } from '../localization';
 
 let template = require('./list-page-menu.html');
 @Component({
@@ -7,7 +7,6 @@ let template = require('./list-page-menu.html');
     template: template
 })
 export class ListPageMenuComponent {
-    postStatusTrans: any;
     
     /* URL base for all menu items */
     @Input()
@@ -31,6 +30,9 @@ export class ListPageMenuComponent {
     editors: string;
 
     constructor() {
-        this.postStatusTrans = POST_STATUS_TRANS;
+    }
+    
+    get zh() {
+        return zh_CN.post;
     }
 }

@@ -6,11 +6,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Title }             from '@angular/platform-browser';
 import { TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
+import { zh_CN } from '../localization';
 
 import { PostService, UserService } from '../service';
 import { User, Post, Category, Tag, Topic,
     Pagination, PostStatus } from '../models';
-import { POST_TYPE_TRANS, POST_STATUS, POST_STATUS_TRANS } from '../models';
+import { POST_STATUS } from '../models';
 
 import {
     PaginatorComponent, DateFilterComponent,
@@ -52,9 +53,7 @@ export class PostsPage implements OnInit
     pageTitle = '文章';
     newItemUrl = 'post/new';
 
-    postTypeTrans: any;
     postStatus: any;
-    postStatusTrans: any;
 
     /* Post status */
     statuses: PostStatus[];
@@ -99,8 +98,12 @@ export class PostsPage implements OnInit
                 private postService: PostService,
                 private titleService: Title) {
         this.postStatus = POST_STATUS;
-        this.postStatusTrans = POST_STATUS_TRANS;
-        this.postTypeTrans   = POST_TYPE_TRANS;
+    }
+
+    /* Localization, have to wrapper it as template only access component local
+     * methods/properties */
+    get zh() {
+        return zh_CN.post;
     }
 
     /**

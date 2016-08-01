@@ -13,13 +13,6 @@ export const POST_TYPE = [
     {key: 'integration',   name: '整理'},
     {key: 'review',        name: '审稿'}
 ];
-/* POST_TYPE_TRANS is used as a dictionary to display user friendly name */
-export const POST_TYPE_TRANS = {
-    creative:      '原创',
-    semi_creative: '伪原创',
-    integration:   '整理',
-    review:        '审稿'
-};
 
 export const POST_STATUS = [
     {key: 'publish',  name: '已发布'},
@@ -28,13 +21,6 @@ export const POST_STATUS = [
     {key: 'draft',    name: '草稿'},
     {key: 'trash',    name: '回收站'}
 ];
-export const POST_STATUS_TRANS = {
-    publish:  '已发布',
-    featured: '置顶',
-    pending:  '待审',
-    draft:    '草稿',
-    trash:    '回收站'
-};
 
 export class PostStatus {
     /* Number of post in current status */
