@@ -1,7 +1,7 @@
 <div class="page-header">
     <h1 class="title">
         图片管理
-        <a class="btn btn-sm btn-info-outline" (click)="toggleRightBar($event)"><span *ngIf="hideRightBar">上传图片</span><span *ngIf="!hideRightBar">隐藏上传</span></a>
+        <a class="btn btn-sm btn-outline-info" (click)="toggleRightBar($event)"><span *ngIf="hideRightBar">上传图片</span><span *ngIf="!hideRightBar">隐藏上传</span></a>
     </h1>
 </div>
 
@@ -36,7 +36,7 @@
 
     <form class="form-inline pull-xs-right">
         <input class="form-control input-sm" type="text" placeholder="搜索图片">
-        <button class="btn btn-sm btn-success-outline" type="submit">搜索</button>
+        <button class="btn btn-sm btn-outline-success" type="submit">搜索</button>
     </form>
 </nav>
 
@@ -125,15 +125,15 @@
                     <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
                 </div>
             </div>
-            <button type="button" class="btn btn-success-outline btn-sm"
+            <button type="button" class="btn btn-outline-success btn-sm"
                     (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
                 <span class="fa fa-upload"></span> 全部上传
             </button>
-            <button type="button" class="btn btn-warning-outline btn-sm"
+            <button type="button" class="btn btn-outline-warning btn-sm"
                     (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
                 <span class="fa fa-ban"></span> 全部取消
             </button>
-            <button type="button" class="btn btn-danger-outline btn-sm"
+            <button type="button" class="btn btn-outline-danger btn-sm"
                     (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
                 <span class="fa fa-trash"></span> 全部删除
             </button>

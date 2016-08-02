@@ -8,8 +8,8 @@ import { Title } from '@angular/platform-browser';
 <div class="page-header">
     <h1 class="title">
         {{ pageTitle }}列表
-        <a class="page-title-action btn btn-sm btn-info-outline" [routerLink]="['/', newItemUrl]">新建{{ pageTitle }}</a>
-        <button class="page-title-action btn btn-sm btn-info-outline float-right">详简切换</button>
+        <a class="page-title-action btn btn-sm btn-outline-info" [routerLink]="['/', newItemUrl]">新建{{ pageTitle }}</a>
+        <button class="page-title-action btn btn-sm btn-outline-info float-right">详简切换</button>
     </h1>
 </div>
     `

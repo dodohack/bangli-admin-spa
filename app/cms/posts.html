@@ -15,7 +15,7 @@
 <!-- Filter toolbar -->
 <div class="list-toolbar">
     <div class="float-left bulk-actions">
-        <select class="c-select c-select-sm" [(ngModel)]="bulkAction" [disabled]="!isAnyPostChecked()">
+        <select class="custom-select-sm" [(ngModel)]="bulkAction" [disabled]="!isAnyPostChecked()">
             <option value="none">批量操作</option>
             <option value="deleting">移到回收站</option>
             <option value="editing">批量修改</option>
