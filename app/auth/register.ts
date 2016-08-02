@@ -9,7 +9,7 @@ import { AuthService }              from '../service/auth.service';
 import { Register, RegisterError }  from '../models';
 import { APP }                      from '../app.api';
 
-let template = './register.html';
+let template = require('./register.html');
 @Component({
     template: template
 })
