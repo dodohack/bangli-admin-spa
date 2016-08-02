@@ -24,10 +24,6 @@ export class UsersPage implements OnInit
     base = 'user/list';
     baseUrl: string;
 
-    /* Parameter to <list-page-header> */
-    pageTitle = '用户';
-    newItemUrl = 'user/new';
-
     /* Which group of users is currently showing */
     current_role: any;
 
