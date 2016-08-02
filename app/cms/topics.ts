@@ -36,10 +36,6 @@ export class TopicsPage implements OnInit {
     /* Parameter to <paginator> */
     deepUrl: string;
 
-    /* Parameter to <list-page-header> */
-    pageTitle = '专题';
-    newItemUrl = 'topic/new';
-
     /* TopicStatus translation, the same as PostStatus */
     statuses: PostStatus[];
 

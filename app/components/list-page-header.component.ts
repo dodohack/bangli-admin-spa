@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, AfterContentInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'list-page-header',
@@ -13,7 +14,7 @@ import { Component, Input } from '@angular/core';
 </div>
     `
 })
-export class ListPageHeaderComponent {
+export class ListPageHeaderComponent implements AfterContentInit {
     /* Page title of the list page */
     @Input()
     pageTitle: string;
@@ -21,4 +22,10 @@ export class ListPageHeaderComponent {
     /* URL to create a new item of the list page */
     @Input()
     newItemUrl: string;
+    
+    constructor(private titleService: Title) {}
+
+    ngAfterContentInit() {
+        this.titleService.setTitle(this.pageTitle + '列表 - 葫芦娃管理平台');
+    }
 }

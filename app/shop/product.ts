@@ -36,11 +36,6 @@ let template = require('./product.html');
 })
 export class ProductPage implements OnInit
 {
-    /* Editor page header input */
-    pageTitle = "商品";
-    previewUrl = "dummy";
-    backUrl   = "product";
-
     froalaEditor: any;
     
     product = new Product;

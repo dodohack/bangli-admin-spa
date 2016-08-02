@@ -44,11 +44,6 @@ export class PostPage implements OnInit
 
     froalaEditor: any;
 
-    /* Parameters to <editor-page-header> */
-    pageTitle  = "文章";
-    previewUrl = "dummy";
-    backUrl    = "post";
-
     hideRightBar = true;
     showFilter   = true;
 
@@ -62,8 +57,6 @@ export class PostPage implements OnInit
                 private titleService: Title) {}
 
     ngOnInit() {
-        this.titleService.setTitle('编辑文章 - 葫芦娃');
-        
         this.cleanPostDirtyMask();
 
         this.initPost();

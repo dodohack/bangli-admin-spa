@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, AfterContentInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { zh_CN } from '../localization';
 
 let template = require('./editor-page-header.html');
@@ -6,7 +7,7 @@ let template = require('./editor-page-header.html');
     selector: 'editor-page-header',
     template: template
 })
-export class EditorPageHeaderComponent {
+export class EditorPageHeaderComponent implements AfterContentInit {
     /* Current page title */
     @Input()
     pageTitle: string;
@@ -24,14 +25,15 @@ export class EditorPageHeaderComponent {
     @Output()
     toggleEvent = new EventEmitter();
 
-    constructor() {
-    }
+    constructor(private titleService: Title) { }
 
     toggleRightBar() {
         //this.toggleEvent.emit();
     }
 
-    get zh() {
-        return zh_CN.post;
+    get zh() { return zh_CN.post; }
+
+    ngAfterContentInit() {
+        this.titleService.setTitle('编辑' + this.pageTitle + ' - 葫芦娃管理平台');
     }
 }

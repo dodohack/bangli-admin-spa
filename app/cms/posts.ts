@@ -4,7 +4,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
-import { Title }             from '@angular/platform-browser';
 import { TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
 
 import { PostService, UserService } from '../service';
@@ -47,10 +46,6 @@ export class PostsPage implements OnInit
     baseUrl = 'post/list/status';
     /* Parameter to <paginator> */
     deepUrl: string;
-    
-    /* Parameter to <list-page-header> */
-    pageTitle = '文章';
-    newItemUrl = 'post/new';
 
     /* Posts filters: any, author, editor, status */
     filter: any;
@@ -78,8 +73,7 @@ export class PostsPage implements OnInit
 
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
-                private postService: PostService,
-                private titleService: Title) { }
+                private postService: PostService) { }
 
     /**
      * Initialize the page, we should only put DI initializition into ctor.
@@ -87,9 +81,6 @@ export class PostsPage implements OnInit
      * page of all customers by default.
      */
     ngOnInit() {
-        /* Set document title */
-        this.titleService.setTitle('文章列表 - 葫芦娃管理平台');
-
         this.pagination.per_page = this.postService.perPage;
 
         this.initPostsList();

@@ -37,10 +37,6 @@ export class OrdersPage implements OnInit
     /* Parameter to <paginator> */
     deepUrl: string;
 
-    /* <list-page-header> parameter */
-    pageTitle = '订单';
-    newItemUrl = 'order/new';
-
     /* Current order status of the listed orders */
     status: any;
 

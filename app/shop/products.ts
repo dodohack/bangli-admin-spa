@@ -4,7 +4,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
-import { Title }             from '@angular/platform-browser';
 
 import { Pagination, User, Product, ProductStatus } from '../models';
 import { ProductService, UserService } from '../service';
@@ -35,10 +34,6 @@ export class ProductsPage implements OnInit
     /* <paginator> parameter */
     deepUrl: string;
 
-    /* <list-page-header> parameter */
-    pageTitle = '商品';
-    newItemUrl = 'product/new';
-
     /* Current order status of the listed orders */
     status: any;
 
@@ -50,12 +45,10 @@ export class ProductsPage implements OnInit
 
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
-                private productService: ProductService,
-                private titleService: Title) {}
+                private productService: ProductService) {}
 
     ngOnInit()
     {
-        this.titleService.setTitle('订单列表 - 葫芦娃管理平台');
         this.pagination.per_page = this.productService.getProductsPerPage();
 
         /* Get URL segments and update the list */
