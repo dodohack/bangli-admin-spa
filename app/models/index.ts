@@ -1,3 +1,4 @@
+import { Menu } from './menu';
 import { Login } from './login';
 import { Register, RegisterError } from './register';
 import { User } from './user';
@@ -12,6 +13,7 @@ import { Product, ProductStatus } from './product';
 import { JwtPayLoad } from './jwt';
 
 export {
+    Menu,
     Login,
     Register,
     RegisterError, /* TODO: Remove this */

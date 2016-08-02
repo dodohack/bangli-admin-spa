@@ -1,7 +1,6 @@
-/**
- * This file defines sidebar menus
- */
-export const SidebarMenus = [
+
+/* Sidebar menus definition */
+export const SIDEBAR_MENUS = [
     {slug: 'dashboard', name: '控制面板',   icon_style: 'fa fa-lg fa-dashboard'},
     {slug: 'order',     name: '订单',      icon_style: 'fa fa-lg fa-credit-card'},
     {slug: 'product',   name: '商品',      icon_style: 'fa fa-lg fa-shopping-cart'},
@@ -20,3 +19,13 @@ export const SidebarMenus = [
     {slug: 'setting',   name: '设置',      icon_style: 'fa fa-lg fa-wrench'},
     {slug: 'migration', name: '数据移植',   icon_style: 'fa fa-lg fa-database'}
 ];
+
+/* customized menus on sidebar/topbar */
+export class Menu {
+    constructor(public slug: string,
+                public name: string,
+                public url?: string,
+                public sort?: number,
+                public icon_style?: string,
+                public style?: string) {}
+}

@@ -5,6 +5,7 @@ import { PostService }    from './post.service';
 import { TopicService }   from './topic.service';
 import { PageService }    from './page.service';
 import { UserService }    from './user.service';
+import { PreferenceService } from './preference.service';
 
 export {
     AuthService,
@@ -13,5 +14,6 @@ export {
     PostService,
     TopicService,
     PageService,
-    UserService
+    UserService,
+    PreferenceService
 }

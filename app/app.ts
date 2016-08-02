@@ -5,9 +5,8 @@
 import { Component }         from '@angular/core';
 import { Router }            from '@angular/router';
 
-import { AuthService }       from './service/auth.service';
-import { SidebarComponent }  from './components/sidebar.component';
-import { TopbarComponent }   from './components/topbar.component';
+import { AuthService }       from './service';
+import { TopbarComponent, SidebarComponent }  from './components';
 
 let template = require('./app.html');
 @Component({

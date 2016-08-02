@@ -4,7 +4,6 @@
 
 import { Injectable }               from '@angular/core';
 import { Jsonp, URLSearchParams }   from '@angular/http';
-import { Observable }               from 'rxjs/Observable';
 
 import { User }        from '../models/user';
 import { AuthService } from './auth.service';

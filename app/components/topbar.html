@@ -1,29 +1,44 @@
-<div class="topbar">
+<div class="topbar" [style.background-color]="preference.menuBgColor">
     <ul>
         <li>
-            <a href="http://www.huluwa.uk" target="_blank"><i class="fa fa-home">首页</i></a>
+            <a href="http://www.huluwa.uk" target="_blank"
+               [style.color]="preference.menuColor"><i class="fa fa-home">首页</i></a>
         </li>
 
         <li>
-            <a [routerLink]="['/post/new']" routerLinkActive="active">
+            <a [routerLink]="['/post/new']" routerLinkActive="active"
+               [style.color]="preference.menuColor">
                 <i class="fa fa-edit"></i>新建文章
             </a>
         </li>
 
         <li>
-            <a [routerLink]="['/product/new']" routerLinkActive="active">
+            <a [routerLink]="['/product/new']" routerLinkActive="active"
+               [style.color]="preference.menuColor">
                 <i class="fa fa-cart-plus"></i>新建产品
             </a>
         </li>
 
+        <!-- List of customized menus -->
+        <template ngFor let-menu [ngForOf]="preference.myTopbarMenus">
+            <li *ngIf="menu">
+                <a [routerLink]="[menu.url]" routerLinkActive="active"
+                   [style.color]="preference.menuColor">
+                    <i ></i>{{ menu.name }} FIXME: css_class
+                </a>
+            </li>
+        </template>
+
         <li class="float-right">
-            <a [routerLink]="['/logout']" routerLinkActive="active">
+            <a [routerLink]="['/logout']" routerLinkActive="active"
+               [style.color]="preference.menuColor">
                 <i class="fa fa-arrow-circle-o-right"></i>退出
             </a>
         </li>
 
         <li class="float-right">
-            <a [routerLink]="['/user/id']" routerLinkActive="active">
+            <a [routerLink]="['/user/id']" routerLinkActive="active"
+               [style.color]="preference.menuColor">
                 <i class="fa fa-user"></i>somename
             </a>
         </li>

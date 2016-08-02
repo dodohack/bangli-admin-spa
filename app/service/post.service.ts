@@ -4,7 +4,6 @@
 
 import { Injectable }               from '@angular/core';
 import { Jsonp, Http, Headers, RequestOptions, URLSearchParams }   from '@angular/http';
-import { Observable } from "rxjs/Observable";
 
 import { PostStatus, Category, Post, Tag, Topic }  from '../models';
 import { AuthService } from './auth.service';
