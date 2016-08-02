@@ -1,2 +1,17 @@
+<list-page-header [pageTitle]="'页面'" [newItemUrl]="'page/new'">
+</list-page-header>
+
+<!-- list page menu -->
+<nav class="navbar page-sub-menu">
+    <list-page-menu
+            [baseUrl]="baseUrl"
+            [statuses]="statuses"
+            [editors]="editors"
+            [localization]="zh"></list-page-menu>
+
+    <search-box></search-box>
+</nav>
+
+
 <h2>This is list of pages</h2>
 

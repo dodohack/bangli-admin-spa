@@ -4,7 +4,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
-import { Title }             from '@angular/platform-browser';
 
 import { User, Pagination }  from '../models';
 import { UserService } from '../service';
@@ -31,8 +30,7 @@ export class UsersPage implements OnInit
     users: User[];
 
     constructor(private route: ActivatedRoute,
-                private userService: UserService,
-                private titleService: Title) {}
+                private userService: UserService){}
 
     /**
      * Initialize the page, we should only put DI initializition into ctor.
@@ -41,8 +39,6 @@ export class UsersPage implements OnInit
      */
     ngOnInit()
     {
-        this.titleService.setTitle('用户列表 - 葫芦娃管理平台');
-
         this.current_role = 'customer';
         this.pagination.current_page = 1;
         this.pagination.per_page = this.userService.getUsersPerPage();
@@ -71,21 +67,8 @@ export class UsersPage implements OnInit
         this.userService.getUsers(this.current_role, this.pagination.current_page)
             .subscribe(
                 json => {
-                    /* '+' magically converts string to number */
-                    this.pagination.total = +json['total'];
-                    this.pagination.per_page = +json['per_page'];
-                    this.pagination.current_page = +json['current_page'];
-                    this.pagination.last_page = +json['last_page'];
-                    this.pagination.from = +json['from'];
-                    this.pagination.to = +json['to'];
                     this.users = json['data'];
-
-                    this.pagination.pre_page =
-                        this.pagination.current_page > 1 ?
-                        this.pagination.current_page - 1 : this.pagination.current_page;
-                    this.pagination.next_page =
-                        this.pagination.current_page < this.pagination.last_page ?
-                        this.pagination.current_page + 1 : this.pagination.last_page;
+                    this.pagination.setup(json);
                 },
                 error => console.error(error)
             );

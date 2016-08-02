@@ -6,6 +6,7 @@ import { Category } from './category';
 import { Tag } from './tag';
 import { Topic } from './topic';
 import { Post, PostStatus, POST_TYPES, POST_STATUSES} from './post';
+import { Page } from './page';
 import { Order, OrderStatus, Shipping, Billing, OrderItem, OrderHistory } from './order';
 import { Product, ProductStatus } from './product';
 import { JwtPayLoad } from './jwt';
@@ -23,6 +24,7 @@ export {
     PostStatus,
     POST_TYPES,
     POST_STATUSES,
+    Page,
     Order,
     OrderStatus,
     Shipping,

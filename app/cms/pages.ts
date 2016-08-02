@@ -3,18 +3,30 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Title }             from '@angular/platform-browser';
+import { UserService, PageService } from '../service';
+import { ListPageHeaderComponent, ListPageMenuComponent } from '../components';
+import { zh_CN } from '../localization';
 
 let template = require('./pages.html');
 @Component({
-    template: template
+    template: template,
+    directives: [
+        ListPageHeaderComponent,
+        ListPageMenuComponent
+    ],
+    providers: [ PageService ]
 })
 export class PagesPage implements OnInit
 {
-    constructor(private titleService: Title) {}
+    baseUrl = 'page/list';
 
-    ngOnInit()
-    {
-        this.titleService.setTitle('文档列表 - 葫芦娃管理平台');
+    constructor(private userService: UserService,
+                private pageService: PageService) {}
+
+    ngOnInit() {
     }
+
+    get zh()       { return zh_CN.post; }
+    get editors()  { return this.userService.editors; }
+    get statuses() { return this.pageService.statuses; }
 }

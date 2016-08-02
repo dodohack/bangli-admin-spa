@@ -4,7 +4,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
-import { Title }             from '@angular/platform-browser';
 
 import { Topic, Category, Pagination, PostStatus }  from '../models';
 import { UserService, PostService, TopicService }  from '../service';
@@ -55,8 +54,7 @@ export class TopicsPage implements OnInit {
     constructor(private route:ActivatedRoute,
                 private userService: UserService,
                 private topicService: TopicService,
-                private postService: PostService,
-                private titleService:Title) {}
+                private postService: PostService) {}
 
     /**
      * Initialize the page, we should only put DI initializition into ctor.
@@ -65,9 +63,6 @@ export class TopicsPage implements OnInit {
      */
     ngOnInit()
     {
-        /* Set document title */
-        this.titleService.setTitle('文章列表 - 葫芦娃管理平台');
-
         this.pagination.per_page = this.topicService.perPage;
 
         this.initTopicStatuses();

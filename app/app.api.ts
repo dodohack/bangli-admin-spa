@@ -50,6 +50,11 @@ export const APP = {
     /* CMS topics available to post */
     cms_topics: base + '/admin/topics/cms',
 
+    /* List of pages */
+    pages: base + '/admin/pages',
+    /* Pages status */
+    page_statuses: base + '/admin/pages/statuses',
+
     /* List of topics */
     topics: base + '/admin/topics',
     /* Topics list page filter menu */
