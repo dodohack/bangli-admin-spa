@@ -11,7 +11,7 @@ import { Topic } from '../models';
     </div>
     <ul class="topic-cloud">
         <template ngFor let-topic [ngForOf]="topics">
-        <li *ngIf="!topic.hidden" class="topic-item label label-pill label-success"
+        <li *ngIf="!topic.hidden" class="topic-item tag tag-pill tag-success"
             [class.active]="topic.checked"
             (click)="check(topic)" >
             {{ topic.title }}

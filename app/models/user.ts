@@ -15,3 +15,20 @@ export class User {
     nicename: string;
     email: string;
 }
+
+/* User profile and settings only stored in localStorage */
+export class UserSetting {
+    constructor(
+        /* List page related */
+        public itemsPerList?: number, /* number of items of a list page */
+        public detailedItem?: boolean, /* Show extra detail in list item */
+
+        /* Visual experience */
+        public menuBgColor?: string, /* Sidebar/topbar background color */
+        public menuFontColor?: string /* Sidebar/topbar font color */
+
+        /* Customized topbar links */
+    ) {
+
+    }
+}

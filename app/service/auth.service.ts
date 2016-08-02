@@ -29,8 +29,6 @@ export class AuthService
     private jwt;
 
     constructor(private router: Router, private http: Http) {
-        console.log("AuthService Object Created!");
-
         this.jwt = localStorage.getItem('jwt');
         if (this.jwt !== '' && this.jwt !== null)
             this.decoded_jwt = jwtDecode(this.jwt);
@@ -47,14 +45,22 @@ export class AuthService
         /* Get current unix timestamp in second */
         let now = Math.floor(Date.now()/1000);
 
-        /* Token expired, remove it and return false */
+        /* Token expired, refresh it */
         if (this.decoded_jwt.exp < now) {
-            this.jwt = null;
-            localStorage.removeItem('jwt');
+            this.refreshToken();
+            // TODO: Remove this return
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * TODO: Refresh JWT token
+     */
+    private refreshToken()
+    {
+        console.log("TODO: Implement JWT refresh");
     }
 
     /**

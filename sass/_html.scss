@@ -77,39 +77,39 @@ input.input-sm {
 }
 
 
-.label-group {
+.tag-group {
     display: inline-block;
     padding-right: 2rem;
 }
 
-.label-primary-outline {
-    border: 1px solid $label-primary-bg;
-    color: $label-primary-bg;
+.tag-primary-outline {
+    border: 1px solid $tag-primary-bg;
+    color: $tag-primary-bg;
 }
 
-.label-warning-outline {
-    border: 1px solid $label-warning-bg;
-    color: $label-warning-bg;
+.tag-warning-outline {
+    border: 1px solid $tag-warning-bg;
+    color: $tag-warning-bg;
 }
 
-.label-danger-outline {
-    border: 1px solid $label-danger-bg;
-    color: $label-danger-bg;
+.tag-danger-outline {
+    border: 1px solid $tag-danger-bg;
+    color: $tag-danger-bg;
 }
 
-.label-default-outline {
-    border: 1px solid $label-default-bg;
-    color: $label-default-bg;
+.tag-default-outline {
+    border: 1px solid $tag-default-bg;
+    color: $tag-default-bg;
 }
 
-.label-success-outline {
-    border: 1px solid $label-success-bg;
-    color: $label-success-bg;
+.tag-success-outline {
+    border: 1px solid $tag-success-bg;
+    color: $tag-success-bg;
 }
 
-.label-info-outline {
-    border: 1px solid $label-info-bg;
-    color: $label-info-bg;
+.tag-info-outline {
+    border: 1px solid $tag-info-bg;
+    color: $tag-info-bg;
 }
 
 /* Test activated anchor via routerLinkActive directive */

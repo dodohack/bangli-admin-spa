@@ -1,12 +1,12 @@
 <!-- Post category, tag, topic -->
 <div class="post-tags">
     <div class="post-tag-group">
-        <span class="label label-warning-outline">文章分类</span>
+        <span class="tag tag-warning-outline">文章分类</span>
         <ul *ngIf="post.categories && post.categories.length <= 0">
-            <li class="label label-pill label-default-outline" (click)="toggleRightBar('cat')">选择分类</li>
+            <li class="tag tag-pill tag-default-outline" (click)="toggleRightBar('cat')">选择分类</li>
         </ul>
         <ul *ngIf="post.categories && post.categories.length > 0">
-            <li *ngFor="let cat of post.categories" class="label label-pill label-primary-outline"
+            <li *ngFor="let cat of post.categories" class="tag tag-pill tag-primary-outline"
                 (click)="toggleRightBar('cat')">
                 <!-- Was removeCat(cat), but we need passing Observable into ChildView -->
                 <input type="checkbox" [(ngModel)]="cat.selected">
@@ -16,12 +16,12 @@
     </div>
 
     <div class="post-tag-group">
-        <span class="label label-warning-outline">专题</span>
+        <span class="tag tag-warning-outline">专题</span>
         <ul *ngIf="post.topics && post.topics.length <= 0">
-            <li class="label label-pill label-default-outline" (click)="toggleRightBar('topic')">选择专题</li>
+            <li class="tag tag-pill tag-default-outline" (click)="toggleRightBar('topic')">选择专题</li>
         </ul>
         <ul *ngIf="post.topics && post.topics.length > 0">
-            <li *ngFor="let topic of post.topics" class="label label-pill label-primary-outline"
+            <li *ngFor="let topic of post.topics" class="tag tag-pill tag-primary-outline"
                 (click)="toggleRightBar('topic')">
                 <input type="hidden" name="topic[]" [ngModel]="topic.id">
                 {{ topic.title }} x
@@ -30,12 +30,12 @@
     </div>
 
     <div class="post-tag-group">
-        <span class="label label-warning-outline">标签</span>
+        <span class="tag tag-warning-outline">标签</span>
         <ul *ngIf="post.tags && post.tags.length <= 0">
-            <li class="label label-pill label-default-outline" (click)="toggleRightBar('tag')">选择标签</li>
+            <li class="tag tag-pill tag-default-outline" (click)="toggleRightBar('tag')">选择标签</li>
         </ul>
         <ul *ngIf="post.tags && post.tags.length > 0">
-            <li *ngFor="let tag of post.tags" class="label label-pill label-primary-outline"
+            <li *ngFor="let tag of post.tags" class="tag tag-pill tag-primary-outline"
                 (click)="toggleRightBar('tag')">
                 <input type="hidden" name="tags[]" [ngModel]="tag.id">
                 {{ tag.name }} x

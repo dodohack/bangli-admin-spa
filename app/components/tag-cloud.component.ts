@@ -11,7 +11,7 @@ import { Tag } from '../models';
     </div>
     <ul class="tag-cloud">
         <template ngFor let-tag [ngForOf]="tags">
-        <li *ngIf="!tag.hidden" class="tag-item label label-pill label-success"
+        <li *ngIf="!tag.hidden" class="tag-item tag tag-pill tag-success"
             [class.active]="tag.checked"
             (click)="check(tag)" >
             {{ tag.name }}
