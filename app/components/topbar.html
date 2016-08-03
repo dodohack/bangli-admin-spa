@@ -1,8 +1,8 @@
 <div class="topbar" [style.background-color]="preference.menuBgColor">
     <ul>
         <li>
-            <a href="http://www.{{ currentDomain }}" target="_blank"
-               [style.color]="preference.menuColor"><i class="fa fa-home"> {{ currentDomain }}</i></a>
+            <a href="{{ DOMAINS[currentDomain].url }}" target="_blank"
+               [style.color]="preference.menuColor"><i class="fa fa-home"> {{ DOMAINS[currentDomain].name }}</i></a>
         </li>
 
         <li>
@@ -23,7 +23,7 @@
         <li dropdown>
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="preference.menuColor">切换站点</a>
             <div class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
-                <a *ngFor="let domain of DOMAINS" class="dropdown-item" role="button" (click)="setDomain(domain)">{{domain}}</a>
+                <a *ngFor="let domain of DOMAIN_KEYS" class="dropdown-item" role="button" (click)="setDomain(domain)">{{ DOMAINS[domain].name }}</a>
             </div>
         </li>
 
