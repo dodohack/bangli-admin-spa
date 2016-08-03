@@ -2,11 +2,13 @@
  * Migrate Wordpress database
  */
 
-import { Component } from '@angular/core';
-import { Http, URLSearchParams }   from '@angular/http';
+import { Component }                     from '@angular/core';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { Title } from '@angular/platform-browser';
 
-import { APP } from '../app.api';
-import { AuthService } from '../service/auth.service';
+import { Api }         from '../api';
+import { Domain }      from '../domain';
+import { AuthService } from '../service';
 
 let template = require('./migration.html');
 @Component({
@@ -14,6 +16,11 @@ let template = require('./migration.html');
 })
 export class MigrationPage
 {
+    /* API server endpoints */
+    API: any;
+    
+    headers: Headers;
+    
     /* Migration status/message returned from application server */
     status: any;
     message: any;
@@ -21,8 +28,17 @@ export class MigrationPage
     /* If migration is under running */
     isRunning: boolean;
 
-    constructor(private http: Http, private authService: AuthService) {
+    constructor(private http: Http, 
+                private title: Title,
+                private authService: AuthService) {
+        this.API = Api.getEndPoint();
+        
+        /* Set http authenticate header */
+        this.headers =
+            new Headers({'Authorization': 'Bearer ' + this.authService.getJwt()});
+
         this.isRunning = false;
+        this.title.setTitle('数据移植 - ' + Domain.getName() + '管理平台');
     }
 
     public migrateUser() {
@@ -67,27 +83,23 @@ export class MigrationPage
         /* Toggle running status */
         this.isRunning = true;
 
-        let params = new URLSearchParams;
-        params.append('token', this.authService.getJwt());
-
-        return this.http
-            .get(APP.migrate_base + '/' + endpoint, {search: params})
-            .map(res => res.json())
-            .subscribe(
-                res   => {
-                    /* TODO: Remove it */
-                    console.log(res);
-                    this.status  = JSON.stringify(res);
-                    this.isRunning = !this.isRunning;
-                    this.message = '数据移植完毕,服务器返回了以下信息';
-                },
-                error => {
-                    /* TODO: Remove it */
-                    console.error(error);
-                    this.status  = error;
-                    this.isRunning = !this.isRunning;
-                    this.message = '数据移植出错,服务器返回了以下信息';
-                }
-            );
+        return this.http.get(this.API.migrate_base + '/' + endpoint)
+                   .map(res => res.json())
+                   .subscribe(
+                       res   => {
+                           /* TODO: Remove it */
+                           console.log(res);
+                           this.status  = JSON.stringify(res);
+                           this.isRunning = !this.isRunning;
+                           this.message = '数据移植完毕,服务器返回了以下信息';
+                       },
+                       error => {
+                           /* TODO: Remove it */
+                           console.error(error);
+                           this.status  = error;
+                           this.isRunning = !this.isRunning;
+                           this.message = '数据移植出错,服务器返回了以下信息';
+                       }
+                   );
     }
 }

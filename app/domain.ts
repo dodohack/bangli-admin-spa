@@ -1,6 +1,10 @@
 /**
  * This static class provides a way to manage the content of different websites
  * by using sessionStorage key 'domain'.
+ *
+ * Current managed domain is persisted in localStorage, and
+ * loaded into sessionStorage when app bootstrap.
+ *
  */
 
 export const DOMAIN_KEYS = [
@@ -30,9 +34,21 @@ export class Domain
      * at the beginning of program initializing
      */
     public static init() {
+        /* Get domain from session */
         let domain: string = sessionStorage.getItem('domain');
-        if (!domain || domain == undefined) {
+        
+        /* If no domain stored in session, try to get it from localStorage */
+        if (!domain)
+            domain = localStorage.getItem('domain');
+        
+        if (!domain) {
+            /* No domain data stored in both session and local storage, 
+             * init both. */
             sessionStorage.setItem('domain',  DOMAIN_KEYS[0]);
+            localStorage.setItem('domain',  DOMAIN_KEYS[0]);
+        } else {
+            /* Initial domain in session from local storage */
+            sessionStorage.setItem('domain', domain);
         }
     }
 
@@ -40,8 +56,18 @@ export class Domain
      * Return current domain the backend is managing
      * @returns {any}
      */
-    public static get(): string   {
+    public static getKey(): string   {
         return sessionStorage.getItem('domain');
+    }
+
+    public static getName(): string {
+        let key = sessionStorage.getItem('domain');
+        return DOMAINS[key].name;
+    }
+
+    public static getUrl(): string {
+        let key = sessionStorage.getItem('domain');
+        return DOMAINS[key].url;
     }
 
     /**
@@ -50,5 +76,6 @@ export class Domain
      */
     public static set(key: string) {
         sessionStorage.setItem('domain',  key);
+        localStorage.setItem('domain',  key);
     }
 }

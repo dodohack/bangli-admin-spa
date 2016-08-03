@@ -1,5 +1,6 @@
 import { Component, Input, AfterContentInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { Domain } from "../domain";
 
 @Component({
     selector: 'list-page-header',
@@ -26,6 +27,7 @@ export class ListPageHeaderComponent implements AfterContentInit {
     constructor(private titleService: Title) {}
 
     ngAfterContentInit() {
-        this.titleService.setTitle(this.pageTitle + '列表 - 葫芦娃管理平台');
+        this.titleService.setTitle(this.pageTitle + '列表 - ' 
+            + Domain.getName() +'管理平台');
     }
 }

@@ -1,52 +1,53 @@
-<div class="topbar" [style.background-color]="preference.menuBgColor">
+<div class="topbar" [style.background-color]="menuBgColor">
     <ul>
         <li>
-            <a href="{{ DOMAINS[currentDomain].url }}" target="_blank"
-               [style.color]="preference.menuColor"><i class="fa fa-home"> {{ DOMAINS[currentDomain].name }}</i></a>
+            <a href="{{ currentDomainUrl }}" target="_blank"
+               [style.color]="menuColor"><i class="fa fa-home"></i>{{ currentDomainName }}</a>
         </li>
 
         <li>
             <a [routerLink]="['/post/new']" routerLinkActive="active"
-               [style.color]="preference.menuColor">
+               [style.color]="menuColor">
                 <i class="fa fa-edit"></i>新建文章
             </a>
         </li>
 
         <li>
             <a [routerLink]="['/product/new']" routerLinkActive="active"
-               [style.color]="preference.menuColor">
+               [style.color]="menuColor">
                 <i class="fa fa-cart-plus"></i>新建产品
             </a>
         </li>
 
-
         <li dropdown>
-            <a dropdownToggle id="domain-dropdown" role="button" [style.color]="preference.menuColor">切换站点</a>
+            <a dropdownToggle id="domain-dropdown" role="button" [style.color]="menuColor">切换站点</a>
             <div class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
                 <a *ngFor="let domain of DOMAIN_KEYS" class="dropdown-item" role="button" (click)="setDomain(domain)">{{ DOMAINS[domain].name }}</a>
             </div>
         </li>
 
         <!-- List of customized menus -->
-        <template ngFor let-menu [ngForOf]="preference.myTopbarMenus">
+        <!--
+        <template ngFor let-menu [ngForOf]="myTopbarMenus">
             <li *ngIf="menu">
                 <a [routerLink]="[menu.url]" routerLinkActive="active"
-                   [style.color]="preference.menuColor">
-                    <i ></i>{{ menu.name }} FIXME: css_class
+                   [style.color]="menuColor">
+                    <i></i>{{ menu.name }} FIXME: css_class
                 </a>
             </li>
         </template>
+        -->
 
         <li class="float-right">
             <a [routerLink]="['/logout']" routerLinkActive="active"
-               [style.color]="preference.menuColor">
+               [style.color]="menuColor">
                 <i class="fa fa-arrow-circle-o-right"></i>退出
             </a>
         </li>
 
         <li class="float-right">
             <a [routerLink]="['/user/id']" routerLinkActive="active"
-               [style.color]="preference.menuColor">
+               [style.color]="menuColor">
                 <i class="fa fa-user"></i>somename
             </a>
         </li>

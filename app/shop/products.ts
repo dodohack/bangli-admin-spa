@@ -26,9 +26,6 @@ let template = require('./products.html');
 })
 export class ProductsPage implements OnInit
 {
-    /* Pagination related variables of the list */
-    pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
-
     /* <list-page-menu> parameter */
     baseUrl = 'product/list';
     /* <paginator> parameter */
@@ -43,14 +40,14 @@ export class ProductsPage implements OnInit
     /* If select all checkbox is checked or not */
     checkedAll = false;
 
+    pagination = new Pagination;
+
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
                 private productService: ProductService) {}
 
     ngOnInit()
     {
-        this.pagination.per_page = this.productService.getProductsPerPage();
-
         /* Get URL segments and update the list */
         this.route.params.subscribe(
             segment => {
@@ -92,18 +89,6 @@ export class ProductsPage implements OnInit
             this.products[i].editing = false;
         }
     }
-
-
-    /**
-     * Set number of products displayed per list
-     */
-    public setProductsPerPage()
-    {
-        this.productService.setProductsPerPage(this.pagination.per_page);
-        /* Update the list view */
-        this.getProductsList();
-    }
-
 
     /**
      * Toggle all checkbox

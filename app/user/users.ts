@@ -7,19 +7,16 @@ import { ActivatedRoute }    from '@angular/router';
 
 import { User, Pagination }  from '../models';
 import { UserService } from '../service';
-import { PaginatorComponent } from "../components";
+import { PaginatorComponent, ListPageHeaderComponent } from "../components";
 import { zh_CN }    from '../localization';
 
 let template = require('./users.html');
 @Component({
     template: template,
-    directives: [ PaginatorComponent ]
+    directives: [ PaginatorComponent, ListPageHeaderComponent ]
 })
 export class UsersPage implements OnInit
 {
-    /* Pagination related variables of the list */
-    pagination = new Pagination(0, 1, 0, 0, 0, 0, 0, 0, 0);
-
     base = 'user/list';
     baseUrl: string;
 
@@ -29,20 +26,21 @@ export class UsersPage implements OnInit
     /* The list of users, array */
     users: User[];
 
-    constructor(private route: ActivatedRoute,
-                private userService: UserService){}
+    pagination = new Pagination;
 
-    /**
-     * Initialize the page, we should only put DI initializition into ctor.
-     * If no role/page is setting from URL segment, we will display the first
-     * page of all customers by default.
-     */
+    constructor(private route: ActivatedRoute,
+                private userService: UserService) {}
+
     ngOnInit()
     {
-        this.current_role = 'customer';
-        this.pagination.current_page = 1;
-        this.pagination.per_page = this.userService.getUsersPerPage();
+        this.initUserList();
+    }
 
+    get zh() { return zh_CN.user; }
+    get userRoles() { return this.userService.roles; }
+    
+    private initUserList()
+    {
         /* Get URL segments and update user list */
         this.route.params.subscribe(
             segment => {
@@ -53,11 +51,8 @@ export class UsersPage implements OnInit
                 /* Update user list when URL changes */
                 this.getUsersList();
             }
-        );
+        );        
     }
-
-    get zh() { return zh_CN.user; }
-    get userRoles() { return this.userService.roles; }
 
     /**
      * Get a list of users
@@ -72,14 +67,5 @@ export class UsersPage implements OnInit
                 },
                 error => console.error(error)
             );
-    }
-
-    /**
-     * Set number of users displayed per list
-     */
-    public setUsersPerPage()
-    {
-        this.userService.setUsersPerPage(this.pagination.per_page);
-        this.getUsersList();
     }
 }

@@ -1,19 +1,18 @@
 import { Component } from '@angular/core';
 
-import { PreferenceService } from '../service';
-
-import { SIDEBAR_MENUS } from '../models/menu';
+import { Sidebar }        from '../models/menu';
+import { UserPreference } from '../preference';
 
 @Component({
     selector: 'sidebar',
     template:
     `
-    <div class="sidebar" [style.background-color]="preference.menuBgColor">
-        <a class="toggle" [style.color]="preference.menuColor"><i class="fa fa-ellipsis-v"></i></a>
+    <div class="sidebar" [style.background-color]="menuBgColor">
+        <a class="toggle" [style.color]="menuColor"><i class="fa fa-ellipsis-v"></i></a>
         <ul>
             <li *ngFor="let menu of sidebarMenus">
                 <a [routerLink]="['/', menu.slug]"
-                   [style.color]="preference.menuColor"
+                   [style.color]="menuColor"
                    title="{{ menu.name }}" 
                    routerLinkActive="active">
                     <i class="{{ menu.icon_style }}"></i>
@@ -22,15 +21,15 @@ import { SIDEBAR_MENUS } from '../models/menu';
             </li>
         </ul>
     </div>
-    `,
-    providers: [ PreferenceService ]
+    `
 })
 export class SidebarComponent {
-    constructor(private preferenceService: PreferenceService
-                /*private authService: AuthService*/) {
+    constructor(/*private authService: AuthService*/) {
         //this.username = authService.getName();
     }
 
-    get sidebarMenus() { return SIDEBAR_MENUS; }
-    get preference() { return this.preferenceService; }
+    get sidebarMenus() { return Sidebar.getMenu(); }
+
+    get menuColor()   { return UserPreference.menuColor(); }
+    get menuBgColor() { return UserPreference.menuBgColor(); }
 }

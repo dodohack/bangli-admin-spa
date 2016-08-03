@@ -5,9 +5,9 @@
 import { Component }         from '@angular/core';
 import { Router }            from '@angular/router';
 
-import { AuthService }              from '../service/auth.service';
+import { AuthService }              from '../service';
 import { Register, RegisterError }  from '../models';
-import { APP }                      from '../app.api';
+import { Api }                      from '../api';
 
 let template = require('./register.html');
 @Component({
@@ -15,13 +15,21 @@ let template = require('./register.html');
 })
 export class RegisterPage
 {
+    /* API server endpoint of current domain */
+    API: any;
+    
     jwt: any;
-    error = new RegisterError('', '', '');
-    form  = new Register('', '', '', '', APP.register_callback);
+    error: RegisterError;
+    form: Register;
 
     constructor(private router: Router,
                 private authService: AuthService)
     {
+        this.API  = Api.getEndPoint();
+        
+        this.error = new RegisterError('', '', '');
+        this.form = new Register('', '', '', '', this.API.register_callback);
+        
         /* Redirect user if already logged in */
         if (this.authService.isLoggedIn)
             this.router.navigate(['/']);

@@ -2,14 +2,11 @@
  * Definition of RESTful API endpoint
  */
 
-/* This should be https://api.huluwa.uk in product env */
-const base: string = 'http://localhost:5000';
-
-/* Authentication server */
-const auth_base: string = 'http://localhost:10000';
+/* This should be https://api.bangli.us in product env */
+const base: string = 'http://localhost:6005';
 
 /* Application server APIs */
-export const APP = {
+export const API_BANGLI_IT = {
     /* Endpoint */
     endpoint: base,
 
@@ -79,13 +76,4 @@ export const APP = {
     product_cats: base + '/admin/categories/product',
     /* Product tags */
     product_tags: base + '/admin/tags/product',
-};
-
-/* Authentication server APIs */
-export const AUTH = {
-    endpoint: auth_base,
-
-    /* Authentcation with email/password */
-    register: auth_base + '/register',
-    login: auth_base + '/login',
 };

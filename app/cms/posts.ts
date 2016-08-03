@@ -38,9 +38,6 @@ let template = require('./posts.html');
 })
 export class PostsPage implements OnInit
 {   
-    /* Pagination related variables of the list */
-    pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
-
     base = 'post/list';
     /* Parameter to <list-page-menu> */
     baseUrl = 'post/list/status';
@@ -71,18 +68,14 @@ export class PostsPage implements OnInit
     /* Alert message */
     alerts = Array<Object>();
 
+    pagination = new Pagination;
+
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
-                private postService: PostService) { }
+                private postService: PostService) {}
 
-    /**
-     * Initialize the page, we should only put DI initializition into ctor.
-     * If no role/page is setting from URL segment, we will display the first
-     * page of all customers by default.
-     */
-    ngOnInit() {
-        this.pagination.per_page = this.postService.perPage;
-
+    ngOnInit()
+    {
         this.initPostsList();
     }
 
@@ -169,17 +162,6 @@ export class PostsPage implements OnInit
             this.posts[i].editing = false;
         }
     }
-
-    /**
-     * Set number of posts displayed per list
-     */
-    public setPostsPerPage()
-    {
-        this.postService.setPostsPerPage(this.pagination.per_page);
-        /* Update the list view */
-        this.getPostsList();
-    }
-
 
     /**
      * Toggle all checkbox

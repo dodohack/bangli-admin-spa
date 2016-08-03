@@ -15,7 +15,7 @@ import { Http, Headers, RequestOptions } from '@angular/http'
 import { Observable } from 'rxjs/Observable';
 
 import { Login, Register, JwtPayLoad }  from "../models";
-import { AUTH }      from "../app.api";
+import { AUTH }      from "../api";
 
 var jwtDecode = require('jwt-decode');
 

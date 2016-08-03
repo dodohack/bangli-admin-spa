@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter, AfterContentInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+
+import { Domain } from '../domain';
 import { zh_CN } from '../localization';
 
 let template = require('./editor-page-header.html');
@@ -34,6 +36,6 @@ export class EditorPageHeaderComponent implements AfterContentInit {
     get zh() { return zh_CN.post; }
 
     ngAfterContentInit() {
-        this.titleService.setTitle('编辑' + this.pageTitle + ' - 葫芦娃管理平台');
+        this.titleService.setTitle('编辑' + this.pageTitle + ' - ' + Domain.getName() + '管理平台');
     }
 }

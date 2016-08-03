@@ -6,24 +6,29 @@ import { disableDeprecatedForms, provideForms } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 
 import { Domain } from './domain';
+import { UserPreference } from './preference';
 
 import { App } from './app';
 import { APP_ROUTER_PROVIDERS } from './app.routes';
 
 /* Inject these service globally, so the can be used anywhere as a singleton */
-import { UserService, PreferenceService } from './service';
+import { UserService } from './service';
 
 if (process.env.ENV === 'production') {
     enableProdMode();
 }
 
-/* Initialize to domain we are currently managing */
+/**
+ * Must be called before bootstrap! 
+ * Initialize to domain we are currently managing 
+ */
 Domain.init();
+UserPreference.init();
 
 bootstrap(App, [
     APP_ROUTER_PROVIDERS,
     HTTP_PROVIDERS, JSONP_PROVIDERS,
-    Title, UserService, PreferenceService,
+    Title, UserService,
     { provide: PLATFORM_DIRECTIVES, useValue: [ROUTER_DIRECTIVES], multi: true },
     disableDeprecatedForms(), provideForms()
 ])

@@ -27,16 +27,11 @@ let template = require('./topics.html');
     providers: [ TopicService, PostService ]
 })
 export class TopicsPage implements OnInit {
-    /* Pagination related variables of the list */
-    pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
 
     /* Parameter to <list-page-menu> */
-    baseUrl = 'topic/list';3
+    baseUrl = 'topic/list';
     /* Parameter to <paginator> */
     deepUrl: string;
-
-    /* TopicStatus translation, the same as PostStatus */
-    statuses: PostStatus[];
 
     /* Posts filters: any, editor, status */
     filter:any;
@@ -51,6 +46,8 @@ export class TopicsPage implements OnInit {
     /* If select all checkbox is checked or not */
     checkedAll:boolean = false;
 
+    pagination = new Pagination;
+
     constructor(private route:ActivatedRoute,
                 private userService: UserService,
                 private topicService: TopicService,
@@ -63,10 +60,6 @@ export class TopicsPage implements OnInit {
      */
     ngOnInit()
     {
-        this.pagination.per_page = this.topicService.perPage;
-
-        this.initTopicStatuses();
-
         /* Get URL segments and update the list */
         this.route.params.subscribe(
             segment => {
@@ -85,15 +78,7 @@ export class TopicsPage implements OnInit {
     get editors() { return this.userService.editors; };
     get categories() { return this.postService.categories; };
 
-    /**
-     * Get topics list page menu
-     */
-    private initTopicStatuses() {
-        this.topicService.statuses.subscribe(
-            statuses => this.statuses = statuses,
-            error => console.error(error)
-        );
-    }
+    get statuses() { return this.topicService.statuses; }
 
     /**
      * Return user display name by given ID
@@ -146,16 +131,6 @@ export class TopicsPage implements OnInit {
             this.topics[i].editing = false;
         }
     }
-
-    /**
-     * Set number of topics displayed per list
-     */
-    public setTopicsPerPage() {
-        this.topicService.setTopicsPerPage(this.pagination.per_page);
-        /* Update the list view */
-        this.getTopicsList();
-    }
-
 
     /**
      * Toggle all checkbox

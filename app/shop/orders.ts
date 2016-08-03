@@ -4,7 +4,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
-import { Title }             from '@angular/platform-browser';
 
 import { OrderStatus, Pagination }     from '../models';
 import { OrderService } from '../service/order.service';
@@ -29,9 +28,6 @@ let template = require('./orders.html');
 })
 export class OrdersPage implements OnInit
 {
-    /* Pagination related variables of the list */
-    pagination = new Pagination(0, 1, 0, 0, 1, 0, 0, 0, 0);
-
     /* Parameter to <list-page-menu> */
     baseUrl = 'order/list';
     /* Parameter to <paginator> */
@@ -46,15 +42,14 @@ export class OrdersPage implements OnInit
     /* If select all checkbox is checked or not */
     checkedAll: boolean = false;
 
+    pagination = new Pagination;
+
     constructor(private route: ActivatedRoute,
-                private orderService: OrderService,
-                private titleService: Title) {}
+                private orderService: OrderService) {}
 
-    ngOnInit() {
-        this.titleService.setTitle('订单列表 - 葫芦娃管理平台');
 
-        this.pagination.per_page = this.orderService.getOrdersPerPage();
-
+    ngOnInit()
+    {
         /* Get URL segments and update the list */
         this.route.params.subscribe(
             segment => {
@@ -95,18 +90,6 @@ export class OrdersPage implements OnInit
             this.orders[i].editing = false;
         }
     }
-
-
-    /**
-     * Set number of users displayed per list
-     */
-    public setOrdersPerPage()
-    {
-        this.orderService.setOrdersPerPage(this.pagination.per_page);
-        /* Update the list view */
-        this.getOrdersList();
-    }
-
 
     /**
      * Toggle all checkbox

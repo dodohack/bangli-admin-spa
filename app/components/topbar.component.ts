@@ -1,34 +1,36 @@
 import { Component } from '@angular/core';
 import { Router }    from '@angular/router';
-import {DROPDOWN_DIRECTIVES} from 'ng2-bootstrap';
+import { DROPDOWN_DIRECTIVES } from 'ng2-bootstrap';
 
-import { PreferenceService } from '../service';
-import { AuthService }       from '../service/auth.service';
+import { AuthService }       from '../service';
 
 import { DOMAIN_KEYS, DOMAINS, Domain } from '../domain';
+import { UserPreference }               from '../preference';
 
 let template = require('./topbar.html');
 @Component({
     selector: 'topbar',
     template: template,
-    directives: [ DROPDOWN_DIRECTIVES ],
-    providers: [ PreferenceService ]
+    directives: [ DROPDOWN_DIRECTIVES ]
 })
 export class TopbarComponent {
 
     /* username: string; */
 
-    constructor(private preferenceService: PreferenceService,
-                private router: Router
+    constructor(private router: Router
                 /*private authService: AuthService*/) {
         //this.username = authService.getName();
     }
 
-    get preference() { return this.preferenceService; }
+    get menuColor()    { return UserPreference.menuColor(); }
+    get menuBgColor()  { return UserPreference.menuBgColor(); }
+    get myTopbarMenus()  { return UserPreference.myTopbarMenus(); }
+    
     get DOMAIN_KEYS() { return DOMAIN_KEYS; }
     get DOMAINS() { return DOMAINS; }
-    get currentDomain() { return Domain.get(); }
-
+    get currentDomainName() { return Domain.getName(); }
+    get currentDomainUrl() { return Domain.getUrl(); }
+    
     /**
      * Set current managing domain, redirect and refresh
      * @param domain

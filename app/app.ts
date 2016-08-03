@@ -21,7 +21,7 @@ export class App
     constructor(private authService: AuthService,
                 private router: Router) {
 
-        console.log("APP INITIALIZED, CURRENT DOMAIN:", Domain.get());
+        console.log("APP INITIALIZED, CURRENT DOMAIN:", Domain.getKey());
 
         // Redirect un-authenticated user to login page
         // TODO: Check user permission as well
