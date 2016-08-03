@@ -1,8 +1,8 @@
 <div class="topbar" [style.background-color]="preference.menuBgColor">
     <ul>
         <li>
-            <a href="http://www.huluwa.uk" target="_blank"
-               [style.color]="preference.menuColor"><i class="fa fa-home">首页</i></a>
+            <a href="http://www.{{ currentDomain }}" target="_blank"
+               [style.color]="preference.menuColor"><i class="fa fa-home"> {{ currentDomain }}</i></a>
         </li>
 
         <li>

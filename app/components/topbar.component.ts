@@ -26,6 +26,7 @@ export class TopbarComponent {
 
     get preference() { return this.preferenceService; }
     get DOMAINS() { return DOMAINS; }
+    get currentDomain() { return Domain.get(); }
 
     /**
      * Set current managing domain, redirect and refresh

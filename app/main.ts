@@ -5,6 +5,8 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 import { disableDeprecatedForms, provideForms } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 
+import { Domain } from './domain';
+
 import { App } from './app';
 import { APP_ROUTER_PROVIDERS } from './app.routes';
 
@@ -14,6 +16,9 @@ import { UserService, PreferenceService } from './service';
 if (process.env.ENV === 'production') {
     enableProdMode();
 }
+
+/* Initialize to domain we are currently managing */
+Domain.init();
 
 bootstrap(App, [
     APP_ROUTER_PROVIDERS,
