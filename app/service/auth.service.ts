@@ -12,12 +12,9 @@
 import { Injectable } from '@angular/core';
 import { Router }     from '@angular/router';
 import { Http, Headers, RequestOptions } from '@angular/http'
-
 import { Observable } from 'rxjs/Observable';
 
-import { Login }     from "../models/login";
-import { Register }  from "../models/register";
-import { JwtPayLoad }from "../models";
+import { Login, Register, JwtPayLoad }  from "../models";
 import { AUTH }      from "../app.api";
 
 var jwtDecode = require('jwt-decode');

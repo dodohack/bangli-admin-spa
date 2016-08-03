@@ -8,6 +8,8 @@ import { Router }            from '@angular/router';
 import { AuthService }       from './service';
 import { TopbarComponent, SidebarComponent }  from './components';
 
+import { Domain } from './domain';
+
 let template = require('./app.html');
 @Component({
     selector: 'huluwa-admin',
@@ -18,6 +20,8 @@ export class App
 {
     constructor(private authService: AuthService,
                 private router: Router) {
+
+        console.log("APP INITIALIZED, CURRENT DOMAIN:", Domain.get());
 
         // Redirect un-authenticated user to login page
         // TODO: Check user permission as well

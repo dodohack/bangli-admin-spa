@@ -19,6 +19,14 @@
             </a>
         </li>
 
+
+        <li dropdown>
+            <a dropdownToggle id="domain-dropdown" role="button" [style.color]="preference.menuColor">切换站点</a>
+            <div class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
+                <a *ngFor="let domain of DOMAINS" class="dropdown-item" role="button" (click)="setDomain(domain)">{{domain}}</a>
+            </div>
+        </li>
+
         <!-- List of customized menus -->
         <template ngFor let-menu [ngForOf]="preference.myTopbarMenus">
             <li *ngIf="menu">

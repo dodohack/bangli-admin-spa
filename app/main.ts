@@ -1,4 +1,3 @@
-// Imports for loading & configuring the in-memory web api
 import { enableProdMode, PLATFORM_DIRECTIVES } from '@angular/core';
 import { bootstrap }    from '@angular/platform-browser-dynamic';
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
