@@ -52,7 +52,7 @@ export class ProductsPage implements OnInit
         this.route.params.subscribe(
             segment => {
                 this.status = segment['status'] ? segment['status'] : 'all';
-                this.deepUrl = this.baseUrl + '/' + this.status;
+                this.deepUrl = this.baseUrl + '/status/' + this.status;
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
                 /* Update order list when URL changes */
                 this.getProductsList();

@@ -16,10 +16,11 @@ export const shopRoutes: RouterConfig = [
         children: [
 
             /* List of products */
-            { path: '', pathMatch: 'full', redirectTo: 'list/all/1' },
-            { path: 'list',         redirectTo: 'list/all/1' },
-            { path: 'list/:status', redirectTo: 'list/:status/1' },
-            { path: 'list/:status/:page', component: ProductsPage },
+            { path: '', pathMatch: 'full', redirectTo: 'list/status/all/1' },
+            { path: 'list',                redirectTo: 'list/status/all/1' },
+            { path: 'list/:status',        redirectTo: 'list/status/:status/1' },
+            { path: 'list/status/:status', redirectTo: 'list/status/:status/1' },
+            { path: 'list/status/:status/:page', component: ProductsPage },
 
             /* Single product */
             { path: 'new', component: ProductPage },
@@ -37,10 +38,11 @@ export const shopRoutes: RouterConfig = [
         children: [
 
             /* List of orders */
-            { path: '', pathMatch: 'full', redirectTo: 'list/all/1' },
-            { path: 'list',         redirectTo: 'list/all/1' },
-            { path: 'list/:status', redirectTo: 'list/:status/1' },
-            { path: 'list/:status/:page', component: OrdersPage },
+            { path: '', pathMatch: 'full',      redirectTo: 'list/status/all/1' },
+            { path: 'list',                     redirectTo: 'list/status/all/1' },
+            { path: 'list/:status',             redirectTo: 'list/status/:status/1' },
+            { path: 'list/status/:status',      redirectTo: 'list/status/:status/1' },
+            { path: 'list/status/:status/:page', component: OrdersPage },
 
             /* Single order */
             { path: 'new', component: OrderPage },

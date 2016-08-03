@@ -7,7 +7,7 @@
     <ul class="nav navbar-nav">
         <li *ngFor="let role of userRoles" class="nav-item">
             <!-- Link to first page of given role of customers -->
-            <a class="nav-link" [routerLink]="['/users', role.role, '1']">{{ zh[role.role] }} ({{ role.count }})</a>
+            <a class="nav-link" [routerLink]="['/user/list', role.role, '1']">{{ zh[role.role] }} ({{ role.count }})</a>
         </li>
     </ul>
 

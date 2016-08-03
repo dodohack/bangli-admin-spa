@@ -2,7 +2,7 @@ import { RouterConfig } from '@angular/router';
 
 import { AuthGuard }    from '../auth/guard';
 import { UsersPage }    from './users';
-//import { UserPage }     from './user';
+import { UserPage }     from './user';
 
 export const userRoutes: RouterConfig = [
     {
@@ -15,10 +15,8 @@ export const userRoutes: RouterConfig = [
             { path: 'list/:role/:page', component: UsersPage },
 
             /* Single user */
-            /*
             { path: 'new', component: UserPage },
             { path: ':id', component: UserPage }
-            */
         ]
     }
 ];

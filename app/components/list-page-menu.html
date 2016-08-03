@@ -31,7 +31,7 @@
 
     <!-- Various order status tabs -->
     <li *ngFor="let status of statuses" class="nav-item">
-        <a class="nav-link" [routerLink]="['/', baseUrl, status.status]" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/', baseUrl, '/status/', status.status]" routerLinkActive="active">
             {{ localization[status.status] }}<span style="color:grey;">（{{ status.count }}）</span>
         </a>
     </li>

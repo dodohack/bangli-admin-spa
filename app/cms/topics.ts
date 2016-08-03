@@ -29,7 +29,7 @@ let template = require('./topics.html');
 export class TopicsPage implements OnInit {
 
     /* Parameter to <list-page-menu> */
-    baseUrl = 'topic/list';
+    baseUrl    = 'topic/list';
     /* Parameter to <paginator> */
     deepUrl: string;
 

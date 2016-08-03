@@ -38,9 +38,8 @@ let template = require('./posts.html');
 })
 export class PostsPage implements OnInit
 {   
-    base = 'post/list';
     /* Parameter to <list-page-menu> */
-    baseUrl = 'post/list/status';
+    baseUrl = 'post/list';
     /* Parameter to <paginator> */
     deepUrl: string;
 
@@ -97,7 +96,7 @@ export class PostsPage implements OnInit
             segment => {
                 this.filter = segment['filter'] ? segment['filter'] : 'all';
                 this.condition = segment['cond'] ? segment['cond'] : 'all';
-                this.deepUrl = this.base + '/' + this.filter + '/' + this.condition;
+                this.deepUrl = this.baseUrl + '/' + this.filter + '/' + this.condition;
                 /* '+' magically converts string to number */
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
                 /* Update post list when URL changes */
