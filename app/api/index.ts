@@ -28,8 +28,11 @@ const auth_base: string = 'http://localhost:10000';
 
 /* Static class, get API endpoints for current managed domain */
 export class Api {
-    public static getEndPoint() {
-        return END_POINTS[Domain.getKey()];
+    public static getEndPoint(key?: string) {
+        if (key)
+            return END_POINTS[key];
+        else
+            return END_POINTS[Domain.getKey()];
     }
 }
 

@@ -8,6 +8,7 @@ import { Router }          from '@angular/router';
 import { AuthService } from '../service';
 import { Login }       from '../models';
 import { Api }         from '../api';
+import { Domain }      from '../domain';
 
 let template = require('./login.html');
 @Component({
@@ -15,9 +16,6 @@ let template = require('./login.html');
 })
 export class LoginPage
 {
-    /* API endpoint of current domain */
-    API: any;
-    
     jwt: any;
     error = '';
     form: Login;
@@ -25,16 +23,19 @@ export class LoginPage
     constructor(private router: Router,
                 private authService: AuthService)
     {
-        this.API = Api.getEndPoint();
-        
+
         this.form = new Login('', '');
         
         /* Redirect user if already logged in */
         if (this.authService.isLoggedIn)
             this.router.navigate(['/']);
     }
-    
-    get stage1MigrationUrl() { return this.API.migrate_user_stage1; }
+
+    /* Stage 1 user migration is always from huluwa.uk */
+    get stage1MigrationUrl() {
+        let API = Api.getEndPoint(Domain.huluwaUkKey());
+        return API.migrate_user_stage1;
+    }
 
     /* Triggered when user clicks on submit button */
     onSubmit()

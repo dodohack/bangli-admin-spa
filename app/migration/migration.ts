@@ -31,51 +31,59 @@ export class MigrationPage
     constructor(private http: Http, 
                 private title: Title,
                 private authService: AuthService) {
-        this.API = Api.getEndPoint();
-        
         /* Set http authenticate header */
         this.headers =
             new Headers({'Authorization': 'Bearer ' + this.authService.getJwt()});
 
         this.isRunning = false;
-        this.title.setTitle('数据移植 - ' + Domain.getName() + '管理平台');
+        this.title.setTitle('数据移植 - 全局管理平台');
     }
 
-    public migrateUser() {
-        this.message = '正在移植用户表,可能需要等几分钟或更长时间,请不要刷新页面';
-        this.migrate('user');
+    get domainKeyHuluwaUk() { return Domain.huluwaUkKey(); }
+    get domainKeyBangliUk() { return Domain.bangliUkKey(); }
+    get domainKeyBangliUs() { return Domain.bangliUsKey(); }
+    get domainKeyBangliDe() { return Domain.bangliDeKey(); }
+    get domainKeyBangliFr() { return Domain.bangliFrKey(); }
+    get domainKeyBangliEs() { return Domain.bangliEsKey(); }
+    get domainKeyBangliIt() { return Domain.bangliItKey(); }
+
+
+    public migrateUser(domainKey: string) {
+        this.message = '正在移植${domainKey}用户表,可能需要等几分钟或更长时间,请不要刷新页面';
+        this.migrate('user', domainKey);
     }
 
-    public migrateUserData() {
-        this.message = '正在移植用户基本数据,可能需要等几分钟或更长时间,请不要刷新页面';
-        this.migrate('userdata');
+    public migrateUserData(domainKey: string) {
+        this.message = '正在移植${domainKey}用户基本数据,可能需要等几分钟或更长时间,请不要刷新页面';
+        this.migrate('userdata', domainKey);
     }
 
-    public migrateAttachment() {
-        this.message = '正在移植附件表,可能需要等几分钟或更长时间,请不要刷新页面';
-        this.migrate('attachment');
+    public migrateAttachment(domainKey: string) {
+        this.message = '正在移植${domainKey}附件表,可能需要等几分钟或更长时间,请不要刷新页面';
+        this.migrate('attachment', domainKey);
     }
 
-    public migratePost() {
-        this.message = '正在移植文章和专题,可能需要等几分钟或更长时间,请不要刷新页面';
-        this.migrate('post');
+    public migratePost(domainKey: string) {
+        this.message = '正在移植${domainKey}文章和专题,可能需要等几分钟或更长时间,请不要刷新页面';
+        this.migrate('post', domainKey);
     }
 
-    public migrateProduct() {
-        this.message = '正在移植产品库,可能需要等几分钟或更长时间,请不要刷新页面';
-        this.migrate('product');
+    public migrateProduct(domainKey: string) {
+        this.message = '正在移植${domainKey}产品库,可能需要等几分钟或更长时间,请不要刷新页面';
+        this.migrate('product', domainKey);
     }
 
-    public migrateOrder() {
-        this.message = '正在移植订单数据,可能需要等几分钟或更长时间,请不要刷新页面';
-        this.migrate('order');
+    public migrateOrder(domainKey: string) {
+        this.message = '正在移植${domainKey}订单数据,可能需要等几分钟或更长时间,请不要刷新页面';
+        this.migrate('order', domainKey);
     }
 
     /**
      * Send request to API server to do wordpress database migration
      * @param endpoint: one of user, userdata, attachment, post, product, order
+     * @param domainKey: which domain we are currently migrating data
      */
-    private migrate(endpoint: string) {
+    private migrate(endpoint: string, domainKey: string) {
 
         /* Empty message */
         this.status = '';
@@ -83,7 +91,12 @@ export class MigrationPage
         /* Toggle running status */
         this.isRunning = true;
 
-        return this.http.get(this.API.migrate_base + '/' + endpoint)
+        /* Get correct API endpoint */
+        this.API = Api.getEndPoint(domainKey);
+        
+        let options = new RequestOptions({ headers: this.headers });
+
+        return this.http.get(this.API.migrate_base + '/' + endpoint, options)
                    .map(res => res.json())
                    .subscribe(
                        res   => {

@@ -98,4 +98,13 @@ export class Domain
         sessionStorage.setItem('domain',  key);
         localStorage.setItem('domain',  key);
     }
+
+    /* Return session/localStorage key string */
+    public static huluwaUkKey(): string { return 'huluwa_uk'; }
+    public static bangliUkKey(): string { return 'bangli_uk'; }
+    public static bangliUsKey(): string { return 'bangli_us'; }
+    public static bangliDeKey(): string { return 'bangli_de'; }
+    public static bangliFrKey(): string { return 'bangli_fr'; }
+    public static bangliEsKey(): string { return 'bangli_es'; }
+    public static bangliItKey(): string { return 'bangli_it'; }
 }

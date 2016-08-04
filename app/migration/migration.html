@@ -1,14 +1,72 @@
 <h2>数据库移植</h2>
 
+<div class="alert alert-danger">请左到右，从上到下依次点击移植按钮，不然数据库会报错！</div>
+
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12 form-control">
+        <h3>移植葫芦娃数据库</h3>
         <div class="btn-toolbar" role="toolbar">
-            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUser()">移植基本用户表</button>
-            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUserData()">移植用户数据表</button>
-            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateAttachment()">移植附件表</button>
-            <button class="btn btn-primary" [disabled]="isRunning" (click)="migratePost()">移植文章表</button>
-            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateProduct()">移植产品表</button>
-            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateOrder()">移植订单表</button>
+            <!--<button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUser(domainKeyHuluwaUk)">移植基本用户表</button>-->
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUserData(domainKeyHuluwaUk)">移植用户数据表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateAttachment(domainKeyHuluwaUk)">移植附件表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migratePost(domainKeyHuluwaUk)">移植文章表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateProduct(domainKeyHuluwaUk)">移植产品表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateOrder(domainKeyHuluwaUk)">移植订单表</button>
+        </div>
+    </div>
+
+    <div class="col-md-12 form-control">
+        <h3>移植英国邦利数据库</h3>
+        <div class="btn-toolbar" role="toolbar">
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUser(domainKeyBangliUk)">合并用户表到bangli-auth</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUserData(domainKeyBangliUk)">移植用户数据表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateAttachment(domainKeyBangliUk)">移植附件表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migratePost(domainKeyBangliUk)">移植文章表</button>
+        </div>
+    </div>
+
+    <div class="col-md-12 form-control">
+        <h3>移植美国邦利数据库</h3>
+        <div class="alert alert-danger">我们只需要移植美国邦利的所有文章和图片相关数据</div>
+        <div class="btn-toolbar" role="toolbar">
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateAttachment(domainKeyBangliUs)">移植附件表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migratePost(domainKeyBangliUs)">移植文章表</button>
+        </div>
+    </div>
+
+    <div class="col-md-12 form-control">
+        <h3>移植德国邦利数据库</h3>
+        <div class="alert alert-danger">我们只需要移植德国邦利的所有文章和图片相关数据</div>
+        <div class="btn-toolbar" role="toolbar">
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateAttachment(domainKeyBangliDe)">移植附件表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migratePost(domainKeyBangliDe)">移植文章表</button>
+        </div>
+    </div>
+
+    <div class="col-md-12 form-control">
+        <h3>移植法国邦利数据库</h3>
+        <div class="alert alert-danger">我们只需要移植法国邦利的所有文章和图片相关数据</div>
+        <div class="btn-toolbar" role="toolbar">
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateAttachment(domainKeyBangliFr)">移植附件表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migratePost(domainKeyBangliFr)">移植文章表</button>
+        </div>
+    </div>
+
+    <div class="col-md-12 form-control">
+        <h3>移植西班牙邦利数据库</h3>
+        <div class="alert alert-danger">我们只需要移植西班牙邦利的所有文章和图片相关数据</div>
+        <div class="btn-toolbar" role="toolbar">
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateAttachment(domainKeyBangliEs)">移植附件表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migratePost(domainKeyBangliEs)">移植文章表</button>
+        </div>
+    </div>
+
+    <div class="col-md-12 form-control">
+        <h3>移植意大利邦利数据库</h3>
+        <div class="alert alert-danger">我们只需要移植意大利邦利的所有文章和图片相关数据</div>
+        <div class="btn-toolbar" role="toolbar">
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateAttachment(domainKeyBangliIt)">移植附件表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migratePost(domainKeyBangliIt)">移植文章表</button>
         </div>
     </div>
 </div>
