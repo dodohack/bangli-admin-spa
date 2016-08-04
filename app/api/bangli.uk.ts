@@ -3,7 +3,7 @@
  */
 
 /* This should be https://api.bangli.uk in product env */
-const base: string = 'http://localhost:6000';
+const base: string = 'http://localhost:5001';
 
 /* Application server APIs */
 export const API_BANGLI_UK = {

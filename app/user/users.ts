@@ -44,7 +44,7 @@ export class UsersPage implements OnInit
         /* Get URL segments and update user list */
         this.route.params.subscribe(
             segment => {
-                this.current_role = segment['role'] ? segment['role'] : 'customer';
+                this.current_role = segment['role'] ? segment['role'] : 'any';
                 this.baseUrl = this.base + '/' + this.current_role;
                 /* '+' magically converts string to number */
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;

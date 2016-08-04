@@ -38,6 +38,7 @@ export const zh_CN = {
     },
 
     user: {
+        member:        '注册用户',
         customer:      '注册用户',
         administrator: '管理员',
         shop_manager:  '店长',

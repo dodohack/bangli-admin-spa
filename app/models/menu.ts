@@ -29,6 +29,8 @@ const BANGLI_UK_SIDEBAR_MENUS = [
     {slug: 'dashboard', name: '控制面板',   icon_style: 'fa fa-lg fa-dashboard'},
     {slug: 'post',      name: '文章',      icon_style: 'fa fa-lg fa-book'},
     {slug: 'topic',     name: '专题',      icon_style: 'fa fa-lg fa-circle-o'},
+    {slug: 'deal',      name: '优惠',      icon_style: 'fa fa-lg fa-circle-o'},
+    {slug: 'bbs',       name: '社区',      icon_style: 'fa fa-lg fa-circle-o'},    
     {slug: 'page',      name: '页面',      icon_style: 'fa fa-lg fa-circle-o'},
     {slug: 'wechat',    name: '微信',      icon_style: 'fa fa-lg fa-wechat'},
     {slug: 'email',     name: '邮件',      icon_style: 'fa fa-lg fa-envelope'},
