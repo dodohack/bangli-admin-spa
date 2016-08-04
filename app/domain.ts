@@ -44,12 +44,32 @@ export class Domain
         if (!domain) {
             /* No domain data stored in both session and local storage, 
              * init both. */
-            sessionStorage.setItem('domain',  DOMAIN_KEYS[0]);
-            localStorage.setItem('domain',  DOMAIN_KEYS[0]);
+            this.set(DOMAIN_KEYS[0]);
+            return;
+        }
+
+        /* Validate the key */
+        if (!this.validateDomainKey(domain)) {
+            /* Update invalid key to default one */
+            this.set(DOMAIN_KEYS[0]);
         } else {
             /* Initial domain in session from local storage */
             sessionStorage.setItem('domain', domain);
         }
+    }
+
+    /**
+     * Check if given domain key valid
+     * @param domain
+     * @returns {boolean}
+     */
+    public static validateDomainKey(domain: string) {
+        for (let i in DOMAIN_KEYS) {
+            if (DOMAIN_KEYS[i] === domain) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
