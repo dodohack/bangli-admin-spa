@@ -45,7 +45,7 @@
 <table class="table table-hover" style="font-size: 85%;">
     <thead class="thead-default">
     <tr>
-        <th width="2%"></th>
+        <th width="2%">#</th>
         <th width="2%">
             <input type="checkbox" name="selectedAll"
                    [(ngModel)]="checkedAll" (change)="checkboxAll()">
@@ -114,3 +114,9 @@
 
     </tbody>
 </table>
+
+
+<!-- Pagination at the end -->
+<div class="list-toolbar">
+    <paginator [baseUrl]="deepUrl" [pagination]="pagination"></paginator>
+</div>

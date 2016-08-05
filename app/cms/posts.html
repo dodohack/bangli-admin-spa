@@ -119,6 +119,12 @@
 </table>
 
 
+<!-- Pagination at the end -->
+<div class="list-toolbar">
+    <paginator [baseUrl]="baseUrl" [pagination]="pagination"></paginator>
+</div>
+
+
 <!-- Right side bar -->
 <div class="right-side-bar" [class.show-right-side-bar]="!hideRightBar">
     <tabset [justified]="true" *ngIf="!hideRightBar">

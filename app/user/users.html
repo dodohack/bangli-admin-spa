@@ -26,6 +26,7 @@
 <table class="table">
     <thead class="thead-default">
     <tr>
+        <th>#</th>
         <th><input type="checkbox"></th>
         <th>用户名</th>
         <th>昵称</th>
@@ -35,7 +36,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let user of users">
+    <tr *ngFor="let user of users; let i=index">
+        <th scope="row">{{ i+1 }}</th>
         <th scope="row"><input type="checkbox"></th>
         <td>{{ user.name }}</td>
         <td>{{ user.nicename }}</td>
@@ -46,4 +48,7 @@
     </tbody>
 </table>
 
-
+<!-- Pagination at the end -->
+<div class="list-toolbar">
+        <paginator [baseUrl]="baseUrl" [pagination]="pagination"></paginator>
+</div>
