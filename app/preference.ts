@@ -37,12 +37,12 @@ export class UserPreference
         for (let i in PREF_VALUE) {
 
             let key   = PREF_VALUE[i].key;
-            let dv     = PREF_VALUE[i].value;
+            let dv    = PREF_VALUE[i].value;
 
             let value = localStorage.getItem(key) === null ?
                 dv : localStorage.getItem(key);
 
-            sessionStorage.setItem(key, value);
+            sessionStorage.setItem(key, String(value));
         }
     }
 
@@ -74,13 +74,13 @@ export class UserPreference
     }
     
     public static toggleSidebar(): boolean {
-        return sessionStorage.getItem('user.toggleSidebar');
+        return !!sessionStorage.getItem('user.toggleSidebar');
     }
     public static itemsPerList(): number {
-        return sessionStorage.getItem('user.itemsPerList');
+        return +sessionStorage.getItem('user.itemsPerList');
     }
     public static showRichList(): boolean {
-        return sessionStorage.getItem('user.showRichList');
+        return !!sessionStorage.getItem('user.showRichList');
     }
     public static menuColor(): string {
         return sessionStorage.getItem('user.menuColor');
