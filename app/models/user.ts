@@ -8,6 +8,12 @@ export const USER_ROLES = [
     'customer', 'administrator', 'shop_manager', 'editor', 'author'
 ];
 
+export const USER_GENDERS = [
+    {key: 'M', display_name: '男性'},
+    {key: 'F', display_name: '女性'},
+    {key: 'U', display_name: '火星人'}
+];
+
 /* User profile and settings only stored in localStorage */
 export class Preference {
     constructor(
@@ -45,7 +51,7 @@ export class UserRole {
 }
 
 export class UserProfile {
-    gender: string;
+    gender: string; /* One of 'M', 'F' or 'U' */
     first_name: string;
     last_name: string;
     birthday: string;

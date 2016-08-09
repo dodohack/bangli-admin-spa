@@ -16,26 +16,24 @@ We have several tabs to switch between massive inputs
 4. Set user offline preferences
 -->
 
-<div class="form-control">
-    <tabset>
-        <tab heading="基本信息">
-            <user-base-profile [uuid]="uuid"></user-base-profile>
-        </tab>
+<tabset>
+    <tab heading="基本信息">
+        <user-base-profile [uuid]="uuid"></user-base-profile>
+    </tab>
 
-        <tab heading="密码授权">
-            <user-auth-profile></user-auth-profile>
-        </tab>
+    <tab heading="密码授权">
+        <user-auth-profile></user-auth-profile>
+    </tab>
 
-        <tab heading="地址信息">
-            <user-shop-profile></user-shop-profile>
-        </tab>
+    <tab heading="地址信息">
+        <user-shop-profile></user-shop-profile>
+    </tab>
 
-        <tab heading="宝宝信息">
-            <user-shop-profile></user-shop-profile>
-        </tab>
+    <tab heading="宝宝信息">
+        <user-shop-profile></user-shop-profile>
+    </tab>
 
-        <tab heading="个人偏好">
-            <user-preference></user-preference>
-        </tab>
-    </tabset>
-</div>
+    <tab heading="个人偏好">
+        <user-preference></user-preference>
+    </tab>
+</tabset>

@@ -47,7 +47,7 @@
 <div class="form-inline post-meta-wrapper">
     <div class="form-group post-meta-item">
         <span class="tag tag-warning-outline">作者</span>
-        <select class="c-select c-select-sm form-control" [(ngModel)]="post.author_id">
+        <select class="form-control" [(ngModel)]="post.author_id">
             <option [value]="author.id"
                     *ngFor="let author of authors">{{ author.nicename }}</option>
         </select>
@@ -55,7 +55,7 @@
 
     <div class="form-group post-meta-item">
         <span class="tag tag-warning-outline">编辑</span>
-        <select class="c-select c-select-sm form-control" [(ngModel)]="post.editor_id">
+        <select class="form-control" [(ngModel)]="post.editor_id">
             <option [value]="editor.id"
                     *ngFor="let editor of editors">{{ editor.nicename }}</option>
         </select>
@@ -63,7 +63,7 @@
 
     <div class="form-group post-meta-item">
         <span class="tag tag-warning-outline">文章类型</span>
-        <select class="c-select c-select-sm form-control" [(ngModel)]="post.post_type">
+        <select class="form-control" [(ngModel)]="post.post_type">
             <option [value]="pt" *ngFor="let pt of POST_TYPES">{{ zh[pt] }}</option>
         </select>
     </div>

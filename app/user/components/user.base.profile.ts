@@ -4,12 +4,15 @@
 import { Component, Input, AfterContentInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
+import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
 import { UserService } from '../../service';
+import { USER_GENDERS } from '../../models/user';
 
 let t = require('./user.base.profile.html');
 @Component({
     selector: 'user-base-profile',
     template: t,
+    directives: [ ACCORDION_DIRECTIVES ]
 })
 export class UserBaseProfile implements AfterContentInit
 {
@@ -18,12 +21,13 @@ export class UserBaseProfile implements AfterContentInit
 
     user: Observable<any>;
 
-    constructor(private userService: UserService) {
-    }
+    constructor(private userService: UserService) {}
 
     ngAfterContentInit() {
-        console.log("UUID: ", this.uuid);
         this.userService.getUserBaseProfile(this.uuid)
             .subscribe(user => this.user = user);
     }
+
+    get userRoles() { return this.userService.roles; }
+    get genders() { return USER_GENDERS; }
 }
