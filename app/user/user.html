@@ -33,7 +33,7 @@ We have several tabs to switch between massive inputs
         <user-shop-profile></user-shop-profile>
     </tab>
 
-    <tab heading="个人偏好">
+    <tab heading="个人偏好" *ngIf="isMyProfile">
         <user-preference></user-preference>
     </tab>
 </tabset>

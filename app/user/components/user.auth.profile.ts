@@ -9,6 +9,6 @@ let t = require('./user.auth.profile.html');
     selector: 'user-auth-profile',
     template: t,
 })
-export class UserAuthProfile 
+export class UserAuthProfileTab
 {
 }

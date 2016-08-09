@@ -10,17 +10,18 @@ import { ActivatedRoute } from "@angular/router";
 import { TAB_DIRECTIVES } from 'ng2-bootstrap';
 
 import { AuthService }       from '../service';
-import { UserAuthProfile }   from './components/user.auth.profile';
-import { UserPreference }    from './components/user.preference';
-import { UserBaseProfile }   from './components/user.base.profile';
-import { UserShopProfile }   from './components/user.shop.profile';
+import { UserAuthProfileTab }   from './components/user.auth.profile';
+import { UserPreferenceTab }    from './components/user.preference';
+import { UserBaseProfileTab }   from './components/user.base.profile';
+import { UserShopProfileTab }   from './components/user.shop.profile';
 
 
 let t = require('./user.html');
 @Component({
     template: t,
     directives: [ TAB_DIRECTIVES,
-        UserAuthProfile, UserPreference, UserBaseProfile, UserShopProfile ]
+        UserAuthProfileTab, UserPreferenceTab, 
+        UserBaseProfileTab, UserShopProfileTab ]
 })
 export class UserPage implements OnInit
 {

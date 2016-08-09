@@ -1,1 +1,60 @@
-<h3>user preference</h3>
+<form (ngSubmit)="save()" #settingForm="ngForm">
+
+<accordion>
+    <accordion-group heading="使用偏好设置" isOpen=true>
+        <div class="row form-group">
+            <div class="col-xs-4">
+                <label>侧栏目录</label>
+                <select name="toggleSidebar" class="form-control" [(ngModel)]="toggleSidebar">
+                    <option [value]="toggleSidebar">图标目录</option>
+                    <option [value]="!toggleSidebar">展开目录</option>
+                </select>
+            </div>
+
+            <div class="col-xs-4">
+                <label>显示详细列表</label>
+                <select name="showRichList" class="form-control" [(ngModel)]="showRichList">
+                    <option [value]="showRichList">是</option>
+                    <option [value]="!showRichList">否</option>
+                </select>
+            </div>
+
+            <div class="col-xs-4">
+                <label>列表每页显示条数</label>
+                <select name="itemsPerList" class="form-control" [(ngModel)]="itemsPerList">
+                    <option *ngFor="let count of counts" [value]="count">{{count}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-xs-3">
+                <label>目录字体颜色</label>
+                <input class="form-control" type="color" name="menuColor" [(ngModel)]="menuColor">
+            </div>
+            <div class="col-xs-3">
+                <label>目录背景颜色</label>
+                <input class="form-control" type="color" name="menuBgColor" [(ngModel)]="menuBgColor">
+            </div>
+            <div class="col-xs-3">
+                <label>内容背景颜色</label>
+                <input class="form-control" type="color" name="contentBgColor" [(ngModel)]="contentBgColor">
+            </div>
+            <div class="col-xs-3">
+                <label>后台页面底色</label>
+                <input class="form-control" type="color" name="bodyBgColor" [(ngModel)]="bodyBgColor">
+            </div>
+        </div>
+    </accordion-group>
+
+    <accordion-group heading="自定义目录" isOpen=true>
+    </accordion-group>
+</accordion>
+
+    <div class="row form-group">
+        <div class="col-xs-12">
+            <button type="submit" class="btn btn-outline-primary"
+                    [disabled]="!settingForm.form.dirty">保存</button>
+        </div>
+    </div>
+</form>

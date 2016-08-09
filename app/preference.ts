@@ -13,9 +13,9 @@ const PREF_VALUE = [
     /* key: session and local storage key */
     /* value: default value */
     /* isJson: is this a json data */
-    { key: 'user.toggleSidebar',  value: false,    isJson: false },
-    { key: 'user.itemsPerList',   value: 20,       isJson: false },
-    { key: 'user.showRichList',   value: false,    isJson: false },
+    { key: 'user.toggleSidebar',  value: false,     isJson: false },
+    { key: 'user.itemsPerList',   value: 20,        isJson: false },
+    { key: 'user.showRichList',   value: false,     isJson: false },
     /* FIXME: Anchor[hover] color is overwritten by menuColor!! */
     { key: 'user.menuColor',      value: '#FFFFFF', isJson: false },
     { key: 'user.menuBgColor',    value: '#383838', isJson: false },

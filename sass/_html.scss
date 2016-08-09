@@ -128,3 +128,7 @@ a.disabled {
     bottom: 1.5rem;
     z-index: 9999;
 }
+
+input[type=color] {
+    height: 3rem;
+}

@@ -41,16 +41,11 @@ export class FastEditPostFormComponent implements AfterContentInit {
     @Output()
     cancel = new EventEmitter();
 
-    constructor() {
-    }
+    constructor() {}
     
-    get POST_STATUSES() {
-        return POST_STATUSES;
-    }
+    get POST_STATUSES() { return POST_STATUSES; }
 
-    get zh() {
-        return zh_CN.post;
-    }
+    get zh() { return zh_CN.post; }
     
     ngAfterContentInit() {
         if (this.posts) {
@@ -58,13 +53,9 @@ export class FastEditPostFormComponent implements AfterContentInit {
         }
     }
     
-    toggleRightBar(event) {
-        this.toggle.emit(event);
-    }
+    toggleRightBar(event) { this.toggle.emit(event); }
 
-    cancelEditing(event) {
-        this.cancel.emit(event);
-    }
+    cancelEditing(event) { this.cancel.emit(event); }
 
     /* FIXME: Parent component automatically get a (submit) event, is that
      * because we click the 'submit' button of the form? */

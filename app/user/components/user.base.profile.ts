@@ -14,7 +14,7 @@ let t = require('./user.base.profile.html');
     template: t,
     directives: [ ACCORDION_DIRECTIVES ]
 })
-export class UserBaseProfile implements AfterContentInit
+export class UserBaseProfileTab implements AfterContentInit
 {
     @Input()
     uuid: string;

@@ -9,7 +9,7 @@ let t = require('./user.shop.profile.html');
     selector: 'user-shop-profile',
     template: t,
 })
-export class UserShopProfile
+export class UserShopProfileTab
 {
 
 }
