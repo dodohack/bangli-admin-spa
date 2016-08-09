@@ -59,6 +59,17 @@ export class UserService
     }
 
     /**
+     * Retrieve user base profile by uuid
+     * @param uuid
+     */
+    public getUserBaseProfile(uuid)
+    {
+        let endpoint = this.API.user_base_profile + '/' + uuid;
+        
+        return this.http.get(endpoint, this.options).map(res => res.json());
+    }
+
+    /**
      * Retrive user roles and number of users for each role.
      */
     private initRoles()

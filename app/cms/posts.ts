@@ -116,10 +116,10 @@ export class PostsPage implements OnInit
         
         for (let i = 0; i < this.authors.length; i++) {
             if (this.authors[i].id == id) {
-                if (this.authors[i].nicename == null)
+                if (this.authors[i].display_name == null)
                     return this.authors[i].name;
                 else
-                    return this.authors[i].nicename;
+                    return this.authors[i].display_name;
             }
         }
     }

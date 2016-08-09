@@ -46,9 +46,9 @@
         </li>
 
         <li class="float-right">
-            <a [routerLink]="['/user/id']" routerLinkActive="active"
+            <a [routerLink]="['/user', uuid]" routerLinkActive="active"
                [style.color]="menuColor">
-                <i class="fa fa-user"></i>somename
+                <i class="fa fa-user"></i>{{ username }}
             </a>
         </li>
     </ul>

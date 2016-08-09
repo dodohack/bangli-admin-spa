@@ -11,7 +11,7 @@ let t = require('./profile.html');
 @Component({
     template: t,
 })
-export class UserProfile implements OnInit
+export class UserProfilePage implements OnInit
 {
     constructor() {}
 

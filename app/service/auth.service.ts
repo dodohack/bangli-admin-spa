@@ -150,4 +150,9 @@ export class AuthService
     {
         return this.decoded_jwt.aud;
     }
+
+    public getUuid()
+    {
+        return this.decoded_jwt.sub;
+    }
 }

@@ -10,9 +10,9 @@ import { UserService } from '../service';
 import { PaginatorComponent, ListPageHeaderComponent } from "../components";
 import { zh_CN }    from '../localization';
 
-let template = require('./users.html');
+let t = require('./users.html');
 @Component({
-    template: template,
+    template: t,
     directives: [ PaginatorComponent, ListPageHeaderComponent ]
 })
 export class UsersPage implements OnInit
@@ -31,10 +31,7 @@ export class UsersPage implements OnInit
     constructor(private route: ActivatedRoute,
                 private userService: UserService) {}
 
-    ngOnInit()
-    {
-        this.initUserList();
-    }
+    ngOnInit() { this.initUserList(); }
 
     get zh() { return zh_CN.user; }
     get userRoles() { return this.userService.roles; }

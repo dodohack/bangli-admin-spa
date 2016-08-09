@@ -16,7 +16,7 @@ export const userRoutes: RouterConfig = [
 
             /* Single user */
             { path: 'new', component: UserPage },
-            { path: ':id', component: UserPage }
+            { path: ':uuid', component: UserPage }
         ]
     }
 ];

@@ -41,8 +41,8 @@
     <tr *ngFor="let user of users; let i=index">
         <th scope="row">{{ i+1 }}</th>
         <th scope="row"><input type="checkbox"></th>
-        <td>{{ user.name }}</td>
-        <td>{{ user.nicename }}</td>
+        <td><a [routerLink]="['/user', user.id]">{{ user.name }}</a></td>
+        <td>{{ user.display_name }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.created_at }}</td>
         <td>xyz</td>

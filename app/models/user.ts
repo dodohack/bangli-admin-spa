@@ -8,14 +8,6 @@ export const USER_ROLES = [
     'customer', 'administrator', 'shop_manager', 'editor', 'author'
 ];
 
-export class User {
-    id: string;
-    role: string;
-    name: string;
-    nicename: string;
-    email: string;
-}
-
 /* User profile and settings only stored in localStorage */
 export class Preference {
     constructor(
@@ -43,4 +35,40 @@ export class Preference {
 
     /* Save preference to localStorage at once */
     save() {} 
+}
+
+export class UserRole {
+    id: number;
+    name: string;
+    display_name: string;
+    description: string;
+}
+
+export class UserProfile {
+    gender: string;
+    first_name: string;
+    last_name: string;
+    birthday: string;
+    point_available: number;
+    point_used: number;
+    currency: string;
+    money_available: number;
+    money_spent: number;
+    order_count: number;
+    cart_items: Object;
+    profile_image: string;
+    subscription: boolean;
+    description: string;
+}
+
+export class User {
+    id: number;
+    role_id: number;
+    name: string;
+    display_name: string;
+    email: string;
+    created_at: string;
+    
+    role: UserRole;
+    profile: UserProfile;
 }

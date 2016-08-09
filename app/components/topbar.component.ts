@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { Router }    from '@angular/router';
 import { DROPDOWN_DIRECTIVES } from 'ng2-bootstrap';
 
-import { AuthService }       from '../service';
-
+import { AuthService }                  from '../service';
 import { DOMAIN_KEYS, DOMAINS, Domain } from '../domain';
 import { UserPreference }               from '../preference';
 
@@ -15,12 +14,12 @@ let template = require('./topbar.html');
 })
 export class TopbarComponent {
 
-    /* username: string; */
-
-    constructor(private router: Router
-                /*private authService: AuthService*/) {
-        //this.username = authService.getName();
+    constructor(private router: Router,
+                private authService: AuthService) {
     }
+
+    get username() { return this.authService.getName(); }
+    get uuid() { return this.authService.getUuid(); }
 
     get menuColor()    { return UserPreference.menuColor(); }
     get menuBgColor()  { return UserPreference.menuBgColor(); }

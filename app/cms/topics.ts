@@ -87,10 +87,10 @@ export class TopicsPage implements OnInit {
     private getNicenameById(id) {
         for (let i = 0; i < this.editors.length; i++) {
             if (this.editors[i].id == id) {
-                if (this.editors[i].nicename == null)
+                if (this.editors[i].display_name == null)
                     return this.editors[i].name;
                 else
-                    return this.editors[i].nicename;
+                    return this.editors[i].display_name;
             }
         }
     }
