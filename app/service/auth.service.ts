@@ -87,8 +87,9 @@ export class AuthService
     public logout()
     {
         localStorage.removeItem('jwt');
-        //console.log("LOGOUT DONE!");
         this.router.navigate(['/login']);
+        console.log("FIXME: Redirected back from login page sometimes; So a reload() is invoked");
+        window.location.reload();
     }
 
     /**

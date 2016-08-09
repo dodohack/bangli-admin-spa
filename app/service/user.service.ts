@@ -63,7 +63,7 @@ export class UserService
      */
     private initRoles()
     {
-        this.http.get(this.API.menu_users, this.options)
+        this.http.get(this.API.user_roles, this.options)
                  .map(res => res.json())
                  .subscribe(json => this.roles = json);
     }

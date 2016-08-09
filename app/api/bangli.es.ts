@@ -27,7 +27,7 @@ export const API_BANGLI_ES = {
     /* List of users */
     users: base + '/admin/users',
     /* Users list page filter menu */
-    menu_users: base + '/admin/menu/users',
+    user_roles: base + '/admin/menu/users',
 
     /* Get users who can edit a post, includes author, editor, shop_manager etc */
     authors: base + '/admin/authors',

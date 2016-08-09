@@ -9,8 +9,8 @@ export const userRoutes: RouterConfig = [
         path: 'user',
         canActivate: [AuthGuard],
         children: [
-            /* List of users */
-            { path: '', pathMatch: 'full', redirectTo: 'list/customer/1' },
+            /* List of users, '5' id of customer role */
+            { path: '', pathMatch: 'full', redirectTo: 'list/5/1' },
             { path: 'list/:role', redirectTo: 'list/:role/1' },
             { path: 'list/:role/:page', component: UsersPage },
 
