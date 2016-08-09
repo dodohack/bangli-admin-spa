@@ -72,15 +72,21 @@ export class UserPreference
         /* Refresh sessionStorage */
         this.init();
     }
-    
+
+    public static setToggleSidebar() {
+        let newState = this.toggleSidebar() ? 'false' : 'true';
+        localStorage.setItem('user.toggleSidebar',  newState);
+        sessionStorage.setItem('user.toggleSidebar', newState);
+    }
+
     public static toggleSidebar(): boolean {
-        return !!sessionStorage.getItem('user.toggleSidebar');
+        return sessionStorage.getItem('user.toggleSidebar') === 'true' ? true : false;
     }
     public static itemsPerList(): number {
         return +sessionStorage.getItem('user.itemsPerList');
     }
     public static showRichList(): boolean {
-        return !!sessionStorage.getItem('user.showRichList');
+        return sessionStorage.getItem('user.showRichList') === 'true' ? true : false;
     }
     public static menuColor(): string {
         return sessionStorage.getItem('user.menuColor');

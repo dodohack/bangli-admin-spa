@@ -5,17 +5,19 @@
         <div class="row form-group">
             <div class="col-xs-4">
                 <label>侧栏目录</label>
-                <select name="toggleSidebar" class="form-control" [(ngModel)]="toggleSidebar">
-                    <option [value]="toggleSidebar">图标目录</option>
-                    <option [value]="!toggleSidebar">展开目录</option>
+                <select name="toggleSidebar" class="form-control" [ngModel]="toggleSidebar"
+                        (ngModelChange)="toggleSidebar = $event === 'true' ? true : false">
+                    <option value="true">图标目录</option>
+                    <option value="false">展开目录</option>
                 </select>
             </div>
 
             <div class="col-xs-4">
                 <label>显示详细列表</label>
-                <select name="showRichList" class="form-control" [(ngModel)]="showRichList">
-                    <option [value]="showRichList">是</option>
-                    <option [value]="!showRichList">否</option>
+                <select name="showRichList" class="form-control" [ngModel]="showRichList"
+                        (ngModelChange)="showRichList = $event === 'true' ? true : false">
+                    <option value="true">是</option>
+                    <option value="false">否</option>
                 </select>
             </div>
 

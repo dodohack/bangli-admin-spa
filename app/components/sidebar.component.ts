@@ -7,8 +7,9 @@ import { UserPreference } from '../preference';
     selector: 'sidebar',
     template:
     `
-    <div class="sidebar" [style.background-color]="menuBgColor">
-        <a class="toggle" [style.color]="menuColor"><i class="fa fa-ellipsis-v"></i></a>
+    <div class="sidebar" [style.background-color]="menuBgColor" [class.icon_sidebar]="toggleSidebar">
+        <a class="toggle" (click)="setToggleSidebar($event)" 
+        [style.color]="menuColor"><i class="fa fa-ellipsis-v"></i></a>
         <ul>
             <li *ngFor="let menu of sidebarMenus">
                 <a [routerLink]="['/', menu.slug]"
@@ -30,6 +31,10 @@ export class SidebarComponent {
 
     get sidebarMenus() { return Sidebar.getMenu(); }
 
+    get toggleSidebar()   { return UserPreference.toggleSidebar(); }
     get menuColor()   { return UserPreference.menuColor(); }
     get menuBgColor() { return UserPreference.menuBgColor(); }
+
+    public setToggleSidebar($event) { UserPreference.setToggleSidebar(); }
+    
 }

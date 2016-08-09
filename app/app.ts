@@ -9,6 +9,7 @@ import { AuthService }       from './service';
 import { TopbarComponent, SidebarComponent }  from './components';
 
 import { Domain } from './domain';
+import { UserPreference } from './preference';
 
 let template = require('./app.html');
 @Component({
@@ -33,4 +34,6 @@ export class App
     get isLoggedIn() {
         return this.authService.isLoggedIn;
     }
+
+    get toggleSidebar() { return UserPreference.toggleSidebar(); }
 }
