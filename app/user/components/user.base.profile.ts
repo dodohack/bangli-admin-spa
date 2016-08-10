@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
 import { UserService } from '../../service';
-import { USER_GENDERS } from '../../models/user';
+import { USER_GENDERS, User } from '../../models/user';
 
 let t = require('./user.base.profile.html');
 @Component({
@@ -18,8 +18,8 @@ export class UserBaseProfileTab implements AfterContentInit
 {
     @Input()
     uuid: string;
-
-    user: Observable<any>;
+    /* FIXME: We should pass user as input from parent component */
+    user: User;
 
     constructor(private userService: UserService) {}
 

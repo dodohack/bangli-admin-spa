@@ -46,4 +46,6 @@ export const AUTH = {
     
     /* Websites avaiable to manage for current user */
     websites: auth_base + '/websites',
+
+    available_websites: auth_base + '/available-websites',
 };

@@ -11,7 +11,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Router }     from '@angular/router';
-import { Http, Headers, RequestOptions } from '@angular/http'
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { Login, Register, JwtPayLoad }  from "../models";
@@ -133,15 +133,28 @@ export class AuthService
     }
 
     /**
-     * Get the list of websites user can use at backend
+     * Get the list of websites current user can use at backend, if user uuid
+     * is given, get the websites for given user
      */
-    public getWebsites()
+    public getWebsites(uuid?: string)
     {
         /* Authentication is needed for this request, but we don't want to
          * trigger CORS(setting customized http headers will trigger this) */
-        let endpoint = AUTH.websites + '?token=' + this.getJwt();
+        let endpoint: string;
+        if (uuid)
+            endpoint = AUTH.websites + '?uuid=' + uuid + '&token=' + this.getJwt();
+        else
+            endpoint = AUTH.websites + '?token=' + this.getJwt();
 
         return this.http.get(endpoint).map(res => res.json());
+    }
+
+    /**
+     * Am I a super user
+     */
+    public isSuperUser()
+    {
+        
     }
 
     /**
