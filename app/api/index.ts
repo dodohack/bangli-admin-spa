@@ -40,7 +40,10 @@ export class Api {
 export const AUTH = {
     endpoint: auth_base,
 
-    /* Authentcation with email/password */
+    /* Authentication with email/password */
     register: auth_base + '/register',
     login: auth_base + '/login',
+    
+    /* Websites avaiable to manage for current user */
+    websites: auth_base + '/websites',
 };

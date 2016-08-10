@@ -23,7 +23,7 @@ var jwtDecode = require('jwt-decode');
 export class AuthService
 {
     private decoded_jwt = new JwtPayLoad('', 0, 0, 0, '', '', '');
-    private jwt;
+    private jwt: string;
 
     constructor(private router: Router, private http: Http) {
         this.jwt = localStorage.getItem('jwt');
@@ -130,6 +130,18 @@ export class AuthService
                 error = error.json();
                 return Observable.throw(error);
             });
+    }
+
+    /**
+     * Get the list of websites user can use at backend
+     */
+    public getWebsites()
+    {
+        /* Authentication is needed for this request, but we don't want to
+         * trigger CORS(setting customized http headers will trigger this) */
+        let endpoint = AUTH.websites + '?token=' + this.getJwt();
+
+        return this.http.get(endpoint).map(res => res.json());
     }
 
     /**
