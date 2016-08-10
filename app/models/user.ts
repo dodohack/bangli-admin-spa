@@ -69,6 +69,7 @@ export class UserProfile {
 
 export class User {
     id: number;
+    uuid: string;
     role_id: number;
     name: string;
     display_name: string;

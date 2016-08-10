@@ -133,31 +133,6 @@ export class AuthService
     }
 
     /**
-     * Get the list of websites current user can use at backend, if user uuid
-     * is given, get the websites for given user
-     */
-    public getWebsites(uuid?: string)
-    {
-        /* Authentication is needed for this request, but we don't want to
-         * trigger CORS(setting customized http headers will trigger this) */
-        let endpoint: string;
-        if (uuid)
-            endpoint = AUTH.websites + '?uuid=' + uuid + '&token=' + this.getJwt();
-        else
-            endpoint = AUTH.websites + '?token=' + this.getJwt();
-
-        return this.http.get(endpoint).map(res => res.json());
-    }
-
-    /**
-     * Am I a super user
-     */
-    public isSuperUser()
-    {
-        
-    }
-
-    /**
      * Return JWT token
      */
     public getJwt()

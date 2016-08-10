@@ -15,13 +15,13 @@ let template = require('./topbar.html');
 export class TopbarComponent {
     
     /* User manageable websites comes from api request from bangli-auth */
-    private websites: any;
+    //private websites: any;
     
     constructor(private router: Router,
                 private authService: AuthService) {
-        this.authService.getWebsites().subscribe(
-            websites => this.websites = websites
-        );
+        //this.authService.getWebsites().subscribe(
+        //    websites => this.websites = websites
+        //);
     }
 
     get username() { return this.authService.getName(); }
@@ -31,8 +31,8 @@ export class TopbarComponent {
     get menuBgColor()  { return UserPreference.menuBgColor(); }
     get myTopbarMenus()  { return UserPreference.myTopbarMenus(); }
     
-    //get DOMAIN_KEYS() { return DOMAIN_KEYS; }
-    //get DOMAINS() { return DOMAINS; }
+    get DOMAIN_KEYS() { return DOMAIN_KEYS; }
+    get DOMAINS() { return DOMAINS; }
     
     get currentDomainName() { return Domain.getName(); }
     get currentDomainUrl() { return Domain.getUrl(); }

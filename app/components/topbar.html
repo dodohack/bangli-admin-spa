@@ -22,8 +22,8 @@
         <li dropdown>
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="menuColor">切换站点</a>
             <div class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
-                <!--<a *ngFor="let domain of DOMAIN_KEYS" class="dropdown-item" role="button" (click)="setDomain(domain)">{{ DOMAINS[domain].name }}</a>-->
-                <a *ngFor="let website of websites" class="dropdown-item" role="button" (click)="setDomain(website.name)">{{ website.display_name }}</a>
+                <a *ngFor="let domain of DOMAIN_KEYS" class="dropdown-item" role="button" (click)="setDomain(domain)">{{ DOMAINS[domain].name }}</a>
+                <!--<a *ngFor="let website of websites" class="dropdown-item" role="button" (click)="setDomain(website.name)">{{ website.display_name }}</a>-->
             </div>
         </li>
 

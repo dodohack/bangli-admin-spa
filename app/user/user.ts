@@ -15,7 +15,7 @@ import { UserPreferenceTab }    from './components/user.preference';
 import { UserBaseProfileTab }   from './components/user.base.profile';
 import { UserShopProfileTab }   from './components/user.shop.profile';
 import { UserWebsiteMgtTab }    from './components/user.website.mgt';
-import {User} from "../models/user";
+import { User }        from "../models";
 
 let t = require('./user.html');
 @Component({
@@ -48,8 +48,14 @@ export class UserPage implements OnInit
     /* If the user current editing is myself or not */
     get isMyProfile() { return this.myUuid === this.uuid; }
 
+    /* Check if current managed user is a customer or not */
+    get isCustomer() {
+        /* FIXME: Magic number(table entry huluwa.users.role_id) */
+        return this.user.role_id === 5 ? true : false;
+    }
+    
     private initUserUuid()
     {
-        this.route.params.subscribe(segment => this.uuid = segment['uuid']);   
+        this.route.params.subscribe(segment => this.uuid = segment['uuid']);
     }
 }
