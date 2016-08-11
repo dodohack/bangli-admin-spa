@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router }    from '@angular/router';
 import { DROPDOWN_DIRECTIVES } from 'ng2-bootstrap';
 
-import { AuthService }                  from '../service';
+import { AuthService, WebsiteService }  from '../service';
 import { DOMAIN_KEYS, DOMAINS, Domain } from '../domain';
 import { UserPreference }               from '../preference';
 
@@ -18,7 +18,8 @@ export class TopbarComponent {
     //private websites: any;
     
     constructor(private router: Router,
-                private authService: AuthService) {
+                private authService: AuthService,
+                private websiteService: WebsiteService) {
         //this.authService.getWebsites().subscribe(
         //    websites => this.websites = websites
         //);
@@ -31,6 +32,7 @@ export class TopbarComponent {
     get menuBgColor()  { return UserPreference.menuBgColor(); }
     get myTopbarMenus()  { return UserPreference.myTopbarMenus(); }
     
+    get myWebsites() { return this.websiteService.myWebsites; }
     get DOMAIN_KEYS() { return DOMAIN_KEYS; }
     get DOMAINS() { return DOMAINS; }
     

@@ -1,5 +1,5 @@
 <div class="topbar" [style.background-color]="menuBgColor">
-    <ul>
+    <ul class="fixed-menu">
         <li>
             <a href="{{ currentDomainUrl }}" target="_blank"
                [style.color]="menuColor"><i class="fa fa-home"></i>{{ currentDomainName }}</a>
@@ -13,18 +13,22 @@
         </li>
 
         <li>
-            <a [routerLink]="['/product/new']" routerLinkActive="active"
+            <a [routerLink]="['/prodpouct/new']" routerLinkActive="active"
                [style.color]="menuColor">
                 <i class="fa fa-cart-plus"></i>新建产品
             </a>
         </li>
 
-        <li dropdown>
+        <li dropdown *ngIf="myWebsites">
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="menuColor">切换站点</a>
-            <div class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
-                <a *ngFor="let domain of DOMAIN_KEYS" class="dropdown-item" role="button" (click)="setDomain(domain)">{{ DOMAINS[domain].name }}</a>
-                <!--<a *ngFor="let website of websites" class="dropdown-item" role="button" (click)="setDomain(website.name)">{{ website.display_name }}</a>-->
-            </div>
+            <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
+                <li role="menuitem" *ngFor="let website of myWebsites">
+                <!--<a *ngFor="let domain of DOMAIN_KEYS" class="dropdown-item" role="button" (click)="setDomain(domain)">{{ DOMAINS[domain].name }}</a>-->
+                    <a *ngIf="website.checked"
+                       class="dropdown-item" role="button"
+                       (click)="setDomain(website.name)">{{ website.display_name }}</a>
+                </li>
+            </ul>
         </li>
 
         <!-- List of customized menus -->

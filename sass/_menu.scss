@@ -6,21 +6,22 @@
 .topbar, .sidebar {
     z-index: 999;
 
-    ul {
+    ul.fixed-menu {
         margin: 0;
         padding: 0;
         list-style: none;
         height: 100%;
-    }
 
-    a {
-        position: relative;
-        letter-spacing: 1px;
+        /* Avoid overwriting websites dropdown style */
+        & > li > a {
+            position: relative;
+            letter-spacing: 1px;
 
-        &:hover {
-            text-decoration: none !important;
-            color: $light-blue;
-            background-color: $menu-hover-bg;
+            &:hover {
+                text-decoration: none !important;
+                color: $light-blue;
+                background-color: $menu-hover-bg;
+            }
         }
     }
 }
@@ -71,18 +72,19 @@
     height: $topbar-height;
     padding-right: 1rem;
 
-    li {
+    /* Avoid overwriting websites dropdown style */
+    ul.fixed-menu > li {
         display: inline-block;
         margin-left: 1rem;
-    }
 
-    a {
-        height: $topbar-height;
-        line-height: $topbar-height;
-        padding: 0.3rem 0.25rem;
+        & > a {
+            height: $topbar-height;
+            line-height: $topbar-height;
+            padding: 0.3rem 0.25rem;
 
-        i {
-            padding-right: 0.25rem;
+            i {
+                padding-right: 0.25rem;
+            }
         }
     }
 }

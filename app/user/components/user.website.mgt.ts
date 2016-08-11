@@ -11,8 +11,7 @@ let t = require('./user.website.mgt.html');
 @Component({
     selector: 'user-website-mgt',
     template: t,
-    directives: [ ACCORDION_DIRECTIVES ],
-    providers: [ WebsiteService ]
+    directives: [ ACCORDION_DIRECTIVES ]
 })
 export class UserWebsiteMgtTab implements AfterContentInit
 {
@@ -20,8 +19,7 @@ export class UserWebsiteMgtTab implements AfterContentInit
     uuid: string;
 
     /* Websites user can access */
-    myWebsites: Website[];
-    allWebsites: Website[];
+    websites: Website[];
     
     constructor(private websiteService: WebsiteService) {}
 
@@ -29,16 +27,17 @@ export class UserWebsiteMgtTab implements AfterContentInit
     ngAfterContentInit() {
         this.websiteService.getUserWebsites(this.uuid)
             .subscribe(websites => {
-                this.myWebsites  = websites['my_websites'];
-                this.allWebsites = websites['all_websites'];
-                this.initCheckStatus();
+                this.websites = this.websiteService.initCheckStatus(
+                    websites['all_websites'], 
+                    websites['my_websites']
+                );
             });
     }
 
     /* Save user manageable websites to bangli-auth.user_website */
     onSubmitWebsites() {
         // Submit allWebsites which contains checked status
-        this.websiteService.saveUserWebsites(this.uuid, this.allWebsites)
+        this.websiteService.saveUserWebsites(this.uuid, this.websites)
             .subscribe(status => console.log(status));
     }
 
@@ -46,18 +45,4 @@ export class UserWebsiteMgtTab implements AfterContentInit
     onSubmitWebsitePerms() {
     }
 
-    private initCheckStatus() {
-        let allLength = this.allWebsites.length;
-        let myLength  = this.myWebsites.length;
-        /* Initial check status */
-        for (let i = 0; i < allLength; i++) {
-            this.allWebsites[i].checked = false;
-            for (let j = 0; j < myLength; j++) {
-                if (this.allWebsites[i].id == this.myWebsites[j].id) {
-                    this.allWebsites[i].checked = true;
-                    break;
-                }
-            }
-        }
-    }
 }

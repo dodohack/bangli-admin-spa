@@ -22,18 +22,18 @@
                 </thead>
 
                 <tbody>
-                <tr *ngFor="let aw of allWebsites">
+                <tr *ngFor="let web of websites">
                     <td>
                         <label class="form-check-inline">
                             <input class="form-check-input" type="checkbox"
-                                   name="w[]"  [checked]="aw.checked" (change)="aw.checked = $event.target.checked">
-                            {{ aw.checked ? '是' : '否' }}
+                                   name="w[]"  [checked]="web.checked" (change)="web.checked = $event.target.checked">
+                            {{ web.checked ? '是' : '否' }}
                         </label>
                     </td>
-                    <td>{{ aw.id }}</td>
-                    <td>{{ aw.display_name }}</td>
-                    <td>{{ aw.frontend_url }}</td>
-                    <td>{{ aw.description }}</td>
+                    <td>{{ web.id }}</td>
+                    <td>{{ web.display_name }}</td>
+                    <td>{{ web.frontend_url }}</td>
+                    <td>{{ weg.description }}</td>
                 </tr>
                 </tbody>
             </table>

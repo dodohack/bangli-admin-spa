@@ -10,7 +10,7 @@ import { UserPreference } from '../preference';
     <div class="sidebar" [style.background-color]="menuBgColor" [class.icon_sidebar]="toggleSidebar">
         <a class="toggle" (click)="setToggleSidebar($event)" 
         [style.color]="menuColor"><i class="fa fa-ellipsis-v"></i></a>
-        <ul>
+        <ul class="fixed-menu">
             <li *ngFor="let menu of sidebarMenus">
                 <a [routerLink]="['/', menu.slug]"
                    [style.color]="menuColor"

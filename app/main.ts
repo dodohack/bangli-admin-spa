@@ -11,8 +11,8 @@ import { UserPreference } from './preference';
 import { App } from './app';
 import { APP_ROUTER_PROVIDERS } from './app.routes';
 
-/* Inject these service globally, so the can be used anywhere as a singleton */
-import { UserService } from './service';
+/* Inject these service globally, so they can be used anywhere as a singleton */
+import { UserService, WebsiteService } from './service';
 
 if (process.env.ENV === 'production') {
     enableProdMode();
@@ -28,7 +28,7 @@ UserPreference.init();
 bootstrap(App, [
     APP_ROUTER_PROVIDERS,
     HTTP_PROVIDERS, JSONP_PROVIDERS,
-    Title, UserService,
+    Title, UserService, WebsiteService,
     { provide: PLATFORM_DIRECTIVES, useValue: [ROUTER_DIRECTIVES], multi: true },
     disableDeprecatedForms(), provideForms()
 ])
