@@ -51,6 +51,16 @@ export class AuthService
 
         return true;
     }
+    
+    get isDashboardUser(): boolean
+    {
+        
+    }
+    
+    get isSuperUser(): boolean
+    {
+        
+    }
 
     /**
      * TODO: Refresh JWT token

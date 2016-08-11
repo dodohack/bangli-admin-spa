@@ -8,6 +8,20 @@ import { AuthService } from './auth.service';
 import { AUTH } from '../api';
 import { Website } from "../models";
 
+/*
+ * TODO: Refactor this class
+ * 1. Do not get available websites/domains from server, use SPA preset ones.
+ * 2. Only get websites/domains ID current user/given user can use from server.
+ * 3. So we can list all available websites/domains in topbar dropdown menu at
+ *    boot time, then filter some out by setting their checked status via the
+ *    data got from stage 2.
+ * 4. Domains.ts and WebsiteService.ts can be merged into single file, all
+ *    constants definition should be moved into modles/website.ts.
+ * This means: the websites/domains are always available to the SPA, only need
+ * to get the checked status from remote server. This fixes Observable
+ * lazy/delayed loading problem when network is slow.
+ */
+
 @Injectable()
 export class WebsiteService
 {
@@ -32,7 +46,7 @@ export class WebsiteService
         this.http.get(endpoint).map(res => res.json())
             .subscribe(websites => {
                 this.myWebsites = this.initCheckStatus(websites['all_websites'], 
-                                                       websites['my_websites']); 
+                                                       websites['my_websites']);
             });
     }
 
@@ -63,7 +77,7 @@ export class WebsiteService
         }
         return newWebsites;
     }
-    
+
     /* Get websites of given user can use */
     public getUserWebsites(uuid: string) {
         let endpoint = AUTH.websites + '?uuid=' + uuid
@@ -77,7 +91,7 @@ export class WebsiteService
         return this.http.get(endpoint).map(res => res.json());
     }
     
-    public saveUserWebsites(uuid: string, websites) {
+    public postUserWebsites(uuid: string, websites) {
         let endpoint = AUTH.websites + '?uuid=' + uuid
             + '&token=' + this.authService.getJwt();
 
@@ -89,4 +103,34 @@ export class WebsiteService
         body = JSON.stringify(body);
         return this.http.post(endpoint, body, this.options).map(res => res.json());
     }
+
+    public getKey(): string {
+        return sessionStorage.getItem('website.key');
+    }
+
+    public getName(): string {
+        return sessionStorage.getItem('website.name');
+    }
+
+    public getUrl(): string {
+        return sessionStorage.getItem('website.url');
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Private
+
+    private initCurrentWebsite(websites: Website[])
+    {
+        /* Current website from session */
+        let key  = sessionStorage.getItem('website.key');
+        let name = sessionStorage.getItem('website.name');
+        let url  = sessionStorage.getItem('website.url');
+
+        /* Validate if user can access the stored web */
+        if (key && name && url) {
+
+        }
+    }
+
+
 }

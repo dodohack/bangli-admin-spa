@@ -9,6 +9,8 @@ export class JwtPayLoad
                 public exp: number,
                 public nbf: number,
                 public jti: string,
+                public dbu: boolean, /* Is a dashboard user */
+                public spu: boolean, /* Is a super user */
                 public sub: string,
                 public aud: string) {}
 }

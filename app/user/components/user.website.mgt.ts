@@ -45,7 +45,7 @@ export class UserWebsiteMgtTab implements AfterContentInit
     /* Save user manageable websites to bangli-auth.user_website */
     onSubmitWebsites() {
         // Submit allWebsites which contains checked status
-        this.websiteService.saveUserWebsites(this.uuid, this.websites)
+        this.websiteService.postUserWebsites(this.uuid, this.websites)
             .subscribe(status => console.log(status));
     }
 

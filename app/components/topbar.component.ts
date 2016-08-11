@@ -3,7 +3,7 @@ import { Router }    from '@angular/router';
 import { DROPDOWN_DIRECTIVES } from 'ng2-bootstrap';
 
 import { AuthService, WebsiteService }  from '../service';
-import { DOMAIN_KEYS, DOMAINS, Domain } from '../domain';
+import { Domain } from '../domain';
 import { UserPreference }               from '../preference';
 
 let template = require('./topbar.html');
@@ -33,8 +33,6 @@ export class TopbarComponent {
     get myTopbarMenus()  { return UserPreference.myTopbarMenus(); }
     
     get myWebsites() { return this.websiteService.myWebsites; }
-    get DOMAIN_KEYS() { return DOMAIN_KEYS; }
-    get DOMAINS() { return DOMAINS; }
     
     get currentDomainName() { return Domain.getName(); }
     get currentDomainUrl() { return Domain.getUrl(); }
