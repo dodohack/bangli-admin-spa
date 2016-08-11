@@ -18,20 +18,28 @@ export class UserWebsiteMgtTab implements AfterContentInit
     @Input()
     uuid: string;
 
+    @Input()
+    isMyProfile: boolean;
+
     /* Websites user can access */
     websites: Website[];
-    
+
     constructor(private websiteService: WebsiteService) {}
 
     /* Can not get @Input before this point */
     ngAfterContentInit() {
-        this.websiteService.getUserWebsites(this.uuid)
-            .subscribe(websites => {
-                this.websites = this.websiteService.initCheckStatus(
-                    websites['all_websites'], 
-                    websites['my_websites']
-                );
-            });
+        if (this.isMyProfile) {
+            /* Get my websites directly */
+            this.websites = this.websiteService.myWebsites;
+        } else {
+            this.websiteService.getUserWebsites(this.uuid)
+                .subscribe(websites => {
+                    this.websites = this.websiteService.initCheckStatus(
+                        websites['all_websites'],
+                        websites['my_websites']
+                    );
+                });
+        }
     }
 
     /* Save user manageable websites to bangli-auth.user_website */
