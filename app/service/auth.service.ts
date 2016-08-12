@@ -12,7 +12,7 @@
 import { Injectable } from '@angular/core';
 import { Router }     from '@angular/router';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 import { Login, Register, JwtPayLoad }  from "../models";
 import { AUTH }                         from "../api";
@@ -26,13 +26,14 @@ export class AuthService
     public jwt: string;
 
     constructor(private router: Router, private http: Http) {
+        console.log("AuthService init");
         this.jwt = localStorage.getItem('jwt');
         if (this.jwt !== '' && this.jwt !== null)
             this.decoded_jwt = jwtDecode(this.jwt);
     }
 
     /**
-     *  Gettter: Check if current user logged or not
+     *  Gettter: Check if current user logged in or not and it is a dashboard user
      */
     get isLoggedIn(): boolean
     {
@@ -49,7 +50,8 @@ export class AuthService
             return false;
         }
 
-        return true;
+        /* Is a dashboard user or not */
+        return this.decoded_jwt.dbu;
     }
 
     /**
@@ -59,7 +61,6 @@ export class AuthService
      */
     get name(): string { return this.decoded_jwt.aud; }
     get uuid(): string { return this.decoded_jwt.sub; }
-    get isDashboardUser(): boolean { return this.decoded_jwt.dbu; }
     get isSuperUser(): boolean { return this.decoded_jwt.spu; }
 
     /**
@@ -115,7 +116,6 @@ export class AuthService
 
         /* Post data and convert server response to JSON format */
         return this.http.post(AUTH.login, body, options)
-            .map(res => res.json())
             .catch(error => {
                 error = error.json();
                 return Observable.throw(error);

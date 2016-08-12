@@ -4,6 +4,7 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Router } from "@angular/router";
+import { Observable } from 'rxjs';
 
 import { AuthService } from './auth.service';
 import { API_END_POINTS, AUTH } from '../api';
@@ -21,16 +22,17 @@ export class DomainService
      */
     curDomain: Domain;
     
-    /* All domains without check status */
-    domains = DOMAINS;
-    
+    /* Domains of current dashboard user */
+    //myDomains: Observable<Domain[]> = Observable.of(DOMAINS);
+    myDomains: Domain[] = DOMAINS;
+
     constructor(private http: Http,
                 private router: Router,
                 private authService: AuthService) 
     {
-        this.initCurDomain();
+        /* These 2 functions must be called in this order */
         this.initMyDomains();
-        console.log("DomainService Init: CURRENT DOMAIN: ", this.curDomain);
+        this.initCurDomain();
     }
 
     /* Get API endpoints for current managed domain */
@@ -51,9 +53,9 @@ export class DomainService
     public switch2Domain(key: string)
     {
         let isFound = false;
-        for (let i = 0; i < this.domains.length; i++) {
-            if (key == this.domains[i].key) {
-                this.curDomain = this.domains[i];
+        for (let i = 0; i < this.myDomains.length; i++) {
+            if (key == this.myDomains[i].key) {
+                this.curDomain = this.myDomains[i];
                 isFound = true;
                 break;
             }
@@ -87,17 +89,30 @@ export class DomainService
     private initMyDomains() 
     {
         let endpoint = AUTH.domains + '?token=' + this.authService.jwt;
-        
-        this.http.get(endpoint).map(res => res.json())
-            .subscribe(domains => {
-                for (let i = 0; i < this.domains.length; i++) {
+
+        /* Init my domain */
+        /*
+        let domains;
+        this.http.get(endpoint).subscribe(_domains => {
+            this.myDomains = Observable.of(_domains);
+        });
+
+        this.myDomains.subscribe(x => console.log("Local version of domains: ", x));
+        this.myDomains.subscribe(x => console.log("Local version of domains: ", x));
+        */
+
+         this.http.get(endpoint).map(res => res.json())
+             .subscribe(domains => {
+                for (let i = 0; i < this.myDomains.length; i++) {
+                    this.myDomains[i].checked = false;
                     for (let j = 0; j < domains.length; j++) {
-                        if (this.domains[i].key == domains[j].key) {
-                            this.domains[i].checked = true;
+                        if (this.myDomains[i].key == domains[j].key) {
+                            this.myDomains[i].checked = true;
                             break;
                         }
                     }
                 }
+                //this.myDomains = Observable.of(domains);
             });
     }
 
@@ -107,7 +122,7 @@ export class DomainService
     private initCurDomain() 
     {
         /* Initialize to a placeholder */
-        this.curDomain = DUMMY_DOMAIN;
+        this.curDomain = new Domain(DUMMY_DOMAIN);
 
         /* Get current domain from session storage first */
         let key = sessionStorage.getItem('domain');
@@ -137,10 +152,10 @@ export class DomainService
      */
     private getDomainFromKey(key: string)
     {
-        let length = this.domains.length;
+        let length = this.myDomains.length;
         for (let i = 0; i < length; i++) {
-            if (this.domains[i].key === key)
-                return this.domains[i];
+            if (this.myDomains[i].key === key)
+                return this.myDomains[i];
         }
         return;
     }

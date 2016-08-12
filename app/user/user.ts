@@ -46,7 +46,10 @@ export class UserPage implements OnInit
     
     /* If the user current editing is myself or not */
     get isMyProfile() { return this.authService.uuid === this.uuid; }
-
+    
+    /* Am I super user */
+    get isSuperUser() { return this.authService.isSuperUser; }
+    
     /* Check the user we are editing is a dashboard user */
     /* FIXME: role_id 5 is customer */
     get isDashboardUser() { return this.user && this.user.role_id != 5; }

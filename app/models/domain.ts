@@ -18,7 +18,11 @@ export const DUMMY_DOMAIN = {
     api: 'http://api.dummy.uk', url: 'http://www.dummy.uk',  checked: false
 };
 
-
+/*
+ * FIXME: 'checked' status can't be signed to variable defined as type Domain[],
+ * the value is always true no matter what, see user.domain.mgt.ts for more.
+ * Cause this is assignemnt between different type?? 
+ */
 export const DOMAINS = [
     /* The first is a placeholder domain use as first time initialization */
     
@@ -45,9 +49,17 @@ export const DOMAINS = [
 ];
     
 export class Domain {
-    key: string;
-    name: string;
-    api: string; /* API server base address */
-    url: string; /* Frontend url */
-    checked: boolean;
+    public key: string;
+    public name: string;
+    public api: string; /* API server base address */
+    public url: string; /* Frontend url */
+    public checked: boolean;
+
+    constructor(domain: Domain) {
+        this.key     = domain.key;
+        this.name    = domain.name;
+        this.api     = domain.api;
+        this.url     = domain.url;
+        this.checked = domain.checked;
+    }
 }

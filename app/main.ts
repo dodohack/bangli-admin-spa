@@ -2,7 +2,7 @@ import { enableProdMode, PLATFORM_DIRECTIVES } from '@angular/core';
 import { bootstrap }    from '@angular/platform-browser-dynamic';
 import { HTTP_PROVIDERS, JSONP_PROVIDERS } from '@angular/http';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import { disableDeprecatedForms, provideForms } from '@angular/forms';
+import { provideForms } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 
 import { UserPreference } from './preference';
@@ -25,6 +25,6 @@ bootstrap(App, [
     HTTP_PROVIDERS, JSONP_PROVIDERS,
     Title, UserService, DomainService,
     { provide: PLATFORM_DIRECTIVES, useValue: [ROUTER_DIRECTIVES], multi: true },
-    disableDeprecatedForms(), provideForms()
+    provideForms()
 ])
 .catch((err: any) => console.error(err));

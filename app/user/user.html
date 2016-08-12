@@ -34,7 +34,8 @@ We have several tabs to switch between massive inputs
     </tab>
 
     <tab heading="站点权限" *ngIf="isDashboardUser">
-        <user-domain-mgt [uuid]="uuid" [isMyProfile]="isMyProfile"></user-domain-mgt>
+        <user-domain-mgt [uuid]="uuid" [isMyProfile]="isMyProfile"
+                         [isSuperUser]="isSuperUser"></user-domain-mgt>
     </tab>
 
     <tab heading="个人偏好" *ngIf="isMyProfile">

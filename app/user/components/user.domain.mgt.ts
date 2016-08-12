@@ -21,32 +21,40 @@ export class UserDomainMgtTab implements AfterContentInit
 
     @Input()
     isMyProfile: boolean;
+    
+    @Input()
+    isSuperUser: boolean;
 
     /* Websites user can access */
-    domains: Domain[];
+    domains: Domain[] = [];
+    
+    /* My domains for dashboard user */
+    myDomains: Domain[] = [];
 
     constructor(private domainService: DomainService) {}
 
     /* Can not get @Input before this point */
     ngAfterContentInit() {
-        if (this.isMyProfile) {
-            /* Get my domains */
-            this.domains = this.domainService.domains;
-        } else {
-            /* Get user domains */
-            this.domains = DOMAINS;
-            this.domainService.getUserDomains(this.uuid)
-                .subscribe(domains => {
-                    for (let i = 0; i < this.domains.length; i++) {
-                        for (let j = 0; j < domains.length; j++) {
-                            if (this.domains[i].key == domains[j].key) {
-                                this.domains[i].checked = true;
-                                break;
-                            }
+        /* Get my domains */
+        this.myDomains = this.domainService.myDomains;
+        
+        /* Init user domain */
+        for (let i = 0; i < DOMAINS.length; i++) {
+            this.domains.push(new Domain(DOMAINS[i]));
+        }
+            
+        this.domainService.getUserDomains(this.uuid)
+            .subscribe(domains => {
+                for (let i = 0; i < this.domains.length; i++) {
+                    this.domains[i].checked = false;
+                    for (let j = 0; j < domains.length; j++) {
+                        if (this.domains[i].key == domains[j].key) {
+                            this.domains[i].checked = true;
+                            break;
                         }
                     }
-                });
-        }
+                }
+            });
     }
 
     /* Save user manageable websites to bangli-auth.user_website */

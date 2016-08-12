@@ -22,7 +22,7 @@
         <li dropdown *ngIf="domains">
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="menuColor">切换站点</a>
             <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
-                <li role="menuitem" *ngFor="let domain of domains">
+                <li role="menuitem" *ngFor="let domain of myDomains">
                     <a *ngIf="domain.checked"
                        class="dropdown-item" role="button"
                        (click)="switch2Domain(domain.key)">{{ domain.name }}</a>

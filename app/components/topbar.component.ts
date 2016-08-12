@@ -18,7 +18,7 @@ export class TopbarComponent {
     get username() { return this.authService.name; }
     get uuid() { return this.authService.uuid; }
 
-    get domains() { return this.domainService.domains; }
+    get myDomains() { return this.domainService.myDomains; }
     get curDomain() { return this.domainService.curDomain; }
 
     get menuColor()    { return UserPreference.menuColor(); }
