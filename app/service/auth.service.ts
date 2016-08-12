@@ -22,7 +22,7 @@ var jwtDecode = require('jwt-decode');
 @Injectable()
 export class AuthService
 {
-    private decoded_jwt = new JwtPayLoad('', 0, 0, 0, '', false, false, '', '');
+    private decoded_jwt: JwtPayLoad;
     public jwt: string;
 
     constructor(private router: Router, private http: Http) {
@@ -115,11 +115,7 @@ export class AuthService
         let options = new RequestOptions({ headers: headers });
 
         /* Post data and convert server response to JSON format */
-        return this.http.post(AUTH.login, body, options)
-            .catch(error => {
-                error = error.json();
-                return Observable.throw(error);
-            });
+        return this.http.post(AUTH.login, body, options).map(res => res.json());
     }
 
     /**

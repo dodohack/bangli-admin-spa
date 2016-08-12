@@ -15,8 +15,7 @@ let template = require('./login.html');
 })
 export class LoginPage
 {
-    jwt: any;
-    error = '';
+    error: string;
     form: Login;
 
     constructor(private router: Router,
@@ -44,16 +43,13 @@ export class LoginPage
 
         this.authService.postLogin(this.form).subscribe(
             data  => {
-                this.jwt = data['token'];
+                /* Login user with returned JWT token */
+                this.authService.login(data['token']);
             },
             error => {
                 /* FIXME: Always return this error message */
                 this.error = "邮箱或密码错误!";
                 //console.error(error['error']);
-            },
-            ()    => {
-                /* Login user in when everything is ok */
-                this.authService.login(this.jwt);
             }
         );
     }

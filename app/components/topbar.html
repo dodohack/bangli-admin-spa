@@ -19,7 +19,7 @@
             </a>
         </li>
 
-        <li dropdown *ngIf="domains">
+        <li dropdown *ngIf="myDomains">
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="menuColor">切换站点</a>
             <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
                 <li role="menuitem" *ngFor="let domain of myDomains">

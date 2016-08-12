@@ -36,14 +36,14 @@ export class UserPreferenceTab
             this.menuBgColor);
 
         UserPreference.save(
-        this.toggleSidebar,
-        this.itemsPerList,
-        this.showRichList,
-        this.menuColor,
-        this.menuBgColor,
-        this.contentBgColor,
-        this.bodyBgColor,
-        this.myTopbarMenus,
-        this.mySidebarMenus); 
+            this.toggleSidebar,
+            this.itemsPerList,
+            this.showRichList,
+            this.menuColor,
+            this.menuBgColor,
+            this.contentBgColor,
+            this.bodyBgColor,
+            this.myTopbarMenus,
+            this.mySidebarMenus);
     }
 }

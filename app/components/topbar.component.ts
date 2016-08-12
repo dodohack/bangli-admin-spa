@@ -3,6 +3,7 @@ import { DROPDOWN_DIRECTIVES } from 'ng2-bootstrap';
 
 import { AuthService, DomainService }  from '../service';
 import { UserPreference }              from '../preference';
+import { Domain }                      from "../models";
 
 let template = require('./topbar.html');
 @Component({
@@ -12,8 +13,12 @@ let template = require('./topbar.html');
 })
 export class TopbarComponent {
     
+    domains: Domain[];
+    
     constructor(private authService: AuthService,
-                private domainService: DomainService) { }
+                private domainService: DomainService) {
+        this.domainService.domains.subscribe(domains => this.domains = domains);        
+    }
 
     get username() { return this.authService.name; }
     get uuid() { return this.authService.uuid; }

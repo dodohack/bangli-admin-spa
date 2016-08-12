@@ -25,11 +25,14 @@ export class DomainService
     /* Domains of current dashboard user */
     //myDomains: Observable<Domain[]> = Observable.of(DOMAINS);
     myDomains: Domain[] = DOMAINS;
+    domains: Observable<Domain[]>;
 
     constructor(private http: Http,
                 private router: Router,
                 private authService: AuthService) 
     {
+        this.domains = Observable.create(observer => observer.next(DOMAINS));
+        
         /* These 2 functions must be called in this order */
         this.initMyDomains();
         this.initCurDomain();

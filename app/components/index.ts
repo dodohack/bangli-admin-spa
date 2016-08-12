@@ -1,29 +1,13 @@
-import { TopbarComponent } from './topbar.component';
-import { SidebarComponent } from './sidebar.component';
-import { DateFilterComponent } from './date-filter.component';
-import { PaginatorComponent } from './paginator.component';
-import { SearchBoxComponent } from './search-box.component';
-import { ListPageHeaderComponent } from './list-page-header.component';
-import { ListPageMenuComponent } from './list-page-menu.component';
-import { FastEditPostFormComponent } from './fast-edit-post-form.component';
-import { EditorPageHeaderComponent } from './editor-page-header.component';
-import { CategoryTreeComponent } from './category-tree.component';
-import { TagCloudComponent } from './tag-cloud.component';
-import { TopicCloudComponent } from './topic-cloud.component';
-import { PostCttCloudComponent } from './post-ctt-cloud.component';
-
-export {
-    TopbarComponent,
-    SidebarComponent,
-    DateFilterComponent,
-    PaginatorComponent,
-    SearchBoxComponent,
-    ListPageHeaderComponent,
-    ListPageMenuComponent,
-    FastEditPostFormComponent,
-    EditorPageHeaderComponent,
-    CategoryTreeComponent,
-    TagCloudComponent,
-    TopicCloudComponent,
-    PostCttCloudComponent
-};
+export * from './topbar.component';
+export * from './sidebar.component';
+export * from './date-filter.component';
+export * from './paginator.component';
+export * from './search-box.component';
+export * from './list-page-header.component';
+export * from './list-page-menu.component';
+export * from './fast-edit-post-form.component';
+export * from './editor-page-header.component';
+export * from './category-tree.component';
+export * from './tag-cloud.component';
+export * from './topic-cloud.component';
+export * from './post-ctt-cloud.component';

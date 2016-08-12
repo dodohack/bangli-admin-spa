@@ -1,4 +1,4 @@
-import { provideRouter, RouterConfig } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { AuthGuard }         from './auth/guard';
 import { AuthService }       from './service/auth.service';
@@ -8,23 +8,19 @@ import { ResetPasswordPage } from './auth/resetpassword';
 import { LoginPage }         from './auth/login';
 import { RegisterPage }      from './auth/register';
 import { LogoutComponent }   from './auth/logout';
-import { VouchersPage }  from './shop/vouchers';
-import { VoucherPage }   from './shop/voucher';
-import { EmailHomePage }      from './email/index';
-import { NewslettersPage }    from './email/newsletters';
-import { NewsletterPage }     from './email/newsletter';
-import { EmailTemplatesPage } from './email/templates';
-import { EmailTemplatePage }  from './email/template';
+import { VouchersPage }      from './shop/vouchers';
+import { VoucherPage }       from './shop/voucher';
 import { ProductCategoriesPage } from './system/product-categories';
 
-import { dashboardRoutes } from './dashboard';
-import { shopRoutes }      from './shop';
-import { cmsRoutes }       from './cms';
-import { galleryRoutes }   from './gallery';
-import { userRoutes }      from './user';
-import { migrationRoutes } from './migration';
+import { dashboardRoutes } from './dashboard/routes';
+import { shopRoutes }      from './shop/routes';
+import { cmsRoutes }       from './cms/routes';
+import { galleryRoutes }   from './gallery/routes';
+import { userRoutes }      from './user/routes';
+import { emailRoutes }     from './email/routes';
+import { migrationRoutes } from './migration/routes';
 
-export const routes: RouterConfig = [
+const appRoutes: Routes = [
 
     {path: 'login', component: LoginPage},
     {path: 'logout', component: LogoutComponent},
@@ -58,46 +54,6 @@ export const routes: RouterConfig = [
         ]
     },
 
-    /* Email management, FIXME: root path can't have a component! */
-    {
-        path: 'email',
-        canActivate: [AuthGuard],
-        children: [
-            { path: '', component: EmailHomePage },
-            {
-                path: 'templates',
-                children: [
-                    { path: '', pathMatch: 'full', redirectTo: '1' },
-                    { path: ':page', component: EmailTemplatesPage }
-                ]
-            },
-
-            {
-                // New/Edit single email template
-                path: 'template',
-                children: [
-                    { path: '', pathMatch: 'full', redirectTo: 'new' },
-                    { path: ':id', component: EmailTemplatePage }
-                ]
-            },
-
-            {
-                path: 'newsletters',
-                children: [
-                    { path: '', pathMatch: 'full', redirectTo: '1' },
-                    { path: ':page', component: NewslettersPage }
-                ]
-            },
-            {
-                // New/Edit newsletter
-                path: 'newsletter',
-                children: [
-                    { path: '', pathMatch: 'full', redirectTo: 'new' },
-                    { path: ':id', component: NewsletterPage }
-                ]
-            }
-        ]
-    },
 
     /*
     { path: 'affiliate',  component: AffiliatePage },
@@ -105,13 +61,11 @@ export const routes: RouterConfig = [
     { path: 'comment', component: },
     { path: 'cs', component: },
     */
-
+    ...emailRoutes,
     ...cmsRoutes,
     ...userRoutes,
     
     ...migrationRoutes
 ];
 
-export const APP_ROUTER_PROVIDERS = [
-    provideRouter(routes) , AuthGuard, AuthService
-];
+export const routing = RouterModule.forRoot(appRoutes);
