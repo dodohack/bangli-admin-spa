@@ -7,7 +7,6 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 
 import { Category, Tag, ProductStatus } from '../models';
 import { AuthService }    from './auth.service';
-import { DomainService }  from './domain.service';
 import { UserPreference } from '../preference';
 
 @Injectable()
@@ -26,8 +25,7 @@ export class ProductService
     tags: Tag[];
 
     constructor(private http: Http,
-                private authService: AuthService,
-                private domainService: DomainService)
+                private authService: AuthService)
     {
         console.log("ProductService initialized.");
 
@@ -43,7 +41,7 @@ export class ProductService
 
     public getProducts(status, cur_page) {
         /* http://api/admin/productrs/{status}/{cur_page}?per_page=<number> */
-        let endpoint = this.domainService.API.products + '/' + status + '/' +
+        let endpoint = this.authService.API.products + '/' + status + '/' +
             cur_page + '?per_page=' + UserPreference.itemsPerList();
 
         return this.http.get(endpoint, this.options).map(res => res.json());
@@ -54,7 +52,7 @@ export class ProductService
      * @param id
      */
     public getProduct(id) {
-        return this.http.get(this.domainService.API.product + '/' + id, this.options)
+        return this.http.get(this.authService.API.product + '/' + id, this.options)
                    .map(res => res.json());
     }
 
@@ -62,7 +60,7 @@ export class ProductService
      * Retrieve statuses of all products
      */
     private initStatuses() {
-        this.http.get(this.domainService.API.product_statuses, this.options)
+        this.http.get(this.authService.API.product_statuses, this.options)
             .map(res => res.json())
             .subscribe(statuses => this.statuses = statuses);
     }
@@ -71,7 +69,7 @@ export class ProductService
      * Return all product categories
      */
     private initCategories() {
-        this.http.get(this.domainService.API.product_cats, this.options)
+        this.http.get(this.authService.API.product_cats, this.options)
             .map(res => res.json())
             .subscribe(cats => this.categories = cats);
     }
@@ -80,7 +78,7 @@ export class ProductService
      * Return all product tags
      */
     private initTags() {
-        this.http.get(this.domainService.API.product_tags, this.options)
+        this.http.get(this.authService.API.product_tags, this.options)
             .map(res => res.json())
             .subscribe(tags => this.tags = tags);
     }    

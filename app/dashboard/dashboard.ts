@@ -3,19 +3,18 @@
  */
 
 import { Component } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { DomainService } from '../service';
+import { Title }     from '@angular/platform-browser';
 
-let template = require('./dashboard.html');
+import { AuthService } from '../service';
+
+let t = require('./dashboard.html');
 @Component({
-    template: template
+    template: t
 })
 export class DashboardPage
 {
     constructor(private titleService: Title,
-                private domainService: DomainService) {
-        this.titleService.setTitle('首页 - ' + this.domainService.name +'管理平台');
+                private authService: AuthService) {
+        this.titleService.setTitle('首页 - ' + this.authService.curDomain.name +'管理平台');
     }
-    
-    get hasDomain() { return this.domainService.key != 'dummy'; }
 }

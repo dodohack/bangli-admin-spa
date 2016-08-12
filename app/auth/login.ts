@@ -41,10 +41,10 @@ export class LoginPage
         /* Reset error massage */
         this.error = '';
 
-        this.authService.postLogin(this.form).subscribe(
+        this.authService.postLogin(this.form.stringify()).subscribe(
             data  => {
-                /* Login user with returned JWT token */
-                this.authService.login(data['token']);
+                /* Validate server response and login user on success */
+                this.error = this.authService.login(data);
             },
             error => {
                 /* FIXME: Always return this error message */

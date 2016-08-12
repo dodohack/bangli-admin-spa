@@ -24,9 +24,10 @@ export const API_END_POINTS = {
 export const AUTH = {
     endpoint: AUTH_API_BASE,
 
-    /* Authentication with email/password */
+    /* Authentication routes */
     register: AUTH_API_BASE + '/register',
-    login: AUTH_API_BASE + '/login',
+    login:    AUTH_API_BASE + '/login',
+    refresh:  AUTH_API_BASE + '/refresh',
     
     /* Domains get/post api */
     domains: AUTH_API_BASE + '/domains',

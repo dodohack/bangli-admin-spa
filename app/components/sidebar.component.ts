@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { DomainService }  from '../service';
+import { AuthService }    from '../service';
 import { SIDEBAR_MENUS }  from '../models/menu';
 import { UserPreference } from '../preference';
 
@@ -26,11 +26,11 @@ import { UserPreference } from '../preference';
     `
 })
 export class SidebarComponent {
-    constructor(private domainService: DomainService) {
+    constructor(private authService: AuthService) {
         //this.username = authService.getName();
     }
 
-    get menus() { return SIDEBAR_MENUS[this.domainService.curDomain.key]; }
+    get menus() { return SIDEBAR_MENUS[this.authService.curDomain.key]; }
 
     get toggleSidebar()   { return UserPreference.toggleSidebar(); }
     get menuColor()   { return UserPreference.menuColor(); }

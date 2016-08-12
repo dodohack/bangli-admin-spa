@@ -4,9 +4,10 @@
 import { Component, Input, AfterContentInit } from '@angular/core';
 import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
 
-import { User } from '../../models';
+import { User }            from '../../models';
 import { Domain, DOMAINS } from '../../models/domain'
-import { DomainService } from '../../service';
+import { AuthService }     from '../../service';
+import { DomainService }   from '../../service';
 
 let t = require('./user.domain.mgt.html');
 @Component({
@@ -31,19 +32,20 @@ export class UserDomainMgtTab implements AfterContentInit
     /* My domains for dashboard user */
     myDomains: Domain[] = [];
 
-    constructor(private domainService: DomainService) {}
+    constructor(private authService: AuthService,
+                private domainService: DomainService) {}
 
     /* Can not get @Input before this point */
     ngAfterContentInit() {
         /* Get my domains */
-        this.myDomains = this.domainService.myDomains;
+        this.myDomains = this.authService.domains;
         
         /* Init user domain */
         for (let i = 0; i < DOMAINS.length; i++) {
             this.domains.push(new Domain(DOMAINS[i]));
         }
             
-        this.domainService.getUserDomains(this.uuid)
+        this.domainService.getDomains(this.uuid)
             .subscribe(domains => {
                 for (let i = 0; i < this.domains.length; i++) {
                     this.domains[i].checked = false;
@@ -60,7 +62,7 @@ export class UserDomainMgtTab implements AfterContentInit
     /* Save user manageable websites to bangli-auth.user_website */
     onSubmitDomains() {
         // Submit allWebsites which contains checked status
-        this.domainService.postUserWebsites(this.uuid, this.domains)
+        this.domainService.postDomains(this.uuid, this.domains)
             .subscribe(status => console.log(status));
     }
 

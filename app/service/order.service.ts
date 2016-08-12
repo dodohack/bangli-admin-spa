@@ -5,9 +5,8 @@
 import { Injectable }                     from '@angular/core';
 import { Http, Headers, RequestOptions }   from '@angular/http';
 
-import { OrderStatus }   from '../models/order';
-import { AuthService }   from './auth.service';
-import { DomainService } from './domain.service';
+import { OrderStatus }    from '../models/order';
+import { AuthService }    from './auth.service';
 import { UserPreference } from '../preference';
 
 
@@ -22,8 +21,7 @@ export class OrderService
     statuses: OrderStatus[];
 
     constructor(private http: Http, 
-                private authService: AuthService,
-                private domainService: DomainService)
+                private authService: AuthService)
     {
         console.log("OrderService initialized.");
 
@@ -38,7 +36,7 @@ export class OrderService
 
     public getOrders(status, cur_page) {
         /* http://api/admin/orders/{status}/{cur_page}?per_page=<number> */
-        let endpoint = this.domainService.API.orders + '/' + status + '/' +
+        let endpoint = this.authService.API.orders + '/' + status + '/' +
             cur_page + '?per_page=' + UserPreference.itemsPerList();
         return this.http.get(endpoint, this.options).map(res => res.json());
     }
@@ -50,7 +48,7 @@ export class OrderService
     public getOrder(id) {
         console.error("WE DO NOT NEED THIS! ALL ORDER DATA ARE DOWNLOADED WITH getOrders");
 
-        return this.http.get(this.domainService.API.order + '/' + id, this.options)
+        return this.http.get(this.authService.API.order + '/' + id, this.options)
                    .map(res => res.json());
     }
 
@@ -58,7 +56,7 @@ export class OrderService
      * Retrieve statuses of all orders
      */
     private initStatuses() {
-        this.http.get(this.domainService.API.order_statuses, this.options)
+        this.http.get(this.authService.API.order_statuses, this.options)
             .map(res => res.json())
             .subscribe(statuses => this.statuses = statuses);
     }

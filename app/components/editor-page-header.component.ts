@@ -1,13 +1,13 @@
 import { Component, Input, Output, EventEmitter, AfterContentInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { DomainService } from '../service';
-import { zh_CN } from '../localization';
+import { AuthService } from '../service';
+import { zh_CN }       from '../localization';
 
-let template = require('./editor-page-header.html');
+let t = require('./editor-page-header.html');
 @Component({
     selector: 'editor-page-header',
-    template: template
+    template: t
 })
 export class EditorPageHeaderComponent implements AfterContentInit {
     /* Current page title */
@@ -28,7 +28,7 @@ export class EditorPageHeaderComponent implements AfterContentInit {
     toggleEvent = new EventEmitter();
 
     constructor(private titleService: Title,
-                private domainService: DomainService) { }
+                private authService: AuthService) { }
 
     toggleRightBar() {
         //this.toggleEvent.emit();
@@ -38,6 +38,6 @@ export class EditorPageHeaderComponent implements AfterContentInit {
 
     ngAfterContentInit() {
         this.titleService.setTitle('编辑' + this.pageTitle + ' - '
-            + this.domainService.name + '管理平台');
+            + this.authService.curDomain.name + '管理平台');
     }
 }

@@ -7,7 +7,6 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 
 import { User }           from '../models/user';
 import { AuthService }    from './auth.service';
-import { DomainService }  from './domain.service';
 import { UserPreference } from '../preference';
 
 @Injectable()
@@ -27,8 +26,7 @@ export class UserService
     roles: string[];
 
     constructor(private http: Http,
-                private authService: AuthService,
-                private domainService: DomainService)
+                private authService: AuthService)
     {
         console.log("UserService initialized.");
 
@@ -47,7 +45,7 @@ export class UserService
     public getUsers(cur_role, cur_page)
     {
         /* http://api/admin/users/{role}/{cur_page}?=per_page=<number> */
-        let endpoint = this.domainService.API.users + '/' + cur_role + '/' + cur_page
+        let endpoint = this.authService.API.users + '/' + cur_role + '/' + cur_page
             + '?per_page=' + UserPreference.itemsPerList();
 
         return this.http.get(endpoint, this.options)
@@ -60,7 +58,7 @@ export class UserService
      */
     public getUserBaseProfile(uuid)
     {
-        let endpoint = this.domainService.API.user_base_profile + '/' + uuid;
+        let endpoint = this.authService.API.user_base_profile + '/' + uuid;
         
         return this.http.get(endpoint, this.options).map(res => res.json());
     }
@@ -70,7 +68,7 @@ export class UserService
      */
     private initRoles()
     {
-        this.http.get(this.domainService.API.user_roles, this.options)
+        this.http.get(this.authService.API.user_roles, this.options)
                  .map(res => res.json())
                  .subscribe(json => this.roles = json);
     }
@@ -82,7 +80,7 @@ export class UserService
      */
     private initAuthorEditors()
     {
-        this.http.get(this.domainService.API.authors, this.options)
+        this.http.get(this.authService.API.authors, this.options)
             .map(res => res.json())
             .subscribe( authors => {
                 this.authors = authors;

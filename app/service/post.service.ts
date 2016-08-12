@@ -7,7 +7,6 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 
 import { PostStatus, Category, Post, Tag, Topic }  from '../models';
 import { AuthService }    from './auth.service';
-import { DomainService }  from './domain.service';
 import { UserPreference } from '../preference';
 
 @Injectable()
@@ -30,8 +29,7 @@ export class PostService
     topics: Topic[];
 
     constructor(private http: Http,
-                private authService: AuthService,
-                private domainService: DomainService)
+                private authService: AuthService)
     {
         console.log("PostService initialized.");
 
@@ -48,7 +46,7 @@ export class PostService
 
     public getPosts(filter, condition, cur_page) {
         /* http://api/admin/posts/{filter}/{cond}/{cur_page}?per_page=<number> */
-        let endpoint = this.domainService.API.posts + '/' + filter + '/'
+        let endpoint = this.authService.API.posts + '/' + filter + '/'
             + condition + '/' + cur_page + '?per_page=' + UserPreference.itemsPerList();
 
         return this.http.get(endpoint, this.options).map(res => res.json());
@@ -59,7 +57,7 @@ export class PostService
      * @param id
      */
     public getPost(id) {
-        return this.http.get(this.domainService.API.post + '/' + id, this.options)
+        return this.http.get(this.authService.API.post + '/' + id, this.options)
                    .map(res => res.json());
     }
 
@@ -67,7 +65,7 @@ export class PostService
      * Save post to database
      */
     public savePost(post: Post) {
-        let endpoint = this.domainService.API.post + '/' + post.id;
+        let endpoint = this.authService.API.post + '/' + post.id;
 
         this.headers.append('Content-Type', 'application/json');
         let options = new RequestOptions({ headers: this.headers });
@@ -96,7 +94,7 @@ export class PostService
      * Retrieve statuses of posts from API server
      */
     private initStatuses() {
-        this.http.get(this.domainService.API.post_statuses, this.options)
+        this.http.get(this.authService.API.post_statuses, this.options)
             .map(res => res.json())
             .subscribe(statuses => this.statuses = statuses);
     }
@@ -105,7 +103,7 @@ export class PostService
      * Init all cms categories
      */
     private initCategories() {
-        this.http.get(this.domainService.API.cms_cats, this.options)
+        this.http.get(this.authService.API.cms_cats, this.options)
             .map(res => res.json())
             .subscribe(cats => this.categories = cats);
     }
@@ -114,7 +112,7 @@ export class PostService
      * Init all cms tags
      */
     private initTags() {
-        this.http.get(this.domainService.API.cms_tags, this.options)
+        this.http.get(this.authService.API.cms_tags, this.options)
             .map(res => res.json())
             .subscribe(tags => this.tags = tags);
     }
@@ -123,7 +121,7 @@ export class PostService
      * Init all cms topics available to post
      */
     private initTopics() {
-        this.http.get(this.domainService.API.cms_topics, this.options)
+        this.http.get(this.authService.API.cms_topics, this.options)
             .map(res => res.json())
             .subscribe(topics => this.topics = topics);
     }

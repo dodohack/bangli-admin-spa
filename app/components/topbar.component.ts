@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { DROPDOWN_DIRECTIVES } from 'ng2-bootstrap';
 
-import { AuthService, DomainService }  from '../service';
-import { UserPreference }              from '../preference';
-import { Domain }                      from "../models";
+import { AuthService }         from '../service';
+import { UserPreference }      from '../preference';
 
 let template = require('./topbar.html');
 @Component({
@@ -12,19 +11,13 @@ let template = require('./topbar.html');
     directives: [ DROPDOWN_DIRECTIVES ]
 })
 export class TopbarComponent {
-    
-    domains: Domain[];
-    
-    constructor(private authService: AuthService,
-                private domainService: DomainService) {
-        this.domainService.domains.subscribe(domains => this.domains = domains);        
-    }
+
+    constructor(private authService: AuthService) {}
 
     get username() { return this.authService.name; }
-    get uuid() { return this.authService.uuid; }
-
-    get myDomains() { return this.domainService.myDomains; }
-    get curDomain() { return this.domainService.curDomain; }
+    get uuid()     { return this.authService.uuid; }
+    get myDomains() { return this.authService.domains; }
+    get curDomain() { return this.authService.curDomain; }
 
     get menuColor()    { return UserPreference.menuColor(); }
     get menuBgColor()  { return UserPreference.menuBgColor(); }
@@ -35,10 +28,10 @@ export class TopbarComponent {
      * @param key
      */
     private switch2Domain(key: string) {
-        this.domainService.switch2Domain(key);
+        this.authService.switch2Domain(key);
     }
     
     private cleanDefaultDomain() {
-        this.domainService.cleanDefaultDomain();
+        this.authService.unsetDefaultDomain();
     }
 }

@@ -37,9 +37,9 @@ export class RegisterPage
         /* Reset the error message */
         this.error.reset();
 
-        this.authService.postRegister(this.form).subscribe(
+        this.authService.postRegister(this.form.stringify()).subscribe(
                 data  => {
-                    this.authService.login(data['token']);
+                    this.authService.login(data);
                 },
                 error => {
                     error['name'] ? this.error['name'] = error['name'] : false;

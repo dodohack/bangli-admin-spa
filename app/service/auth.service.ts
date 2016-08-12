@@ -14,8 +14,11 @@ import { Router }     from '@angular/router';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 
-import { Login, Register, JwtPayLoad }  from "../models";
-import { AUTH }                         from "../api";
+import { Domain, DOMAINS }      from '../models';
+import { Login, Register }      from '../models';
+import { JwtPayLoad }           from "../models";
+import { AUTH }                 from "../api";
+import { API_END_POINTS }       from '../api';
 
 var jwtDecode = require('jwt-decode');
 
@@ -24,12 +27,17 @@ export class AuthService
 {
     private decoded_jwt: JwtPayLoad;
     public jwt: string;
+    
+    /* Current managing domain */
+    public curDomain: Domain;
+    /* Available domain to me */
+    public domains: Domain[];
 
-    constructor(private router: Router, private http: Http) {
+    constructor(private router: Router, private http: Http) 
+    {
         console.log("AuthService init");
-        this.jwt = localStorage.getItem('jwt');
-        if (this.jwt !== '' && this.jwt !== null)
-            this.decoded_jwt = jwtDecode(this.jwt);
+        /* Each time the APP boot, refresh token and domains */
+        this.refreshToken();
     }
 
     /**
@@ -59,34 +67,45 @@ export class AuthService
      * http://stackoverflow.com/questions/34376854/delegation-eventemitter-or-observable-in-angular2/35568924#35568924
      * for better solution.
      */
+    /* Get API endpoints for current managed domain */
+    get API() { return API_END_POINTS[this.curDomain.key]; }
     get name(): string { return this.decoded_jwt.aud; }
     get uuid(): string { return this.decoded_jwt.sub; }
     get isSuperUser(): boolean { return this.decoded_jwt.spu; }
-
-    /**
-     * TODO: Refresh JWT token
-     */
-    private refreshToken()
-    {
-        console.log("TODO: Implement JWT refresh");
-    }
 
     /**
      * FIXME: We should move user login logic from login.form.ts to here
      * Login user with given JWT and redirect user to dashboard
      * This function called on both register success and login success
      */
-    public login(jwt: string)
+    public login(response: any)
     {
-        this.jwt = jwt;
+        let jwt = response['token'];
+
+        if (!jwt || typeof jwt !== 'string') {
+            console.error("Empty JWT returned from auth server!");
+            return;
+        }
+
         /* Initial decoded jwt */
         this.decoded_jwt = jwtDecode(jwt);
+        /* Not a dashboard user */
+        if (!this.decoded_jwt.dbu) return '你不是后台用户!';
+
+        /* Only dashboard user has this attributes returned */
+        let domains = response['domains'];
+        /* Can not user any domains */
+        if (!domains.length) return '你无权管理任何站点, 请联系管理员!';
+
+        this.jwt = jwt;
+        /* Init this.domains */
+        this.initDomains(domains);
 
         /*
          * Remember user login so they don't need to re-login after restart the
          * browser.
          */
-        localStorage.setItem('jwt', jwt);
+        localStorage.setItem('jwt', this.jwt);
 
         /* Redirect user to dashboard */
         this.router.navigate(['/']);
@@ -97,45 +116,152 @@ export class AuthService
      */
     public logout()
     {
+        /* Empty some storage that may diff from differen user roles */
         localStorage.removeItem('jwt');
+        sessionStorage.removeItem('domain');
+        localStorage.removeItem('domain');
         this.router.navigate(['/login']);
         console.log("FIXME: Redirected back from login page sometimes; So a reload() is invoked");
         window.location.reload();
     }
 
     /**
-     * Send user login credentials to sso server and retain jwt
-     * This should only be called when user explicitly submit the login form.
+     * Switch current managing domain to another
+     * @param key
      */
-    public postLogin(form: Login)
+    public switch2Domain(key: string)
     {
-        /* Form a http post data */
-        let body    = form.stringify();
+        let found = false;
+        for (let i = 0; i < this.domains.length; i++) {
+            if (key == this.domains[i].key) {
+                this.curDomain = this.domains[i];
+                found = true;
+                break;
+            }
+        }
+        
+        if (found) {
+            /* Must save to session storage as APP is going to be reloaded,
+             * everything thing unsaved is lost after reload. */
+            sessionStorage.setItem('domain', key);
+            localStorage.setItem('domain', key);
+            
+            /* Reload the app */
+            this.router.navigate(['/']);
+            window.location.reload();
+            
+        }
+    }
+    
+    public unsetDefaultDomain() 
+    {
+        /* Update the storage */
+        sessionStorage.removeItem('domain');
+        localStorage.removeItem('domain');
+
+        /* Reload the app */
+        this.router.navigate(['/']);
+        window.location.reload();
+    }
+
+    /* Login user, refresh token, register user */
+    public postLogin(form: string)
+    {
+        return this.post(AUTH.login, form); 
+    }
+    public postRefresh(form: string) 
+    {
+        return this.post(AUTH.refresh, form);
+    }
+    public postRegister(form: string)
+    {
+        return this.post(AUTH.register, form);
+    }
+    
+    
+    //////////////////////////////////////////////////////////////////////////
+    // Private helper functions
+    
+    private post(api: string, body: string)
+    {
         let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
         let options = new RequestOptions({ headers: headers });
-
+        
         /* Post data and convert server response to JSON format */
-        return this.http.post(AUTH.login, body, options).map(res => res.json());
+        return this.http.post(api, body, options).map(res => res.json());        
     }
 
     /**
-     * Send user register credentials to sso server and retain jwt.
-     * This should be only called for user registration.
+     * Refresh current token
      */
-    public postRegister(form: Register)
+    private refreshToken()
     {
-        /* Form a http post data */
-        let body    = form.stringify();
-        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
-        let options = new RequestOptions({ headers: headers });
-
-        /* Post data and convert server response to JSON format */
-        return this.http.post(AUTH.register, body, options)
-            .map(res => res.json())
-            .catch(error => {
-                error = error.json();
-                return Observable.throw(error);
-            });
+        /* Init JWT if any */
+        let jwt = localStorage.getItem('jwt');
+        if (jwt) {
+            let form = 'token=' + jwt;
+            this.postRefresh(form).subscribe(data => this.login(data));
+        }
     }
 
+    /**
+     * Init domains available for me and my default domain
+     * @param domains - my domains comes from server
+     */
+    private initDomains(domains: Domain[]) 
+    {
+        /* Init domain lists */
+        this.domains = DOMAINS;
+        for (let i = 0; i < this.domains.length; i++) {
+            this.domains[i].checked = false;
+            for (let j = 0; j < domains.length; j++) {
+                if (this.domains[i].key == domains[j].key) {
+                    this.domains[i].checked = true;
+                    /* Init current domain if it is not initialized */
+                    if (!this.curDomain) {
+                        this.curDomain = this.domains[i];
+                    }
+                    break;
+                }
+            }
+        }
+
+        let sessionDomainKey = sessionStorage.getItem('domain');
+        let localDomainKey   = localStorage.getItem('domain');
+
+        /* We always have this.curDomain initialized */
+        if (!sessionDomainKey && !localDomainKey) {
+            sessionStorage.setItem('domain', this.curDomain.key);
+            localStorage.setItem('domain', this.curDomain.key);
+            return;
+        }
+
+        if (!sessionDomainKey && localDomainKey) {
+            let domain = this.getDomainFromKey(localDomainKey);
+            if (domain) this.curDomain = domain;
+            sessionStorage.setItem('domain', localDomainKey);
+            return;
+        }
+
+        if (sessionDomainKey) {
+            let domain = this.getDomainFromKey(sessionDomainKey);
+            if (domain) this.curDomain = domain;
+            return;
+        }
+    }
+
+    /**
+     * Get a usable domain from available domains list
+     * @param key
+     * @returns {Domain}
+     */
+    private getDomainFromKey(key: string)
+    {
+        for (let i = 0; i < this.domains.length; i++) {
+            if (this.domains[i].key == key)
+                return this.domains[i];
+        }
+
+        return;
+    }
 }
