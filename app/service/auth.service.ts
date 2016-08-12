@@ -15,15 +15,15 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { Login, Register, JwtPayLoad }  from "../models";
-import { AUTH }      from "../api";
+import { AUTH }                         from "../api";
 
 var jwtDecode = require('jwt-decode');
 
 @Injectable()
 export class AuthService
 {
-    private decoded_jwt = new JwtPayLoad('', 0, 0, 0, '', '', '');
-    private jwt: string;
+    private decoded_jwt = new JwtPayLoad('', 0, 0, 0, '', false, false, '', '');
+    public jwt: string;
 
     constructor(private router: Router, private http: Http) {
         this.jwt = localStorage.getItem('jwt');
@@ -51,16 +51,16 @@ export class AuthService
 
         return true;
     }
-    
-    get isDashboardUser(): boolean
-    {
-        
-    }
-    
-    get isSuperUser(): boolean
-    {
-        
-    }
+
+    /**
+     * FIXME: If this class is not singleton, we can't do this, see
+     * http://stackoverflow.com/questions/34376854/delegation-eventemitter-or-observable-in-angular2/35568924#35568924
+     * for better solution.
+     */
+    get name(): string { return this.decoded_jwt.aud; }
+    get uuid(): string { return this.decoded_jwt.sub; }
+    get isDashboardUser(): boolean { return this.decoded_jwt.dbu; }
+    get isSuperUser(): boolean { return this.decoded_jwt.spu; }
 
     /**
      * TODO: Refresh JWT token
@@ -142,27 +142,4 @@ export class AuthService
             });
     }
 
-    /**
-     * Return JWT token
-     */
-    public getJwt()
-    {
-        return localStorage.getItem('jwt');
-    }
-
-    /**
-     * Return user name
-     * FIXME: If this class is not singleton, we can't do this, see
-     * http://stackoverflow.com/questions/34376854/delegation-eventemitter-or-observable-in-angular2/35568924#35568924
-     * for better solution.
-     */
-    public getName()
-    {
-        return this.decoded_jwt.aud;
-    }
-
-    public getUuid()
-    {
-        return this.decoded_jwt.sub;
-    }
 }

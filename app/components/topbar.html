@@ -1,8 +1,8 @@
 <div class="topbar" [style.background-color]="menuBgColor">
     <ul class="fixed-menu">
         <li>
-            <a href="{{ currentDomainUrl }}" target="_blank"
-               [style.color]="menuColor"><i class="fa fa-home"></i>{{ currentDomainName }}</a>
+            <a href="{{ curDomain.url }}" target="_blank"
+               [style.color]="menuColor"><i class="fa fa-home"></i>{{ curDomain.name }}</a>
         </li>
 
         <li>
@@ -19,13 +19,19 @@
             </a>
         </li>
 
-        <li dropdown *ngIf="myWebsites">
+        <li dropdown *ngIf="domains">
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="menuColor">切换站点</a>
             <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
-                <li role="menuitem" *ngFor="let website of myWebsites">
-                    <a *ngIf="website.checked"
+                <li role="menuitem" *ngFor="let domain of domains">
+                    <a *ngIf="domain.checked"
                        class="dropdown-item" role="button"
-                       (click)="setDomain(website.name)">{{ website.display_name }}</a>
+                       (click)="switch2Domain(domain.key)">{{ domain.name }}</a>
+                </li>
+
+                <li class="divider dropdown-divider"></li>
+                <li role="menuitem">
+                    <a class="dropdown-item" role="button"
+                       (click)="cleanDefaultDomain()">重置默认站点</a>
                 </li>
             </ul>
         </li>

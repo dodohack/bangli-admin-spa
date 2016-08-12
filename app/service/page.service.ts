@@ -3,10 +3,9 @@
 import { Injectable }  from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 
-import { PostStatus, Page } from '../models';
-import { AuthService }      from './auth.service';
-import { Api }            from '../api';
-import { UserPreference } from '../preference';
+import { PostStatus  }   from '../models';
+import { AuthService }   from './auth.service';
+import { DomainService } from './domain.service';
 
 @Injectable()
 export class PageService
@@ -22,14 +21,15 @@ export class PageService
     statuses: PostStatus[];
 
     constructor(private http: Http,
-                private authService: AuthService) {
+                private authService: AuthService,
+                private domainService: DomainService) {
         console.log("PageService initialized.");
 
-        this.API = Api.getEndPoint();
+        this.API = this.domainService.API;
 
         /* Set http authenticate header */
         this.headers =
-            new Headers({'Authorization': 'Bearer ' + this.authService.getJwt()});
+            new Headers({'Authorization': 'Bearer ' + this.authService.jwt});
         this.options = new RequestOptions({ headers: this.headers });
 
         this.initStatuses();

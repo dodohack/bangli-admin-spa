@@ -14,7 +14,7 @@ import { UserAuthProfileTab }   from './components/user.auth.profile';
 import { UserPreferenceTab }    from './components/user.preference';
 import { UserBaseProfileTab }   from './components/user.base.profile';
 import { UserShopProfileTab }   from './components/user.shop.profile';
-import { UserWebsiteMgtTab }    from './components/user.website.mgt';
+import { UserDomainMgtTab }     from './components/user.domain.mgt';
 import { User }        from "../models";
 
 let t = require('./user.html');
@@ -23,39 +23,33 @@ let t = require('./user.html');
     directives: [ TAB_DIRECTIVES,
         UserAuthProfileTab, UserPreferenceTab, 
         UserBaseProfileTab, UserShopProfileTab,
-        UserWebsiteMgtTab ]
+        UserDomainMgtTab ]
 })
 export class UserPage implements OnInit
 {
-    /* My uuid, may be the same to uuid if editing my profile */
-    myUuid: string;
-    /* User uuid we are currently editing */
-    uuid: string;
     /* The user we are editing */
     user: User;
+    uuid: string;
 
     constructor(private route: ActivatedRoute,
                 private authService: AuthService,
                 private userService: UserService) { }
 
     ngOnInit() {
-        this.myUuid = this.authService.getUuid();
-        this.initUserUuid();
-        this.userService.getUserBaseProfile(this.uuid)
-            .subscribe(user => this.user = user);
+        this.route.params.subscribe(segment => {
+            this.uuid = segment['uuid'];
+
+            this.userService.getUserBaseProfile(this.uuid)
+                .subscribe(user => this.user = user);
+        });
     }
     
     /* If the user current editing is myself or not */
-    get isMyProfile() { return this.myUuid === this.uuid; }
+    get isMyProfile() { return this.authService.uuid === this.uuid; }
 
-    /* Check if current managed user is a customer or not */
-    get isCustomer() {
-        /* FIXME: Magic number(table entry huluwa.users.role_id) */
-        return this.user.role_id === 5 ? true : false;
-    }
+    /* Check the user we are editing is a dashboard user */
+    /* FIXME: role_id 5 is customer */
+    get isDashboardUser() { return this.user && this.user.role_id != 5; }
     
-    private initUserUuid()
-    {
-        this.route.params.subscribe(segment => this.uuid = segment['uuid']);
-    }
+
 }

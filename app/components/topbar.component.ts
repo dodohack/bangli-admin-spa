@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-import { Router }    from '@angular/router';
 import { DROPDOWN_DIRECTIVES } from 'ng2-bootstrap';
 
-import { AuthService, WebsiteService }  from '../service';
-import { Domain } from '../domain';
-import { UserPreference }               from '../preference';
+import { AuthService, DomainService }  from '../service';
+import { UserPreference }              from '../preference';
 
 let template = require('./topbar.html');
 @Component({
@@ -14,36 +12,28 @@ let template = require('./topbar.html');
 })
 export class TopbarComponent {
     
-    /* User manageable websites comes from api request from bangli-auth */
-    //private websites: any;
-    
-    constructor(private router: Router,
-                private authService: AuthService,
-                private websiteService: WebsiteService) {
-        //this.authService.getWebsites().subscribe(
-        //    websites => this.websites = websites
-        //);
-    }
+    constructor(private authService: AuthService,
+                private domainService: DomainService) { }
 
-    get username() { return this.authService.getName(); }
-    get uuid() { return this.authService.getUuid(); }
+    get username() { return this.authService.name; }
+    get uuid() { return this.authService.uuid; }
+
+    get domains() { return this.domainService.domains; }
+    get curDomain() { return this.domainService.curDomain; }
 
     get menuColor()    { return UserPreference.menuColor(); }
     get menuBgColor()  { return UserPreference.menuBgColor(); }
     get myTopbarMenus()  { return UserPreference.myTopbarMenus(); }
-    
-    get myWebsites() { return this.websiteService.myWebsites; }
-    
-    get currentDomainName() { return Domain.getName(); }
-    get currentDomainUrl() { return Domain.getUrl(); }
-    
+
     /**
-     * Set current managing domain, redirect and refresh
-     * @param domain
+     * Wwitch domain user currently managing
+     * @param key
      */
-    private setDomain(key: string) {
-        Domain.set(key);
-        this.router.navigate(['/']);
-        window.location.reload();
+    private switch2Domain(key: string) {
+        this.domainService.switch2Domain(key);
+    }
+    
+    private cleanDefaultDomain() {
+        this.domainService.cleanDefaultDomain();
     }
 }

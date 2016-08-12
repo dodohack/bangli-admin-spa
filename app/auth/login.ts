@@ -5,10 +5,9 @@
 import { Component }       from '@angular/core';
 import { Router }          from '@angular/router';
 
-import { AuthService } from '../service';
-import { Login }       from '../models';
-import { Api }         from '../api';
-import { Domain }      from '../domain';
+import { AuthService }     from '../service';
+import { Login }           from '../models';
+import { API_END_POINTS }  from '../api';
 
 let template = require('./login.html');
 @Component({
@@ -33,7 +32,7 @@ export class LoginPage
 
     /* Stage 1 user migration is always from huluwa.uk */
     get stage1MigrationUrl() {
-        let API = Api.getEndPoint(Domain.huluwaUkKey());
+        let API = API_END_POINTS['huluwa_uk'];
         return API.migrate_user_stage1;
     }
 

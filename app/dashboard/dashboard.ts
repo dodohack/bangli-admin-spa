@@ -4,7 +4,7 @@
 
 import { Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Domain } from '../domain';
+import { DomainService } from '../service';
 
 let template = require('./dashboard.html');
 @Component({
@@ -12,7 +12,10 @@ let template = require('./dashboard.html');
 })
 export class DashboardPage
 {
-    constructor(private titleService: Title) {
-        this.titleService.setTitle('首页 - ' + Domain.getName() +'管理平台');
+    constructor(private titleService: Title,
+                private domainService: DomainService) {
+        this.titleService.setTitle('首页 - ' + this.domainService.name +'管理平台');
     }
+    
+    get hasDomain() { return this.domainService.key != 'dummy'; }
 }

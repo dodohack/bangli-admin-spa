@@ -5,18 +5,14 @@
 import { Injectable }               from '@angular/core';
 import { Http, Headers, RequestOptions }   from '@angular/http';
 
-import { PostStatus }  from '../models';
-import { AuthService } from './auth.service';
-
-import { Api }            from '../api';
+import { PostStatus }     from '../models';
+import { AuthService }    from './auth.service';
+import { DomainService }  from './domain.service';
 import { UserPreference } from '../preference';
 
 @Injectable()
 export class TopicService
 {
-    /* API endpoint of current domain */
-    API: any;
-
     /* Http request headers */
     headers: Headers;
     options: RequestOptions;
@@ -25,15 +21,14 @@ export class TopicService
     statuses: PostStatus[];
 
     constructor(private http: Http,
-                private authService: AuthService)
+                private authService: AuthService,
+                private domainService: DomainService)
     {
         console.log("TopicService initialized.");
 
-        this.API = Api.getEndPoint();
-
         /* Set http authenticate header */
         this.headers =
-            new Headers({'Authorization': 'Bearer ' + this.authService.getJwt()});
+            new Headers({'Authorization': 'Bearer ' + this.authService.jwt});
         this.options = new RequestOptions({ headers: this.headers });
 
         this.initStatuses();
@@ -44,7 +39,7 @@ export class TopicService
      */
     public getTopics(filter, condition, cur_page) {
         /* http://api/admin/topics/{filter}/{cond}/{cur_page}?per_page=<number> */
-        let endpoint = this.API.topics + '/' + filter + '/' + condition + '/' +
+        let endpoint = this.domainService.API.topics + '/' + filter + '/' + condition + '/' +
             cur_page + '?per_page=' + UserPreference.itemsPerList();
 
         return this.http.get(endpoint, this.options).map(res => res.json());
@@ -55,7 +50,7 @@ export class TopicService
      * Retrieve statuses of topics from API server
      */
     private initStatuses() {
-        this.http.get(this.API.topic_statuses, this.options)
+        this.http.get(this.domainService.API.topic_statuses, this.options)
             .map(res => res.json())
             .subscribe(statuses => this.statuses = statuses);
     }
@@ -65,7 +60,7 @@ export class TopicService
      * @param id
      */
     public getTopic(id) {
-        return this.http.get(this.API.topic + '/' + id, this.options)
+        return this.http.get(this.domainService.API.topic + '/' + id, this.options)
                    .map(res => res.json());
     }
 }

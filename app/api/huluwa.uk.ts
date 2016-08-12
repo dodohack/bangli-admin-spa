@@ -1,9 +1,9 @@
 /**
  * Definition of RESTful API endpoint
  */
+import { APP_API_BASE } from "../models/domain";
 
-/* This should be https://api.huluwa.uk in product env */
-const base: string = 'http://localhost:5000';
+const base: string = APP_API_BASE['huluwa_uk'];
 
 /* Application server APIs */
 export const API_HULUWA_UK = {

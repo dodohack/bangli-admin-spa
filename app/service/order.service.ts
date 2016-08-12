@@ -5,19 +5,15 @@
 import { Injectable }                     from '@angular/core';
 import { Http, Headers, RequestOptions }   from '@angular/http';
 
-import { OrderStatus } from '../models/order';
-import { AuthService } from './auth.service';
-
-import { Api }            from '../api';
+import { OrderStatus }   from '../models/order';
+import { AuthService }   from './auth.service';
+import { DomainService } from './domain.service';
 import { UserPreference } from '../preference';
 
 
 @Injectable()
 export class OrderService
 {
-    /* API endpoint of current domain */
-    API: any;
-    
     /* Http request headers */
     headers: Headers;
     options: RequestOptions;
@@ -26,15 +22,14 @@ export class OrderService
     statuses: OrderStatus[];
 
     constructor(private http: Http, 
-                private authService: AuthService)
+                private authService: AuthService,
+                private domainService: DomainService)
     {
         console.log("OrderService initialized.");
-        
-        this.API = Api.getEndPoint();
 
         /* Set http authenticate header */
         this.headers =
-            new Headers({'Authorization': 'Bearer ' + this.authService.getJwt()});
+            new Headers({'Authorization': 'Bearer ' + this.authService.jwt});
         this.options = new RequestOptions({ headers: this.headers });
 
         this.initStatuses();
@@ -43,7 +38,7 @@ export class OrderService
 
     public getOrders(status, cur_page) {
         /* http://api/admin/orders/{status}/{cur_page}?per_page=<number> */
-        let endpoint = this.API.orders + '/' + status + '/' +
+        let endpoint = this.domainService.API.orders + '/' + status + '/' +
             cur_page + '?per_page=' + UserPreference.itemsPerList();
         return this.http.get(endpoint, this.options).map(res => res.json());
     }
@@ -55,7 +50,7 @@ export class OrderService
     public getOrder(id) {
         console.error("WE DO NOT NEED THIS! ALL ORDER DATA ARE DOWNLOADED WITH getOrders");
 
-        return this.http.get(this.API.order + '/' + id, this.options)
+        return this.http.get(this.domainService.API.order + '/' + id, this.options)
                    .map(res => res.json());
     }
 
@@ -63,7 +58,7 @@ export class OrderService
      * Retrieve statuses of all orders
      */
     private initStatuses() {
-        this.http.get(this.API.order_statuses, this.options)
+        this.http.get(this.domainService.API.order_statuses, this.options)
             .map(res => res.json())
             .subscribe(statuses => this.statuses = statuses);
     }

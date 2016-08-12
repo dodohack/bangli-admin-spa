@@ -9,31 +9,32 @@
             NOTE: 如果选中了用户可以管理其他站点,还需要检查此用户是否被添加到了其他站点。
         </div>
 
-        <form (ngSubmit)="onSubmitWebsites()" #websiteMgtForm="ngForm">
+        <form (ngSubmit)="onSubmitDomains()" #websiteMgtForm="ngForm">
             <table class="table table-hover" style="font-size: 85%">
                 <thead class="thead-default">
                 <tr>
                     <th width="10%">可否访问</th>
-                    <th width="10%">站点ID</th>
+                    <th width="10%">站点Key</th>
                     <th width="20%">站点名字</th>
                     <th width="20%">站点域名</th>
-                    <th width="40%">站点介绍</th>
+                    <th width="40%">站点API</th>
                 </tr>
                 </thead>
 
                 <tbody>
-                <tr *ngFor="let web of websites">
+                <tr *ngFor="let domain of domains">
                     <td>
                         <label class="form-check-inline">
                             <input class="form-check-input" type="checkbox"
-                                   name="w[]"  [checked]="web.checked" (change)="web.checked = $event.target.checked">
-                            {{ web.checked ? '是' : '否' }}
+                                   name="d[]"  [checked]="domain.checked"
+                                   (change)="domain.checked = $event.target.checked">
+                            {{ domain.checked ? '是' : '否' }}
                         </label>
                     </td>
-                    <td>{{ web.id }}</td>
-                    <td>{{ web.name }}</td>
-                    <td>{{ web.url }}</td>
-                    <td>{{ web.description }}</td>
+                    <td>{{ domain.key }}</td>
+                    <td>{{ domain.name }}</td>
+                    <td>{{ domain.url }}</td>
+                    <td>{{ domain.api }}</td>
                 </tr>
                 </tbody>
             </table>
@@ -52,7 +53,7 @@
         </p>
 
 
-        <form (ngSubmit)="onSubmitWebsitePerms()" #websitePermForm="ngForm">
+        <form (ngSubmit)="onSubmitDomainPerms()" #websitePermForm="ngForm">
 
 
             <div class="row form-group"><div class="col-xs-12">

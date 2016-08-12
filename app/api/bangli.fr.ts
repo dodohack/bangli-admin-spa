@@ -1,9 +1,9 @@
 /**
  * Definition of RESTful API endpoint
  */
+import { APP_API_BASE } from "../models/domain";
 
-/* This should be https://api.bangli.fr in product env */
-const base: string = 'http://localhost:6003';
+const base: string = APP_API_BASE['bangli_fr'];
 
 /* Application server APIs */
 export const API_BANGLI_FR = {

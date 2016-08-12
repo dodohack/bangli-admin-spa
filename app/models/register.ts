@@ -7,15 +7,14 @@ export class Register {
         public name: string,
         public email: string,
         public password: string,
-        public password_confirmation: string,
-        public callback: string
+        public password_confirmation: string
     ){ }
 
     /* Return stringified string for form post */
     public stringify() : string {
         return 'name=' + this.name + '&email=' + this.email +
             '&password=' + this.password + '&password_confirmation=' +
-            this.password_confirmation + '&callback=' + this.callback;
+            this.password_confirmation;
     }
 }
 

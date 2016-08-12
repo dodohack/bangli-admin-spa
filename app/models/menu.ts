@@ -1,7 +1,6 @@
 /*
  * Sidebar menus definition for all websites
  */
-import { Domain } from '../domain';
 
 /* Sidebar menus used by huluwa management */
 const HULUWA_UK_SIDEBAR_MENUS = [
@@ -43,26 +42,10 @@ const BANGLI_UK_SIDEBAR_MENUS = [
     {slug: 'migration', name: '数据移植',   icon_style: 'fa fa-lg fa-database'}
 ];
 
-const SIDEBAR_MENUS = {
+export const SIDEBAR_MENUS = {
     huluwa_uk: HULUWA_UK_SIDEBAR_MENUS,
     bangli_uk: BANGLI_UK_SIDEBAR_MENUS
 };
-
-export class Sidebar {
-
-    /**
-     * Return corresponding sidebar menu for current managed website
-     * Bangli network has the same sidebar menu.
-     * @returns {any}
-     */
-    public static getMenu() {
-        let key = Domain.getKey();
-        if (key == 'huluwa_uk')
-            return SIDEBAR_MENUS[key];
-        else
-            return SIDEBAR_MENUS['bangli_uk'];
-    }
-} 
 
 /* customized menus on sidebar/topbar */
 export class Menu {

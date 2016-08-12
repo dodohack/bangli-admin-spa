@@ -11,7 +11,7 @@ import { Page } from './page';
 import { Order, OrderStatus, Shipping, Billing, OrderItem, OrderHistory } from './order';
 import { Product, ProductStatus } from './product';
 import { JwtPayLoad } from './jwt';
-import { Website } from './website';
+import { Domain } from './domain';
 
 export {
     Menu,
@@ -37,5 +37,5 @@ export {
     Product,
     ProductStatus,
     JwtPayLoad,
-    Website,
+    Domain,
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
-import { Sidebar }        from '../models/menu';
+import { DomainService }  from '../service';
+import { SIDEBAR_MENUS }  from '../models/menu';
 import { UserPreference } from '../preference';
 
 @Component({
@@ -11,7 +12,7 @@ import { UserPreference } from '../preference';
         <a class="toggle" (click)="setToggleSidebar($event)" 
         [style.color]="menuColor"><i class="fa fa-ellipsis-v"></i></a>
         <ul class="fixed-menu">
-            <li *ngFor="let menu of sidebarMenus">
+            <li *ngFor="let menu of menus">
                 <a [routerLink]="['/', menu.slug]"
                    [style.color]="menuColor"
                    title="{{ menu.name }}" 
@@ -25,11 +26,11 @@ import { UserPreference } from '../preference';
     `
 })
 export class SidebarComponent {
-    constructor(/*private authService: AuthService*/) {
+    constructor(private domainService: DomainService) {
         //this.username = authService.getName();
     }
 
-    get sidebarMenus() { return Sidebar.getMenu(); }
+    get menus() { return SIDEBAR_MENUS[this.domainService.curDomain.key]; }
 
     get toggleSidebar()   { return UserPreference.toggleSidebar(); }
     get menuColor()   { return UserPreference.menuColor(); }

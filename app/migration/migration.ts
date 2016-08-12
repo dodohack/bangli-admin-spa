@@ -6,8 +6,7 @@ import { Component }                     from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Title } from '@angular/platform-browser';
 
-import { Api }         from '../api';
-import { Domain }      from '../domain';
+import { API_END_POINTS }      from '../api';
 import { AuthService } from '../service';
 
 let template = require('./migration.html');
@@ -16,9 +15,6 @@ let template = require('./migration.html');
 })
 export class MigrationPage
 {
-    /* API server endpoints */
-    API: any;
-    
     headers: Headers;
     
     /* Migration status/message returned from application server */
@@ -33,48 +29,39 @@ export class MigrationPage
                 private authService: AuthService) {
         /* Set http authenticate header */
         this.headers =
-            new Headers({'Authorization': 'Bearer ' + this.authService.getJwt()});
+            new Headers({'Authorization': 'Bearer ' + this.authService.jwt});
 
         this.isRunning = false;
         this.title.setTitle('数据移植 - 全局管理平台');
     }
 
-    get domainKeyHuluwaUk() { return Domain.huluwaUkKey(); }
-    get domainKeyBangliUk() { return Domain.bangliUkKey(); }
-    get domainKeyBangliUs() { return Domain.bangliUsKey(); }
-    get domainKeyBangliDe() { return Domain.bangliDeKey(); }
-    get domainKeyBangliFr() { return Domain.bangliFrKey(); }
-    get domainKeyBangliEs() { return Domain.bangliEsKey(); }
-    get domainKeyBangliIt() { return Domain.bangliItKey(); }
-
-
     public migrateUser(domainKey: string) {
-        this.message = '正在移植${domainKey}用户表,可能需要等几分钟或更长时间,请不要刷新页面';
+        this.message = "正在移植${domainKey}用户表,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('user', domainKey);
     }
 
     public migrateUserData(domainKey: string) {
-        this.message = '正在移植${domainKey}用户基本数据,可能需要等几分钟或更长时间,请不要刷新页面';
+        this.message = "正在移植${domainKey}用户基本数据,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('userdata', domainKey);
     }
 
     public migrateAttachment(domainKey: string) {
-        this.message = '正在移植${domainKey}附件表,可能需要等几分钟或更长时间,请不要刷新页面';
+        this.message = "正在移植${domainKey}附件表,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('attachment', domainKey);
     }
 
     public migratePost(domainKey: string) {
-        this.message = '正在移植${domainKey}文章和专题,可能需要等几分钟或更长时间,请不要刷新页面';
+        this.message = "正在移植${domainKey}文章和专题,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('post', domainKey);
     }
 
     public migrateProduct(domainKey: string) {
-        this.message = '正在移植${domainKey}产品库,可能需要等几分钟或更长时间,请不要刷新页面';
+        this.message = "正在移植${domainKey}产品库,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('product', domainKey);
     }
 
     public migrateOrder(domainKey: string) {
-        this.message = '正在移植${domainKey}订单数据,可能需要等几分钟或更长时间,请不要刷新页面';
+        this.message = "正在移植${domainKey}订单数据,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('order', domainKey);
     }
 
@@ -92,11 +79,11 @@ export class MigrationPage
         this.isRunning = true;
 
         /* Get correct API endpoint */
-        this.API = Api.getEndPoint(domainKey);
+        let API = API_END_POINTS[domainKey];
         
         let options = new RequestOptions({ headers: this.headers });
 
-        return this.http.get(this.API.migrate_base + '/' + endpoint, options)
+        return this.http.get(API.migrate_base + '/' + endpoint, options)
                    .map(res => res.json())
                    .subscribe(
                        res   => {
