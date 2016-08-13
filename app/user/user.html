@@ -18,22 +18,29 @@ We have several tabs to switch between massive inputs
 
 <tabset>
     <tab heading="基本信息">
-        <user-base-profile [uuid]="uuid"></user-base-profile>
+        <user-base-profile [uuid]="uuid" [isMyProfile]="isMyProfile"
+                           [isSuperUser]="isSuperUser"></user-base-profile>
     </tab>
 
-    <tab heading="密码授权">
-        <user-auth-profile></user-auth-profile>
+    <tab heading="密码授权" *ngIf="isMyProfile || isSuperUser">
+        <user-auth-profile [uuid]="uuid" [isMyProfile]="isMyProfile"
+                           [isSuperUser]="isSuperUser"></user-auth-profile>
     </tab>
 
     <tab heading="地址信息">
-        <user-shop-profile></user-shop-profile>
+        <user-shop-profile [uuid]="uuid" [isMyProfile]="isMyProfile"
+                           [isSuperUser]="isSuperUser"></user-shop-profile>
     </tab>
 
     <tab heading="宝宝信息">
-        <user-shop-profile></user-shop-profile>
+        <user-baby-profile [uuid]="uuid" [isMyProfile]="isMyProfile"
+                           [isSuperUser]="isSuperUser"></user-baby-profile>
     </tab>
 
-    <tab heading="站点权限" *ngIf="isDashboardUser">
+    <!-- User can only see his permission, but can't edit -->
+    <!-- User can't see others permission -->
+    <!-- Super user can see and modify any user's permission -->
+    <tab heading="后台权限" *ngIf="isMyProfile || isSuperUser">
         <user-domain-mgt [uuid]="uuid" [isMyProfile]="isMyProfile"
                          [isSuperUser]="isSuperUser"></user-domain-mgt>
     </tab>

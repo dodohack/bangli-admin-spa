@@ -8,32 +8,14 @@ import { TYPEAHEAD_DIRECTIVES, TAB_DIRECTIVES, AlertComponent } from 'ng2-bootst
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 import { FROALA_OPTIONS } from '../models/froala.option';
 
-import { 
-    EditorPageHeaderComponent, 
-    CategoryTreeComponent,
-    TagCloudComponent,
-    TopicCloudComponent,
-    PostCttCloudComponent } from '../components';
-
 import { User, Post, Category, Tag, Topic } from '../models';
 import { POST_TYPES } from '../models';
 import { PostService, UserService } from '../service';
 import { zh_CN } from '../localization';
 
-let template = require('./post.html');
+let t = require('./post.html');
 @Component({
-    template: template,
-    directives: [
-        AlertComponent,
-        TAB_DIRECTIVES,
-        TYPEAHEAD_DIRECTIVES,
-        FroalaEditorCompnoent,
-        EditorPageHeaderComponent,
-        CategoryTreeComponent,
-        TagCloudComponent,
-        TopicCloudComponent,
-        PostCttCloudComponent
-    ],
+    template: t,
     providers: [ PostService ]
 })
 export class PostPage implements OnInit

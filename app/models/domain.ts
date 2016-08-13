@@ -13,11 +13,6 @@ export const APP_API_BASE = {
     bangli_it: 'http://localhost:5006'
 };
 
-export const DUMMY_DOMAIN = {
-    key: 'dummy', name: '无站点',
-    api: 'http://api.dummy.uk', url: 'http://www.dummy.uk',  checked: false
-};
-
 /*
  * FIXME: 'checked' status can't be signed to variable defined as type Domain[],
  * the value is always true no matter what, see user.domain.mgt.ts for more.

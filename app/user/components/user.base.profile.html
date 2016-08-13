@@ -1,4 +1,4 @@
-<form *ngIf="user">
+<form *ngIf="user" (ngSubmit)="onSubmit()" #profileForm="ngForm">
     <input type="hidden" name="id" [ngModel]="user.id">
 
     <accordion>
@@ -6,14 +6,16 @@
             <div class="row form-group">
                 <div class="col-xs-6">
                     <label>用户角色</label>
-                    <select name="role_id" class="form-control" [(ngModel)]="user.role_id">
+                    <select name="role_id" class="form-control"
+                            [(ngModel)]="user.role_id" [disabled]="!isSuperUser">
                         <option *ngFor="let role of userRoles" [value]="role.id">{{ role.display_name }}</option>
                     </select>
                 </div>
 
                 <div class="col-xs-6">
                     <label>昵称</label>
-                    <input class="form-control" type="text" name="display_name" [(ngModel)]="user.display_name">
+                    <input class="form-control" type="text" name="display_name"
+                           [(ngModel)]="user.display_name" [disabled]="!isSuperUser && !isMyProfile">
                 </div>
             </div>
 
@@ -33,24 +35,28 @@
             <div class="row form-group">
                 <div class="col-xs-3">
                     <label>性别</label>
-                    <select name="gender" class="form-control" [(ngModel)]="user.profile.gender">
+                    <select name="gender" class="form-control" [(ngModel)]="user.profile.gender"
+                            [disabled]="!isSuperUser && !isMyProfile">
                         <option *ngFor="let gender of genders" [value]="gender.key">{{ gender.display_name }}</option>
                     </select>
                 </div>
 
                 <div class="col-xs-3">
                     <label>生日</label>
-                    <input class="form-control" type="text" name="birthday" [(ngModel)]="user.profile.birthday">
+                    <input class="form-control" type="text" name="birthday"
+                           [(ngModel)]="user.profile.birthday" [disabled]="!isSuperUser && !isMyProfile">
                 </div>
 
                 <div class="col-xs-3">
                     <label>名字</label>
-                    <input class="form-control" type="text" name="first_name" [(ngModel)]="user.profile.first_name">
+                    <input class="form-control" type="text" name="first_name"
+                           [(ngModel)]="user.profile.first_name" [disabled]="!isSuperUser && !isMyProfile">
                 </div>
 
                 <div class="col-xs-3">
                     <label>姓氏</label>
-                    <input class="form-control" type="text" name="last_name" [(ngModel)]="user.profile.last_name">
+                    <input class="form-control" type="text" name="last_name"
+                           [(ngModel)]="user.profile.last_name" [disabled]="!isSuperUser && !isMyProfile">
                 </div>
             </div>
 
@@ -58,7 +64,8 @@
             <div class="row form-group">
                 <div class="col-xs-9">
                     <label>用户头像URL</label>
-                    <input class="form-control" type="text" name="avatar" [(ngModel)]="user.profile.avatar">
+                    <input class="form-control" type="text" name="avatar"
+                           [(ngModel)]="user.profile.avatar" [disabled]="!isSuperUser && !isMyProfile">
                 </div>
 
                 <div class="col-xs-3">
@@ -66,12 +73,16 @@
                     <div>
                         <label class="form-check-inline">
                             <input class="form-check-input" type="radio" name="subscription"
-                                   [ngModel]="user.profile.subscription" (ngModelChange)="user.profile.subscription"> 是
+                                   [ngModel]="user.profile.subscription"
+                                   (ngModelChange)="user.profile.subscription"
+                                   [disabled]="!isSuperUser && !isMyProfile"> 是
                         </label>
 
                         <label class="form-check-inline">
                             <input class="form-check-input" type="radio" name="subscription"
-                                   [ngModel]="!user.profile.subscription" (ngModelChange)="user.profile.subscription"> 否
+                                   [ngModel]="!user.profile.subscription"
+                                   (ngModelChange)="user.profile.subscription"
+                                   [disabled]="!isSuperUser && !isMyProfile"> 否
                         </label>
                     </div>
                 </div>
@@ -81,7 +92,15 @@
                 <div class="col-xs-12">
                     <label>简介 (最长255个字)</label>
                     <textarea class="form-control" type="text" rows="3" maxlength="255"
-                              name="description" [(ngModel)]="user.profile.description"></textarea>
+                              name="description" [(ngModel)]="user.profile.description"
+                              [disabled]="!isSuperUser && !isMyProfile"></textarea>
+                </div>
+            </div>
+
+            <div class="row form-group" *ngIf="isSuperUser || isMyProfile">
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-primary btn-block"
+                            [disabled]="!profileForm.form.dirty">保存</button>
                 </div>
             </div>
         </accordion-group>

@@ -62,6 +62,21 @@ export class UserService
         
         return this.http.get(endpoint, this.options).map(res => res.json());
     }
+    
+    public postUserBaseProfile(uuid, user)
+    {
+        let endpoint = this.authService.API.user_base_profile + '/' + uuid;
+        
+        // TODO
+        let body = JSON.stringify(user);
+        console.log("Saving user profile: ", body);
+
+        return this.http.post(endpoint, body, this.options).map(res => res.json());
+    }
+    
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // Private helper functions
 
     /**
      * Retrive user roles and number of users for each role.

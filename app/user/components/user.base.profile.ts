@@ -18,6 +18,16 @@ export class UserBaseProfileTab implements AfterContentInit
 {
     @Input()
     uuid: string;
+    
+    @Input()
+    isMyProfile: boolean;
+    
+    @Input()
+    isSuperUser: boolean;
+
+    /* Popup alert shows saving status */
+    alert = Array<Object>();
+    
     /* FIXME: We should pass user as input from parent component */
     user: User;
 
@@ -30,4 +40,15 @@ export class UserBaseProfileTab implements AfterContentInit
 
     get userRoles() { return this.userService.roles; }
     get genders() { return USER_GENDERS; }
+
+    onSubmit() {
+        this.userService.postUserBaseProfile(this.uuid, this.user)
+            .subscribe(
+                ret => {
+                    if (ret['status'] == 0)
+                        this.alert.push({type: 'success', msg: '保存成功'});
+                    else
+                        this.alert.push({type: 'danger', msg: '保存失败: ' + ret['msg']});
+                });
+    }
 }

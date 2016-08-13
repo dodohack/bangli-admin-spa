@@ -1,15 +1,15 @@
 /**
- * Display user shop related profile, such as orders, content of carts,
+ * Display user baby profiles
  * shop_managers can see this
  */
 import { Component, Input, AfterContentInit } from '@angular/core';
 
-let t = require('./user.shop.profile.html');
+let t = require('./user.baby.profile.html');
 @Component({
-    selector: 'user-shop-profile',
+    selector: 'user-baby-profile',
     template: t,
 })
-export class UserShopProfileTab implements AfterContentInit
+export class UserBabyProfileTab implements AfterContentInit
 {
     @Input()
     uuid: string;

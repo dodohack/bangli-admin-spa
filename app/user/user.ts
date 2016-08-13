@@ -9,13 +9,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { TAB_DIRECTIVES } from 'ng2-bootstrap';
 
-import { AuthService, UserService } from '../service';
+import { AuthService }          from '../service';
 import { UserAuthProfileTab }   from './components/user.auth.profile';
 import { UserPreferenceTab }    from './components/user.preference';
 import { UserBaseProfileTab }   from './components/user.base.profile';
 import { UserShopProfileTab }   from './components/user.shop.profile';
+import { UserBabyProfileTab }   from './components/user.baby.profile';
 import { UserDomainMgtTab }     from './components/user.domain.mgt';
-import { User }        from "../models";
 
 let t = require('./user.html');
 @Component({
@@ -23,25 +23,18 @@ let t = require('./user.html');
     directives: [ TAB_DIRECTIVES,
         UserAuthProfileTab, UserPreferenceTab, 
         UserBaseProfileTab, UserShopProfileTab,
-        UserDomainMgtTab ]
+        UserBabyProfileTab, UserDomainMgtTab ]
 })
 export class UserPage implements OnInit
 {
-    /* The user we are editing */
-    user: User;
+    /* uuid of current editing user */
     uuid: string;
 
     constructor(private route: ActivatedRoute,
-                private authService: AuthService,
-                private userService: UserService) { }
+                private authService: AuthService) { }
 
     ngOnInit() {
-        this.route.params.subscribe(segment => {
-            this.uuid = segment['uuid'];
-
-            this.userService.getUserBaseProfile(this.uuid)
-                .subscribe(user => this.user = user);
-        });
+        this.route.params.subscribe(segment => this.uuid = segment['uuid']);
     }
     
     /* If the user current editing is myself or not */
@@ -49,10 +42,4 @@ export class UserPage implements OnInit
     
     /* Am I super user */
     get isSuperUser() { return this.authService.isSuperUser; }
-    
-    /* Check the user we are editing is a dashboard user */
-    /* FIXME: role_id 5 is customer */
-    get isDashboardUser() { return this.user && this.user.role_id != 5; }
-    
-
 }

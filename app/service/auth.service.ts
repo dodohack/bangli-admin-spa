@@ -41,7 +41,7 @@ export class AuthService
     }
 
     /**
-     *  Gettter: Check if current user logged in or not and it is a dashboard user
+     *  Check if current user logged in and if it is a dashboard user
      */
     get isLoggedIn(): boolean
     {
