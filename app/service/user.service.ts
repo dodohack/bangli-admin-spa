@@ -59,13 +59,17 @@ export class UserService
     public getUserBaseProfile(uuid)
     {
         let endpoint = this.authService.API.user_base_profile + '/' + uuid;
-        
         return this.http.get(endpoint, this.options).map(res => res.json());
     }
-    
-    public postUserBaseProfile(uuid, user)
+    public getUserProfile(uuid)
     {
-        let endpoint = this.authService.API.user_base_profile + '/' + uuid;
+        let endpoint = this.authService.API.user_profile + '/' + uuid;
+        return this.http.get(endpoint, this.options).map(res => res.json());
+    }
+
+    public postUserBaseProfile(user)
+    {
+        let endpoint = this.authService.API.user_base_profile;
         
         // TODO
         let body = JSON.stringify(user);
@@ -73,7 +77,17 @@ export class UserService
 
         return this.http.post(endpoint, body, this.options).map(res => res.json());
     }
-    
+    public postUserProfile(user)
+    {
+        let endpoint = this.authService.API.user_profile;
+
+        // TODO
+        let body = JSON.stringify(user);
+        console.log("Saving user profile: ", body);
+
+        return this.http.post(endpoint, body, this.options).map(res => res.json());
+    }
+
     
     ///////////////////////////////////////////////////////////////////////////
     // Private helper functions

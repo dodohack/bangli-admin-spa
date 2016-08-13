@@ -1,12 +1,12 @@
 /**
  * Display basic user profile, shop_managers can see this
  */
-import { Component, Input, AfterContentInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
 import { UserService } from '../../service';
-import { USER_GENDERS, User } from '../../models/user';
+import { USER_GENDERS, User } from '../../models';
 
 let t = require('./user.base.profile.html');
 @Component({
@@ -14,7 +14,7 @@ let t = require('./user.base.profile.html');
     template: t,
     directives: [ ACCORDION_DIRECTIVES ]
 })
-export class UserBaseProfileTab implements AfterContentInit
+export class UserBaseProfileTab
 {
     @Input()
     uuid: string;
@@ -24,31 +24,12 @@ export class UserBaseProfileTab implements AfterContentInit
     
     @Input()
     isSuperUser: boolean;
-
-    /* Popup alert shows saving status */
-    alert = Array<Object>();
     
-    /* FIXME: We should pass user as input from parent component */
+    @Input()
     user: User;
 
     constructor(private userService: UserService) {}
-
-    ngAfterContentInit() {
-        this.userService.getUserBaseProfile(this.uuid)
-            .subscribe(user => this.user = user);
-    }
-
+    
     get userRoles() { return this.userService.roles; }
     get genders() { return USER_GENDERS; }
-
-    onSubmit() {
-        this.userService.postUserBaseProfile(this.uuid, this.user)
-            .subscribe(
-                ret => {
-                    if (ret['status'] == 0)
-                        this.alert.push({type: 'success', msg: '保存成功'});
-                    else
-                        this.alert.push({type: 'danger', msg: '保存失败: ' + ret['msg']});
-                });
-    }
 }

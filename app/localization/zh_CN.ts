@@ -38,11 +38,16 @@ export const zh_CN = {
     },
 
     user: {
-        member:        '注册用户',
-        customer:      '注册用户',
+        super_user:    '超级管理员',
         administrator: '管理员',
         shop_manager:  '店长',
         editor:        '编辑',
-        author:        '作者'
+        author:        '作者',
+        member:        '注册用户',
+        customer:      '注册用户',
+        default_shipping: '默认收货地址',
+        default_billing:  '默认账单地址',
+        shipping:         '收货地址',
+        billing:          '账单地址'
     }
 };

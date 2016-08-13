@@ -1,0 +1,33 @@
+<accordion-group heading="地址信息" isOpen="true">
+    <div *ngIf="user && !user.addresses.length" class="alert alert-info">
+        用户没有任何收货地址或者账单地址
+    </div>
+
+    <table class="table table-hover" style="font-size: 85%">
+        <thead class="thead-default">
+        <tr>
+            <th width="10%">地址类型</th>
+            <th width="10%">姓名</th>
+            <th width="15%">电话</th>
+            <th width="40%">地址</th>
+            <th width="5%">邮编</th>
+            <th width="10%">更新时间</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr *ngFor="let addr of user.addresses">
+            <td>{{ zh[addr.address_type] }}</td>
+            <td>{{ addr.first_name }} {{ addr.last_name }}</td>
+            <td>
+                <span *ngIf="addr.mobile">M: {{ addr.mobile }}</span>
+                <span *ngIf="addr.telephone">T: {{ addr.telephone }}</span>
+            </td>
+            <td>{{ addr.province }}{{ addr.city }}{{ addr.county }}{{ addr.address }} [{{addr.country}}]</td>
+            <td>{{ addr.postcode }}</td>
+            <td>{{ addr.updated_at }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+</accordion-group>

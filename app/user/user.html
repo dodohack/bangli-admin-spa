@@ -17,24 +17,35 @@ We have several tabs to switch between massive inputs
 -->
 
 <tabset>
-    <tab heading="基本信息">
-        <user-base-profile [uuid]="uuid" [isMyProfile]="isMyProfile"
-                           [isSuperUser]="isSuperUser"></user-base-profile>
+    <tab heading="用户资料">
+        <form *ngIf="user" (ngSubmit)="onSubmitProfile()">
+            <input type="hidden" name="id" [ngModel]="user.id">
+            <accordion>
+
+                <user-base-profile [uuid]="uuid" [user]="user"
+                                   [isMyProfile]="isMyProfile"
+                                   [isSuperUser]="isSuperUser"></user-base-profile>
+
+                <user-shipping-profile [uuid]="uuid" [user]="user"
+                                       [isMyProfile]="isMyProfile"
+                                       [isSuperUser]="isSuperUser"></user-shipping-profile>
+
+                <user-baby-profile [uuid]="uuid" [user]="user"
+                                   [isMyProfile]="isMyProfile"
+                                   [isSuperUser]="isSuperUser"></user-baby-profile>
+            </accordion>
+            <div class="row form-group" *ngIf="isSuperUser || isMyProfile">
+                <div class="col-xs-12">
+                    <!-- FIXME: form dirty detection is not propagated up -->
+                    <button type="submit" class="btn btn-primary btn-block">保存</button>
+                </div>
+            </div>
+        </form>
     </tab>
 
     <tab heading="密码授权" *ngIf="isMyProfile || isSuperUser">
         <user-auth-profile [uuid]="uuid" [isMyProfile]="isMyProfile"
                            [isSuperUser]="isSuperUser"></user-auth-profile>
-    </tab>
-
-    <tab heading="地址信息">
-        <user-shop-profile [uuid]="uuid" [isMyProfile]="isMyProfile"
-                           [isSuperUser]="isSuperUser"></user-shop-profile>
-    </tab>
-
-    <tab heading="宝宝信息">
-        <user-baby-profile [uuid]="uuid" [isMyProfile]="isMyProfile"
-                           [isSuperUser]="isSuperUser"></user-baby-profile>
     </tab>
 
     <!-- User can only see his permission, but can't edit -->

@@ -12,15 +12,17 @@ import { UserPreference } from '../preference';
         <a class="toggle" (click)="setToggleSidebar($event)" 
         [style.color]="menuColor"><i class="fa fa-ellipsis-v"></i></a>
         <ul class="fixed-menu">
-            <li *ngFor="let menu of menus">
-                <a [routerLink]="['/', menu.slug]"
-                   [style.color]="menuColor"
-                   title="{{ menu.name }}" 
-                   routerLinkActive="active">
-                    <i class="{{ menu.icon_style }}"></i>
-                    <span>{{ menu.name }}</span>
-                </a>
-            </li>
+            <template ngFor let-menu [ngForOf]="menus">
+                <li *ngIf="hasRole(menu.role)">
+                    <a [routerLink]="['/', menu.slug]"
+                       [style.color]="menuColor"
+                       title="{{ menu.name }}" 
+                       routerLinkActive="active">
+                        <i class="{{ menu.icon_style }}"></i>
+                        <span>{{ menu.name }}</span>
+                    </a>
+                </li>
+            </template>
         </ul>
     </div>
     `
@@ -31,11 +33,14 @@ export class SidebarComponent {
     }
 
     get menus() { return SIDEBAR_MENUS[this.authService.curDomain.key]; }
+    get toggleSidebar() { return UserPreference.toggleSidebar(); }
+    get menuColor()     { return UserPreference.menuColor(); }
+    get menuBgColor()   { return UserPreference.menuBgColor(); }
 
-    get toggleSidebar()   { return UserPreference.toggleSidebar(); }
-    get menuColor()   { return UserPreference.menuColor(); }
-    get menuBgColor() { return UserPreference.menuBgColor(); }
-
-    public setToggleSidebar($event) { UserPreference.setToggleSidebar(); }
+    private hasRole(role: string) {
+        return this.authService.hasRole(role);
+    }
+    
+    private setToggleSidebar($event) { UserPreference.setToggleSidebar(); }
     
 }

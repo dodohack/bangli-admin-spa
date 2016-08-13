@@ -20,27 +20,28 @@ export const APP_API_BASE = {
  */
 export const DOMAINS = [
     /* The first is a placeholder domain use as first time initialization */
+    /* FIXME: Remove userRoleId */
     
     { key: 'huluwa_uk', name: '葫芦娃',
-      api: APP_API_BASE['huluwa_uk'], url: 'http://www.huluwa.uk',  checked: false},
+      api: APP_API_BASE['huluwa_uk'], url: 'http://www.huluwa.uk',  checked: false, userRoleId: 0},
 
     { key: 'bangli_uk', name: '英国邦利',
-      api: APP_API_BASE['bangli_uk'], url: 'http://www.bangli.uk', checked: false},
+      api: APP_API_BASE['bangli_uk'], url: 'http://www.bangli.uk', checked: false, userRoleId: 0},
 
     { key: 'bangli_us', name: '美国邦利',
-      api: APP_API_BASE['bangli_us'], url: 'http://www.bangli.us', checked: false},
+      api: APP_API_BASE['bangli_us'], url: 'http://www.bangli.us', checked: false, userRoleId: 0},
 
     { key: 'bangli_de', name: '德国邦利',
-      api: APP_API_BASE['bangli_de'], url: 'http://www.bangli.de', checked: false},
+      api: APP_API_BASE['bangli_de'], url: 'http://www.bangli.de', checked: false, userRoleId: 0},
 
     { key: 'bangli_fr', name: '法国邦利',
-      api: APP_API_BASE['bangli_fr'], url: 'http://www.bangli.fr', checked: false},
+      api: APP_API_BASE['bangli_fr'], url: 'http://www.bangli.fr', checked: false, userRoleId: 0},
 
     { key: 'bangli_es', name: '西班牙邦利',
-      api: APP_API_BASE['bangli_es'], url: 'http://www.bangli.es', checked: false},
+      api: APP_API_BASE['bangli_es'], url: 'http://www.bangli.es', checked: false, userRoleId: 0},
 
     { key: 'bangli_it', name: '意大利邦利',
-      api: APP_API_BASE['bangli_it'], url: 'http://www.bangli.it', checked: false}
+      api: APP_API_BASE['bangli_it'], url: 'http://www.bangli.it', checked: false, userRoleId: 0}
 ];
     
 export class Domain {
@@ -49,6 +50,7 @@ export class Domain {
     public api: string; /* API server base address */
     public url: string; /* Frontend url */
     public checked: boolean;
+    public userRoleId: number;
 
     constructor(domain: Domain) {
         this.key     = domain.key;
@@ -56,5 +58,7 @@ export class Domain {
         this.api     = domain.api;
         this.url     = domain.url;
         this.checked = domain.checked;
+        /* FIXME: Should be changed to better solution */
+        this.userRoleId = domain.userRoleId;
     }
 }

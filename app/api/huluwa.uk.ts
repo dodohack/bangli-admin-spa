@@ -33,8 +33,9 @@ export const API_HULUWA_UK = {
     users: base + '/admin/users',
     /* Users list page filter menu */
     user_roles: base + '/admin/menu/users',
-    /* User base profile */
-    user_base_profile: base + '/admin/user/base_profile',
+    /* User profile */
+    user_profile: base + '/admin/user/profile',
+    user_base_profile: base + '/admin/user/base_profile', /* deprecated */
 
     /* Get users who can edit a post, includes author, editor, shop_manager etc */
     authors: base + '/admin/authors',

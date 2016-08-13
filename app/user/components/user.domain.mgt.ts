@@ -7,6 +7,7 @@ import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
 import { User }            from '../../models';
 import { Domain, DOMAINS } from '../../models/domain'
 import { AuthService }     from '../../service';
+import { UserService }     from '../../service';
 import { DomainService }   from '../../service';
 
 let t = require('./user.domain.mgt.html');
@@ -34,6 +35,7 @@ export class UserDomainMgtTab implements AfterContentInit
     myDomains: Domain[] = [];
 
     constructor(private authService: AuthService,
+                private userService: UserService,
                 private domainService: DomainService) {}
 
     /* Can not get @Input before this point */
@@ -60,8 +62,11 @@ export class UserDomainMgtTab implements AfterContentInit
             });
     }
 
+    get userRoles() { return this.userService.roles; }
+
     /* Save user manageable websites to bangli-auth.user_website */
     onSubmitDomains() {
+        console.log("domains to be submitted:", this.domains);
         // Submit allWebsites which contains checked status
         this.domainService.postDomains(this.uuid, this.domains)
             .subscribe(status => console.log(status));

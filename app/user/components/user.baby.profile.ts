@@ -2,14 +2,15 @@
  * Display user baby profiles
  * shop_managers can see this
  */
-import { Component, Input, AfterContentInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { User } from "../../models";
 
 let t = require('./user.baby.profile.html');
 @Component({
     selector: 'user-baby-profile',
     template: t,
 })
-export class UserBabyProfileTab implements AfterContentInit
+export class UserBabyProfileTab
 {
     @Input()
     uuid: string;
@@ -20,7 +21,6 @@ export class UserBabyProfileTab implements AfterContentInit
     @Input()
     isSuperUser: boolean;
 
-    ngAfterContentInit() {
-
-    }
+    @Input()
+    user: User;
 }

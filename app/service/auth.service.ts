@@ -27,7 +27,7 @@ export class AuthService
 {
     private role: UserRole;
 
-    private decoded_jwt: JwtPayLoad;
+    private payload: JwtPayLoad;
     public jwt: string;
     
     /* Current managing domain */
@@ -38,6 +38,32 @@ export class AuthService
     constructor(private router: Router, private http: Http) 
     {
         console.log("AuthService init");
+
+        /* FIXME: This preload data from localStorage is a temp fix to async
+         * FIXME: data issue. We will use Observable as a proper fix later. */
+        this.domains = DOMAINS;
+        let key = localStorage.getItem('domain');
+        if (key) {
+            for (let i = 0; i < this.domains.length; i++) {
+                if (this.domains[i].key === key) {
+                    this.curDomain = this.domains[i];
+                    break;
+                }
+            }
+        }
+        /* Init stuff from localStorage first */
+        let jwt = localStorage.getItem('jwt');
+        if (jwt) {
+            this.jwt = jwt;
+            this.payload = jwtDecode(jwt);
+        }
+        let role = localStorage.getItem('role')
+        if (role) this.role = JSON.parse(role);
+        console.log("jwt: ", this.jwt);
+        console.log("payload: ", this.payload);
+        console.log("role: ", this.role);
+        console.log("curDomain: ", this.curDomain);
+        
         /* Each time the APP boot, refresh token and domains */
         this.refreshToken();
     }
@@ -54,14 +80,14 @@ export class AuthService
         let now = Math.floor(Date.now()/1000);
 
         /* Token expired, refresh it */
-        if (this.decoded_jwt.exp < now) {
+        if (this.payload.exp < now) {
             //this.refreshToken();
             // TODO: Remove this return
             return false;
         }
 
         /* Is a dashboard user or not */
-        return this.decoded_jwt.dbu;
+        return this.payload.dbu;
     }
 
     /**
@@ -71,9 +97,9 @@ export class AuthService
      */
     /* Get API endpoints for current managed domain */
     get API() { return API_END_POINTS[this.curDomain.key]; }
-    get name(): string { return this.decoded_jwt.aud; }
-    get uuid(): string { return this.decoded_jwt.sub; }
-    get isSuperUser(): boolean { return this.decoded_jwt && this.decoded_jwt.spu; }
+    get name(): string { return this.payload.aud; }
+    get uuid(): string { return this.payload.sub; }
+    get isSuperUser(): boolean { return this.payload && this.payload.spu; }
     get isAdmin(): boolean {
         return this.isSuperUser || (this.role && this.role.name === 'administrator');
     }
@@ -85,6 +111,26 @@ export class AuthService
     }
     get isAuthor(): boolean {
         return this.isEditor || this.role.name === 'author';
+    }
+
+    public hasRole(role: string): boolean {
+        /* FIXME: this.role is not ready !!!! */
+        /* TODO: Observer, Observer !!! */
+        switch(role) {
+            case 'super_user':
+                return this.isSuperUser;
+            case 'administrator':
+                return this.isAdmin;
+            case 'shop_manager':
+                return this.isShopMgr;
+            case 'editor':
+                return this.isEditor;
+            case 'author':
+                return this.isAuthor;
+            default:
+                return false;
+        }
+
     }
 
     /**
@@ -102,9 +148,9 @@ export class AuthService
         }
 
         /* Initial decoded jwt */
-        this.decoded_jwt = jwtDecode(jwt);
+        this.payload = jwtDecode(jwt);
         /* Not a dashboard user */
-        if (!this.decoded_jwt.dbu) return '你不是后台用户!';
+        if (!this.payload.dbu) return '你不是后台用户!';
 
         /* Only dashboard user has this attributes returned */
         let domains = response['domains'];
@@ -139,6 +185,7 @@ export class AuthService
         localStorage.removeItem('jwt');
         sessionStorage.removeItem('domain');
         localStorage.removeItem('domain');
+        localStorage.removeItem('role');
         this.router.navigate(['/login']);
         console.log("FIXME: Redirected back from login page sometimes; So a reload() is invoked");
         window.location.reload();
@@ -175,12 +222,15 @@ export class AuthService
     public unsetDefaultDomain() 
     {
         /* Update the storage */
+        console.log("DUMMY OPTION USED TO TEST EMPTY STORAGE KEY 'domain'");
+        /*
         sessionStorage.removeItem('domain');
         localStorage.removeItem('domain');
 
-        /* Reload the app */
+        // Reload the app
         this.router.navigate(['/']);
         window.location.reload();
+        */
     }
 
     /* Login user, refresh token, register user */
@@ -252,8 +302,6 @@ export class AuthService
      */
     private initDomains(domains: Domain[]) 
     {
-        /* Init domain lists */
-        this.domains = DOMAINS;
         for (let i = 0; i < this.domains.length; i++) {
             this.domains[i].checked = false;
             for (let j = 0; j < domains.length; j++) {
@@ -318,7 +366,10 @@ export class AuthService
             return;
         }
 
-        this.getRole().subscribe(role => this.role = role);
+        this.getRole().subscribe(role => {
+            this.role = role;
+            localStorage.setItem('role', JSON.stringify(this.role));
+        });
     }
 
 }

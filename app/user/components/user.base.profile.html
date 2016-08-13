@@ -1,147 +1,133 @@
-<form *ngIf="user" (ngSubmit)="onSubmit()" #profileForm="ngForm">
-    <input type="hidden" name="id" [ngModel]="user.id">
+<accordion-group heading="基本信息" isOpen="true">
+    <div class="row form-group">
+        <div class="col-xs-6">
+            <label>用户角色</label>
+            <select name="role_id" class="form-control"
+                    [(ngModel)]="user.role_id" [disabled]="!isSuperUser">
+                <option *ngFor="let role of userRoles" [value]="role.id">{{ role.display_name }}</option>
+            </select>
+        </div>
 
-    <accordion>
-        <accordion-group heading="基本信息" isOpen="true">
-            <div class="row form-group">
-                <div class="col-xs-6">
-                    <label>用户角色</label>
-                    <select name="role_id" class="form-control"
-                            [(ngModel)]="user.role_id" [disabled]="!isSuperUser">
-                        <option *ngFor="let role of userRoles" [value]="role.id">{{ role.display_name }}</option>
-                    </select>
-                </div>
+        <div class="col-xs-6">
+            <label>昵称</label>
+            <input class="form-control" type="text" name="display_name"
+                   [(ngModel)]="user.display_name" [disabled]="!isSuperUser && !isMyProfile">
+        </div>
+    </div>
 
-                <div class="col-xs-6">
-                    <label>昵称</label>
-                    <input class="form-control" type="text" name="display_name"
-                           [(ngModel)]="user.display_name" [disabled]="!isSuperUser && !isMyProfile">
-                </div>
+    <div class="row form-group">
+        <div class="col-xs-6">
+            <label>登录名</label>
+            <input class="form-control" type="text" name="name" [ngModel]="user.name" disabled>
+        </div>
+
+        <div class="col-xs-6">
+            <label>邮箱</label>
+            <input class="form-control" type="text" name="email" [ngModel]="user.email" disabled>
+        </div>
+    </div>
+
+
+    <div class="row form-group">
+        <div class="col-xs-3">
+            <label>性别</label>
+            <select name="gender" class="form-control" [(ngModel)]="user.profile.gender"
+                    [disabled]="!isSuperUser && !isMyProfile">
+                <option *ngFor="let gender of genders" [value]="gender.key">{{ gender.display_name }}</option>
+            </select>
+        </div>
+
+        <div class="col-xs-3">
+            <label>生日</label>
+            <input class="form-control" type="text" name="birthday"
+                   [(ngModel)]="user.profile.birthday" [disabled]="!isSuperUser && !isMyProfile">
+        </div>
+
+        <div class="col-xs-3">
+            <label>名字</label>
+            <input class="form-control" type="text" name="first_name"
+                   [(ngModel)]="user.profile.first_name" [disabled]="!isSuperUser && !isMyProfile">
+        </div>
+
+        <div class="col-xs-3">
+            <label>姓氏</label>
+            <input class="form-control" type="text" name="last_name"
+                   [(ngModel)]="user.profile.last_name" [disabled]="!isSuperUser && !isMyProfile">
+        </div>
+    </div>
+
+
+    <div class="row form-group">
+        <div class="col-xs-9">
+            <label>用户头像URL</label>
+            <input class="form-control" type="text" name="avatar"
+                   [(ngModel)]="user.profile.avatar" [disabled]="!isSuperUser && !isMyProfile">
+        </div>
+
+        <div class="col-xs-3">
+            <label>是否订阅</label>
+            <div>
+                <label class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="subscription"
+                           [ngModel]="user.profile.subscription"
+                           (ngModelChange)="user.profile.subscription"
+                           [disabled]="!isSuperUser && !isMyProfile"> 是
+                </label>
+
+                <label class="form-check-inline">
+                    <input class="form-check-input" type="radio" name="subscription"
+                           [ngModel]="!user.profile.subscription"
+                           (ngModelChange)="user.profile.subscription"
+                           [disabled]="!isSuperUser && !isMyProfile"> 否
+                </label>
             </div>
+        </div>
+    </div>
 
-            <div class="row form-group">
-                <div class="col-xs-6">
-                    <label>登录名</label>
-                    <input class="form-control" type="text" name="name" [ngModel]="user.name" disabled>
-                </div>
+    <div class="form-group row">
+        <div class="col-xs-12">
+            <label>简介 (最长255个字)</label>
+            <textarea class="form-control" type="text" rows="3" maxlength="255"
+                      name="description" [(ngModel)]="user.profile.description"
+                      [disabled]="!isSuperUser && !isMyProfile"></textarea>
+        </div>
+    </div>
+</accordion-group>
 
-                <div class="col-xs-6">
-                    <label>邮箱</label>
-                    <input class="form-control" type="text" name="email" [ngModel]="user.email" disabled>
-                </div>
-            </div>
+<accordion-group heading="消费信息" isOpen="true">
 
+    <div class="form-group row">
+        <div class="col-xs-3">
+            <label>可用积分</label>
+            <input class="form-control" type="text" name="point_available" [(ngModel)]="user.profile.point_available" disabled>
+        </div>
 
-            <div class="row form-group">
-                <div class="col-xs-3">
-                    <label>性别</label>
-                    <select name="gender" class="form-control" [(ngModel)]="user.profile.gender"
-                            [disabled]="!isSuperUser && !isMyProfile">
-                        <option *ngFor="let gender of genders" [value]="gender.key">{{ gender.display_name }}</option>
-                    </select>
-                </div>
+        <div class="col-xs-3">
+            <label>已消费积分</label>
+            <input class="form-control" type="text" name="point_used" [(ngModel)]="user.profile.point_used" disabled>
+        </div>
 
-                <div class="col-xs-3">
-                    <label>生日</label>
-                    <input class="form-control" type="text" name="birthday"
-                           [(ngModel)]="user.profile.birthday" [disabled]="!isSuperUser && !isMyProfile">
-                </div>
+        <div class="col-xs-3">
+            <label>账户余额 ({{ user.profile.currency }})</label>
+            <input class="form-control" type="text" name="money_available" [(ngModel)]="user.profile.money_available" disabled>
+        </div>
 
-                <div class="col-xs-3">
-                    <label>名字</label>
-                    <input class="form-control" type="text" name="first_name"
-                           [(ngModel)]="user.profile.first_name" [disabled]="!isSuperUser && !isMyProfile">
-                </div>
+        <div class="col-xs-3">
+            <label>已消费金额 ({{ user.profile.currency }})</label>
+            <input class="form-control" type="text" name="money_spent" [(ngModel)]="user.profile.money_spent" disabled>
+        </div>
+    </div>
 
-                <div class="col-xs-3">
-                    <label>姓氏</label>
-                    <input class="form-control" type="text" name="last_name"
-                           [(ngModel)]="user.profile.last_name" [disabled]="!isSuperUser && !isMyProfile">
-                </div>
-            </div>
+    <div class="form-group row">
+        <div class="col-xs-12">
+            <label>订单总数: {{ user.profile.order_count }}</label>
+        </div>
+    </div>
 
+    <div class="form-group row">
+        <div class="col-xs-12">
+            <label>当前购物车物品: {{ user.profile.cart_items }}</label>
+        </div>
+    </div>
 
-            <div class="row form-group">
-                <div class="col-xs-9">
-                    <label>用户头像URL</label>
-                    <input class="form-control" type="text" name="avatar"
-                           [(ngModel)]="user.profile.avatar" [disabled]="!isSuperUser && !isMyProfile">
-                </div>
-
-                <div class="col-xs-3">
-                    <label>是否订阅</label>
-                    <div>
-                        <label class="form-check-inline">
-                            <input class="form-check-input" type="radio" name="subscription"
-                                   [ngModel]="user.profile.subscription"
-                                   (ngModelChange)="user.profile.subscription"
-                                   [disabled]="!isSuperUser && !isMyProfile"> 是
-                        </label>
-
-                        <label class="form-check-inline">
-                            <input class="form-check-input" type="radio" name="subscription"
-                                   [ngModel]="!user.profile.subscription"
-                                   (ngModelChange)="user.profile.subscription"
-                                   [disabled]="!isSuperUser && !isMyProfile"> 否
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-xs-12">
-                    <label>简介 (最长255个字)</label>
-                    <textarea class="form-control" type="text" rows="3" maxlength="255"
-                              name="description" [(ngModel)]="user.profile.description"
-                              [disabled]="!isSuperUser && !isMyProfile"></textarea>
-                </div>
-            </div>
-
-            <div class="row form-group" *ngIf="isSuperUser || isMyProfile">
-                <div class="col-xs-12">
-                    <button type="submit" class="btn btn-primary btn-block"
-                            [disabled]="!profileForm.form.dirty">保存</button>
-                </div>
-            </div>
-        </accordion-group>
-
-        <accordion-group heading="消费信息" isOpen="true">
-
-            <div class="form-group row">
-                <div class="col-xs-3">
-                    <label>可用积分</label>
-                    <input class="form-control" type="text" name="point_available" [(ngModel)]="user.profile.point_available" disabled>
-                </div>
-
-                <div class="col-xs-3">
-                    <label>已消费积分</label>
-                    <input class="form-control" type="text" name="point_used" [(ngModel)]="user.profile.point_used" disabled>
-                </div>
-
-                <div class="col-xs-3">
-                    <label>账户余额 ({{ user.profile.currency }})</label>
-                    <input class="form-control" type="text" name="money_available" [(ngModel)]="user.profile.money_available" disabled>
-                </div>
-
-                <div class="col-xs-3">
-                    <label>已消费金额 ({{ user.profile.currency }})</label>
-                    <input class="form-control" type="text" name="money_spent" [(ngModel)]="user.profile.money_spent" disabled>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-xs-12">
-                    <label>订单总数: {{ user.profile.order_count }}</label>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-xs-12">
-                    <label>当前购物车物品: {{ user.profile.cart_items }}</label>
-                </div>
-            </div>
-
-        </accordion-group>
-
-    </accordion>
-</form>
+</accordion-group>
