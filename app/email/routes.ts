@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { AuthGuard }          from '../auth';
+import { EditorGuard }        from '../auth';
 import { EmailHomePage }      from '.';
 import { EmailTemplatesPage } from '.';
 import { EmailTemplatePage }  from '.';
@@ -12,7 +12,7 @@ export const emailRoutes: Routes = [
     /* Email management, FIXME: root path can't have a component! */
     {
         path: 'email',
-            canActivate: [AuthGuard],
+            canActivate: [EditorGuard],
         children: [
             { path: '', component: EmailHomePage },
             {

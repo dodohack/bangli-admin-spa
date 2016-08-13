@@ -1,7 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthGuard }         from './auth/guard';
-import { AuthService }       from './service/auth.service';
+import { BaseGuard }         from './auth';
 
 import { LostPasswordPage }  from './auth/lostpassword';
 import { ResetPasswordPage } from './auth/resetpassword';
@@ -32,12 +31,12 @@ const appRoutes: Routes = [
     ...shopRoutes,
     ...galleryRoutes,
 
-    {path: 'categories/product', component: ProductCategoriesPage, canActivate: [AuthGuard]},
+    {path: 'categories/product', component: ProductCategoriesPage, canActivate: [BaseGuard]},
  
 
     {
         path: 'vouchers',
-        canActivate: [AuthGuard],
+        canActivate: [BaseGuard],
         children: [
             { path: '', pathMatch: 'full', redirectTo: 'all/all/1' },
             { path: ':filter/:cond', redirectTo: ':filter/:cond/1' },
@@ -47,7 +46,7 @@ const appRoutes: Routes = [
 
     {
         path: 'voucher',
-        canActivate: [AuthGuard],
+        canActivate: [BaseGuard],
         children: [
             { path: '', pathMatch: 'full', redirectTo: 'new' },
             { path: ':id', component: VoucherPage }

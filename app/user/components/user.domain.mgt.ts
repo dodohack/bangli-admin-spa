@@ -13,7 +13,8 @@ let t = require('./user.domain.mgt.html');
 @Component({
     selector: 'user-domain-mgt',
     template: t,
-    directives: [ ACCORDION_DIRECTIVES ]
+    directives: [ ACCORDION_DIRECTIVES ],
+    providers: [ DomainService ]
 })
 export class UserDomainMgtTab implements AfterContentInit
 {

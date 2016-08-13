@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
 
-import { AuthGuard }     from '../auth';
+import { BaseGuard }     from '../auth';
 import { ImagesPage }    from '.';
 
 export const galleryRoutes: Routes = [
-    { path: 'gallery', canActivate: [AuthGuard], component: ImagesPage }
+    { path: 'gallery', canActivate: [BaseGuard], component: ImagesPage }
 ];

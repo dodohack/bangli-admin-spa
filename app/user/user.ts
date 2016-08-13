@@ -23,7 +23,7 @@ let t = require('./user.html');
     directives: [ TAB_DIRECTIVES,
         UserAuthProfileTab, UserPreferenceTab, 
         UserBaseProfileTab, UserShopProfileTab,
-        UserBabyProfileTab, UserDomainMgtTab ]
+        UserBabyProfileTab, UserDomainMgtTab ],
 })
 export class UserPage implements OnInit
 {

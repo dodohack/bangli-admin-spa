@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { AuthGuard }    from '../auth/guard';
+import { ShopMgrGuard } from '../auth';
 import { ProductsPage } from '.';
 import { ProductPage }  from '.';
 import { OrdersPage }   from '.';
@@ -12,7 +12,7 @@ export const shopRoutes: Routes = [
          * Products path
          */
         path: 'product',
-        canActivate: [AuthGuard],
+        canActivate: [ShopMgrGuard],
         children: [
 
             /* List of products */
@@ -34,7 +34,7 @@ export const shopRoutes: Routes = [
          * Order path
          */
         path: 'order',
-        canActivate: [AuthGuard],
+        canActivate: [ShopMgrGuard],
         children: [
 
             /* List of orders */

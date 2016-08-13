@@ -4,10 +4,14 @@ import { FormsModule }   from '@angular/forms';
 import { HttpModule }    from '@angular/http';
 import { Title }         from '@angular/platform-browser';
 
-import { AuthGuard }     from './auth';
+import { BaseGuard }     from './auth';
+import { AuthorGuard }   from './auth';
+import { EditorGuard }   from './auth';
+import { ShopMgrGuard }  from './auth';
+import { AdminGuard }    from './auth';
+import { SuperUserGuard} from './auth';
 import { AuthService }   from './service';
 import { UserService }   from './service';
-import { DomainService } from './service';
 import { routing }       from './app.routes';
 import { App }           from './app';
 
@@ -125,10 +129,14 @@ UserPreference.init();
     ],
     providers: [ 
         Title, 
-        AuthGuard, 
+        BaseGuard,
+        AuthorGuard,
+        EditorGuard,
+        ShopMgrGuard,
+        AdminGuard,
+        SuperUserGuard,
         AuthService, 
-        UserService, 
-        DomainService 
+        UserService
     ],
     bootstrap: [ App ]
 })

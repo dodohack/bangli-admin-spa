@@ -22,9 +22,11 @@ export class App
 
         // Redirect un-authenticated user to login page
         // TODO: Check user permission as well
+        /*
         if (!this.authService.isLoggedIn) {
             this.router.navigate(['/login']);
         }
+        */
     }
 
     get isLoggedIn() { return this.authService.isLoggedIn; }

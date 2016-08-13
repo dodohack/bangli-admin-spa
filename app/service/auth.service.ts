@@ -15,7 +15,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs';
 
 import { Domain, DOMAINS }      from '../models';
-import { Login, Register }      from '../models';
+import { UserRole }             from '../models';
 import { JwtPayLoad }           from "../models";
 import { AUTH }                 from "../api";
 import { API_END_POINTS }       from '../api';
@@ -25,6 +25,8 @@ var jwtDecode = require('jwt-decode');
 @Injectable()
 export class AuthService
 {
+    private role: UserRole;
+
     private decoded_jwt: JwtPayLoad;
     public jwt: string;
     
@@ -53,7 +55,7 @@ export class AuthService
 
         /* Token expired, refresh it */
         if (this.decoded_jwt.exp < now) {
-            this.refreshToken();
+            //this.refreshToken();
             // TODO: Remove this return
             return false;
         }
@@ -71,14 +73,26 @@ export class AuthService
     get API() { return API_END_POINTS[this.curDomain.key]; }
     get name(): string { return this.decoded_jwt.aud; }
     get uuid(): string { return this.decoded_jwt.sub; }
-    get isSuperUser(): boolean { return this.decoded_jwt.spu; }
+    get isSuperUser(): boolean { return this.decoded_jwt && this.decoded_jwt.spu; }
+    get isAdmin(): boolean {
+        return this.isSuperUser || (this.role && this.role.name === 'administrator');
+    }
+    get isShopMgr(): boolean {
+        return this.isAdmin || this.role.name === 'shop_manager';
+    }
+    get isEditor(): boolean {
+        return this.isShopMgr || this.role.name === 'editor';
+    }
+    get isAuthor(): boolean {
+        return this.isEditor || this.role.name === 'author';
+    }
 
     /**
      * FIXME: We should move user login logic from login.form.ts to here
      * Login user with given JWT and redirect user to dashboard
      * This function called on both register success and login success
      */
-    public login(response: any)
+    public login(response: any, isRefresh?: boolean)
     {
         let jwt = response['token'];
 
@@ -101,14 +115,19 @@ export class AuthService
         /* Init this.domains */
         this.initDomains(domains);
 
+        /* Init user site level permission as well */
+        if (!isRefresh)
+            this.initSiteLevelRole();
+
         /*
          * Remember user login so they don't need to re-login after restart the
          * browser.
          */
         localStorage.setItem('jwt', this.jwt);
 
-        /* Redirect user to dashboard */
-        this.router.navigate(['/']);
+        /* Redirect user to dashboard if user is first time login */
+        if (!isRefresh)
+            this.router.navigate(['/']);
     }
 
     /**
@@ -191,6 +210,29 @@ export class AuthService
         return this.http.post(api, body, options).map(res => res.json());        
     }
 
+    private _get(api: string)
+    {
+        /* Set http authenticate header */
+        let headers = new Headers({'Authorization': 'Bearer ' + this.jwt});
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.get(api, options).map(res => res.json());
+    }
+
+    /**
+     * Retrieve user permission from app server
+     * @returns {Observable<R>}
+     */
+    private getPermissions()
+    {
+        return this._get(this.API.permissions);
+    }
+
+    private getRole()
+    {
+        return this._get(this.API.role);
+    }
+
     /**
      * Refresh current token
      */
@@ -200,7 +242,7 @@ export class AuthService
         let jwt = localStorage.getItem('jwt');
         if (jwt) {
             let form = 'token=' + jwt;
-            this.postRefresh(form).subscribe(data => this.login(data));
+            this.postRefresh(form).subscribe(data => this.login(data, true));
         }
     }
 
@@ -264,4 +306,19 @@ export class AuthService
 
         return;
     }
+
+    /**
+     * When user's current domain is ready, we can init his permissions for
+     * current domain now.
+     */
+    private initSiteLevelRole()
+    {
+        if (!this.curDomain) {
+            console.error("User current domain is not ready!");
+            return;
+        }
+
+        this.getRole().subscribe(role => this.role = role);
+    }
+
 }

@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { AuthGuard }    from '../auth';
+import { AuthorGuard, EditorGuard } from '../auth';
 import { PostsPage }    from '.';
 import { PostPage }     from '.';
 import { TopicsPage }   from '.';
@@ -15,7 +15,7 @@ export const cmsRoutes: Routes = [
          * Posts path
          */
         path: 'post',
-        canActivate: [AuthGuard],
+        canActivate: [AuthorGuard],
         children: [
 
             /* List of posts */
@@ -36,7 +36,7 @@ export const cmsRoutes: Routes = [
          * Topics path
          */
         path: 'topic',
-        canActivate: [AuthGuard],
+        canActivate: [EditorGuard],
         children: [
 
             /* List of topics */
@@ -57,7 +57,7 @@ export const cmsRoutes: Routes = [
          * Pages path
          */
         path: 'page',
-        canActivate: [AuthGuard],
+        canActivate: [EditorGuard],
         children: [
 
             /* List of pages */

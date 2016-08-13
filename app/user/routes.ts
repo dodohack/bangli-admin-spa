@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router';
 
-import { AuthGuard }    from '../auth';
+import { AdminGuard }   from '../auth';
 import { UsersPage }    from '.';
 import { UserPage }     from '.';
 
 export const userRoutes: Routes = [
     {
         path: 'user',
-        canActivate: [AuthGuard],
+        canActivate: [ AdminGuard ],
         children: [
             /* List of users, '5' id of customer role */
             { path: '', pathMatch: 'full', redirectTo: 'list/5/1' },
