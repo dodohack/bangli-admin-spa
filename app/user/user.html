@@ -44,19 +44,29 @@ We have several tabs to switch between massive inputs
     </tab>
 
     <tab heading="密码授权" *ngIf="isMyProfile || isSuperUser">
-        <user-auth-profile [uuid]="uuid" [isMyProfile]="isMyProfile"
-                           [isSuperUser]="isSuperUser"></user-auth-profile>
+        <user-auth-profile [uuid]="uuid" [user]="user"
+                           [isMyProfile]="isMyProfile"
+                           [isSuperUser]="isSuperUser"
+                           (alerts)="displayAlerts($event)"></user-auth-profile>
     </tab>
 
     <!-- User can only see his permission, but can't edit -->
     <!-- User can't see others permission -->
     <!-- Super user can see and modify any user's permission -->
     <tab heading="后台权限" *ngIf="isMyProfile || isSuperUser">
-        <user-domain-mgt [uuid]="uuid" [isMyProfile]="isMyProfile"
-                         [isSuperUser]="isSuperUser"></user-domain-mgt>
+        <user-domain-mgt [uuid]="uuid"
+                         [isMyProfile]="isMyProfile"
+                         [isSuperUser]="isSuperUser"
+                         (alerts)="displayAlerts($event)"></user-domain-mgt>
     </tab>
 
     <tab heading="个人偏好" *ngIf="isMyProfile">
         <user-preference></user-preference>
     </tab>
 </tabset>
+
+<!-- Alerts area, fixed at left bottom -->
+<div class="alert-area" *ngIf="alerts && alerts.length">
+    <alert *ngFor="let alert of alerts; let i = index" [type]="alert.type"
+           dismissOnTimeout="2000">{{alert?.msg}}</alert>
+</div>

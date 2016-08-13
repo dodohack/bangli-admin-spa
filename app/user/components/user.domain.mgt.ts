@@ -1,8 +1,8 @@
 /**
  * Display backend user website accessibility, role and permission.
  */
-import { Component, Input, AfterContentInit } from '@angular/core';
-import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
+import { Component, Input, Output}       from '@angular/core';
+import {EventEmitter, AfterContentInit } from '@angular/core';
 
 import { User }            from '../../models';
 import { Domain, DOMAINS } from '../../models/domain'
@@ -14,7 +14,6 @@ let t = require('./user.domain.mgt.html');
 @Component({
     selector: 'user-domain-mgt',
     template: t,
-    directives: [ ACCORDION_DIRECTIVES ],
     providers: [ DomainService ]
 })
 export class UserDomainMgtTab implements AfterContentInit
@@ -27,6 +26,9 @@ export class UserDomainMgtTab implements AfterContentInit
     
     @Input()
     isSuperUser: boolean;
+
+    @Output()
+    alerts = new EventEmitter();
 
     /* Websites user can access */
     domains: Domain[] = [];
@@ -69,7 +71,7 @@ export class UserDomainMgtTab implements AfterContentInit
         console.log("domains to be submitted:", this.domains);
         // Submit allWebsites which contains checked status
         this.domainService.postDomains(this.uuid, this.domains)
-            .subscribe(status => console.log(status));
+            .subscribe(ret => this.alerts.emit(ret));
     }
 
     /* Save per website permssions for user to business api server */

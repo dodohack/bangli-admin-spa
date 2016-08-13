@@ -1,9 +1,49 @@
-<h3>User auth profile page</h3>
-<p>
-    Includes:<br>
-    1. Choose this user can manage which websites at backend? (bangli-auth domain)<br>
-    2. Invalidate user token (bangli-auth + huluwa-api domains)<br>
-    3. Change password (bangli-auth + huluwa-api domains)??<br>
-    4. Chnage email address. (bangli-auth + huluwa-api domains)??<br>
-    5. Change user permission for each website (huluwa-api/bangli-api etc domains)<br>
-</p>
+<accordion>
+        <accordion-group heading="授权信息" isOpen="true">
+            <form *ngIf="user" (ngSubmit)="onSubmit()">
+                <div class="row form-group">
+                    <div class="col-xs-6">
+                        <label>登录名</label>
+                        <input class="form-control" type="text" name="name"
+                               [ngModel]="user.name" disabled>
+                    </div>
+
+                    <div class="col-xs-6">
+                        <label>邮箱</label>
+                        <input class="form-control" type="text" name="email"
+                               [ngModel]="user.email" disabled>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-xs-6">
+                        <label>密码</label>
+                        <input class="form-control" type="password"
+                               name="password" [(ngModel)]="password">
+
+                    </div>
+
+                    <div class="col-xs-6">
+                        <label>重复密码</label>
+                        <input class="form-control" type="password"
+                               name="password_repeat" [(ngModel)]="password_repeat">
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-xs-12">
+                        <div class="alert alert-danger" *ngIf="password && password_repeat && password !== password_repeat">
+                            两次输入的密码不一致
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" [disabled]="!password || !password_repeat || password !== password_repeat">
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </accordion-group>
+
+    <accordion-group heading="已登录设备" isOpen="true">
+        <div class="alert alert-info">Invalidate user token (bangli-auth + huluwa-api domains)</div>
+    </accordion-group>
+</accordion>

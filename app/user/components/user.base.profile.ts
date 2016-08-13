@@ -4,7 +4,6 @@
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
 import { UserService } from '../../service';
 import { USER_GENDERS, User } from '../../models';
 
@@ -12,7 +11,6 @@ let t = require('./user.base.profile.html');
 @Component({
     selector: 'user-base-profile',
     template: t,
-    directives: [ ACCORDION_DIRECTIVES ]
 })
 export class UserBaseProfileTab
 {

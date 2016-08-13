@@ -67,30 +67,24 @@ export class UserService
         return this.http.get(endpoint, this.options).map(res => res.json());
     }
 
-    public postUserBaseProfile(user)
+    public postUserBaseProfile(user: User)
     {
-        let endpoint = this.authService.API.user_base_profile;
-        
-        // TODO
-        let body = JSON.stringify(user);
-        console.log("Saving user profile: ", body);
-
-        return this.http.post(endpoint, body, this.options).map(res => res.json());
+        return this.post(this.authService.API.user_base_profile, user);
     }
-    public postUserProfile(user)
+    public postUserProfile(user: User)
     {
-        let endpoint = this.authService.API.user_profile;
-
-        // TODO
-        let body = JSON.stringify(user);
-        console.log("Saving user profile: ", body);
-
-        return this.http.post(endpoint, body, this.options).map(res => res.json());
+        return this.post(this.authService.API.user_profile, user);
     }
 
     
     ///////////////////////////////////////////////////////////////////////////
     // Private helper functions
+
+    private post(endpoint: string, user: User)
+    {
+        let body = JSON.stringify(user);
+        return this.http.post(endpoint, body, this.options).map(res => res.json());
+    }
 
     /**
      * Retrive user roles and number of users for each role.

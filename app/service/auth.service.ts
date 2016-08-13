@@ -246,6 +246,10 @@ export class AuthService
     {
         return this.post(AUTH.register, form);
     }
+    public postUpdatePassword(form: string)
+    {
+        return this.post(AUTH.update_password, form);
+    }
     
     
     //////////////////////////////////////////////////////////////////////////

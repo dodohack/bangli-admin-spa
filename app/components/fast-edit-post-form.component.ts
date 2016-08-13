@@ -1,20 +1,17 @@
 /**
  * This is the form template used to in fast editing a post in post list
  */
-import { Component, Input, Output, EventEmitter, AfterContentInit } from '@angular/core';
-import { NgForm }    from '@angular/forms';
+import { Component, EventEmitter }         from '@angular/core';
+import { Input, Output, AfterContentInit } from '@angular/core';
 
 import { User, Post } from '../models';
 import { POST_STATUSES } from '../models';
-import { PostCttCloudComponent } from './post-ctt-cloud.component';
-
 import { zh_CN } from '../localization';
 
-let template = require('./fast-edit-post-form.html');
+let t = require('./fast-edit-post-form.html');
 @Component({
     selector: 'fast-edit-post-form',
-    template: template,
-    directives: [ PostCttCloudComponent ]
+    template: t
 })
 export class FastEditPostFormComponent implements AfterContentInit {
 

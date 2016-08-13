@@ -1,103 +1,80 @@
-<accordion>
-    <accordion-group heading="站点访问权限" isOpen=true>
 
-        <div class="alert alert-danger">
-            如果在同一路径下切换页面(从其他用户切到当前用户),页面不会重新创建, 或导致所有变量无法重新从服务器读取,
-            需要在每个具体的tab页面subscribe ActivatedRoute的改变,或者是从UserPage发送事件到子组件,子组件
-            监听这个事件!
-            NOTE: 如果选中了用户可以管理其他站点,还需要检查此用户是否被添加到了其他站点。
-            NOTE: 如果用户没有后台权限(dashboard_user), 选中了站点需要同时开启用户的后台权限。
+<div class="alert alert-danger">
+    如果在同一路径下切换页面(从其他用户切到当前用户),页面不会重新创建, 或导致所有变量无法重新从服务器读取,
+    需要在每个具体的tab页面subscribe ActivatedRoute的改变,或者是从UserPage发送事件到子组件,子组件
+    监听这个事件!
+    NOTE: 如果选中了用户可以管理其他站点,还需要检查此用户是否被添加到了其他站点。
+    NOTE: 如果用户没有后台权限(dashboard_user), 选中了站点需要同时开启用户的后台权限。
+</div>
+
+<form (ngSubmit)="onSubmitDomains()" #websiteMgtForm="ngForm">
+    <table class="table table-hover" style="font-size: 85%">
+        <thead class="thead-default">
+        <tr>
+            <th width="10%">可否访问</th>
+            <th width="10%">用户权限</th>
+            <th width="10%">站点Key</th>
+            <th width="20%">站点名字</th>
+            <th width="20%">站点域名</th>
+            <th width="30%">站点API</th>
+        </tr>
+        </thead>
+
+        <!-- Manage user domain, super-user only view -->
+        <tbody *ngIf="!isMyProfile && isSuperUser">
+            <tr *ngFor="let domain of domains; let i=index">
+                <td>
+                    <label class="form-check-inline">
+                        <input class="form-check-input" type="checkbox"
+                               name="du[]"  [checked]="domain.checked"
+                               (change)="domain.checked = $event.target.checked">
+                        {{ domain.checked ? '是' : '否' }}
+                    </label>
+                </td>
+                <td>
+                    <select name="perm{{i}}" class="form-control"
+                            [(ngModel)]="domain.userRoleId" [disabled]="!domain.checked">
+                        <option *ngFor="let role of userRoles" [value]="role.id">{{ role.display_name}}</option>
+                    </select>
+                </td>
+                <td>{{ domain.key }}</td>
+                <td>{{ domain.name }}</td>
+                <td>{{ domain.url }}</td>
+                <td>{{ domain.api }}</td>
+            </tr>
+        </tbody>
+
+        <!-- View my domain -->
+        <tbody *ngIf="isMyProfile">
+        <tr *ngFor="let domain of myDomains; let i=index">
+            <td>
+                <label class="form-check-inline">
+                    <!-- Only super-user can edit -->
+                    <input *ngIf="isSuperUser"
+                           class="form-check-input" type="checkbox"
+                           name="dm[]"  [checked]="domain.checked"
+                           (change)="domain.checked = $event.target.checked">
+                    {{ domain.checked ? '是' : '否' }}
+                </label>
+            </td>
+            <td>
+                <select name="myperm{{i}}" class="form-control"
+                        [(ngModel)]="domain.userRoleId" [disabled]="!domain.checked">
+                    <option *ngFor="let role of userRoles" [value]="role.id">{{ role.display_name}}</option>
+                </select>
+            </td>
+            <td>{{ domain.key }}</td>
+            <td>{{ domain.name }}</td>
+            <td>{{ domain.url }}</td>
+            <td>{{ domain.api }}</td>
+        </tr>
+        </tbody>
+
+    </table>
+
+    <div class="row form-group" *ngIf="isSuperUser">
+        <div class="col-xs-12">
+            <button type="submit" class="btn btn-primary btn-block">保存</button>
         </div>
-
-        <form (ngSubmit)="onSubmitDomains()" #websiteMgtForm="ngForm">
-            <table class="table table-hover" style="font-size: 85%">
-                <thead class="thead-default">
-                <tr>
-                    <th width="10%">可否访问</th>
-                    <th width="10%">用户权限</th>
-                    <th width="10%">站点Key</th>
-                    <th width="20%">站点名字</th>
-                    <th width="20%">站点域名</th>
-                    <th width="30%">站点API</th>
-                </tr>
-                </thead>
-
-                <!-- Manage user domain, super-user only view -->
-                <tbody *ngIf="!isMyProfile && isSuperUser">
-                    <tr *ngFor="let domain of domains; let i=index">
-                        <td>
-                            <label class="form-check-inline">
-                                <input class="form-check-input" type="checkbox"
-                                       name="du[]"  [checked]="domain.checked"
-                                       (change)="domain.checked = $event.target.checked">
-                                {{ domain.checked ? '是' : '否' }}
-                            </label>
-                        </td>
-                        <td>
-                            <select name="perm{{i}}" class="form-control"
-                                    [(ngModel)]="domain.userRoleId" [disabled]="!domain.checked">
-                                <option *ngFor="let role of userRoles" [value]="role.id">{{ role.display_name}}</option>
-                            </select>
-                        </td>
-                        <td>{{ domain.key }}</td>
-                        <td>{{ domain.name }}</td>
-                        <td>{{ domain.url }}</td>
-                        <td>{{ domain.api }}</td>
-                    </tr>
-                </tbody>
-
-                <!-- View my domain -->
-                <tbody *ngIf="isMyProfile">
-                <tr *ngFor="let domain of myDomains; let i=index">
-                    <td>
-                        <label class="form-check-inline">
-                            <!-- Only super-user can edit -->
-                            <input *ngIf="isSuperUser"
-                                   class="form-check-input" type="checkbox"
-                                   name="dm[]"  [checked]="domain.checked"
-                                   (change)="domain.checked = $event.target.checked">
-                            {{ domain.checked ? '是' : '否' }}
-                        </label>
-                    </td>
-                    <td>
-                        <select name="myperm{{i}}" class="form-control"
-                                [(ngModel)]="domain.userRoleId" [disabled]="!domain.checked">
-                            <option *ngFor="let role of userRoles" [value]="role.id">{{ role.display_name}}</option>
-                        </select>
-                    </td>
-                    <td>{{ domain.key }}</td>
-                    <td>{{ domain.name }}</td>
-                    <td>{{ domain.url }}</td>
-                    <td>{{ domain.api }}</td>
-                </tr>
-                </tbody>
-
-            </table>
-
-            <div class="row form-group" *ngIf="isSuperUser">
-                <div class="col-xs-12">
-                    <button type="submit" class="btn btn-primary btn-block">保存</button>
-                </div>
-            </div>
-        </form>
-    </accordion-group>
-
-
-    <accordion-group heading="单个站点用户权限" isOpen=true>
-
-        <p> 遍历所有用户存在的站点,每个站点的权限使用一个accordion-group分类。
-            Change user permission for each website (huluwa-api/bangli-api etc domains)
-        </p>
-
-
-        <form (ngSubmit)="onSubmitDomainPerms()" #websitePermForm="ngForm">
-
-
-            <div class="row form-group"><div class="col-xs-12">
-                <button type="submit" class="btn btn-outline-primary"
-                        [disabled]="!websiteMgtForm.form.dirty">保存</button>
-            </div></div>
-        </form>
-    </accordion-group>
-
-</accordion>
+    </div>
+</form>

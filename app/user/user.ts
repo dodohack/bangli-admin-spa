@@ -23,7 +23,7 @@ import { User } from "../models";
 let t = require('./user.html');
 @Component({
     template: t,
-    directives: [ TAB_DIRECTIVES,
+    directives: [
         UserAuthProfileTab, UserPreferenceTab, 
         UserBaseProfileTab, UserShippingProfileTab,
         UserBabyProfileTab, UserDomainMgtTab ],
@@ -33,7 +33,7 @@ export class UserPage implements OnInit
     /* uuid of current editing user */
     uuid: string;
     
-    alert = Array<Object>();
+    alerts = Array<Object>();
     
     user: User;
 
@@ -54,10 +54,22 @@ export class UserPage implements OnInit
             .subscribe(
                 ret => {
                     if (ret['status'] == 0)
-                        this.alert.push({type: 'success', msg: '保存成功'});
+                        this.alerts.push({type: 'success', msg: '保存成功'});
                     else
-                        this.alert.push({type: 'danger', msg: '保存失败: ' + ret['msg']});
+                        this.alerts.push({type: 'danger', msg: '保存失败: ' + ret['msg']});
                 });
+    }
+
+    /**
+     * Event from child view
+     * @param $event
+     */
+    displayAlerts($event)
+    {
+        if($event['status'] == 0)
+            this.alerts.push({type: 'success', msg: '保存成功'});
+        else
+            this.alerts.push({type: 'danger', msg: '保存失败: ' + $event['msg']});
     }
     
     /* If the user current editing is myself or not */

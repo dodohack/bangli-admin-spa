@@ -4,6 +4,11 @@ import { FormsModule }   from '@angular/forms';
 import { HttpModule }    from '@angular/http';
 import { Title }         from '@angular/platform-browser';
 
+import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
+import { AlertComponent }       from 'ng2-bootstrap';
+import { TYPEAHEAD_DIRECTIVES } from 'ng2-bootstrap';
+import { TAB_DIRECTIVES }       from 'ng2-bootstrap';
+
 import { BaseGuard }     from './auth';
 import { AuthorGuard }   from './auth';
 import { EditorGuard }   from './auth';
@@ -73,6 +78,11 @@ UserPreference.init();
         HttpModule
     ],
     declarations: [
+        ACCORDION_DIRECTIVES,
+        TYPEAHEAD_DIRECTIVES,
+        TAB_DIRECTIVES,
+        AlertComponent,
+        
         App,
         /* Components */
         CategoryTreeComponent,

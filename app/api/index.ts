@@ -28,6 +28,7 @@ export const AUTH = {
     register: AUTH_API_BASE + '/register',
     login:    AUTH_API_BASE + '/login',
     refresh:  AUTH_API_BASE + '/refresh',
+    update_password: AUTH_API_BASE + '/update_password',
     
     /* Domains get/post api */
     domains: AUTH_API_BASE + '/domains',
