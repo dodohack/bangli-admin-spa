@@ -2,6 +2,19 @@
  * Order statuses and number of orders per status
  */
 
+export const ORDER_STATUSES = [
+    'pending',
+    'processing',
+    'shipped',
+    'completed',
+    'cancelled',
+    'refunded',
+    'failed',
+    'trash'
+];
+
+export const CARRIERS = [ 'BP', 'PF' ];
+
 export class OrderStatus {
     /* Number of orders in current status */
     count: number;

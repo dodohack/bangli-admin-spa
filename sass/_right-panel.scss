@@ -1,0 +1,69 @@
+
+/* Right side panel */
+
+.right-panel {
+  z-index: 999;
+  position: fixed;
+  top: $topbar-height;
+  bottom: 0;
+  right: -400px;
+  width: 400px;
+  background: #FFFFFF;
+  transition: .2s ease-in-out;
+
+  .panel-nav {
+    height: 2rem;
+    border-bottom: 2px dashed #7d7d7d;
+    background-color: #b9b9b9;
+
+    button {
+      margin: 0 0.5rem;
+      height: 100%;
+
+      /* Panel title */
+      &.title {
+
+      }
+
+      &.pre,
+      &.next {
+
+      }
+
+      /* Panel close button */
+      &.close {
+        color: red;
+        padding: 0 0.75rem;
+        margin-right: 0;
+        background-color: darkgrey;
+        opacity: 0.6;
+        &:hover { opacity: 0.9 }
+      }
+    }
+  }
+
+  .panel-content,
+  .tab-content {
+    background: #e5e5e5;
+    padding: 0.5rem;
+    height: 100%;
+    overflow-y: scroll;
+  }
+}
+
+/* Large right panel */
+.right-panel-lg {
+  right: -600px;
+  width: 600px;
+}
+
+/* Small right panel */
+.right-panel-sm {
+  right: -280px;
+  width: -280px
+}
+
+.show-right-panel {
+  right: 0 !important;
+  box-shadow: -5px 0px 5px #888;
+}

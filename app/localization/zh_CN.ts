@@ -9,7 +9,7 @@ export const zh_CN = {
         featured: '置顶',
         pending: '待审',
         draft: '草稿',
-        trash: '回收站',
+        trashed: '回收站',
 
         /* Post type */
         creative: '原创',
@@ -29,12 +29,23 @@ export const zh_CN = {
 
     order: {
         /* Order status */
-        cancelled: '已取消',
-        completed: '已完成',
         pending: '待付款',
+        cancelled: '已取消',
+        shipped: '已发货',
+        completed: '已完成',
         processing: '处理中',
         refunded: '已退款',
-        trash: '回收站'
+        failed: '失败订单',
+        trash: '回收站',
+
+        /* Gateway */
+        alipay: '支付宝',
+        wxpay: '微信支付',
+        wxpay_scan: '微信扫码',
+
+        /* carrier */
+        BP: '比利时邮政',
+        PF: '英国邮政',
     },
 
     user: {

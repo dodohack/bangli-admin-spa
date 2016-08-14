@@ -32,6 +32,7 @@ import { SearchBoxComponent }        from './components';
 import { SidebarComponent }          from './components';
 import { TopbarComponent}            from './components';
 import { TagCloudComponent }         from './components';
+import { DateFilterComponent }       from './components';
 
 import { LoginPage }      from './auth';
 import { RegisterPage }   from './auth';
@@ -55,7 +56,6 @@ import { ImagesPage }     from './gallery';
 import { ProductsPage }   from './shop';
 import { ProductPage }    from './shop';
 import { OrdersPage }     from './shop';
-import { OrderPage }      from './shop';
 
 import { UsersPage }      from './user';
 import { UserPage }       from './user';
@@ -95,6 +95,7 @@ UserPreference.init();
         SidebarComponent,
         TopbarComponent,
         TagCloudComponent,
+        DateFilterComponent,
         
         /* AUTH */
         LoginPage,
@@ -124,7 +125,6 @@ UserPreference.init();
         ProductsPage,
         ProductPage,
         OrdersPage,
-        OrderPage,
 
         /* Email */
         EmailHomePage,

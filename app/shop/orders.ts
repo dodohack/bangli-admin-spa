@@ -1,33 +1,24 @@
 /**
- * This is the component for single order
+ * This is the component for orders list, single order editing.
  */
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 
-import { OrderStatus, Pagination }     from '../models';
-import { OrderService } from '../service/order.service';
-import {
-    PaginatorComponent, DateFilterComponent,
-    SearchBoxComponent, ListPageHeaderComponent,
-    ListPageMenuComponent } from "../components";
+import { CARRIERS, ORDER_STATUSES, Order, Pagination } from '../models';
+import { OrderService }      from '../service';
 
 import { zh_CN }    from '../localization';
 
-let template = require('./orders.html');
+let t = require('./orders.html');
 @Component({
-    template: template,
-    directives: [
-        PaginatorComponent,
-        DateFilterComponent,
-        SearchBoxComponent,
-        ListPageHeaderComponent,
-        ListPageMenuComponent
-    ],
+    template: t,
     providers: [ OrderService ]
 })
 export class OrdersPage implements OnInit
 {
+    hideRightPanel = true;
+    
     /* Parameter to <list-page-menu> */
     baseUrl = 'order/list';
     /* Parameter to <paginator> */
@@ -38,11 +29,17 @@ export class OrdersPage implements OnInit
 
     /* The list of orders */
     orders: any;
+    /* Order index and order, the order we are current editing */
+    index: number;
+    order: Order;
 
     /* If select all checkbox is checked or not */
     checkedAll: boolean = false;
 
     pagination = new Pagination;
+    
+    /* New an empty object array */
+    alerts = Array<Object>();
 
     constructor(private route: ActivatedRoute,
                 private orderService: OrderService) {}
@@ -64,6 +61,8 @@ export class OrdersPage implements OnInit
 
     get zh() { return zh_CN.order; }
     get statuses() { return this.orderService.statuses; }
+    get availableStatuses() { return ORDER_STATUSES; }
+    get availableCarriers() { return CARRIERS; }
 
     private getOrdersList()
     {
@@ -71,6 +70,18 @@ export class OrdersPage implements OnInit
             .subscribe(
                 json => {
                     this.orders = json['data'];
+                    for (let i = 0; i < this.orders.length; i++) {
+                        /* Convert MySQL JSON entries into array */
+                        if (this.orders[i]['shippings'])
+                            this.orders[i]['shippings'] = JSON.parse(this.orders[i]['shippings']);
+                        if (this.orders[i]['billings'])
+                            this.orders[i]['billings'] = JSON.parse(this.orders[i]['billings']);
+                        if (this.orders[i]['update_history'])
+                            this.orders[i]['update_history'] = JSON.parse(this.orders[i]['update_history']);
+                        if (this.orders[i]['products'])
+                            this.orders[i]['products'] = JSON.parse(this.orders[i]['products']);
+                        //console.log(this.orders[i]['shippings']);
+                    }
                     this.pagination.setup(json);
                 },
                 error => console.error(error),
@@ -123,7 +134,8 @@ export class OrdersPage implements OnInit
      */
     private orderItemCount(order)
     {
-        let json = JSON.parse(order['products']);
+        //let json = JSON.parse(order['products']);
+        let json = order['products'];
         
         let length = json.length;
         let count  = 0;
@@ -139,9 +151,10 @@ export class OrdersPage implements OnInit
      * Get tracking number of given order
      * @param order
      */
-    private orderTracking(order)
+    private orderTracking(order: Order)
     {
-        let json = JSON.parse(order['shippings']);
+        //let json = JSON.parse(order['shippings']);
+        let json = order['shippings'];
 
         let length = json.length;
         let tracking = '';
@@ -152,5 +165,22 @@ export class OrdersPage implements OnInit
         }
 
         return tracking;
+    }
+    
+    private editOrder(index: number)
+    {
+        if (index < 0) {
+            index = 0;
+            this.alerts.push({type: 'danger', msg: '已经是第一个订单了!'});
+        }
+
+        if (index > this.orders.length - 1) {
+            index = this.orders.length - 1;
+            this.alerts.push({type: 'danger', msg: '已经是最后一个订单了!'});
+        }
+
+        this.hideRightPanel = false;
+        this.index = index;
+        this.order = this.orders[this.index];
     }
 }

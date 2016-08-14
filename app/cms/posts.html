@@ -126,7 +126,7 @@
 
 
 <!-- Right side bar -->
-<div class="right-side-bar" [class.show-right-side-bar]="!hideRightBar">
+<div class="right-panel" [class.show-right-panel]="!hideRightBar">
     <tabset [justified]="true" *ngIf="!hideRightBar">
         <tab heading="分类" [active]="tabs['cat']"
              (select)="tabs['cat'] = true" (deselect)="tabs['cat'] = false">

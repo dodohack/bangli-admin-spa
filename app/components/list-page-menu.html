@@ -1,6 +1,8 @@
 <ul class="nav navbar-nav">
     <li class="nav-item">
+        <!-- FIXME: can't have slash in url parameter, it is encoded into %2F -->
         <a class="nav-link" [routerLink]="['/', baseUrl]" routerLinkActive="active">全部</a>
+        <!--<a class="nav-link" [routerLink]="['/', 'baseUrl', 'hello']">全部</a>-->
     </li>
 
     <li *ngIf="byMe">

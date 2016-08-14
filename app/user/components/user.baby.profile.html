@@ -1,4 +1,8 @@
-<accordion-group heading="宝宝信息" isOpen="true">
+<accordion-group isOpen="true">
+    <div accordion-heading>
+        宝宝信息<i class="pull-right fa fa-chevron-circle-down"></i>
+    </div>
+
     <div *ngIf="user && !user.baby_profiles.length" class="alert alert-info">
         用户没有填写任何关于她宝宝的信息
     </div>

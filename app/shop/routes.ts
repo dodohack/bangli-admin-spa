@@ -43,10 +43,6 @@ export const shopRoutes: Routes = [
             { path: 'list/:status',             redirectTo: 'list/status/:status/1' },
             { path: 'list/status/:status',      redirectTo: 'list/status/:status/1' },
             { path: 'list/status/:status/:page', component: OrdersPage },
-
-            /* Single order */
-            { path: 'new', component: OrderPage },
-            { path: ':id', component: OrderPage }
         ]
     },
 ];

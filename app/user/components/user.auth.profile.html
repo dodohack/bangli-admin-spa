@@ -1,5 +1,9 @@
 <accordion>
-        <accordion-group heading="授权信息" isOpen="true">
+        <accordion-group isOpen="true">
+            <div accordion-heading>
+                授权信息<i class="pull-right fa fa-chevron-circle-down"></i>
+            </div>
+
             <form *ngIf="user" (ngSubmit)="onSubmit()">
                 <div class="row form-group">
                     <div class="col-xs-6">
@@ -43,7 +47,11 @@
             </form>
         </accordion-group>
 
-    <accordion-group heading="已登录设备" isOpen="true">
+    <accordion-group isOpen="true">
+        <div accordion-heading>
+            已登录设备<i class="pull-right fa fa-chevron-circle-down"></i>
+        </div>
+
         <div class="alert alert-info">Invalidate user token (bangli-auth + huluwa-api domains)</div>
     </accordion-group>
 </accordion>

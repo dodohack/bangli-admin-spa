@@ -29,30 +29,6 @@
   margin-bottom: 2rem;
 }
 
-/* Right sidebar */
-
-.right-side-bar {
-  z-index: 999;
-  padding: 0.5rem;
-  position: fixed;
-  top: $topbar-height;
-  bottom: 0;
-  right: -400px;
-  width: 400px;
-  background: #FFFFFF;
-  transition: .3s ease-in-out;
-
-  .tab-content {
-    height: 100%;
-    overflow-y: scroll;
-  }
-}
-
-.show-right-side-bar {
-  right: 0;
-  box-shadow: -5px 0px 5px #888;
-}
-
 .nav-tabs {
   margin-bottom: 0.25rem;
 

@@ -1,7 +1,11 @@
 <form (ngSubmit)="save()" #settingForm="ngForm">
 
 <accordion>
-    <accordion-group heading="使用偏好设置" isOpen=true>
+    <accordion-group isOpen=true>
+        <div accordion-heading>
+            使用偏好设置<i class="pull-right fa fa-chevron-circle-down"></i>
+        </div>
+
         <div class="row form-group">
             <div class="col-xs-4">
                 <label>侧栏目录</label>
@@ -49,8 +53,16 @@
         </div>
     </accordion-group>
 
-    <accordion-group heading="自定义目录" isOpen=true>
+    <accordion-group isOpen=true>
+        <div accordion-heading>
+            自定义目录<i class="pull-right fa fa-chevron-circle-down"></i>
+        </div>
+
+        <div class="alert alert-danger">
+            自定义顶部和侧栏目录
+        </div>
     </accordion-group>
+
 </accordion>
 
     <div class="row form-group">

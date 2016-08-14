@@ -1,18 +1,53 @@
 // In bootstrap 4, there is no 'panel', so we have our own here
 
 .panel {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 1px 1px rgba(0,0,0,.04);
+  background: #fff;
+}
+
+.panel-heading {
+  background: #e5ffd4; //#c5c5c5;
+}
+
+.panel-open {
+  .panel-heading {
+    background: #f3f3f3;
+    border-bottom: 1px solid #e5e5e5;
+  }
+}
+
+.panel-title,
+.panel-body {
+  padding: 0.5rem;
 }
 
 h4.panel-title {
-  background: #dcdada;
-  border-radius: 3px;
-  font-size: 1.25rem;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  margin: 0;
+  font-size: 1rem;
   cursor: pointer;
+  
+  a { 
+    color: black !important;
+    text-decoration: none;
+
+    i { color: grey; }
+
+    /* Disable ng2-bootstrap a:focus style in accordion */
+    &:focus { outline: 0; }
+  }
 
   &:hover {
-    background: #cecece;
+    background: #e5ffd4;
   }
+}
+
+.panel-body {
+
 }
