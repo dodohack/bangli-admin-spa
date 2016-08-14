@@ -46,6 +46,7 @@ export const emailRoutes: Routes = [
                     { path: '', pathMatch: 'full', redirectTo: 'new' },
                     { path: ':id', component: NewsletterPage }
                 ]
-            },
+            }
+        ]
     },
 ];
