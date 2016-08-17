@@ -1,5 +1,5 @@
 export * from './guard';
-export * from './new-login';
+export * from './login';
 export * from './register';
 /* TODO: Refactor following modules */
 export * from './logout';

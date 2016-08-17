@@ -1,57 +1,31 @@
 /**
- * This is the login page for backend
+ * This login process uses ngrx/store, once this is working, old login will
+ * be deprecated.
  */
+import { Component } from '@angular/core';
+import { Router }    from '@angular/router';
+import { Store }     from '@ngrx/store';
 
-import { Component }       from '@angular/core';
-import { Router }          from '@angular/router';
+import { AppState }    from '../reducers';
+import { AuthService } from '../service';
+import { Login }       from '../models';
+import {AuthActions} from "../actions/auth";
+import {User} from "../models/user";
+import {Observable} from "rxjs/Rx";
 
-import { AuthService }     from '../service';
-import { Login }           from '../models';
-import { API_END_POINTS }  from '../api';
-
-let template = require('./login.html');
+let t = require('./login.html');
 @Component({
-    template: template
+    template: t
 })
 export class LoginPage
 {
-    error: string;
     form: Login;
-
-    constructor(private router: Router,
-                private authService: AuthService)
-    {
-
-        //this.form = new Login('', '');
-        
-        /* Redirect user if already logged in */
-        if (this.authService.isLoggedIn)
-            this.router.navigate(['/']);
+    auth: Observable<any>;
+    constructor(private store: Store<AppState>) {
+        this.auth = store.select('auth');
     }
 
-    /* Stage 1 user migration is always from huluwa.uk */
-    get stage1MigrationUrl() {
-        let API = API_END_POINTS['huluwa_uk'];
-        return API.migrate_user_stage1;
-    }
-
-    /* Triggered when user clicks on submit button */
-    onSubmit()
-    {
-        /* Reset error massage */
-        this.error = '';
-        /*
-        this.authService.postLogin(this.form.stringify()).subscribe(
-            data  => {
-                // Validate server response and login user on success
-                this.error = this.authService.login(data);
-            },
-            error => {
-                // FIXME: Always return this error message
-                this.error = "邮箱或密码错误!";
-                //console.error(error['error']);
-            }
-        );
-        */
+    onSubmit() {
+        this.store.dispatch({type: AuthActions.LOGIN, payload: this.form});
     }
 }
