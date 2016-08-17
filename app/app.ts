@@ -6,14 +6,14 @@ import { Component }         from '@angular/core';
 import { Router }            from '@angular/router';
 
 import { AuthService }       from './service';
-import { TopbarComponent, SidebarComponent }  from './components';
-import { UserPreference } from './preference';
+import { UserPreference }    from './preference';
 
-let template = require('./app.html');
+import { AppState }          from './reducers';
+
+let t = require('./app.html');
 @Component({
     selector: 'admin-spa',
-    template: template,
-    directives: [TopbarComponent, SidebarComponent]
+    template: t
 })
 export class App
 {

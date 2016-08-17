@@ -74,8 +74,11 @@ export class User {
     name: string;
     display_name: string;
     email: string;
+    password: string;
     created_at: string;
     
     role: UserRole;
     profile: UserProfile;
+
+    public stringify(): string { return 'email=' + this.email + '&password=' + this.password; }
 }

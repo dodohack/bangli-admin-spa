@@ -22,7 +22,7 @@ export class LoginPage
                 private authService: AuthService)
     {
 
-        this.form = new Login('', '');
+        //this.form = new Login('', '');
         
         /* Redirect user if already logged in */
         if (this.authService.isLoggedIn)
@@ -40,17 +40,18 @@ export class LoginPage
     {
         /* Reset error massage */
         this.error = '';
-
+        /*
         this.authService.postLogin(this.form.stringify()).subscribe(
             data  => {
-                /* Validate server response and login user on success */
+                // Validate server response and login user on success
                 this.error = this.authService.login(data);
             },
             error => {
-                /* FIXME: Always return this error message */
+                // FIXME: Always return this error message
                 this.error = "邮箱或密码错误!";
                 //console.error(error['error']);
             }
         );
+        */
     }
 }

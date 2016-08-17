@@ -4,7 +4,6 @@ import { ShopMgrGuard } from '../auth';
 import { ProductsPage } from '.';
 import { ProductPage }  from '.';
 import { OrdersPage }   from '.';
-import { OrderPage }    from '.';
 
 export const shopRoutes: Routes = [
     {

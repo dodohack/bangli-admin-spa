@@ -2,14 +2,15 @@
  * This is the definition of the input of a login form
  */
 
-export class Login {
+export interface Login {
 
-    constructor(public email: string,
-                public password: string){}
+    email: string;
+    password: string;
 
-    /* Return stringified string for form post */
+    /* Old deprecated, should be removed after bug fix
     public stringify() : string
     {
         return 'email=' + this.email + '&password=' + this.password;
     }
+    */
 }

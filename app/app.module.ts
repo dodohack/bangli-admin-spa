@@ -20,6 +20,8 @@ import { UserService }   from './service';
 import { routing }       from './app.routes';
 import { App }           from './app';
 
+import { NewAuthService }   from './services';
+
 import { UserPreference } from './preference';
 
 import { CategoryTreeComponent }     from './components';
@@ -65,6 +67,13 @@ import { EmailTemplatesPage } from './email';
 import { EmailTemplatePage }  from './email';
 import { NewslettersPage }    from './email';
 import { NewsletterPage }     from './email';
+
+import { provideStore }  from  '@ngrx/store';
+import { runEffects }    from  '@ngrx/effects';
+
+/* Import the default export from these files */
+import reducer   from './reducers';
+import effects   from './effects';
 
 /* FIXME: Remove this static class */
 /* Called before bootstrap */
@@ -137,8 +146,8 @@ UserPreference.init();
         UsersPage,
         UserPage,
     ],
-    providers: [ 
-        Title, 
+    providers: [
+        Title,
         BaseGuard,
         AuthorGuard,
         EditorGuard,
@@ -146,7 +155,10 @@ UserPreference.init();
         AdminGuard,
         SuperUserGuard,
         AuthService, 
-        UserService
+        //NewAuthService,
+        UserService,
+        provideStore(reducer),
+        runEffects(effects),
     ],
     bootstrap: [ App ]
 })
