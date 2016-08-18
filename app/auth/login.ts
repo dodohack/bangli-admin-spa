@@ -26,6 +26,6 @@ export class LoginPage
     }
 
     onSubmit() {
-        this.store.dispatch({type: AuthActions.LOGIN, payload: this.user.loginForm});
+        this.store.dispatch({type: AuthActions.LOGIN, payload: this.user});
     }
 }

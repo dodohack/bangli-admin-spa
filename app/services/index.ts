@@ -1,9 +1,9 @@
-import { AuthService } from './auth.service';
+import { NewAuthService } from './auth.service';
 
 export {
-    AuthService
+    NewAuthService
 };
 
 export default [
-    AuthService
+    NewAuthService
 ];

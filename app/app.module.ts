@@ -15,11 +15,12 @@ import { EditorGuard }   from './auth';
 import { ShopMgrGuard }  from './auth';
 import { AdminGuard }    from './auth';
 import { SuperUserGuard} from './auth';
+import { AuthService }   from './service';
 import { UserService }   from './service';
 import { routing }       from './app.routes';
 import { App }           from './app';
 
-import { AuthService }   from './services';
+import { NewAuthService }   from './services';
 
 import { UserPreference } from './preference';
 
@@ -143,7 +144,8 @@ UserPreference.init();
         UserPage,
     ],
     providers: [
-        //AuthService,
+        //NewAuthService,
+        AuthService,
         UserService,
         Title,
         BaseGuard,

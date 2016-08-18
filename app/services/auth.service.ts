@@ -21,7 +21,7 @@ import {User} from "../models/user";
 var jwtDecode = require('jwt-decode');
 
 @Injectable()
-export class AuthService {
+export class NewAuthService {
     constructor(private router:Router, private http:Http) {
         console.log("New AuthService init");
     }
