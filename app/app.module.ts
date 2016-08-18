@@ -143,7 +143,7 @@ UserPreference.init();
         UserPage,
     ],
     providers: [
-        AuthService,
+        //AuthService,
         UserService,
         Title,
         BaseGuard,

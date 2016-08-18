@@ -27,6 +27,7 @@ export class AuthService {
     }
 
     login (loginForm: string): Observable<User> {
+        console.log("AuthService::login user: ", loginForm);
         return this.post(AUTH.login, loginForm);
     }
 

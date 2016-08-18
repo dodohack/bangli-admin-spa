@@ -25,21 +25,31 @@ const initialState: UserState = {
 export default function(state = initialState, action: Action): UserState {
     switch (action.type)
     {
-        case AuthActions.LOGIN:
-        {
+        case AuthActions.LOGIN: {
             return Object.assign({}, action.payload, {
                 logining: true
             });
         }
 
-        case AuthActions.LOGIN_COMPLETE:
-            return action.payload;
+        case AuthActions.LOGIN_COMPLETE: {
+            return Object.assign({}, action.payload, {
+                logining: false
+            });
+        }
 
-        case AuthActions.LOGIN_SUCCESS:
-            return action.payload;
+        case AuthActions.LOGIN_SUCCESS: {
+            return Object.assign({}, action.payload, {
+                logining: false,
+                loginSuccess: true
+            });
+        }
 
-        case AuthActions.LOGIN_FAIL:
-            return action.payload;
+        case AuthActions.LOGIN_FAIL: {
+            return Object.assign({}, action.payload, {
+                logining: false,
+                loginSuccess: false
+            });
+        }
 
         case AuthActions.REGISTER:
             return action.payload;

@@ -5,7 +5,7 @@
 import { Component }         from '@angular/core';
 import { Router }            from '@angular/router';
 
-//import { AuthService }       from './service';
+import { AuthService }       from './services';
 import { UserPreference }    from './preference';
 
 import { AppState }          from './reducers';
@@ -17,7 +17,7 @@ let t = require('./app.html');
 })
 export class App
 {
-    constructor(//private authService: AuthService,
+    constructor(private authService: AuthService,
                 private router: Router) {
 
         // Redirect un-authenticated user to login page

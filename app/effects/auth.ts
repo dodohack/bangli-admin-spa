@@ -15,7 +15,7 @@ import { User }        from "../models";
 export class AuthEffects {
     constructor (private update$: StateUpdates<AppState>,
                  /* This breaks the circular DI problem */
-                 @SkipSelf() @Optional() private srv: AuthService) {}
+                 /*@SkipSelf() @Optional() */ private srv: AuthService) {}
 
     @Effect()
     loginAuth$ = this.update$.whenAction(AuthActions.LOGIN)
