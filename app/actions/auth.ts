@@ -9,7 +9,7 @@ export class AuthActions {
     static login(user: User): Action {
         return {
             type: AuthActions.LOGIN,
-            payload: user.loginForm
+            payload: user
         }
     }
 
@@ -41,7 +41,7 @@ export class AuthActions {
     static register(user: User): Action {
         return {
             type: AuthActions.REGISTER,
-            payload: user.registerForm
+            payload: user
         };
     }
 

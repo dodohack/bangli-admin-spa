@@ -5,7 +5,7 @@
 import { Injectable }                      from '@angular/core';
 import { Router }                          from '@angular/router';
 import { Http, Headers, RequestOptions }   from '@angular/http';
-import { Effect, StateUpdates, toPayload } from '@ngrx/effects';
+import { Effect, Actions }                 from '@ngrx/effects';
 import { Observable }                      from 'rxjs/Observable';
 
 import { AppState }    from '../reducers';
@@ -20,7 +20,7 @@ export class AuthEffects {
      * our own service here yet.
      * See latest comment of https://github.com/ngrx/effects/issues/12
      * */
-    constructor (private update$: StateUpdates<AppState>,
+    constructor (private actions$: Actions,
                  //private router: Router,
                  private http: Http
                  /*private srv: NewAuthService*/) {}
@@ -29,16 +29,22 @@ export class AuthEffects {
      * This effect triggers when AuthActions.LOGIN is fired
      */
     @Effect()
-    loginAuth$ = this.update$.whenAction(AuthActions.LOGIN)
-        .map<User>(toPayload)
-        .switchMap(user => this.login(user.loginForm))
+    loginAuth$ = this.actions$
+        // Listen for the 'LOGIN' action
+        .ofType(AuthActions.LOGIN)
+        // Map the payload into JSON to use as the request body
+        //.map(action => JSON.stringify(action.payload))
+        .map(action => 'email=' + action.payload.email + '&password=' + action.payload.password)
+        .switchMap(payload => this.login(payload))
+        // If success, dispatch success action wit result
         .map(user => AuthActions.loginComplete(user))
+        // If request fails, dispatch failed action
         .catch(() => Observable.of(AuthActions.loginFail()));
 
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
     // FIXME: As injecting our own services into ngrx/effect causes error
-    // 'Cannot instantiate cycli dependency', so we firstly put the impl't of
+    // 'Cannot instantiate cyclic dependency', so we firstly put the impl't of
     // services here. See https://github.com/ngrx/effects/issues/12 as well
 
     private login (form: string): Observable<User> {
@@ -48,6 +54,7 @@ export class AuthEffects {
 
     private post(api: string, body: string)
     {
+        //let headers = new Headers({'Content-Type': 'application/json'});
         let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
         let options = new RequestOptions({ headers: headers });
 

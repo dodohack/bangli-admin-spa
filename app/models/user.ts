@@ -96,7 +96,4 @@ export class User {
      * state of the reducer. 
      */
     constructor() {}
-    
-    get loginForm(): string { return 'email=' + this.email + '&password=' + this.password; }
-    get registerForm(): string { return 'name=' + this.name + '&email=' + this.email + '&password=' + this.password; }
 }

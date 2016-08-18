@@ -62,18 +62,18 @@ import { EmailTemplatePage }  from './email';
 import { NewslettersPage }    from './email';
 import { NewsletterPage }     from './email';
 
-import { provideStore }  from  '@ngrx/store';
-import { runEffects }    from  '@ngrx/effects';
+import { provideStore }  from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects/module';
 
 /* Import the default export from these files */
-import reducer   from './reducers';
-import effects   from './effects';
-
-import { AuthModule } from "./auth/auth.module";
+import reducer           from './reducers';
+import { AuthEffects }   from './effects';
+import { AuthModule }    from './auth/auth.module';
 
 import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
 import { instrumentStore } from '@ngrx/store-devtools';
 import { useLogMonitor } from '@ngrx/store-log-monitor';
+
 
 /* FIXME: Remove this static class */
 /* Called before bootstrap */
@@ -86,6 +86,7 @@ UserPreference.init();
         routing,
         HttpModule,
         AuthModule,
+        EffectsModule.run(AuthEffects),
     ],
     declarations: [
         /* Debug only */
@@ -155,7 +156,6 @@ UserPreference.init();
         AdminGuard,
         SuperUserGuard,
         provideStore(reducer),
-        runEffects(effects),
 
         /**
          * instrumentStore() sets up the @ngrx/store-devtools providers
