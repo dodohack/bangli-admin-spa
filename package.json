@@ -63,6 +63,7 @@
     "less-loader": "^2.2.3",
     "ngrx-store-freeze": "^0.1.0",
     "ngrx-store-hmr": "0.0.3",
+    "ngrx-store-logger": "^0.1.7",
     "node-sass": "^3.7.0",
     "null-loader": "^0.1.1",
     "phantomjs-prebuilt": "^2.1.7",
