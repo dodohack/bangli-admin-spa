@@ -15,12 +15,11 @@ import { EditorGuard }   from './auth';
 import { ShopMgrGuard }  from './auth';
 import { AdminGuard }    from './auth';
 import { SuperUserGuard} from './auth';
-import { AuthService }   from './service';
 import { UserService }   from './service';
 import { routing }       from './app.routes';
 import { App }           from './app';
 
-import { NewAuthService }   from './services';
+import { AuthService }   from './services';
 
 import { UserPreference } from './preference';
 
@@ -35,12 +34,6 @@ import { SidebarComponent }          from './components';
 import { TopbarComponent}            from './components';
 import { TagCloudComponent }         from './components';
 import { DateFilterComponent }       from './components';
-
-import { LoginPage }      from './auth';
-import { RegisterPage }   from './auth';
-import { LogoutComponent} from './auth';
-import {LostPasswordPage} from './auth';
-import {ResetPasswordPage}from './auth';
 
 import { DashboardPage }  from './dashboard';
 
@@ -75,6 +68,12 @@ import { runEffects }    from  '@ngrx/effects';
 import reducer   from './reducers';
 import effects   from './effects';
 
+import { AuthModule } from "./auth/auth.module";
+
+import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
+import { instrumentStore } from '@ngrx/store-devtools';
+import { useLogMonitor } from '@ngrx/store-log-monitor';
+
 /* FIXME: Remove this static class */
 /* Called before bootstrap */
 UserPreference.init();
@@ -84,9 +83,13 @@ UserPreference.init();
         BrowserModule,
         FormsModule,
         routing,
-        HttpModule
+        HttpModule,
+        AuthModule,
     ],
     declarations: [
+        /* Debug only */
+        StoreLogMonitorComponent,
+
         ACCORDION_DIRECTIVES,
         TYPEAHEAD_DIRECTIVES,
         TAB_DIRECTIVES,
@@ -105,13 +108,6 @@ UserPreference.init();
         TopbarComponent,
         TagCloudComponent,
         DateFilterComponent,
-        
-        /* AUTH */
-        LoginPage,
-        RegisterPage,
-        LostPasswordPage,
-        ResetPasswordPage,
-        LogoutComponent,
 
         /* CMS */
         PostsPage,
@@ -147,7 +143,6 @@ UserPreference.init();
         UserPage,
     ],
     providers: [
-        //NewAuthService,
         AuthService,
         UserService,
         Title,
@@ -159,6 +154,16 @@ UserPreference.init();
         SuperUserGuard,
         provideStore(reducer),
         runEffects(effects),
+
+        /**
+         * instrumentStore() sets up the @ngrx/store-devtools providers
+         */
+        instrumentStore({
+            monitor: useLogMonitor({
+                position: 'right',
+                visible: true
+            })
+        }),
     ],
     bootstrap: [ App ]
 })

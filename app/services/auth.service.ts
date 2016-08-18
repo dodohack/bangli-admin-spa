@@ -21,13 +21,13 @@ import {User} from "../models/user";
 var jwtDecode = require('jwt-decode');
 
 @Injectable()
-export class NewAuthService {
+export class AuthService {
     constructor(private router:Router, private http:Http) {
         console.log("New AuthService init");
     }
 
-    login (user: User): Observable<User> {
-        return this.post(AUTH.login, user.stringify());
+    login (loginForm: string): Observable<User> {
+        return this.post(AUTH.login, loginForm);
     }
 
     ///////////////////////////////////////////////////////////////////////////

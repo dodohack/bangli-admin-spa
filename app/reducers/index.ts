@@ -43,7 +43,7 @@ import authReducer, * as fromAuth from './auth';
  * our top level state interface is just a map of keys to inner state types.
  */
 export interface AppState {
-    auth: fromAuth.LoginState;
+    auth: fromAuth.UserState;
 }
 
 

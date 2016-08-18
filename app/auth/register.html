@@ -11,6 +11,7 @@
         TODO: Ref https://auth0.com/blog/2016/05/03/angular2-series-forms-and-custom-validation/
         TODO: for advanced form validation
         -->
+        <!--
         <div *ngIf="error.name != ''" class="alert alert-danger">
             {{ error.name }}
         </div>
@@ -20,6 +21,7 @@
         <div *ngIf="error.password != ''" class="alert alert-danger">
             {{ error.password }}
         </div>
+        -->
 
         <form class="form-horizontal" role="form" (ngSubmit)="onSubmit()"
               #registerForm="ngForm">
@@ -30,7 +32,7 @@
                         <i class="fa fa-user fa-lg"></i>
                     </span>
                     <input type="text" class="form-control" required
-                           [(ngModel)]="form.name" name="name" placeholder="用户名">
+                           [(ngModel)]="user.name" name="name" placeholder="用户名">
                 </div>
             </div>
 
@@ -49,7 +51,7 @@
                     <span class="input-group-addon">
                         <i class="fa fa-lock fa-lg"></i>
                     </span>
-                    <input type="password" class="form-control" [(ngModel)]="form.password"
+                    <input type="password" class="form-control" [(ngModel)]="user.password"
                            name="password" placeholder="密码" required>
                 </div>
             </div>
@@ -59,7 +61,7 @@
                     <span class="input-group-addon">
                         <i class="fa fa-lock fa-lg"></i>
                     </span>
-                    <input type="password" class="form-control" [(ngModel)]="form.password_confirmation"
+                    <input type="password" class="form-control" [(ngModel)]="password_confirmation"
                            name="password_confirmation" placeholder="确认密码" required>
                 </div>
             </div>

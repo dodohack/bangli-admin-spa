@@ -5,8 +5,8 @@
 import { Component }         from '@angular/core';
 import { Router }            from '@angular/router';
 
-import { AuthService }              from '../service';
-import { Register, RegisterError }  from '../models';
+import { AuthService }       from '../service';
+import { User }              from '../models';
 
 let t = require('./register.html');
 @Component({
@@ -14,27 +14,27 @@ let t = require('./register.html');
 })
 export class RegisterPage
 {
-    error: RegisterError;
-    form: Register;
+    user: User;
+    password_confirmation: string;
 
     constructor(private router: Router,
-                private authService: AuthService)
+                /*private authService: AuthService*/)
     {
-        this.error = new RegisterError('', '', '');
-        /* FIXME: We don't need API.register_callback here, 
-         * FIXME: we will add user to API server manually after user registered.
-         */
-        this.form = new Register('', '', '', '');
-        
         /* Redirect user if already logged in */
+        /*
         if (this.authService.isLoggedIn)
             this.router.navigate(['/']);
+        */
     }
 
     /* Triggered when user clicks on submit button */
     onSubmit()
     {
+        if (this.user.password != this.password_confirmation)
+            console.error("Password mismatch");
+        
         /* Reset the error message */
+        /*
         this.error.reset();
 
         this.authService.postRegister(this.form.stringify()).subscribe(
@@ -48,5 +48,6 @@ export class RegisterPage
                     //console.error(error);
                 }
             );
+       */
     }
 }

@@ -2,11 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { BaseGuard }         from './auth';
 
-import { LostPasswordPage }  from './auth/lostpassword';
-import { ResetPasswordPage } from './auth/resetpassword';
-import { LoginPage }         from './auth/login';
-import { RegisterPage }      from './auth/register';
-import { LogoutComponent }   from './auth/logout';
+
 import { VouchersPage }      from './shop/vouchers';
 import { VoucherPage }       from './shop/voucher';
 import { ProductCategoriesPage } from './system/product-categories';
@@ -20,12 +16,6 @@ import { emailRoutes }     from './email/routes';
 import { migrationRoutes } from './migration/routes';
 
 const appRoutes: Routes = [
-
-    {path: 'login', component: LoginPage},
-    {path: 'logout', component: LogoutComponent},
-    {path: 'register', component: RegisterPage},
-    {path: 'lost-password', component: LostPasswordPage},
-    {path: 'reset-password', component: ResetPasswordPage},
 
     ...dashboardRoutes,
     ...shopRoutes,

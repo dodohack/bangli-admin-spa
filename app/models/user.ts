@@ -15,43 +15,34 @@ export const USER_GENDERS = [
 ];
 
 /* User profile and settings only stored in localStorage */
-export class Preference {
-    constructor(
-        /* Sidebar toggle state */
-        public toggleSidebar?: boolean,
+export interface UserPreference {
+    /* Sidebar toggle state */
+    toggleSidebar: boolean;
 
-        /* List page related */
-        public itemsPerList?: number, /* number of items of a list page */
-        public detailedItem?: boolean, /* Show extra detail in list item */
+    /* List page related */
+    itemsPerList: number; /* number of items of a list page */
+    detailedItem: boolean; /* Show extra detail in list item */
 
-        /* Visual experience */
-        public menuBgColor?: string, /* Sidebar/topbar background color */
-        public menuFontColor?: string, /* Sidebar/topbar font color */
-        public mainColor?: string, /* Content background color */
+    /* Visual experience */
+    menuBgColor: string; /* Sidebar/topbar background color */
+    menuFontColor: string; /* Sidebar/topbar font color */
+    mainColor: string; /* Content background color */
 
-
-        /* Customized topbar menus */
-        public myTopbarMenus?: Menu[],
-        /* Customized sidebar menus */
-        public mySidebarMenus?: Menu[]
-    ) {}
-
-    /* Load preference from localStorage at once */
-    load() {}
-
-    /* Save preference to localStorage at once */
-    save() {} 
+    /* Customized topbar menus */
+    myTopbarMenus: Menu[];
+    /* Customized sidebar menus */
+    mySidebarMenus: Menu[];
 }
 
-export class UserRole {
+export interface UserRole {
     id: number;
     name: string;
     display_name: string;
     description: string;
 }
 
-export class UserProfile {
-    gender: string; /* One of 'M', 'F' or 'U' */
+export interface UserProfile {
+    gender: string; /* ENUM, One of 'M', 'F' or 'U' */
     first_name: string;
     last_name: string;
     birthday: string;
@@ -67,18 +58,45 @@ export class UserProfile {
     description: string;
 }
 
+/* Decoded JWT payload */
+export interface JwtPayLoad {
+    iss: string;
+    iat: number;
+    exp: number;
+    nbf: number;
+    jti: string;
+    dbu: boolean; /* Is a dashboard user */
+    spu: boolean; /* Is a super user */
+    sub: string;
+    aud: string;
+}
+
+
+/* Login, register, token refresh all uses the same User model */
 export class User {
     id: number;
     uuid: string;
     role_id: number;
-    name: string;
     display_name: string;
+    name: string;
     email: string;
     password: string;
     created_at: string;
-    
+
+    jwt: string; /* JWT token */
+    jwtPayload: JwtPayLoad; /* Decoded JWT token */
+
     role: UserRole;
     profile: UserProfile;
 
-    public stringify(): string { return 'email=' + this.email + '&password=' + this.password; }
+    preference: UserPreference; /* User offline preference */
+
+    /* TODO: Should we explicitly init all member to initial state? 
+     * Cause in each reducer, we use 'new User' to create the initial
+     * state of the reducer. 
+     */
+    constructor() {}
+    
+    get loginForm(): string { return 'email=' + this.email + '&password=' + this.password; }
+    get registerForm(): string { return 'name=' + this.name + '&email=' + this.email + '&password=' + this.password; }
 }

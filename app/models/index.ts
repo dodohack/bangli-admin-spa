@@ -1,18 +1,18 @@
 /**
  * Prviously, I have messed up the definition of models, I have defined so
- * many models which does not have corresponding existance on server side.
+ * many models which does not have corresponding existence on server side.
  *
  * The models we defined here at client side, should matches database table
  * entries or joined tables on server side. When dealing with those models,
  * we choose part of the entries we want to process, instead of dividing
  * them into small pieces, such as model 'User' should be used in login,
- * register, jwt and user info related area, so no seperate 'Login',
+ * register, jwt and user info related area, so no separate 'Login',
  * 'Register', 'JWT' module should exists.
+ *
+ * AFAIK, Client side model is a projection of server side tables/jointed tables
  */
 
 export * from './menu';
-export * from './login';
-export * from './register';
 export * from './user';
 export * from './pagination';
 export * from './category';
@@ -22,5 +22,4 @@ export * from './post';
 export * from './page';
 export * from './order';
 export * from './product';
-export * from './jwt';
 export * from './domain';
