@@ -1,3 +1,15 @@
+/**
+ * Prviously, I have messed up the definition of models, I have defined so
+ * many models which does not have corresponding existance on server side.
+ *
+ * The models we defined here at client side, should matches database table
+ * entries or joined tables on server side. When dealing with those models,
+ * we choose part of the entries we want to process, instead of dividing
+ * them into small pieces, such as model 'User' should be used in login,
+ * register, jwt and user info related area, so no seperate 'Login',
+ * 'Register', 'JWT' module should exists.
+ */
+
 export * from './menu';
 export * from './login';
 export * from './register';
