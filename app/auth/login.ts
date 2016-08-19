@@ -10,7 +10,8 @@ import { Observable } from "rxjs/Rx";
 import { AppState }    from '../reducers';
 import { AuthService } from '../service';
 import { User }        from '../models';
-import {AuthActions}   from "../actions/auth";
+import { AuthActions } from "../actions";
+import { AlertActions } from "../actions";
 
 
 let t = require('./login.html');
@@ -26,6 +27,7 @@ export class LoginPage
     }
 
     onSubmit() {
+        this.store.dispatch({type: AlertActions.INFO, payload: '正在登陆...'});
         this.store.dispatch({type: AuthActions.LOGIN, payload: this.user});
     }
 }

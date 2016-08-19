@@ -1,5 +1,5 @@
 /**
- * Redux reducer - Authentication related reducer
+ * Authentication related reducer
  */
 import '@ngrx/core/add/operator/select';
 import 'rxjs/add/operator/map';

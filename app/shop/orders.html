@@ -229,9 +229,3 @@
     </div>
 </div>
 
-
-<!-- Alerts area, fixed at left bottom -->
-<div class="alert-area" *ngIf="alerts && alerts.length">
-    <alert *ngFor="let alert of alerts; let i = index" [type]="alert.type"
-           dismissOnTimeout="2000">{{alert?.msg}}</alert>
-</div>

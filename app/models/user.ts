@@ -90,10 +90,4 @@ export class User {
     profile: UserProfile;
 
     preference: UserPreference; /* User offline preference */
-
-    /* TODO: Should we explicitly init all member to initial state? 
-     * Cause in each reducer, we use 'new User' to create the initial
-     * state of the reducer. 
-     */
-    constructor() {}
 }

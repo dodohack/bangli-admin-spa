@@ -23,3 +23,5 @@ export * from './page';
 export * from './order';
 export * from './product';
 export * from './domain';
+export * from './alert';
+

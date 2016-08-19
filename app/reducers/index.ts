@@ -19,6 +19,11 @@ import { compose }         from '@ngrx/core/compose';
 import { combineReducers } from '@ngrx/store';
 
 /**
+ * Syncing between ngrx/store and browser local storage
+ */
+import { localStorageSync } from 'ngrx-store-localstorage';
+
+/**
  * storeLogger is a powerful metareducer that logs out each time we dispatch
  * an action.
  *
@@ -35,14 +40,15 @@ import { storeLogger }     from 'ngrx-store-logger';
  */
 import { storeFreeze }     from 'ngrx-store-freeze';
 
-
-import authReducer, * as fromAuth from './auth';
+import alertsReducer, * as fromAlerts from './alerts';
+import authReducer, * as fromAuth     from './auth';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
  * our top level state interface is just a map of keys to inner state types.
  */
 export interface AppState {
+    alerts: fromAlerts.AlertState;
     auth: fromAuth.UserState;
 }
 
@@ -54,6 +60,12 @@ export interface AppState {
  * wrapping that in storeLogger. Remember that compose applies
  * the result from right to left.
  */
-export default compose(storeFreeze, storeLogger(), combineReducers)({
+export default compose(
+    storeFreeze, storeLogger(),
+    localStorageSync(['']),
+    combineReducers
+)
+({
+    alerts: alertsReducer,
     auth: authReducer
 });

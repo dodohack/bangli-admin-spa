@@ -1,29 +1,21 @@
 /**
- * Redux effects - Auth related side effect, triggered by listening on the
+ * Auth related side effect, triggered by listening on the
  * changes of Redux actions.
  */
 import { Injectable }                      from '@angular/core';
-import { Router }                          from '@angular/router';
 import { Http, Headers, RequestOptions }   from '@angular/http';
 import { Effect, Actions }                 from '@ngrx/effects';
 import { Observable }                      from 'rxjs/Observable';
 
-import { AppState }    from '../reducers';
-import { AuthActions } from '../actions';
-//import { NewAuthService } from '../services';
-import { AUTH }        from '../api';
-import { User }        from "../models";
+import { AuthActions }  from '../actions';
+import { AUTH }         from '../api';
+import { User }         from '../models';
+import { AlertActions } from '../actions';
 
 @Injectable()
 export class AuthEffects {
-    /* FIXME: ngrx/effect is bugged with service injection, we can not inject
-     * our own service here yet.
-     * See latest comment of https://github.com/ngrx/effects/issues/12
-     * */
     constructor (private actions$: Actions,
-                 //private router: Router,
-                 private http: Http
-                 /*private srv: NewAuthService*/) {}
+                 private http: Http) {}
 
     /**
      * This effect triggers when AuthActions.LOGIN is fired
@@ -39,7 +31,11 @@ export class AuthEffects {
         // If success, dispatch success action wit result
         .map(user => AuthActions.loginComplete(user))
         // If request fails, dispatch failed action
-        .catch(() => Observable.of(AuthActions.loginFail()));
+        .catch(() => {
+            // TODO: Send error to global module: alert
+            return Observable.of({type: AlertActions.ERROR, payload: '登陆失败'});
+            //return Observable.of(AuthActions.loginFail())
+        });
 
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions

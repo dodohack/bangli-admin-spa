@@ -2,6 +2,8 @@
  * Action to show alert at fixed position(bottom left).
  */
 export class AlertActions {
-    static SHOW = '[Alert] Show';
-    static HIDE = '[Alert] Hide';
+    static SUCCESS = '[Alert] Success';
+    static INFO    = '[Alert] Info';
+    static WARNING = '[Alert] Warning';
+    static ERROR   = '[Alert] Error';
 }
