@@ -27,15 +27,20 @@ export class AuthEffects {
         // Map the payload into JSON to use as the request body
         //.map(action => JSON.stringify(action.payload))
         .map(action => 'email=' + action.payload.email + '&password=' + action.payload.password)
+        // Post login request
         .switchMap(payload => this.login(payload))
         // If success, dispatch success action wit result
         .map(user => AuthActions.loginComplete(user))
         // If request fails, dispatch failed action
-        .catch(() => {
-            // TODO: Send error to global module: alert
-            return Observable.of({type: AlertActions.ERROR, payload: '登陆失败'});
-            //return Observable.of(AuthActions.loginFail())
+        .catch(ret => {
+            return Observable.of(
+                {type: AlertActions.ERROR, payload: '登陆失败'},
+                AuthActions.loginFail()
+            );
         });
+    
+    
+    
 
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions

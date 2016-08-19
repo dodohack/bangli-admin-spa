@@ -16,16 +16,15 @@ export default function(state: AlertsState = [], action: Action): AlertsState {
         }
 
         case AlertActions.INFO: {
-            console.log("Reduce AlertActioins.INFO");
             return [...state, { type: 'info', msg: action.payload }];
         }
 
         case AlertActions.WARNING: {
-            return [...state, { type: 'warning', msg: action.payload }];
+            return [...state, { type: 'warning', msg: '注意: ' + action.payload }];
         }
 
         case AlertActions.ERROR: {
-            return [...state, { type: 'danger', msg: action.payload }];
+            return [...state, { type: 'danger', msg: '错误: ' + action.payload }];
         }
 
         default:

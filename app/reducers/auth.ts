@@ -45,6 +45,7 @@ export default function(state = initialState, action: Action): UserState {
         }
 
         case AuthActions.LOGIN_FAIL: {
+            console.log("Auth reducer: login failed");
             return Object.assign({}, action.payload, {
                 logining: false,
                 loginSuccess: false

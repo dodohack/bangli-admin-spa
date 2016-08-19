@@ -27,7 +27,6 @@ export class LoginPage
     }
 
     onSubmit() {
-        this.store.dispatch({type: AlertActions.INFO, payload: '正在登陆...'});
         this.store.dispatch({type: AuthActions.LOGIN, payload: this.user});
     }
 }
