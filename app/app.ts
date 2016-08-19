@@ -19,21 +19,13 @@ let t = require('./app.html');
 })
 export class App
 {
-    /* FIXME: Observable is already an array !!! */
-    //alerts: Observable<Alert>;
-    alerts = Array<Object>();
+    /* TODO: This array will grow large, need to clean it periodically */
+    alerts$: Observable<Alert[]>;
 
-    counter$: Observable<number>;
-    
     constructor(/*private authService: AuthService,*/
                 private store: Store<AppState>,
                 private router: Router) {
-        //this.alerts = store.select('alerts');
-        //this.alerts.subscribe(payload => console.log('ALERT: ', payload));
-        store.select('alerts').subscribe(alert => this.alerts.push(alert));
-        //console.log("This alerts: ", this.alerts);
-
-        this.counter$ = Observable.interval(1000);
+        this.alerts$ = store.select('alerts');
     }
 
     get isLoggedIn() { return false; /*return this.authService.isLoggedIn;*/ }
