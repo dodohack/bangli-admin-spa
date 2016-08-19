@@ -1,0 +1,17 @@
+/* Global fixed popup alert at bottom left */
+.alert-area {
+  position: fixed;
+  left: 1rem;
+  bottom: 0;
+  z-index: 9999;
+
+  .alert {
+    opacity: 0.8;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .alert-danger {
+    color: red;
+  }
+}

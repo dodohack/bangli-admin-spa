@@ -34,7 +34,7 @@ export class AuthEffects {
         // If request fails, dispatch failed action
         .catch(ret => {
             return Observable.of(
-                {type: AlertActions.ERROR, payload: '登陆失败'},
+                {type: AlertActions.ERROR, payload: '邮箱或密码错误!'},
                 AuthActions.loginFail()
             );
         });
