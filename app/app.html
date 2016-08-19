@@ -13,8 +13,8 @@
 
     <ngrx-store-log-monitor toggleCommand="ctrl-x"></ngrx-store-log-monitor>
 
+    <h1>Count: {{ counter$ | async}}</h1>
     <!-- Alerts area, fixed at left bottom of page -->
-
     <div class="alert-area" *ngIf="alerts && alerts.length">
         <alert *ngFor="let alert of alerts" [type]="alert.type"
                dismissible="true" dismissOnTimeout="3000">{{alert?.msg}}</alert>

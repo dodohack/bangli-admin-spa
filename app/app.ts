@@ -22,6 +22,8 @@ export class App
     /* FIXME: Observable is already an array !!! */
     //alerts: Observable<Alert>;
     alerts = Array<Object>();
+
+    counter$: Observable<number>;
     
     constructor(/*private authService: AuthService,*/
                 private store: Store<AppState>,
@@ -30,6 +32,8 @@ export class App
         //this.alerts.subscribe(payload => console.log('ALERT: ', payload));
         store.select('alerts').subscribe(alert => this.alerts.push(alert));
         //console.log("This alerts: ", this.alerts);
+
+        this.counter$ = Observable.interval(1000);
     }
 
     get isLoggedIn() { return false; /*return this.authService.isLoggedIn;*/ }
