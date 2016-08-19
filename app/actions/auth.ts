@@ -13,14 +13,6 @@ export class AuthActions {
         }
     }
 
-    static LOGIN_COMPLETE = '[Auth] Login Complete';
-    static loginComplete(user: User): Action {
-        return {
-            type: AuthActions.LOGIN_COMPLETE,
-            payload: user
-        };
-    }
-
     static LOGIN_SUCCESS = '[Auth] Login Success';
     static loginSuccess(user: User): Action {
         return {
@@ -30,10 +22,9 @@ export class AuthActions {
     }
 
     static LOGIN_FAIL = '[Auth] Login Fail';
-    static loginFail(/*user: User*/): Action {
+    static loginFail(): Action {
         return {
-            type: AuthActions.LOGIN_FAIL,
-            payload: 'Login failed' //user
+            type: AuthActions.LOGIN_FAIL
         };
     }
 

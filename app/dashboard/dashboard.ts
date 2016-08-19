@@ -13,8 +13,7 @@ let t = require('./dashboard.html');
 })
 export class DashboardPage
 {
-    constructor(private titleService: Title,
-                private authService: AuthService) {
-        this.titleService.setTitle('首页 - ' + this.authService.curDomain.name +'管理平台');
+    constructor(private titleService: Title) {
+        //this.titleService.setTitle('首页 - ' + this.authService.curDomain.name +'管理平台');
     }
 }

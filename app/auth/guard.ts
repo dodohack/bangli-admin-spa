@@ -4,7 +4,10 @@
 
 import { Injectable }          from '@angular/core'
 import { CanActivate, Router } from '@angular/router';
-import { AuthService }         from '../service/auth.service';
+import { Store }               from '@ngrx/store';
+import { Observable }          from 'rxjs/Observable';
+
+import { AppState }            from '../reducers';
 
 /**
  * User is logged in and can use dashboard
@@ -12,10 +15,19 @@ import { AuthService }         from '../service/auth.service';
 @Injectable()
 export class BaseGuard implements CanActivate {
 
-    constructor(private authService: AuthService, private router: Router) {}
+    token: string = '';
+    auth$: Observable<any>;
+
+    constructor(private store: Store<AppState>, 
+                private router: Router) {
+        this.auth$ = store.select('auth');
+        this.auth$.subscribe(payload => this.token = payload.token);
+    }
 
     canActivate() {
-        if (this.authService.isLoggedIn) { return true; }
+        /* TODO: Check if token is valid */
+        /* Check if we have JWT token */
+        if (this.token) { return true; }
 
         /* Redirect un-authenticated user to login page */
         this.router.navigate(['/login']);
@@ -28,10 +40,11 @@ export class BaseGuard implements CanActivate {
  */
 @Injectable()
 export class AuthorGuard implements CanActivate {
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private router: Router) {}
 
     canActivate() {
-        if (this.authService.isAuthor) { return true; }
+        return true;
+        //if (this.authService.isAuthor) { return true; }
     }
 }
 
@@ -40,10 +53,11 @@ export class AuthorGuard implements CanActivate {
  */
 @Injectable()
 export class EditorGuard implements CanActivate {
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private router: Router) {}
 
     canActivate() {
-        if (this.authService.isEditor) { return true; }
+        return true;
+        //if (this.authService.isEditor) { return true; }
     }
 }
 
@@ -53,10 +67,11 @@ export class EditorGuard implements CanActivate {
  */
 @Injectable()
 export class ShopMgrGuard implements CanActivate {
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private router: Router) {}
 
     canActivate() {
-        if (this.authService.isShopMgr) { return true; }
+        return true;
+        //if (this.authService.isShopMgr) { return true; }
     }
 }
 
@@ -65,10 +80,11 @@ export class ShopMgrGuard implements CanActivate {
  */
 @Injectable()
 export class AdminGuard implements CanActivate {
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private router: Router) {}
 
     canActivate() {
-        if (this.authService.isAdmin) { return true; }
+        return true;
+        //if (this.authService.isAdmin) { return true; }
     }
 }
 
@@ -77,9 +93,10 @@ export class AdminGuard implements CanActivate {
  */
 @Injectable()
 export class SuperUserGuard implements CanActivate {
-    constructor(private authService: AuthService, private router: Router) {}
+    constructor(private router: Router) {}
 
     canActivate() {
-        if (this.authService.isSuperUser) { return true; }
+        return true;
+        //if (this.authService.isSuperUser) { return true; }
     }
 }

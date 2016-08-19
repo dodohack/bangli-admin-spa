@@ -24,6 +24,7 @@ export default function(state: AlertsState = [], action: Action): AlertsState {
         }
 
         case AlertActions.ERROR: {
+            console.log("AlertError action: ", action);
             return [...state, { type: 'danger', msg: '错误: ' + action.payload }];
         }
 

@@ -7,7 +7,6 @@ import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
-//import { AuthService }       from './services';
 import { UserPreference }    from './preference';
 import { AppState }          from './reducers';
 import { Alert }             from './models';
@@ -22,12 +21,18 @@ export class App
     /* TODO: This array will grow large, need to clean it periodically */
     alerts$: Observable<Alert[]>;
 
-    constructor(/*private authService: AuthService,*/
-                private store: Store<AppState>,
+    token: string = '';
+    auth$: Observable<any>;
+
+    constructor(private store: Store<AppState>,
                 private router: Router) {
         this.alerts$ = store.select('alerts');
+
+        this.auth$ = store.select('auth');
+        this.auth$.subscribe(payload => this.token = payload.token);
     }
 
-    get isLoggedIn() { return false; /*return this.authService.isLoggedIn;*/ }
+    get isLoggedIn() { return this.token ? true : false; }
+
     get toggleSidebar() { return UserPreference.toggleSidebar(); }
 }

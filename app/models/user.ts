@@ -83,7 +83,8 @@ export class User {
     password: string;
     created_at: string;
 
-    jwt: string; /* JWT token */
+    token: string; /* JWT token */
+    jwt: string; /* DEPRECATED: JWT token */
     jwtPayload: JwtPayLoad; /* Decoded JWT token */
 
     role: UserRole;

@@ -62,10 +62,14 @@ export interface AppState {
  */
 export default compose(
     storeFreeze, storeLogger(),
-    localStorageSync(['']),
+    localStorageSync(['auth'], true),
     combineReducers
 )
 ({
     alerts: alertsReducer,
     auth: authReducer
 });
+
+export function isUserLoggedIn() {
+    return fromAuth.isUserLoggedIn();
+}

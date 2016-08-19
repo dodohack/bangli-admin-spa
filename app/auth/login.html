@@ -13,6 +13,9 @@
         <div *ngIf="error" class="alert alert-danger">
             {{ error }}
         </div>
+        <div *ngIf="auth$ | async" class="alert alert-danger">
+            {{ auth$ | async | json }}
+        </div>
 
         <form class="form-horizontal" role="form" (ngSubmit)="onSubmit()"
               #loginForm="ngForm">

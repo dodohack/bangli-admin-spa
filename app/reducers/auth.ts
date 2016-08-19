@@ -12,42 +12,26 @@ import { User }        from '../models';
 export type UserState = User;
 /* Create a empty user as initial state */
 const initialState: UserState = new User;
-/*
-const initialState: UserState = {
-    id: 0,
-    uuid: '',
-    name: '',
-    email: '',
-    password: ''
-}
-*/
 
 export default function(state = initialState, action: Action): UserState {
     switch (action.type)
     {
         case AuthActions.LOGIN: {
             return Object.assign({}, action.payload, {
-                logining: true
-            });
-        }
-
-        case AuthActions.LOGIN_COMPLETE: {
-            return Object.assign({}, action.payload, {
-                logining: false
+                loginSuccess: false
             });
         }
 
         case AuthActions.LOGIN_SUCCESS: {
+            console.log("Auth reducer: login success action: ", action);
             return Object.assign({}, action.payload, {
-                logining: false,
                 loginSuccess: true
             });
         }
 
         case AuthActions.LOGIN_FAIL: {
-            console.log("Auth reducer: login failed");
+            console.log("Auth reducer: login failed action: ", action);
             return Object.assign({}, action.payload, {
-                logining: false,
                 loginSuccess: false
             });
         }
@@ -67,4 +51,9 @@ export default function(state = initialState, action: Action): UserState {
         default:
             return state;
     }
+}
+
+export function isUserLoggedIn() {
+    return (state$: Observable<UserState>) => 
+        state$.select(user => user.token);
 }
