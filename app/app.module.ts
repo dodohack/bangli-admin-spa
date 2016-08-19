@@ -8,6 +8,7 @@ import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
 import { AlertComponent }       from 'ng2-bootstrap';
 import { TYPEAHEAD_DIRECTIVES } from 'ng2-bootstrap';
 import { TAB_DIRECTIVES }       from 'ng2-bootstrap';
+import { DROPDOWN_DIRECTIVES }  from 'ng2-bootstrap';
 
 import { BaseGuard }     from './auth';
 import { AuthorGuard }   from './auth';
@@ -94,6 +95,7 @@ UserPreference.init();
 
         ACCORDION_DIRECTIVES,
         TYPEAHEAD_DIRECTIVES,
+        DROPDOWN_DIRECTIVES,
         TAB_DIRECTIVES,
         AlertComponent,
         

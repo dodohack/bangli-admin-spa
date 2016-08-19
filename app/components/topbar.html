@@ -1,9 +1,11 @@
 <div class="topbar" [style.background-color]="menuBgColor">
     <ul class="fixed-menu">
+        <!--
         <li>
             <a href="{{ curDomain.url }}" target="_blank"
                [style.color]="menuColor"><i class="fa fa-home"></i>{{ curDomain.name }}</a>
         </li>
+        -->
 
         <li>
             <a [routerLink]="['/post/new']" routerLinkActive="active"
@@ -19,13 +21,13 @@
             </a>
         </li>
 
-        <li dropdown *ngIf="myDomains">
+        <li dropdown>
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="menuColor">切换站点</a>
             <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
-                <li role="menuitem" *ngFor="let domain of myDomains">
-                    <a *ngIf="domain.checked"
+                <li role="menuitem" *ngFor="let domain of (auth$ | async).domains">
+                    <a
                        class="dropdown-item" role="button"
-                       (click)="switch2Domain(domain.key)">{{ domain.name }}</a>
+                       (click)="switch2Domain(domain.key)">{{ domain.key }}</a>
                 </li>
 
                 <li class="divider dropdown-divider"></li>
@@ -58,7 +60,7 @@
         <li class="float-right">
             <a [routerLink]="['/user', uuid]" routerLinkActive="active"
                [style.color]="menuColor">
-                <i class="fa fa-user"></i>{{ username }}
+                <i class="fa fa-user"></i>{{ (auth$ | async).payload.aud }}
             </a>
         </li>
     </ul>

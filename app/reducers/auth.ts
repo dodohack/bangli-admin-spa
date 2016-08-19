@@ -9,6 +9,8 @@ import { Action }     from '@ngrx/store';
 import { AuthActions } from '../actions';
 import { User }        from '../models';
 
+var jwtDecode = require('jwt-decode');
+
 export type UserState = User;
 /* Create a empty user as initial state */
 const initialState: UserState = new User;
@@ -23,14 +25,13 @@ export default function(state = initialState, action: Action): UserState {
         }
 
         case AuthActions.LOGIN_SUCCESS: {
-            console.log("Auth reducer: login success action: ", action);
             return Object.assign({}, action.payload, {
+                payload: jwtDecode(action.payload.token), // JWT payload
                 loginSuccess: true
             });
         }
 
         case AuthActions.LOGIN_FAIL: {
-            console.log("Auth reducer: login failed action: ", action);
             return Object.assign({}, action.payload, {
                 loginSuccess: false
             });

@@ -1,24 +1,35 @@
-import { Component } from '@angular/core';
-import { DROPDOWN_DIRECTIVES } from 'ng2-bootstrap';
+import { Component }               from '@angular/core';
+import { OnInit }                  from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { Store }                   from '@ngrx/store';
+import { Observable }              from 'rxjs/Observable';
 
-import { AuthService }         from '../service';
-import { UserPreference }      from '../preference';
+import { UserPreference }    from '../preference';
+import { AppState }          from '../reducers';
 
-let template = require('./topbar.html');
+let t = require('./topbar.html');
 @Component({
     selector: 'topbar',
-    template: template,
-    directives: [ DROPDOWN_DIRECTIVES ]
+    template: t,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TopbarComponent {
+export class TopbarComponent implements OnInit {
 
-    constructor(private authService: AuthService) {}
+    auth$: Observable<any>;
+    
+    constructor(private store: Store<AppState>) {
+        this.auth$ = store.select('auth');
+    }
+    
+    ngOnInit() {}
 
+    /*
     get username() { return this.authService.name; }
     get uuid()     { return this.authService.uuid; }
     get myDomains() { return this.authService.domains; }
     get curDomain() { return this.authService.curDomain; }
-
+    */
+    
     get menuColor()    { return UserPreference.menuColor(); }
     get menuBgColor()  { return UserPreference.menuBgColor(); }
     get myTopbarMenus()  { return UserPreference.myTopbarMenus(); }
@@ -28,10 +39,10 @@ export class TopbarComponent {
      * @param key
      */
     private switch2Domain(key: string) {
-        this.authService.switch2Domain(key);
+        //this.authService.switch2Domain(key);
     }
     
     private cleanDefaultDomain() {
-        this.authService.unsetDefaultDomain();
+        //this.authService.unsetDefaultDomain();
     }
 }
