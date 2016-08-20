@@ -5,6 +5,11 @@ import { Action }     from '@ngrx/store';
 import { User }       from '../models';
 
 export class AuthActions {
+    static INIT = '[Auth] Init';
+    static init(): Action {
+        return { type: AuthActions.INIT };
+    }
+
     static LOGIN = '[Auth] Login';
     static login(user: User): Action {
         return {
@@ -23,16 +28,12 @@ export class AuthActions {
 
     static LOGIN_FAIL = '[Auth] Login Fail';
     static loginFail(): Action {
-        return {
-            type: AuthActions.LOGIN_FAIL
-        };
+        return { type: AuthActions.LOGIN_FAIL };
     }
 
     static LOGOUT = '[Auth] Logout';
     static logout(): Action {
-        return {
-            type: AuthActions.LOGOUT
-        };
+        return { type: AuthActions.LOGOUT };
     }
 
     static REGISTER = '[Auth] Register';
@@ -75,10 +76,10 @@ export class AuthActions {
      * NOTE: Cause we always has a default domain_key set with key 'auth'.
      * */
     static SWITCH_DOMAIN = '[Auth] Switch Domain';
-    static switchDomain(user: User): Action {
+    static switchDomain(domain_key: string): Action {
         return {
             type: AuthActions.SWITCH_DOMAIN,
-            payload: user
+            payload: domain_key
         }
     }
 }

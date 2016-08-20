@@ -14,25 +14,6 @@ export const USER_GENDERS = [
     {key: 'U', display_name: '火星人'}
 ];
 
-/* User profile and settings only stored in localStorage */
-export interface UserPreference {
-    /* Sidebar toggle state */
-    toggleSidebar: boolean;
-
-    /* List page related */
-    itemsPerList: number; /* number of items of a list page */
-    detailedItem: boolean; /* Show extra detail in list item */
-
-    /* Visual experience */
-    menuBgColor: string; /* Sidebar/topbar background color */
-    menuFontColor: string; /* Sidebar/topbar font color */
-    mainColor: string; /* Content background color */
-
-    /* Customized topbar menus */
-    myTopbarMenus: Menu[];
-    /* Customized sidebar menus */
-    mySidebarMenus: Menu[];
-}
 
 export interface UserRole {
     id: number;
@@ -89,8 +70,6 @@ export class User {
 
     role: UserRole;
     profile: UserProfile;
-
-    preference: UserPreference; /* User offline preference */
 
     domain_key: string;
     domains: Domain[];

@@ -3,11 +3,16 @@
     <div *ngIf="isLoggedIn">
 
         <topbar [auth]="auth$ | async"
+                [pref]="pref$ | async"
                 (logout)="logout()"
                 (switchDomain)="switchDomain($event)">
         </topbar>
 
-        <sidebar></sidebar>
+        <sidebar [auth]="auth$ | async"
+                 [pref]="pref$ | async"
+                 (toggle)="toggleSidebar($event)">
+        </sidebar>
+
     </div>
 
     <div [class.content]="isLoggedIn"

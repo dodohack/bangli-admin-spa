@@ -1,5 +1,3 @@
-export * from './topbar.component';
-export * from './sidebar.component';
 export * from './date-filter.component';
 export * from './paginator.component';
 export * from './search-box.component';

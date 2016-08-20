@@ -3,6 +3,9 @@ import { Input, Output }           from '@angular/core';
 import { EventEmitter }            from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
+import { User }           from '../models';
+import { Preference }     from '../models';
+
 @Component({
     selector: 'topbar',
     template: require('./topbar.html'),
@@ -10,19 +13,9 @@ import { ChangeDetectionStrategy } from '@angular/core';
 })
 export class Topbar {
     
-    _auth;
-    @Input() set auth(value) { this._auth = Object.assign({}, value); }
-
-    get auth() { return this._auth; }
+    @Input() auth: User;
+    @Input() pref: Preference;
 
     @Output() logout = new EventEmitter();
     @Output() switchDomain = new EventEmitter();
-
-    /**
-     * Wwitch domain user currently managing
-     * @param key
-     */
-    private switch2Domain(key: string) {
-        //this.authService.switch2Domain(key);
-    }
 }

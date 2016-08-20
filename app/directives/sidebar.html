@@ -1,0 +1,19 @@
+<div class="sidebar" [style.background-color]="pref.menuBackgroundColor" [class.icon_sidebar]="pref.isIconSidebar">
+    <a class="toggle" (click)="toggle.emit($event)"
+       [style.color]="pref.menuColor"><i class="fa fa-ellipsis-v"></i></a>
+
+    <ul class="fixed-menu">
+        <template ngFor let-menu [ngForOf]="menus">
+            <!--<li *ngIf="hasRole(menu.role)">-->
+            <li>
+                <a [routerLink]="['/', menu.slug]"
+                   [style.color]="pref.menuColor"
+                   title="{{ menu.name }}"
+                   routerLinkActive="active">
+                    <i class="{{ menu.icon_style }}"></i>
+                    <span>{{ menu.name }}</span>
+                </a>
+            </li>
+        </template>
+    </ul>
+</div>

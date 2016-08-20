@@ -24,4 +24,5 @@ export * from './order';
 export * from './product';
 export * from './domain';
 export * from './alert';
+export * from './preference';
 

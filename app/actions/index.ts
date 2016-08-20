@@ -1,13 +1,16 @@
 import { AlertActions }  from './alert';
 import { AuthActions }   from './auth';
+import { PreferenceActions } from './preference';
 
 
 export {
     AlertActions,
-    AuthActions
+    AuthActions,
+    PreferenceActions
 };
 
 export default [
     AlertActions,
-    AuthActions
+    AuthActions,
+    PreferenceActions
 ];

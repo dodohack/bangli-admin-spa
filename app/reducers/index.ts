@@ -42,7 +42,7 @@ import { storeFreeze }     from 'ngrx-store-freeze';
 
 import alertsReducer, * as fromAlerts from './alerts';
 import authReducer, * as fromAuth     from './auth';
-
+import prefReducer, * as fromPref     from './preference';
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
  * our top level state interface is just a map of keys to inner state types.
@@ -50,6 +50,7 @@ import authReducer, * as fromAuth     from './auth';
 export interface AppState {
     alerts: fromAlerts.AlertsState;
     auth: fromAuth.UserState;
+    pref: fromPref.PreferenceState;
 }
 
 
@@ -62,12 +63,13 @@ export interface AppState {
  */
 export default compose(
     storeFreeze, storeLogger(),
-    localStorageSync(['auth'], true),
+    localStorageSync(['auth', 'pref'], true),
     combineReducers
 )
 ({
     alerts: alertsReducer,
-    auth: authReducer
+    auth: authReducer,
+    pref: prefReducer
 });
 
 export function isUserLoggedIn() {

@@ -7,12 +7,11 @@ import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
-import { UserPreference }    from './preference';
 import { AppState }          from './reducers';
 import { AuthActions }       from './actions';
+import { PreferenceActions } from './actions';
 import { Alert }             from './models';
 
-import { Topbar }            from './directives';
 
 @Component({
     selector: 'admin-spa',
@@ -25,22 +24,22 @@ export class App
 
     payload: any; // A user object if user is logged in
     auth$: Observable<any>;
+    pref$: Observable<any>;
 
     constructor(private store: Store<AppState>,
                 private router: Router) {
+        
         this.alerts$ = store.select('alerts');
-
-        this.auth$ = store.select('auth');
+        this.auth$   = store.select('auth');
+        this.pref$   = store.select('pref'); 
+        
         this.auth$.subscribe(payload => this.payload = payload);
-    }
-    
-    logout() { this.store.dispatch(AuthActions.logout()); }
-    switchDomain($event) {
-        this.payload.domain_key = $event;
-        this.store.dispatch(AuthActions.switchDomain(this.payload)); 
     }
 
     get isLoggedIn() { return this.payload.token ? true : false; }
 
-    get toggleSidebar() { return UserPreference.toggleSidebar(); }
+    //logout() { this.store.dispatch(AuthActions.logout()); }
+    logout() { console.log("LOGOUT CLICKED"); }
+    switchDomain($event) { this.store.dispatch(AuthActions.switchDomain($event)); }
+    toggleSidebar($event) { this.store.dispatch(PreferenceActions.toggleSidebar()); }
 }

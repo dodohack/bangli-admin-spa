@@ -1,4 +1,4 @@
-<div class="topbar" [style.background-color]="menuBgColor">
+<div class="topbar" [style.background-color]="pref.menuBackgroundColor">
     <ul class="fixed-menu">
         <!--
         <li>
@@ -9,31 +9,24 @@
 
         <li>
             <a [routerLink]="['/post/new']" routerLinkActive="active"
-               [style.color]="menuColor">
+               [style.color]="pref.menuColor">
                 <i class="fa fa-edit"></i>新建文章
             </a>
         </li>
 
         <li>
             <a [routerLink]="['/product/new']" routerLinkActive="active"
-               [style.color]="menuColor">
+               [style.color]="pref.menuColor">
                 <i class="fa fa-cart-plus"></i>新建产品
             </a>
         </li>
 
         <li dropdown>
-            <a dropdownToggle id="domain-dropdown" role="button" [style.color]="menuColor">切换站点</a>
+            <a dropdownToggle id="domain-dropdown" role="button" [style.color]="pref.menuColor">切换站点</a>
             <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
                 <li role="menuitem" *ngFor="let domain of auth.domains">
-                    <a
-                            class="dropdown-item" role="button"
-                            (click)="switchDomain.emit(domain.key)">{{ domain.key }}</a>
-                </li>
-
-                <li class="divider dropdown-divider"></li>
-                <li role="menuitem">
                     <a class="dropdown-item" role="button"
-                       (click)="cleanDefaultDomain()">重置默认站点</a>
+                       (click)="switchDomain.emit(domain.key)">{{ domain.key }}</a>
                 </li>
             </ul>
         </li>
@@ -51,14 +44,14 @@
         -->
 
         <li class="float-right">
-            <a [style.color]="menuColor" (click)="logout.emit()">
+            <a [style.color]="pref.menuColor" (click)="logout.emit()">
                 <i class="fa fa-arrow-circle-o-right"></i>退出
             </a>
         </li>
 
         <li class="float-right">
             <a [routerLink]="['/user', uuid]" routerLinkActive="active"
-               [style.color]="menuColor">
+               [style.color]="pref.menuColor">
                 <i class="fa fa-user"></i>{{ auth.payload.aud }}
             </a>
         </li>

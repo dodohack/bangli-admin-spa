@@ -33,7 +33,7 @@ export class LoginPage implements OnInit
     ngOnInit() {
         // TODO: Implement this when we manage to save data to localStorage
         // Rehydrate user/auth from localStorage
-        // this.store.dispatch({type: AuthActions.LOGIN});
+        this.store.dispatch({ type: AuthActions.INIT });
 
         // FIXME: Is this a good way to get data from store?
         this.auth$.subscribe(payload => {
@@ -46,7 +46,6 @@ export class LoginPage implements OnInit
     }
 
     onSubmit() {
-        console.log("onSubmit, user: ", this.user);
         this.store.dispatch({type: AuthActions.LOGIN, payload: this.user});
     }
     

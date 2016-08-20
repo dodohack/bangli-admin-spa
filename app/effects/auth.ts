@@ -37,13 +37,18 @@ export class AuthEffects {
      * current payload.
      * @type {Observable<R>}
      */
+    /* FIXME: 1. payload should be stringified before storing */
+    /* FIXME: 2. An action must be returned after this */
+    /*
     @Effect()
     loginSuccess$ = this.actions$.ofType(AuthActions.LOGIN_SUCCESS)
         .map(action => {
             if (!sessionStorage.getItem('auth')) {
                 sessionStorage.setItem('auth', action.payload);
             }
+            return AuthActions.loginDone(user)
         });
+        */
 
     /**
      * User logout: Send user jwt to server to add to blacklist
@@ -55,18 +60,6 @@ export class AuthEffects {
     logout$ = this.actions$.ofType(AuthActions.LOGOUT)
         .map(action => this.logout()));
     */
-
-    /**
-     * Update sessionStorage key 'domain_key'.
-     * FIXME: We should have a ngrx-store-sessionstorage reducer
-     * @type {Observable<R>}
-     */
-    @Effect()
-    swtchDomain$ = this.actions$.ofType(AuthActions.SWITCH_DOMAIN)
-        .map(action =>
-            sessionStorage.setItem('auth', action.payload));
-
-
 
     /*
     @Effect()

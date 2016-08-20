@@ -23,7 +23,8 @@ import { App }           from './app';
 
 import { NewAuthService }   from './services';
 
-import { UserPreference } from './preference';
+import { Topbar }         from './directives';
+import { Sidebar }        from './directives';
 
 import { CategoryTreeComponent }     from './components';
 import { EditorPageHeaderComponent } from './components';
@@ -32,8 +33,6 @@ import { FastEditPostFormComponent } from './components';
 import { PaginatorComponent }        from './components';
 import { PostCttCloudComponent}      from './components';
 import { SearchBoxComponent }        from './components';
-import { SidebarComponent }          from './components';
-import { TopbarComponent}            from './components';
 import { TagCloudComponent }         from './components';
 import { DateFilterComponent }       from './components';
 
@@ -75,11 +74,6 @@ import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
 import { instrumentStore } from '@ngrx/store-devtools';
 import { useLogMonitor } from '@ngrx/store-log-monitor';
 
-
-/* FIXME: Remove this static class */
-/* Called before bootstrap */
-UserPreference.init();
-
 @NgModule({
     imports: [
         BrowserModule,
@@ -108,8 +102,8 @@ UserPreference.init();
         PaginatorComponent,
         PostCttCloudComponent,
         SearchBoxComponent,
-        SidebarComponent,
-        TopbarComponent,
+        Sidebar,
+        Topbar,
         TagCloudComponent,
         DateFilterComponent,
 

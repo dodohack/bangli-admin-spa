@@ -18,6 +18,10 @@ const initialState: UserState = new User;
 export default function(state = initialState, action: Action): UserState {
     switch (action.type)
     {
+        case AuthActions.INIT: {
+            return state;
+        }
+            
         case AuthActions.LOGIN: {
             return Object.assign({}, action.payload);
         }
@@ -25,6 +29,7 @@ export default function(state = initialState, action: Action): UserState {
         case AuthActions.LOGIN_SUCCESS: {
             return Object.assign({}, action.payload, {
                 payload: jwtDecode(action.payload.token), // JWT payload
+                domain_key: action.payload.domains[0].key
             });
         }
             
@@ -48,7 +53,12 @@ export default function(state = initialState, action: Action): UserState {
         case AuthActions.REGISTER_FAIL:
             return action.payload;
 
-        default:
+        case AuthActions.SWITCH_DOMAIN:
+            return Object.assign({}, state, {
+                domain_key: action.payload
+            });
+
+        default: // Return initial state
             return state;
     }
 }
