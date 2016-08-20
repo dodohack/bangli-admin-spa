@@ -8,7 +8,6 @@ import { RegisterPage }      from './register';
 
 const routes: Routes = [
     {path: 'login',          component: LoginPage},
-    //{path: 'logout',         component: LogoutComponent},
     {path: 'register',       component: RegisterPage},
     //{path: 'lost-password',  component: LostPasswordPage},
     //{path: 'reset-password', component: ResetPasswordPage}

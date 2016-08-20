@@ -19,22 +19,21 @@ export default function(state = initialState, action: Action): UserState {
     switch (action.type)
     {
         case AuthActions.LOGIN: {
-            return Object.assign({}, action.payload, {
-                loginSuccess: false
-            });
+            return Object.assign({}, action.payload);
         }
 
         case AuthActions.LOGIN_SUCCESS: {
             return Object.assign({}, action.payload, {
                 payload: jwtDecode(action.payload.token), // JWT payload
-                loginSuccess: true
             });
         }
-
+            
         case AuthActions.LOGIN_FAIL: {
-            return Object.assign({}, action.payload, {
-                loginSuccess: false
-            });
+            return Object.assign({}, action.payload);
+        }
+            
+        case AuthActions.LOGOUT: {
+            return Object.assign({}, action.payload);
         }
 
         case AuthActions.REGISTER:

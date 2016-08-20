@@ -1,4 +1,5 @@
 /**
- * Directives define common used components which is free from business domain,
- * provides generic functionality to display grouped html tags.
+ * Directives define components which is mainly responsible for displaying
+ * templates.
  */
+export * from './topbar';

@@ -24,10 +24,10 @@
         <li dropdown>
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="menuColor">切换站点</a>
             <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
-                <li role="menuitem" *ngFor="let domain of (auth$ | async).domains">
+                <li role="menuitem" *ngFor="let domain of auth.domains">
                     <a
-                       class="dropdown-item" role="button"
-                       (click)="switch2Domain(domain.key)">{{ domain.key }}</a>
+                            class="dropdown-item" role="button"
+                            (click)="switchDomain.emit(domain.key)">{{ domain.key }}</a>
                 </li>
 
                 <li class="divider dropdown-divider"></li>
@@ -51,7 +51,7 @@
         -->
 
         <li class="float-right">
-            <a [style.color]="menuColor" (click)="logout()">
+            <a [style.color]="menuColor" (click)="logout.emit()">
                 <i class="fa fa-arrow-circle-o-right"></i>退出
             </a>
         </li>
@@ -59,7 +59,7 @@
         <li class="float-right">
             <a [routerLink]="['/user', uuid]" routerLinkActive="active"
                [style.color]="menuColor">
-                <i class="fa fa-user"></i>{{ (auth$ | async).payload.aud }}
+                <i class="fa fa-user"></i>{{ auth.payload.aud }}
             </a>
         </li>
     </ul>

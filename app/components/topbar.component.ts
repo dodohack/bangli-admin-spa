@@ -1,10 +1,12 @@
 import { Component }               from '@angular/core';
 import { OnInit }                  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { Router }                  from '@angular/router';
 import { Store }                   from '@ngrx/store';
 import { Observable }              from 'rxjs/Observable';
 
 import { UserPreference }    from '../preference';
+import { AuthActions }       from '../actions';
 import { AppState }          from '../reducers';
 
 let t = require('./topbar.html');
@@ -17,7 +19,8 @@ export class TopbarComponent implements OnInit {
 
     auth$: Observable<any>;
     
-    constructor(private store: Store<AppState>) {
+    constructor(private store: Store<AppState>,
+                private router: Router) {
         this.auth$ = store.select('auth');
     }
     
@@ -33,6 +36,11 @@ export class TopbarComponent implements OnInit {
     get menuColor()    { return UserPreference.menuColor(); }
     get menuBgColor()  { return UserPreference.menuBgColor(); }
     get myTopbarMenus()  { return UserPreference.myTopbarMenus(); }
+
+    logout() {
+        this.store.dispatch(AuthActions.logout());
+        this.router.navigate(['/login']);
+    }
 
     /**
      * Wwitch domain user currently managing

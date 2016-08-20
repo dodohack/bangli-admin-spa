@@ -28,6 +28,13 @@ export class AuthActions {
         };
     }
 
+    static LOGOUT = '[Auth] Logout';
+    static logout(): Action {
+        return {
+            type: AuthActions.LOGOUT
+        };
+    }
+
     static REGISTER = '[Auth] Register';
     static register(user: User): Action {
         return {
@@ -59,5 +66,19 @@ export class AuthActions {
             type: AuthActions.REGISTER_FAIL,
             payload: user
         };
+    }
+
+    /* Change current domain user managing, can we stall use same 'auth'??
+     * YES, We can, but domain_key in sessionStorage has high priority!!
+     * 1. Check if sessionStorage has domain_key, if it does, use it.
+     * 2. Only check localStorage if 1 is not true.
+     * NOTE: Cause we always has a default domain_key set with key 'auth'.
+     * */
+    static SWITCH_DOMAIN = '[Auth] Switch Domain';
+    static switchDomain(user: User): Action {
+        return {
+            type: AuthActions.SWITCH_DOMAIN,
+            payload: user
+        }
     }
 }

@@ -21,9 +21,7 @@ export class AuthEffects {
      * This effect triggers when AuthActions.LOGIN is fired
      */
     @Effect()
-    loginAuth$ = this.actions$
-        // Listen for the 'LOGIN' action
-        .ofType(AuthActions.LOGIN)
+    login$ = this.actions$.ofType(AuthActions.LOGIN)
         // Map the payload into JSON to use as the request body
         .map(action => JSON.stringify(action.payload))
         //.map(action => 'email=' + action.payload.email + '&password=' + action.payload.password)
@@ -32,7 +30,43 @@ export class AuthEffects {
         // If success, dispatch success action wit result
         .map(user => AuthActions.loginSuccess(user))
         // If request fails, dispatch failed action
-        .catch(() => { return Observable.of(AuthActions.loginFail()); });
+        .catch(() => Observable.of(AuthActions.loginFail()));
+
+    /**
+     * Update default 'domain_key' from sessionStorage or set default from
+     * current payload.
+     * @type {Observable<R>}
+     */
+    @Effect()
+    loginSuccess$ = this.actions$.ofType(AuthActions.LOGIN_SUCCESS)
+        .map(action => {
+            if (!sessionStorage.getItem('auth')) {
+                sessionStorage.setItem('auth', action.payload);
+            }
+        });
+
+    /**
+     * User logout: Send user jwt to server to add to blacklist
+     * The localStorage 'auth' is automatically cleaned by ngrx-store-localstorage.
+     * @type {Actions}
+     */
+    /*
+    @Effect()
+    logout$ = this.actions$.ofType(AuthActions.LOGOUT)
+        .map(action => this.logout()));
+    */
+
+    /**
+     * Update sessionStorage key 'domain_key'.
+     * FIXME: We should have a ngrx-store-sessionstorage reducer
+     * @type {Observable<R>}
+     */
+    @Effect()
+    swtchDomain$ = this.actions$.ofType(AuthActions.SWITCH_DOMAIN)
+        .map(action =>
+            sessionStorage.setItem('auth', action.payload));
+
+
 
     /*
     @Effect()

@@ -1,8 +1,8 @@
 /**
  * This defines the user model such as author, editor, etc
  */
-
-import { Menu } from '../models';
+import { Domain } from './domain';
+import { Menu }   from './menu';
     
 export const USER_ROLES = [
     'customer', 'administrator', 'shop_manager', 'editor', 'author'
@@ -91,4 +91,7 @@ export class User {
     profile: UserProfile;
 
     preference: UserPreference; /* User offline preference */
+
+    domain_key: string;
+    domains: Domain[];
 }

@@ -9,19 +9,21 @@ import { Observable }        from 'rxjs/Observable';
 
 import { UserPreference }    from './preference';
 import { AppState }          from './reducers';
+import { AuthActions }       from './actions';
 import { Alert }             from './models';
 
-let t = require('./app.html');
+import { Topbar }            from './directives';
+
 @Component({
     selector: 'admin-spa',
-    template: t
+    template: require('./app.html')
 })
 export class App
 {
     /* TODO: This array will grow large, need to clean it periodically */
     alerts$: Observable<Alert[]>;
 
-    token: string = '';
+    payload: any; // A user object if user is logged in
     auth$: Observable<any>;
 
     constructor(private store: Store<AppState>,
@@ -29,10 +31,16 @@ export class App
         this.alerts$ = store.select('alerts');
 
         this.auth$ = store.select('auth');
-        this.auth$.subscribe(payload => this.token = payload.token);
+        this.auth$.subscribe(payload => this.payload = payload);
+    }
+    
+    logout() { this.store.dispatch(AuthActions.logout()); }
+    switchDomain($event) {
+        this.payload.domain_key = $event;
+        this.store.dispatch(AuthActions.switchDomain(this.payload)); 
     }
 
-    get isLoggedIn() { return this.token ? true : false; }
+    get isLoggedIn() { return this.payload.token ? true : false; }
 
     get toggleSidebar() { return UserPreference.toggleSidebar(); }
 }
