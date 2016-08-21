@@ -7,7 +7,6 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 
 import { Category, Tag, ProductStatus } from '../models';
 import { AuthService }    from './auth.service';
-import { UserPreference } from '../preference';
 
 @Injectable()
 export class ProductService
@@ -42,7 +41,7 @@ export class ProductService
     public getProducts(status, cur_page) {
         /* http://api/admin/productrs/{status}/{cur_page}?per_page=<number> */
         let endpoint = this.authService.API.products + '/' + status + '/' +
-            cur_page + '?per_page=' + UserPreference.itemsPerList();
+            cur_page + '?per_page=' + 20;
 
         return this.http.get(endpoint, this.options).map(res => res.json());
     }

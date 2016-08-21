@@ -11,7 +11,6 @@ import { dashboardRoutes } from './dashboard/routes';
 import { shopRoutes }      from './shop/routes';
 import { cmsRoutes }       from './cms/routes';
 import { galleryRoutes }   from './gallery/routes';
-import { userRoutes }      from './user/routes';
 import { emailRoutes }     from './email/routes';
 import { migrationRoutes } from './migration/routes';
 
@@ -52,7 +51,6 @@ const appRoutes: Routes = [
     */
     ...emailRoutes,
     ...cmsRoutes,
-    ...userRoutes,
     
     ...migrationRoutes
 ];

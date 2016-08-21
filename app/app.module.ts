@@ -21,8 +21,6 @@ import { UserService }   from './service';
 import { routing }       from './app.routes';
 import { App }           from './app';
 
-import { NewAuthService }   from './services';
-
 import { Topbar }         from './directives';
 import { Sidebar }        from './directives';
 
@@ -53,8 +51,6 @@ import { ProductsPage }   from './shop';
 import { ProductPage }    from './shop';
 import { OrdersPage }     from './shop';
 
-import { UsersPage }      from './user';
-import { UserPage }       from './user';
 
 import { EmailHomePage }      from './email';
 import { EmailTemplatesPage } from './email';
@@ -68,7 +64,9 @@ import { EffectsModule } from '@ngrx/effects/module';
 /* Import the default export from these files */
 import reducer           from './reducers';
 import { AuthEffects }   from './effects';
+
 import { AuthModule }    from './auth/auth.module';
+import { UserModule }    from './user/user.module';
 
 import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
 import { instrumentStore } from '@ngrx/store-devtools';
@@ -81,25 +79,22 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         routing,
         HttpModule,
         AuthModule,
+        UserModule,
         EffectsModule.run(AuthEffects),
     ],
     declarations: [
         /* Debug only */
         StoreLogMonitorComponent,
 
-        ACCORDION_DIRECTIVES,
         TYPEAHEAD_DIRECTIVES,
         DROPDOWN_DIRECTIVES,
-        TAB_DIRECTIVES,
         AlertComponent,
         
         App,
         /* Components */
         CategoryTreeComponent,
         EditorPageHeaderComponent,
-        ListPageHeaderComponent,
         FastEditPostFormComponent,
-        PaginatorComponent,
         PostCttCloudComponent,
         SearchBoxComponent,
         Sidebar,
@@ -135,13 +130,8 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         EmailTemplatePage,
         NewslettersPage,
         NewsletterPage,
-
-        /* User */
-        UsersPage,
-        UserPage,
     ],
     providers: [
-        //NewAuthService,
         AuthService,
         UserService,
         Title,

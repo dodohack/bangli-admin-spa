@@ -78,6 +78,10 @@ export default function(state = initialState, action: Action): PreferenceState {
                )
             });
         }
+            
+        case PreferenceActions.SAVE: {
+            return Object.assign({}, action.payload);
+        }
 
         default:
             return state;

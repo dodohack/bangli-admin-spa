@@ -6,40 +6,37 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
-import { TAB_DIRECTIVES } from 'ng2-bootstrap';
+import { ActivatedRoute }    from '@angular/router';
+import { Store }             from '@ngrx/store';
+import { Observable }        from 'rxjs/Observable';
 
-import { AuthService }          from '../service';
+import { AppState }          from '../reducers';
+import { AlertActions }      from '../actions';
+import { PreferenceActions } from '../actions';
+
 import { UserService }          from "../service";
 
-import { UserAuthProfileTab }   from './components/user.auth.profile';
-import { UserPreferenceTab }    from './components/user.preference';
-import { UserBaseProfileTab }   from './components/user.base.profile';
-import {UserShippingProfileTab} from './components/user.shipping.profile';
-import { UserBabyProfileTab }   from './components/user.baby.profile';
-import { UserDomainMgtTab }     from './components/user.domain.mgt';
 import { User } from "../models";
 
-let t = require('./user.html');
 @Component({
-    template: t,
-    directives: [
-        UserAuthProfileTab, UserPreferenceTab, 
-        UserBaseProfileTab, UserShippingProfileTab,
-        UserBabyProfileTab, UserDomainMgtTab ],
+    template: require('./user.html')
 })
 export class UserPage implements OnInit
 {
     /* uuid of current editing user */
     uuid: string;
-    
-    alerts = Array<Object>();
-    
+
     user: User;
+
+    auth$:   Observable<any>;
+    pref$:   Observable<any>;
 
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
-                private authService: AuthService) { }
+                private store: Store<AppState>) {
+        this.auth$   = this.store.select('auth');
+        this.pref$   = this.store.select('pref');
+    }
 
     ngOnInit() 
     {
@@ -47,16 +44,19 @@ export class UserPage implements OnInit
         this.userService.getUserProfile(this.uuid)
             .subscribe(user => this.user = user);
     }
+
+    savePreference($event) {
+        this.store.dispatch(PreferenceActions.save($event));
+    }
     
     onSubmitProfile() 
     {
-        this.userService.postUserProfile(this.user)
-            .subscribe(
+        this.userService.postUserProfile(this.user).subscribe(
                 ret => {
                     if (ret['status'] == 0)
-                        this.alerts.push({type: 'success', msg: '保存成功'});
+                        this.store.dispatch(AlertActions.success('保存成功'));
                     else
-                        this.alerts.push({type: 'danger', msg: '保存失败: ' + ret['msg']});
+                        this.store.dispatch(AlertActions.error('保存失败' + ret['msg']));
                 });
     }
 
@@ -67,14 +67,14 @@ export class UserPage implements OnInit
     displayAlerts($event)
     {
         if($event['status'] == 0)
-            this.alerts.push({type: 'success', msg: '保存成功'});
+            this.store.dispatch(AlertActions.success('保存成功'));
         else
-            this.alerts.push({type: 'danger', msg: '保存失败: ' + $event['msg']});
+            this.store.dispatch(AlertActions.error('保存失败' + $event['msg']));
     }
     
     /* If the user current editing is myself or not */
-    get isMyProfile() { return this.authService.uuid === this.uuid; }
+    get isMyProfile() { return true; /*this.authService.uuid === this.uuid;*/ }
     
     /* Am I super user */
-    get isSuperUser() { return this.authService.isSuperUser; }
+    get isSuperUser() { return true; /*this.authService.isSuperUser;*/ }
 }

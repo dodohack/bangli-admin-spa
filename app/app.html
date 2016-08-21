@@ -1,6 +1,6 @@
 <!-- This is the template page for all pages -->
 <div class="container-fluid" style="min-width: 768px; max-width: 1400px;">
-    <div *ngIf="isLoggedIn">
+    <div *ngIf="isLoggedIn"> <!-- (auth$ | async).payload.token -->
 
         <topbar [auth]="auth$ | async"
                 [pref]="pref$ | async"
@@ -17,7 +17,7 @@
 
     <div [class.content]="isLoggedIn"
          [class.login-page]="!isLoggedIn"
-         [class.full-width]="toggleSidebar">
+         [class.full-width]="pref.isIconSidebar">
         <router-outlet></router-outlet>
     </div>
 

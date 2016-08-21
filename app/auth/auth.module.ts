@@ -5,8 +5,6 @@ import { NgModule }     from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule }  from '@angular/forms';
 
-//import { AuthService }  from '../services';
-
 import { routing }      from './routing';
 import { LoginPage }       from './login';
 import { RegisterPage }    from './register';

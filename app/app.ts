@@ -23,6 +23,8 @@ export class App
     alerts$: Observable<Alert[]>;
 
     payload: any; // A user object if user is logged in
+    pref: any;
+
     auth$: Observable<any>;
     pref$: Observable<any>;
 
@@ -34,6 +36,7 @@ export class App
         this.pref$   = store.select('pref'); 
         
         this.auth$.subscribe(payload => this.payload = payload);
+        this.pref$.subscribe(pref => this.pref = pref);
     }
 
     get isLoggedIn() { return this.payload.token ? true : false; }

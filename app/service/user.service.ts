@@ -7,7 +7,6 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 
 import { User }           from '../models/user';
 import { AuthService }    from './auth.service';
-import { UserPreference } from '../preference';
 
 @Injectable()
 export class UserService
@@ -46,7 +45,7 @@ export class UserService
     {
         /* http://api/admin/users/{role}/{cur_page}?=per_page=<number> */
         let endpoint = this.authService.API.users + '/' + cur_role + '/' + cur_page
-            + '?per_page=' + UserPreference.itemsPerList();
+            + '?per_page=' + 20;
 
         return this.http.get(endpoint, this.options)
                    .map(res => res.json());

@@ -4,16 +4,15 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
+import { Observable }        from 'rxjs/Observable';
+import { Store }             from '@ngrx/store';
 
 import { User, Pagination }  from '../models';
 import { UserService } from '../service';
-import { PaginatorComponent, ListPageHeaderComponent } from "../components";
 import { zh_CN }    from '../localization';
 
-let t = require('./users.html');
 @Component({
-    template: t,
-    directives: [ PaginatorComponent, ListPageHeaderComponent ]
+    template: require('./users.html')
 })
 export class UsersPage implements OnInit
 {

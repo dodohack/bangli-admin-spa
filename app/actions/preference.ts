@@ -1,8 +1,8 @@
 /**
  * Actions of user preferences management
  */
-import { Action } from '@ngrx/store';
-import { Menu }   from "../models";
+import { Menu }       from "../models";
+import { Preference } from "../models";
 
 export class PreferenceActions {
     static TOGGLE_SIDEBAR = '[Preference] Toggle Sidebar';
@@ -48,5 +48,10 @@ export class PreferenceActions {
     static REMOVE_SIDEBAR_MENU = '[Preference] Remove Sidebar Menu';
     static removeSidebarMenu(menu: Menu) {
         return { type: PreferenceActions.REMOVE_SIDEBAR_MENU, payload: menu };
-    }    
+    }
+    
+    static SAVE = '[Preference] Save';
+    static save(pref: Preference) {
+        return { type: PreferenceActions.SAVE, payload: pref };
+    }
 }

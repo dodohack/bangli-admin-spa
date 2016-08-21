@@ -7,7 +7,6 @@ import { Http, Headers, RequestOptions }   from '@angular/http';
 
 import { OrderStatus }    from '../models/order';
 import { AuthService }    from './auth.service';
-import { UserPreference } from '../preference';
 
 
 @Injectable()
@@ -35,9 +34,10 @@ export class OrderService
 
 
     public getOrders(status, cur_page) {
+        // FIXME: Use preference 'listItemCount' here
         /* http://api/admin/orders/{status}/{cur_page}?per_page=<number> */
         let endpoint = this.authService.API.orders + '/' + status + '/' +
-            cur_page + '?per_page=' + UserPreference.itemsPerList();
+            cur_page + '?per_page=' + 20;
         return this.http.get(endpoint, this.options).map(res => res.json());
     }
 

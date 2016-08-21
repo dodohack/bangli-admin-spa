@@ -1,10 +1,10 @@
-import { Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { AdminGuard }   from '../auth';
 import { UsersPage }    from '.';
 import { UserPage }     from '.';
 
-export const userRoutes: Routes = [
+const routes: Routes = [
     {
         path: 'user',
         canActivate: [ AdminGuard ],
@@ -21,3 +21,4 @@ export const userRoutes: Routes = [
     }
 ];
 
+export const routing = RouterModule.forChild(routes);

@@ -54,19 +54,15 @@ We have several tabs to switch between massive inputs
     <!-- User can't see others permission -->
     <!-- Super user can see and modify any user's permission -->
     <tab heading="后台权限" *ngIf="isMyProfile || isSuperUser">
-        <user-domain-mgt [uuid]="uuid"
+        <user-domain-mgt [auth]="auth$ | async"
+                         [uuid]="uuid"
                          [isMyProfile]="isMyProfile"
                          [isSuperUser]="isSuperUser"
                          (alerts)="displayAlerts($event)"></user-domain-mgt>
     </tab>
 
     <tab heading="个人偏好" *ngIf="isMyProfile">
-        <user-preference></user-preference>
+        <user-preference [pref]="pref$ | async"
+                         (save)="savePreference($event)"></user-preference>
     </tab>
 </tabset>
-
-<!-- Alerts area, fixed at left bottom -->
-<div class="alert-area" *ngIf="alerts && alerts.length">
-    <alert *ngFor="let alert of alerts; let i = index" [type]="alert.type"
-           dismissOnTimeout="2000">{{alert?.msg}}</alert>
-</div>

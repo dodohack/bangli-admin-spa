@@ -10,16 +10,18 @@ import { AuthService }     from '../../service';
 import { UserService }     from '../../service';
 import { DomainService }   from '../../service';
 
-let t = require('./user.domain.mgt.html');
 @Component({
     selector: 'user-domain-mgt',
-    template: t,
+    template: require('./user.domain.mgt.html'),
     providers: [ DomainService ]
 })
 export class UserDomainMgtTab implements AfterContentInit
 {
     @Input()
     uuid: string;
+
+    @Input()
+    auth;
 
     @Input()
     isMyProfile: boolean;

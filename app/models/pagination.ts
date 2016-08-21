@@ -1,7 +1,6 @@
 /**
  * This is the definition of pagination
  */
-import { UserPreference } from '../preference';
 
 export class Pagination {
     /* Total items */
@@ -11,7 +10,7 @@ export class Pagination {
     public first_page: number = 1;
     
     /* Number of items per page */
-    public per_page: number;
+    public per_page: number = 20;
     
     /* Previous page */
     public pre_page: number = 0;
@@ -30,10 +29,6 @@ export class Pagination {
     
     /* Items of current page ends to, in total */
     public to: number = 0;
-    
-    constructor () {
-        this.per_page = UserPreference.itemsPerList();
-    }
 
     /**
      * Setup pagination from given json data returned from API server

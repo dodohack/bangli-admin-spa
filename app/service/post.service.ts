@@ -7,7 +7,6 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 
 import { PostStatus, Category, Post, Tag, Topic }  from '../models';
 import { AuthService }    from './auth.service';
-import { UserPreference } from '../preference';
 
 @Injectable()
 export class PostService
@@ -47,7 +46,7 @@ export class PostService
     public getPosts(filter, condition, cur_page) {
         /* http://api/admin/posts/{filter}/{cond}/{cur_page}?per_page=<number> */
         let endpoint = this.authService.API.posts + '/' + filter + '/'
-            + condition + '/' + cur_page + '?per_page=' + UserPreference.itemsPerList();
+            + condition + '/' + cur_page + '?per_page=' + 20;
 
         return this.http.get(endpoint, this.options).map(res => res.json());
     }
