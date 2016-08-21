@@ -41,8 +41,11 @@ export class App
 
     get isLoggedIn() { return this.payload.token ? true : false; }
 
-    //logout() { this.store.dispatch(AuthActions.logout()); }
-    logout() { console.log("LOGOUT CLICKED"); }
+    logout() {
+        this.store.dispatch(AuthActions.logout());
+        // FIXME: Should we have something send back from sideeffect??
+        this.router.navigate(['/login']);
+    }
     switchDomain($event) { this.store.dispatch(AuthActions.switchDomain($event)); }
     toggleSidebar($event) { this.store.dispatch(PreferenceActions.toggleSidebar()); }
 }

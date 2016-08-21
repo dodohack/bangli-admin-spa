@@ -10,6 +10,7 @@ import { TYPEAHEAD_DIRECTIVES } from 'ng2-bootstrap';
 import { TAB_DIRECTIVES }       from 'ng2-bootstrap';
 import { DROPDOWN_DIRECTIVES }  from 'ng2-bootstrap';
 
+import { UnauthGuard }   from './auth';
 import { BaseGuard }     from './auth';
 import { AuthorGuard }   from './auth';
 import { EditorGuard }   from './auth';
@@ -33,8 +34,6 @@ import { PostCttCloudComponent}      from './components';
 import { SearchBoxComponent }        from './components';
 import { TagCloudComponent }         from './components';
 import { DateFilterComponent }       from './components';
-
-import { DashboardPage }  from './dashboard';
 
 import { MigrationPage }  from './migration';
 
@@ -65,8 +64,10 @@ import { EffectsModule } from '@ngrx/effects/module';
 import reducer           from './reducers';
 import { AuthEffects }   from './effects';
 
-import { AuthModule }    from './auth/auth.module';
-import { UserModule }    from './user/user.module';
+import { AuthModule }      from './auth/auth.module';
+import { UserModule }      from './user/user.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+
 
 import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
 import { instrumentStore } from '@ngrx/store-devtools';
@@ -79,6 +80,7 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         routing,
         HttpModule,
         AuthModule,
+        DashboardModule,
         UserModule,
         EffectsModule.run(AuthEffects),
     ],
@@ -110,9 +112,6 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         PagesPage,
         PagePage,
 
-        /* Dashboard */
-        DashboardPage,
-        
         /* Migration */
         MigrationPage,
 
@@ -135,6 +134,7 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         AuthService,
         UserService,
         Title,
+        UnauthGuard,
         BaseGuard,
         AuthorGuard,
         EditorGuard,

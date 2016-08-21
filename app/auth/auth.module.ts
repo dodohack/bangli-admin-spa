@@ -6,11 +6,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule }  from '@angular/forms';
 
 import { routing }      from './routing';
-import { LoginPage }       from './login';
-import { RegisterPage }    from './register';
+import { LoginForm }    from './components';
+import { RegisterForm } from './components';
+import { LoginPage }    from './login.page';
+import { RegisterPage } from './register.page';
 
 @NgModule({
     imports: [ CommonModule, FormsModule, routing ],
-    declarations: [ LoginPage, RegisterPage ]
+    declarations: [ LoginForm, RegisterForm, LoginPage, RegisterPage ]
 })
 export class AuthModule {}

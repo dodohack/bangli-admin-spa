@@ -27,7 +27,7 @@ export class AuthEffects {
         //.map(action => 'email=' + action.payload.email + '&password=' + action.payload.password)
         // Post login request
         .switchMap(payload => this.login(payload))
-        // If success, dispatch success action wit result
+        // If success, dispatch success action with result
         .map(user => AuthActions.loginSuccess(user))
         // If request fails, dispatch failed action
         .catch(() => Observable.of(AuthActions.loginFail()));

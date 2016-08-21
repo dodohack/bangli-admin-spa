@@ -72,6 +72,6 @@ export default compose(
     pref: prefReducer
 });
 
-export function isUserLoggedIn() {
-    return fromAuth.isUserLoggedIn();
+export function getUserToken() {
+    return fromAuth.getUserToken();
 }

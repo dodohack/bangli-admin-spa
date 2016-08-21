@@ -2,12 +2,45 @@
  * This guard the access to the dashboard
  */
 
-import { Injectable }          from '@angular/core'
-import { CanActivate, Router } from '@angular/router';
-import { Store }               from '@ngrx/store';
-import { Observable }          from 'rxjs/Observable';
+import { Injectable }             from '@angular/core'
+import { CanActivate, Router }    from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
+import { RouterStateSnapshot }    from '@angular/router';
+import { Store }                  from '@ngrx/store';
+import { Observable }             from 'rxjs/Observable';
 
-import { AppState }            from '../reducers';
+import {AppState, getUserToken}   from '../reducers';
+
+
+/**
+ * Only un-logged user can visit, such as login, register pages etc
+ */
+@Injectable()
+export class UnauthGuard implements CanActivate {
+    auth$: Observable<any>;
+
+    constructor(private store: Store<AppState>,
+                private router: Router) {
+        this.auth$ = this.store.select('auth');
+    }
+
+    canActivate(route: ActivatedRouteSnapshot,
+                state: RouterStateSnapshot) {
+
+        /* TODO: Check if token is valid */
+        /* TODO: Reference ngrx-example-app book-exists.ts canActivate */
+        /* NOTE: take(1) - only take one object from the observable stream */
+        return this.auth$.take(1).map(payload => {
+            if (payload.token) {
+                this.router.navigate(['/dashboard']);
+                return false;
+            } else {
+                return true;
+            }
+        });
+    }
+}
+
 
 /**
  * User is logged in and can use dashboard
@@ -15,23 +48,31 @@ import { AppState }            from '../reducers';
 @Injectable()
 export class BaseGuard implements CanActivate {
 
-    token: string = '';
     auth$: Observable<any>;
 
-    constructor(private store: Store<AppState>, 
+    constructor(private store: Store<AppState>,
                 private router: Router) {
-        this.auth$ = store.select('auth');
-        this.auth$.subscribe(payload => this.token = payload.token);
+        this.auth$ = this.store.select('auth');
     }
 
-    canActivate() {
-        /* TODO: Check if token is valid */
-        /* Check if we have JWT token */
-        if (this.token) { return true; }
+    canActivate(route: ActivatedRouteSnapshot,
+                state: RouterStateSnapshot) {
 
-        /* Redirect un-authenticated user to login page */
-        this.router.navigate(['/login']);
-        return false;
+        /* TODO: We can chain more Observables in */
+        /* TODO: Check if token is valid */
+
+        /* TODO: Reference ngrx-example-app book-exists.ts canActivate */
+        /* NOTE: take(1) - only take one object from the observable stream */
+        return this.auth$.take(1).map(payload => {
+            if (payload.token) {
+                return true;
+            } else {
+                this.router.navigate(['/login']);
+                return false;
+            }
+        });
+
+        /* TODO: We could save state.url as redirect url after login */
     }
 }
 
@@ -40,9 +81,10 @@ export class BaseGuard implements CanActivate {
  */
 @Injectable()
 export class AuthorGuard implements CanActivate {
-    constructor(private router: Router) {}
+    constructor(private router: Router ) {}
 
-    canActivate() {
+    canActivate(route: ActivatedRouteSnapshot,
+                state: RouterStateSnapshot) {
         return true;
         //if (this.authService.isAuthor) { return true; }
     }
@@ -55,7 +97,8 @@ export class AuthorGuard implements CanActivate {
 export class EditorGuard implements CanActivate {
     constructor(private router: Router) {}
 
-    canActivate() {
+    canActivate(route: ActivatedRouteSnapshot,
+                state: RouterStateSnapshot) {
         return true;
         //if (this.authService.isEditor) { return true; }
     }
@@ -67,9 +110,10 @@ export class EditorGuard implements CanActivate {
  */
 @Injectable()
 export class ShopMgrGuard implements CanActivate {
-    constructor(private router: Router) {}
+    constructor(private router: Router ) {}
 
-    canActivate() {
+    canActivate(route: ActivatedRouteSnapshot,
+                state: RouterStateSnapshot) {
         return true;
         //if (this.authService.isShopMgr) { return true; }
     }
@@ -80,9 +124,10 @@ export class ShopMgrGuard implements CanActivate {
  */
 @Injectable()
 export class AdminGuard implements CanActivate {
-    constructor(private router: Router) {}
+    constructor(private router: Router ) {}
 
-    canActivate() {
+    canActivate(route: ActivatedRouteSnapshot,
+                state: RouterStateSnapshot) {
         return true;
         //if (this.authService.isAdmin) { return true; }
     }
@@ -93,9 +138,10 @@ export class AdminGuard implements CanActivate {
  */
 @Injectable()
 export class SuperUserGuard implements CanActivate {
-    constructor(private router: Router) {}
+    constructor(private router: Router ) {}
 
-    canActivate() {
+    canActivate(route: ActivatedRouteSnapshot,
+                state: RouterStateSnapshot) {
         return true;
         //if (this.authService.isSuperUser) { return true; }
     }

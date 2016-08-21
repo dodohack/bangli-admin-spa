@@ -18,14 +18,6 @@ const initialState: UserState = new User;
 export default function(state = initialState, action: Action): UserState {
     switch (action.type)
     {
-        case AuthActions.INIT: {
-            return state;
-        }
-            
-        case AuthActions.LOGIN: {
-            return Object.assign({}, action.payload);
-        }
-
         case AuthActions.LOGIN_SUCCESS: {
             return Object.assign({}, action.payload, {
                 payload: jwtDecode(action.payload.token), // JWT payload
@@ -34,11 +26,11 @@ export default function(state = initialState, action: Action): UserState {
         }
             
         case AuthActions.LOGIN_FAIL: {
-            return Object.assign({}, action.payload);
+            return state;
         }
             
         case AuthActions.LOGOUT: {
-            return Object.assign({}, action.payload);
+            return initialState;
         }
 
         case AuthActions.REGISTER:
@@ -58,12 +50,13 @@ export default function(state = initialState, action: Action): UserState {
                 domain_key: action.payload
             });
 
+        case AuthActions.INIT:
         default: // Return initial state
             return state;
     }
 }
 
-export function isUserLoggedIn() {
+export function getUserToken() {
     return (state$: Observable<UserState>) => 
         state$.select(user => user.token);
 }

@@ -10,14 +10,13 @@
         TODO: Ref https://auth0.com/blog/2016/05/03/angular2-series-forms-and-custom-validation/
         TODO: for advanced form validation
         -->
+        <!--
         <div *ngIf="error" class="alert alert-danger">
             {{ error }}
         </div>
-        <div *ngIf="auth$ | async" class="alert alert-danger">
-            {{ auth$ | async | json }}
-        </div>
+        -->
 
-        <form class="form-horizontal" role="form" (ngSubmit)="onSubmit()"
+        <form class="form-horizontal" role="form" (ngSubmit)="login.emit(auth)"
               #loginForm="ngForm">
 
             <div class="form-group">
@@ -26,7 +25,7 @@
                         <i class="fa fa-envelope fa-lg"></i>
                     </span>
                     <input type="email" class="form-control" required
-                           [(ngModel)]="user.email" name="email" placeholder="邮箱">
+                           [(ngModel)]="auth.email" name="email" placeholder="邮箱">
                 </div>
             </div>
 
@@ -36,12 +35,12 @@
                         <i class="fa fa-lock fa-lg"></i>
                     </span>
                     <input type="password" class="form-control" required
-                           [(ngModel)]="user.password" name="password" placeholder="密码">
+                           [(ngModel)]="auth.password" name="password" placeholder="密码">
                 </div>
             </div>
 
             <div class="clearfix login-box-row">
-                <a href="{{ stage1MigrationUrl }}" target="_blank" class="small">第一次使用请点这里移植用户数据表</a>
+                <!--<a href="http://api.huluwa.uk/migrate/user" target="_blank" class="small">第一次使用请点这里移植用户数据表</a>-->
                 <a [routerLink]="['/reset-password']" class="small float-right">忘记密码</a>
             </div>
 

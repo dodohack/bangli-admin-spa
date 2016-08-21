@@ -5,11 +5,8 @@
 import { Component } from '@angular/core';
 import { Title }     from '@angular/platform-browser';
 
-import { AuthService } from '../service';
-
-let t = require('./dashboard.html');
 @Component({
-    template: t
+    template: require('./dashboard.page.html')
 })
 export class DashboardPage
 {
