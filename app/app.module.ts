@@ -1,14 +1,7 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule }   from '@angular/forms';
 import { HttpModule }    from '@angular/http';
 import { Title }         from '@angular/platform-browser';
-
-import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
-import { AlertComponent }       from 'ng2-bootstrap';
-import { TYPEAHEAD_DIRECTIVES } from 'ng2-bootstrap';
-import { TAB_DIRECTIVES }       from 'ng2-bootstrap';
-import { DROPDOWN_DIRECTIVES }  from 'ng2-bootstrap';
 
 import { UnauthGuard }   from './auth';
 import { BaseGuard }     from './auth';
@@ -22,34 +15,9 @@ import { UserService }   from './service';
 import { routing }       from './app.routes';
 import { App }           from './app';
 
-import { Topbar }         from './directives';
-import { Sidebar }        from './directives';
-
-import { CategoryTreeComponent }     from './components';
-import { EditorPageHeaderComponent } from './components';
-import { ListPageHeaderComponent }   from './components';
-import { FastEditPostFormComponent } from './components';
-import { PaginatorComponent }        from './components';
-import { PostCttCloudComponent}      from './components';
-import { SearchBoxComponent }        from './components';
-import { TagCloudComponent }         from './components';
-import { DateFilterComponent }       from './components';
-
 import { MigrationPage }  from './migration';
 
-import { PostsPage }      from './cms';
-import { PostPage }       from './cms';
-import { TopicsPage }     from './cms';
-import { TopicPage }      from './cms';
-import { PagesPage }      from './cms';
-import { PagePage }       from './cms';
-
 import { ImagesPage }     from './gallery';
-
-import { ProductsPage }   from './shop';
-import { ProductPage }    from './shop';
-import { OrdersPage }     from './shop';
-
 
 import { EmailHomePage }      from './email';
 import { EmailTemplatesPage } from './email';
@@ -64,9 +32,12 @@ import { EffectsModule } from '@ngrx/effects/module';
 import reducer           from './reducers';
 import { AuthEffects }   from './effects';
 
+import { SharedModule }    from './directives/shared.module';
 import { AuthModule }      from './auth/auth.module';
 import { UserModule }      from './user/user.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { CmsModule }       from './cms/cms.module';
+import { ShopModule }      from './shop/shop.module';
 
 
 import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
@@ -76,52 +47,27 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
 @NgModule({
     imports: [
         BrowserModule,
-        FormsModule,
         routing,
         HttpModule,
         AuthModule,
         DashboardModule,
+        CmsModule,
+        ShopModule,
         UserModule,
+        SharedModule.forRoot(),
         EffectsModule.run(AuthEffects),
     ],
     declarations: [
         /* Debug only */
         StoreLogMonitorComponent,
-
-        TYPEAHEAD_DIRECTIVES,
-        DROPDOWN_DIRECTIVES,
-        AlertComponent,
         
         App,
-        /* Components */
-        CategoryTreeComponent,
-        EditorPageHeaderComponent,
-        FastEditPostFormComponent,
-        PostCttCloudComponent,
-        SearchBoxComponent,
-        Sidebar,
-        Topbar,
-        TagCloudComponent,
-        DateFilterComponent,
-
-        /* CMS */
-        PostsPage,
-        PostPage,
-        TopicsPage,
-        TopicPage,
-        PagesPage,
-        PagePage,
 
         /* Migration */
         MigrationPage,
 
         /* Gallary */
         ImagesPage,
-
-        /* Shop */
-        ProductsPage,
-        ProductPage,
-        OrdersPage,
 
         /* Email */
         EmailHomePage,

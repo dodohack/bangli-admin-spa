@@ -1,8 +1,6 @@
 import { Component, Input, AfterContentInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { AuthService } from "../service";
-
 @Component({
     selector: 'list-page-header',
     template:
@@ -25,11 +23,11 @@ export class ListPageHeaderComponent implements AfterContentInit {
     @Input()
     newItemUrl: string;
     
-    constructor(private titleService: Title,
-                private authService: AuthService) {}
+    constructor(private titleService: Title) {}
+
 
     ngAfterContentInit() {
-        this.titleService.setTitle(this.pageTitle + '列表 - ' 
-            + this.authService.curDomain.name +'管理平台');
+        //this.titleService.setTitle(this.pageTitle + '列表 - '
+        //    + this.authService.curDomain.name +'管理平台');
     }
 }

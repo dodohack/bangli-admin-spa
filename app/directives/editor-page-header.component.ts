@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, AfterContentInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { AuthService } from '../service';
 import { zh_CN }       from '../localization';
 
 let t = require('./editor-page-header.html');
@@ -27,8 +26,7 @@ export class EditorPageHeaderComponent implements AfterContentInit {
     @Output()
     toggleEvent = new EventEmitter();
 
-    constructor(private titleService: Title,
-                private authService: AuthService) { }
+    constructor(private titleService: Title) { }
 
     toggleRightBar() {
         //this.toggleEvent.emit();
@@ -37,7 +35,7 @@ export class EditorPageHeaderComponent implements AfterContentInit {
     get zh() { return zh_CN.post; }
 
     ngAfterContentInit() {
-        this.titleService.setTitle('编辑' + this.pageTitle + ' - '
-            + this.authService.curDomain.name + '管理平台');
+        //this.titleService.setTitle('编辑' + this.pageTitle + ' - '
+        //    + this.authService.curDomain.name + '管理平台');
     }
 }

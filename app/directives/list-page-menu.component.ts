@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { zh_CN } from '../localization';
 
-let template = require('./list-page-menu.html');
 @Component({
     selector: 'list-page-menu',
-    template: template
+    template: require('./list-page-menu.html')
 })
 export class ListPageMenuComponent {
     

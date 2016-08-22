@@ -4,9 +4,8 @@
 
 import { Component, OnInit } from '@angular/core';
 
-let template = require('./topic.html');
 @Component({
-    template: template
+    template: require('./topic.html')
 })
 
 export class TopicPage implements OnInit

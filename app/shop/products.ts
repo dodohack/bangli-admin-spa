@@ -7,22 +7,11 @@ import { ActivatedRoute }    from '@angular/router';
 
 import { Pagination, User, Product, ProductStatus } from '../models';
 import { ProductService, UserService } from '../service';
-import {
-    PaginatorComponent, SearchBoxComponent,
-    ListPageHeaderComponent, ListPageMenuComponent } from "../components";
 
 import { zh_CN } from '../localization';
 
-let template = require('./products.html');
 @Component({
-    template: template,
-    directives: [
-        PaginatorComponent,
-        SearchBoxComponent,
-        ListPageHeaderComponent,
-        ListPageMenuComponent
-    ],
-    providers: [ ProductService ]
+    template: require('./products.html')
 })
 export class ProductsPage implements OnInit
 {

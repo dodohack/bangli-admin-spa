@@ -7,14 +7,11 @@ import { VouchersPage }      from './shop/vouchers';
 import { VoucherPage }       from './shop/voucher';
 import { ProductCategoriesPage } from './system/product-categories';
 
-import { shopRoutes }      from './shop/routes';
-import { cmsRoutes }       from './cms/routes';
 import { galleryRoutes }   from './gallery/routes';
 import { emailRoutes }     from './email/routes';
 import { migrationRoutes } from './migration/routes';
 
 const appRoutes: Routes = [
-    ...shopRoutes,
     ...galleryRoutes,
 
     {path: 'categories/product', component: ProductCategoriesPage, canActivate: [BaseGuard]},
@@ -47,7 +44,6 @@ const appRoutes: Routes = [
     { path: 'cs', component: },
     */
     ...emailRoutes,
-    ...cmsRoutes,
     
     ...migrationRoutes
 ];

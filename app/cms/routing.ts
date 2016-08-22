@@ -1,15 +1,15 @@
-import { Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { AuthorGuard, EditorGuard } from '../auth';
-import { PostsPage }    from '.';
-import { PostPage }     from '.';
-import { TopicsPage }   from '.';
-import { TopicPage }    from '.';
-import { PagesPage }    from '.';
-import { PagePage }     from '.';
+import { PostsPage }    from './posts.page';
+import { PostPage }     from './post.page';
+import { TopicsPage }   from './topics.page';
+import { TopicPage }    from './topic.page';
+import { PagesPage }    from './pages.page';
+import { PagePage }     from './page.page';
 
 
-export const cmsRoutes: Routes = [
+const routes: Routes = [
     {
         /**
          * Posts path
@@ -73,3 +73,5 @@ export const cmsRoutes: Routes = [
         ]
     },
 ];
+
+export const routing = RouterModule.forChild(routes);

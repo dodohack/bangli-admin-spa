@@ -7,24 +7,11 @@ import { ActivatedRoute }    from '@angular/router';
 
 import { Topic, Category, Pagination, PostStatus }  from '../models';
 import { UserService, PostService, TopicService }  from '../service';
-import {
-    PaginatorComponent, DateFilterComponent,
-    SearchBoxComponent, ListPageHeaderComponent ,
-    ListPageMenuComponent } from "../components";
 
 import { zh_CN } from '../localization';
 
-let template = require('./topics.html');
 @Component({
-    template: template,
-    directives: [
-        PaginatorComponent,
-        DateFilterComponent,
-        SearchBoxComponent,
-        ListPageHeaderComponent,
-        ListPageMenuComponent
-    ],
-    providers: [ TopicService, PostService ]
+    template: require('./topics.html')
 })
 export class TopicsPage implements OnInit {
 

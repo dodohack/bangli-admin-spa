@@ -10,10 +10,8 @@ import { OrderService }      from '../service';
 
 import { zh_CN }    from '../localization';
 
-let t = require('./orders.html');
 @Component({
-    template: t,
-    providers: [ OrderService ]
+    template: require('./orders.html')
 })
 export class OrdersPage implements OnInit
 {

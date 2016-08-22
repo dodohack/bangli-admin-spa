@@ -3,15 +3,11 @@
  */
 import { NgModule }     from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule }  from '@angular/forms';
-
-import { TAB_DIRECTIVES }       from 'ng2-bootstrap';
-import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
+import { SharedModule } from '../directives/shared.module';
 
 import { routing }      from './routing';
 
-import { ListPageHeaderComponent } from '../components';
-import { PaginatorComponent }      from '../components';
+
 import { UserAuthProfileTab }   from './components/user.auth.profile';
 import { UserPreferenceTab }    from './components/user.preference';
 import { UserBaseProfileTab }   from './components/user.base.profile';
@@ -23,21 +19,12 @@ import { UserPage } from './user';
 import { UsersPage } from './users';
 
 @NgModule({
-    imports: [ CommonModule, FormsModule, routing ],
+    imports: [ CommonModule, SharedModule, routing ],
     declarations: [
-        TAB_DIRECTIVES,
-        ACCORDION_DIRECTIVES,
-        ListPageHeaderComponent, PaginatorComponent,
         UserAuthProfileTab, UserPreferenceTab,
         UserBaseProfileTab, UserShippingProfileTab,
         UserBabyProfileTab, UserDomainMgtTab,
         UserPage, UsersPage
-    ],
-    exports: [ 
-        ListPageHeaderComponent, 
-        PaginatorComponent,
-        TAB_DIRECTIVES,
-        ACCORDION_DIRECTIVES
     ]
 })
 export class UserModule {}

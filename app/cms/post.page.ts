@@ -12,10 +12,8 @@ import { POST_TYPES } from '../models';
 import { PostService, UserService } from '../service';
 import { zh_CN } from '../localization';
 
-let t = require('./post.html');
 @Component({
-    template: t,
-    providers: [ PostService ]
+    template: require('./post.html')
 })
 export class PostPage implements OnInit
 {

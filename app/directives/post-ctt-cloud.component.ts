@@ -10,10 +10,9 @@ import { NgForm }    from '@angular/forms';
 
 import { Post } from '../models';
 
-let template = require('./post-ctt-cloud.html');
 @Component({
     selector: 'post-ctt-cloud',
-    template: template
+    template: require('./post-ctt-cloud.html')
 })
 export class PostCttCloudComponent {
     /* Post information needs to modify */

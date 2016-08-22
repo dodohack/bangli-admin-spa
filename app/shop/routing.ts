@@ -1,11 +1,11 @@
-import { Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
 import { ShopMgrGuard } from '../auth';
-import { ProductsPage } from '.';
-import { ProductPage }  from '.';
-import { OrdersPage }   from '.';
+import { ProductsPage } from './products';
+import { ProductPage }  from './product';
+import { OrdersPage }   from './orders';
 
-export const shopRoutes: Routes = [
+const routes: Routes = [
     {
         /**
          * Products path
@@ -45,3 +45,5 @@ export const shopRoutes: Routes = [
         ]
     },
 ];
+
+export const routing = RouterModule.forChild(routes);

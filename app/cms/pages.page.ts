@@ -4,17 +4,10 @@
 
 import { Component, OnInit } from '@angular/core';
 import { UserService, PageService } from '../service';
-import { ListPageHeaderComponent, ListPageMenuComponent } from '../components';
 import { zh_CN } from '../localization';
 
-let template = require('./pages.html');
 @Component({
-    template: template,
-    directives: [
-        ListPageHeaderComponent,
-        ListPageMenuComponent
-    ],
-    providers: [ PageService ]
+    template: require('./pages.html')
 })
 export class PagesPage implements OnInit
 {

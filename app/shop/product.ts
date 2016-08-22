@@ -5,34 +5,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 import { ActivatedRoute }    from '@angular/router';
-import { TYPEAHEAD_DIRECTIVES, TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 import { FROALA_OPTIONS } from '../models/froala.option';
 import { Observable } from 'rxjs/Observable';
-
-import {
-    EditorPageHeaderComponent,
-    CategoryTreeComponent,
-    TagCloudComponent } from '../components';
 
 import { User, Product, Category, Tag } from '../models';
 import { ProductService, UserService } from '../service';
 import { zh_CN } from '../localization';
 
-
-let template = require('./product.html');
 @Component({
-    template: template,
-    directives: [
-        AlertComponent,
-        TAB_DIRECTIVES,
-        TYPEAHEAD_DIRECTIVES,
-        FroalaEditorCompnoent,
-        EditorPageHeaderComponent,
-        CategoryTreeComponent,
-        TagCloudComponent
-    ],
-    providers: [ ProductService ]
+    template: require('./product.html')
 })
 export class ProductPage implements OnInit
 {

@@ -9,32 +9,11 @@ import { TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
 import { PostService, UserService } from '../service';
 import { User, Post, Category, Tag, Topic,
     Pagination, PostStatus } from '../models';
-import {
-    PaginatorComponent, DateFilterComponent,
-    SearchBoxComponent, ListPageHeaderComponent,
-    ListPageMenuComponent, FastEditPostFormComponent,
-    CategoryTreeComponent, TagCloudComponent,
-    TopicCloudComponent } from '../components';
 
 import { zh_CN } from '../localization';
 
-let template = require('./posts.html');
 @Component({
-    template: template,
-    directives: [
-        AlertComponent,
-        TAB_DIRECTIVES,
-        PaginatorComponent,
-        DateFilterComponent,
-        SearchBoxComponent,
-        ListPageHeaderComponent,
-        ListPageMenuComponent,
-        FastEditPostFormComponent,
-        CategoryTreeComponent,
-        TagCloudComponent,
-        TopicCloudComponent
-    ],
-    providers: [ PostService ]
+    template: require('./posts.html')
 })
 export class PostsPage implements OnInit
 {   

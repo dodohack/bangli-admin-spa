@@ -5,10 +5,9 @@ import { Component, Input } from "@angular/core";
 
 import { Pagination } from '../models/pagination';
 
-let template = require('./paginator.html');
 @Component({
     selector: 'paginator',
-    template: template
+    template: require('./paginator.html')
 })
 export class PaginatorComponent {
     @Input()

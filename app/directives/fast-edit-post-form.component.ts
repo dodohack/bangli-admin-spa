@@ -8,10 +8,9 @@ import { User, Post } from '../models';
 import { POST_STATUSES } from '../models';
 import { zh_CN } from '../localization';
 
-let t = require('./fast-edit-post-form.html');
 @Component({
     selector: 'fast-edit-post-form',
-    template: t
+    template: require('./fast-edit-post-form.html')
 })
 export class FastEditPostFormComponent implements AfterContentInit {
 
