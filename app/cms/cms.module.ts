@@ -7,6 +7,8 @@ import { SharedModule } from '../directives/shared.module';
 
 import { routing }      from './routing';
 
+import { PostService }  from '../service';
+
 import { PostsPage }    from './posts.page';
 import { PostPage }     from './post.page';
 import { TopicsPage }   from './topics.page';
@@ -21,6 +23,9 @@ import { PagePage }     from './page.page';
         PostsPage, PostPage,
         TopicsPage, TopicPage, 
         PagesPage, PagePage 
+    ],
+    providers: [
+        PostService
     ]
 })
 export class CmsModule {}

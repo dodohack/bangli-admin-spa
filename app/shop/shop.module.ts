@@ -7,6 +7,9 @@ import { SharedModule}  from '../directives/shared.module';
 
 import { routing }      from './routing';
 
+import { OrderService }      from '../service';
+import { ProductService }    from '../service';
+
 import { ProductsPage } from './products';
 import { ProductPage }  from './product';
 import { OrdersPage }   from './orders';
@@ -17,6 +20,10 @@ import { OrdersPage }   from './orders';
         ProductsPage,
         ProductPage,
         OrdersPage
+    ],
+    providers: [
+        OrderService,
+        ProductService
     ]
 })
 export class ShopModule {}
