@@ -1,9 +1,14 @@
 /**
  * This is the component for single order
  */
-
+import '@ngrx/core/add/operator/select';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
+import { Store }             from '@ngrx/store';
+import { Observable }        from 'rxjs/Observable';
+
+import { AppState }          from '../reducers';
+import { ProductActions }    from '../actions';
 
 import { Pagination, User, Product, ProductStatus } from '../models';
 import { ProductService, UserService } from '../service';
@@ -24,7 +29,7 @@ export class ProductsPage implements OnInit
     status: any;
 
     /* The list of products */
-    products: Product[];
+    products$: Observable<Product[]>;
 
     /* If select all checkbox is checked or not */
     checkedAll = false;
@@ -32,21 +37,31 @@ export class ProductsPage implements OnInit
     pagination = new Pagination;
 
     constructor(private route: ActivatedRoute,
+                private store: Store<AppState>,
                 private userService: UserService,
-                private productService: ProductService) {}
+                private productService: ProductService) {
+        this.products$ = this.store.select('products');
+    }
 
     ngOnInit()
     {
+        /* Get list of products when url changes */
+        /* FIXME: Need to get pagination from url as well */
+        this.products$ = this.route.params.select<string>('status')
+            .switchMap(status => this.store.let(getProducts(status)));
+
         /* Get URL segments and update the list */
+        /*
         this.route.params.subscribe(
             segment => {
                 this.status = segment['status'] ? segment['status'] : 'all';
                 this.deepUrl = this.baseUrl + '/status/' + this.status;
                 this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
-                /* Update order list when URL changes */
+                // Update order list when URL changes
                 this.getProductsList();
             }
         );
+        */
     }
     
     get zh() { return zh_CN.product; }

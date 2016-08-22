@@ -1,9 +1,12 @@
-import { AuthEffects } from './auth';
+import { AuthEffects }    from './auth';
+import { ProductEffects } from './product';
 
 export {
-    AuthEffects
+    AuthEffects,
+    ProductEffects
 };
 
 export default [
-    AuthEffects
+    AuthEffects,
+    ProductEffects
 ];

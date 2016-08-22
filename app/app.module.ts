@@ -33,8 +33,8 @@ import { provideStore }  from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects/module';
 
 /* Import the default export from these files */
-import reducer           from './reducers';
-import { AuthEffects }   from './effects';
+import reducer          from './reducers';
+import effects          from './effects';
 
 import { SharedModule }    from './directives/shared.module';
 import { AuthModule }      from './auth/auth.module';
@@ -59,7 +59,7 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         ShopModule,
         UserModule,
         SharedModule.forRoot(),
-        EffectsModule.run(AuthEffects),
+        EffectsModule.run(effects),
     ],
     declarations: [
         /* Debug only */

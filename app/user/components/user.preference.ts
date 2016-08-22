@@ -1,6 +1,6 @@
 /**
- * Display dashboard user local settings, only users can use dashboard will have
- * this displayed
+ * Display dashboard user local settings, only users can use dashboard
+ * will have this displayed
  */
 import { Component }     from '@angular/core';
 import { Input, Output } from '@angular/core';
