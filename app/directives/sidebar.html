@@ -6,7 +6,7 @@
         <template ngFor let-menu [ngForOf]="menus">
             <!--<li *ngIf="hasRole(menu.role)">-->
             <li>
-                <a [routerLink]="['/', menu.slug]"
+                <a routerLink="['/', menu.slug]"
                    [style.color]="pref.menuColor"
                    title="{{ menu.name }}"
                    routerLinkActive="active">

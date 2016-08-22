@@ -4,7 +4,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, CanDeactivate }  from '@angular/router';
-import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
+
 import { FROALA_OPTIONS } from '../models/froala.option';
 
 import { User, Post, Category, Tag, Topic } from '../models';

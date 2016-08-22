@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { zh_CN } from '../localization';
 
 @Component({
     selector: 'list-page-menu',

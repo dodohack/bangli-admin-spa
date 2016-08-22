@@ -11,16 +11,20 @@ import { AlertComponent }       from 'ng2-bootstrap';
 import { TYPEAHEAD_DIRECTIVES } from 'ng2-bootstrap';
 import { DROPDOWN_DIRECTIVES }  from 'ng2-bootstrap';
 
+import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
+
 import { Sidebar } from './sidebar';
 import { Topbar }  from './topbar';
 import { CategoryTreeComponent }     from './category-tree.component';
 import { EditorPageHeaderComponent } from './editor-page-header.component';
 import { ListPageHeaderComponent }   from './list-page-header.component';
+import { ListPageMenuComponent }     from './list-page-menu.component';
 import { FastEditPostFormComponent } from './fast-edit-post-form.component';
 import { PaginatorComponent }        from './paginator.component';
 import { PostCttCloudComponent}      from './post-ctt-cloud.component';
 import { SearchBoxComponent }        from './search-box.component';
 import { TagCloudComponent }         from './tag-cloud.component';
+import { TopicCloudComponent }       from './topic-cloud.component';
 import { DateFilterComponent }       from './date-filter.component';
 
 @NgModule({
@@ -32,16 +36,20 @@ import { DateFilterComponent }       from './date-filter.component';
         DROPDOWN_DIRECTIVES,
         AlertComponent,
 
+        FroalaEditorCompnoent,
+
         Sidebar,
         Topbar,
         PaginatorComponent,
         ListPageHeaderComponent,
+        ListPageMenuComponent,
         CategoryTreeComponent,
         EditorPageHeaderComponent,
         FastEditPostFormComponent,
         PostCttCloudComponent,
         SearchBoxComponent,
         TagCloudComponent,
+        TopicCloudComponent,
         DateFilterComponent,
     ],
     exports: [
@@ -51,17 +59,21 @@ import { DateFilterComponent }       from './date-filter.component';
         DROPDOWN_DIRECTIVES,
         AlertComponent,
 
+        FroalaEditorCompnoent,
+        
         Topbar,
         Sidebar,
 
         PaginatorComponent,
         ListPageHeaderComponent,
+        ListPageMenuComponent,
         CategoryTreeComponent,
         EditorPageHeaderComponent,
         FastEditPostFormComponent,
         PostCttCloudComponent,
         SearchBoxComponent,
         TagCloudComponent,
+        TopicCloudComponent,
         DateFilterComponent,        
         CommonModule,
         FormsModule
