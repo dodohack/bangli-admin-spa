@@ -8,14 +8,14 @@
         -->
 
         <li>
-            <a routerLink="['/post/new']" routerLinkActive="active"
+            <a [routerLink]="['/post/new']" routerLinkActive="active"
                [style.color]="pref.menuColor">
                 <i class="fa fa-edit"></i>新建文章
             </a>
         </li>
 
         <li>
-            <a routerLink="['/product/new']" routerLinkActive="active"
+            <a [routerLink]="['/product/new']" routerLinkActive="active"
                [style.color]="pref.menuColor">
                 <i class="fa fa-cart-plus"></i>新建产品
             </a>
@@ -50,7 +50,7 @@
         </li>
 
         <li class="float-right">
-            <a routerLink="['/user', auth.payload.sub]" routerLinkActive="active"
+            <a [routerLink]="['/user', auth.payload.sub]" routerLinkActive="active"
                [style.color]="pref.menuColor">
                 <i class="fa fa-user"></i>{{ auth.payload.aud }}
             </a>

@@ -83,7 +83,7 @@ export class AuthEffects {
      * @returns {Observable<R>}
      */
     private login (form: string): Observable<User> {
-        console.log("AuthService::login user: ", form);
+        console.error("FIXME: This can only be triggered first time, LOGIN FORM: ", form);
         return this.post(AUTH.login, form);
     }
 

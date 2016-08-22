@@ -28,7 +28,7 @@ export default function(state = initialState, action: Action): UserState {
         case AuthActions.LOGIN_FAIL: {
             return state;
         }
-            
+
         case AuthActions.LOGOUT: {
             return initialState;
         }

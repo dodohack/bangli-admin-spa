@@ -13,8 +13,6 @@ import { DROPDOWN_DIRECTIVES }  from 'ng2-bootstrap';
 
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
-import { Sidebar } from './sidebar';
-import { Topbar }  from './topbar';
 import { CategoryTreeComponent }     from './category-tree.component';
 import { EditorPageHeaderComponent } from './editor-page-header.component';
 import { ListPageHeaderComponent }   from './list-page-header.component';
@@ -38,8 +36,6 @@ import { DateFilterComponent }       from './date-filter.component';
 
         FroalaEditorCompnoent,
 
-        Sidebar,
-        Topbar,
         PaginatorComponent,
         ListPageHeaderComponent,
         ListPageMenuComponent,
@@ -60,9 +56,6 @@ import { DateFilterComponent }       from './date-filter.component';
         AlertComponent,
 
         FroalaEditorCompnoent,
-        
-        Topbar,
-        Sidebar,
 
         PaginatorComponent,
         ListPageHeaderComponent,

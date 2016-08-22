@@ -12,7 +12,6 @@ import { Preference }     from '../models';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Topbar {
-    
     @Input() auth: User;
     @Input() pref: Preference;
 

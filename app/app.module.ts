@@ -15,6 +15,10 @@ import { UserService }   from './service';
 import { routing }       from './app.routes';
 import { App }           from './app';
 
+
+import { Sidebar } from './directives/sidebar';
+import { Topbar }  from './directives/topbar';
+
 import { MigrationPage }  from './migration';
 
 import { ImagesPage }     from './gallery';
@@ -62,6 +66,8 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         StoreLogMonitorComponent,
         
         App,
+        Topbar,
+        Sidebar,
 
         /* Migration */
         MigrationPage,
