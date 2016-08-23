@@ -53,7 +53,9 @@ export class ProductEffects {
     /**
      * Get products statuses
      */
+    /*
     private statuses(): Observable<any> {
 
     }
+    */
 }

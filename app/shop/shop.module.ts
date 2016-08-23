@@ -11,7 +11,7 @@ import { OrderService }      from '../service';
 import { ProductService }    from '../service';
 
 import { ProductsList } from './components/products-list';
-import { ProductsPage } from './products';
+import { ProductsPage } from './products.page';
 import { ProductPage }  from './product';
 import { OrdersPage }   from './orders';
 

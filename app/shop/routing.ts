@@ -1,7 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 
 import { ShopMgrGuard } from '../auth';
-import { ProductsPage } from './products';
+import { ProductsPage } from './products.page';
 import { ProductPage }  from './product';
 import { OrdersPage }   from './orders';
 

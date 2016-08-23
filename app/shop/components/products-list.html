@@ -17,7 +17,9 @@
         <th width="12%">更新日期</th>
     </thead>
 
-    <tbody>
+    <tbody *ngIf="products">
+    {{ products | json }}
+    <!--
         <template ngFor let-product [ngForOf]="products" let-i="index">
             <tr id="{{i}}" (dblclick)="quickEdit.emit(i)">
                 <th>{{i+1}}</th>
@@ -44,6 +46,7 @@
                 <td>{{ product.updated_at }}</td>
             </tr>
         </template>
+     -->
     </tbody>
 
 </table>

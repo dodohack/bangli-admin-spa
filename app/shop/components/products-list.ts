@@ -16,7 +16,7 @@ import { Product } from '../../models';
 export class ProductsList
 {
     _products: Product[];
-    @Input() set products(value) { this.products = Object.assign({}, value); }
+    @Input() set products(value) { this._products = Object.assign({}, value); }
     get products() { return this._products; }
     
     @Output() quickEdit = new EventEmitter();

@@ -16,7 +16,7 @@ import { ProductService, UserService } from '../service';
 import { zh_CN } from '../localization';
 
 @Component({
-    template: require('./products.html')
+    template: require('./products.page.html')
 })
 export class ProductsPage implements OnInit
 {
@@ -29,7 +29,7 @@ export class ProductsPage implements OnInit
     status: any;
 
     /* The list of products */
-    products$: Observable<Product[]>;
+    products$: Observable<any>;
 
     /* If select all checkbox is checked or not */
     checkedAll = false;
@@ -47,8 +47,15 @@ export class ProductsPage implements OnInit
     {
         /* Get list of products when url changes */
         /* FIXME: Need to get pagination from url as well */
+        /*
         this.products$ = this.route.params.select<string>('status')
             .switchMap(status => this.store.let(getProducts(status)));
+        */
+
+        // DEBUG
+        this.route.params.subscribe(segment => {
+            console.log("url segment array is : ", segment);
+        })
 
         /* Get URL segments and update the list */
         /*
@@ -68,8 +75,12 @@ export class ProductsPage implements OnInit
     get editors() { return this.userService.editors; }
     get statuses() { return this.productService.statuses; }
 
+    private quickEdit($event) {
+
+    }
+
     private getProductsList()
-    {
+    {/*
         this.productService.getProducts(this.status, this.pagination.current_page)
             .subscribe(
                 json => {
@@ -81,17 +92,20 @@ export class ProductsPage implements OnInit
                     this.initCheckbox();
                 }
             );
+      */
     }
 
     /**
      * Add extra entries to the order
      */
     private initCheckbox() {
+        /*
         let length = this.products.length;
         for (let i = 0; i < length; i++) {
             this.products[i].checked = false;
             this.products[i].editing = false;
         }
+        */
     }
 
     /**
@@ -99,11 +113,13 @@ export class ProductsPage implements OnInit
      */
     private checkboxAll()
     {
+        /*
         this.checkedAll = !this.checkedAll;
         let length = this.products.length;
         for (let i = 0; i < length; i++) {
             this.products[i].checked = this.checkedAll;
         }
+        */
     }
 
     /**
@@ -115,7 +131,7 @@ export class ProductsPage implements OnInit
      */
     private fastEditCurrentProduct($event, i)
     {
-        this.products[i].editing = !this.products[i].editing;
+        //this.products[i].editing = !this.products[i].editing;
         //console.log("double clicked detected: " + i);
         //console.log($event);
     }
