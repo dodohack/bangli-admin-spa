@@ -7,12 +7,12 @@ import { ActivatedRoute }    from '@angular/router';
 import { Observable }        from 'rxjs/Observable';
 import { Store }             from '@ngrx/store';
 
+import { AppState }          from '../reducers';
 import { User, Pagination }  from '../models';
-import { UserService } from '../service';
 import { zh_CN }    from '../localization';
 
 @Component({
-    template: require('./users.html')
+    template: require('./users.page.html')
 })
 export class UsersPage implements OnInit
 {
@@ -27,8 +27,14 @@ export class UsersPage implements OnInit
 
     pagination = new Pagination;
 
+    auth$: Observable<any>;
+    users$: Observable<any>;
+
     constructor(private route: ActivatedRoute,
-                private userService: UserService) {}
+                private store: Store<AppState>) {
+        this.auth$  = this.store.select('auth');
+        this.users$ = this.store.select('users');
+    }
 
     ngOnInit() { this.initUserList(); }
 

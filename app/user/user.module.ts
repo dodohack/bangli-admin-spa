@@ -13,17 +13,19 @@ import { UserPreferenceTab }    from './components/user.preference';
 import { UserBaseProfileTab }   from './components/user.base.profile';
 import {UserShippingProfileTab} from './components/user.shipping.profile';
 import { UserBabyProfileTab }   from './components/user.baby.profile';
-import { UserDomainMgtTab }     from './components/user.domain.mgt';
+import { UserDomainsTab }       from './components/user.domains';
+import { UsersList }            from './components/users.list';
 
-import { UserPage } from './user';
-import { UsersPage } from './users';
+import { UserPage }  from './user.page';
+import { UsersPage } from './users.page';
 
 @NgModule({
     imports: [ CommonModule, SharedModule, routing ],
     declarations: [
+        UsersList,
         UserAuthProfileTab, UserPreferenceTab,
         UserBaseProfileTab, UserShippingProfileTab,
-        UserBabyProfileTab, UserDomainMgtTab,
+        UserBabyProfileTab, UserDomainsTab,
         UserPage, UsersPage
     ]
 })

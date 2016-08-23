@@ -50,15 +50,10 @@ We have several tabs to switch between massive inputs
                            (alerts)="displayAlerts($event)"></user-auth-profile>
     </tab>
 
-    <!-- User can only see his permission, but can't edit -->
-    <!-- User can't see others permission -->
-    <!-- Super user can see and modify any user's permission -->
     <tab heading="后台权限" *ngIf="isMyProfile || isSuperUser">
-        <user-domain-mgt [auth]="auth$ | async"
-                         [uuid]="uuid"
-                         [isMyProfile]="isMyProfile"
-                         [isSuperUser]="isSuperUser"
-                         (alerts)="displayAlerts($event)"></user-domain-mgt>
+        <user-domains-tab [uuid]="uuid"
+                          [isSuperUser]="isSuperUser"
+                          (save)="saveDomains($event)"></user-domains-tab>
     </tab>
 
     <tab heading="个人偏好" *ngIf="isMyProfile">

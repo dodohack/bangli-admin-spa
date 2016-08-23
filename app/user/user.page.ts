@@ -10,7 +10,7 @@ import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
-import { AppState }          from '../reducers';
+import { AppState, getUser } from '../reducers';
 import { AlertActions }      from '../actions';
 import { PreferenceActions } from '../actions';
 
@@ -19,38 +19,38 @@ import { UserService }          from "../service";
 import { User } from "../models";
 
 @Component({
-    template: require('./user.html')
+    template: require('./user.page.html')
 })
 export class UserPage implements OnInit
 {
-    /* uuid of current editing user */
-    uuid: string;
-
-    user: User;
+    /* The user we are viewing */
+    user$: Observable<User>;
 
     auth$:   Observable<any>;
     pref$:   Observable<any>;
 
     constructor(private route: ActivatedRoute,
-                private userService: UserService,
                 private store: Store<AppState>) {
         this.auth$   = this.store.select('auth');
         this.pref$   = this.store.select('pref');
     }
 
-    ngOnInit() 
-    {
-        this.route.params.subscribe(segment => this.uuid = segment['uuid']);
-        this.userService.getUserProfile(this.uuid)
-            .subscribe(user => this.user = user);
+    ngOnInit() {
+        this.user$ = this.route.params.select<string>('uuid')
+            .switchMap(uuid => store.let(getUser(uuid)));
     }
 
     savePreference($event) {
         this.store.dispatch(PreferenceActions.save($event));
     }
+
+    saveDomains($event) {
+        //this.store.dispatch();
+    }
     
     onSubmitProfile() 
     {
+        /*
         this.userService.postUserProfile(this.user).subscribe(
                 ret => {
                     if (ret['status'] == 0)
@@ -58,6 +58,7 @@ export class UserPage implements OnInit
                     else
                         this.store.dispatch(AlertActions.error('保存失败' + ret['msg']));
                 });
+                */
     }
 
     /**
@@ -66,10 +67,12 @@ export class UserPage implements OnInit
      */
     displayAlerts($event)
     {
+        /*
         if($event['status'] == 0)
             this.store.dispatch(AlertActions.success('保存成功'));
         else
             this.store.dispatch(AlertActions.error('保存失败' + $event['msg']));
+            */
     }
     
     /* If the user current editing is myself or not */

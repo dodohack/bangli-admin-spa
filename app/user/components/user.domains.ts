@@ -1,21 +1,19 @@
 /**
  * Display backend user website accessibility, role and permission.
  */
-import { Component, Input, Output}       from '@angular/core';
-import {EventEmitter, AfterContentInit } from '@angular/core';
+import { Component, Input, Output }   from '@angular/core';
+import { EventEmitter}                from '@angular/core';
+import { ChangeDetectionStrategy }    from '@angular/core';
 
 import { User }            from '../../models';
 import { Domain, DOMAINS } from '../../models/domain'
-import { AuthService }     from '../../service';
-import { UserService }     from '../../service';
-import { DomainService }   from '../../service';
 
 @Component({
-    selector: 'user-domain-mgt',
-    template: require('./user.domain.mgt.html'),
-    providers: [ DomainService ]
+    selector: 'user-domains-tab',
+    template: require('./user.domains.html'),
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserDomainMgtTab implements AfterContentInit
+export class UserDomainsTab
 {
     @Input()
     uuid: string;
@@ -29,25 +27,21 @@ export class UserDomainMgtTab implements AfterContentInit
     @Input()
     isSuperUser: boolean;
 
+    /* Domains user can access */
+    _domains: Domain[];
+    @Input() set domains(value) { this._domains = Object.assign({}, value); }
+    get domains() { return this._domains; }
+
     @Output()
-    alerts = new EventEmitter();
-
-    /* Websites user can access */
-    domains: Domain[] = [];
-    
-    /* My domains for dashboard user */
-    myDomains: Domain[] = [];
-
-    constructor(private authService: AuthService,
-                private userService: UserService,
-                private domainService: DomainService) {}
+    save = new EventEmitter();
 
     /* Can not get @Input before this point */
+    /*
     ngAfterContentInit() {
-        /* Get my domains */
+        // Get my domains
         this.myDomains = this.authService.domains;
         
-        /* Init user domain */
+        // Init user domain
         for (let i = 0; i < DOMAINS.length; i++) {
             this.domains.push(new Domain(DOMAINS[i]));
         }
@@ -65,16 +59,19 @@ export class UserDomainMgtTab implements AfterContentInit
                 }
             });
     }
+    */
 
+    /*
     get userRoles() { return this.userService.roles; }
 
-    /* Save user manageable websites to bangli-auth.user_website */
+    // Save user manageable websites to bangli-auth.user_website
     onSubmitDomains() {
         console.log("domains to be submitted:", this.domains);
         // Submit allWebsites which contains checked status
         this.domainService.postDomains(this.uuid, this.domains)
             .subscribe(ret => this.alerts.emit(ret));
     }
+    */
 
     /* Save per website permssions for user to business api server */
     onSubmitDomainPerms() {

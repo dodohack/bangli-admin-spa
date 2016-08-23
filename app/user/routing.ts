@@ -1,8 +1,8 @@
 import { Routes, RouterModule } from '@angular/router';
 
 import { AdminGuard }   from '../auth';
-import { UsersPage }    from '.';
-import { UserPage }     from '.';
+import { UsersPage }    from './users.page';
+import { UserPage }     from './user.page';
 
 const routes: Routes = [
     {

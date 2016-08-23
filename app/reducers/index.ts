@@ -42,8 +42,11 @@ import { storeFreeze }     from 'ngrx-store-freeze';
 
 import alertsReducer, * as fromAlerts     from './alerts';
 import authReducer, * as fromAuth         from './auth';
+import usersReducer, * as fromUsers       from './users';
 import prefReducer, * as fromPref         from './preference';
 import productsReducer, * as fromProducts from './products';
+import {Observable} from "rxjs/Observable";
+
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
  * our top level state interface is just a map of keys to inner state types.
@@ -51,6 +54,7 @@ import productsReducer, * as fromProducts from './products';
 export interface AppState {
     alerts: fromAlerts.AlertsState;
     auth: fromAuth.UserState;
+    users: fromUsers.UsersState;
     pref: fromPref.PreferenceState;
     products: fromProducts.ProductsState;
 }
@@ -71,10 +75,20 @@ export default compose(
 ({
     alerts: alertsReducer,
     auth: authReducer,
+    users: usersReducer,
     pref: prefReducer,
     products: productsReducer
 });
 
 export function getUserToken() {
     return fromAuth.getUserToken();
+}
+
+export function getUsersState() {
+    return (state$: Observable<AppState>) => state$
+        .select(s => s.users);
+}
+
+export function getUser(uuid: string) {
+    return compose(fromUsers.getUser(uuid), getUsersState());
 }

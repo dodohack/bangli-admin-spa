@@ -1,0 +1,24 @@
+<table class="table">
+    <thead class="thead-default">
+    <tr>
+        <th>#</th>
+        <th><input type="checkbox"></th>
+        <th>用户名</th>
+        <th>昵称</th>
+        <th>邮箱</th>
+        <th>注册时间</th>
+        <th>订单数量</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users; let i=index">
+        <th scope="row">{{ i+1 }}</th>
+        <th scope="row"><input type="checkbox"></th>
+        <td><a [routerLink]="['/user', user.uuid]">{{ user.name }}</a></td>
+        <td>{{ user.display_name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.created_at }}</td>
+        <td>xyz</td>
+    </tr>
+    </tbody>
+</table>
