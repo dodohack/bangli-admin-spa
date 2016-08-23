@@ -6,6 +6,7 @@ import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
+import { UsersState } from '../../reducers/users';
 import { User } from '../../models';
 
 @Component({
@@ -15,8 +16,12 @@ import { User } from '../../models';
 })
 export class UsersList
 {
-    _users: User[];
-    @Input() set users(value) { this._users = Object.assign({}, value); }
-    get users() { return this._users; }
+    _usersState: UsersState;
+    @Input() set usersState(value) { this._usersState = Object.assign({}, value); }
+    get usersState() { return this._usersState; }
+    
+    get uuids() { return this._usersState.uuids; }
+    get users() { return this._usersState.entities; }
+    get paginator() { return this._usersState.paginator; }
 }
 

@@ -12,9 +12,8 @@ import { Observable }        from 'rxjs/Observable';
 
 import { AppState, getUser } from '../reducers';
 import { AlertActions }      from '../actions';
+import { UserActions }       from '../actions';
 import { PreferenceActions } from '../actions';
-
-import { UserService }          from "../service";
 
 import { User } from "../models";
 
@@ -24,7 +23,7 @@ import { User } from "../models";
 export class UserPage implements OnInit
 {
     /* The user we are viewing */
-    user$: Observable<User>;
+    user$:   Observable<User>;
 
     auth$:   Observable<any>;
     pref$:   Observable<any>;
@@ -37,7 +36,7 @@ export class UserPage implements OnInit
 
     ngOnInit() {
         this.user$ = this.route.params.select<string>('uuid')
-            .switchMap(uuid => store.let(getUser(uuid)));
+            .switchMap(uuid => this.store.let(getUser(uuid)));
     }
 
     savePreference($event) {
@@ -45,7 +44,7 @@ export class UserPage implements OnInit
     }
 
     saveDomains($event) {
-        //this.store.dispatch();
+        this.store.dispatch(UserActions.saveDomains($event));
     }
     
     onSubmitProfile() 

@@ -5,7 +5,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 
-import { CARRIERS, ORDER_STATUSES, Order, Pagination } from '../models';
+import { CARRIERS, ORDER_STATUSES, Order, Paginator } from '../models';
 import { OrderService }      from '../service';
 
 import { zh_CN }    from '../localization';
@@ -34,7 +34,7 @@ export class OrdersPage implements OnInit
     /* If select all checkbox is checked or not */
     checkedAll: boolean = false;
 
-    pagination = new Pagination;
+    pagination = new Paginator;
     
     /* New an empty object array */
     alerts = Array<Object>();
@@ -50,7 +50,7 @@ export class OrdersPage implements OnInit
             segment => {
                 this.status = segment['status'] ? segment['status'] : 'all';
                 this.deepUrl = this.baseUrl + '/status/' + this.status;
-                this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
+                this.pagination.cur_page = segment['page'] ? +segment['page'] : 1;
                 /* Update order list when URL changes */
                 this.getOrdersList();
             }
@@ -64,7 +64,7 @@ export class OrdersPage implements OnInit
 
     private getOrdersList()
     {
-        this.orderService.getOrders(this.status, this.pagination.current_page)
+        this.orderService.getOrders(this.status, this.pagination.cur_page)
             .subscribe(
                 json => {
                     this.orders = json['data'];
@@ -80,7 +80,7 @@ export class OrdersPage implements OnInit
                             this.orders[i]['products'] = JSON.parse(this.orders[i]['products']);
                         //console.log(this.orders[i]['shippings']);
                     }
-                    this.pagination.setup(json);
+                    //this.pagination.setup(json);
                 },
                 error => console.error(error),
                 ()    => {

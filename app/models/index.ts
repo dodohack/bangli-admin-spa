@@ -14,7 +14,7 @@
 
 export * from './menu';
 export * from './user';
-export * from './pagination';
+export * from './paginator';
 export * from './category';
 export * from './tag';
 export * from './topic';

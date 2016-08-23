@@ -7,6 +7,7 @@ import { SharedModule } from '../directives/shared.module';
 
 import { routing }      from './routing';
 
+import { Paginator }            from '../directives/paginator';
 
 import { UserAuthProfileTab }   from './components/user.auth.profile';
 import { UserPreferenceTab }    from './components/user.preference';
@@ -22,6 +23,7 @@ import { UsersPage } from './users.page';
 @NgModule({
     imports: [ CommonModule, SharedModule, routing ],
     declarations: [
+        Paginator,
         UsersList,
         UserAuthProfileTab, UserPreferenceTab,
         UserBaseProfileTab, UserShippingProfileTab,

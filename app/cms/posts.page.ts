@@ -8,7 +8,7 @@ import { TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
 
 import { PostService, UserService } from '../service';
 import { User, Post, Category, Tag, Topic,
-    Pagination, PostStatus } from '../models';
+    Paginator, PostStatus } from '../models';
 
 import { zh_CN } from '../localization';
 
@@ -46,7 +46,7 @@ export class PostsPage implements OnInit
     /* Alert message */
     alerts = Array<Object>();
 
-    pagination = new Pagination;
+    pagination = new Paginator;
 
     constructor(private route: ActivatedRoute,
                 private userService: UserService,
@@ -77,7 +77,7 @@ export class PostsPage implements OnInit
                 this.condition = segment['cond'] ? segment['cond'] : 'all';
                 this.deepUrl = this.baseUrl + '/' + this.filter + '/' + this.condition;
                 /* '+' magically converts string to number */
-                this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
+                this.pagination.cur_page = segment['page'] ? +segment['page'] : 1;
                 /* Update post list when URL changes */
                 this.getPostsList();
             }
@@ -109,11 +109,11 @@ export class PostsPage implements OnInit
     private getPostsList()
     {
         this.postService.getPosts(this.filter, this.condition,
-                                  this.pagination.current_page)
+                                  this.pagination.cur_page)
             .subscribe(
                 json => {
                     this.posts = json['data'];
-                    this.pagination.setup(json);
+                    //this.pagination.setup(json);
                 },
                 error => console.error(error),
                 ()    => {

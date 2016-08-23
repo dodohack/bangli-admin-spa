@@ -89,6 +89,12 @@ export function getUsersState() {
         .select(s => s.users);
 }
 
+/* FIXME: */
+export function getUsers(filter: any) {
+    return getUsersState();
+}
+
 export function getUser(uuid: string) {
+    console.log("get user by uuid: ", uuid);
     return compose(fromUsers.getUser(uuid), getUsersState());
 }

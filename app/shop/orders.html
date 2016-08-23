@@ -22,7 +22,7 @@
         <button type="submit" class="btn btn-secondary btn-sm">应用</button>
     </div>
 
-    <paginator [baseUrl]="deepUrl" [pagination]="pagination"></paginator>
+   <!--<paginator [baseUrl]="deepUrl" [pagination]="pagination"></paginator>-->
 </div>
 
 <!-- Order list table -->
@@ -92,9 +92,11 @@
 
 
 <!-- Pagination at the end -->
+<!--
 <div class="list-toolbar">
     <paginator [baseUrl]="deepUrl" [pagination]="pagination"></paginator>
 </div>
+-->
 
 <!-- Fixed right panel - order editing -->
 <div *ngIf="order" class="right-panel right-panel-lg" [class.show-right-panel]="!hideRightPanel">

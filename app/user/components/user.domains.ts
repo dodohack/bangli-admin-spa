@@ -16,24 +16,24 @@ import { Domain, DOMAINS } from '../../models/domain'
 export class UserDomainsTab
 {
     @Input()
-    uuid: string;
+    _user: User;
+    @Input() set user(value) { this._user = Object.assign({}, value); }
+    get user() { return this._user; }
 
-    @Input()
-    auth;
-
-    @Input()
-    isMyProfile: boolean;
-    
     @Input()
     isSuperUser: boolean;
 
     /* Domains user can access */
+    /*
     _domains: Domain[];
     @Input() set domains(value) { this._domains = Object.assign({}, value); }
     get domains() { return this._domains; }
+    */
 
     @Output()
     save = new EventEmitter();
+
+    get domains() { return this._user.domains; }
 
     /* Can not get @Input before this point */
     /*

@@ -51,7 +51,7 @@ We have several tabs to switch between massive inputs
     </tab>
 
     <tab heading="后台权限" *ngIf="isMyProfile || isSuperUser">
-        <user-domains-tab [uuid]="uuid"
+        <user-domains-tab [user]="user$ | async"
                           [isSuperUser]="isSuperUser"
                           (save)="saveDomains($event)"></user-domains-tab>
     </tab>

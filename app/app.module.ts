@@ -15,9 +15,12 @@ import { UserService }   from './service';
 import { routing }       from './app.routes';
 import { App }           from './app';
 
-
+/* FIXME: If we do not put these globally used directives here, we will get
+ * strange error: Can't bind to 'routerLink' since it isn't a known property of 'a'
+ */
 import { Sidebar } from './directives/sidebar';
 import { Topbar }  from './directives/topbar';
+import { Paginator } from './directives/paginator';
 
 import { MigrationPage }  from './migration';
 
@@ -33,9 +36,10 @@ import { provideStore }  from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects/module';
 
 /* Import the default export from these files */
-import reducer          from './reducers';
-import effects          from './effects';
-import { AuthEffects }  from './effects';
+import reducer            from './reducers';
+import effects            from './effects';
+import { AuthEffects }    from './effects';
+import { UserEffects }    from './effects';
 import { ProductEffects } from './effects';
 
 import { SharedModule }    from './directives/shared.module';
@@ -62,6 +66,7 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         UserModule,
         SharedModule.forRoot(),
         EffectsModule.run(AuthEffects),
+        EffectsModule.run(UserEffects),
         EffectsModule.run(ProductEffects),
     ],
     declarations: [
@@ -69,8 +74,10 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         StoreLogMonitorComponent,
         
         App,
+
         Topbar,
         Sidebar,
+        //Paginator,
 
         /* Migration */
         MigrationPage,

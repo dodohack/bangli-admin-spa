@@ -10,7 +10,7 @@ import { Observable }        from 'rxjs/Observable';
 import { AppState }          from '../reducers';
 import { ProductActions }    from '../actions';
 
-import { Pagination, User, Product, ProductStatus } from '../models';
+import { Paginator, User, Product, ProductStatus } from '../models';
 import { ProductService, UserService } from '../service';
 
 import { zh_CN } from '../localization';
@@ -34,7 +34,7 @@ export class ProductsPage implements OnInit
     /* If select all checkbox is checked or not */
     checkedAll = false;
 
-    pagination = new Pagination;
+    pagination = new Paginator;
 
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>,

@@ -9,25 +9,25 @@
         <li class="nav-item">
             <a class="nav-link" [routerLink]="['/user/list/5/1']">所有用户</a>
         </li>
-        -->
         <li *ngFor="let role of userRoles" class="nav-item">
-            <!-- Link to first page of given role of customers -->
             <a class="nav-link" [routerLink]="['/user/list', role.id, '1']">{{ role.display_name }}</a>
         </li>
+        -->
     </ul>
 
     <search-box></search-box>
 </nav>
 
-<!-- Filter toolbar -->
+<!-- Paginator -->
 <div class="list-toolbar">
-    <paginator [baseUrl]="baseUrl" [pagination]="pagination"></paginator>
+    <paginator [base]="'user'" [usersState]="usersState$ | async"></paginator>
 </div>
 
 <!-- List of users -->
-<users-list [users]="users$ | async"></users-list>
+<users-list [usersState]="usersState$ | async"></users-list>
 
-<!-- Pagination at the end -->
+<!-- Paginator -->
 <div class="list-toolbar">
-        <paginator [baseUrl]="baseUrl" [pagination]="pagination"></paginator>
+    <paginator [base]="'user'" [usersState]="usersState$ | async"></paginator>
 </div>
+

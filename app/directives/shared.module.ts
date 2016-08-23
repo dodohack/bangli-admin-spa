@@ -18,7 +18,6 @@ import { EditorPageHeaderComponent } from './editor-page-header.component';
 import { ListPageHeaderComponent }   from './list-page-header.component';
 import { ListPageMenuComponent }     from './list-page-menu.component';
 import { FastEditPostFormComponent } from './fast-edit-post-form.component';
-import { PaginatorComponent }        from './paginator.component';
 import { PostCttCloudComponent}      from './post-ctt-cloud.component';
 import { SearchBoxComponent }        from './search-box.component';
 import { TagCloudComponent }         from './tag-cloud.component';
@@ -36,7 +35,6 @@ import { DateFilterComponent }       from './date-filter.component';
 
         FroalaEditorCompnoent,
 
-        PaginatorComponent,
         ListPageHeaderComponent,
         ListPageMenuComponent,
         CategoryTreeComponent,
@@ -56,8 +54,7 @@ import { DateFilterComponent }       from './date-filter.component';
         AlertComponent,
 
         FroalaEditorCompnoent,
-
-        PaginatorComponent,
+        
         ListPageHeaderComponent,
         ListPageMenuComponent,
         CategoryTreeComponent,

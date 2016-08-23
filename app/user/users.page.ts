@@ -2,72 +2,64 @@
  * Display list of users
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component }         from '@angular/core';
+import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Observable }        from 'rxjs/Observable';
+import { Subscription }      from "rxjs/Rx";
 import { Store }             from '@ngrx/store';
 
-import { AppState }          from '../reducers';
-import { User, Pagination }  from '../models';
+import { UserActions }        from '../actions';
+import { AppState, getUsers } from '../reducers';
+import { User, Paginator }    from '../models';
 import { zh_CN }    from '../localization';
+
 
 @Component({
     template: require('./users.page.html')
 })
-export class UsersPage implements OnInit
+export class UsersPage implements OnInit, OnDestroy
 {
-    base = 'user/list';
-    baseUrl: string;
+    sub: Subscription;
 
-    /* Which group of users is currently showing */
-    current_role: any;
-
-    /* The list of users, array */
-    users: User[];
-
-    pagination = new Pagination;
-
-    auth$: Observable<any>;
-    users$: Observable<any>;
+    authState$: Observable<any>;
+    usersState$: Observable<any>;
 
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) {
-        this.auth$  = this.store.select('auth');
-        this.users$ = this.store.select('users');
+        this.authState$  = this.store.select('auth');
+        this.usersState$ = this.store.select('users');
     }
 
-    ngOnInit() { this.initUserList(); }
+    ngOnInit() {
+        // FIXME: Avoid nested observable subscription, it may may cause problems.
+        // TODO:
+        // 1. UserActions.loadUsers() should be dispatched when url changes.
+        // 2. this.users$ is assigned to the list of users
+        // 3. support user role_id filters ('any' or role_id).
+        // route.params.subscribe is not a good solution, we should use
+        // route.params.switchMap() instead.
+        this.sub = this.route.params.subscribe(params => {
+            //let current_role = segment['role'] ? segment['role'] : 'any';
+            this.authState$.subscribe(auth => {
+                let token = auth.token;
+                /* FIXME: Paginator is always redirected to page/:page/role/0 !!! */
+                let cur_page = params['page'] ? +params['page'] : 1;
+                let role_id  = params['role_id'] ? params['role_id'] : '';
+                let api = 'http://localhost:5000/admin/users/' + cur_page +
+                    '?role_id=' + role_id +
+                    '&per_page=20' +
+                    '&token=' + token;
+                this.store.dispatch(UserActions.loadUsers(api));
+            });
+        });
+    }
+
+    /* TODO: Check if memory leaks if we don't do this */
+    ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
 
     get zh() { return zh_CN.user; }
-    get userRoles() { return this.userService.roles; }
-    
-    private initUserList()
-    {
-        /* Get URL segments and update user list */
-        this.route.params.subscribe(
-            segment => {
-                this.current_role = segment['role'] ? segment['role'] : 'any';
-                this.baseUrl = this.base + '/' + this.current_role;
-                /* '+' magically converts string to number */
-                this.pagination.current_page = segment['page'] ? +segment['page'] : 1;
-                /* Update user list when URL changes */
-                this.getUsersList();
-            }
-        );        
-    }
-
-    /**
-     * Get a list of users
-     */
-    private getUsersList()
-    {
-        this.userService.getUsers(this.current_role, this.pagination.current_page)
-            .subscribe(
-                json => {
-                    this.users = json['data'];
-                    this.pagination.setup(json);
-                },
-                error => console.error(error)
-            );
-    }
+    get userRoles() { return ''; /*this.userService.roles; */}
 }

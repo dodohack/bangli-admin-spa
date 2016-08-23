@@ -19,10 +19,10 @@ export class UserActions {
     }
 
     static LOAD_USERS = '[User] Load Users';
-    static loadUsers(users: User[]): Action {
+    static loadUsers(filters: any): Action {
         return {
             type: UserActions.LOAD_USERS,
-            payload: users
+            payload: filters
         };
     }
 
@@ -31,6 +31,13 @@ export class UserActions {
         return {
             type: UserActions.LOAD_USERS_SUCCESS,
             payload: users
+        };
+    }
+
+    static LOAD_USERS_FAIL = '[User] Load Users Fail';
+    static loadUsersFail(): Action {
+        return {
+            type: UserActions.LOAD_USERS_FAIL
         };
     }
 
@@ -51,10 +58,9 @@ export class UserActions {
     }
 
     static LOAD_USER_FAIL = '[User] Load User Fail';
-    static loadUserFail(user: User): Action {
+    static loadUserFail(): Action {
         return {
-            type: UserActions.LOAD_USER_FAIL,
-            payload: user
+            type: UserActions.LOAD_USER_FAIL
         };
     }
 
