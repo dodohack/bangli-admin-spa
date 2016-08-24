@@ -3,23 +3,34 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { UserService, PageService } from '../service';
+import { ActivatedRoute }    from '@angular/router';
+import { Store }             from '@ngrx/store';
+import { Observable }        from 'rxjs/Observable';
+
+import { AppState }          from '../reducers';
+import { PageActions }       from '../actions';
+
 import { zh_CN } from '../localization';
 
 @Component({
-    template: require('./pages.html')
+    template: require('./pages.page.html')
 })
 export class PagesPage implements OnInit
 {
-    baseUrl = 'page/list';
+    /* Pages state in ngrx */
+    pagesState$: Observable<any>;
 
-    constructor(private userService: UserService,
-                private pageService: PageService) {}
-
-    ngOnInit() {
+    constructor(private route: ActivatedRoute,
+                private store: Store<AppState>) {
+        this.pagesState$ = this.store.select('pages');
     }
 
-    get zh()       { return zh_CN.post; }
-    get editors()  { return this.userService.editors; }
-    get statuses() { return this.pageService.statuses; }
+
+    ngOnInit() {
+        /* TODO: Get status/editor from url as well */
+        this.route.params.subscribe(params => {
+            let cur_page = params['page'] ? params['page'] : '1';
+            this.store.dispatch(PageActions.loadPages({cur_page: cur_page}));
+        });
+    }
 }

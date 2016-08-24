@@ -1,0 +1,60 @@
+<list-page-header [pageTitle]="'专题'" [newItemUrl]="'topic/new'">
+</list-page-header>
+
+<!-- list page menu -->
+<nav class="navbar page-sub-menu">
+    <list-page-menu
+            [baseUrl]="baseUrl" [byMe]=""
+            [statuses]="statuses"
+            [editors]="editors"
+            [localization]="zh"></list-page-menu>
+
+    <search-box></search-box>
+</nav>
+
+<!-- Filter toolbar -->
+<div class="list-toolbar">
+    <div class="float-left bulk-actions">
+        <select class="c-select select-sm">
+            <option value="0" selected>批量操作</option>
+            <option value="x">移到回收站</option>
+            <option value="y">批量修改</option>
+        </select>
+        <button type="submit" class="btn btn-secondary btn-sm">应用</button>
+    </div>
+
+    <div class="float-left filters">
+        <select class="c-select select-sm">
+            <option value="0" selected>全部日期</option>
+            <option value="x">2016年5月</option>
+            <option value="y">2016年4月</option>
+            <option value="y">2016年3月</option>
+        </select>
+        <select class="c-select select-sm">
+            <option value="0" selected>所有分类</option>
+            <option value="x">分类1</option>
+            <option value="y">分类2</option>
+            <option value="y">分类3</option>
+        </select>
+        <select class="c-select select-sm">
+            <option value="0" selected>所有专题</option>
+            <option value="x">专题1</option>
+            <option value="y">专题2</option>
+            <option value="y">专题3</option>
+        </select>
+        <button type="submit" class="btn btn-secondary btn-sm">筛选</button>
+    </div>
+
+    <!--<paginator [baseUrl]="deepUrl" [pagination]="pagination"></paginator>-->
+</div>
+
+<!-- Topic list table -->
+<topics-list [topicsState]="topicsState$ | async"></topics-list>
+
+
+<!-- Pagination at the end -->
+<!--
+<div class="list-toolbar">
+    <paginator [baseUrl]="baseUrl" [pagination]="pagination"></paginator>
+</div>
+-->

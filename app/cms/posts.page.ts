@@ -32,7 +32,7 @@ export class PostsPage implements OnInit
 
     
     ngOnInit() {
-        /* TODO: Get status from url as well */
+        /* TODO: Get status/author/editor from url as well */
         this.route.params.subscribe(params => {
            let cur_page = params['page'] ? params['page'] : '1';
             this.store.dispatch(PostActions.loadPosts({cur_page: cur_page}));

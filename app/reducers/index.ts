@@ -47,6 +47,8 @@ import prefReducer, * as fromPref         from './preference';
 import productsReducer, * as fromProducts from './products';
 import ordersReducer, * as fromOrders     from './orders';
 import postsReducer, * as fromPosts       from './posts';
+import topicsReducer, * as fromTopics     from './topics';
+import pagesReducer, * as fromPages       from './pages';
 import {Observable} from "rxjs/Observable";
 
 /**
@@ -61,6 +63,8 @@ export interface AppState {
     products: fromProducts.ProductsState;
     orders:   fromOrders.OrdersState;
     posts:    fromPosts.PostsState;
+    topics:   fromTopics.TopicsState;
+    pages:    fromPages.PagesState;
 }
 
 
@@ -77,13 +81,15 @@ export default compose(
     combineReducers
 )
 ({
-    alerts: alertsReducer,
-    auth: authReducer,
-    users: usersReducer,
-    pref: prefReducer,
+    alerts:   alertsReducer,
+    auth:     authReducer,
+    users:    usersReducer,
+    pref:     prefReducer,
     products: productsReducer,
-    orders: ordersReducer,
-    posts: postsReducer
+    orders:   ordersReducer,
+    posts:    postsReducer,
+    topics:   topicsReducer,
+    pages:    pagesReducer
 });
 
 /*****************************************************************************
@@ -131,3 +137,30 @@ export function getPostsState() {
 export function getPost(id: number) {
     return compose(fromPosts.getPost(id), getPostsState());
 }
+
+
+/*****************************************************************************
+ * Topic
+ *****************************************************************************/
+export function getTopicsState() {
+    return (state$: Observable<AppState>) =>
+        state$.select(s => s.topics);
+}
+
+export function getTopic(id: number) {
+    return compose(fromTopics.getTopic(id), getTopicsState());
+}
+
+
+/*****************************************************************************
+ * Page
+ *****************************************************************************/
+export function getPagesState() {
+    return (state$: Observable<AppState>) =>
+        state$.select(s => s.pages);
+}
+
+export function getPage(id: number) {
+    return compose(fromPages.getPage(id), getPagesState());
+}
+

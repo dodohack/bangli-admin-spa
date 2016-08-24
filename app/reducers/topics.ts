@@ -1,37 +1,37 @@
 /**
- * Cms post reducer
+ * Cms topic reducer
  */
 import '@ngrx/core/add/operator/select';
 import { Observable } from 'rxjs/Observable';
 import { Action }     from '@ngrx/store';
 
 import { Paginator }      from '../models';
-import { Post }        from '../models';
-import { PostActions } from '../actions';
+import { Topic }        from '../models';
+import { TopicActions } from '../actions';
 
-export interface PostsState {
+export interface TopicsState {
     ids: number[];
-    entities: { [id: number]: Post };
+    entities: { [id: number]: Topic };
     paginator: Paginator;
 };
 
-const initialState: PostsState = {
+const initialState: TopicsState = {
     ids: [],
     entities: {},
     paginator: new Paginator
 };
 
-export default function (state = initialState, action: Action): PostsState {
+export default function (state = initialState, action: Action): TopicsState {
     switch (action.type)
     {
-        case PostActions.SEARCH_COMPLETE:
-        case PostActions.LOAD_POSTS_SUCCESS: {
-            const posts: Post[] = action.payload.posts;
-            const ids: number[]       = posts.map(p => p.id);
-            const entities            = posts.reduce(
-                (entities: { [id: number]: Post }, post: Post) => {
-                    post.selected = false;
-                    return Object.assign(entities, { [post.id]: post });
+        case TopicActions.SEARCH_COMPLETE:
+        case TopicActions.LOAD_TOPICS_SUCCESS: {
+            const topics: Topic[] = action.payload.topics;
+            const ids: number[]       = topics.map(p => p.id);
+            const entities            = topics.reduce(
+                (entities: { [id: number]: Topic }, topic: Topic) => {
+                    topic.selected = false;
+                    return Object.assign(entities, { [topic.id]: topic });
                 }, {});
 
             return {
@@ -41,11 +41,11 @@ export default function (state = initialState, action: Action): PostsState {
             };
         }
 
-        case PostActions.LOAD_POST_SUCCESS: {
-            // Post id
+        case TopicActions.LOAD_TOPIC_SUCCESS: {
+            // Topic id
             const id: number = +action.payload['id'];
 
-            // Update corresponding post from current posts list with
+            // Update corresponding topic from current topics list with
             // detailed information.
             if (state.ids.indexOf(id) !== -1) {
                 return {
@@ -65,9 +65,9 @@ export default function (state = initialState, action: Action): PostsState {
 }
 
 /**
- * Return a post from current post list by id
+ * Return a topic from current topic list by id
  */
-export function getPost(id: number) {
-    return (state$: Observable<PostsState>) =>
+export function getTopic(id: number) {
+    return (state$: Observable<TopicsState>) =>
         state$.select(s => s.entities[id]);
 }

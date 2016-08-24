@@ -3,13 +3,17 @@ import { UserEffects }    from './user';
 import { ProductEffects } from './product';
 import { OrderEffects }   from './order';
 import { PostEffects }    from './post';
+import { TopicEffects }   from './topic';
+import { PageEffects }    from './page';
 
 export {
     AuthEffects,
     UserEffects,
     ProductEffects,
     OrderEffects,
-    PostEffects
+    PostEffects,
+    TopicEffects,
+    PageEffects
 };
 
 export default [
@@ -17,5 +21,7 @@ export default [
     UserEffects,
     ProductEffects,
     OrderEffects,
-    PostEffects
+    PostEffects,
+    TopicEffects,
+    PageEffects
 ];

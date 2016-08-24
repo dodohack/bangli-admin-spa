@@ -39,6 +39,8 @@ import { UserEffects }    from './effects';
 import { ProductEffects } from './effects';
 import { OrderEffects }   from './effects';
 import { PostEffects }    from './effects';
+import { TopicEffects }   from './effects';
+import { PageEffects }    from './effects';
 
 import { SharedModule }    from './directives/shared.module';
 import { AuthModule }      from './auth/auth.module';
@@ -68,6 +70,8 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         EffectsModule.run(ProductEffects),
         EffectsModule.run(OrderEffects),
         EffectsModule.run(PostEffects),
+        EffectsModule.run(TopicEffects),
+        EffectsModule.run(PageEffects),
     ],
     declarations: [
         /* Debug only */

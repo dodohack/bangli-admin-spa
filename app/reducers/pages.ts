@@ -1,37 +1,37 @@
 /**
- * Cms post reducer
+ * Cms page reducer
  */
 import '@ngrx/core/add/operator/select';
 import { Observable } from 'rxjs/Observable';
 import { Action }     from '@ngrx/store';
 
 import { Paginator }      from '../models';
-import { Post }        from '../models';
-import { PostActions } from '../actions';
+import { Page }        from '../models';
+import { PageActions } from '../actions';
 
-export interface PostsState {
+export interface PagesState {
     ids: number[];
-    entities: { [id: number]: Post };
+    entities: { [id: number]: Page };
     paginator: Paginator;
 };
 
-const initialState: PostsState = {
+const initialState: PagesState = {
     ids: [],
     entities: {},
     paginator: new Paginator
 };
 
-export default function (state = initialState, action: Action): PostsState {
+export default function (state = initialState, action: Action): PagesState {
     switch (action.type)
     {
-        case PostActions.SEARCH_COMPLETE:
-        case PostActions.LOAD_POSTS_SUCCESS: {
-            const posts: Post[] = action.payload.posts;
-            const ids: number[]       = posts.map(p => p.id);
-            const entities            = posts.reduce(
-                (entities: { [id: number]: Post }, post: Post) => {
-                    post.selected = false;
-                    return Object.assign(entities, { [post.id]: post });
+        case PageActions.SEARCH_COMPLETE:
+        case PageActions.LOAD_PAGES_SUCCESS: {
+            const pages: Page[] = action.payload.pages;
+            const ids: number[]       = pages.map(p => p.id);
+            const entities            = pages.reduce(
+                (entities: { [id: number]: Page }, page: Page) => {
+                    page.selected = false;
+                    return Object.assign(entities, { [page.id]: page });
                 }, {});
 
             return {
@@ -41,11 +41,11 @@ export default function (state = initialState, action: Action): PostsState {
             };
         }
 
-        case PostActions.LOAD_POST_SUCCESS: {
-            // Post id
+        case PageActions.LOAD_PAGE_SUCCESS: {
+            // Page id
             const id: number = +action.payload['id'];
 
-            // Update corresponding post from current posts list with
+            // Update corresponding page from current pages list with
             // detailed information.
             if (state.ids.indexOf(id) !== -1) {
                 return {
@@ -65,9 +65,9 @@ export default function (state = initialState, action: Action): PostsState {
 }
 
 /**
- * Return a post from current post list by id
+ * Return a page from current page list by id
  */
-export function getPost(id: number) {
-    return (state$: Observable<PostsState>) =>
+export function getPage(id: number) {
+    return (state$: Observable<PagesState>) =>
         state$.select(s => s.entities[id]);
 }

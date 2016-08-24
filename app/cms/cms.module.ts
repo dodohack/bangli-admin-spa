@@ -7,6 +7,7 @@ import { SharedModule } from '../directives/shared.module';
 import { routing }      from './routing';
 
 import { PostsList }    from './components/posts.list';
+import { TopicsList }   from './components/topics.list';
 
 import { PostsPage }    from './posts.page';
 import { PostPage }     from './post.page';
@@ -19,7 +20,7 @@ import { PagePage }     from './page.page';
 @NgModule({
     imports: [ SharedModule, routing ],
     declarations: [
-        PostsList,
+        PostsList, TopicsList,
         PostsPage, PostPage,
         TopicsPage, TopicPage, 
         PagesPage, PagePage 
