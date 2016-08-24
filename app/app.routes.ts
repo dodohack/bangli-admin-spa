@@ -2,7 +2,6 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { BaseGuard }         from './auth';
 
-
 import { VouchersPage }      from './shop/vouchers';
 import { VoucherPage }       from './shop/voucher';
 import { ProductCategoriesPage } from './system/product-categories';

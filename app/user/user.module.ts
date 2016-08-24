@@ -2,12 +2,9 @@
  * This is the module contains all user authentication related pages
  */
 import { NgModule }     from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SharedModule } from '../directives/shared.module';
 
 import { routing }      from './routing';
-
-import { Paginator }            from '../directives/paginator';
 
 import { UserAuthProfileTab }   from './components/user.auth.profile';
 import { UserPreferenceTab }    from './components/user.preference';
@@ -21,9 +18,8 @@ import { UserPage }  from './user.page';
 import { UsersPage } from './users.page';
 
 @NgModule({
-    imports: [ CommonModule, SharedModule, routing ],
+    imports: [ SharedModule, routing ],
     declarations: [
-        Paginator,
         UsersList,
         UserAuthProfileTab, UserPreferenceTab,
         UserBaseProfileTab, UserShippingProfileTab,

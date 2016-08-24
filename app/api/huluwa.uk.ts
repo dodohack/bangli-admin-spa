@@ -31,8 +31,8 @@ export const API_HULUWA_UK = {
 
     /* List of users */
     users: base + '/admin/users',
-    /* Users list page filter menu */
-    user_roles: base + '/admin/menu/users',
+    /* List of user roles */
+    user_roles: base + '/admin/user_roles',
     /* User with detailed profile */
     user: base + '/admin/user',
 

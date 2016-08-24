@@ -18,6 +18,52 @@ export class ProductActions {
         };
     }
 
+    static LOAD_PRODUCTS = '[Product] Load Products';
+    static loadProducts(filters: any): Action {
+        return {
+            type: ProductActions.LOAD_PRODUCTS,
+            payload: filters
+        };
+    }
+
+    static LOAD_PRODUCTS_SUCCESS = '[Product] Load Products Success';
+    static loadProductsSuccess(products: Product[]): Action {
+        return {
+            type: ProductActions.LOAD_PRODUCTS_SUCCESS,
+            payload: products
+        };
+    }
+
+    static LOAD_PRODUCTS_FAIL = '[Product] Load Products Fail';
+    static loadProductsFail(): Action {
+        return {
+            type: ProductActions.LOAD_PRODUCTS_FAIL,
+        };
+    }
+
+    static LOAD_PRODUCT = '[Product] Load Product';
+    static loadProduct(id: string): Action {
+        return {
+            type: ProductActions.LOAD_PRODUCT,
+            payload: id
+        };
+    }
+
+    static LOAD_PRODUCT_SUCCESS = '[Product] Load Product Success';
+    static loadProductSuccess(product: Product): Action {
+        return {
+            type: ProductActions.LOAD_PRODUCT_SUCCESS,
+            payload: product
+        };
+    }
+
+    static LOAD_PRODUCT_FAIL = '[Product] Load Product Fail';
+    static loadProductFail(): Action {
+        return {
+            type: ProductActions.LOAD_PRODUCT_FAIL,
+        };
+    }
+
     static AUTO_SAVE = '[Product] Auto Save';
     static autoSave(product: Product): Action {
         return {
@@ -26,18 +72,18 @@ export class ProductActions {
         };
     }
 
-    static SAVE = '[Product] Save';
-    static save(product: Product): Action {
+    static SAVE_PRODUCT = '[Product] Save Product';
+    static saveProduct(product: Product): Action {
         return {
-            type: ProductActions.SAVE,
+            type: ProductActions.SAVE_PRODUCT,
             payload: product
         };
     }
 
-    static BULK_SAVE = '[Product] Bulk Save';
-    static bulkSave(products: Product[]): Action {
+    static SAVE_PRODUCTS = '[Product] Save Products';
+    static saveProducts(products: Product[]): Action {
         return {
-            type: ProductActions.BULK_SAVE,
+            type: ProductActions.SAVE_PRODUCTS,
             payload: products
         };
     }

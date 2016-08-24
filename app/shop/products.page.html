@@ -38,17 +38,18 @@
         <button type="submit" class="btn btn-secondary btn-sm">筛选</button>
     </div>
 
-    <!--<paginator [baseUrl]="deepUrl" [pagination]="pagination"></paginator>-->
+    <!--<paginator [base]="'product'" [lists]="products$ | async"></paginator>-->
 </div>
 
 <!-- Products list table -->
-<products-list [products]="products$ | async"
+<products-list [productsState]="productsState$ | async"
                (quickEdit)="quickEdit($event)"></products-list>
 
 
 <!-- Pagination at the end -->
+
 <!--
 <div class="list-toolbar">
-    <paginator [baseUrl]="deepUrl" [pagination]="pagination"></paginator>
+    <paginator [base]="'product'" [lists]="products | async"></paginator>
 </div>
 -->

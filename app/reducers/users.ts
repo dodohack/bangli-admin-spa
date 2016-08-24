@@ -1,19 +1,19 @@
 import { Action }     from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
-import { User }         from '../models';
+import { User }        from '../models';
 import { Paginator }   from '../models';
-import { UserActions }  from '../actions';
+import { UserActions } from '../actions';
 
 export interface UsersState {
     uuids: string[];
-    entities: User[];
+    entities: { [uuid: string]: User };
     paginator: Paginator;
 };
 
 const initialState: UsersState = {
     uuids: [],
-    entities: [],
+    entities: {},
     paginator: new Paginator
 };
 

@@ -6,22 +6,27 @@ import { Http, Headers, RequestOptions }  from '@angular/http';
 import { Effect, Actions }                from '@ngrx/effects';
 import { Observable }                     from 'rxjs/Observable';
 
+import { AuthCache }       from '../auth.cache';
+import { PrefCache }       from '../pref.cache';
 import { ProductActions }  from '../actions';
 import { Product }         from "../models";
 
 @Injectable()
 export class ProductEffects {
-    /* Http request headers */
-    headers: Headers;
-    options: RequestOptions;
 
     constructor (private actions$: Actions,
-                 private http: Http) {
-        this.headers = new Headers({'Content-Type': 'application/json'});
-        this.headers.append('Authorization', 'Bearer TODO: JWT TOKEN HERE');
-        this.options = new RequestOptions({ headers: this.headers });
-    }
+                 private http: Http) {}
 
+    @Effect() loadProducts$ = this.actions$.ofType(ProductActions.LOAD_PRODUCTS)
+        .switchMap(action => this.getProducts(action.payload))
+        .map(products => ProductActions.loadProductsSuccess(products))
+        .catch(() => Observable.of(ProductActions.loadProductsFail()));
+
+    @Effect() loadProduct$ = this.actions$.ofType(ProductActions.LOAD_PRODUCT)
+        .switchMap(action => this.getProduct(action.payload))
+        .map(product => ProductActions.loadProductSuccess(product))
+        .catch(() => Observable.of(ProductActions.loadProductFail()));
+    
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
 
@@ -31,31 +36,28 @@ export class ProductEffects {
     private save(products: Product[]): Observable<Product[]> {
         let api = '';
         let body = JSON.stringify(products);
-        return this.http.post(api, body, this.options).map(res => res.json());
+
+        let headers = new Headers({
+            'Authorization': AuthCache.token(),
+            'Content-Type': 'application/json'});
+        let options = new RequestOptions({ headers: headers });
+
+        return this.http.post(api, body, options).map(res => res.json());
     }
 
-    /**
-     * Get single product by it's id
-     */
-    private retrieve(id: number): Observable<Product> {
-        let api = '' + '/' + id;
-        return this.http.get(api, this.options).map(res => res.json());
+    private getProducts(filters: any): Observable<any> {
+        let cur_page = filters.cur_page;
+        //let status   = filters.status;
+        let api = AuthCache.API().products + '/' + cur_page +
+            '?per_page=' + PrefCache.getPerPage() +
+            //'&status=' + status +
+            '&token=' + AuthCache.token();
+        return this.http.get(api).map(res => res.json());
     }
 
-    /**
-     * Get a list of products with pagination
-     */
-    private list(cur_page: number, status: string): Observable<Product[]> {
-        let api = '' + '/' + status + '/' + cur_page + '?per_page=' + 20;
-        return this.http.get(api, this.options).map(res => res.json());
-    }
 
-    /**
-     * Get products statuses
-     */
-    /*
-    private statuses(): Observable<any> {
-
+    private getProduct(id: number): Observable<Product> {
+        let api = AuthCache.API().product + '/' + id + '?token=' + AuthCache.token();
+        return this.http.get(api).map(res => res.json());
     }
-    */
 }

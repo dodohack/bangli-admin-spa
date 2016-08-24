@@ -20,7 +20,7 @@
 
 <!-- Paginator -->
 <div class="list-toolbar">
-    <paginator [base]="'user'" [usersState]="usersState$ | async"></paginator>
+    <paginator [base]="'user'" [lists]="usersState$ | async"></paginator>
 </div>
 
 <!-- List of users -->
@@ -28,6 +28,6 @@
 
 <!-- Paginator -->
 <div class="list-toolbar">
-    <paginator [base]="'user'" [usersState]="usersState$ | async"></paginator>
+    <paginator [base]="'user'" [lists]="usersState$ | async"></paginator>
 </div>
 

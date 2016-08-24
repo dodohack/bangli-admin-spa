@@ -10,8 +10,7 @@ import { EditorGuard }   from './auth';
 import { ShopMgrGuard }  from './auth';
 import { AdminGuard }    from './auth';
 import { SuperUserGuard} from './auth';
-import { AuthService }   from './service';
-import { UserService }   from './service';
+
 import { routing }       from './app.routes';
 import { App }           from './app';
 
@@ -20,12 +19,9 @@ import { App }           from './app';
  */
 import { Sidebar } from './directives/sidebar';
 import { Topbar }  from './directives/topbar';
-import { Paginator } from './directives/paginator';
 
 import { MigrationPage }  from './migration';
-
 import { ImagesPage }     from './gallery';
-
 import { EmailHomePage }      from './email';
 import { EmailTemplatesPage } from './email';
 import { EmailTemplatePage }  from './email';
@@ -56,8 +52,8 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
 
 @NgModule({
     imports: [
-        BrowserModule,
         routing,
+        BrowserModule,
         HttpModule,
         AuthModule,
         DashboardModule,
@@ -93,8 +89,6 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         NewsletterPage,
     ],
     providers: [
-        AuthService,
-        UserService,
         Title,
         UnauthGuard,
         BaseGuard,

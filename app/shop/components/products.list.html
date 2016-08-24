@@ -18,21 +18,19 @@
     </thead>
 
     <tbody *ngIf="products">
-    {{ products | json }}
-    <!--
-        <template ngFor let-product [ngForOf]="products" let-i="index">
-            <tr id="{{i}}" (dblclick)="quickEdit.emit(i)">
+        <template ngFor let-id [ngForOf]="ids" let-i="index">
+            <tr id="{{i}}" (dblclick)="quickEdit.emit(id)">
                 <th>{{i+1}}</th>
-                <td><input type="checkbox" name="product[]" [(ngModel)]="product.checked"></td>
-                <td>{{ product.image_id }}</td>
+                <td><input type="checkbox" name="product[]" [(ngModel)]="products[id].selected"></td>
+                <td>{{ products[id].image_id }}</td>
                 <td>
-                    <strong><a [routerLink]="['/product', product.id ]">{{ product.title }}</a></strong>
+                    <strong><a [routerLink]="['/product', id ]">{{ products[id].title }}</a></strong>
                     <div class="row-actions">
                         <span class="trash"><a>删除</a> | </span>
-                        <span><a href="http://www.huluwa.uk/product/{{product.guid}}" target="_blank">查看</a></span>
+                        <span><a href="http://www.huluwa.uk/product/{{products[id].guid}}" target="_blank">查看</a></span>
                     </div>
                 </td>
-                <td>{{ product.sku }}</td>
+                <td>{{ products[id].sku }}</td>
                 <td>
                     <span>实际库存: xxx</span>
                     <div>
@@ -41,12 +39,11 @@
                 </td>
                 <td> xxx </td>
                 <td>£ xxx </td>
-                <td><a *ngFor="let cat of product.categories" [routerLink]="['/category', cat.id]">{{ cat.name }} </a></td>
-                <td>{{ product.min_age }} - {{ product.max_age }}</td>
-                <td>{{ product.updated_at }}</td>
+                <td><a *ngFor="let cat of products[id].categories" [routerLink]="['/category', cat.id]">{{ cat.name }} </a></td>
+                <td>{{ products[id].min_age }} - {{ products[id].max_age }}</td>
+                <td>{{ products[id].updated_at }}</td>
             </tr>
         </template>
-     -->
     </tbody>
 
 </table>

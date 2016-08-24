@@ -13,6 +13,7 @@ import { DROPDOWN_DIRECTIVES }  from 'ng2-bootstrap';
 
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
+import { Paginator }                 from './paginator';
 import { CategoryTreeComponent }     from './category-tree.component';
 import { EditorPageHeaderComponent } from './editor-page-header.component';
 import { ListPageHeaderComponent }   from './list-page-header.component';
@@ -35,6 +36,7 @@ import { DateFilterComponent }       from './date-filter.component';
 
         FroalaEditorCompnoent,
 
+        Paginator,
         ListPageHeaderComponent,
         ListPageMenuComponent,
         CategoryTreeComponent,
@@ -54,7 +56,8 @@ import { DateFilterComponent }       from './date-filter.component';
         AlertComponent,
 
         FroalaEditorCompnoent,
-        
+
+        Paginator,
         ListPageHeaderComponent,
         ListPageMenuComponent,
         CategoryTreeComponent,
@@ -64,13 +67,13 @@ import { DateFilterComponent }       from './date-filter.component';
         SearchBoxComponent,
         TagCloudComponent,
         TopicCloudComponent,
-        DateFilterComponent,        
+        DateFilterComponent,
+
         CommonModule,
         FormsModule
     ]
 })
 export class SharedModule {
-
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: SharedModule

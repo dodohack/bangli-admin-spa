@@ -15,11 +15,9 @@ const routes: Routes = [
         children: [
 
             /* List of products */
-            { path: '', pathMatch: 'full', redirectTo: 'list/status/all/1' },
-            { path: 'list',                redirectTo: 'list/status/all/1' },
-            { path: 'list/:status',        redirectTo: 'list/status/:status/1' },
-            { path: 'list/status/:status', redirectTo: 'list/status/:status/1' },
-            { path: 'list/status/:status/:page', component: ProductsPage },
+            { path: '', pathMatch: 'full', redirectTo: 'page/1/status/all' },
+            { path: 'page/:page',          redirectTo: 'page/:page/status/all' },
+            { path: 'page/:page/status/:status', component: ProductsPage },
 
             /* Single product */
             { path: 'new', component: ProductPage },

@@ -4,8 +4,6 @@
 import { Component, Input } from "@angular/core";
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { UsersState } from '../reducers/users';
-
 @Component({
     selector: 'paginator',
     template: require('./paginator.html'),
@@ -15,9 +13,9 @@ export class Paginator {
     
     @Input() base: string;
 
-    @Input() usersState: UsersState;
+    @Input() lists: any;
 
-    get paginator() { return this.usersState.paginator; }
+    get paginator() { return this.lists.paginator; }
 
     /**
      * We can loop over the array returned by this function to greatly simplify

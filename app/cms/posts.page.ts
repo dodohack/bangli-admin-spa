@@ -4,16 +4,15 @@
 
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
-import { TAB_DIRECTIVES, AlertComponent } from 'ng2-bootstrap';
 
 import { PostService, UserService } from '../service';
 import { User, Post, Category, Tag, Topic,
-    Paginator, PostStatus } from '../models';
+         Paginator, PostStatus } from '../models';
 
 import { zh_CN } from '../localization';
 
 @Component({
-    template: require('./posts.html')
+    template: require('./posts.page.html')
 })
 export class PostsPage implements OnInit
 {   

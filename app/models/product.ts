@@ -30,6 +30,7 @@ export class ProductVariation {
 
 export class Product {
     id: number;
+    selected: boolean;
     editor_id: number;
     brand_id: number;
     product_type: string;
@@ -51,7 +52,4 @@ export class Product {
 
     categories: Category[];
     tags: Tag[];
-
-    checked: boolean;
-    editing: boolean;
 }
