@@ -3,7 +3,7 @@
         地址信息<i class="pull-right fa fa-chevron-circle-down"></i>
     </div>
 
-    <div *ngIf="user && !user.addresses.length" class="alert alert-info">
+    <div *ngIf="!user.addresses" class="alert alert-info">
         用户没有任何收货地址或者账单地址
     </div>
 

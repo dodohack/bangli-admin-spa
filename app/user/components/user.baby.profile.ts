@@ -5,16 +5,12 @@
 import { Component, Input } from '@angular/core';
 import { User } from "../../models";
 
-let t = require('./user.baby.profile.html');
 @Component({
     selector: 'user-baby-profile',
-    template: t,
+    template: require('./user.baby.profile.html')
 })
 export class UserBabyProfileTab
 {
-    @Input()
-    uuid: string;
-
     @Input()
     isMyProfile: boolean;
 
