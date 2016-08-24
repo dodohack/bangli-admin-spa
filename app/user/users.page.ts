@@ -32,7 +32,8 @@ export class UsersPage implements OnInit, OnDestroy
     }
 
     ngOnInit() {
-        // FIXME: Avoid nested observable subscription, it may may cause problems.
+        // FIXME: Avoid nested observable subscription, it cause problems, such
+        // FIXME: as multiple subscription in inner subscibe.
         // TODO:
         // 1. UserActions.loadUsers() should be dispatched when url changes.
         // 2. this.users$ is assigned to the list of users

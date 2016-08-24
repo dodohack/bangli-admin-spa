@@ -1,39 +1,7 @@
 <div class="float-right paginator">
     <span>共{{ paginator.total }}条 | 本页{{ paginator.count }}条 | 第{{ paginator.cur_page }} / {{ paginator.last_page }}页</span>
-
-    <a *ngIf="paginator.cur_page != 1"
-       class="btn btn-sm btn-secondary" [routerLink]="['/', base, 'page', '1']">
-        <i class="fa fa-angle-double-left"></i>
-    </a>
-    <a *ngIf="paginator.cur_page == 1"
-       class="disabled btn btn-sm btn-secondary">
-        <i class="fa fa-angle-double-left"></i>
-    </a>
-
-    <a *ngIf="paginator.cur_page != paginator.pre_page"
-       class="btn btn-sm btn-secondary" [routerLink]="['/', base, 'page', paginator.pre_page]">
-        <i class="fa fa-angle-left"></i>
-    </a>
-    <a *ngIf="paginator.cur_page == paginator.pre_page"
-       class="disabled btn btn-sm btn-secondary">
-        <i class="fa fa-angle-left"></i>
-    </a>
-
-    <a *ngIf="paginator.cur_page != paginator.next_page"
-       class="btn btn-sm btn-secondary" [routerLink]="['/', base, 'page', paginator.next_page]">
-        <i class="fa fa-angle-right"></i>
-    </a>
-    <a *ngIf="paginator.cur_page == paginator.next_page"
-       class="disabled btn btn-sm btn-secondary" [routerLink]="['/', base, 'page', paginator.next_page]">
-        <i class="fa fa-angle-right"></i>
-    </a>
-
-    <a *ngIf="paginator.cur_page != paginator.last_page"
-       class="btn btn-sm btn-secondary" [routerLink]="['/', base, 'page', paginator.last_page]">
-        <i class="fa fa-angle-double-right"></i>
-    </a>
-    <a *ngIf="paginator.cur_page == paginator.last_page"
-       class="disabled btn btn-sm btn-secondary" [routerLink]="['/', base, 'page', paginator.last_page]">
-        <i class="fa fa-angle-double-right"></i>
+    <a *ngFor="let p of paginators" class="btn btn-sm btn-secondary"
+       [class.disabled]="p.disabled" [routerLink]="['/', base, 'page', p.index]">
+        <i class="fa {{ p.icon }}"></i>
     </a>
 </div>
