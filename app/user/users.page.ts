@@ -45,7 +45,8 @@ export class UsersPage implements OnInit, OnDestroy
                 let token = auth.token;
                 /* FIXME: Paginator is always redirected to page/:page/role/0 !!! */
                 let cur_page = params['page'] ? +params['page'] : 1;
-                let role_id  = params['role_id'] ? params['role_id'] : '';
+                let role_id  = params['role'] ? params['role'] : '';
+
                 let api = 'http://localhost:5000/admin/users/' + cur_page +
                     '?role_id=' + role_id +
                     '&per_page=20' +
