@@ -2,12 +2,12 @@
  * This is the single product edit page component
  */
 
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute }    from '@angular/router';
-import { Store }             from '@ngrx/store';
-import { Observable }        from 'rxjs/Observable';
+import { Component, OnInit }     from '@angular/core';
+import { ActivatedRoute }        from '@angular/router';
+import { Store }                 from '@ngrx/store';
+import { Observable }            from 'rxjs/Observable';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
-import { FROALA_OPTIONS }    from '../models/froala.option';
+import { FROALA_OPTIONS }        from '../models/froala.option';
 
 import { AppState, getProduct }         from '../reducers';
 import { ProductActions }               from '../actions';

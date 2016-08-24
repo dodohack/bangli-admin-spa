@@ -67,6 +67,7 @@ export class OrderHistory {
 
 export class Order {
     id: number;
+    selected: boolean;
     user_id: number;
     status: string;
     user_ip: string;

@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ShopMgrGuard } from '../auth';
 import { ProductsPage } from './products.page';
 import { ProductPage }  from './product.page';
-import { OrdersPage }   from './orders';
+import { OrdersPage }   from './orders.page';
 
 const routes: Routes = [
     {
@@ -34,11 +34,9 @@ const routes: Routes = [
         children: [
 
             /* List of orders */
-            { path: '', pathMatch: 'full',      redirectTo: 'list/status/all/1' },
-            { path: 'list',                     redirectTo: 'list/status/all/1' },
-            { path: 'list/:status',             redirectTo: 'list/status/:status/1' },
-            { path: 'list/status/:status',      redirectTo: 'list/status/:status/1' },
-            { path: 'list/status/:status/:page', component: OrdersPage },
+            { path: '', pathMatch: 'full',      redirectTo: 'page/1/status/all' },
+            { path: 'page/:page',               redirectTo: 'page/:page/status/all' },
+            { path: 'page/:page/status/:status', component: OrdersPage },
         ]
     },
 ];

@@ -22,79 +22,18 @@
         <button type="submit" class="btn btn-secondary btn-sm">应用</button>
     </div>
 
-   <!--<paginator [baseUrl]="deepUrl" [pagination]="pagination"></paginator>-->
+   <!--<paginator [base]="'order'" [lists]="ordersState | async"></paginator>-->
 </div>
 
 <!-- Order list table -->
-<table class="table table-hover" style="font-size: 85%;">
-    <thead class="thead-default">
-        <tr>
-            <th width="2%">
-                <input type="checkbox" name="selectedAll"
-                       [(ngModel)]="checkedAll" (change)="checkboxAll()">
-            </th>
-            <th width="5%">订单号</th>
-            <th width="2%">状态</th>
-            <th width="2%">留言</th>
-            <th width="20%">顾客</th>
-            <th width="5%">数量</th>
-            <th width="8%">下单日期</th>
-            <th width="10%">总价</th>
-            <th width="15%">快递(单号/价格)</th>
-            <th width="15%">操作</th>
-        </tr>
-    </thead>
-
-    <tbody>
-    <!-- table row of order -->
-    <template ngFor let-order [ngForOf]="orders" let-i="index">
-
-        <!-- order information short version -->
-        <tr id="{{i}}">
-            <td><input type="checkbox" name="order[]" [(ngModel)]="order.checked"></td>
-            <!--<td><strong><a [routerLink]="['/order', order.id ]">{{ order.id }}</a></strong></td>-->
-            <td><strong><a type="button" (click)="editOrder(i)"> #{{ order.id }} </a></strong></td>
-            <td><i class="fa fa-circle-o"></i></td>
-            <td><i class="fa fa-comment"></i></td>
-            <td>
-                <!-- 下单用户, 点击弹出model显示此用户信息,不用切换到用户页面, 因为查看用户信息不是重点 -->
-                {{ order.customer.name }}
-                <div>
-                    <span>{{ order.customer.email }}</span>
-                </div>
-            </td>
-            <td>{{ orderItemCount(order) }}</td>
-            <td>{{ order.created_at }}</td>
-            <td>{{ order.currency}} {{ order.total / 100 }}</td>
-            <td (dblclick)="editingTracking=true">
-                {{ order.postage }}
-                <div>
-                    <span *ngIf="!editingTracking">{{ orderTracking(order) }}</span>
-                    <input *ngIf="editingTracking" class="form-control form-control-sm" type="text"
-                           [ngModel]="orderTracking(order)">
-                </div>
-            </td>
-            <td>
-                <div class="btn btn-group btn-group-sm">
-                    <button class="btn btn-sm btn-outline-info"><i class="fa fa-ellipsis-h"></i></button>
-                    <button class="btn btn-sm btn-outline-info"><i class="fa fa-check"></i></button>
-                    <button class="btn btn-sm btn-outline-info"><i class="fa fa-eye"></i></button>
-                    <button class="btn btn-sm btn-outline-info"><i class="fa fa-print"></i></button>
-                </div>
-            </td>
-        </tr>
-
-        <!-- order information extra detail -->
-
-    </template>
-    </tbody>
-</table>
+<orders-list [ordersState]="ordersState$ | async"
+             (quickEdit)="quickEdit($event)"></orders-list>
 
 
 <!-- Pagination at the end -->
 <!--
 <div class="list-toolbar">
-    <paginator [baseUrl]="deepUrl" [pagination]="pagination"></paginator>
+    <paginator [base]="'order'" [list]="ordersState$ | async"></paginator>
 </div>
 -->
 

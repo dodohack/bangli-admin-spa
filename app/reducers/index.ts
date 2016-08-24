@@ -45,6 +45,7 @@ import authReducer, * as fromAuth         from './auth';
 import usersReducer, * as fromUsers       from './users';
 import prefReducer, * as fromPref         from './preference';
 import productsReducer, * as fromProducts from './products';
+import ordersReducer, * as fromOrders     from './orders';
 import {Observable} from "rxjs/Observable";
 
 /**
@@ -52,11 +53,12 @@ import {Observable} from "rxjs/Observable";
  * our top level state interface is just a map of keys to inner state types.
  */
 export interface AppState {
-    alerts: fromAlerts.AlertsState;
-    auth: fromAuth.UserState;
-    users: fromUsers.UsersState;
-    pref: fromPref.PreferenceState;
+    alerts:   fromAlerts.AlertsState;
+    auth:     fromAuth.UserState;
+    users:    fromUsers.UsersState;
+    pref:     fromPref.PreferenceState;
     products: fromProducts.ProductsState;
+    orders:   fromOrders.OrdersState;
 }
 
 
@@ -77,7 +79,8 @@ export default compose(
     auth: authReducer,
     users: usersReducer,
     pref: prefReducer,
-    products: productsReducer
+    products: productsReducer,
+    orders: ordersReducer
 });
 
 export function getUserToken() {
