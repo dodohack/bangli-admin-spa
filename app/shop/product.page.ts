@@ -3,46 +3,57 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { Title }             from '@angular/platform-browser';
 import { ActivatedRoute }    from '@angular/router';
+import { Store }             from '@ngrx/store';
+import { Observable }        from 'rxjs/Observable';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
-import { FROALA_OPTIONS } from '../models/froala.option';
-import { Observable } from 'rxjs/Observable';
+import { FROALA_OPTIONS }    from '../models/froala.option';
 
+import { AppState, getProduct }         from '../reducers';
+import { ProductActions }               from '../actions';
 import { User, Product, Category, Tag } from '../models';
-import { ProductService, UserService } from '../service';
+
 import { zh_CN } from '../localization';
 
 @Component({
-    template: require('./product.html')
+    template: require('./product.page.html')
 })
 export class ProductPage implements OnInit
 {
     froalaEditor: any;
-    
-    product = new Product;
-
     hideRightBar = true;
     tabs = { 'cat': false, 'tag': false };
-    
-    alerts = Array<Object>();
-    
+
+    /* Id of current product */
+    id$: Observable<number>;
+
+    /* List of products */
+    products$: Observable<any>;
+
     constructor(private route: ActivatedRoute,
-                private userService: UserService,
-                private productService: ProductService,
-                private titleService: Title) {}
+                private store: Store<AppState>) {
+        this.products$ = this.store.select('products');
+    }
 
     ngOnInit() {
-        this.titleService.setTitle('编辑商品 - 葫芦娃');
-        this.initProduct();
+        this.route.params.subscribe(params => {
+            this.store.dispatch(ProductActions.loadProduct(params['id']));
+        });
+
+        this.id$ = this.route.params.select<number>('id');
     }
 
     get zh() { return zh_CN.product };
     /* Froala editor options */
     get froalaOptions () { return FROALA_OPTIONS; }
-    get editors() { return this.userService.editors; }
-    get categories() { return this.productService.categories; }
-    get tags()       { return this.productService.tags; }
+    //get editors() { return this.userService.editors; }
+    //get categories() { return this.productService.categories; }
+    //get tags()       { return this.productService.tags; }
+
+    /* Get current product by id */
+    get product$(): Observable<any> {
+        return this.id$.switchMap(id => this.store.let(getProduct(id)));
+    }
 
     /**
      * This function is somehow bugged
@@ -50,7 +61,7 @@ export class ProductPage implements OnInit
      */
     onFroalaModelChanged(event: any) {
         setTimeout(() => {
-            this.product.content = event;
+            //this.product.content = event;
             console.log("onFroalaModelChanged");
         });
     }
@@ -63,11 +74,12 @@ export class ProductPage implements OnInit
         });
     }
 
+    /*
     private initProduct()
     {
         this.route.params.subscribe(
             segment => {
-                /* Get product id from URL segment */
+                // Get product id from URL segment
                 this.product.id = segment['id'] ? +segment['id'] : 0;
             }
         );
@@ -76,7 +88,7 @@ export class ProductPage implements OnInit
             this.productService.getProduct(this.product.id).subscribe(
                 product => {
                     this.product = product;
-                    /* Till now, categories and tags should be ready */
+                    // Till now, categories and tags should be ready
                     if (this.product.categories)
                         this.updateCategoryCheckStatus(this.categories);
                     if (this.product.tags)
@@ -87,10 +99,12 @@ export class ProductPage implements OnInit
             // TODO: Create a new product
         }
     }
+    */
 
     /**
      * Set categories to checked status based on the value of post.categories
      */
+    /*
     private updateCategoryCheckStatus(categories: Category[])
     {
         for (let i in categories) {
@@ -118,7 +132,7 @@ export class ProductPage implements OnInit
             }
         }
     }
-
+    */
     private toggleRightBar(e: any): void {
         this.hideRightBar = !this.hideRightBar;
     }

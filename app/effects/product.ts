@@ -56,7 +56,7 @@ export class ProductEffects {
     }
 
 
-    private getProduct(id: number): Observable<Product> {
+    private getProduct(id: string): Observable<Product> {
         let api = AuthCache.API().product + '/' + id + '?token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }

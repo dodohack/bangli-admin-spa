@@ -85,8 +85,8 @@ export function getUserToken() {
 }
 
 export function getUsersState() {
-    return (state$: Observable<AppState>) => state$
-        .select(s => s.users);
+    return (state$: Observable<AppState>) =>
+        state$.select(s => s.users);
 }
 
 /* FIXME: */
@@ -96,4 +96,13 @@ export function getUsers(filter: any) {
 
 export function getUser(uuid: string) {
     return compose(fromUsers.getUser(uuid), getUsersState());
+}
+
+export function getProductsState() {
+    return (state$: Observable<AppState>) =>
+        state$.select(s => s.products);
+}
+
+export function getProduct(id: number) {
+    return compose(fromProducts.getProduct(id), getProductsState());
 }

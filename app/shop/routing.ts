@@ -2,7 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { ShopMgrGuard } from '../auth';
 import { ProductsPage } from './products.page';
-import { ProductPage }  from './product';
+import { ProductPage }  from './product.page';
 import { OrdersPage }   from './orders';
 
 const routes: Routes = [
@@ -24,7 +24,6 @@ const routes: Routes = [
             { path: ':id', component: ProductPage }
         ]
     },
-
 
     {
         /**

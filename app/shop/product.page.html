@@ -2,17 +2,17 @@
         [pageTitle]="'商品'"
         [previewUrl]="'dummy'"
         [backUrl]="'product'"
-        [postStatus]="product.status">
+        [postStatus]="(product$ | async).status">
 </editor-page-header>
 
 <!-- Product title and main buttons -->
 <div class="form-group">
     <div class="input-group">
         <input type="text" name="title" class="form-control" placeholder="文章标题"
-               [(ngModel)]="title">
+               [ngModel]="(product$ | async).title">
         <span class="input-group-btn">
             <a type="button" class="btn btn-warning" target="_blank"
-               href="http://www.huluwa.uk/{{id}}.html"><i class="fa fa-external-link"></i> 预览</a>
+               href="http://www.huluwa.uk/{{ (product$ | async).id }}.html"><i class="fa fa-external-link"></i> 预览</a>
             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> 保存</button>
             <!-- Only display these 2 buttons for editors and above -->
             <button type="submit" class="btn btn-primary"><i class="fa fa-eye"></i> 审稿</button>
@@ -23,7 +23,7 @@
 
 <!-- Froala Editor -->
 <froala [froalaOptions]="froalaOptions"
-        [froalaData]="product.content" (model)="onFroalaModelChanged($event)"
+        [froalaData]="(product$ | async).content" (model)="onFroalaModelChanged($event)"
         (editorInitialized)="onEditorInitialized()"></froala>
 
 <!-- Product category, tag etc -->

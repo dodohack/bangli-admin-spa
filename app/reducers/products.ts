@@ -43,18 +43,18 @@ export default function (state = initialState, action: Action): ProductsState {
 
         case ProductActions.LOAD_PRODUCT_SUCCESS: {
             // Product id
-            const id: number = action.payload['id'];
+            const id: number = +action.payload['id'];
 
             // Update corresponding product from current products list with
             // detailed information.
-            if (state.ids.indexOf(id)) {
+            if (state.ids.indexOf(id) !== -1) {
                 return {
                     ids: [...state.ids],
+                    // FIXME: 'selected' state is lost
                     entities: Object.assign({}, state.entities, {[id]: action.payload}),
                     paginator: Object.assign({}, state.paginator)
                 }
             } else {
-                console.error("***CAN NOT FIND CURRENT PRODUCT FROM PRODUCTS LIST***");
                 return state;
             }
         }

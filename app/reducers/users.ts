@@ -44,7 +44,7 @@ export default function (state = initialState, action: Action): UsersState {
 
             // Update user from users list with detailed info just loaded
             // 'entities' is updated, 'uuids' and 'paginator' remain the same
-            if (state.uuids.indexOf(uuid)) {
+            if (state.uuids.indexOf(uuid) !== -1) {
                 return {
                     uuids: [...state.uuids],
                     entities: Object.assign({}, state.entities, {[uuid]: action.payload}),
