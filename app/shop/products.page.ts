@@ -10,8 +10,7 @@ import { Observable }        from 'rxjs/Observable';
 import { AppState }          from '../reducers';
 import { ProductActions }    from '../actions';
 
-import { Paginator, User, Product, ProductStatus } from '../models';
-import { ProductService, UserService } from '../service';
+import { Product, ProductStatus } from '../models';
 
 import { zh_CN } from '../localization';
 
@@ -28,8 +27,7 @@ export class ProductsPage implements OnInit
         this.productsState$ = this.store.select('products');
     }
 
-    ngOnInit()
-    {
+    ngOnInit() {
         /* TODO: Get status from url as well */
         this.route.params.subscribe(params => {
             let cur_page = params['page'] ? params['page'] : '1';

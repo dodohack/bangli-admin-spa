@@ -7,7 +7,6 @@ import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 import { UsersState } from '../../reducers/users';
-import { User } from '../../models';
 
 @Component({
     selector: 'users-list',

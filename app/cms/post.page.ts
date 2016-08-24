@@ -20,7 +20,7 @@ import { zh_CN } from '../localization';
 export class PostPage implements OnInit
 {
     /* The post we are current editing */
-    post = new Post(-1, -1, -1, -1, '', '', '', []);
+    post = new Post();
 
     froalaEditor: any;
 
@@ -60,12 +60,12 @@ export class PostPage implements OnInit
     }
 
     private cleanPostDirtyMask() {
-        this.post.dirtyContent = false;
+
     }
 
     private isPostDirty() {
         console.log("TODO: Remove me and use form.dirty instead");
-        return this.post.dirtyContent;
+        return false;
     }
 
     /**
@@ -172,7 +172,6 @@ export class PostPage implements OnInit
     onFroalaModelChanged(event: any) {
         setTimeout(() => {
             this.post.content = event;
-            this.post.dirtyContent = true;
             console.log("onFroalaModelChanged");
         });
     }

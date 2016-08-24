@@ -2,12 +2,11 @@
  * This is the module contains all user authentication related pages
  */
 import { NgModule }     from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { SharedModule } from '../directives/shared.module';
 
 import { routing }      from './routing';
 
-import { PostService }  from '../service';
+import { PostsList }    from './components/posts.list';
 
 import { PostsPage }    from './posts.page';
 import { PostPage }     from './post.page';
@@ -18,14 +17,12 @@ import { PagePage }     from './page.page';
 
 
 @NgModule({
-    imports: [ CommonModule, SharedModule, routing ],
+    imports: [ SharedModule, routing ],
     declarations: [
+        PostsList,
         PostsPage, PostPage,
         TopicsPage, TopicPage, 
         PagesPage, PagePage 
-    ],
-    providers: [
-        PostService
     ]
 })
 export class CmsModule {}

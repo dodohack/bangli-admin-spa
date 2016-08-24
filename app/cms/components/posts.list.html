@@ -1,0 +1,78 @@
+<table class="table table-hover" style="font-size: 85%;">
+    <thead class="thead-default">
+    <tr>
+        <th width="2%"></th>
+        <th width="2%">
+            <input type="checkbox" name="selectedAll"
+                   [(ngModel)]="checkedAll" (change)="checkboxAll()">
+        </th>
+        <th width="30%">标题</th>
+        <th width="8%">作者</th>
+        <th width="8%">编辑</th>
+        <th width="18%">分类</th>
+        <th width="12%">前端日期</th>
+        <th width="12%">发布日期</th>
+        <th width="6%">view</th>
+        <th width="4%"><i class="fa fa-comments" title="评论"></i></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <!-- Fast batch editing -->
+    <!--
+    <tr *ngIf="bulkEditing" class="fast-edit-form">
+        <td colspan="10">
+
+            <fast-edit-post-form [posts]="posts"
+                                 [authors]="authors"
+                                 [editors]="editors"
+                                 (toggle)="toggleRightBar($event)"
+                                 (cancel)="cancelBulkEditing($event)"
+                                 (submit)="onSubmit($event)">
+            </fast-edit-post-form>
+        </td>
+    </tr>
+    -->
+
+    <!-- table row of post -->
+    <template ngFor let-id [ngForOf]="ids" let-i="index">
+        <!-- displaying -->
+        <!--<tr id="{{i}}" (dblclick)="">-->
+        <tr>
+            <th>{{i+1}}</th>
+            <td><input type="checkbox" name="post[]" [(ngModel)]="posts[id].checked"></td>
+            <td>
+                <strong><a [routerLink]="['/post', id ]">{{ posts[id].title }}</a></strong>
+                <div class="row-actions">
+                    <span class="trash"><a>删除</a> | </span>
+                    <span><a href="http://www.huluwa.uk/{{id}}.html" target="_blank">查看</a></span>
+                </div>
+            </td>
+            <td>Author: {{ posts[id].author_id }}</td>
+            <td>
+                <span>Editor: {{ posts[id].editor_id }}</span>
+                <div><span class="tag tag-default-outline">{{ posts[id].post_type }}</span></div>
+            </td>
+            <td><span *ngFor="let cat of posts[id].categories"><a [routerLink]="['/cms/category', cat.id]">{{ cat.name }}</a>, </span></td>
+            <td>{{ posts[id].fake_published_at }}</td>
+            <td>{{ posts[id].published_at }}</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <!-- Fast edit single post -->
+        <!--
+        <tr *ngIf="post.editing" class="fast-edit-form" id="edit-{{i}}">
+            <td colspan="10">
+                <fast-edit-post-form [post]="post"
+                                     [authors]="authors"
+                                     [editors]="editors"
+                                     (toggle)="toggleRightBar($event, i)"
+                                     (cancel)="cancelFastEditing($event, i)"
+                                     (submit)="onSubmit($event, i)">
+                </fast-edit-post-form>
+            </td>
+        </tr>
+        -->
+    </template>
+    </tbody>
+</table>

@@ -19,11 +19,9 @@ const routes: Routes = [
         children: [
 
             /* List of posts */
-            { path: '', pathMatch: 'full', redirectTo: 'list/all/all/1' },
-            { path: 'list',                redirectTo: 'list/all/all/1' },
-            { path: 'list/status',         redirectTo: 'list/all/all/1' },
-            { path: 'list/:filter/:cond',  redirectTo: 'list/:filter/:cond/1' },
-            { path: 'list/:filter/:cond/:page', component: PostsPage },
+            { path: '', pathMatch: 'full', redirectTo: 'page/1/status/all' },
+            { path: 'page/:page',          redirectTo: 'page/:page/status/all' },
+            { path: 'page/:page/status/:status', component: PostsPage },
 
             /* Single post */
             { path: 'new', component: PostPage },

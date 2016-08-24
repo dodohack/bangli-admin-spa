@@ -46,6 +46,7 @@ import usersReducer, * as fromUsers       from './users';
 import prefReducer, * as fromPref         from './preference';
 import productsReducer, * as fromProducts from './products';
 import ordersReducer, * as fromOrders     from './orders';
+import postsReducer, * as fromPosts       from './posts';
 import {Observable} from "rxjs/Observable";
 
 /**
@@ -59,6 +60,7 @@ export interface AppState {
     pref:     fromPref.PreferenceState;
     products: fromProducts.ProductsState;
     orders:   fromOrders.OrdersState;
+    posts:    fromPosts.PostsState;
 }
 
 
@@ -80,9 +82,13 @@ export default compose(
     users: usersReducer,
     pref: prefReducer,
     products: productsReducer,
-    orders: ordersReducer
+    orders: ordersReducer,
+    posts: postsReducer
 });
 
+/*****************************************************************************
+ * User
+ *****************************************************************************/
 export function getUserToken() {
     return fromAuth.getUserToken();
 }
@@ -101,6 +107,9 @@ export function getUser(uuid: string) {
     return compose(fromUsers.getUser(uuid), getUsersState());
 }
 
+/*****************************************************************************
+ * Product
+ *****************************************************************************/
 export function getProductsState() {
     return (state$: Observable<AppState>) =>
         state$.select(s => s.products);
@@ -108,4 +117,17 @@ export function getProductsState() {
 
 export function getProduct(id: number) {
     return compose(fromProducts.getProduct(id), getProductsState());
+}
+
+
+/*****************************************************************************
+ * Post
+ *****************************************************************************/
+export function getPostsState() {
+    return (state$: Observable<AppState>) =>
+        state$.select(s => s.posts);
+}
+
+export function getPost(id: number) {
+    return compose(fromPosts.getPost(id), getPostsState());
 }

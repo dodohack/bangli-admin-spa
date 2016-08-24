@@ -21,34 +21,21 @@ export class PostStatus {
 }
 
 export class Post {
-
-    constructor(public id: number,
-                public editor_id: number,
-                public author_id: number,
-                public image_id: number,
-                public status: string,
-                public post_type: string,
-                public title: string,
-                public categories: Category[],
-                public tags?: Tag[],
-                public topics?: Topic[],
-                public excerpt?: string,
-                public content?: string,
-                public checked?: boolean, /* Is checked in post list */
-                public editing?: boolean, /* Is in fast editing mode */
-                public fake_published_at?: string,
-                public published_at?: string,
-                public created_at?: string,
-                public updated_at?: string,
-                public dirtyContent?: boolean /* Is post content changed */
-    ) {}
-
-
-    /**
-     * Abstract common part
-     * @param posts
-     */
-    static abstractCommonPartFromPosts(posts: Post[])
-    {
-    }
+    id: number;
+    selected: boolean;
+    editor_id: number;
+    author_id: number;
+    image_id: number;
+    status: string;
+    post_type: string;
+    title: string;
+    categories: Category[];
+    tags: Tag[];
+    topics: Topic[];
+    excerpt: string;
+    content: string;
+    fake_published_at: string;
+    published_at: string;
+    created_at: string;
+    updated_at: string;
 }

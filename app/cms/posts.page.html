@@ -15,12 +15,12 @@
 <!-- Filter toolbar -->
 <div class="list-toolbar">
     <div class="float-left bulk-actions">
-        <select class="custom-select-sm" [(ngModel)]="bulkAction" [disabled]="!isAnyPostChecked()">
+        <select class="custom-select-sm" [(ngModel)]="bulkAction">
             <option value="none">批量操作</option>
             <option value="deleting">移到回收站</option>
             <option value="editing">批量修改</option>
         </select>
-        <button class="btn btn-secondary btn-sm" (click)="applyBulkAction()" [disabled]="!isAnyPostChecked()">应用</button>
+        <button class="btn btn-secondary btn-sm" (click)="applyBulkAction()">应用</button>
     </div>
 
     <div class="float-left filters">
@@ -45,79 +45,7 @@
 </div>
 
 <!-- Post list table -->
-<table class="table table-hover" style="font-size: 85%;">
-    <thead class="thead-default">
-        <tr>
-            <th width="2%"></th>
-            <th width="2%">
-                <input type="checkbox" name="selectedAll"
-                                  [(ngModel)]="checkedAll" (change)="checkboxAll()">
-            </th>
-            <th width="30%">标题</th>
-            <th width="8%">作者</th>
-            <th width="8%">编辑</th>
-            <th width="18%">分类</th>
-            <th width="12%">前端日期</th>
-            <th width="12%">发布日期</th>
-            <th width="6%">view</th>
-            <th width="4%"><i class="fa fa-comments" title="评论"></i></th>
-        </tr>
-    </thead>
-
-    <tbody>
-        <!-- Fast batch editing -->
-        <tr *ngIf="bulkEditing" class="fast-edit-form">
-            <td colspan="10">
-                <fast-edit-post-form [posts]="posts"
-                                     [authors]="authors"
-                                     [editors]="editors"
-                                     (toggle)="toggleRightBar($event)"
-                                     (cancel)="cancelBulkEditing($event)"
-                                     (submit)="onSubmit($event)">
-                </fast-edit-post-form>
-            </td>
-        </tr>
-
-        <!-- table row of post -->
-        <template ngFor let-post [ngForOf]="posts" let-i="index">
-            <!-- displaying -->
-            <tr id="{{i}}" (dblclick)="fastEditing($event, i)">
-                <th>{{i+1}}</th>
-                <td><input type="checkbox" name="post[]" [(ngModel)]="post.checked"></td>
-                <td>
-                    <strong><a [routerLink]="['/post', post.id ]">{{ post.title }}</a></strong>
-                    <div class="row-actions">
-                        <span class="trash"><a>删除</a> | </span>
-                        <span><a href="http://www.huluwa.uk/{{post.id}}.html" target="_blank">查看</a></span>
-                    </div>
-                </td>
-                <td>{{ getNicenameById(post.author_id) }}</td>
-                <td>
-                    <span>{{ getNicenameById(post.editor_id) }}</span>
-                    <div><span class="tag tag-default-outline">{{ zh[post.post_type] }}</span></div>
-                </td>
-                <td><span *ngFor="let cat of post.categories"><a [routerLink]="['/cms/category', cat.id]">{{ cat.name }}</a>, </span></td>
-                <td>{{ post.fake_published_at }}</td>
-                <td>{{ post.published_at }}</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <!-- Fast edit single post -->
-            <tr *ngIf="post.editing" class="fast-edit-form" id="edit-{{i}}">
-                <td colspan="10">
-                    <fast-edit-post-form [post]="post"
-                                         [authors]="authors"
-                                         [editors]="editors"
-                                         (toggle)="toggleRightBar($event, i)"
-                                         (cancel)="cancelFastEditing($event, i)"
-                                         (submit)="onSubmit($event, i)">
-                    </fast-edit-post-form>
-                </td>
-            </tr>
-        </template>
-    </tbody>
-</table>
-
+<posts-list [postsState]="postsState$ | async"></posts-list>
 
 <!-- Pagination at the end -->
     <!--
