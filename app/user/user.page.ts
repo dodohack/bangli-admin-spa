@@ -56,7 +56,7 @@ export class UserPage implements OnInit
     }
 
     get isSuperUser(): Observable<boolean> {
-        return this.auth$.map(user => user.payload.sup ? true : false);
+        return this.auth$.map(user => user.payload.spu ? true : false);
     }
 
     get user$(): Observable<any> {
