@@ -3,11 +3,14 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Effect, Actions }               from '@ngrx/effects';
 import { Observable }                    from 'rxjs/Observable';
 
+import { AuthCache }   from '../auth.cache';
+import { PrefCache }   from '../pref.cache';
 import { UserActions } from '../actions';
 import { User }        from '../models';
 
 @Injectable()
 export class UserEffects {
+    
     constructor(private actions$: Actions,
                 private http: Http) {
     }
@@ -27,15 +30,12 @@ export class UserEffects {
 
     @Effect() loadUsers$ = this.actions$.ofType(UserActions.LOAD_USERS)
         .map(action => action.payload)
-        .switchMap(api => this.getUsers(api))
-        .map(users => {
-            console.log("Trying to get users: ", users);
-            return UserActions.loadUsersSuccess(users);
-        })
+        .switchMap(filters => this.getUsers(filters))
+        .map(users => UserActions.loadUsersSuccess(users))
         .catch(() => Observable.of(UserActions.loadUsersFail()));
 
     @Effect() loadUser$ = this.actions$.ofType(UserActions.LOAD_USER)
-        .map(action => JSON.stringify(action.payload))
+        .map(action => action.payload)
         .switchMap(uuid => this.getUser(uuid))
         .map(user => UserActions.loadUserSuccess(user))
         .catch(() => Observable.of(UserActions.loadUserFail()));
@@ -59,16 +59,22 @@ export class UserEffects {
     }
 
     private searchUsers(query: string): Observable<User[]> {
-        let api = '';
+        let api = AuthCache.API();
         return this.http.get(api).map(res => res.json());
     }
 
-    private getUsers(api: string): Observable<any> {
+    private getUsers(filters: any): Observable<any> {
+        let cur_page = filters.cur_page;
+        let role_id  = filters.role_id;
+        let api = AuthCache.API().users + '/' + cur_page +
+            '?role_id=' + role_id +
+            '&per_page=' + PrefCache.getPerPage() +
+            '&token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }
 
     private getUser(uuid: string): Observable<User> {
-        let api = '';
-        return this.http.get(api).map(res => res.json());
+        let api = AuthCache.API().user + '/' + uuid + '?token=' + AuthCache.token();
+            return this.http.get(api).map(res => res.json());
     }
 }

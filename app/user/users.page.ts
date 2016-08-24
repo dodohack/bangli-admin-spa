@@ -21,13 +21,13 @@ import { zh_CN }    from '../localization';
 export class UsersPage implements OnInit, OnDestroy
 {
     sub: Subscription;
+    
+    routeRoleId: string;
 
-    authState$: Observable<any>;
     usersState$: Observable<any>;
 
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) {
-        this.authState$  = this.store.select('auth');
         this.usersState$ = this.store.select('users');
     }
 
@@ -42,18 +42,10 @@ export class UsersPage implements OnInit, OnDestroy
         // route.params.switchMap() instead.
         this.sub = this.route.params.subscribe(params => {
             //let current_role = segment['role'] ? segment['role'] : 'any';
-            this.authState$.subscribe(auth => {
-                let token = auth.token;
-                /* FIXME: Paginator is always redirected to page/:page/role/0 !!! */
-                let cur_page = params['page'] ? +params['page'] : 1;
-                let role_id  = params['role'] ? params['role'] : '';
-
-                let api = 'http://localhost:5000/admin/users/' + cur_page +
-                    '?role_id=' + role_id +
-                    '&per_page=20' +
-                    '&token=' + token;
-                this.store.dispatch(UserActions.loadUsers(api));
-            });
+            /* FIXME: Paginator is always redirected to page/:page/0 !!! */
+            let cur_page = params['page'] ? params['page'] : '1';
+            this.routeRoleId = params['role'] ? params['role'] : '';
+            this.store.dispatch(UserActions.loadUsers({cur_page: cur_page, role_id: this.routeRoleId}));
         });
     }
 

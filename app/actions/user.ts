@@ -42,10 +42,10 @@ export class UserActions {
     }
 
     static LOAD_USER = '[User] Load User';
-    static loadUser(user: User): Action {
+    static loadUser(uuid: string): Action {
         return {
             type: UserActions.LOAD_USER,
-            payload: user
+            payload: uuid
         };
     }
 

@@ -95,6 +95,5 @@ export function getUsers(filter: any) {
 }
 
 export function getUser(uuid: string) {
-    console.log("get user by uuid: ", uuid);
     return compose(fromUsers.getUser(uuid), getUsersState());
 }

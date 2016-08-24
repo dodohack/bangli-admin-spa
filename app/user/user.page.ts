@@ -22,21 +22,46 @@ import { User } from "../models";
 })
 export class UserPage implements OnInit
 {
-    /* The user we are viewing */
-    user$:   Observable<User>;
+    /* sub of jwt token and uuid of the user */
+    sub$:    Observable<string>;
+    uuid$:   Observable<string>;
 
+    /* The list of users we are viewing */
+    users$:   Observable<any>;
     auth$:   Observable<any>;
     pref$:   Observable<any>;
 
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) {
+        this.users$  = this.store.select('users');
         this.auth$   = this.store.select('auth');
         this.pref$   = this.store.select('pref');
     }
 
     ngOnInit() {
-        this.user$ = this.route.params.select<string>('uuid')
-            .switchMap(uuid => this.store.let(getUser(uuid)));
+        // FIXME: Do not use subscribe, use switchMap!!
+        this.route.params.subscribe(params => {
+            let uuid = params['uuid'];
+            this.store.dispatch(UserActions.loadUser(uuid));
+        });
+
+        this.sub$ = this.auth$.map(user => user.payload.sub);
+        this.uuid$ = this.route.params.select<string>('uuid');
+    }
+
+    /* TODO: We can always subscribe to get isMyProfile and isSuperUser from 
+     * ngOnInit, do we still need to call async everywhere in template? */
+    get isMyProfile(): Observable<boolean> {
+        return this.sub$.combineLatest(this.uuid$).map(pair => pair[0] === pair[1]);
+    }
+
+    get isSuperUser(): Observable<boolean> {
+        return this.auth$.map(user => user.payload.sup ? true : false);
+    }
+
+    get user$(): Observable<any> {
+        // Get user from users by uuid
+        return this.uuid$.switchMap(uuid => this.store.let(getUser(uuid)));
     }
 
     savePreference($event) {
@@ -73,10 +98,4 @@ export class UserPage implements OnInit
             this.store.dispatch(AlertActions.error('保存失败' + $event['msg']));
             */
     }
-    
-    /* If the user current editing is myself or not */
-    get isMyProfile() { return true; /*this.authService.uuid === this.uuid;*/ }
-    
-    /* Am I super user */
-    get isSuperUser() { return true; /*this.authService.isSuperUser;*/ }
 }

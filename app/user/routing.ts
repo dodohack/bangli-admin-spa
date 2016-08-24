@@ -11,7 +11,7 @@ const routes: Routes = [
         children: [
             { path: '',      pathMatch: 'full', redirectTo: 'page/1/role/0' },
             { path: 'page/:page',               redirectTo: 'page/:page/role/0' },
-            { path: 'page/:page/role/:role_id',  component: UsersPage },
+            { path: 'page/:page/role/:role',  component: UsersPage },
 
             /* Single user */
             { path: 'new', component: UserPage },

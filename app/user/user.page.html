@@ -3,56 +3,43 @@ This should be the shared template used by by setting 3rd users profile and
 my profile.
 -->
 <div class="page-header">
-    <h1 class="title" *ngIf="isMyProfile">个人设置</h1>
-    <h1 class="title" *ngIf="!isMyProfile">管理用户<span *ngIf="user">: {{ user.display_name }}</span></h1>
+    <h1 class="title">修改资料: </h1><!--{{ (user$ | async).display_name }}</h1>-->
 </div>
-
-<!--
-TODO:
-We have several tabs to switch between massive inputs
-1. Invalidate user login tokens
-2. Change user password
-3. Change user other online profile
-4. Set user offline preferences
--->
 
 <tabset>
     <tab heading="用户资料">
-        <form *ngIf="user" (ngSubmit)="onSubmitProfile()">
-            <input type="hidden" name="id" [ngModel]="user.id">
+        <form  *ngIf="user$ | async" (ngSubmit)="onSubmitProfile()">
             <accordion>
+                <user-base-profile [user]="user$ | async"
+                                   [isMyProfile]="isMyProfile | async"
+                                   [isSuperUser]="isSuperUser | async"></user-base-profile>
 
-                <user-base-profile [uuid]="uuid" [user]="user"
-                                   [isMyProfile]="isMyProfile"
-                                   [isSuperUser]="isSuperUser"></user-base-profile>
+                <user-shipping-profile [user]="user$ | async"
+                                       [isMyProfile]="isMyProfile | async"
+                                       [isSuperUser]="isSuperUser | async"></user-shipping-profile>
 
-                <user-shipping-profile [uuid]="uuid" [user]="user"
-                                       [isMyProfile]="isMyProfile"
-                                       [isSuperUser]="isSuperUser"></user-shipping-profile>
-
-                <user-baby-profile [uuid]="uuid" [user]="user"
-                                   [isMyProfile]="isMyProfile"
-                                   [isSuperUser]="isSuperUser"></user-baby-profile>
+                <user-baby-profile [user]="user$ | async"
+                                   [isMyProfile]="isMyProfile | async"
+                                   [isSuperUser]="isSuperUser | async"></user-baby-profile>
             </accordion>
-            <div class="row form-group" *ngIf="isSuperUser || isMyProfile">
+            <div class="row form-group" *ngIf="(isSuperUser | async) || (isMyProfile | async)">
                 <div class="col-xs-12">
-                    <!-- FIXME: form dirty detection is not propagated up -->
                     <button type="submit" class="btn btn-primary btn-block">保存</button>
                 </div>
             </div>
         </form>
     </tab>
 
-    <tab heading="密码授权" *ngIf="isMyProfile || isSuperUser">
-        <user-auth-profile [uuid]="uuid" [user]="user"
-                           [isMyProfile]="isMyProfile"
-                           [isSuperUser]="isSuperUser"
+    <tab heading="密码授权" *ngIf="(isMyProfile | async) || (isSuperUser | async)">
+        <user-auth-profile [user]="user$ | async"
+                           [isMyProfile]="isMyProfile | async"
+                           [isSuperUser]="isSuperUser | async"
                            (alerts)="displayAlerts($event)"></user-auth-profile>
     </tab>
 
-    <tab heading="后台权限" *ngIf="isMyProfile || isSuperUser">
+    <tab heading="后台权限" *ngIf="(isMyProfile | async) || (isSuperUser | async)">
         <user-domains-tab [user]="user$ | async"
-                          [isSuperUser]="isSuperUser"
+                          [isSuperUser]="isSuperUser | async"
                           (save)="saveDomains($event)"></user-domains-tab>
     </tab>
 

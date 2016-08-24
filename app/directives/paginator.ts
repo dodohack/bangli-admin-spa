@@ -17,14 +17,12 @@ export class Paginator {
 
     @Input() usersState: UsersState;
 
-    param1Key   = 'role';
-    param1Value = '0';
-
     get paginator() { return this.usersState.paginator; }
 
     /**
      * We can loop over the array returned by this function to greatly simplify
-     * the html template.
+     * the html template, this 4 elements represent the state and style of
+     * 'first', 'previous', 'next' and 'last' pages.
      */
     get paginators() {
         return [

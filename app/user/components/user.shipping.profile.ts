@@ -7,16 +7,12 @@ import { User } from '../../models';
 
 import { zh_CN } from '../../localization';
 
-let t = require('./user.shipping.profile.html');
 @Component({
     selector: 'user-shipping-profile',
-    template: t,
+    template: require('./user.shipping.profile.html')
 })
 export class UserShippingProfileTab
 {
-    @Input()
-    uuid: string;
-
     @Input()
     isMyProfile: boolean;
 

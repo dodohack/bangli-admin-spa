@@ -37,8 +37,6 @@ export class AuthService
 
     constructor(private router: Router, private http: Http) 
     {
-        console.log("AuthService init");
-
         /* FIXME: This preload data from localStorage is a temp fix to async
          * FIXME: data issue. We will use Observable as a proper fix later. */
         this.domains = DOMAINS;
@@ -59,11 +57,7 @@ export class AuthService
         }
         let role = localStorage.getItem('role')
         if (role) this.role = JSON.parse(role);
-        console.log("jwt: ", this.jwt);
-        console.log("payload: ", this.payload);
-        console.log("role: ", this.role);
-        console.log("curDomain: ", this.curDomain);
-        
+
         /* Each time the APP boot, refresh token and domains */
         this.refreshToken();
     }

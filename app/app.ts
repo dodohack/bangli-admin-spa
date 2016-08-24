@@ -7,10 +7,13 @@ import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
+import { AuthCache }         from './auth.cache';
+import { PrefCache }         from './pref.cache';
 import { AppState }          from './reducers';
 import { AuthActions }       from './actions';
 import { PreferenceActions } from './actions';
 import { Alert }             from './models';
+import { Preference }        from "./models";
 
 
 @Component({
@@ -22,8 +25,8 @@ export class App
     /* TODO: This array will grow large, need to clean it periodically */
     alerts$: Observable<Alert[]>;
 
-    payload: any; // A user object if user is logged in
-    pref: any;
+    user: any; // A user object if user is logged in
+    pref: Preference;
 
     auth$: Observable<any>;
     pref$: Observable<any>;
@@ -34,12 +37,24 @@ export class App
         this.alerts$ = store.select('alerts');
         this.auth$   = store.select('auth');
         this.pref$   = store.select('pref'); 
-        
-        this.auth$.subscribe(payload => this.payload = payload);
-        this.pref$.subscribe(pref => this.pref = pref);
+
+        /* TODO: THIS IS A HACK!
+         * TODO: Do we have a better solution to get the authentication info
+         * TODO: globally, especially the 'token' and 'domain_key'
+         */
+        this.auth$.subscribe(payload => {
+            this.user = payload;
+            AuthCache.setToken(this.user.token);
+            AuthCache.setDecodedToken(this.user.payload);
+            AuthCache.setDomainKey(this.user.domain_key);
+        });
+        this.pref$.subscribe(pref => {
+            this.pref = pref;
+            PrefCache.setPerPage(this.pref.listItemCount.toString());
+        });
     }
 
-    get isLoggedIn() { return this.payload.token ? true : false; }
+    get isLoggedIn() { return this.user.token ? true : false; }
 
     logout() {
         this.store.dispatch(AuthActions.logout());

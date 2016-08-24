@@ -36,6 +36,25 @@ export default function (state = initialState, action: Action): UsersState {
                 paginator: Object.assign({}, action.payload.paginator)
             };
         }
+            
+        case UserActions.LOAD_USER_SUCCESS: {
+            // User uuid currently loaded
+            const uuid: string = action.payload['uuid'];
+
+
+            // Update user from users list with detailed info just loaded
+            // 'entities' is updated, 'uuids' and 'paginator' remain the same
+            if (state.uuids.indexOf(uuid)) {
+                return {
+                    uuids: [...state.uuids],
+                    entities: Object.assign({}, state.entities, {[uuid]: action.payload}),
+                    paginator: Object.assign({}, state.paginator)
+                }
+            } else {
+                console.error("***CAN NOT FIND CURRENT USER FROM USERS LIST***");
+                return state;
+            }
+        }
 
         default:
             return state;
