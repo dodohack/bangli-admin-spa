@@ -93,12 +93,45 @@ export default compose(
 });
 
 /*****************************************************************************
- * User
+ * Auth
  *****************************************************************************/
-export function getUserToken() {
-    return fromAuth.getUserToken();
+
+/* Get AuthState from current AppState */
+export function getAuthState() {
+    return (state$: Observable<AppState>) =>
+        state$.select(s => s.auth);
+}
+export function getAuthToken() {
+    return fromAuth.getAuthToken();
 }
 
+export function isDashboardUser() {
+    return compose(fromAuth.isDashboardUser(), getAuthState());
+}
+
+export function hasAuthorRole() {
+    return compose(fromAuth.hasAuthorRole(), getAuthState());
+}
+
+export function hasEditorRole() {
+    return compose(fromAuth.hasEditorRole(), getAuthState());
+}
+
+export function hasShopManagerRole() {
+    return compose(fromAuth.hasShopManagerRole(), getAuthState());
+}
+
+export function hasAdminRole() {
+    return compose(fromAuth.hasAdminRole(), getAuthState());
+}
+
+export function hasSuperUserRole() {
+    return compose(fromAuth.hasSuperUserRole(), getAuthState());
+}
+
+/*****************************************************************************
+ * User
+ *****************************************************************************/
 export function getUsersState() {
     return (state$: Observable<AppState>) =>
         state$.select(s => s.users);

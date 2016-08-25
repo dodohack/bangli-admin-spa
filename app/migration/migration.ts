@@ -4,14 +4,13 @@
 
 import { Component }                     from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { Title } from '@angular/platform-browser';
+import { Title }                         from '@angular/platform-browser';
 
+import { AuthCache }           from '../auth.cache';
 import { API_END_POINTS }      from '../api';
-import { AuthService } from '../service/auth.service';
 
-let template = require('./migration.html');
 @Component({
-    template: template
+    template: require('./migration.html')
 })
 export class MigrationPage
 {
@@ -24,12 +23,10 @@ export class MigrationPage
     /* If migration is under running */
     isRunning: boolean;
 
-    constructor(private http: Http, 
-                private title: Title,
-                private authService: AuthService) {
+    constructor(private http: Http, private title: Title) {
         /* Set http authenticate header */
         this.headers =
-            new Headers({'Authorization': 'Bearer ' + this.authService.jwt});
+            new Headers({'Authorization': 'Bearer ' + AuthCache.token()});
 
         this.isRunning = false;
         this.title.setTitle('数据移植 - 全局管理平台');

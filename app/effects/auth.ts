@@ -11,26 +11,25 @@ import { AuthActions }  from '../actions';
 import { AUTH }         from '../api';
 import { User }         from '../models';
 import { AlertActions } from '../actions';
+import { AuthCache }    from "../auth.cache";
 
 @Injectable()
 export class AuthEffects {
     constructor (private actions$: Actions,
                  private http: Http) {}
 
-    /**
-     * This effect triggers when AuthActions.LOGIN is fired
-     */
-    @Effect()
-    login$ = this.actions$.ofType(AuthActions.LOGIN)
-        // Map the payload into JSON to use as the request body
+    @Effect() login$ = this.actions$.ofType(AuthActions.LOGIN)
         .map(action => JSON.stringify(action.payload))
-        //.map(action => 'email=' + action.payload.email + '&password=' + action.payload.password)
-        // Post login request
         .switchMap(payload => this.login(payload))
-        // If success, dispatch success action with result
         .map(user => AuthActions.loginSuccess(user))
-        // If request fails, dispatch failed action
         .catch(() => Observable.of(AuthActions.loginFail()));
+
+    /* Triggers on app start or manually login into domain */
+    @Effect() loginDomain$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN)
+        .switchMap(action => this.loginDomain(action.payload))
+        .map(user => AuthActions.loginDomainSuccess(user))
+        .catch(() => Observable.of(AuthActions.loginDomainFail()));
+    
 
     /**
      * Update default 'domain_key' from sessionStorage or set default from
@@ -61,39 +60,27 @@ export class AuthEffects {
         .map(action => this.logout()));
     */
 
-    /*
-    @Effect()
-    loginAuthFail$ = this.actions$
-        // Listen for the 'LOGIN_FAIL' action
-        .ofType(AuthActions.LOGIN_FAIL)
-        .map(action => {
-            console.log("Prevous action of LOGIN_FAIL is: ", action);
-            // Reset the form
-            // Dispatch an error message
-            return Observable.of({type: AlertActions.ERROR, payload: '邮箱或密码错误!'});
-        });
-    */
-
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
 
-    /**
-     * Login a user with given email and password
-     * @param form
-     * @returns {Observable<R>}
-     */
-    private login (form: string): Observable<User> {
-        console.error("FIXME: This can only be triggered first time, LOGIN FORM: ", form);
-        return this.post(AUTH.login, form);
-    }
-
-    private post(api: string, body: string)
-    {
+    private _post(api: string, body: string) {
         let headers = new Headers({'Content-Type': 'application/json'});
         //let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
         let options = new RequestOptions({ headers: headers });
 
         // Post data and convert server response to JSON format
         return this.http.post(api, body, options).map(res => res.json());
+    }    
+    
+    /* Login a user with given email and password */
+    private login(form: string): Observable<User> {
+        console.error("FIXME: This can only be triggered first time, LOGIN FORM: ", form);
+        return this._post(AUTH.login, form);
+    }
+
+    /* Login user into specified API domain */
+    private loginDomain(user: User): Observable<User> {
+        // Get user role for thie given domain
+        return this.http.get(AuthCache.API().role).map(res => res.json());
     }
 }

@@ -11,6 +11,7 @@ import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
 import { AppState, getUser } from '../reducers';
+import { hasSuperUserRole }  from '../reducers';
 import { AlertActions }      from '../actions';
 import { UserActions }       from '../actions';
 import { PreferenceActions } from '../actions';
@@ -57,7 +58,7 @@ export class UserPage implements OnInit
     }
 
     get isSuperUser(): Observable<boolean> {
-        return this.auth$.map(user => user.payload.spu ? true : false);
+        return this.store.let(hasSuperUserRole());
     }
 
     get user$(): Observable<any> {
@@ -72,31 +73,15 @@ export class UserPage implements OnInit
     saveDomains($event) {
         this.store.dispatch(UserActions.saveDomains($event));
     }
-    
-    onSubmitProfile() 
-    {
-        /*
-        this.userService.postUserProfile(this.user).subscribe(
-                ret => {
-                    if (ret['status'] == 0)
-                        this.store.dispatch(AlertActions.success('保存成功'));
-                    else
-                        this.store.dispatch(AlertActions.error('保存失败' + ret['msg']));
-                });
-                */
+
+    /* TODO: Change from child view template need to be propergated up */
+    saveProfile() {
+        this.store.dispatch(UserActions.saveUser());
     }
 
-    /**
-     * Event from child view
-     * @param $event
-     */
-    displayAlerts($event)
-    {
-        /*
-        if($event['status'] == 0)
-            this.store.dispatch(AlertActions.success('保存成功'));
-        else
-            this.store.dispatch(AlertActions.error('保存失败' + $event['msg']));
-            */
+    /* Save user password to bangli-auth */
+    saveCrefidential() {
+        // TODO: Should we use the same method as saveProfile()?
+        this.store.dispatch(UserActions.saveUser());
     }
 }

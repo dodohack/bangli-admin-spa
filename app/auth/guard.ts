@@ -1,5 +1,5 @@
 /**
- * This guard the access to the dashboard
+ * This guard the access level to the dashboard
  */
 
 import { Injectable }             from '@angular/core'
@@ -9,8 +9,12 @@ import { RouterStateSnapshot }    from '@angular/router';
 import { Store }                  from '@ngrx/store';
 import { Observable }             from 'rxjs/Observable';
 
-import {AppState, getUserToken}   from '../reducers';
-
+import { AppState }               from '../reducers';
+import { hasAuthorRole }          from '../reducers';
+import { hasEditorRole }          from '../reducers';
+import { hasShopManagerRole }     from '../reducers';
+import { hasAdminRole }           from '../reducers';
+import { hasSuperUserRole }       from '../reducers';
 
 /**
  * Only un-logged user can visit, such as login, register pages etc
@@ -50,21 +54,19 @@ export class BaseGuard implements CanActivate {
 
     auth$: Observable<any>;
 
-    constructor(private store: Store<AppState>,
-                private router: Router) {
+    constructor(private store: Store<AppState>, private router: Router) {
         this.auth$ = this.store.select('auth');
     }
 
-    canActivate(route: ActivatedRouteSnapshot,
-                state: RouterStateSnapshot) {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
         /* TODO: We can chain more Observables in */
         /* TODO: Check if token is valid */
 
         /* TODO: Reference ngrx-example-app book-exists.ts canActivate */
         /* NOTE: take(1) - only take one object from the observable stream */
-        return this.auth$.take(1).map(payload => {
-            if (payload.token) {
+        return this.auth$.take(1).map(user => {
+            if (user.token) {
                 return true;
             } else {
                 this.router.navigate(['/login']);
@@ -76,73 +78,53 @@ export class BaseGuard implements CanActivate {
     }
 }
 
-/**
- * User has permission equal or larger than an author, not just an author
- */
+/* Author guard */
 @Injectable()
 export class AuthorGuard implements CanActivate {
-    constructor(private router: Router ) {}
+    constructor(private store: Store<AppState>, private router: Router) {}
 
-    canActivate(route: ActivatedRouteSnapshot,
-                state: RouterStateSnapshot) {
-        return true;
-        //if (this.authService.isAuthor) { return true; }
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        return this.store.let(hasAuthorRole());
     }
 }
 
-/**
- * * User has permission equal or larger than an editor, not just an editor
- */
+/* Editor guard */
 @Injectable()
 export class EditorGuard implements CanActivate {
-    constructor(private router: Router) {}
+    constructor(private store: Store<AppState>, private router: Router) {}
 
-    canActivate(route: ActivatedRouteSnapshot,
-                state: RouterStateSnapshot) {
-        return true;
-        //if (this.authService.isEditor) { return true; }
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        return this.store.let(hasEditorRole());
     }
 }
 
 
-/**
- * * User has permission equal or larger than an shop_manager
- */
+/* Shop manager guard */
 @Injectable()
 export class ShopMgrGuard implements CanActivate {
-    constructor(private router: Router ) {}
+    constructor(private store: Store<AppState>, private router: Router) {}
 
-    canActivate(route: ActivatedRouteSnapshot,
-                state: RouterStateSnapshot) {
-        return true;
-        //if (this.authService.isShopMgr) { return true; }
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        return this.store.let(hasShopManagerRole());
     }
 }
 
-/**
- * * User has permission equal or larger than an admin(single site)
- */
+/* Admin guard */
 @Injectable()
 export class AdminGuard implements CanActivate {
-    constructor(private router: Router ) {}
+    constructor(private store: Store<AppState>, private router: Router) {}
 
-    canActivate(route: ActivatedRouteSnapshot,
-                state: RouterStateSnapshot) {
-        return true;
-        //if (this.authService.isAdmin) { return true; }
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        return this.store.let(hasAdminRole());
     }
 }
 
-/**
- * * User has permission equal or larger than an admin(single site)
- */
+/* Super user guard */
 @Injectable()
 export class SuperUserGuard implements CanActivate {
-    constructor(private router: Router ) {}
-
-    canActivate(route: ActivatedRouteSnapshot,
-                state: RouterStateSnapshot) {
-        return true;
-        //if (this.authService.isSuperUser) { return true; }
+    constructor(private store: Store<AppState>, private router: Router) {}    
+    
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        return this.store.let(hasSuperUserRole());
     }
 }

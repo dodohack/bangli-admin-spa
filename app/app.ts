@@ -10,6 +10,7 @@ import { Observable }        from 'rxjs/Observable';
 import { AuthCache }         from './auth.cache';
 import { PrefCache }         from './pref.cache';
 import { AppState }          from './reducers';
+import { isDashboardUser }   from './reducers';
 import { AuthActions }       from './actions';
 import { PreferenceActions } from './actions';
 import { Alert }             from './models';
@@ -47,6 +48,8 @@ export class App
             AuthCache.setToken(this.user.token);
             AuthCache.setDecodedToken(this.user.payload);
             AuthCache.setDomainKey(this.user.domain_key);
+            // Login user into default domain
+            this.store.dispatch(AuthActions.loginDomain(payload));
         });
         this.pref$.subscribe(pref => {
             this.pref = pref;
@@ -54,13 +57,15 @@ export class App
         });
     }
 
-    get isLoggedIn() { return this.user.token ? true : false; }
+    get isLoggedIn() { return this.store.let(isDashboardUser()); }
 
     logout() {
         this.store.dispatch(AuthActions.logout());
         // FIXME: Should we have something send back from sideeffect??
         this.router.navigate(['/login']);
     }
-    switchDomain($event) { this.store.dispatch(AuthActions.switchDomain($event)); }
+
+    /* Login user into selected domain */
+    loginDomain($event) { this.store.dispatch(AuthActions.loginDomain($event)); }
     toggleSidebar($event) { this.store.dispatch(PreferenceActions.toggleSidebar()); }
 }

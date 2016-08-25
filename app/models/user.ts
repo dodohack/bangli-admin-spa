@@ -54,23 +54,23 @@ export interface JwtPayLoad {
 
 
 /* Login, register, token refresh all uses the same User model */
+/* This user is per domain, some data are not shared cross different domain */
 export class User {
     id: number;
-    uuid: string;
     role_id: number;
-    display_name: string;
+    uuid: string;
     name: string;
+    display_name: string;
     email: string;
     password: string;
     created_at: string;
 
     token: string; /* JWT token */
-    jwt: string; /* DEPRECATED: JWT token */
-    jwtPayload: JwtPayLoad; /* Decoded JWT token */
-
-    role: UserRole;
-    profile: UserProfile;
+    payload: JwtPayLoad; /* Decoded JWT token */
 
     domain_key: string;
     domains: Domain[];
+
+    role: UserRole;
+    profile: UserProfile;
 }

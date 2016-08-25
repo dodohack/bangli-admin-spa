@@ -73,13 +73,29 @@ export class AuthActions {
      * YES, We can, but domain_key in sessionStorage has high priority!!
      * 1. Check if sessionStorage has domain_key, if it does, use it.
      * 2. Only check localStorage if 1 is not true.
+     * 3. User role and permission of switched domain is also retrieved
      * NOTE: Cause we always has a default domain_key set with key 'auth'.
      * */
-    static SWITCH_DOMAIN = '[Auth] Switch Domain';
-    static switchDomain(domain_key: string): Action {
+    static LOGIN_DOMAIN = '[Auth] Login Domain';
+    static loginDomain(domain_key: string): Action {
         return {
-            type: AuthActions.SWITCH_DOMAIN,
+            type: AuthActions.LOGIN_DOMAIN,
             payload: domain_key
-        }
+        };
+    }
+
+    static LOGIN_DOMAIN_SUCCESS = '[Auth] Login Domain Success';
+    static loginDomainSuccess(user: User): Action {
+        return {
+            type: AuthActions.LOGIN_DOMAIN_SUCCESS,
+            payload: user
+        };
+    }
+
+    static LOGIN_DOMAIN_FAIL = '[Auth] Login Domain Fail';
+    static loginDomainFail(): Action {
+        return {
+            type: AuthActions.LOGIN_DOMAIN_FAIL
+        };
     }
 }

@@ -4,7 +4,7 @@
                 授权信息<i class="pull-right fa fa-chevron-circle-down"></i>
             </div>
 
-            <form *ngIf="user" (ngSubmit)="onSubmit()">
+            <form *ngIf="user" (ngSubmit)="save.emit(user)">
                 <div class="row form-group">
                     <div class="col-xs-6">
                         <label>登录名</label>

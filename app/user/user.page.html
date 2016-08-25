@@ -8,7 +8,7 @@ my profile.
 
 <tabset>
     <tab heading="用户资料">
-        <form  *ngIf="user$ | async" (ngSubmit)="onSubmitProfile()">
+        <form  *ngIf="user$ | async" (ngSubmit)="saveProfile()">
             <accordion>
                 <user-base-profile [user]="user$ | async"
                                    [isMyProfile]="isMyProfile | async"
