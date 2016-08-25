@@ -1,23 +1,27 @@
-<div class="page-header">
+<div class="page-header" *ngIf="lists">
     <!-- Display current post url if any -->
-    <div class="float-right" *ngIf="previewUrl">
+    <div class="float-right" *ngIf="!isUser && entity">
         <span class="tag tag-default-outline">
-            文章状态: {{ zh[postStatus] }}
+            {{ title }}状态: {{ zh[entity.status] }}
         </span>
         <span class="tag tag-default-outline">
-            预览: <a href="{{previewUrl}}" target="_blank">{{ previewUrl }}</a>
+            预览: <a href="{{ previewLink }}" target="_blank">{{ previewLink }}</a>
         </span>
     </div>
 
     <h1 class="title">
-        编辑{{ pageTitle }}
-        <a class="page-title-action btn btn-outline-info btn-sm" routerLink="['/', backUrl]">
+        编辑{{ title }}
+        <a class="page-title-action btn btn-outline-info btn-sm"
+           routerLink="['/']">
             <i class="fa fa-backward"></i> 返回列表
         </a>
-        <!--
-        <a class="page-title-action btn btn-outline-info btn-sm" (click)="toggleRightBar()">
-            <span *ngIf="hideRightBar">显示侧栏</span><span *ngIf="!hideRightBar">隐藏侧栏</span>
+        <a class="page-title-action btn btn-outline-info btn-sm"
+           routerLink="['/', previous]" *ngIf="previous">
+            <i class="fa fa-angle-double-left"></i> Previous {{ previous }}
         </a>
-        -->
+        <a class="page-title-action btn btn-outline-info btn-sm"
+           routerLink="['/', next]" *ngIf="next">
+            Next {{ next }} <i class="fa fa-angle-double-right"></i>
+        </a>
     </h1>
 </div>

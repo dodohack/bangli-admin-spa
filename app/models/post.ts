@@ -22,7 +22,6 @@ export class PostStatus {
 
 export class Post {
     id: number;
-    selected: boolean;
     editor_id: number;
     author_id: number;
     image_id: number;

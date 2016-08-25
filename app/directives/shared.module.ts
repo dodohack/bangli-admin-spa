@@ -16,7 +16,7 @@ import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 import { RightPanel }                from './right-panel';
 import { Paginator }                 from './paginator';
 import { CategoryTreeComponent }     from './category-tree.component';
-import { EditorPageHeaderComponent } from './editor-page-header.component';
+import { EditorPageHeader }          from './editor-page-header';
 import { ListPageHeaderComponent }   from './list-page-header.component';
 import { ListPageMenuComponent }     from './list-page-menu.component';
 import { FastEditPostFormComponent } from './fast-edit-post-form.component';
@@ -42,7 +42,7 @@ import { DateFilterComponent }       from './date-filter.component';
         ListPageHeaderComponent,
         ListPageMenuComponent,
         CategoryTreeComponent,
-        EditorPageHeaderComponent,
+        EditorPageHeader,
         FastEditPostFormComponent,
         PostCttCloudComponent,
         SearchBoxComponent,
@@ -64,7 +64,7 @@ import { DateFilterComponent }       from './date-filter.component';
         ListPageHeaderComponent,
         ListPageMenuComponent,
         CategoryTreeComponent,
-        EditorPageHeaderComponent,
+        EditorPageHeader,
         FastEditPostFormComponent,
         PostCttCloudComponent,
         SearchBoxComponent,

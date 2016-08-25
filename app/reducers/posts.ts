@@ -12,12 +12,16 @@ import { PostActions } from '../actions';
 export interface PostsState {
     ids: number[];
     entities: { [id: number]: Post };
+    editing: number[]; // Posts in editing mode
+    //selected: number[]; // Posts selected? FIXME: Can we use 'editing' instead?
     paginator: Paginator;
 };
 
 const initialState: PostsState = {
     ids: [],
     entities: {},
+    editing: [],
+    //selected: [],
     paginator: new Paginator
 };
 
@@ -30,13 +34,13 @@ export default function (state = initialState, action: Action): PostsState {
             const ids: number[]       = posts.map(p => p.id);
             const entities            = posts.reduce(
                 (entities: { [id: number]: Post }, post: Post) => {
-                    post.selected = false;
                     return Object.assign(entities, { [post.id]: post });
                 }, {});
 
             return {
                 ids: [...ids],
                 entities: Object.assign({}, entities),
+                editing: [],
                 paginator: Object.assign({}, action.payload.paginator)
             };
         }
@@ -50,8 +54,9 @@ export default function (state = initialState, action: Action): PostsState {
             if (state.ids.indexOf(id) !== -1) {
                 return {
                     ids: [...state.ids],
-                    // FIXME: 'selected' state is lost
                     entities: Object.assign({}, state.entities, {[id]: action.payload}),
+                    // Set current post in editing mode
+                    editing: [id],
                     paginator: Object.assign({}, state.paginator)
                 }
             } else {
@@ -59,6 +64,7 @@ export default function (state = initialState, action: Action): PostsState {
                 return {
                     ids: [id],
                     entities: Object.assign({}, {[id]: action.payload}),
+                    editing: [id],
                     // paginator should be empty
                     paginator: Object.assign({}, state.paginator)
                 };

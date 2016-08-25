@@ -1,8 +1,4 @@
-<editor-page-header
-        [pageTitle]="'商品'"
-        [previewUrl]="'dummy'"
-        [backUrl]="'product'"
-        [postStatus]="(product$ | async).status">
+<editor-page-header [isProduct]="true" [lists]="product$ | async">
 </editor-page-header>
 
 <!-- Product title and main buttons -->

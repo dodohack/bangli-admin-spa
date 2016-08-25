@@ -10,6 +10,7 @@ import { Observable }        from 'rxjs/Observable';
 import { FroalaEditorCompnoent } from 'ng2-froala-editor/ng2-froala-editor';
 
 import { AppState, getPost } from '../reducers';
+import { PostsState }        from '../reducers/posts';
 import { PostActions }       from '../actions';
 
 import { FROALA_OPTIONS }    from '../models/froala.option';
@@ -23,7 +24,7 @@ import { zh_CN } from '../localization';
 export class PostPage implements OnInit
 {
     /* PostsState in post reducer */
-    postsState$: Observable<any>;
+    postsState: PostsState;
 
     /* Current post */
     id: number;
@@ -41,6 +42,12 @@ export class PostPage implements OnInit
             this.id = +params['id'];
             this.store.dispatch(PostActions.loadPost(this.id));
         });
+
+        this.store.select<PostsState>('posts')
+            .subscribe(postsState => this.postsState = postsState);
+
+        this.store.let(getPost(this.id))
+            .subscribe(post => this.post = Object.assign({}, post));
     }
     
     canDeactivate() {
@@ -48,9 +55,11 @@ export class PostPage implements OnInit
     }
 
     /* Get current post */
+    /*
     get post$(): Observable<any> {
-        return this.store.let(getPost(this.id));
+     return this.store.let(getPost(this.id));
     }
+    */
 
     get froalaOptions() {return FROALA_OPTIONS; }
     /* Post type enum(kind of) */
