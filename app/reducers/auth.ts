@@ -85,8 +85,9 @@ export function hasAuthorRole() {
              user.role.name === 'editor'  ||
              user.role.name === 'shop_manager' ||
              user.role.name === 'administrator' ||
-             user.payload.spu === 1))
+             user.payload.spu === 1)) {
             return true;
+        }
         return false;
     });
 }

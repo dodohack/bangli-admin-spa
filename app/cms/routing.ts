@@ -23,8 +23,7 @@ const routes: Routes = [
             /* List of posts */
             { path: '', pathMatch: 'full', redirectTo: 'page/1/status/all' },
             { path: 'page/:page',          redirectTo: 'page/:page/status/all' },
-            { path: 'page/:page/status/:status', component: PostsPage,         canDeactivate: [PostsEditGuard]
-            },
+            { path: 'page/:page/status/:status', component: PostsPage, canDeactivate: [PostsEditGuard]},
 
             /* Single post */
             { path: 'new', component: PostPage, canDeactivate: [PostEditGuard] },

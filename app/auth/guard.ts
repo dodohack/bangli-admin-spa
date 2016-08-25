@@ -64,7 +64,7 @@ export class BaseGuard implements CanActivate {
         /* TODO: Check if token is valid */
 
         /* TODO: Reference ngrx-example-app book-exists.ts canActivate */
-        /* NOTE: take(1) - only take one object from the observable stream */
+        /* NOTE: take(1) - must have, otherwise it doesn't work */
         return this.auth$.take(1).map(user => {
             if (user.token) {
                 return true;
@@ -84,7 +84,7 @@ export class AuthorGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasAuthorRole());
+        return this.store.let(hasAuthorRole()).take(1);
     }
 }
 
@@ -94,7 +94,7 @@ export class EditorGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasEditorRole());
+        return this.store.let(hasEditorRole()).take(1);
     }
 }
 
@@ -105,7 +105,7 @@ export class ShopMgrGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasShopManagerRole());
+        return this.store.let(hasShopManagerRole()).take(1);
     }
 }
 
@@ -115,7 +115,7 @@ export class AdminGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasAdminRole());
+        return this.store.let(hasAdminRole()).take(1);
     }
 }
 
@@ -125,6 +125,6 @@ export class SuperUserGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}    
     
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasSuperUserRole());
+        return this.store.let(hasSuperUserRole()).take(1);
     }
 }
