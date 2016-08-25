@@ -41,7 +41,6 @@ export default function (state = initialState, action: Action): UsersState {
             // User uuid currently loaded
             const uuid: string = action.payload['uuid'];
 
-
             // Update user from users list with detailed info just loaded
             // 'entities' is updated, 'uuids' and 'paginator' remain the same
             if (state.uuids.indexOf(uuid) !== -1) {
@@ -51,7 +50,25 @@ export default function (state = initialState, action: Action): UsersState {
                     paginator: Object.assign({}, state.paginator)
                 }
             } else {
-                console.error("***CAN NOT FIND CURRENT USER FROM USERS LIST***");
+                console.error("***LOAD_USER_SUCCESS: CAN NOT FIND CURRENT USER FROM USERS LIST***");
+                return state;
+            }
+        }
+
+        case UserActions.LOAD_DOMAINS_SUCCESS: {
+            const uuid: string = action.payload['uuid'];
+
+            // Update the user with retrieved domains info
+            if (state.uuids.indexOf(uuid) !== -1) {
+                const user = Object.assign({}, state.entities[uuid],
+                    {domains: action.payload['domains']});
+                return {
+                    uuids: [...state.uuids],
+                    entities: Object.assign({}, state.entities, {[uuid]: user}),
+                    paginator: Object.assign({}, state.paginator)
+                }
+            } else {
+                console.error("***LOAD_DOMAINS_SUCCESS: CAN NOT FIND CURRENT USER FROM USERS LIST***");
                 return state;
             }
         }

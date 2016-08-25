@@ -43,6 +43,7 @@ export class UserPage implements OnInit
         this.route.params.subscribe(params => {
             let uuid = params['uuid'];
             this.store.dispatch(UserActions.loadUser(uuid));
+            this.store.dispatch(UserActions.loadDomains(uuid));
         });
 
         this.sub$ = this.auth$.map(user => user.payload.sub);

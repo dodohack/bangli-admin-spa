@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { User }   from '../models';
+import { Domain } from '../models';
 
 export class UserActions {
     static SEARCH = '[User] Search';
@@ -65,10 +66,25 @@ export class UserActions {
     }
 
     static LOAD_DOMAINS = '[User] Load Domains';
-    static loadDomains(user: User): Action {
+    static loadDomains(uuid: string): Action {
         return {
             type: UserActions.LOAD_DOMAINS,
-            payload: user
+            payload: uuid
+        };
+    }
+
+    static LOAD_DOMAINS_SUCCESS = '[User] Load Domains Success';
+    static loadDomainsSuccess(domains: Domain[]): Action {
+        return {
+            type: UserActions.LOAD_DOMAINS_SUCCESS,
+            payload: domains
+        };
+    }
+
+    static LOAD_DOMAINS_FAIL = '[User] Load Domains Fail';
+    static loadDomainsFail(): Action {
+        return {
+            type: UserActions.LOAD_DOMAINS_FAIL
         };
     }
 
@@ -88,6 +104,13 @@ export class UserActions {
         };
     }
 
+    static SAVE_DOMAINS_FAIL = '[User] Save Domains Fail';
+    static saveDomainsFail() {
+        return {
+            type: UserActions.SAVE_DOMAINS_FAIL
+        };
+    }
+
     static SAVE_USER = '[User] Save User';
     static saveUser(user: User) {
         return {
@@ -101,6 +124,13 @@ export class UserActions {
         return {
             type: UserActions.SAVE_USER_SUCCESS,
             payload: user
+        };
+    }
+
+    static SAVE_USER_FAIL = '[User] Save User Fail';
+    static saveUserFail() {
+        return {
+            type: UserActions.SAVE_USER_FAIL
         };
     }
 }

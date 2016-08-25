@@ -7,6 +7,8 @@ import { AuthCache }   from '../auth.cache';
 import { PrefCache }   from '../pref.cache';
 import { UserActions } from '../actions';
 import { User }        from '../models';
+import { Domain }      from '../models';
+import { AUTH }        from '../api';
 
 @Injectable()
 export class UserEffects {
@@ -37,6 +39,17 @@ export class UserEffects {
         .map(user => UserActions.loadUserSuccess(user))
         .catch(() => Observable.of(UserActions.loadUserFail()));
 
+    /* Load domains of user can manage */
+    @Effect() loadDomains$ = this.actions$.ofType(UserActions.LOAD_DOMAINS)
+        .switchMap(action => this.getUserDomains(action.payload))
+        .map(domains => UserActions.loadDomainsSuccess(domains))
+        .catch(() => Observable.of(UserActions.loadDomainsFail()));
+
+    /* Update domains of user can manage */
+    @Effect() saveDomains$ = this.actions$.ofType(UserActions.SAVE_DOMAINS)
+        .switchMap(action => this.postUserDomains(action.payload))
+        .map(res => UserActions.saveDomainsSuccess(res))
+        .catch(() => Observable.of(UserActions.saveDomainsFail()));
 
     /////////////////////////////////////////////////////////////////////////
     // Http functions
@@ -65,6 +78,16 @@ export class UserEffects {
 
     private getUser(uuid: string): Observable<User> {
         let api = AuthCache.API().user + '/' + uuid + '?token=' + AuthCache.token();
-            return this.http.get(api).map(res => res.json());
+        return this.http.get(api).map(res => res.json());
+    }
+
+    private getUserDomains(uuid: string): Observable<Domain[]> {
+        let api = AUTH.domains + '/' + uuid + '&token=' + AuthCache.token();
+        return this.http.get(api).map(res => res.json());
+    }
+
+    private postUserDomains(user: User) {
+        let api = AUTH.domains + '/' + user.uuid;
+        return this._post(api, JSON.stringify(user.domains));
     }
 }
