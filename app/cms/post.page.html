@@ -96,8 +96,8 @@
 
 
 <!-- Right side bar -->
-<div class="right-panel" [class.show-right-panel]="!hideRightBar">
-    <tabset [justified]="true" *ngIf="!hideRightBar">
+<right-panel [width]="'400px'" [isOpen]="false">
+    <tabset [justified]="true">
         <tab heading="分类" [active]="tabs['cat']"
              (select)="tabs['cat'] = true" (deselect)="tabs['cat'] = false">
             <category-tree [isTreeRoot]="showFilter"
@@ -116,10 +116,4 @@
             <topic-cloud [topics]="topics" (checkEvent)="checkTopic($event)"></topic-cloud>
         </tab>
     </tabset>
-</div>
-
-<!-- Alerts area, fixed at left bottom -->
-<div class="alert-area" *ngIf="alerts && alerts.length">
-    <alert *ngFor="let alert of alerts; let i = index" [type]="alert.type"
-           dismissOnTimeout="2000">{{alert?.msg}}</alert>
-</div>
+</right-panel>
