@@ -1,33 +1,33 @@
 /**
- * This is the single post edit page component
+ * This is the single post page
  */
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, CanDeactivate }  from '@angular/router';
+import { ActivatedRoute }    from '@angular/router';
+
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
-
-import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
-import { FROALA_OPTIONS } from '../models/froala.option';
+import { FroalaEditorCompnoent } from 'ng2-froala-editor';
 
 import { AppState, getPost } from '../reducers';
 import { PostActions }       from '../actions';
 
-import { User, Post, Category, Tag, Topic } from '../models';
+import { FROALA_OPTIONS }    from '../models/froala.option';
 import { POST_TYPES } from '../models';
+
+import { User, Post, Category, Tag, Topic } from '../models';
 
 import { zh_CN } from '../localization';
 
-@Component({
-    template: require('./post.page.html')
-})
+@Component({ template: require('./post.page.html') })
 export class PostPage implements OnInit
 {
-    /* The post we are current editing */
-    posts$: Observable<any>;
+    /* PostsState in post reducer */
+    postsState$: Observable<any>;
 
-    /* Id of current product */
-    id$: Observable<number>;
+    /* Current post */
+    id: number;
+    post: Post;
 
     froalaEditor: any;
 
@@ -38,15 +38,18 @@ export class PostPage implements OnInit
 
     ngOnInit() {
         this.route.params.subscribe(params => {
-            this.store.dispatch(PostActions.loadPost(params['id']));
+            this.id = +params['id'];
+            this.store.dispatch(PostActions.loadPost(this.id));
         });
-
-        this.id$ = this.route.params.select<number>('id');
+    }
+    
+    canDeactivate() {
+        
     }
 
-    /* Get current post by id */
+    /* Get current post */
     get post$(): Observable<any> {
-        return this.id$.switchMap(id => this.store.let(getPost(id)));
+        return this.store.let(getPost(this.id));
     }
 
     get froalaOptions() {return FROALA_OPTIONS; }

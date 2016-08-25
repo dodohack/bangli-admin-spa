@@ -39,6 +39,8 @@ export class PostsPage implements OnInit
         });
     }
 
+    canDeactivate() {}
+
     /* Localization, have to wrapper it as template only access 
      * component local methods/properties */
     get zh() { return zh_CN.post; }

@@ -1,6 +1,8 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthorGuard, EditorGuard } from '../auth';
+import { AuthorGuard, EditorGuard }      from '../auth';
+import { PostsEditGuard, PostEditGuard } from './guard';
+
 import { PostsPage }    from './posts.page';
 import { PostPage }     from './post.page';
 import { TopicsPage }   from './topics.page';
@@ -21,11 +23,12 @@ const routes: Routes = [
             /* List of posts */
             { path: '', pathMatch: 'full', redirectTo: 'page/1/status/all' },
             { path: 'page/:page',          redirectTo: 'page/:page/status/all' },
-            { path: 'page/:page/status/:status', component: PostsPage },
+            { path: 'page/:page/status/:status', component: PostsPage,         canDeactivate: [PostsEditGuard]
+            },
 
             /* Single post */
-            { path: 'new', component: PostPage },
-            { path: ':id', component: PostPage }
+            { path: 'new', component: PostPage, canDeactivate: [PostEditGuard] },
+            { path: ':id', component: PostPage, canDeactivate: [PostEditGuard] }
         ]
     },
 
