@@ -9,11 +9,6 @@ const base: string = APP_API_BASE['huluwa_uk'];
 export const API_HULUWA_UK = {
     /* Endpoint */
     endpoint: base,
-    
-    /* My dashboard permission */
-    permissions: base + '/admin/permissions',
-    /* My current role */
-    role: base + '/admin/role',
 
     /* Base migration url of API server */
     migrate_base: base + '/admin/migrate',

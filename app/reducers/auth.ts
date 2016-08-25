@@ -19,11 +19,9 @@ export default function(state = initialState, action: Action): AuthState {
     switch (action.type)
     {
         case AuthActions.LOGIN_SUCCESS: {
-            return Object.assign({}, action.payload, {
-                payload: jwtDecode(action.payload.token), // JWT payload
-                domain_key: '' // Do not initial it, LOGIN_DOMAIN will do this
-                //domain_key: action.payload.domains[0].key
-            });
+            return Object.assign({}, action.payload,
+                {payload: jwtDecode(action.payload.token)}
+            );
         }
             
         case AuthActions.LOGIN_FAIL: {
@@ -46,17 +44,13 @@ export default function(state = initialState, action: Action): AuthState {
         case AuthActions.REGISTER_FAIL:
             return action.payload;
 
-        case AuthActions.LOGIN_DOMAIN_SUCCESS:
-            return Object.assign({}, 'x');
-            /*
-            return Object.assign({}, state, {
-                domain_key: action.payload
-            });
-            */
+        case AuthActions.LOGIN_DOMAIN_SUCCESS: {
+            // Merge user auth info and user profile from specific domain
+            return Object.assign({}, state, action.payload);
+        }
+
         case AuthActions.LOGIN_DOMAIN_FAIL:
-            return Object.assign({}, state, {
-                domain_key: action.payload
-            });
+            return state;
 
         case AuthActions.INIT:
         default: // Return initial state

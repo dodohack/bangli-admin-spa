@@ -7,11 +7,10 @@ import { Http, Headers, RequestOptions }   from '@angular/http';
 import { Effect, Actions }                 from '@ngrx/effects';
 import { Observable }                      from 'rxjs/Observable';
 
-import { AuthActions }  from '../actions';
-import { AUTH }         from '../api';
-import { User }         from '../models';
-import { AlertActions } from '../actions';
-import { AuthCache }    from "../auth.cache";
+import { AUTH, API_END_POINTS }   from '../api';
+import { AuthActions }            from '../actions';
+import { User }                   from '../models';
+import { AlertActions }           from '../actions';
 
 @Injectable()
 export class AuthEffects {
@@ -23,6 +22,13 @@ export class AuthEffects {
         .switchMap(payload => this.login(payload))
         .map(user => AuthActions.loginSuccess(user))
         .catch(() => Observable.of(AuthActions.loginFail()));
+
+    /* Login default domain after user login */
+    @Effect() loginSuccess$ = this.actions$.ofType(AuthActions.LOGIN_SUCCESS)
+        .map(action => {
+            console.log("LOGIN DOMAIN AFTER LOGIN_SUCCESS");
+            return AuthActions.loginDomain(action.payload);
+        });
 
     /* Triggers on app start or manually login into domain */
     @Effect() loginDomain$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN)
@@ -72,15 +78,25 @@ export class AuthEffects {
         return this.http.post(api, body, options).map(res => res.json());
     }    
     
-    /* Login a user with given email and password */
+    // Login a user with given email and password
     private login(form: string): Observable<User> {
-        console.error("FIXME: This can only be triggered first time, LOGIN FORM: ", form);
         return this._post(AUTH.login, form);
     }
 
-    /* Login user into specified API domain */
+    // Login user into specified API domain
     private loginDomain(user: User): Observable<User> {
-        // Get user role for thie given domain
-        return this.http.get(AuthCache.API().role).map(res => res.json());
+        if (!user.domains)
+            return Observable.throw('No permission to manage any domains');
+
+        // Get default domain first first entry
+        if (!user.domain_key && user.domains) {
+            user.domain_key = user.domains[0].key;
+        }
+
+        // We can't use AuthCache here, cause it is not ready at user login
+        let api = API_END_POINTS[user.domain_key].user + '?token=' + user.token;
+
+        // Get current user domain specific profile
+        return this.http.get(api).map(res => res.json());
     }
 }
