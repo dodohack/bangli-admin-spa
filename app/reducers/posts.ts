@@ -55,7 +55,13 @@ export default function (state = initialState, action: Action): PostsState {
                     paginator: Object.assign({}, state.paginator)
                 }
             } else {
-                return state;
+                // Return the single post in the PostsState
+                return {
+                    ids: [id],
+                    entities: Object.assign({}, {[id]: action.payload}),
+                    // paginator should be empty
+                    paginator: Object.assign({}, state.paginator)
+                };
             }
         }
 

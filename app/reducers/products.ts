@@ -55,7 +55,13 @@ export default function (state = initialState, action: Action): ProductsState {
                     paginator: Object.assign({}, state.paginator)
                 }
             } else {
-                return state;
+                // Return single product within ProductsState
+                return {
+                    ids: [id],
+                    entities: Object.assign({}, {[id]: action.payload}),
+                    // paginator should be empty
+                    paginator: Object.assign({}, state.paginator)
+                };
             }
         }
 

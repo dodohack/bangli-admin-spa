@@ -48,10 +48,15 @@ export default function (state = initialState, action: Action): UsersState {
                     uuids: [...state.uuids],
                     entities: Object.assign({}, state.entities, {[uuid]: action.payload}),
                     paginator: Object.assign({}, state.paginator)
-                }
+                };
             } else {
-                console.error("***LOAD_USER_SUCCESS: CAN NOT FIND CURRENT USER FROM USERS LIST***");
-                return state;
+                // Return single user with the UsersState
+                return {
+                    uuids: [uuid],
+                    entities: Object.assign({}, {[uuid]: action.payload}),
+                    // paginator should be empty
+                    paginator: Object.assign({}, state.paginator)
+                };
             }
         }
 
@@ -66,9 +71,9 @@ export default function (state = initialState, action: Action): UsersState {
                     uuids: [...state.uuids],
                     entities: Object.assign({}, state.entities, {[uuid]: user}),
                     paginator: Object.assign({}, state.paginator)
-                }
+                };
             } else {
-                console.error("***LOAD_DOMAINS_SUCCESS: CAN NOT FIND CURRENT USER FROM USERS LIST***");
+                console.error("***THIS SHOULD NOT HAPPEN: CAN NOT FIND CURRENT USER FROM USERS LIST***");
                 return state;
             }
         }

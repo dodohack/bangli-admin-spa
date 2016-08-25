@@ -53,9 +53,15 @@ export default function (state = initialState, action: Action): TopicsState {
                     // FIXME: 'selected' state is lost
                     entities: Object.assign({}, state.entities, {[id]: action.payload}),
                     paginator: Object.assign({}, state.paginator)
-                }
+                };
             } else {
-                return state;
+                // Return single topic in the TopicsState
+                return {
+                    ids: [id],
+                    entities: Object.assign({}, {[id]: action.payload}),
+                    // paginator should be empty
+                    paginator: Object.assign({}, state.paginator)
+                };
             }
         }
 
