@@ -1,6 +1,6 @@
 /**
- * This panel is normally used in post/posts, topic/topics, product/products
- * page, it is a multiple purpose panel.
+ * This is a container component, normally used in post/posts, topic/topics,
+ * product/products page, it is a multiple purpose panel.
  */
 import { Component }      from '@angular/core';
 import { Input, Output }  from '@angular/core';
@@ -19,7 +19,7 @@ export class RightPanel {
 
     // Panel width with pixel, say, '600px'
     @Input() width: string;
-    // Panel position in hide
+    // Panel position offset the screen
     get right() { return '-' + this.width; }
 
     @Input() isOpen: boolean;
