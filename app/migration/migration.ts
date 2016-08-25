@@ -7,7 +7,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Title } from '@angular/platform-browser';
 
 import { API_END_POINTS }      from '../api';
-import { AuthService } from '../service';
+import { AuthService } from '../service/auth.service';
 
 let template = require('./migration.html');
 @Component({

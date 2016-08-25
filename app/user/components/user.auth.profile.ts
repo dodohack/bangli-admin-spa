@@ -4,7 +4,7 @@
  */
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { AuthService } from '../../service';
+import { AuthService } from '../../service/auth.service';
 import { User }        from '../../models';
 
 let t = require('./user.auth.profile.html');
