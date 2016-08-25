@@ -10,6 +10,7 @@ import { Topic } from '../models';
          #box (keyup)="filterTopic(box.value)">
     </div>
     <ul class="topic-cloud">
+        <!--
         <template ngFor let-topic [ngForOf]="topics">
         <li *ngIf="!topic.hidden" class="topic-item tag tag-pill tag-success"
             [class.active]="topic.checked"
@@ -17,6 +18,7 @@ import { Topic } from '../models';
             {{ topic.title }}
         </li>
         </template>
+        -->
     </ul>
     `
 })
@@ -35,14 +37,16 @@ export class TopicCloudComponent {
 
     filterTopic(str: string)
     {
+        /*
         for (let i in this.topics)
         {
-            /* Set initial state */
+            // Set initial state
             this.topics[i].hidden = true;
 
             if (this.topics[i].title.includes(str) ||
                 this.topics[i].guid.includes(str))
                 this.topics[i].hidden = false;
         }
+        */
     }
 }

@@ -46,8 +46,8 @@ export interface JwtPayLoad {
     exp: number;
     nbf: number;
     jti: string;
-    dbu: boolean; /* Is a dashboard user */
-    spu: boolean; /* Is a super user */
+    dbu: number; /* Is a dashboard user */
+    spu: number; /* Is a super user */
     sub: string;
     aud: string;
 }

@@ -7,7 +7,7 @@ import { ActivatedRoute }    from '@angular/router';
 
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
-import { FroalaEditorCompnoent } from 'ng2-froala-editor';
+import { FroalaEditorCompnoent } from 'ng2-froala-editor/ng2-froala-editor';
 
 import { AppState, getPost } from '../reducers';
 import { PostActions }       from '../actions';
@@ -44,7 +44,7 @@ export class PostPage implements OnInit
     }
     
     canDeactivate() {
-        
+        return true;
     }
 
     /* Get current post */

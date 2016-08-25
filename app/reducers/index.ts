@@ -57,7 +57,7 @@ import {Observable} from "rxjs/Observable";
  */
 export interface AppState {
     alerts:   fromAlerts.AlertsState;
-    auth:     fromAuth.UserState;
+    auth:     fromAuth.AuthState;
     users:    fromUsers.UsersState;
     pref:     fromPref.PreferenceState;
     products: fromProducts.ProductsState;

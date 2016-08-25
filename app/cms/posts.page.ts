@@ -39,7 +39,9 @@ export class PostsPage implements OnInit
         });
     }
 
-    canDeactivate() {}
+    canDeactivate() {
+        return true;
+    }
 
     /* Localization, have to wrapper it as template only access 
      * component local methods/properties */

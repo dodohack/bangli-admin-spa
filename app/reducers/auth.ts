@@ -46,16 +46,13 @@ export default function(state = initialState, action: Action): AuthState {
         case AuthActions.REGISTER_FAIL:
             return action.payload;
 
-        case AuthActions.LOGIN_DOMAIN:
-            return Object.assign({}, state, {
-                domain_key: action.payload
-            });
-
         case AuthActions.LOGIN_DOMAIN_SUCCESS:
+            return Object.assign({}, 'x');
+            /*
             return Object.assign({}, state, {
                 domain_key: action.payload
             });
-
+            */
         case AuthActions.LOGIN_DOMAIN_FAIL:
             return Object.assign({}, state, {
                 domain_key: action.payload
@@ -80,7 +77,7 @@ export function getAuthToken() {
 export function isDashboardUser() {
     return (state$: Observable<AuthState>) => state$.select(user => {
         let now = Math.floor(Date.now()/1000);
-        if (user.payload.exp > now && user.payload.dbu === 1)
+        if (user.payload && user.payload.exp > now && user.payload.dbu === 1)
             return true;
         return false;
     });

@@ -49,7 +49,7 @@ export class App
             AuthCache.setDecodedToken(this.user.payload);
             AuthCache.setDomainKey(this.user.domain_key);
             // Login user into default domain
-            this.store.dispatch(AuthActions.loginDomain(payload));
+            //this.store.dispatch(AuthActions.loginDomain(payload));
         });
         this.pref$.subscribe(pref => {
             this.pref = pref;

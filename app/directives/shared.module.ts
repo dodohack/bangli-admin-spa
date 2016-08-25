@@ -11,7 +11,7 @@ import { AlertComponent }       from 'ng2-bootstrap';
 import { TYPEAHEAD_DIRECTIVES } from 'ng2-bootstrap';
 import { DROPDOWN_DIRECTIVES }  from 'ng2-bootstrap';
 
-import { FroalaEditorCompnoent } from "ng2-froala-editor";
+import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
 import { RightPanel }                from './right-panel';
 import { Paginator }                 from './paginator';

@@ -76,12 +76,12 @@ export class UserPage implements OnInit
 
     /* TODO: Change from child view template need to be propergated up */
     saveProfile() {
-        this.store.dispatch(UserActions.saveUser());
+        //this.store.dispatch(UserActions.saveUser());
     }
 
     /* Save user password to bangli-auth */
     saveCrefidential() {
         // TODO: Should we use the same method as saveProfile()?
-        this.store.dispatch(UserActions.saveUser());
+        //this.store.dispatch(UserActions.saveUser());
     }
 }
