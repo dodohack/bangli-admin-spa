@@ -6,6 +6,9 @@ import { SharedModule } from '../directives/shared.module';
 
 import { routing }      from './routing';
 
+import { PostsEditGuard } from './guard';
+import { PostEditGuard }  from './guard';
+
 import { PostsList }    from './components/posts.list';
 import { TopicsList }   from './components/topics.list';
 
@@ -24,6 +27,10 @@ import { PagePage }     from './page.page';
         PostsPage, PostPage,
         TopicsPage, TopicPage, 
         PagesPage, PagePage 
+    ],
+    providers: [
+        PostsEditGuard,
+        PostEditGuard
     ]
 })
 export class CmsModule {}

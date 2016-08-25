@@ -2,7 +2,7 @@
     <div *ngIf="hasNav" class="panel-nav">
         <button type="button" (click)="edit(index-1)" class="btn btn-outline-primary btn-sm"><i class="fa fa-arrow-left"></i></button>
         <button type="button" (click)="edit(index+1)" class="btn btn-outline-primary btn-sm"><i class="fa fa-arrow-right"></i></button>
-        <span class="title">第{{ index+1 }}个, ID号: {{ item.id }}</span>
+        <span class="title">第{{ index+1 }}个, ID号: </span>
         <button type="button" class="btn btn-outline-danger btn-sm close" (click)="isOpen = false">x</button>
     </div>
     <div class="panel-content">
