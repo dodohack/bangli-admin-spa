@@ -46,6 +46,8 @@ import usersReducer, * as fromUsers       from './users';
 import prefReducer, * as fromPref         from './preference';
 import productsReducer, * as fromProducts from './products';
 import ordersReducer, * as fromOrders     from './orders';
+import vouchersReducer, * as fromVouchers from './vouchers';
+import newslettersReducer, * as fromNewsletters from './newsletters';
 import postsReducer, * as fromPosts       from './posts';
 import topicsReducer, * as fromTopics     from './topics';
 import pagesReducer, * as fromPages       from './pages';
@@ -62,6 +64,8 @@ export interface AppState {
     pref:     fromPref.PreferenceState;
     products: fromProducts.ProductsState;
     orders:   fromOrders.OrdersState;
+    vouchers: fromVouchers.VouchersState;
+    newsletters: fromNewsletters.NewsletterState;
     posts:    fromPosts.PostsState;
     topics:   fromTopics.TopicsState;
     pages:    fromPages.PagesState;
@@ -87,6 +91,8 @@ export default compose(
     pref:     prefReducer,
     products: productsReducer,
     orders:   ordersReducer,
+    vouchers: vouchersReducer,
+    newsletters: newslettersReducer,
     posts:    postsReducer,
     topics:   topicsReducer,
     pages:    pagesReducer

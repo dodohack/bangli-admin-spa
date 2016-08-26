@@ -32,11 +32,12 @@ import { EffectsModule } from '@ngrx/effects/module';
 
 /* Import the default export from these files */
 import reducer            from './reducers';
-import effects            from './effects';
 import { AuthEffects }    from './effects';
 import { UserEffects }    from './effects';
 import { ProductEffects } from './effects';
 import { OrderEffects }   from './effects';
+import { VoucherEffects } from './effects';
+import { NewsletterEffects } from './effects';
 import { PostEffects }    from './effects';
 import { TopicEffects }   from './effects';
 import { PageEffects }    from './effects';
@@ -69,6 +70,8 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         EffectsModule.run(UserEffects),
         EffectsModule.run(ProductEffects),
         EffectsModule.run(OrderEffects),
+        EffectsModule.run(VoucherEffects),
+        EffectsModule.run(NewsletterEffects),
         EffectsModule.run(PostEffects),
         EffectsModule.run(TopicEffects),
         EffectsModule.run(PageEffects),

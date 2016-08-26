@@ -23,6 +23,7 @@ export * from './page';
 export * from './order';
 export * from './product';
 export * from './voucher';
+export * from './newsletter';
 export * from './domain';
 export * from './alert';
 export * from './preference';
