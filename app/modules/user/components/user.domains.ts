@@ -5,8 +5,8 @@ import { Component, Input, Output }   from '@angular/core';
 import { EventEmitter}                from '@angular/core';
 import { ChangeDetectionStrategy }    from '@angular/core';
 
-import { User }            from '../../models';
-import { Domain, DOMAINS } from '../../models/domain'
+import { User }            from '../../../models';
+import { Domain  }         from '../../../models/domain'
 
 @Component({
     selector: 'user-domains-tab',
