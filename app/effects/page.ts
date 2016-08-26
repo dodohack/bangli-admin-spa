@@ -14,8 +14,15 @@ import { Page }         from "../models";
 @Injectable()
 export class PageEffects {
 
+    /* Common http options*/
+    headers: Headers;
+
     constructor (private actions$: Actions,
-                 private http: Http) {}
+                 private http: Http) {
+        this.headers = new Headers({
+            'Authorization': 'Bearer ' + AuthCache.token(),
+            'Content-Type': 'application/json'});
+    }
 
     @Effect() loadPages$ = this.actions$.ofType(PageActions.LOAD_PAGES)
         .switchMap(action => this.getPages(action.payload))
@@ -30,34 +37,86 @@ export class PageEffects {
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
 
+
     /**
-     * Save single page/multiple pages
+     * Get single page
      */
-    private save(pages: Page[]): Observable<Page[]> {
-        let api = '';
-        let body = JSON.stringify(pages);
+    private getPage(id: number): Observable<Page> {
+        let api = AuthCache.API().cms_pages +
+            '/' + id + '?token=' + AuthCache.token();
+        return this.http.get(api).map(res => res.json());
+    }
 
-        let headers = new Headers({
-            'Authorization': AuthCache.token(),
-            'Content-Type': 'application/json'});
-        let options = new RequestOptions({ headers: headers });
+    /**
+     * Update single page
+     */
+    private putPage(page: Page): Observable<Page> {
+        let body = JSON.stringify(page);
 
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().cms_pages + '/' + page.id;
+        return this.http.put(api, body, options).map(res => res.json());
+    }
+
+    /**
+     * Create a new page
+     */
+    private postPage(page: Page): Observable<Page> {
+        let body = JSON.stringify(page);
+
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().cms_pages + '/' + page.id;
         return this.http.post(api, body, options).map(res => res.json());
     }
 
+    /**
+     * Delete a page
+     */
+    private deletePage(page: Page): Observable<Page> {
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().cms_pages + '/' + page.id;
+        return this.http.delete(api, options).map(res => res.json());
+    }
+
+    /**
+     * Get pages
+     */
     private getPages(filters: any): Observable<any> {
         let cur_page = filters.cur_page;
-        //let status   = filters.status;
-        let api = AuthCache.API().pages + '/' + cur_page +
-            '?per_page=' + PrefCache.getPerPage() +
-            //'&status=' + status +
+        let status   = filters.status;
+        let api = AuthCache.API().cms_pages +
+            '?page=' + cur_page +
+            '&per_page=' + PrefCache.getPerPage() +
+            '&status=' + status +
             '&token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }
 
+    /**
+     * Update pages
+     */
+    private putPages(pages: Page[]): Observable<Page[]> {
+        let body = JSON.stringify(pages);
 
-    private getPage(id: string): Observable<Page> {
-        let api = AuthCache.API().page + '/' + id + '?token=' + AuthCache.token();
-        return this.http.get(api).map(res => res.json());
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().cms_pages_batch;
+        return this.http.put(api, body, options).map(res => res.json());
+    }
+
+    /**
+     * Delete pages
+     */
+    private deletePages(pages: Page[]): Observable<Page[]> {
+        let body = JSON.stringify(pages);
+
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().cms_pages_batch;
+        // TODO: http.delete can't have a body
+        //return this.http.delete(api, options).map(res => res.json());
     }
 }

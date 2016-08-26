@@ -14,8 +14,14 @@ import { Post }         from "../models";
 @Injectable()
 export class PostEffects {
 
+    headers: Headers;
+
     constructor (private actions$: Actions,
-                 private http: Http) {}
+                 private http: Http) {
+        this.headers = new Headers({
+            'Authorization': 'Bearer' + AuthCache.token(),
+            'Content-Type': 'application/json'});
+    }
 
     @Effect() loadPosts$ = this.actions$.ofType(PostActions.LOAD_POSTS)
         .switchMap(action => this.getPosts(action.payload))
@@ -26,10 +32,10 @@ export class PostEffects {
         .switchMap(action => this.getPost(action.payload))
         .map(post => PostActions.loadPostSuccess(post))
         .catch(() => Observable.of(PostActions.loadPostFail()));
-    
-    @Effect() savePost$ = this.actions$.ofType(PostActions.SAVE_POST)
+
+    @Effect() putPost$ = this.actions$.ofType(PostActions.SAVE_POST)
         .map(action => action.payload)
-        .switchMap(post => this.savePost(post))
+        .switchMap(post => this.putPost(post))
         .map(res => PostActions.savePostSuccess())
         .catch(() => Observable.of(PostActions.savePostFail()));
 
@@ -37,20 +43,54 @@ export class PostEffects {
     // Private helper functions
 
     /**
-     * Save single post/multiple posts
+     * Get a post
      */
-    private save(posts: Post[]): Observable<any> {
-        let api = '';
-        let body = JSON.stringify(posts);
+    private getPost(id: string): Observable<Post> {
+        let api = AuthCache.API().cms_posts +
+            '/' + id + '?token=' + AuthCache.token();
+        return this.http.get(api).map(res => res.json());
+    }
 
-        let headers = new Headers({
-            'Authorization': AuthCache.token(),
-            'Content-Type': 'application/json'});
-        let options = new RequestOptions({ headers: headers });
+    /**
+     * Update a post
+     */
+    private putPost(post: Post): Observable<Post> {
+        console.log("SAVING POST: ", post);
+        // FIXME: If return true immediately, status SAVE_POST_SUCCESS happens
+        // FIXME: before SAVE_POST, why???
+        //return Observable.of(true);
 
+        let body = JSON.stringify(post);
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().cms_posts + '/' + post.id;
         return this.http.post(api, body, options).map(res => res.json());
     }
 
+    /**
+     * Create a new post
+     */
+    private postPost(post: Post): Observable<Post> {
+        let body = JSON.stringify(post);
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().cms_posts;
+        return this.http.post(api, body, options).map(res => res.json());
+    }
+
+    /**
+     * Delete a post
+     */
+    private deletePost(post: Post): Observable<Post> {
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().cms_posts + '/' + post.id;
+        return this.http.delete(api, options).map(res => res.json());
+    }
+
+    /**
+     * Get posts
+     */
     private getPosts(filters: any): Observable<any> {
         let cur_page = filters.cur_page;
         //let status   = filters.status;
@@ -61,25 +101,29 @@ export class PostEffects {
         return this.http.get(api).map(res => res.json());
     }
 
-    private getPost(id: string): Observable<Post> {
-        let api = AuthCache.API().post + '/' + id + '?token=' + AuthCache.token();
-        return this.http.get(api).map(res => res.json());
+    /**
+     * Update posts
+     */
+    private putPosts(posts: Post[]): Observable<Post[]> {
+        let body = JSON.stringify(posts);
+
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().cms_posts_batch;
+        return this.http.put(api, body, options).map(res => res.json());
     }
-    
-    private savePost(post: Post): Observable<any> {
-        console.log("SAVING POST: ", post);
-        // FIXME: If return true immediately, status SAVE_POST_SUCCESS happens
-        // FIXME: before SAVE_POST, why???
-        //return Observable.of(true);
 
-        let api = AuthCache.API().post + '/' + post.id;
-        let body = JSON.stringify(post);
+    /**
+     * Delete posts
+     */
+    private deletePosts(posts: Post[]): Observable<Post[]> {
+        let body = JSON.stringify(posts);
 
-        let headers = new Headers({
-            'Authorization': 'Bearer ' + AuthCache.token(),
-            'Content-Type': 'application/json'});
-        let options = new RequestOptions({ headers: headers });
+        let options = new RequestOptions({ headers: this.headers });
 
-        return this.http.post(api, body, options).map(res => res.json());
+        let api = AuthCache.API().cms_posts_batch;
+        // TODO: http.delete can't have a body
+        //return this.http.delete(api, options).map(res => res.json());
     }
+
 }

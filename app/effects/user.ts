@@ -12,9 +12,15 @@ import { AUTH }        from '../api';
 
 @Injectable()
 export class UserEffects {
+
+    headers: Headers;
     
     constructor(private actions$: Actions,
-                private http: Http) {}
+                private http: Http) {
+        this.headers = new Headers({
+            'Authorization': 'Bearer' + AuthCache.token(),
+            'Content-Type': 'application/json'});
+    }
     
     @Effect() search$ = this.actions$.ofType(UserActions.SEARCH)
         .map(action => JSON.stringify(action.payload))
@@ -53,12 +59,84 @@ export class UserEffects {
 
     /////////////////////////////////////////////////////////////////////////
     // Http functions
-    private _post(api: string, body: string) {
-        let headers = new Headers({
-            'Authorization': AuthCache.token(),
-            'Content-Type': 'application/json'});
-        let options = new RequestOptions({ headers: headers });
+
+
+    /**
+     * Get single user
+     */
+    private getUser(uuid: string): Observable<User> {
+        let api = AuthCache.API().users + '/' + uuid + '?token=' + AuthCache.token();
+        return this.http.get(api).map(res => res.json());
+    }
+
+
+    /**
+     * Update single user
+     */
+    private putUser(user: User): Observable<User> {
+        let body = JSON.stringify(user);
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().users + '/' + user.uuid;
+        return this.http.put(api, body, options).map(res => res.json());
+    }
+
+    /**
+     * Create a new user
+     */
+    private postUser(user: User): Observable<User> {
+        let body = JSON.stringify(user);
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().users;
         return this.http.post(api, body, options).map(res => res.json());
+    }
+
+    /**
+     * Delete a user
+     */
+    private deleteUser(user: User): Observable<User> {
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().users + '/' + user.uuid;
+        return this.http.delete(api, options).map(res => res.json());
+    }
+
+    /**
+     * Get list of users
+     */
+    private getUsers(filters: any): Observable<any> {
+        let cur_page = filters.cur_page;
+        let role_id  = filters.role_id;
+        let api = AuthCache.API().users +
+            '?page=' + cur_page +
+            '&role_id=' + role_id +
+            '&per_page=' + PrefCache.getPerPage() +
+            '&token=' + AuthCache.token();
+        return this.http.get(api).map(res => res.json());
+    }
+
+    /**
+     * Update users
+     */
+    private putUsers(users: User[]): Observable<User[]> {
+        let body = JSON.stringify(users);
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().users_batch;
+        return this.http.put(api, body, options).map(res => res.json());
+    }
+
+    /**
+     * Delete users
+     */
+    private deleteUsers(users: User[]): Observable<User[]> {
+        let body = JSON.stringify(users);
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().users_batch;
+        // TODO: http.delete can't have a body
+        //return this.http.delete(api, options).map(res => res.json());
     }
 
     private searchUsers(query: string): Observable<User[]> {
@@ -66,20 +144,6 @@ export class UserEffects {
         return this.http.get(api).map(res => res.json());
     }
 
-    private getUsers(filters: any): Observable<any> {
-        let cur_page = filters.cur_page;
-        let role_id  = filters.role_id;
-        let api = AuthCache.API().users + '/' + cur_page +
-            '?role_id=' + role_id +
-            '&per_page=' + PrefCache.getPerPage() +
-            '&token=' + AuthCache.token();
-        return this.http.get(api).map(res => res.json());
-    }
-
-    private getUser(uuid: string): Observable<User> {
-        let api = AuthCache.API().user + '/' + uuid + '?token=' + AuthCache.token();
-        return this.http.get(api).map(res => res.json());
-    }
 
     private getUserDomains(uuid: string): Observable<Domain[]> {
         let api = AUTH.domains + '/' + uuid + '&token=' + AuthCache.token();
@@ -87,7 +151,10 @@ export class UserEffects {
     }
 
     private postUserDomains(user: User) {
+        let body = JSON.stringify(user.domains);
+        let options = new RequestOptions({ headers: this.headers });
+
         let api = AUTH.domains + '/' + user.uuid;
-        return this._post(api, JSON.stringify(user.domains));
+        return this.http.post(api, body, options);
     }
 }

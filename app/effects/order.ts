@@ -14,8 +14,14 @@ import { Order }           from "../models";
 @Injectable()
 export class OrderEffects {
 
+    headers: Headers;
+
     constructor (private actions$: Actions,
-                 private http: Http) {}
+                 private http: Http) {
+        this.headers = new Headers({
+            'Authorization': 'Bearer' + AuthCache.token(),
+            'Content-Type': 'application/json'});
+    }
 
     @Effect() loadOrders$ = this.actions$.ofType(OrderActions.LOAD_ORDERS)
         .switchMap(action => this.getOrders(action.payload))
@@ -25,28 +31,83 @@ export class OrderEffects {
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
 
-    /**
-     * Save single product/multiple products
+    /** 
+     * Get single order(may not use)
      */
-    private save(orders: Order[]): Observable<Order[]> {
-        let api = '';
-        let body = JSON.stringify(orders);
+    private getOrder(id: number): Observable<Order> {
+        let api = AuthCache.API().shop_orders +
+            '/' + id + '?token=' + AuthCache.token();
+        return this.http.get(api).map(res => res.json());
+    }
+    
+    /**
+     * Update single order
+     */
+    private putOrder(order: Order): Observable<Order> {
+        let body = JSON.stringify(order);
+        let options = new RequestOptions({ headers: this.headers });
 
-        let headers = new Headers({
-            'Authorization': AuthCache.token(),
-            'Content-Type': 'application/json'});
-        let options = new RequestOptions({ headers: headers });
+        let api = AuthCache.API().shop_orders + '/' + order.id;
+        return this.http.put(api, body, options).map(res => res.json());
+    }
 
+    /**
+     * Create a new order
+     */
+    private postOrder(order: Order): Observable<Order> {
+        let body = JSON.stringify(order);
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().shop_orders;
         return this.http.post(api, body, options).map(res => res.json());
     }
 
+    /**
+     * Delete a order
+     */
+    private deleteOrder(order: Order): Observable<Order> {
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().shop_orders + '/' + order.id;
+        return this.http.delete(api, options).map(res => res.json());
+    }
+
+    /**
+     * Get orders
+     */
     private getOrders(filters: any): Observable<any> {
         let cur_page = filters.cur_page;
-        //let status   = filters.status;
-        let api = AuthCache.API().orders + '/' + cur_page +
-            '?per_page=' + PrefCache.getPerPage() +
-            //'&status=' + status +
+        let status   = filters.status;
+
+        let api = AuthCache.API().orders +
+            '?page=' + cur_page +
+            '&per_page=' + PrefCache.getPerPage() +
+            '&status=' + status +
             '&token=' + AuthCache.token();
+
         return this.http.get(api).map(res => res.json());
+    }
+
+    /**
+     * Update orders
+     */
+    private putOrders(orders: Order[]): Observable<Order[]> {
+        let body = JSON.stringify(orders);
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().shop_orders_batch;
+        return this.http.put(api, body, options).map(res => res.json());
+    }
+
+    /**
+     * Delete orders
+     */
+    private deleteOrders(orders: Order[]): Observable<Order[]> {
+        let body = JSON.stringify(orders);
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API().shop_orders_batch;
+        // TODO: http.delete can't have a body
+        //return this.http.delete(api, options).map(res => res.json());
     }
 }

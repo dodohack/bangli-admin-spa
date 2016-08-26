@@ -68,8 +68,8 @@ export const API_HULUWA = {
     shop_order_states: '/shop/orders/states',
 
     /* Products/Product */
-    shpo_products:       '/shop/products',
-    shpo_products_batch: '/shop/products/batch',
+    shop_products:       '/shop/products',
+    shop_products_batch: '/shop/products/batch',
 
     /* Products states */
     shop_product_states: '/shop/products/states',
