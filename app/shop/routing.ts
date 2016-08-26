@@ -4,6 +4,8 @@ import { ShopMgrGuard } from '../auth';
 import { ProductsPage } from './products.page';
 import { ProductPage }  from './product.page';
 import { OrdersPage }   from './orders.page';
+import { VouchersPage } from './vouchers.page';
+import { CategoriesPage} from './categories.page';
 
 const routes: Routes = [
     {
@@ -39,6 +41,19 @@ const routes: Routes = [
             { path: 'page/:page/status/:status', component: OrdersPage },
         ]
     },
+
+
+    {
+        path: 'voucher',
+        canActivate: [ShopMgrGuard],
+        children: [
+            { path: '', pathMatch: 'full', redirectTo: 'all/all/1' },
+            { path: ':filter/:cond', redirectTo: ':filter/:cond/1' },
+            { path: ':filter/:cond/:page', component: VouchersPage }
+        ]
+    },
+
+    {path: 'categories/product', component: CategoriesPage, canActivate: [ShopMgrGuard]},
 ];
 
 export const routing = RouterModule.forChild(routes);

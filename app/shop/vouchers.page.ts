@@ -5,10 +5,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 
-let template = require('./vouchers.html');
-@Component({
-    template: template
-})
+@Component({ template: require('./vouchers.page.html') })
 export class VouchersPage implements OnInit
 {
     constructor(private titleService: Title) {}

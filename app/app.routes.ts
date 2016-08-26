@@ -2,39 +2,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { BaseGuard }         from './auth';
 
-import { VouchersPage }      from './shop/vouchers';
-import { VoucherPage }       from './shop/voucher';
-import { ProductCategoriesPage } from './system/product-categories';
-
 import { galleryRoutes }   from './gallery/routes';
 import { emailRoutes }     from './email/routes';
-import { migrationRoutes } from './migration/routes';
 
 const appRoutes: Routes = [
     ...galleryRoutes,
-
-    {path: 'categories/product', component: ProductCategoriesPage, canActivate: [BaseGuard]},
- 
-
-    {
-        path: 'vouchers',
-        canActivate: [BaseGuard],
-        children: [
-            { path: '', pathMatch: 'full', redirectTo: 'all/all/1' },
-            { path: ':filter/:cond', redirectTo: ':filter/:cond/1' },
-            { path: ':filter/:cond/:page', component: VouchersPage }
-        ]
-    },
-
-    {
-        path: 'voucher',
-        canActivate: [BaseGuard],
-        children: [
-            { path: '', pathMatch: 'full', redirectTo: 'new' },
-            { path: ':id', component: VoucherPage }
-        ]
-    },
-
 
     /*
     { path: 'affiliate',  component: AffiliatePage },
@@ -43,8 +15,6 @@ const appRoutes: Routes = [
     { path: 'cs', component: },
     */
     ...emailRoutes,
-    
-    ...migrationRoutes
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);

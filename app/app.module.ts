@@ -20,7 +20,6 @@ import { App }           from './app';
 import { Sidebar } from './directives/sidebar';
 import { Topbar }  from './directives/topbar';
 
-import { MigrationPage }  from './migration';
 import { ImagesPage }     from './gallery';
 import { EmailHomePage }      from './email';
 import { EmailTemplatesPage } from './email';
@@ -48,7 +47,7 @@ import { UserModule }      from './user/user.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CmsModule }       from './cms/cms.module';
 import { ShopModule }      from './shop/shop.module';
-
+import { MigrationModule } from './migration/migration.module';
 
 import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
 import { instrumentStore } from '@ngrx/store-devtools';
@@ -64,6 +63,7 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         CmsModule,
         ShopModule,
         UserModule,
+        MigrationModule,
         SharedModule.forRoot(),
         EffectsModule.run(AuthEffects),
         EffectsModule.run(UserEffects),
@@ -82,9 +82,6 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         Topbar,
         Sidebar,
         //Paginator,
-
-        /* Migration */
-        MigrationPage,
 
         /* Gallary */
         ImagesPage,

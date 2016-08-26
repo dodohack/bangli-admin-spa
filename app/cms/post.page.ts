@@ -3,6 +3,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { ViewChild}          from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 
 import { Store }             from '@ngrx/store';
@@ -24,6 +25,8 @@ import { zh_CN } from '../localization';
 @Component({ template: require('./post.page.html') })
 export class PostPage implements OnInit
 {
+    @ViewChild('postForm') postForm;
+
     /* PostsState in post reducer */
     postsState: PostsState;
 
@@ -56,6 +59,7 @@ export class PostPage implements OnInit
     }
     
     canDeactivate() {
+        console.log("canDeactivate called postForm: ", this.postForm);
         return true;
     }
 

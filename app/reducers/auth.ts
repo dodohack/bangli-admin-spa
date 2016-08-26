@@ -80,11 +80,11 @@ export function isDashboardUser() {
 export function hasAuthorRole() {
     return (state$: Observable<AuthState>) => state$.select(user => {
         let now = Math.floor(Date.now()/1000);
-        if (user.payload.exp > now && user.payload.dbu === 1 &&
-            (user.role.name === 'author' ||
-             user.role.name === 'editor'  ||
-             user.role.name === 'shop_manager' ||
-             user.role.name === 'administrator' ||
+        if (user.payload && user.payload.exp > now && user.payload.dbu === 1 &&
+            (user.role.name === 'author'         ||
+             user.role.name === 'editor'         ||
+             user.role.name === 'shop_manager'   ||
+             user.role.name === 'administrator'  ||
              user.payload.spu === 1)) {
             return true;
         }
@@ -95,9 +95,9 @@ export function hasAuthorRole() {
 export function hasEditorRole() {
     return (state$: Observable<AuthState>) => state$.select(user => {
         let now = Math.floor(Date.now()/1000);
-        if (user.payload.exp > now && user.payload.dbu === 1 &&
-            (user.role.name === 'editor'  ||
-             user.role.name === 'shop_manager' ||
+        if (user.payload && user.payload.exp > now && user.payload.dbu === 1 &&
+            (user.role.name === 'editor'        ||
+             user.role.name === 'shop_manager'  ||
              user.role.name === 'administrator' ||
              user.payload.spu === 1))
             return true;
@@ -108,8 +108,8 @@ export function hasEditorRole() {
 export function hasShopManagerRole() {
     return (state$: Observable<AuthState>) => state$.select(user => {
         let now = Math.floor(Date.now()/1000);
-        if (user.payload.exp > now && user.payload.dbu === 1 &&
-            (user.role.name === 'shop_manager' ||
+        if (user.payload && user.payload.exp > now && user.payload.dbu === 1 &&
+            (user.role.name === 'shop_manager'  ||
              user.role.name === 'administrator' ||
              user.payload.spu === 1))
             return true;
@@ -120,7 +120,7 @@ export function hasShopManagerRole() {
 export function hasAdminRole() {
     return (state$: Observable<AuthState>) => state$.select(user => {
         let now = Math.floor(Date.now()/1000);
-        if (user.payload.exp > now && user.payload.dbu === 1 &&
+        if (user.payload && user.payload.exp > now && user.payload.dbu === 1 &&
             (user.role.name === 'administrator' || user.payload.spu === 1))
             return true;
         return false;
@@ -130,7 +130,7 @@ export function hasAdminRole() {
 export function hasSuperUserRole() {
     return (state$: Observable<AuthState>) => state$.select(user => {
         let now = Math.floor(Date.now()/1000);
-        if (user.payload.exp > now && user.payload.dbu === 1 &&
+        if (user.payload && user.payload.exp > now && user.payload.dbu === 1 &&
             user.payload.spu === 1)
             return true;
         return false;

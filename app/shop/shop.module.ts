@@ -11,6 +11,8 @@ import { OrdersList }   from './components/orders.list';
 import { ProductsPage } from './products.page';
 import { ProductPage }  from './product.page';
 import { OrdersPage }   from './orders.page';
+import { VouchersPage } from './vouchers.page';
+import { CategoriesPage } from './categories.page';
 
 @NgModule({
     imports: [ SharedModule, routing ],
@@ -19,7 +21,9 @@ import { OrdersPage }   from './orders.page';
         OrdersList,
         ProductsPage,
         ProductPage,
-        OrdersPage
+        OrdersPage,
+        VouchersPage,
+        CategoriesPage
     ]
 })
 export class ShopModule {}

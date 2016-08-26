@@ -3,11 +3,10 @@
  */
 import { Component, OnInit }    from '@angular/core';
 
-let template = require('./product-categories.html');
 @Component({
-    template: template,
+    template: require('./categories.page.html')
 })
-export class ProductCategoriesPage implements OnInit
+export class CategoriesPage implements OnInit
 {
     constructor() {}
 
