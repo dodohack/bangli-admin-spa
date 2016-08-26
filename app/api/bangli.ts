@@ -1,8 +1,9 @@
 /**
- * Definition of RESTful API endpoint
+ * RESTful application server APIs, routes are relative to '/admin'.
+ * Naming conventions under RESTful standard, using http method
+ * 'get', 'post', 'put', 'delete' as standard operations.
+ * APIs with suffix 'batch' is used to 'put' and 'delete' list of entities.
  */
-
-/* Application server APIs, relative to path '/admin' */
 export const API_BANGLI = {
     /* Base migration url of API server */
     migrate_base: '/migrate',
@@ -14,50 +15,63 @@ export const API_BANGLI = {
     /* Authentication callback with JWT token */
     register_callback: '/register',
 
-
-    /*************************************************************************
-     * Users
-     *************************************************************************/
-    /* List of users */
+    /* Retrieve users, authors, editors etc; Retrieve/update single user */
     users: '/users',
+    /* Update users */
+    users_batch: '/users/batch',
     /* List of user roles */
-    user_roles: '/user_roles',
-    /* Single user */
-    user: '/user',
-    /* Users can edit own post */
-    authors: '/authors',
-    /* Users can edit any post */
-    editors: '/editors',
+    users_roles: '/users/roles',
 
     /*************************************************************************
      * CMS
      *************************************************************************/
     /* List of posts */
-    cms_posts: '/cms/posts',
+    cms_posts:       '/cms/posts',
+    cms_posts_batch: '/cms/posts/batch',
     /* List of post statuses */
-    cms_post_statuses: '/cms/posts/statuses',
-    /* Single post */
-    cms_post: '/cms/post',
-    /* Categories */
-    cms_cats: '/cms/categories',
-    /* Tags */
-    cms_tags: '/cms/tags',
-    /* List of topics */
-    cms_topics: '/cms/topics',
-    /* Single topic */
-    cms_topic: '/cms/topic',
-    /* List of pages */
-    cms_pages: '/cms/pages',
-    /* Single page */
-    cms_page: '/cms/page',
+    cms_post_states: '/cms/posts/states',
+
+    /* Categories/Category */
+    cms_cats:       '/cms/categories',
+    cms_cats_batch: '/cms/categories/batch',
+
+    /* Tags/Tag */
+    cms_tags:       '/cms/tags',
+    cms_tags_batch: '/cms/tags/batch',
+
+    /* List of topics available for given post */
+    cms_topic_cats: '/cms/topic_cats',
+
+    /* Topics/Topic */
+    cms_topics:       '/cms/topics',
+    cms_topics_batch: '/cms/topics/batch',
+
+    /* Pages/Page */
+    cms_pages:       '/cms/pages',
+    cms_pages_batch: '/cms/pages/batch',
+
     /* Pages status */
-    page_statuses: '/cms/pages/statuses',
+    cms_page_states: '/cms/pages/states',
+
     /* List of topic statuses */
-    cms_topic_statuses: '/cms/topics/statuses',
+    cms_topic_states: '/cms/topics/states',
 
     /*************************************************************************
      * Deal
      *************************************************************************/
-    deals: '/deals',
-    deal:  '/deal',
+    deals:       '/deals',
+    deals_batch: '/deals/batch',
+
+    /*************************************************************************
+     * Emails
+     *************************************************************************/
+
+    /*************************************************************************
+     * Affiliate
+     *************************************************************************/
+
+    /*************************************************************************
+     * More
+     *************************************************************************/
+
 };
