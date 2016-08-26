@@ -7,6 +7,7 @@ import { NewsletterEffects } from './newsletter';
 import { PostEffects }    from './post';
 import { TopicEffects }   from './topic';
 import { PageEffects }    from './page';
+import { DealEffects }    from './deal';
 
 export {
     AuthEffects,
@@ -17,7 +18,8 @@ export {
     NewsletterEffects,
     PostEffects,
     TopicEffects,
-    PageEffects
+    PageEffects,
+    DealEffects
 };
 
 export default [
@@ -29,5 +31,6 @@ export default [
     NewsletterEffects,
     PostEffects,
     TopicEffects,
-    PageEffects
+    PageEffects,
+    DealEffects
 ];

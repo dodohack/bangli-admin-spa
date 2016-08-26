@@ -4,6 +4,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule }                  from '@angular/common';
 import { FormsModule }                   from '@angular/forms';
+import { ROUTER_DIRECTIVES }             from '@angular/router';
 
 import { TAB_DIRECTIVES }       from 'ng2-bootstrap';
 import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
@@ -29,6 +30,8 @@ import { DateFilterComponent }       from './date-filter.component';
 @NgModule({
     imports: [ CommonModule, FormsModule ],
     declarations: [
+        ROUTER_DIRECTIVES, // TODO: Hope this can fix <a [routerLink]> issue
+
         TAB_DIRECTIVES,
         ACCORDION_DIRECTIVES,
         TYPEAHEAD_DIRECTIVES,
@@ -51,6 +54,8 @@ import { DateFilterComponent }       from './date-filter.component';
         DateFilterComponent,
     ],
     exports: [
+        ROUTER_DIRECTIVES,
+
         TAB_DIRECTIVES,
         ACCORDION_DIRECTIVES,
         TYPEAHEAD_DIRECTIVES,

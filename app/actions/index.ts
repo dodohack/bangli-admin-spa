@@ -5,6 +5,7 @@ import { ProductActions }    from './product';
 import { OrderActions }      from './order';
 import { VoucherActions }    from './voucher';
 import { PostActions }       from './post';
+import { DealActions }       from './deal';
 import { NewsletterActions } from './newsletter';
 import { TopicActions }      from './topic';
 import { PageActions }       from './page';
@@ -19,6 +20,7 @@ export {
     OrderActions,
     VoucherActions,
     PostActions,
+    DealActions,
     NewsletterActions,
     TopicActions,
     PageActions,
@@ -33,6 +35,7 @@ export default [
     OrderActions,
     VoucherActions,
     PostActions,
+    DealActions,
     NewsletterActions,
     TopicActions,
     PageActions,

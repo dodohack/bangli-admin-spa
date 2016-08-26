@@ -40,8 +40,11 @@ import { AuthModule }      from './auth/auth.module';
 import { UserModule }      from './user/user.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CmsModule }       from './cms/cms.module';
+import { DealModule }      from './deal/deal.module';
 import { EmailModule }     from './email/email.module';
 import { ShopModule }      from './shop/shop.module';
+import { AffiliateModule } from './affiliate/affiliate.module';
+import { AnalysisModule }  from './analysis/analysis.module';
 import { AttachmentModule }from './attachment/attachment.module';
 import { MigrationModule } from './migration/migration.module';
 
@@ -58,9 +61,12 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         AuthModule,
         DashboardModule,
         CmsModule,
+        DealModule,
         EmailModule,
         ShopModule,
         UserModule,
+        AffiliateModule,
+        AnalysisModule,
         AttachmentModule,
         MigrationModule,
         SharedModule.forRoot(),

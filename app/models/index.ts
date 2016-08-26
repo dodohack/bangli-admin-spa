@@ -20,6 +20,7 @@ export * from './tag';
 export * from './topic';
 export * from './post';
 export * from './page';
+export * from './deal';
 export * from './order';
 export * from './product';
 export * from './voucher';
