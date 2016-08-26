@@ -76,8 +76,11 @@ export class PostPage implements OnInit
     //get categories() { return this.postService.categories; }
     //get tags()       { return this.postService.tags; }
     //get topics()     { return this.postService.topics; }
-    
-    
+
+    /**
+     * NOTE: ngrx/effect 'savePost' happens before reducer 'SAVE_POST', is this
+     * the behavior we want???
+     */
     save() { console.error("***save()***"); this.store.dispatch(PostActions.savePost(this.post)); }
     save2Pending() { console.error("***savePending()***"); this.post.status = 'pending'; this.save(); }
     save2Draft() { console.error("***saveDraft()***"); this.post.status = 'draft'; this.save(); }
