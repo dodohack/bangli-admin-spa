@@ -3,6 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
 import { Title }         from '@angular/platform-browser';
 
+import { provideStore }  from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects/module';
+
 import { UnauthGuard }   from './auth';
 import { BaseGuard }     from './auth';
 import { AuthorGuard }   from './auth';
@@ -19,16 +22,6 @@ import { App }           from './app';
  */
 import { Sidebar } from './directives/sidebar';
 import { Topbar }  from './directives/topbar';
-
-import { ImagesPage }     from './gallery';
-import { EmailHomePage }      from './email';
-import { EmailTemplatesPage } from './email';
-import { EmailTemplatePage }  from './email';
-import { NewslettersPage }    from './email';
-import { NewsletterPage }     from './email';
-
-import { provideStore }  from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects/module';
 
 /* Import the default export from these files */
 import reducer            from './reducers';
@@ -47,9 +40,12 @@ import { AuthModule }      from './auth/auth.module';
 import { UserModule }      from './user/user.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CmsModule }       from './cms/cms.module';
+import { EmailModule }     from './email/email.module';
 import { ShopModule }      from './shop/shop.module';
+import { AttachmentModule }from './attachment/attachment.module';
 import { MigrationModule } from './migration/migration.module';
 
+/* Debug tools */
 import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
 import { instrumentStore } from '@ngrx/store-devtools';
 import { useLogMonitor } from '@ngrx/store-log-monitor';
@@ -62,8 +58,10 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         AuthModule,
         DashboardModule,
         CmsModule,
+        EmailModule,
         ShopModule,
         UserModule,
+        AttachmentModule,
         MigrationModule,
         SharedModule.forRoot(),
         EffectsModule.run(AuthEffects),
@@ -85,16 +83,6 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         Topbar,
         Sidebar,
         //Paginator,
-
-        /* Gallary */
-        ImagesPage,
-
-        /* Email */
-        EmailHomePage,
-        EmailTemplatesPage,
-        EmailTemplatePage,
-        NewslettersPage,
-        NewsletterPage,
     ],
     providers: [
         Title,

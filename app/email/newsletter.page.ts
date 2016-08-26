@@ -5,16 +5,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 
-let template = require('./newsletter.html');
-@Component({
-    templateUrl: 'app/email/newsletter.html'
-})
+@Component({ template: require('./newsletter.html') })
 export class NewsletterPage implements OnInit
 {
     constructor(private titleService: Title) {}
 
-    ngOnInit()
-    {
+    ngOnInit() {
         this.titleService.setTitle('Newsletter - 葫芦娃管理平台');
+    }
+
+    canDeactivate() {
+        return true;
     }
 }

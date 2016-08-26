@@ -7,12 +7,11 @@ import { FILE_UPLOAD_DIRECTIVES, FileUploader } from 'ng2-file-upload';
 
 const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
 
-let template = require('./images.html');
 @Component({
-    template: template,
+    template: require('./gallery.page.html'),
     directives: [FILE_UPLOAD_DIRECTIVES]
 })
-export class ImagesPage
+export class GalleryPage
 {
     public hideRightBar:boolean = true;
     public uploader:FileUploader = new FileUploader({url: URL});

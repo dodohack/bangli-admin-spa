@@ -5,9 +5,7 @@
 import { Component } from '@angular/core';
 import { Title }     from '@angular/platform-browser';
 
-@Component({
-    template: require('./dashboard.page.html')
-})
+@Component({ template: require('./dashboard.page.html') })
 export class DashboardPage
 {
     constructor(private titleService: Title) {
