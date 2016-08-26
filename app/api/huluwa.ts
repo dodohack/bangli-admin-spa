@@ -14,61 +14,77 @@ export const API_HULUWA = {
     /* Authentication callback with JWT token */
     register_callback: '/register',
 
-    /* Menus */
-    menu: '/menu',
-
+    /*************************************************************************
+     * Users
+     *************************************************************************/
     /* List of users */
     users: '/users',
     /* List of user roles */
     user_roles: '/user_roles',
-    /* User with detailed profile */
+    /* Single user */
     user: '/user',
-
-    /* Get users who can edit a post, includes author, editor, shop_manager etc */
+    /* Users can edit own post */
     authors: '/authors',
-    /* Get users who can edit all posts, includes editor, shop_manager etc */
+    /* Users can edit any post */
     editors: '/editors',
 
+    /*************************************************************************
+     * CMS
+     *************************************************************************/
     /* List of posts */
-    posts: '/posts',
+    cms_posts: '/cms/posts',
     /* List of post statuses */
-    post_statuses: '/posts/statuses',
+    cms_post_statuses: '/cms/posts/statuses',
     /* Single post */
-    post: '/post',
-    /* CMS categories */
-    cms_cats: '/categories/cms',
-    /* CMS tags */
-    cms_tags: '/tags/cms',
-    /* CMS topics available to post */
-    cms_topics: '/topics/cms',
-
-    /* List of pages */
-    pages: '/pages',
-    /* Pages status */
-    page_statuses: '/pages/statuses',
-
+    cms_post: '/cms/post',
+    /* Categories */
+    cms_cats: '/cms/categories',
+    /* Tags */
+    cms_tags: '/cms/tags',
+    /* List of topics available for given post */
+    cms_topic_cats: '/cms/topic_cats',
     /* List of topics */
-    topics: '/topics',
-    /* Topics list page filter menu */
-    topic_statuses: '/topics/statuses',
+    cms_topics: '/cms/topics',
     /* Single topic */
-    topic: '/topic',
+    cms_topic: '/cms/topic',
+    /* List of pages */
+    cms_pages: '/cms/pages',
+    /* Single page */
+    cms_page: '/cms/page',
+    /* Pages status */
+    cms_page_statuses: '/cms/pages/statuses',
+    /* List of topic statuses */
+    cms_topic_statuses: '/cms/topics/statuses',
 
+    /*************************************************************************
+     * Shop
+     *************************************************************************/
     /* List of orders */
-    orders: '/orders',
+    shop_orders: '/shop/orders',
     /* List of order statuses */
-    order_statuses: '/orders/statuses',
+    shop_order_statuses: '/shop/orders/statuses',
     /* Single order */
-    order:  '/order',
-
+    shop_order: '/shop/order',
     /* List of products */
-    products: '/products',
+    shpo_products: '/shop_products',
     /* Products list page filter menu */
-    product_statuses: '/products/statuses',
+    shop_product_statuses: '/shop/products/statuses',
     /* Single product */
-    product:  '/product',
+    shop_product: '/shop/product',
     /* Product categories */
-    product_cats: '/categories/product',
+    shop_cats: '/shop/categories',
     /* Product tags */
-    product_tags: '/tags/product',
+    shop_tags: '/shop/tags',
+
+    /*************************************************************************
+     * Emails
+     *************************************************************************/
+
+    /*************************************************************************
+     * Affiliate
+     *************************************************************************/
+
+    /*************************************************************************
+     * More
+     *************************************************************************/
 };

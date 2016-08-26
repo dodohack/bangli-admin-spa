@@ -14,59 +14,50 @@ export const API_BANGLI = {
     /* Authentication callback with JWT token */
     register_callback: '/register',
 
-    /* Menus */
-    menu: '/menu',
 
+    /*************************************************************************
+     * Users
+     *************************************************************************/
     /* List of users */
     users: '/users',
-    /* Users list page filter menu */
-    user_roles: '/menu/users',
-
-    /* Get users who can edit a post, includes author, editor, shop_manager etc */
+    /* List of user roles */
+    user_roles: '/user_roles',
+    /* Single user */
+    user: '/user',
+    /* Users can edit own post */
     authors: '/authors',
-    /* Get users who can edit all posts, includes editor, shop_manager etc */
+    /* Users can edit any post */
     editors: '/editors',
 
+    /*************************************************************************
+     * CMS
+     *************************************************************************/
     /* List of posts */
-    posts: '/posts',
+    cms_posts: '/cms/posts',
     /* List of post statuses */
-    post_statuses: '/posts/statuses',
+    cms_post_statuses: '/cms/posts/statuses',
     /* Single post */
-    post: '/post',
-    /* CMS categories */
-    cms_cats: '/categories/cms',
-    /* CMS tags */
-    cms_tags: '/tags/cms',
-    /* CMS topics available to post */
-    cms_topics: '/topics/cms',
-
-    /* List of pages */
-    pages: '/pages',
-    /* Pages status */
-    page_statuses: '/pages/statuses',
-
+    cms_post: '/cms/post',
+    /* Categories */
+    cms_cats: '/cms/categories',
+    /* Tags */
+    cms_tags: '/cms/tags',
     /* List of topics */
-    topics: '/topics',
-    /* Topics list page filter menu */
-    topic_statuses: '/topics/statuses',
+    cms_topics: '/cms/topics',
     /* Single topic */
-    topic: '/topic',
+    cms_topic: '/cms/topic',
+    /* List of pages */
+    cms_pages: '/cms/pages',
+    /* Single page */
+    cms_page: '/cms/page',
+    /* Pages status */
+    page_statuses: '/cms/pages/statuses',
+    /* List of topic statuses */
+    cms_topic_statuses: '/cms/topics/statuses',
 
-    /* List of orders */
-    orders: '/orders',
-    /* List of order statuses */
-    order_statuses: '/orders/statuses',
-    /* Single order */
-    order: '/order',
-
-    /* List of products */
-    products: '/products',
-    /* Products list page filter menu */
-    product_statuses: '/products/statuses',
-    /* Single product */
-    product:  '/product',
-    /* Product categories */
-    product_cats: '/categories/product',
-    /* Product tags */
-    product_tags: '/tags/product',
+    /*************************************************************************
+     * Deal
+     *************************************************************************/
+    deals: '/deals',
+    deal:  '/deal',
 };
