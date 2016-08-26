@@ -6,13 +6,13 @@ import { Title }         from '@angular/platform-browser';
 import { provideStore }  from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects/module';
 
-import { UnauthGuard }   from './auth';
-import { BaseGuard }     from './auth';
-import { AuthorGuard }   from './auth';
-import { EditorGuard }   from './auth';
-import { ShopMgrGuard }  from './auth';
-import { AdminGuard }    from './auth';
-import { SuperUserGuard} from './auth';
+import { UnauthGuard }   from './guard';
+import { BaseGuard }     from './guard';
+import { AuthorGuard }   from './guard';
+import { EditorGuard }   from './guard';
+import { ShopMgrGuard }  from './guard';
+import { AdminGuard }    from './guard';
+import { SuperUserGuard} from './guard';
 
 import { routing }       from './app.routes';
 import { App }           from './app';
@@ -20,8 +20,8 @@ import { App }           from './app';
 /* FIXME: If we do not put these globally used directives here, we will get
  * strange error: Can't bind to 'routerLink' since it isn't a known property of 'a'
  */
-import { Sidebar } from './directives/sidebar';
-import { Topbar }  from './directives/topbar';
+import { Sidebar } from './modules/directives/sidebar';
+import { Topbar }  from './modules/directives/topbar';
 
 /* Import the default export from these files */
 import reducer            from './reducers';
@@ -35,18 +35,18 @@ import { PostEffects }    from './effects';
 import { TopicEffects }   from './effects';
 import { PageEffects }    from './effects';
 
-import { SharedModule }    from './directives/shared.module';
-import { AuthModule }      from './auth/auth.module';
-import { UserModule }      from './user/user.module';
-import { DashboardModule } from './dashboard/dashboard.module';
-import { CmsModule }       from './cms/cms.module';
-import { DealModule }      from './deal/deal.module';
-import { EmailModule }     from './email/email.module';
-import { ShopModule }      from './shop/shop.module';
-import { AffiliateModule } from './affiliate/affiliate.module';
-import { AnalysisModule }  from './analysis/analysis.module';
-import { AttachmentModule }from './attachment/attachment.module';
-import { MigrationModule } from './migration/migration.module';
+import { SharedModule }    from './modules/directives/shared.module';
+import { AuthModule }      from './modules/auth/auth.module';
+import { UserModule }      from './modules/user/user.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { CmsModule }       from './modules/cms/cms.module';
+import { DealModule }      from './modules/deal/deal.module';
+import { EmailModule }     from './modules/email/email.module';
+import { ShopModule }      from './modules/shop/shop.module';
+import { AffiliateModule } from './modules/affiliate/affiliate.module';
+import { AnalysisModule }  from './modules/analysis/analysis.module';
+import { AttachmentModule }from './modules/attachment/attachment.module';
+import { MigrationModule } from './modules/migration/migration.module';
 
 /* Debug tools */
 import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
