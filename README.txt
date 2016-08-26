@@ -13,28 +13,10 @@ includes ng2-file-upload, n2g-dragular, ng2-bootstrap, ng2-charts etc, they
 are located at: https://github.com/valor-software/ng2-plans
 ##############################################################################
 
-The source code of this project is located at 'app', here is the explain of
-how the folders are grouped:
-
-app/auth: authentication related pages
-app/cms: Content management system, includes posts, pages, topics.
-app/components: templates commonly used by many other page templates
-app/dashboard: Admin home page
-app/datatype: DEPRECATED, moved to models
-app/email: Email system management
-app/gallery: Images, files uploading and management system
-app/localization: i18n localization, Only zh_CN is supported currently.
-app/migration: A simple page used to send command to api server to do wordpress
-               migration job.
-app/models: Definition of models
-app/service: Data providers, retrieve from and send data to servers.
-app/shop: Core business, products, shop orders, vouchers related.
-app/user: User management module.
-
 # DEVELOPMENT #
 
 *. Run git pull and npm install
-*. Modify app/app.api.ts to correct set the auth-server and api-server to your
+*. Modify app/api/index.ts to correct set the auth-server and api-server to your
    test servers(you should run both bangli-auth and huluwa-api in order to
    test it).
 *. Run npm start to start this server, see package.json for how 'npm start'

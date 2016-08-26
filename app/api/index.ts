@@ -39,7 +39,6 @@ export const AUTH = {
     domains: AUTH_API + '/domains',
 };
 
-
 /*
  * CAN THIS BE DEPRECATED??
  * FIXME: 'checked' status can't be signed to variable defined as type Domain[],
