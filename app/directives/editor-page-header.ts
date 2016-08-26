@@ -17,9 +17,10 @@ export class EditorPageHeader {
     @Input() isUser: boolean;
 
     /* Single or list of content, can be postsState, productsState etc */
+    @Input() entity: any;
     @Input() lists: any;
 
-    get zh() {
+    get zh(): any {
         if (this.isProduct)
             return zh_CN.product;
         else
@@ -34,13 +35,23 @@ export class EditorPageHeader {
         if (this.isUser)    return '用户';
     }
 
-    get entity() {
-        return this.lists.entities[this.lists.editing[0]];
+    get id() {
+        if (this.isUser)
+            return this.entity.uuid;
+        else
+            return this.entity.id;
+    }
+
+    get ids() {
+        if (this.isUser)
+            return this.lists.uuids;
+        else
+            return this.lists.ids;
     }
 
     get previewLink() {
         if (this.isPost)
-            return 'http://www.huluwa.uk/' + this.lists.editing[0] + '.html';
+            return 'http://www.huluwa.uk/' + this.entity.id + '.html';
         if (this.isPage)
             return 'http://www.huluwa.uk/page/' + this.entity.guid;
         if (this.isTopic)
@@ -54,16 +65,10 @@ export class EditorPageHeader {
      * @returns {any}
      */
     get previous() {
-        let id = this.lists.editing[0];
-
-        /* Only UsersState use uuids */
-        let ids = this.lists.ids;
-        if (!ids) ids = this.lists.uuids;
-
-        let loc = ids.indexOf(id);
+        let loc = this.ids.indexOf(this.id);
 
         if (loc !== -1 && loc > 0)
-            return ids[loc - 1];
+            return this.ids[loc - 1];
 
         return false;
     }
@@ -73,16 +78,10 @@ export class EditorPageHeader {
      * @returns {any}
      */
     get next() {
-        let id = this.lists.editing[0];
+        let loc = this.ids.indexOf(this.id);
 
-        /* Only UsersState use uuids */
-        let ids = this.lists.ids;
-        if (!ids) ids = this.lists.uuids;
-
-        let loc = ids.indexOf(id);
-
-        if (loc !== -1 && loc < ids.length - 1)
-            return ids[loc + 1];
+        if (loc !== -1 && loc < this.ids.length - 1)
+            return this.ids[loc + 1];
 
         return false;
     }

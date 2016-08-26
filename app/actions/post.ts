@@ -79,6 +79,44 @@ export class PostActions {
             payload: post
         };
     }
+/*
+    static SAVE_POST_AS_PENDING = '[Post] Save Post As Pending';
+    static savePostAsPending(post: Post): Action {
+        return {
+            type: PostActions.SAVE_POST_AS_PENDING,
+            payload: post
+        };
+    }
+
+    static SAVE_POST_AS_DRAFT = '[Post] Save Post As Draft';
+    static savePostAsDraft(post: Post): Action {
+        return {
+            type: PostActions.SAVE_POST_AS_DRAFT,
+            payload: post
+        };
+    }
+
+    static SAVE_POST_AS_PUBLISH = '[Post] Save Post As Publish';
+    static savePostAsPublish(post: Post): Action {
+        return {
+            type: PostActions.SAVE_POST_AS_PUBLISH,
+            payload: post
+        };
+    }
+*/
+    static SAVE_POST_SUCCESS = '[Post] Save Post Success';
+    static savePostSuccess(): Action {
+        return {
+            type: PostActions.SAVE_POST_SUCCESS
+        };
+    }
+
+    static SAVE_POST_FAIL = '[Post] Save Post Fail';
+    static savePostFail(): Action {
+        return {
+            type: PostActions.SAVE_POST_FAIL
+        };
+    }
 
     static SAVE_POSTS = '[Post] Save Posts';
     static savePosts(posts: Post[]): Action {

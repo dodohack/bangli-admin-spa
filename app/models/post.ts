@@ -22,6 +22,7 @@ export class PostStatus {
 
 export class Post {
     id: number;
+    editing: boolean; // is current post in editing?
     editor_id: number;
     author_id: number;
     image_id: number;

@@ -2,7 +2,7 @@
     <!-- Display current post url if any -->
     <div class="float-right" *ngIf="!isUser && entity">
         <span class="tag tag-default-outline">
-            {{ title }}状态: {{ zh[entity.status] }}
+            状态: {{ zh[entity.status] }}
         </span>
         <span class="tag tag-default-outline">
             预览: <a href="{{ previewLink }}" target="_blank">{{ previewLink }}</a>
