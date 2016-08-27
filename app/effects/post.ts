@@ -66,7 +66,7 @@ export class PostEffects {
         let options = new RequestOptions({ headers: this.headers });
 
         let api = this.api + AuthCache.API_PATH().cms_posts + '/' + post.id;
-        return this.http.post(api, body, options).map(res => res.json());
+        return this.http.put(api, body, options).map(res => res.json());
     }
 
     /**
@@ -102,7 +102,6 @@ export class PostEffects {
             //'&status=' + status +
             '&token=' + AuthCache.token();
 
-        console.log("Effect LOAD_POSTS, API: ", this.api);
         return this.http.get(api).map(res => res.json());
     }
 

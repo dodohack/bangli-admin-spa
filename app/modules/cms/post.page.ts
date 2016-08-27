@@ -32,6 +32,7 @@ export class PostPage implements OnInit
     
     /* PostsState in post reducer */
     postsState: PostsState;
+    postsState$: Observable<PostsState>;
 
     /* Current post */
     id: number;
@@ -47,21 +48,17 @@ export class PostPage implements OnInit
 
     ngOnInit() {
         this.authState$ = this.store.select<AuthState>('auth');
-        
+
         this.route.params.subscribe(params => {
             this.id = +params['id'];
             this.store.dispatch(PostActions.loadPost(this.id));
         });
 
-        this.store.select<PostsState>('posts')
-            .subscribe(postsState => this.postsState = postsState);
-
-        this.store.let(getPost(this.id))
-            .subscribe(post => {
-                console.log("*** GET A NEW POST: ", post);
-                this.post = Object.assign({}, post);
-            });
-
+        this.store.select<PostsState>('posts').subscribe(postsState => {
+            this.postsState = postsState;
+            /* When opening a single post, 'editing' always contains 1 id */
+            this.post = this.postsState.entities[this.postsState.editing[0]];
+        });
     }
     
     canDeactivate() {

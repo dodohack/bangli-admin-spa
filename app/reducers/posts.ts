@@ -11,12 +11,14 @@ import { PostActions } from '../actions';
 
 export interface PostsState {
     ids: number[];
+    editing: number[]; // Post in editing/dirty state
     entities: { [id: number]: Post };
     paginator: Paginator;
 };
 
 const initialState: PostsState = {
     ids: [],
+    editing: [],
     entities: {},
     paginator: new Paginator
 };
@@ -24,16 +26,6 @@ const initialState: PostsState = {
 export default function (state = initialState, action: Action): PostsState {
     switch (action.type)
     {
-        case PostActions.LOAD_POSTS: {
-            console.log("Reducer LOAD_POSTS");
-            return Object.assign({}, action.payload);
-        }
-
-        case PostActions.LOAD_POSTS_FAIL: {
-            console.log("Reducer LOAD_POSTS_FAIL");
-            return Object.assign({}, action.payload);
-        }
-
         case PostActions.SEARCH_COMPLETE:
         case PostActions.LOAD_POSTS_SUCCESS: {
             const posts: Post[] = action.payload.posts;
@@ -46,6 +38,7 @@ export default function (state = initialState, action: Action): PostsState {
 
             return {
                 ids: [...ids],
+                editing: [],
                 entities: Object.assign({}, entities),
                 paginator: Object.assign({}, action.payload.paginator)
             };
@@ -61,6 +54,7 @@ export default function (state = initialState, action: Action): PostsState {
             // new list with 1 element.
             return {
                 ids: (state.ids.indexOf(id) === -1) ? [...state.ids, id] : [...state.ids],
+                editing: [id],
                 entities: Object.assign({}, state.entities, {[id]: newPost}),
                 paginator: Object.assign({}, state.paginator)
             };
@@ -75,6 +69,7 @@ export default function (state = initialState, action: Action): PostsState {
 
             return {
                 ids: [...state.ids],
+                editing: [...state.editing],
                 entities: Object.assign({}, state.entities, {[id]: newPost}),
                 paginator: Object.assign({}, state.paginator)
             };
@@ -84,6 +79,7 @@ export default function (state = initialState, action: Action): PostsState {
             console.log("***REDUCER: SAVE POST SUCCESS");
             return {
                 ids: [...state.ids],
+                editing: [...state.editing],
                 entities: Object.assign({}, state.entities),
                 paginator: Object.assign({}, state.paginator)
             };
