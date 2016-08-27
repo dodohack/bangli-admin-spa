@@ -20,6 +20,8 @@ export interface AuthState {
     jwt:   JwtPayload;
     // Current managing domain
     key: string;
+    // Only used to restore 'key' if loginDomain fails
+    last_key: string;
     // Domain keys array
     keys: string[];
     // Available domains to current user
@@ -32,6 +34,7 @@ const initialState: AuthState = {
     token: '',
     jwt: new JwtPayload,
     key: '',
+    last_key: '',
     keys: [],
     domains: {},
     users: {}
@@ -54,17 +57,29 @@ export default function(state = initialState, action: Action): AuthState {
                 token: token,
                 jwt: jwtDecode(token),
                 key: keys[0],
+                last_key: keys[0],
                 keys: [...keys],
                 domains: Object.assign({}, domainEntities),
                 users: state.users
             };
         }
+            
+        case AuthActions.SWITCH_DOMAIN: {
+            return Object.assign({},
+                state, { key: action.payload, last_key: state.key });
+        }
 
         case AuthActions.LOGIN_DOMAIN_SUCCESS: {
             const user = { [state.key]: action.payload };
             // Append domain specific user profile to state.users
-            return Object.assign({}, state,
-                { users: Object.assign({}, state.users, user) });
+            return Object.assign({},
+                state, { users: Object.assign({}, state.users, user) });
+        }
+
+        case AuthActions.LOGIN_DOMAIN_FAIL: {
+            // Reset auth.key to previous state
+            return Object.assign({},
+                state, { key: state.last_key, last_key: state.key });
         }
 
         case AuthActions.LOGOUT: {

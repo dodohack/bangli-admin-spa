@@ -67,6 +67,11 @@ export class App implements OnInit
     }
 
     /* Login user into selected domain */
-    loginDomain($event) { this.store.dispatch(AuthActions.loginDomain($event)); }
+    loginDomain($event) {
+        // Switch current domain key
+        this.store.dispatch(AuthActions.switchDomain($event));
+        // Get user profile from given domain
+        this.store.dispatch(AuthActions.loginDomain(this.auth));
+    }
     toggleSidebar($event) { this.store.dispatch(PreferenceActions.toggleSidebar()); }
 }

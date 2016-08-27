@@ -69,18 +69,21 @@ export class AuthActions {
         };
     }
 
-    /* Change current domain user managing, can we stall use same 'auth'??
-     * YES, We can, but domain_key in sessionStorage has high priority!!
-     * 1. Check if sessionStorage has domain_key, if it does, use it.
-     * 2. Only check localStorage if 1 is not true.
-     * 3. User role and permission of switched domain is also retrieved
-     * NOTE: Cause we always has a default domain_key set with key 'auth'.
-     * */
+    /* Only update auth.key to given domain key */
+    static SWITCH_DOMAIN = '[Auth] Switch Domain';
+    static switchDomain(domain_key: string): Action {
+        return {
+            type: AuthActions.SWITCH_DOMAIN,
+            payload: domain_key
+        };
+    }
+    
+    /* Login user into domain by auth.key */
     static LOGIN_DOMAIN = '[Auth] Login Domain';
-    static loginDomain(domain_key: string): Action {
+    static loginDomain(auth: any): Action {
         return {
             type: AuthActions.LOGIN_DOMAIN,
-            payload: domain_key
+            payload: auth
         };
     }
 
