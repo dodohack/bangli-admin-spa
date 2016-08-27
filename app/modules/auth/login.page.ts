@@ -9,21 +9,17 @@ import { Store }      from '@ngrx/store';
 import { Observable } from "rxjs";
 
 import { AppState }     from '../../reducers';
-import { AuthActions }  from "../../actions";
-import { AlertActions } from "../../actions";
+import { AuthState }    from '../../reducers/auth';
+import { AuthActions }  from '../../actions';
+import { AlertActions } from '../../actions';
 
 @Component({
-    template: `<login-form [auth]="auth$ | async"
-                           (login)="onSubmit($event)"></login-form>`
+    template: `<login-form (login)="onSubmit($event)"></login-form>`
 })
 export class LoginPage implements OnInit
 {
-    auth$: Observable<any>;
-
     constructor(private store: Store<AppState>,
-                private router: Router) {
-        this.auth$ = this.store.select('auth');
-    }
+                private router: Router) {}
 
     ngOnInit() {
         // Do not need to do this manually
@@ -31,9 +27,10 @@ export class LoginPage implements OnInit
         //this.store.dispatch(AuthActions.init());
 
         // FIXME: Is this a good way to get data from store?
-        this.auth$.subscribe(payload => {
-            if (!payload.token) this.onLoginFail();
-            else this.onLoginSuccess();
+        this.store.select<AuthState>('auth').subscribe(auth => {
+            if (auth.token && auth.key) {
+                this.router.navigate(['/dashboard']);
+            }
         });
     }
 
@@ -41,13 +38,4 @@ export class LoginPage implements OnInit
         console.log("login submit event: ", $event);
         this.store.dispatch(AuthActions.login($event));
     }
-    
-    private onLoginFail() {
-        // WHAT TO DO??
-    }
-    
-    private onLoginSuccess() {
-        this.router.navigate(['/dashboard']);
-    }
-
 }

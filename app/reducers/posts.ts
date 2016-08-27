@@ -5,7 +5,7 @@ import '@ngrx/core/add/operator/select';
 import { Observable } from 'rxjs/Observable';
 import { Action }     from '@ngrx/store';
 
-import { Paginator }      from '../models';
+import { Paginator }   from '../models';
 import { Post }        from '../models';
 import { PostActions } from '../actions';
 

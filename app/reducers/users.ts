@@ -2,6 +2,7 @@ import { Action }     from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { User }        from '../models';
+import { Domain }      from '../models';
 import { Paginator }   from '../models';
 import { UserActions } from '../actions';
 

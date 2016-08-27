@@ -7,10 +7,12 @@ import { Http, Headers, RequestOptions }   from '@angular/http';
 import { Effect, Actions }                 from '@ngrx/effects';
 import { Observable }                      from 'rxjs/Observable';
 
-import { AUTH, API_END_POINTS }   from '../api';
-import { AuthActions }            from '../actions';
-import { User }                   from '../models';
-import { AlertActions }           from '../actions';
+import { AUTH, APIS, API_END_POINTS } from '../api';
+import { AuthActions }                from '../actions';
+import { User }                       from '../models';
+import { AlertActions }               from '../actions';
+
+var jwtDecode = require('jwt-decode');
 
 @Injectable()
 export class AuthEffects {
@@ -19,53 +21,30 @@ export class AuthEffects {
 
     @Effect() login$ = this.actions$.ofType(AuthActions.LOGIN)
         .map(action => JSON.stringify(action.payload))
-        .switchMap(payload => this.login(payload))
-        .map(user => AuthActions.loginSuccess(user))
-        .catch(() => Observable.of(AuthActions.loginFail()));
+        .switchMap(payload => this.login(payload)
+            .map(user => AuthActions.loginSuccess(user))
+            .catch(() => Observable.of(AuthActions.loginFail()))
+        );
 
-    /* Login default domain after user login */
+    /* Dispatch action LOGIN_DOMAIN immediately after LOGIN_SUCCESS,
+     * NOTE: This effects may happen before LOGIN_SUCCESS reducer */
     @Effect() loginSuccess$ = this.actions$.ofType(AuthActions.LOGIN_SUCCESS)
-        .map(action => {
-            console.log("LOGIN DOMAIN AFTER LOGIN_SUCCESS");
-            return AuthActions.loginDomain(action.payload);
-        });
+        .map(action => AuthActions.loginDomain(action.payload));
 
-    /* Triggers on app start or manually login into domain */
+    @Effect() loginFail$ = this.actions$.ofType(AuthActions.LOGIN_FAIL)
+        .map(action => AlertActions.error('登录授权服务器失败!'));
+
+    /* Triggers on user login or manually switch domain */
     @Effect() loginDomain$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN)
-        .switchMap(action => this.loginDomain(action.payload))
-        .map(user => AuthActions.loginDomainSuccess(user))
-        .catch(() => Observable.of(AuthActions.loginDomainFail()));
+        .switchMap(action => this.loginDomain(action.payload)
+            .map(user => AuthActions.loginDomainSuccess(user))
+            .catch(() => Observable.of(AuthActions.loginDomainFail()))
+        );
+
+    @Effect() loginDomainFail$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN_FAIL)
+        .map(action => AlertActions.error('登录应用服务器失败!'));
+
     
-
-    /**
-     * Update default 'domain_key' from sessionStorage or set default from
-     * current payload.
-     * @type {Observable<R>}
-     */
-    /* FIXME: 1. payload should be stringified before storing */
-    /* FIXME: 2. An action must be returned after this */
-    /*
-    @Effect()
-    loginSuccess$ = this.actions$.ofType(AuthActions.LOGIN_SUCCESS)
-        .map(action => {
-            if (!sessionStorage.getItem('auth')) {
-                sessionStorage.setItem('auth', action.payload);
-            }
-            return AuthActions.loginDone(user)
-        });
-        */
-
-    /**
-     * User logout: Send user jwt to server to add to blacklist
-     * The localStorage 'auth' is automatically cleaned by ngrx-store-localstorage.
-     * @type {Actions}
-     */
-    /*
-    @Effect()
-    logout$ = this.actions$.ofType(AuthActions.LOGOUT)
-        .map(action => this.logout()));
-    */
-
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
 
@@ -84,17 +63,35 @@ export class AuthEffects {
     }
 
     // Login user into specified API domain
-    private loginDomain(user: User): Observable<User> {
-        if (!user.domains)
+    // We are doing extra work in this function is because this function
+    // may happens before reducer LOGIN_SUCCESS, so some data may not ready.
+    private loginDomain(auth: any): Observable<User> {
+        if (!auth.token)
+            return Observable.throw('You should have get a token');
+
+        let key  = '';
+        let uuid = '';
+
+        if (!auth.key && !auth.domains)
             return Observable.throw('No permission to manage any domains');
 
-        // Get default domain first first entry
-        if (!user.domain_key && user.domains) {
-            user.domain_key = user.domains[0].key;
-        }
+        // Get first domain as default
+        if (!auth.key)
+            key = auth.domains[0].key;
+        else
+            key = auth.key;
+
+        if (auth.jwt)
+            uuid = auth.jwt.sub;
+        else
+            uuid = jwtDecode(auth.token).sub;
 
         // We can't use AuthCache here, cause it is not ready at user login
-        let api = API_END_POINTS[user.domain_key].user + '?token=' + user.token;
+        let api = APIS[key] + API_END_POINTS[key].users
+            + '/' + uuid + '?token=' + auth.token;
+
+        console.log("KEY IS: ", key);
+        console.log("LOGIN INTO DOMAIN: ", api);
 
         // Get current user domain specific profile
         return this.http.get(api).map(res => res.json());

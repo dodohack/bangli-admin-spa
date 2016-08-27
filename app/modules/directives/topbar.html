@@ -1,11 +1,10 @@
 <div class="topbar" [style.background-color]="pref.menuBackgroundColor">
     <ul class="fixed-menu">
-        <!--
+
         <li>
-            <a href="{{ curDomain.url }}" target="_blank"
-               [style.color]="menuColor"><i class="fa fa-home"></i>{{ curDomain.name }}</a>
+            <a href="{{ auth.domains[auth.key].url }}" target="_blank"
+               [style.color]="pref.menuColor"><i class="fa fa-home"></i>{{ auth.domains[auth.key].name }}</a>
         </li>
-        -->
 
         <li>
             <a [routerLink]="['/post/new']" routerLinkActive="active"
@@ -24,9 +23,9 @@
         <li dropdown>
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="pref.menuColor">切换站点</a>
             <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
-                <li role="menuitem" *ngFor="let domain of auth.domains">
+                <li role="menuitem" *ngFor="let key of auth.keys">
                     <a class="dropdown-item" role="button"
-                       (click)="switchDomain.emit(domain.key)">{{ domain.key }}</a>
+                       (click)="loginDomain.emit(key)">{{ auth.domains[key].name }}</a>
                 </li>
             </ul>
         </li>
@@ -44,15 +43,15 @@
         -->
 
         <li class="float-right">
-            <a [style.color]="pref.menuColor" (click)="logout.emit()">
+            <a [style.color]="pref.menuColor" (click)="logout.emit()" style="cursor: pointer">
                 <i class="fa fa-arrow-circle-o-right"></i>退出
             </a>
         </li>
 
         <li class="float-right">
-            <a [routerLink]="['/user', auth.payload.sub]" routerLinkActive="active"
+            <a [routerLink]="['/user', auth.jwt.sub]" routerLinkActive="active"
                [style.color]="pref.menuColor">
-                <i class="fa fa-user"></i>{{ auth.payload.aud }}
+                <i class="fa fa-user"></i>{{ auth.jwt.aud }}
             </a>
         </li>
     </ul>

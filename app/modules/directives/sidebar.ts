@@ -3,7 +3,7 @@ import { Input, Output }  from '@angular/core';
 import { EventEmitter }   from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { User }           from '../../models';
+import { AuthState }      from '../../reducers/auth';
 import { Preference }     from '../../models';
 import { SIDEBAR_MENUS }  from '../../models';
 
@@ -14,12 +14,12 @@ import { SIDEBAR_MENUS }  from '../../models';
 })
 export class Sidebar {
 
-    @Input() auth: User;
+    @Input() auth: AuthState;
     @Input() pref: Preference;
 
     @Output() toggle = new EventEmitter();
 
-    get menus() { return SIDEBAR_MENUS[this.auth.domain_key]; }
+    get menus() { return SIDEBAR_MENUS[this.auth.key]; }
 
     //private hasRole(role: string) { return this.authService.hasRole(role); }
 }

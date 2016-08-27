@@ -2,14 +2,14 @@
 <div class="container-fluid" style="min-width: 768px; max-width: 1400px;">
     <div *ngIf="isLoggedIn | async"> <!-- (auth$ | async).payload.token -->
 
-        <topbar [auth]="auth$ | async"
-                [pref]="pref$ | async"
+        <topbar [auth]="auth"
+                [pref]="pref"
                 (logout)="logout()"
-                (switchDomain)="loginDomain($event)">
+                (loginDomain)="loginDomain($event)">
         </topbar>
 
-        <sidebar [auth]="auth$ | async"
-                 [pref]="pref$ | async"
+        <sidebar [auth]="auth"
+                 [pref]="pref"
                  (toggle)="toggleSidebar($event)">
         </sidebar>
 

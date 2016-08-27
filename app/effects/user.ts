@@ -152,7 +152,7 @@ export class UserEffects {
     }
 
     private postUserDomains(user: User) {
-        let body = JSON.stringify(user.domains);
+        let body = ''; //JSON.stringify(user.domains);
         let options = new RequestOptions({ headers: this.headers });
 
         let api = AUTH.domains + '/' + user.uuid;

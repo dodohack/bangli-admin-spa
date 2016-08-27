@@ -13,6 +13,7 @@ import { TemplateEditGuard }    from './guard';
 import { NewslettersList }  from './components/newsletters.list';
 import { TemplatesList }    from './components/templates.list';
 
+import { EmailHomePage }    from './home.page';
 import { NewslettersPage }  from './newsletters.page';
 import { NewsletterPage }   from './newsletter.page';
 import { TemplatesPage }    from './templates.page';
@@ -21,6 +22,7 @@ import { TemplatePage }     from './template.page';
 @NgModule({
     imports: [ SharedModule, routing ],
     declarations: [
+        EmailHomePage,
         NewslettersList, TemplatesList,
         NewslettersPage, NewsletterPage,
         TemplatesPage, TemplatePage

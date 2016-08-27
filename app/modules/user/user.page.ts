@@ -45,7 +45,7 @@ export class UserPage implements OnInit
             this.store.dispatch(UserActions.loadDomains(uuid));
         });
 
-        this.sub$ = this.auth$.map(user => user.payload.sub);
+        this.sub$ = this.auth$.map(auth => auth.jwt.sub);
         this.uuid$ = this.route.params.select<string>('uuid');
     }
 

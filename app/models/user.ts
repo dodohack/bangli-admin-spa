@@ -1,9 +1,7 @@
 /**
  * This defines the user model such as author, editor, etc
  */
-import { Domain } from './domain';
-import { Menu }   from './menu';
-    
+
 export const USER_ROLES = [
     'customer', 'administrator', 'shop_manager', 'editor', 'author'
 ];
@@ -15,14 +13,14 @@ export const USER_GENDERS = [
 ];
 
 
-export interface UserRole {
+interface UserRole {
     id: number;
     name: string;
     display_name: string;
     description: string;
 }
 
-export interface UserProfile {
+interface UserProfile {
     gender: string; /* ENUM, One of 'M', 'F' or 'U' */
     first_name: string;
     last_name: string;
@@ -39,22 +37,7 @@ export interface UserProfile {
     description: string;
 }
 
-/* Decoded JWT payload */
-export interface JwtPayLoad {
-    iss: string;
-    iat: number;
-    exp: number;
-    nbf: number;
-    jti: string;
-    dbu: number; /* Is a dashboard user */
-    spu: number; /* Is a super user */
-    sub: string;
-    aud: string;
-}
-
-
-/* Login, register, token refresh all uses the same User model */
-/* This user is per domain, some data are not shared cross different domain */
+/* This user is per domain data */
 export class User {
     id: number;
     role_id: number;
@@ -64,12 +47,6 @@ export class User {
     email: string;
     password: string;
     created_at: string;
-
-    token: string; /* JWT token */
-    payload: JwtPayLoad; /* Decoded JWT token */
-
-    domain_key: string;
-    domains: Domain[];
 
     role: UserRole;
     profile: UserProfile;

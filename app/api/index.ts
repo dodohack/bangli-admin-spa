@@ -35,37 +35,7 @@ export const AUTH = {
     refresh:  AUTH_API + '/refresh',
     update_password: AUTH_API + '/update_password',
     
-    /* Domains get/post api */
+    /* Domains management - superuser only API */
     domains: AUTH_API + '/domains',
+    domains_user: AUTH_API + '/domains/user',
 };
-
-/*
- * CAN THIS BE DEPRECATED??
- * FIXME: 'checked' status can't be signed to variable defined as type Domain[],
- * the value is always true no matter what, see user.domain.mgt.ts for more.
- * Cause this is assignemnt between different type??
- */
-export const DOMAINS = [
-    /* FIXME: Remove userRoleId */
-
-    { key: 'huluwa_uk', name: '葫芦娃',
-        api: APIS.huluwa_uk, url: 'http://www.huluwa.uk',  checked: false, userRoleId: 0},
-
-    { key: 'bangli_uk', name: '英国邦利',
-        api: APIS.bangli_uk, url: 'http://www.bangli.uk', checked: false, userRoleId: 0},
-
-    { key: 'bangli_us', name: '美国邦利',
-        api: APIS.bangli_us, url: 'http://www.bangli.us', checked: false, userRoleId: 0},
-
-    { key: 'bangli_de', name: '德国邦利',
-        api: APIS.bangli_de, url: 'http://www.bangli.de', checked: false, userRoleId: 0},
-
-    { key: 'bangli_fr', name: '法国邦利',
-        api: APIS.bangli_fr, url: 'http://www.bangli.fr', checked: false, userRoleId: 0},
-
-    { key: 'bangli_es', name: '西班牙邦利',
-        api: APIS.bangli_es, url: 'http://www.bangli.es', checked: false, userRoleId: 0},
-
-    { key: 'bangli_it', name: '意大利邦利',
-        api: APIS.bangli_it, url: 'http://www.bangli.it', checked: false, userRoleId: 0}
-];

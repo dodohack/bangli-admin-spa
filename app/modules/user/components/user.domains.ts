@@ -6,7 +6,7 @@ import { EventEmitter}                from '@angular/core';
 import { ChangeDetectionStrategy }    from '@angular/core';
 
 import { User }            from '../../../models';
-import { Domain  }         from '../../../models/domain'
+import { Domain  }         from '../../../models'
 
 @Component({
     selector: 'user-domains-tab',
@@ -15,26 +15,21 @@ import { Domain  }         from '../../../models/domain'
 })
 export class UserDomainsTab
 {
-    @Input()
-    _user: User;
+    @Input() _user: User;
     @Input() set user(value) { this._user = Object.assign({}, value); }
     get user() { return this._user; }
 
-    @Input()
-    isSuperUser: boolean;
+    @Input() domains: Domain[];
 
-    @Output()
-    save = new EventEmitter();
+    @Input() isSuperUser: boolean;
 
-    get domains() { return this._user.domains; }
+    @Output() save = new EventEmitter();
 
     /*
-    get userRoles() { return this.userService.roles; }
-
+    get userRoles() { }
     */
 
     /* Save per website permssions for user to business api server */
-    onSubmitDomainPerms() {
-    }
+    onSubmitDomainPerms() { }
 
 }

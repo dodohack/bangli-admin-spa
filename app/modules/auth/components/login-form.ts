@@ -16,9 +16,8 @@ import { User }           from '../../../models';
 })
 export class LoginForm
 {
-    _auth: User;
-    @Input() set auth(value) { this._auth = Object.assign({}, value); }
-    get auth() { return this._auth; }
+    /* Just a form data */
+    user = new User;
 
     /* NOTE: keyword 'submit' is reserved, if using it, 2 event is emitted */
     @Output()
