@@ -7,7 +7,7 @@ import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { Preference } from '../../models';
+import { Preference } from '../../../models';
 
 @Component({
     selector: 'user-preference',

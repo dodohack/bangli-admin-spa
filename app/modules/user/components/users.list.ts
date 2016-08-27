@@ -6,7 +6,7 @@ import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { UsersState } from '../../reducers/users';
+import { UsersState } from '../../../reducers/users';
 
 @Component({
     selector: 'users-list',

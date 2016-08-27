@@ -6,7 +6,7 @@ import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { ProductsState } from '../../reducers/products';
+import { ProductsState } from '../../../reducers/products';
 
 @Component({
     selector: 'products-list',

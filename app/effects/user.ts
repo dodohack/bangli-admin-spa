@@ -136,7 +136,8 @@ export class UserEffects {
 
         let api = AuthCache.API().users_batch;
         // TODO: http.delete can't have a body
-        //return this.http.delete(api, options).map(res => res.json());
+        console.error("Unimplemented: deleteUsers");
+        return this.http.delete(api, options).map(res => res.json());
     }
 
     private searchUsers(query: string): Observable<User[]> {

@@ -13,7 +13,7 @@ import { AppState, getProduct }         from '../../reducers';
 import { ProductActions }               from '../../actions';
 import { User, Product, Category, Tag } from '../../models';
 
-import { zh_CN } from '../localization';
+import { zh_CN } from '../../localization';
 
 @Component({ template: require('./product.page.html') })
 export class ProductPage implements OnInit

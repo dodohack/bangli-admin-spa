@@ -1,7 +1,7 @@
 <ul class="nav navbar-nav">
     <li class="nav-item">
         <!-- FIXME: can't have slash in url parameter, it is encoded into %2F -->
-        <a class="nav-link" routerLink="['/', baseUrl]" routerLinkActive="active">全部</a>
+        <a class="nav-link" [routerLink]="['/', baseUrl]" routerLinkActive="active">全部</a>
         <!--<a class="nav-link" routerLink="['/', 'baseUrl', 'hello']">全部</a>-->
     </li>
 
@@ -14,7 +14,7 @@
 
         <div class="dropdown-menu">
             <a *ngFor="let author of authors; let i=index" class="dropdown-item"
-               routerLink="['/', baseUrl, '/author', author.id]">
+               [routerLink]="['/', baseUrl, '/author', author.id]">
                 {{ i+1 }}. {{ author.nicename }}（{{ author.name }}）
             </a>
         </div>
@@ -25,7 +25,7 @@
 
         <div class="dropdown-menu">
             <a *ngFor="let editor of editors; let i=index" class="dropdown-item"
-               routerLink="['/', baseUrl, '/editor', editor.id]">
+               [routerLink]="['/', baseUrl, '/editor', editor.id]">
                 {{ i+1 }}. {{ editor.nicename }}（{{ editor.name }}）
             </a>
         </div>
@@ -33,7 +33,7 @@
 
     <!-- Various order status tabs -->
     <li *ngFor="let status of statuses" class="nav-item">
-        <a class="nav-link" routerLink="['/', baseUrl, '/status/', status.status]" routerLinkActive="active">
+        <a class="nav-link" [routerLink]="['/', baseUrl, '/status/', status.status]" routerLinkActive="active">
             {{ localization[status.status] }}<span style="color:grey;">（{{ status.count }}）</span>
         </a>
     </li>

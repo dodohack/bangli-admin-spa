@@ -7,7 +7,7 @@ import { EventEmitter }   from '@angular/core';
 import { Input, Output }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { User }           from '../../models';
+import { User }           from '../../../models';
 
 @Component({
     selector: 'login-form',

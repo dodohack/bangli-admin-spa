@@ -6,7 +6,7 @@ import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { TopicsState } from '../../reducers/topics';
+import { TopicsState } from '../../../reducers/topics';
 
 @Component({
     selector: 'topics-list',

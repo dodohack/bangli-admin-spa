@@ -1,8 +1,7 @@
-<div class="alert alert-danger">Angular is bugged in parsing [routerLink]!!!</div>
 <div class="float-right paginator">
     <span>共{{ paginator.total }}条 | 本页{{ paginator.count }}条 | 第{{ paginator.cur_page }} / {{ paginator.last_page }}页</span>
     <a *ngFor="let p of paginators" class="btn btn-sm btn-secondary"
-       [class.disabled]="p.disabled" routerLink="['/', base, 'page', p.index]">
+       [class.disabled]="p.disabled" [routerLink]="['/', base, 'page', p.index]">
         <i class="fa {{ p.icon }}"></i>
     </a>
 </div>

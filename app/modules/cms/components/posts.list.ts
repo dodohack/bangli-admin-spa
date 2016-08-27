@@ -6,7 +6,7 @@ import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { PostsState } from '../../reducers/posts';
+import { PostsState } from '../../../reducers/posts';
 
 @Component({
     selector: 'posts-list',

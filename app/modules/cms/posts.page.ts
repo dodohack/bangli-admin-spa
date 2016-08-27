@@ -7,17 +7,15 @@ import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
-import { AppState }          from '../reducers';
-import { PostActions }       from '../actions';
+import { AppState }          from '../../reducers';
+import { PostActions }       from '../../actions';
 
 import { User, Post, Category, Tag, Topic,
-         Paginator, PostStatus } from '../models';
+         Paginator, PostStatus } from '../../models';
 
-import { zh_CN } from '../localization';
+import { zh_CN } from '../../localization';
 
-@Component({
-    template: require('./posts.page.html')
-})
+@Component({ template: require('./posts.page.html') })
 export class PostsPage implements OnInit
 {   
     /* Posts state in ngrx */

@@ -1,7 +1,7 @@
 import { Component, EventEmitter } from '@angular/core';
 import { Input, Output }           from '@angular/core';
 
-import { zh_CN }       from '../localization';
+import { zh_CN }       from '../../localization';
 
 @Component({
     selector: 'editor-page-header',

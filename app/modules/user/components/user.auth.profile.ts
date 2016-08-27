@@ -4,7 +4,7 @@
  */
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { User }        from '../../models';
+import { User }        from '../../../models';
 
 @Component({
     selector: 'user-auth-profile',

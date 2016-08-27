@@ -117,6 +117,7 @@ export class TopicEffects {
 
         let api = AuthCache.API().cms_topics_batch;
         // TODO: http.delete can't have a body
-        //return this.http.delete(api, options).map(res => res.json());
+        console.error("Unimplemented: deleteTopics");
+        return this.http.delete(api, options).map(res => res.json());
     }
 }

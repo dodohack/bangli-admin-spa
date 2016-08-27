@@ -117,6 +117,7 @@ export class PageEffects {
 
         let api = AuthCache.API().cms_pages_batch;
         // TODO: http.delete can't have a body
-        //return this.http.delete(api, options).map(res => res.json());
+        console.error("Unimplemented: deletePages");
+        return this.http.delete(api, options).map(res => res.json());
     }
 }

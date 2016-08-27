@@ -9,12 +9,12 @@ import { RouterStateSnapshot }    from '@angular/router';
 import { Store }                  from '@ngrx/store';
 import { Observable }             from 'rxjs/Observable';
 
-import { AppState }               from '../reducers';
-import { hasAuthorRole }          from '../reducers';
-import { hasEditorRole }          from '../reducers';
-import { hasShopManagerRole }     from '../reducers';
-import { hasAdminRole }           from '../reducers';
-import { hasSuperUserRole }       from '../reducers';
+import { AppState }               from './reducers';
+import { hasAuthorRole }          from './reducers';
+import { hasEditorRole }          from './reducers';
+import { hasShopManagerRole }     from './reducers';
+import { hasAdminRole }           from './reducers';
+import { hasSuperUserRole }       from './reducers';
 
 /**
  * Only un-logged user can visit, such as login, register pages etc
@@ -84,7 +84,7 @@ export class AuthorGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasAuthorRole()).take(1);
+        return this.store.let<boolean>(hasAuthorRole()).take(1);
     }
 }
 
@@ -94,7 +94,7 @@ export class EditorGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasEditorRole()).take(1);
+        return this.store.let<boolean>(hasEditorRole()).take(1);
     }
 }
 
@@ -105,7 +105,7 @@ export class ShopMgrGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasShopManagerRole()).take(1);
+        return this.store.let<boolean>(hasShopManagerRole()).take(1);
     }
 }
 
@@ -115,7 +115,7 @@ export class AdminGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasAdminRole()).take(1);
+        return this.store.let<boolean>(hasAdminRole()).take(1);
     }
 }
 
@@ -125,6 +125,6 @@ export class SuperUserGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}    
     
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasSuperUserRole()).take(1);
+        return this.store.let<boolean>(hasSuperUserRole()).take(1);
     }
 }

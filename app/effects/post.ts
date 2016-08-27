@@ -123,7 +123,8 @@ export class PostEffects {
 
         let api = AuthCache.API().cms_posts_batch;
         // TODO: http.delete can't have a body
-        //return this.http.delete(api, options).map(res => res.json());
+        console.error("Unimplemented: deletePosts");
+        return this.http.delete(api, options).map(res => res.json());
     }
 
 }

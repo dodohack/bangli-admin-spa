@@ -3,7 +3,7 @@
  */
 import { Component, Input } from '@angular/core';
 
-import { USER_GENDERS, User } from '../../models';
+import { USER_GENDERS, User } from '../../../models';
 
 @Component({
     selector: 'user-base-profile',

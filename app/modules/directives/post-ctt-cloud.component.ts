@@ -8,7 +8,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { NgForm }    from '@angular/forms';
 
-import { Post } from '../models';
+import { Post } from '../../models';
 
 @Component({
     selector: 'post-ctt-cloud',

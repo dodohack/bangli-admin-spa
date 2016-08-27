@@ -3,7 +3,7 @@
  * shop_managers can see this
  */
 import { Component, Input } from '@angular/core';
-import { User } from "../../models";
+import { User } from "../../../models";
 
 @Component({
     selector: 'user-baby-profile',

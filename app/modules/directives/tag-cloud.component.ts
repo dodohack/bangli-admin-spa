@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Tag } from '../models';
+import { Tag } from '../../models';
 
 @Component({
     selector: 'tag-cloud',

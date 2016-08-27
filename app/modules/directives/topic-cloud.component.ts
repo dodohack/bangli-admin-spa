@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Topic } from '../models';
+import { Topic } from '../../models';
 
 @Component({
     selector: 'topic-cloud',

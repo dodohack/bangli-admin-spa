@@ -3,9 +3,9 @@
  * shop_managers can see this
  */
 import { Component, Input } from '@angular/core';
-import { User } from '../../models';
+import { User } from '../../../models';
 
-import { zh_CN } from '../../localization';
+import { zh_CN } from '../../../localization';
 
 @Component({
     selector: 'user-shipping-profile',

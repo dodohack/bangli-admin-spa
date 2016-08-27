@@ -32,7 +32,7 @@ const routes: Routes = [
                 path: 'template',
                 children: [
                     { path: '', pathMatch: 'full', redirectTo: 'new' },
-                    { path: ':id', component: TemplatePage, canDeactivatee: [TemplateEditGuard] }
+                    { path: ':id', component: TemplatePage, canDeactivate: [TemplateEditGuard] }
                 ]
             },
 

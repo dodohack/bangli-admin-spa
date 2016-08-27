@@ -5,7 +5,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title }             from '@angular/platform-browser';
 
-@Component({ template: require('./newsletter.html') })
+@Component({ template: require('./newsletter.page.html') })
 export class NewsletterPage implements OnInit
 {
     constructor(private titleService: Title) {}

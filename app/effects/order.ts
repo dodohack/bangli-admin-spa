@@ -108,6 +108,7 @@ export class OrderEffects {
 
         let api = AuthCache.API().shop_orders_batch;
         // TODO: http.delete can't have a body
-        //return this.http.delete(api, options).map(res => res.json());
+        console.error("Unimplemented: deleteOrders");
+        return this.http.delete(api, options).map(res => res.json());
     }
 }

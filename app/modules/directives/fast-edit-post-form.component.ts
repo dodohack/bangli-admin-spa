@@ -4,9 +4,9 @@
 import { Component, EventEmitter }         from '@angular/core';
 import { Input, Output, AfterContentInit } from '@angular/core';
 
-import { User, Post } from '../models';
-import { POST_STATUSES } from '../models';
-import { zh_CN } from '../localization';
+import { User, Post } from '../../models';
+import { POST_STATUSES } from '../../models';
+import { zh_CN } from '../../localization';
 
 @Component({
     selector: 'fast-edit-post-form',

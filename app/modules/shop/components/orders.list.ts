@@ -6,7 +6,7 @@ import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { OrdersState } from '../../reducers/orders';
+import { OrdersState } from '../../../reducers/orders';
 
 @Component({
     selector: 'orders-list',
