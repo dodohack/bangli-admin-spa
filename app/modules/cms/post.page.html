@@ -1,4 +1,5 @@
-<editor-page-header [isPost]="true" [entity]="post" [lists]="postsState">
+<editor-page-header [authState]="authState$ | async" [isPost]="true"
+                    [entity]="post" [lists]="postsState">
 </editor-page-header>
 
 <form *ngIf="post" (ngSubmit)="save()" #postForm="ngForm">

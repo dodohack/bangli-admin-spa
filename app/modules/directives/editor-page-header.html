@@ -12,16 +12,16 @@
     <h1 class="title">
         编辑{{ title }}
         <a class="page-title-action btn btn-outline-info btn-sm"
-           [routerLink]="['/']">
+           [routerLink]="['/', baseUrl]">
             <i class="fa fa-backward"></i> 返回列表
         </a>
 
         <a class="page-title-action btn btn-outline-info btn-sm"
-           [routerLink]="['/', previous]" *ngIf="previous">
+           [routerLink]="['/', baseUrl, previous]" *ngIf="previous">
             <i class="fa fa-angle-double-left"></i> Previous {{ previous }}
         </a>
         <a class="page-title-action btn btn-outline-info btn-sm"
-           [routerLink]="['/', next]" *ngIf="next">
+           [routerLink]="['/', baseUrl, next]" *ngIf="next">
             Next {{ next }} <i class="fa fa-angle-double-right"></i>
         </a>
     </h1>

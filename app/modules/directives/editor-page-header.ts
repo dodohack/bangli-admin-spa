@@ -1,6 +1,7 @@
 import { Component, EventEmitter } from '@angular/core';
 import { Input, Output }           from '@angular/core';
 
+import { AuthState }   from '../../reducers/auth';
 import { zh_CN }       from '../../localization';
 
 @Component({
@@ -8,6 +9,8 @@ import { zh_CN }       from '../../localization';
     template: require('./editor-page-header.html')
 })
 export class EditorPageHeader {
+    
+    @Input() authState: AuthState;
 
     /* The type of lists passed in */
     @Input() isPost: boolean;
@@ -34,6 +37,14 @@ export class EditorPageHeader {
         if (this.isPage)    return '页面';
         if (this.isUser)    return '用户';
     }
+    
+    get baseUrl() {
+        if (this.isPost)    return 'post';
+        if (this.isTopic)   return 'topic';
+        if (this.isProduct) return 'product';
+        if (this.isPage)    return 'page';
+        if (this.isUser)    return 'user';        
+    }
 
     get id() {
         if (this.isUser)
@@ -48,16 +59,17 @@ export class EditorPageHeader {
         else
             return this.lists.ids;
     }
-
+    
     get previewLink() {
+        let url = this.authState.domains[this.authState.key].url + '/';
         if (this.isPost)
-            return 'http://www.huluwa.uk/' + this.entity.id + '.html';
+            return url + this.entity.id + '.html';
         if (this.isPage)
-            return 'http://www.huluwa.uk/page/' + this.entity.guid;
+            return url + 'page/' + this.entity.guid;
         if (this.isTopic)
-            return 'http://www.huluwa.uk/topic/' + this.entity.guid;
+            return url + 'topic/' + this.entity.guid;
         if (this.isProduct)
-            return 'http://www.huluwa.uk/product/' + this.entity.guid;
+            return url + 'product/' + this.entity.guid;
     }
 
     /**

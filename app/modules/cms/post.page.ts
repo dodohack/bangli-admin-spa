@@ -13,6 +13,7 @@ import { FroalaEditorCompnoent } from 'ng2-froala-editor/ng2-froala-editor';
 import { AppState, getPost } from '../../reducers';
 import { hasEditorRole }     from '../../reducers';
 import { PostsState }        from '../../reducers/posts';
+import { AuthState }         from '../../reducers/auth';
 import { PostActions }       from '../../actions';
 
 import { FROALA_OPTIONS }    from '../../models/froala.option';
@@ -27,6 +28,8 @@ export class PostPage implements OnInit
 {
     @ViewChild('postForm') postForm;
 
+    authState$: Observable<AuthState>;
+    
     /* PostsState in post reducer */
     postsState: PostsState;
 
@@ -39,9 +42,12 @@ export class PostPage implements OnInit
     tabs = {'cat': false, 'tag': false, 'topic': false};
 
     constructor(private route: ActivatedRoute,
-                private store: Store<AppState>) {}
+                private store: Store<AppState>) {
+    }
 
     ngOnInit() {
+        this.authState$ = this.store.select<AuthState>('auth');
+        
         this.route.params.subscribe(params => {
             this.id = +params['id'];
             this.store.dispatch(PostActions.loadPost(this.id));
