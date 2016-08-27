@@ -7,7 +7,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Title }                         from '@angular/platform-browser';
 
 import { AuthCache }           from '../../auth.cache';
-import { API_END_POINTS }      from '../../api';
+import { APIS, API_PATH }      from '../../api';
 
 @Component({
     template: require('./migration.html')
@@ -76,11 +76,11 @@ export class MigrationPage
         this.isRunning = true;
 
         /* Get correct API endpoint */
-        let API = API_END_POINTS[domainKey];
+        let API = APIS[domainKey] + API_PATH[domainKey].migrate_base;
         
         let options = new RequestOptions({ headers: this.headers });
 
-        return this.http.get(API.migrate_base + '/' + endpoint, options)
+        return this.http.get(API + '/' + endpoint, options)
                    .map(res => res.json())
                    .subscribe(
                        res   => {

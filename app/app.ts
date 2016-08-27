@@ -39,6 +39,9 @@ export class App implements OnInit
         /* TODO: THIS IS A HACK!
          * TODO: Do we have a better solution to get the authentication info
          * TODO: globally, especially the 'token' and 'domain_key'
+         * FIXME: When 'commit' on ngrx debugging tool, we will get logged out
+         * FIXME: as 'auth' state is cleared by it!!
+         * FIXME: We can have a workaround by set initialState from localStorage.
          */
         this.store.select<AuthState>('auth').subscribe(auth => {
             console.log("APP INIT: authState is: ", auth);

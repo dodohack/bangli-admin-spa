@@ -14,6 +14,7 @@ import { Topic }         from "../models";
 @Injectable()
 export class TopicEffects {
 
+    api: string;
     headers: Headers;
 
     constructor (private actions$: Actions,
@@ -21,6 +22,7 @@ export class TopicEffects {
         this.headers = new Headers({
             'Authorization': 'Bearer' + AuthCache.token(),
             'Content-Type': 'application/json'});
+        this.api = AuthCache.API();
     }
 
     @Effect() loadTopics$ = this.actions$.ofType(TopicActions.LOAD_TOPICS)
@@ -41,9 +43,9 @@ export class TopicEffects {
      * Get single topic(may not use)
      */
     private getTopic(id: number): Observable<Topic> {
-        let api = AuthCache.API().cms_topics +
+        this.api += AuthCache.API_PATH().cms_topics +
             '/' + id + '?token=' + AuthCache.token();
-        return this.http.get(api).map(res => res.json());
+        return this.http.get(this.api).map(res => res.json());
     }
 
     /**
@@ -53,8 +55,8 @@ export class TopicEffects {
         let body = JSON.stringify(topic);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API().cms_topics + '/' + topic.id;
-        return this.http.put(api, body, options).map(res => res.json());
+        this.api += AuthCache.API_PATH().cms_topics + '/' + topic.id;
+        return this.http.put(this.api, body, options).map(res => res.json());
     }
 
     /**
@@ -65,8 +67,8 @@ export class TopicEffects {
 
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API().cms_topics;
-        return this.http.post(api, body, options).map(res => res.json());
+        this.api += AuthCache.API_PATH().cms_topics;
+        return this.http.post(this.api, body, options).map(res => res.json());
     }
 
     /**
@@ -75,8 +77,8 @@ export class TopicEffects {
     private deleteTopic(topic: Topic): Observable<Topic> {
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API().cms_topics + '/' + topic.id;
-        return this.http.delete(api, options).map(res => res.json());
+        this.api += AuthCache.API_PATH().cms_topics + '/' + topic.id;
+        return this.http.delete(this.api, options).map(res => res.json());
     }
 
     /**
@@ -86,13 +88,13 @@ export class TopicEffects {
         let cur_page = filters.cur_page;
         let status   = filters.status;
 
-        let api = AuthCache.API().topics +
+        this.api += AuthCache.API_PATH().topics +
             '?page=' + cur_page +
             '&per_page=' + PrefCache.getPerPage() +
             '&status=' + status +
             '&token=' + AuthCache.token();
 
-        return this.http.get(api).map(res => res.json());
+        return this.http.get(this.api).map(res => res.json());
     }
 
     /**
@@ -103,8 +105,8 @@ export class TopicEffects {
 
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API().cms_topics_batch;
-        return this.http.put(api, body, options).map(res => res.json());
+        this.api += AuthCache.API_PATH().cms_topics_batch;
+        return this.http.put(this.api, body, options).map(res => res.json());
     }
 
     /**
@@ -115,9 +117,9 @@ export class TopicEffects {
 
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API().cms_topics_batch;
+        this.api += AuthCache.API_PATH().cms_topics_batch;
         // TODO: http.delete can't have a body
         console.error("Unimplemented: deleteTopics");
-        return this.http.delete(api, options).map(res => res.json());
+        return this.http.delete(this.api, options).map(res => res.json());
     }
 }

@@ -15,7 +15,7 @@ export const APIS = {
     bangli_it: 'http://localhost:5006/admin'
 };
 
-export const API_END_POINTS = {
+export const API_PATH = {
     huluwa_uk: API_HULUWA,
     bangli_uk: API_BANGLI,
     bangli_us: API_BANGLI,

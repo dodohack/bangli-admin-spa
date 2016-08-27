@@ -14,7 +14,7 @@ import { Page }         from "../models";
 @Injectable()
 export class PageEffects {
 
-    /* Common http options*/
+    api: string;
     headers: Headers;
 
     constructor (private actions$: Actions,
@@ -22,6 +22,7 @@ export class PageEffects {
         this.headers = new Headers({
             'Authorization': 'Bearer ' + AuthCache.token(),
             'Content-Type': 'application/json'});
+        this.api = AuthCache.API();
     }
 
     @Effect() loadPages$ = this.actions$.ofType(PageActions.LOAD_PAGES)
@@ -42,9 +43,9 @@ export class PageEffects {
      * Get single page
      */
     private getPage(id: number): Observable<Page> {
-        let api = AuthCache.API().cms_pages +
+        this.api += AuthCache.API_PATH().cms_pages +
             '/' + id + '?token=' + AuthCache.token();
-        return this.http.get(api).map(res => res.json());
+        return this.http.get(this.api).map(res => res.json());
     }
 
     /**
@@ -55,8 +56,8 @@ export class PageEffects {
 
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API().cms_pages + '/' + page.id;
-        return this.http.put(api, body, options).map(res => res.json());
+        this.api += AuthCache.API_PATH().cms_pages + '/' + page.id;
+        return this.http.put(this.api, body, options).map(res => res.json());
     }
 
     /**
@@ -67,8 +68,8 @@ export class PageEffects {
 
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API().cms_pages + '/' + page.id;
-        return this.http.post(api, body, options).map(res => res.json());
+        this.api += AuthCache.API_PATH().cms_pages + '/' + page.id;
+        return this.http.post(this.api, body, options).map(res => res.json());
     }
 
     /**
@@ -77,8 +78,8 @@ export class PageEffects {
     private deletePage(page: Page): Observable<Page> {
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API().cms_pages + '/' + page.id;
-        return this.http.delete(api, options).map(res => res.json());
+        this.api += AuthCache.API_PATH().cms_pages + '/' + page.id;
+        return this.http.delete(this.api, options).map(res => res.json());
     }
 
     /**
@@ -87,12 +88,12 @@ export class PageEffects {
     private getPages(filters: any): Observable<any> {
         let cur_page = filters.cur_page;
         let status   = filters.status;
-        let api = AuthCache.API().cms_pages +
+        this.api += AuthCache.API_PATH().cms_pages +
             '?page=' + cur_page +
             '&per_page=' + PrefCache.getPerPage() +
             '&status=' + status +
             '&token=' + AuthCache.token();
-        return this.http.get(api).map(res => res.json());
+        return this.http.get(this.api).map(res => res.json());
     }
 
     /**
@@ -103,8 +104,8 @@ export class PageEffects {
 
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API().cms_pages_batch;
-        return this.http.put(api, body, options).map(res => res.json());
+        this.api += AuthCache.API_PATH().cms_pages_batch;
+        return this.http.put(this.api, body, options).map(res => res.json());
     }
 
     /**
@@ -115,9 +116,9 @@ export class PageEffects {
 
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API().cms_pages_batch;
+        this.api += AuthCache.API_PATH().cms_pages_batch;
         // TODO: http.delete can't have a body
         console.error("Unimplemented: deletePages");
-        return this.http.delete(api, options).map(res => res.json());
+        return this.http.delete(this.api, options).map(res => res.json());
     }
 }

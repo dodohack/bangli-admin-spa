@@ -24,6 +24,16 @@ const initialState: PostsState = {
 export default function (state = initialState, action: Action): PostsState {
     switch (action.type)
     {
+        case PostActions.LOAD_POSTS: {
+            console.log("Reducer LOAD_POSTS");
+            return Object.assign({}, action.payload);
+        }
+
+        case PostActions.LOAD_POSTS_FAIL: {
+            console.log("Reducer LOAD_POSTS_FAIL");
+            return Object.assign({}, action.payload);
+        }
+
         case PostActions.SEARCH_COMPLETE:
         case PostActions.LOAD_POSTS_SUCCESS: {
             const posts: Post[] = action.payload.posts;

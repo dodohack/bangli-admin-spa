@@ -7,7 +7,7 @@ import { Http, Headers, RequestOptions }   from '@angular/http';
 import { Effect, Actions }                 from '@ngrx/effects';
 import { Observable }                      from 'rxjs/Observable';
 
-import { AUTH, APIS, API_END_POINTS } from '../api';
+import { AUTH, APIS, API_PATH }       from '../api';
 import { AuthActions }                from '../actions';
 import { User }                       from '../models';
 import { AlertActions }               from '../actions';
@@ -87,7 +87,7 @@ export class AuthEffects {
             uuid = jwtDecode(auth.token).sub;
 
         // We can't use AuthCache here, cause it is not ready at user login
-        let api = APIS[key] + API_END_POINTS[key].users
+        let api = APIS[key] + API_PATH[key].users
             + '/' + uuid + '?token=' + auth.token;
 
         console.log("KEY IS: ", key);

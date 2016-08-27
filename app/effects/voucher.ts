@@ -14,7 +14,15 @@ import { Voucher }         from "../models";
 @Injectable()
 export class VoucherEffects {
 
-    constructor(private actions$:Actions,
-                private http:Http) {
+    api: string;
+    headers: Headers;
+
+    constructor (private actions$: Actions,
+                 private http: Http) {
+        this.headers = new Headers({
+            'Authorization': 'Bearer' + AuthCache.token(),
+            'Content-Type': 'application/json'});
+
+        this.api = AuthCache.API();
     }
 }

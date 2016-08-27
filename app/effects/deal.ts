@@ -13,7 +13,15 @@ import { Deal }         from "../models";
 
 @Injectable()
 export class DealEffects {
+
+    api: string;
+    headers: Headers;
+
     constructor(private actions$:Actions,
                 private http:Http) {
+        this.headers = new Headers({
+            'Authorization': 'Bearer' + AuthCache.token(),
+            'Content-Type': 'application/json'});
+        this.api = AuthCache.API();
     }
 }
