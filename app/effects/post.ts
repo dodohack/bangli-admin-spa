@@ -8,8 +8,9 @@ import { Observable }                     from 'rxjs/Observable';
 
 import { AuthCache }       from '../auth.cache';
 import { PrefCache }       from '../pref.cache';
-import { PostActions }  from '../actions';
-import { Post }         from "../models";
+import { PostActions }     from '../actions';
+import { AlertActions }    from '../actions';
+import { Post }            from "../models";
 
 @Injectable()
 export class PostEffects {
@@ -26,20 +27,28 @@ export class PostEffects {
     }
 
     @Effect() loadPosts$ = this.actions$.ofType(PostActions.LOAD_POSTS)
-        .switchMap(action => this.getPosts(action.payload))
-        .map(posts => PostActions.loadPostsSuccess(posts))
-        .catch(() => Observable.of(PostActions.loadPostsFail()));
+        .switchMap(action => this.getPosts(action.payload)
+            .map(posts => PostActions.loadPostsSuccess(posts))
+            .catch(() => Observable.of(PostActions.loadPostsFail()))
+        );
 
     @Effect() loadPost$ = this.actions$.ofType(PostActions.LOAD_POST)
-        .switchMap(action => this.getPost(action.payload))
-        .map(post => PostActions.loadPostSuccess(post))
-        .catch(() => Observable.of(PostActions.loadPostFail()));
+        .switchMap(action => this.getPost(action.payload)
+            .map(post => PostActions.loadPostSuccess(post))
+            .catch(() => Observable.of(PostActions.loadPostFail()))
+        );
 
     @Effect() putPost$ = this.actions$.ofType(PostActions.SAVE_POST)
-        .map(action => action.payload)
-        .switchMap(post => this.putPost(post))
-        .map(res => PostActions.savePostSuccess())
-        .catch(() => Observable.of(PostActions.savePostFail()));
+        .switchMap(action => this.putPost(action.payload)
+            .map(post => PostActions.savePostSuccess(post))
+            .catch(() => Observable.of(PostActions.savePostFail()))
+        );
+
+    @Effect() savePostSuccess$ = this.actions$.ofType(PostActions.SAVE_POST_SUCCESS)
+        .map(action => AlertActions.success('文章保存成功!'));
+    
+    @Effect() savePostFail$ = this.actions$.ofType(PostActions.SAVE_POST_FAIL)
+        .map(action => AlertActions.error('文章保存失败!'));
 
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
@@ -58,9 +67,6 @@ export class PostEffects {
      */
     private putPost(post: Post): Observable<Post> {
         console.log("SAVING POST: ", post);
-        // FIXME: If return true immediately, status SAVE_POST_SUCCESS happens
-        // FIXME: before SAVE_POST, why???
-        //return Observable.of(true);
 
         let body = JSON.stringify(post);
         let options = new RequestOptions({ headers: this.headers });

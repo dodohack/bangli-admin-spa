@@ -105,9 +105,10 @@ export class PostActions {
     }
 */
     static SAVE_POST_SUCCESS = '[Post] Save Post Success';
-    static savePostSuccess(): Action {
+    static savePostSuccess(post: Post): Action {
         return {
-            type: PostActions.SAVE_POST_SUCCESS
+            type: PostActions.SAVE_POST_SUCCESS,
+            payload: post
         };
     }
 

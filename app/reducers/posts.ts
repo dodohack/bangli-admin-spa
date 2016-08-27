@@ -32,7 +32,6 @@ export default function (state = initialState, action: Action): PostsState {
             const ids: number[]       = posts.map(p => p.id);
             const entities            = posts.reduce(
                 (entities: { [id: number]: Post }, post: Post) => {
-                    post.editing = false;
                     return Object.assign(entities, { [post.id]: post });
                 }, {});
 
@@ -44,46 +43,34 @@ export default function (state = initialState, action: Action): PostsState {
             };
         }
 
+        case PostActions.SAVE_POST_SUCCESS:
         case PostActions.LOAD_POST_SUCCESS: {
             // Post id
             const id: number = +action.payload['id'];
-            // Get new post as editing mode
-            let newPost: Post = Object.assign({}, action.payload, {editing: true});
 
             // Update corresponding post from current posts list or create a
             // new list with 1 element.
             return {
                 ids: (state.ids.indexOf(id) === -1) ? [...state.ids, id] : [...state.ids],
                 editing: [id],
-                entities: Object.assign({}, state.entities, {[id]: newPost}),
+                entities: Object.assign({}, state.entities, {[id]: action.payload}),
                 paginator: Object.assign({}, state.paginator)
             };
         }
 
-        /* FIXME: Should we put the newPost in SAVE_POST_SUCCESS or SAVE_POST ? */
         /* This is a must, as we can get the updated post from its subscriber */
+        /*
         case PostActions.SAVE_POST: {
-            console.log("***REDUCER: SAVE POST");
             const id: number = +action.payload['id'];
-            let newPost: Post = Object.assign({}, action.payload);
 
             return {
                 ids: [...state.ids],
                 editing: [...state.editing],
-                entities: Object.assign({}, state.entities, {[id]: newPost}),
+                entities: Object.assign({}, state.entities, {[id]: action.payload}),
                 paginator: Object.assign({}, state.paginator)
             };
         }
-
-        case PostActions.SAVE_POST_SUCCESS: {
-            console.log("***REDUCER: SAVE POST SUCCESS");
-            return {
-                ids: [...state.ids],
-                editing: [...state.editing],
-                entities: Object.assign({}, state.entities),
-                paginator: Object.assign({}, state.paginator)
-            };
-        }
+        */
 /*
         case PostActions.SAVE_POST_AS_DRAFT: {
             // Update post to draft status

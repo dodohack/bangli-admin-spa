@@ -43,8 +43,7 @@ export class PostPage implements OnInit
     tabs = {'cat': false, 'tag': false, 'topic': false};
 
     constructor(private route: ActivatedRoute,
-                private store: Store<AppState>) {
-    }
+                private store: Store<AppState>) { }
 
     ngOnInit() {
         this.authState$ = this.store.select<AuthState>('auth');
@@ -58,6 +57,7 @@ export class PostPage implements OnInit
             this.postsState = postsState;
             /* When opening a single post, 'editing' always contains 1 id */
             this.post = this.postsState.entities[this.postsState.editing[0]];
+            console.log("**** GET A NEW POST: ", this.post);
         });
     }
     
