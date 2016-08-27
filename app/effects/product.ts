@@ -42,9 +42,9 @@ export class ProductEffects {
      * Get single product(may not use)
      */
     private getProduct(id: number): Observable<Product> {
-        this.api += AuthCache.API_PATH().shop_products +
+        let api = this.api + AuthCache.API_PATH().shop_products +
             '/' + id + '?token=' + AuthCache.token();
-        return this.http.get(this.api).map(res => res.json());
+        return this.http.get(api).map(res => res.json());
     }
 
     /**
@@ -54,8 +54,8 @@ export class ProductEffects {
         let body = JSON.stringify(product);
         let options = new RequestOptions({ headers: this.headers });
 
-        this.api += AuthCache.API_PATH().shop_products + '/' + product.id;
-        return this.http.put(this.api, body, options).map(res => res.json());
+        let api = this.api + AuthCache.API_PATH().shop_products + '/' + product.id;
+        return this.http.put(api, body, options).map(res => res.json());
     }
 
     /**
@@ -66,8 +66,8 @@ export class ProductEffects {
 
         let options = new RequestOptions({ headers: this.headers });
 
-        this.api += AuthCache.API_PATH().shop_products;
-        return this.http.post(this.api, body, options).map(res => res.json());
+        let api = this.api + AuthCache.API_PATH().shop_products;
+        return this.http.post(api, body, options).map(res => res.json());
     }
 
     /**
@@ -76,8 +76,8 @@ export class ProductEffects {
     private deleteProduct(product: Product): Observable<Product> {
         let options = new RequestOptions({ headers: this.headers });
 
-        this.api += AuthCache.API_PATH().shop_products + '/' + product.id;
-        return this.http.delete(this.api, options).map(res => res.json());
+        let api = this.api + AuthCache.API_PATH().shop_products + '/' + product.id;
+        return this.http.delete(api, options).map(res => res.json());
     }
 
     /**
@@ -87,13 +87,13 @@ export class ProductEffects {
         let cur_page = filters.cur_page;
         let status   = filters.status;
 
-        this.api += AuthCache.API_PATH().products +
+        let api = this.api + AuthCache.API_PATH().products +
             '?page=' + cur_page +
             '&per_page=' + PrefCache.getPerPage() +
             '&status=' + status +
             '&token=' + AuthCache.token();
 
-        return this.http.get(this.api).map(res => res.json());
+        return this.http.get(api).map(res => res.json());
     }
 
     /**
@@ -104,8 +104,8 @@ export class ProductEffects {
 
         let options = new RequestOptions({ headers: this.headers });
 
-        this.api += AuthCache.API_PATH().shop_products_batch;
-        return this.http.put(this.api, body, options).map(res => res.json());
+        let api = this.api + AuthCache.API_PATH().shop_products_batch;
+        return this.http.put(api, body, options).map(res => res.json());
     }
 
     /**
@@ -116,9 +116,9 @@ export class ProductEffects {
 
         let options = new RequestOptions({ headers: this.headers });
 
-        this.api += AuthCache.API_PATH().shop_products_batch;
+        let api = this.api + AuthCache.API_PATH().shop_products_batch;
         // TODO: http.delete can't have a body
         console.error("Unimplemented: deleteProducts");
-        return this.http.delete(this.api, options).map(res => res.json());
+        return this.http.delete(api, options).map(res => res.json());
     }
 }
