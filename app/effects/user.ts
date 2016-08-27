@@ -38,26 +38,30 @@ export class UserEffects {
         .mapTo(UserActions.searchComplete([]));
 
     @Effect() loadUsers$ = this.actions$.ofType(UserActions.LOAD_USERS)
-        .switchMap(action => this.getUsers(action.payload))
-        .map(users => UserActions.loadUsersSuccess(users))
-        .catch(() => Observable.of(UserActions.loadUsersFail()));
+        .switchMap(action => this.getUsers(action.payload)
+            .map(users => UserActions.loadUsersSuccess(users))
+            .catch(() => Observable.of(UserActions.loadUsersFail()))
+        );
 
     @Effect() loadUser$ = this.actions$.ofType(UserActions.LOAD_USER)
-        .switchMap(action => this.getUser(action.payload))
-        .map(user => UserActions.loadUserSuccess(user))
-        .catch(() => Observable.of(UserActions.loadUserFail()));
+        .switchMap(action => this.getUser(action.payload)
+            .map(user => UserActions.loadUserSuccess(user))
+            .catch(() => Observable.of(UserActions.loadUserFail()))
+        );
 
     /* Load domains of user can manage */
     @Effect() loadDomains$ = this.actions$.ofType(UserActions.LOAD_DOMAINS)
-        .switchMap(action => this.getUserDomains(action.payload))
-        .map(domains => UserActions.loadDomainsSuccess(domains))
-        .catch(() => Observable.of(UserActions.loadDomainsFail()));
+        .switchMap(action => this.getUserDomains(action.payload)
+            .map(domains => UserActions.loadDomainsSuccess(domains))
+            .catch(() => Observable.of(UserActions.loadDomainsFail()))
+        );
 
     /* Update domains of user can manage */
     @Effect() saveDomains$ = this.actions$.ofType(UserActions.SAVE_DOMAINS)
-        .switchMap(action => this.postUserDomains(action.payload))
-        .map(res => UserActions.saveDomainsSuccess(res))
-        .catch(() => Observable.of(UserActions.saveDomainsFail()));
+        .switchMap(action => this.postUserDomains(action.payload)
+            .map(res => UserActions.saveDomainsSuccess(res))
+            .catch(() => Observable.of(UserActions.saveDomainsFail()))
+        );
 
     /////////////////////////////////////////////////////////////////////////
     // Http functions

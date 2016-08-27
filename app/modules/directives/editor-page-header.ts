@@ -9,7 +9,7 @@ import { zh_CN }       from '../../localization';
     template: require('./editor-page-header.html')
 })
 export class EditorPageHeader {
-    
+
     @Input() authState: AuthState;
 
     /* The type of lists passed in */

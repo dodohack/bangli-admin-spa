@@ -41,6 +41,13 @@ export class PostActions {
         };
     }
 
+    static NEW_POST = '[Post] New Post';
+    static newPost(): Action {
+        return {
+            type: PostActions.NEW_POST
+        };
+    }
+
     static LOAD_POST = '[Post] Load Post';
     static loadPost(id: number): Action {
         return {

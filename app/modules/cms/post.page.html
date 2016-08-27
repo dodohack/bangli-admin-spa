@@ -37,13 +37,12 @@
 </div>
 
 <!-- Post meta data -->
-<!--
 <div class="form-inline post-meta-wrapper">
     <div class="form-group post-meta-item">
         <span class="tag tag-warning-outline">作者</span>
         <select class="form-control" [(ngModel)]="post.author_id">
             <option [value]="author.id"
-                    *ngFor="let author of authors">{{ author.nicename }}</option>
+                    *ngFor="let author of (authors$ | async)">{{ author.display_name }}</option>
         </select>
     </div>
 
@@ -51,7 +50,7 @@
         <span class="tag tag-warning-outline">编辑</span>
         <select class="form-control" [(ngModel)]="post.editor_id">
             <option [value]="editor.id"
-                    *ngFor="let editor of editors">{{ editor.nicename }}</option>
+                    *ngFor="let editor of (editors$ | async)">{{ editor.display_name }}</option>
         </select>
     </div>
 
@@ -67,7 +66,7 @@
         <input class="form-control input-sm" [(ngModel)]="post.fake_published_at">
     </div>
 </div>
--->
+
 
 <!-- Froala Editor -->
 <froala [froalaOptions]="froalaOptions"

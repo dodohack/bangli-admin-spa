@@ -10,6 +10,7 @@ import { NewsletterActions } from './newsletter';
 import { TopicActions }      from './topic';
 import { PageActions }       from './page';
 import { PreferenceActions } from './preference';
+import { CmsAttrActions }    from './cmsattr';
 
 
 export {
@@ -24,7 +25,8 @@ export {
     NewsletterActions,
     TopicActions,
     PageActions,
-    PreferenceActions
+    PreferenceActions,
+    CmsAttrActions
 };
 
 export default [
@@ -39,5 +41,6 @@ export default [
     NewsletterActions,
     TopicActions,
     PageActions,
-    PreferenceActions
+    PreferenceActions,
+    CmsAttrActions
 ];

@@ -14,7 +14,9 @@ import { AppState, getPost } from '../../reducers';
 import { hasEditorRole }     from '../../reducers';
 import { PostsState }        from '../../reducers/posts';
 import { AuthState }         from '../../reducers/auth';
+import { UsersState }        from "../../reducers/users";
 import { PostActions }       from '../../actions';
+import { AlertActions }      from "../../actions";
 
 import { FROALA_OPTIONS }    from '../../models/froala.option';
 import { POST_TYPES } from '../../models';
@@ -23,19 +25,22 @@ import { User, Post, Category, Tag, Topic } from '../../models';
 
 import { zh_CN } from '../../localization';
 
+
+
 @Component({ template: require('./post.page.html') })
 export class PostPage implements OnInit
 {
     @ViewChild('postForm') postForm;
 
     authState$: Observable<AuthState>;
-    
-    /* PostsState in post reducer */
+    authors$: Observable<UsersState>;
+    editors$: Observable<UsersState>;
+
+    // PostsState in post reducer
     postsState: PostsState;
     postsState$: Observable<PostsState>;
 
-    /* Current post */
-    id: number;
+    // Current post
     post: Post;
 
     froalaEditor: any;
@@ -47,12 +52,21 @@ export class PostPage implements OnInit
 
     ngOnInit() {
         this.authState$ = this.store.select<AuthState>('auth');
+        this.authors$ = this.store.let<UsersState>(getAuthors());
+        this.editors$ = this.store.let<UsersState>(getEditors());
 
+        // Dispatch an action to create or load a post
         this.route.params.subscribe(params => {
-            this.id = +params['id'];
-            this.store.dispatch(PostActions.loadPost(this.id));
+            if (Object.keys(params).length === 0) {
+                // New a post
+                this.store.dispatch(PostActions.newPost());
+            } else {
+                // Edit a post
+                this.store.dispatch(PostActions.loadPost(+params['id']));
+            }
         });
 
+        // Load the post
         this.store.select<PostsState>('posts').subscribe(postsState => {
             this.postsState = postsState;
             /* When opening a single post, 'editing' always contains 1 id */
@@ -62,8 +76,13 @@ export class PostPage implements OnInit
     }
     
     canDeactivate() {
-        console.log("canDeactivate called postForm: ", this.postForm);
-        return true;
+        console.log("form status: ", this.postForm);
+        if (this.postForm.dirty) {
+            this.store.dispatch(AlertActions.error('请先保存当前更改再退出此页面'));
+            return false;
+        } else {
+            return true;
+        }
     }
 
     get isDraft() { return this.post.status === 'draft'; }
@@ -71,7 +90,7 @@ export class PostPage implements OnInit
     get isPublish() { return this.post.status === 'publish'; }
     get hasEditorRole() { return this.store.let(hasEditorRole()); }
 
-    get froalaOptions() {return FROALA_OPTIONS; }
+    get froalaOptions() { return FROALA_OPTIONS; }
     /* Post type enum(kind of) */
     get POST_TYPES() { return POST_TYPES; }
     

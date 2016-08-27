@@ -50,6 +50,7 @@ export default function (state = initialState, action: Action): PostsState {
 
             // Update corresponding post from current posts list or create a
             // new list with 1 element.
+            // TODO: Remove id 0 post
             return {
                 ids: (state.ids.indexOf(id) === -1) ? [...state.ids, id] : [...state.ids],
                 editing: [id],
@@ -57,7 +58,19 @@ export default function (state = initialState, action: Action): PostsState {
                 paginator: Object.assign({}, state.paginator)
             };
         }
-
+            
+        case PostActions.NEW_POST: {
+            // Create a new post, we use '0' as a placeholder id
+            const id = 0;
+            const newPost = new Post;
+            return {
+                ids: [...state.ids, id],
+                editing: [id],
+                entities: Object.assign({}, state.entities, {[id]: newPost}),
+                paginator: Object.assign({}, state.paginator)
+            };
+        }
+            
         /* This is a must, as we can get the updated post from its subscriber */
         /*
         case PostActions.SAVE_POST: {
@@ -71,40 +84,7 @@ export default function (state = initialState, action: Action): PostsState {
             };
         }
         */
-/*
-        case PostActions.SAVE_POST_AS_DRAFT: {
-            // Update post to draft status
-            const post: Post = Object.assign({}, action.payload, {status: 'draft'});
 
-            return {
-                ids: [...state.ids],
-                entities: Object.assign({}, state.entities, {[post.id]: post}),
-                paginator: Object.assign({}, state.paginator)
-            };
-        }
-
-        case PostActions.SAVE_POST_AS_PENDING: {
-            // Update post to pending status
-            const post: Post = Object.assign({}, action.payload, {status: 'pending'});
-
-            return {
-                ids: [...state.ids],
-                entities: Object.assign({}, state.entities, {[post.id]: post}),
-                paginator: Object.assign({}, state.paginator)
-            };
-        }
-
-        case PostActions.SAVE_POST_AS_PUBLISH: {
-            // Update post to publish status
-            const post: Post = Object.assign({}, action.payload, {status: 'publish'});
-
-            return {
-                ids: [...state.ids],
-                entities: Object.assign({}, state.entities, {[post.id]: post}),
-                paginator: Object.assign({}, state.paginator)
-            };
-        }
-*/
         default:
             return state;
     }

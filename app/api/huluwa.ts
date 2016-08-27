@@ -25,6 +25,8 @@ export const API_HULUWA = {
     /*************************************************************************
      * CMS
      *************************************************************************/
+    /* Cms attributes includes available authors, editors, categories etc */
+    cms_attrs:       '/cms/attributes',
     /* List of posts */
     cms_posts:       '/cms/posts',
     cms_posts_batch: '/cms/posts/batch',

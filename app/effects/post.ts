@@ -39,7 +39,7 @@ export class PostEffects {
         );
 
     @Effect() putPost$ = this.actions$.ofType(PostActions.SAVE_POST)
-        .switchMap(action => this.putPost(action.payload)
+        .switchMap(action => this.savePost(action.payload)
             .map(post => PostActions.savePostSuccess(post))
             .catch(() => Observable.of(PostActions.savePostFail()))
         );
@@ -63,27 +63,23 @@ export class PostEffects {
     }
 
     /**
-     * Update a post
+     * Create/Update a post
      */
-    private putPost(post: Post): Observable<Post> {
+    private savePost(post: Post): Observable<Post> {
         console.log("SAVING POST: ", post);
 
         let body = JSON.stringify(post);
         let options = new RequestOptions({ headers: this.headers });
-
-        let api = this.api + AuthCache.API_PATH().cms_posts + '/' + post.id;
-        return this.http.put(api, body, options).map(res => res.json());
-    }
-
-    /**
-     * Create a new post
-     */
-    private postPost(post: Post): Observable<Post> {
-        let body = JSON.stringify(post);
-        let options = new RequestOptions({ headers: this.headers });
-
-        let api = this.api + AuthCache.API_PATH().cms_posts;
-        return this.http.post(api, body, options).map(res => res.json());
+        
+        if (post.id && post.id !== 0) {
+            // Update an existing post
+            let api = this.api + AuthCache.API_PATH().cms_posts + '/' + post.id;
+            return this.http.put(api, body, options).map(res => res.json());            
+        } else {
+            // Create a new post
+            let api = this.api + AuthCache.API_PATH().cms_posts;
+            return this.http.post(api, body, options).map(res => res.json());
+        }
     }
 
     /**

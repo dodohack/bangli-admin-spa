@@ -12,17 +12,24 @@ export const POST_TYPES = ['creative', 'semi_creative', 'integration', 'review']
 /* POST_STATUSES definition, all possible entries of table column cms_post.status */
 export const POST_STATUSES = ['public', 'featured', 'pending', 'draft', 'trash'];
 
+export class PostType {
+    /* Number of post in current type */
+    count: number;
+
+    /* The status name */
+    key: string;
+}
+
 export class PostStatus {
     /* Number of post in current status */
     count: number;
 
     /* The status name */
-    status: string;
+    key: string;
 }
 
 export class Post {
     id: number;
-    editing: boolean; // is current post in editing?
     editor_id: number;
     author_id: number;
     image_id: number;

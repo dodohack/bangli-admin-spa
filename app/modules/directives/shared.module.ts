@@ -18,7 +18,7 @@ import { RightPanel }                from './right-panel';
 import { Paginator }                 from './paginator';
 import { CategoryTreeComponent }     from './category-tree.component';
 import { EditorPageHeader }          from './editor-page-header';
-import { ListPageHeaderComponent }   from './list-page-header.component';
+import { ListPageHeader }            from './list-page-header';
 import { ListPageMenuComponent }     from './list-page-menu.component';
 import { FastEditPostFormComponent } from './fast-edit-post-form.component';
 import { PostCttCloudComponent}      from './post-ctt-cloud.component';
@@ -40,7 +40,7 @@ import { DateFilterComponent }       from './date-filter.component';
 
         RightPanel,
         Paginator,
-        ListPageHeaderComponent,
+        ListPageHeader,
         ListPageMenuComponent,
         CategoryTreeComponent,
         EditorPageHeader,
@@ -62,7 +62,7 @@ import { DateFilterComponent }       from './date-filter.component';
 
         RightPanel,
         Paginator,
-        ListPageHeaderComponent,
+        ListPageHeader,
         ListPageMenuComponent,
         CategoryTreeComponent,
         EditorPageHeader,
