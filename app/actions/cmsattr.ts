@@ -3,13 +3,15 @@
  * authors, editors, categories, tags, topic_cats, status, post_types etc
  */
 import { Action }          from '@ngrx/store';
+import { AuthState }       from '../reducers/auth';
 import { CmsAttrsState }   from '../reducers/cmsattrs';
 
 export class CmsAttrActions {
     static LOAD_ALL = '[CmsAttr] Load All';
-    static loadAll(): Action {
+    static loadAll(auth: AuthState): Action {
         return {
-            type: CmsAttrActions.LOAD_ALL
+            type: CmsAttrActions.LOAD_ALL,
+            payload: auth
         };
     }
 

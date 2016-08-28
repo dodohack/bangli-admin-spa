@@ -14,14 +14,13 @@ import { Newsletter }        from "../models";
 @Injectable()
 export class NewsletterEffects {
 
-    api: string;
-    headers: Headers;
 
     constructor(private actions$: Actions,
-                private http: Http) {
-        this.headers = new Headers({
+                private http: Http) {}
+
+    get headers() {
+        return new Headers({
             'Authorization': 'Bearer' + AuthCache.token(),
             'Content-Type': 'application/json'});
-        this.api = AuthCache.API();
     }
 }

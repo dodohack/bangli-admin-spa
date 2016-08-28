@@ -14,16 +14,13 @@ import { Order }           from "../models";
 @Injectable()
 export class OrderEffects {
 
-    api: string;
-    headers: Headers;
-
     constructor (private actions$: Actions,
-                 private http: Http) {
-        this.headers = new Headers({
+                 private http: Http) {}
+
+    get headers() {
+        return new Headers({
             'Authorization': 'Bearer' + AuthCache.token(),
             'Content-Type': 'application/json'});
-        
-        this.api = AuthCache.API();
     }
 
     @Effect() loadOrders$ = this.actions$.ofType(OrderActions.LOAD_ORDERS)
@@ -38,7 +35,7 @@ export class OrderEffects {
      * Get single order(may not use)
      */
     private getOrder(id: number): Observable<Order> {
-        let api = this.api + AuthCache.API_PATH().shop_orders +
+        let api = AuthCache.API() + AuthCache.API_PATH().shop_orders +
             '/' + id + '?token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }
@@ -50,7 +47,7 @@ export class OrderEffects {
         let body = JSON.stringify(order);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().shop_orders + '/' + order.id;
+        let api = AuthCache.API() + AuthCache.API_PATH().shop_orders + '/' + order.id;
         return this.http.put(api, body, options).map(res => res.json());
     }
 
@@ -61,7 +58,7 @@ export class OrderEffects {
         let body = JSON.stringify(order);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().shop_orders;
+        let api = AuthCache.API() + AuthCache.API_PATH().shop_orders;
         return this.http.post(api, body, options).map(res => res.json());
     }
 
@@ -71,7 +68,7 @@ export class OrderEffects {
     private deleteOrder(order: Order): Observable<Order> {
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().shop_orders + '/' + order.id;
+        let api = AuthCache.API() + AuthCache.API_PATH().shop_orders + '/' + order.id;
         return this.http.delete(api, options).map(res => res.json());
     }
 
@@ -82,7 +79,7 @@ export class OrderEffects {
         let cur_page = filters.cur_page;
         let status   = filters.status;
 
-        let api = this.api + AuthCache.API_PATH().orders +
+        let api = AuthCache.API() + AuthCache.API_PATH().orders +
             '?page=' + cur_page +
             '&per_page=' + PrefCache.getPerPage() +
             '&status=' + status +
@@ -98,7 +95,7 @@ export class OrderEffects {
         let body = JSON.stringify(orders);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().shop_orders_batch;
+        let api = AuthCache.API() + AuthCache.API_PATH().shop_orders_batch;
         return this.http.put(api, body, options).map(res => res.json());
     }
 
@@ -109,7 +106,7 @@ export class OrderEffects {
         let body = JSON.stringify(orders);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().shop_orders_batch;
+        let api = AuthCache.API() + AuthCache.API_PATH().shop_orders_batch;
         // TODO: http.delete can't have a body
         console.error("Unimplemented: deleteOrders");
         return this.http.delete(api, options).map(res => res.json());

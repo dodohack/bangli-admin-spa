@@ -11,7 +11,7 @@ import { AppState }          from '../../reducers';
 import { PostActions }       from '../../actions';
 
 import { User, Post, Category, Tag, Topic,
-         Paginator, PostStatus } from '../../models';
+         Paginator } from '../../models';
 
 import { zh_CN } from '../../localization';
 

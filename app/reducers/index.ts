@@ -52,6 +52,7 @@ import postsReducer, * as fromPosts       from './posts';
 import topicsReducer, * as fromTopics     from './topics';
 import pagesReducer, * as fromPages       from './pages';
 import dealsReducer, * as fromDeals       from './deals';
+import cmsReducer, * as fromCms           from './cmsattrs';
 import {Observable} from "rxjs/Observable";
 
 /**
@@ -71,6 +72,7 @@ export interface AppState {
     topics:   fromTopics.TopicsState;
     pages:    fromPages.PagesState;
     deals:    fromDeals.DealsState;
+    cms:      fromCms.CmsAttrsState;
 }
 
 
@@ -83,7 +85,7 @@ export interface AppState {
  */
 export default compose(
     storeFreeze, storeLogger(),
-    localStorageSync(['auth', 'pref'], true),
+    localStorageSync(['auth', 'pref', 'cms'], true),
     combineReducers
 )
 ({
@@ -98,7 +100,8 @@ export default compose(
     posts:    postsReducer,
     topics:   topicsReducer,
     pages:    pagesReducer,
-    deals:    dealsReducer
+    deals:    dealsReducer,
+    cms:      cmsReducer
 });
 
 /*****************************************************************************

@@ -13,6 +13,7 @@ import { AppState }          from './reducers';
 import { AuthState }         from './reducers/auth';
 import { isDashboardUser }   from './reducers';
 import { AuthActions }       from './actions';
+import { CmsAttrActions }    from './actions';
 import { PreferenceActions } from './actions';
 import { Alert }             from './models';
 import { Preference }        from "./models";
@@ -47,9 +48,15 @@ export class App implements OnInit
             console.log("APP INIT: authState is: ", auth);
             this.auth = auth;
             if (auth.token) {
+                console.error("***Cache Auth token***");
                 AuthCache.cacheToken(auth.token);
                 AuthCache.cacheJwt(auth.jwt);
                 AuthCache.cacheDomainKey(auth.key);
+
+                // Preload and cache all cms attributes, we must pass auth in
+                // as sessionStorage may not be written when we kick the network
+                // access
+                this.store.dispatch(CmsAttrActions.loadAll(auth));
             } else {
                 AuthCache.clean();
             }

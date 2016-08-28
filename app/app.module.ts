@@ -16,12 +16,8 @@ import { SuperUserGuard} from './guard';
 
 import { routing }       from './app.routes';
 import { App }           from './app';
-
-/* FIXME: If we do not put these globally used directives here, we will get
- * strange error: Can't bind to 'routerLink' since it isn't a known property of 'a'
- */
-import { Sidebar } from './modules/directives/sidebar';
-import { Topbar }  from './modules/directives/topbar';
+import { Sidebar }       from './modules/directives/sidebar';
+import { Topbar }        from './modules/directives/topbar';
 
 /* Import the default export from these files */
 import reducer            from './reducers';
@@ -34,6 +30,7 @@ import { NewsletterEffects } from './effects';
 import { PostEffects }    from './effects';
 import { TopicEffects }   from './effects';
 import { PageEffects }    from './effects';
+import { CmsAttrEffects } from './effects';
 
 import { SharedModule }    from './modules/directives/shared.module';
 import { AuthModule }      from './modules/auth/auth.module';
@@ -79,6 +76,7 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         EffectsModule.run(PostEffects),
         EffectsModule.run(TopicEffects),
         EffectsModule.run(PageEffects),
+        EffectsModule.run(CmsAttrEffects),
     ],
     declarations: [
         /* Debug only */
@@ -88,7 +86,6 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
 
         Topbar,
         Sidebar,
-        //Paginator,
     ],
     providers: [
         Title,

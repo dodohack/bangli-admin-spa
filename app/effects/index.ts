@@ -8,6 +8,7 @@ import { PostEffects }    from './post';
 import { TopicEffects }   from './topic';
 import { PageEffects }    from './page';
 import { DealEffects }    from './deal';
+import { CmsAttrEffects } from './cmsattr';
 
 export {
     AuthEffects,
@@ -19,7 +20,8 @@ export {
     PostEffects,
     TopicEffects,
     PageEffects,
-    DealEffects
+    DealEffects,
+    CmsAttrEffects
 };
 
 export default [
@@ -32,5 +34,6 @@ export default [
     PostEffects,
     TopicEffects,
     PageEffects,
-    DealEffects
+    DealEffects,
+    CmsAttrEffects
 ];

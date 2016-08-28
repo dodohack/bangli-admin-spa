@@ -7,7 +7,7 @@ import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
-import { Topic, Category, Paginator, PostStatus }  from '../../models';
+import { Topic, Category, Paginator }  from '../../models';
 
 import { AppState }          from '../../reducers';
 import { TopicActions }      from '../../actions';

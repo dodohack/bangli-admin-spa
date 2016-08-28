@@ -15,17 +15,15 @@ import { Post }            from "../models";
 @Injectable()
 export class PostEffects {
 
-    api: string;
-    headers: Headers;
-
     constructor (private actions$: Actions,
-                 private http: Http) {
-        this.headers = new Headers({
+                 private http: Http) {}
+    
+    get headers() { 
+        return new Headers({
             'Authorization': 'Bearer' + AuthCache.token(),
             'Content-Type': 'application/json'});
-        this.api = AuthCache.API();
     }
-
+    
     @Effect() loadPosts$ = this.actions$.ofType(PostActions.LOAD_POSTS)
         .switchMap(action => this.getPosts(action.payload)
             .map(posts => PostActions.loadPostsSuccess(posts))
@@ -57,7 +55,7 @@ export class PostEffects {
      * Get a post
      */
     private getPost(id: string): Observable<Post> {
-        let api = this.api + AuthCache.API_PATH().cms_posts +
+        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts +
             '/' + id + '?token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }
@@ -73,11 +71,11 @@ export class PostEffects {
         
         if (post.id && post.id !== 0) {
             // Update an existing post
-            let api = this.api + AuthCache.API_PATH().cms_posts + '/' + post.id;
+            let api = AuthCache.API() + AuthCache.API_PATH().cms_posts + '/' + post.id;
             return this.http.put(api, body, options).map(res => res.json());            
         } else {
             // Create a new post
-            let api = this.api + AuthCache.API_PATH().cms_posts;
+            let api = AuthCache.API() + AuthCache.API_PATH().cms_posts;
             return this.http.post(api, body, options).map(res => res.json());
         }
     }
@@ -88,7 +86,7 @@ export class PostEffects {
     private deletePost(post: Post): Observable<Post> {
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().cms_posts + '/' + post.id;
+        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts + '/' + post.id;
         return this.http.delete(api, options).map(res => res.json());
     }
 
@@ -98,7 +96,7 @@ export class PostEffects {
     private getPosts(filters: any): Observable<any> {
         let cur_page = filters.cur_page;
         //let status   = filters.status;
-        let api = this.api + AuthCache.API_PATH().cms_posts +
+        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts +
             '?page=' + cur_page +
             '&per_page=' + PrefCache.getPerPage() +
             //'&status=' + status +
@@ -115,7 +113,7 @@ export class PostEffects {
 
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().cms_posts_batch;
+        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts_batch;
         return this.http.put(api, body, options).map(res => res.json());
     }
 
@@ -127,7 +125,7 @@ export class PostEffects {
 
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().cms_posts_batch;
+        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts_batch;
         // TODO: http.delete can't have a body
         console.error("Unimplemented: deletePosts");
         return this.http.delete(api, options).map(res => res.json());

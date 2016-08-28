@@ -12,16 +12,13 @@ import { AUTH }        from '../api';
 
 @Injectable()
 export class UserEffects {
-
-    api: string;
-    headers: Headers;
-    
     constructor(private actions$: Actions,
-                private http: Http) {
-        this.headers = new Headers({
+                private http: Http) {}
+
+    get headers() {
+        return new Headers({
             'Authorization': 'Bearer' + AuthCache.token(),
             'Content-Type': 'application/json'});
-        this.api = AuthCache.API();
     }
     
     @Effect() search$ = this.actions$.ofType(UserActions.SEARCH)
@@ -71,7 +68,7 @@ export class UserEffects {
      * Get single user
      */
     private getUser(uuid: string): Observable<User> {
-        let api = this.api + AuthCache.API_PATH().users + '/' + uuid + '?token=' + AuthCache.token();
+        let api = AuthCache.API() + AuthCache.API_PATH().users + '/' + uuid + '?token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }
 
@@ -83,7 +80,7 @@ export class UserEffects {
         let body = JSON.stringify(user);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().users + '/' + user.uuid;
+        let api = AuthCache.API() + AuthCache.API_PATH().users + '/' + user.uuid;
         return this.http.put(api, body, options).map(res => res.json());
     }
 
@@ -94,7 +91,7 @@ export class UserEffects {
         let body = JSON.stringify(user);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().users;
+        let api = AuthCache.API() + AuthCache.API_PATH().users;
         return this.http.post(api, body, options).map(res => res.json());
     }
 
@@ -104,7 +101,7 @@ export class UserEffects {
     private deleteUser(user: User): Observable<User> {
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().users + '/' + user.uuid;
+        let api = AuthCache.API() + AuthCache.API_PATH().users + '/' + user.uuid;
         return this.http.delete(api, options).map(res => res.json());
     }
 
@@ -114,7 +111,7 @@ export class UserEffects {
     private getUsers(filters: any): Observable<any> {
         let cur_page = filters.cur_page;
         let role_id  = filters.role_id;
-        let api = this.api + AuthCache.API_PATH().users +
+        let api = AuthCache.API() + AuthCache.API_PATH().users +
             '?page=' + cur_page +
             '&role_id=' + role_id +
             '&per_page=' + PrefCache.getPerPage() +
@@ -129,7 +126,7 @@ export class UserEffects {
         let body = JSON.stringify(users);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().users_batch;
+        let api = AuthCache.API() + AuthCache.API_PATH().users_batch;
         return this.http.put(api, body, options).map(res => res.json());
     }
 
@@ -140,28 +137,28 @@ export class UserEffects {
         let body = JSON.stringify(users);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AuthCache.API_PATH().users_batch;
+        let api = AuthCache.API() + AuthCache.API_PATH().users_batch;
         // TODO: http.delete can't have a body
         console.error("Unimplemented: deleteUsers");
         return this.http.delete(api, options).map(res => res.json());
     }
 
     private searchUsers(query: string): Observable<User[]> {
-        let api = this.api + AuthCache.API();
+        let api = AuthCache.API() + AuthCache.API();
         return this.http.get(api).map(res => res.json());
     }
 
 
     private getUserDomains(uuid: string): Observable<Domain[]> {
-        let api = this.api + AUTH.domains + '/' + uuid + '&token=' + AuthCache.token();
+        let api = AuthCache.API() + AUTH.domains + '/' + uuid + '&token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }
 
-    private postUserDomains(user: User) {
+    private postUserDomains(user: User): Observable<any> {
         let body = ''; //JSON.stringify(user.domains);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.api + AUTH.domains + '/' + user.uuid;
+        let api = AuthCache.API() + AUTH.domains + '/' + user.uuid;
         return this.http.post(api, body, options);
     }
 }

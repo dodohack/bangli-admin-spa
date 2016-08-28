@@ -6,36 +6,30 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Effect, Actions }               from '@ngrx/effects';
 import { Observable }                    from 'rxjs/Observable';
 
-import { AuthCache }        from '../auth.cache';
+import { APIS, API_PATH }   from '../api';
+import { AuthState }        from '../reducers/auth';
 import { CmsAttrsState }    from '../reducers/cmsattrs';
 import { CmsAttrActions }   from '../actions';
 
 @Injectable()
 export class CmsAttrEffects {
-
-    api: string;
-    headers: Headers;
-
     constructor(private actions$: Actions,
-                private http: Http) {
-        this.headers = new Headers({
-            'Authorization': 'Bearer' + AuthCache.token(),
-            'Content-Type': 'application/json'});
-        this.api = AuthCache.API();
-    }
+                private http: Http) { }
     
     @Effect() loadAll$ = this.actions$.ofType(CmsAttrActions.LOAD_ALL)
-        .switchMap(() => this.getAll()
+        .switchMap((action) => this.getAll(action.payload)
             .map(attrs => CmsAttrActions.loadAllSuccess(attrs))
             .catch(() => Observable.of(CmsAttrActions.loadAllFail()))
         );
-    
+
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
     
-    private getAll(): Observable<CmsAttrsState> {
-        let api = this.api + AuthCache.API_PATH().cms_attrs + 
-            '?token=' + AuthCache.token();
+    private getAll(auth: AuthState): Observable<CmsAttrsState> {
+
+        let api = APIS[auth.key] + API_PATH[auth.key].cms_attrs +
+            '?token=' + auth.token;
+        console.log("***CMS_ATTRS API: ", api);
         return this.http.get(api).map(res => res.json());
     } 
 }

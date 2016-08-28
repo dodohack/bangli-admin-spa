@@ -32,7 +32,7 @@
             <select name="post_status" class="c-select c-select-sm"
                     [(ngModel)]="post ? post.status : tempPost.status">
                 <option value="" *ngIf="posts">不修改</option>
-                <option [value]="ps" *ngFor="let ps of POST_STATUSES">{{ zh[ps] }}</option>
+                <!--<option [value]="ps" *ngFor="let ps of POST_STATUSES">{{ zh[ps] }}</option>-->
             </select>
         </div>
 

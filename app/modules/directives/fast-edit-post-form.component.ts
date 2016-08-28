@@ -5,7 +5,6 @@ import { Component, EventEmitter }         from '@angular/core';
 import { Input, Output, AfterContentInit } from '@angular/core';
 
 import { User, Post } from '../../models';
-import { POST_STATUSES } from '../../models';
 import { zh_CN } from '../../localization';
 
 @Component({
@@ -38,8 +37,6 @@ export class FastEditPostFormComponent implements AfterContentInit {
     cancel = new EventEmitter();
 
     constructor() {}
-    
-    get POST_STATUSES() { return POST_STATUSES; }
 
     get zh() { return zh_CN.post; }
     

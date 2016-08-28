@@ -33,8 +33,6 @@ export class PostPage implements OnInit
     @ViewChild('postForm') postForm;
 
     authState$: Observable<AuthState>;
-    authors$: Observable<UsersState>;
-    editors$: Observable<UsersState>;
 
     // PostsState in post reducer
     postsState: PostsState;
@@ -52,8 +50,6 @@ export class PostPage implements OnInit
 
     ngOnInit() {
         this.authState$ = this.store.select<AuthState>('auth');
-        this.authors$ = this.store.let<UsersState>(getAuthors());
-        this.editors$ = this.store.let<UsersState>(getEditors());
 
         // Dispatch an action to create or load a post
         this.route.params.subscribe(params => {
@@ -85,9 +81,9 @@ export class PostPage implements OnInit
         }
     }
 
-    get isDraft() { return this.post.status === 'draft'; }
-    get isPending() { return this.post.status === 'pending'; }
-    get isPublish() { return this.post.status === 'publish'; }
+    get isDraft() { return this.post.state === 'draft'; }
+    get isPending() { return this.post.state === 'pending'; }
+    get isPublish() { return this.post.state === 'publish'; }
     get hasEditorRole() { return this.store.let(hasEditorRole()); }
 
     get froalaOptions() { return FROALA_OPTIONS; }
@@ -108,9 +104,9 @@ export class PostPage implements OnInit
      * the behavior we want???
      */
     save() { console.error("***save()***"); this.store.dispatch(PostActions.savePost(this.post)); }
-    save2Pending() { console.error("***savePending()***"); this.post.status = 'pending'; this.save(); }
-    save2Draft() { console.error("***saveDraft()***"); this.post.status = 'draft'; this.save(); }
-    save2Publish() { console.error("***savePublish()***"); this.post.status = 'publish'; this.save(); }
+    save2Pending() { console.error("***savePending()***"); this.post.state = 'pending'; this.save(); }
+    save2Draft() { console.error("***saveDraft()***"); this.post.state = 'draft'; this.save(); }
+    save2Publish() { console.error("***savePublish()***"); this.post.state = 'publish'; this.save(); }
 
     /**
      * This function is somehow bugged

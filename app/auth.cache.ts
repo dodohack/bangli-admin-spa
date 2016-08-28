@@ -5,6 +5,11 @@
 import { APIS, API_PATH } from './api';
 import { JwtPayload }           from "./models";
 
+/**
+ * FIXME: Can not use following getters in any constructors, as the data is
+ * not available before login(no sessionStorage initialized), but constructors
+ * such as effects constructors are initialized bofore login.
+ */
 export class AuthCache {
     static token():string { return sessionStorage.getItem('token'); }
     static cacheToken(v: string) { if (v) sessionStorage.setItem('token', v); }

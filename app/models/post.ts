@@ -6,35 +6,50 @@ import { Category } from './category';
 import { Tag }      from './tag';
 import { Topic }    from './topic';
 
-/* POST_TYPES definition, all possible entries of table column cms_post.post_type */
-export const POST_TYPES = ['creative', 'semi_creative', 'integration', 'review'];
+/* CREATIVE_TYPES definition, all possible entries of table column cms_post.post_type */
+export const CREATIVE_TYPES = [
+    {creative_type: 'creative',      count: 0},
+    {creative_type: 'semi_creative', count: 0},
+    {creative_type: 'integration',   count: 0},
+    {creative_type: 'review',        count: 0}
+];
 
-/* POST_STATUSES definition, all possible entries of table column cms_post.status */
-export const POST_STATUSES = ['public', 'featured', 'pending', 'draft', 'trash'];
+/* TODO: This is massively used by bangli domain */
+export const POST_TYPES = [
+    {post_type: 'product',   count: 0},
+    {post_type: 'knowledge', count: 0}
+];
 
+/* POST_STATES definition, all possible entries of table column cms_post.status */
+export const POST_STATES = [
+    {state: 'public',   count: 0},
+    {state: 'featured', count: 0},
+    {state: 'pending',  count: 0},
+    {state: 'draft',    count: 0},
+    {state: 'trash',    count: 0}
+];
+
+export class CreativeType {
+    creative_type: string;
+    count: number;
+}
 export class PostType {
-    /* Number of post in current type */
+    post_type: string;
     count: number;
-
-    /* The status name */
-    key: string;
-}
-
-export class PostStatus {
-    /* Number of post in current status */
+};
+export class PostState {
+    state: string;
     count: number;
-
-    /* The status name */
-    key: string;
-}
+};
 
 export class Post {
     id: number;
     editor_id: number;
     author_id: number;
     image_id: number;
-    status: string;
+    state: string;
     post_type: string;
+    creative_type: string;
     title: string;
     categories: Category[];
     tags: Tag[];
