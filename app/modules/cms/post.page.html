@@ -15,25 +15,73 @@
     </div>
 
     <div class="col-xs-5 col-sm-5 col-md-4">
+        <!-- Save buttons -->
         <div class="float-right">
-        <button type="submit" class="btn btn-sm btn-outline-success"
-                [disabled]="!postForm.form.dirty && postForm.form.valid">保存</button>
+            <button type="submit" class="btn btn-sm btn-outline-success"
+                    [disabled]="!postForm.form.dirty && postForm.form.valid">保存</button>
 
-        <button class="btn btn-sm btn-outline-primary"
-                (click)="save2Pending()" [disabled]="!isDraft">提交审稿</button>
+            <button class="btn btn-sm btn-outline-primary"
+                    (click)="save2Pending()" [disabled]="!isDraft">提交审稿</button>
 
-        <button class="btn btn-sm btn-outline-danger"
-                (click)="save2Draft()" *ngIf="isPending || isPublish">保存为草稿</button>
+            <button class="btn btn-sm btn-outline-danger"
+                    (click)="save2Draft()" *ngIf="isPending || isPublish">保存为草稿</button>
 
-        <button class="btn btn-sm btn-outline-danger"
-                (click)="save2Publish()" [disabled]="isPublish">发布</button>
+            <button class="btn btn-sm btn-outline-danger"
+                    (click)="save2Publish()" [disabled]="isPublish">发布</button>
         </div>
     </div>
 </div>
 
-<div class="form-inline post-ctt-wrapper">
-    <!-- Post category, tag, topic etc -->
-    <post-ctt-cloud [post]="post" (toggle)="toggleRightBar($event)"></post-ctt-cloud>
+<!-- author/editor/post_type/creative_type selectors -->
+<div class="row post-meta-select">
+    <div class="col-xs-12 form-inline">
+
+            <div class="form-group post-meta">
+                <label>作者</label>
+                <select class="form-control form-control-sm custom-select" name="author_id" [(ngModel)]="post.author_id">
+                    <option *ngFor="let author of (cmsState$ | async).authors"
+                            [selected]="author.id === post.author_id"
+                            [value]="author.id">{{ author.display_name }}</option>
+                </select>
+            </div>
+
+            <div class="form-group post-meta">
+                <label>编辑</label>
+                <select class="form-control form-control-sm custom-select" name="editor_id" [(ngModel)]="post.editor_id">
+                    <option *ngFor="let editor of (cmsState$ | async).editors"
+                            [selected]="editor.id === post.editor_id"
+                            [value]="editor.id">{{ editor.display_name }}</option>
+                </select>
+            </div>
+
+            <div class="form-group post-meta">
+                <label>文章类型</label>
+                <select class="form-control form-control-sm custom-select" name="post_type" [(ngModel)]="post.post_type">
+                    <option *ngFor="let post_type of (cmsState$ | async).post_types.available"
+                            [selected]="post.post_type === post_type.post_type"
+                            [value]="post_type.post_type">{{ post_type.post_type }}</option>
+                </select>
+            </div>
+
+            <div class="form-group post-meta">
+                <label>原创类型</label>
+                <select class="form-control form-control-sm custom-select" name="c_type" [(ngModel)]="post.creative_type">
+                    <option *ngFor="let c_type of (cmsState$ | async).post_creative_types.available"
+                            [selected]="post.creative_type === c_type.creative_type"
+                            [value]="c_type.creative_type">{{ c_type.creative_type }}</option>
+                </select>
+            </div>
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="form-inline post-ctt-wrapper">
+            <!-- Post category, tag, topic etc -->
+            <post-ctt-cloud [post]="post" (toggle)="toggleRightBar($event)"></post-ctt-cloud>
+        </div>
+    </div>
 </div>
 
 <!-- Post meta data -->

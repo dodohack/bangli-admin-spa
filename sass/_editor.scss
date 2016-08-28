@@ -64,8 +64,18 @@
   }
 }
 
-.post-title {
+.post-title, .post-meta-select {
   margin-bottom: 1rem;
+}
+
+.post-meta-select {
+  .post-meta {
+    padding-right: 1rem;
+    label {
+      font-size: 90%;
+      color: darkgray;
+    }
+  }
 }
 
 /* Author, editor and post type wrapper */

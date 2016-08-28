@@ -14,6 +14,7 @@ import { AppState, getPost } from '../../reducers';
 import { hasEditorRole }     from '../../reducers';
 import { PostsState }        from '../../reducers/posts';
 import { AuthState }         from '../../reducers/auth';
+import { CmsAttrsState }      from '../../reducers/cmsattrs';
 import { UsersState }        from "../../reducers/users";
 import { PostActions }       from '../../actions';
 import { AlertActions }      from "../../actions";
@@ -33,6 +34,7 @@ export class PostPage implements OnInit
     @ViewChild('postForm') postForm;
 
     authState$: Observable<AuthState>;
+    cmsState$: Observable<CmsAttrsState>;
 
     // PostsState in post reducer
     postsState: PostsState;
@@ -50,6 +52,7 @@ export class PostPage implements OnInit
 
     ngOnInit() {
         this.authState$ = this.store.select<AuthState>('auth');
+        this.cmsState$  = this.store.select<CmsAttrsState>('cms');
 
         // Dispatch an action to create or load a post
         this.route.params.subscribe(params => {

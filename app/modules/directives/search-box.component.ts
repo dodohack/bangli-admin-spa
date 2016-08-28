@@ -12,7 +12,7 @@ import { TYPEAHEAD_DIRECTIVES } from 'ng2-bootstrap';
     <form class="form-inline pull-xs-right" [formGroup]="searchForm">
         <div class="input-group">
             <input 
-            class="form-control input-sm" 
+            class="form-control" 
             placeholder="搜索"
             formControlName="search"
             [typeahead]="searchPrompt"
