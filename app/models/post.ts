@@ -16,12 +16,14 @@ export const CREATIVE_TYPES = [
 
 /* TODO: This is massively used by bangli domain */
 export const POST_TYPES = [
+    {post_type: 'unset',     count: 0},
     {post_type: 'product',   count: 0},
     {post_type: 'knowledge', count: 0}
 ];
 
 /* POST_STATES definition, all possible entries of table column cms_post.status */
 export const POST_STATES = [
+    {state: 'unsaved',  count: 0}, // Initial state for offline display
     {state: 'public',   count: 0},
     {state: 'featured', count: 0},
     {state: 'pending',  count: 0},
@@ -60,4 +62,10 @@ export class Post {
     published_at: string;
     created_at: string;
     updated_at: string;
+
+    /* This is a fix to froala editor when creating a new post, post.content
+     * should be immediate avaiable to it */
+    //constructor() {
+    //    this.content = '';
+    //}
 }

@@ -25,7 +25,7 @@
                 <span class="tag tag-default-outline">
                     状态: {{ zh[entity.state] }}
                 </span>
-                <span class="tag tag-default-outline">
+                <span class="tag tag-default-outline" *ngIf="previewLink">
                     预览: <a href="{{ previewLink }}" target="_blank">{{ previewLink }}</a>
                 </span>
             </div>

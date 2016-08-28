@@ -8,23 +8,18 @@ import { ActivatedRoute }    from '@angular/router';
 
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
-import { FroalaEditorCompnoent } from 'ng2-froala-editor/ng2-froala-editor';
 
-import { AppState, getPost } from '../../reducers';
+import { AppState }          from '../../reducers';
 import { hasEditorRole }     from '../../reducers';
 import { PostsState }        from '../../reducers/posts';
 import { AuthState }         from '../../reducers/auth';
-import { CmsAttrsState }      from '../../reducers/cmsattrs';
-import { UsersState }        from "../../reducers/users";
+import { CmsAttrsState }     from '../../reducers/cmsattrs';
 import { PostActions }       from '../../actions';
 import { AlertActions }      from "../../actions";
 
 import { FROALA_OPTIONS }    from '../../models/froala.option';
-import { POST_TYPES } from '../../models';
-
-import { User, Post, Category, Tag, Topic } from '../../models';
-
-import { zh_CN } from '../../localization';
+import { Post }              from '../../models';
+import { zh_CN }             from '../../localization';
 
 
 
@@ -33,16 +28,20 @@ export class PostPage implements OnInit
 {
     @ViewChild('postForm') postForm;
 
-    authState$: Observable<AuthState>;
-    cmsState$: Observable<CmsAttrsState>;
+    authState: AuthState;
+    //authState$: Observable<AuthState>;
+    cmsState: CmsAttrsState;
+    //cmsState$: Observable<CmsAttrsState>;
 
     // PostsState in post reducer
     postsState: PostsState;
-    postsState$: Observable<PostsState>;
+    //postsState$: Observable<PostsState>;
 
-    // Current post
+    // Current post, inputPost is only used to initialize forala editor, cause
+    // it is bugged when both input/output model are the same
+    inputPost: Post;
     post: Post;
-
+    
     froalaEditor: any;
 
     tabs = {'cat': false, 'tag': false, 'topic': false};
@@ -51,8 +50,10 @@ export class PostPage implements OnInit
                 private store: Store<AppState>) { }
 
     ngOnInit() {
-        this.authState$ = this.store.select<AuthState>('auth');
-        this.cmsState$  = this.store.select<CmsAttrsState>('cms');
+        this.store.select<AuthState>('auth')
+            .subscribe(authState => this.authState = authState);
+        this.store.select<CmsAttrsState>('cms')
+            .subscribe(cmsState => this.cmsState = cmsState);
 
         // Dispatch an action to create or load a post
         this.route.params.subscribe(params => {
@@ -68,9 +69,10 @@ export class PostPage implements OnInit
         // Load the post
         this.store.select<PostsState>('posts').subscribe(postsState => {
             this.postsState = postsState;
-            /* When opening a single post, 'editing' always contains 1 id */
-            this.post = this.postsState.entities[this.postsState.editing[0]];
-            console.log("**** GET A NEW POST: ", this.post);
+            // When opening a single post, 'editing' always contains 1 id
+            // Do a copy of the post, do not modify on the original one.
+            this.inputPost = postsState.entities[postsState.editing[0]];
+            if (this.inputPost) this.post = Object.assign({}, this.inputPost);
         });
     }
     
@@ -84,57 +86,29 @@ export class PostPage implements OnInit
         }
     }
 
-    get isDraft() { return this.post.state === 'draft'; }
+    get isDraft()   { return this.post.state === 'draft'; }
     get isPending() { return this.post.state === 'pending'; }
     get isPublish() { return this.post.state === 'publish'; }
     get hasEditorRole() { return this.store.let(hasEditorRole()); }
 
+    get zh() { return zh_CN.post; } // Localization
     get froalaOptions() { return FROALA_OPTIONS; }
-    /* Post type enum(kind of) */
-    get POST_TYPES() { return POST_TYPES; }
     
-    /* Localization for cms post */
-    get zh() { return zh_CN.post; }
-    //get authors() { return this.userService.authors; }
-    //get editors() { return this.userService.editors; }
 
-    //get categories() { return this.postService.categories; }
-    //get tags()       { return this.postService.tags; }
-    //get topics()     { return this.postService.topics; }
-
-    /**
-     * NOTE: ngrx/effect 'savePost' happens before reducer 'SAVE_POST', is this
-     * the behavior we want???
-     */
-    save() { console.error("***save()***"); this.store.dispatch(PostActions.savePost(this.post)); }
-    save2Pending() { console.error("***savePending()***"); this.post.state = 'pending'; this.save(); }
-    save2Draft() { console.error("***saveDraft()***"); this.post.state = 'draft'; this.save(); }
-    save2Publish() { console.error("***savePublish()***"); this.post.state = 'publish'; this.save(); }
-
-    /**
-     * This function is somehow bugged
-     * @param event
-     */
-    onFroalaModelChanged(event: any) {
+    postContentChanged($event) {
+        // If no timeout set, the editor will throw an exception
         setTimeout(() => {
-            //this.post.content = event;
-            console.log("onFroalaModelChanged");
-        });
+            console.log("Post content changed!");
+            this.post.content = $event;
+        }, 5);
     }
 
-    onEditorInitialized(event?: any) {
-        console.log("onEditorInitialized");
-        this.froalaEditor = FroalaEditorCompnoent.getFroalaInstance();
-        this.froalaEditor.on('froalaEditor.focus', (e, editor) => {
-            console.log("editor is focused");
-        });
+    // TODO: Need to get back a save success status and enable canDeactivate
+    save() {
+        console.error("***save()***");
+        this.store.dispatch(PostActions.savePost(this.post));
     }
-
-    onSelectAuthor(e: any) {
-        console.log("Author selected: ", e.item.nicename);
-    }
-
-    onSelectEditor(e: any) {
-        console.log("Editor selected: ", e.item.nicename);
-    }
+    save2Pending() { this.post.state = 'pending'; this.save(); }
+    save2Draft()   { this.post.state = 'draft';   this.save(); }
+    save2Publish() { this.post.state = 'publish'; this.save(); }
 }

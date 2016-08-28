@@ -64,11 +64,13 @@
   }
 }
 
-.post-title, .post-meta-select {
-  margin-bottom: 1rem;
+.post-title {
+  font-size: 120%;
+  font-weight: 700;
 }
 
-.post-meta-select {
+.post-meta-row {
+  margin-bottom: 1rem;
   .post-meta {
     padding-right: 1rem;
     label {

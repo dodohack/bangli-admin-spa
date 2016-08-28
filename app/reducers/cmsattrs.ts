@@ -3,10 +3,6 @@ import { Action }         from '@ngrx/store';
 import { User }           from '../models';
 import { Category }       from "../models";
 import { Tag }            from "../models";
-//import { PostState }      from "../models";
-//import { TopicType }      from "../models";
-//import { CreativeType }   from "../models";
-//import { PostType }       from "../models";
 import { Topic }          from "../models";
 
 import { POST_STATES }    from '../models';

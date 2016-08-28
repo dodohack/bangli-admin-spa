@@ -1,15 +1,15 @@
-<editor-page-header [authState]="authState$ | async" [isPost]="true"
+<editor-page-header [authState]="authState" [isPost]="true"
                     [entity]="post" [lists]="postsState">
 </editor-page-header>
 
 <form *ngIf="post" (ngSubmit)="save()" #postForm="ngForm">
 
 <!-- Post title and main buttons -->
-<div class="row post-title">
+<div class="row post-meta-row">
     <div class="col-xs-7 col-sm-7 col-md-8">
         <div class="input-group">
             <span class="input-group-addon">标题</span>
-            <input type="text" name="title" class="form-control"
+            <input type="text" name="title" class="form-control post-title"
                    [(ngModel)]="post.title" placeholder="文章标题" required>
         </div>
     </div>
@@ -33,14 +33,14 @@
 </div>
 
 <!-- author/editor/post_type/creative_type selectors -->
-<div class="row post-meta-select">
+<div class="row post-meta-row">
     <div class="col-xs-12 form-inline">
 
             <div class="form-group post-meta">
                 <label>作者</label>
                 <select class="form-control form-control-sm custom-select" name="author_id" [(ngModel)]="post.author_id">
-                    <option *ngFor="let author of (cmsState$ | async).authors"
-                            [selected]="author.id === post.author_id"
+                    <option *ngFor="let author of cmsState.authors"
+                            [selected]="author.id === post.author_id || (!post.author_id && authState.users[authState.key].id === author.id)"
                             [value]="author.id">{{ author.display_name }}</option>
                 </select>
             </div>
@@ -48,8 +48,8 @@
             <div class="form-group post-meta">
                 <label>编辑</label>
                 <select class="form-control form-control-sm custom-select" name="editor_id" [(ngModel)]="post.editor_id">
-                    <option *ngFor="let editor of (cmsState$ | async).editors"
-                            [selected]="editor.id === post.editor_id"
+                    <option *ngFor="let editor of cmsState.editors"
+                            [selected]="editor.id === post.editor_id || (!post.editor_id && authState.users[authState.key].id === editor.id)"
                             [value]="editor.id">{{ editor.display_name }}</option>
                 </select>
             </div>
@@ -57,18 +57,18 @@
             <div class="form-group post-meta">
                 <label>文章类型</label>
                 <select class="form-control form-control-sm custom-select" name="post_type" [(ngModel)]="post.post_type">
-                    <option *ngFor="let post_type of (cmsState$ | async).post_types.available"
-                            [selected]="post.post_type === post_type.post_type"
-                            [value]="post_type.post_type">{{ post_type.post_type }}</option>
+                    <option *ngFor="let pt of cmsState.post_types.available"
+                            [selected]="post.post_type === pt.post_type"
+                            [value]="pt.post_type">{{ zh[pt.post_type] }}</option>
                 </select>
             </div>
 
             <div class="form-group post-meta">
                 <label>原创类型</label>
                 <select class="form-control form-control-sm custom-select" name="c_type" [(ngModel)]="post.creative_type">
-                    <option *ngFor="let c_type of (cmsState$ | async).post_creative_types.available"
+                    <option *ngFor="let c_type of cmsState.post_creative_types.available"
                             [selected]="post.creative_type === c_type.creative_type"
-                            [value]="c_type.creative_type">{{ c_type.creative_type }}</option>
+                            [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
                 </select>
             </div>
 
@@ -84,43 +84,9 @@
     </div>
 </div>
 
-<!-- Post meta data -->
-<!--
-<div class="form-inline post-meta-wrapper">
-    <div class="form-group post-meta-item">
-        <span class="tag tag-warning-outline">作者</span>
-        <select class="form-control" [(ngModel)]="post.author_id">
-            <option [value]="author.id"
-                    *ngFor="let author of (authors$ | async)">{{ author.display_name }}</option>
-        </select>
-    </div>
-
-    <div class="form-group post-meta-item">
-        <span class="tag tag-warning-outline">编辑</span>
-        <select class="form-control" [(ngModel)]="post.editor_id">
-            <option [value]="editor.id"
-                    *ngFor="let editor of (editors$ | async)">{{ editor.display_name }}</option>
-        </select>
-    </div>
-
-    <div class="form-group post-meta-item">
-        <span class="tag tag-warning-outline">文章类型</span>
-        <select class="form-control" [(ngModel)]="post.post_type">
-            <option [value]="pt" *ngFor="let pt of POST_TYPES">{{ zh[pt] }}</option>
-        </select>
-    </div>
-
-    <div class="form-group post-meta-item">
-        <span class="tag tag-warning-outline">前端显示时间</span>
-        <input class="form-control input-sm" [(ngModel)]="post.fake_published_at">
-    </div>
-</div>
--->
-
 <!-- Froala Editor -->
-<froala [froalaOptions]="froalaOptions"
-        [froalaData]="post.content" (model)="onFroalaModelChanged($event)"
-        (editorInitialized)="onEditorInitialized()"></froala>
+<froala *ngIf="inputPost" [froalaOptions]="froalaOptions"
+        [froalaData]="inputPost.content" (model)="postContentChanged($event)"></froala>
 
 <div class="row">
     <div class="col-xs-8">
@@ -144,19 +110,20 @@
         <tab heading="分类" [active]="tabs['cat']"
              (select)="tabs['cat'] = true" (deselect)="tabs['cat'] = false">
             <category-tree [isTreeRoot]="showFilter"
-                           [categories]="categories"
+                           [categories]="cmsState.categories"
                            (checkEvent)="checkCat($event)">
             </category-tree>
         </tab>
 
         <tab heading="标签" [active]="tabs['tag']"
              (select)="tabs['tag'] = true" (deselect)="tabs['tag'] = false">
-            <tag-cloud [tags]="tags" (checkEvent)="checkTag($event)"></tag-cloud>
+            <tag-cloud [tags]="cmsState.tags" (checkEvent)="checkTag($event)"></tag-cloud>
         </tab>
 
         <tab heading="专题" [active]="tabs['topic']"
              (select)="tabs['topic'] = true" (deselect)="tabs['topic'] = false">
-            <topic-cloud [topics]="topics" (checkEvent)="checkTopic($event)"></topic-cloud>
+            <topic-cloud [topics]="cmsState.post_topic_cats"
+                         (checkEvent)="checkTopic($event)"></topic-cloud>
         </tab>
     </tabset>
 </right-panel>

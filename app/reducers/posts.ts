@@ -62,7 +62,8 @@ export default function (state = initialState, action: Action): PostsState {
         case PostActions.NEW_POST: {
             // Create a new post, we use '0' as a placeholder id
             const id = 0;
-            const newPost = new Post;
+            let newPost: Post = new Post;
+            newPost.state     = 'unsaved';
             return {
                 ids: [...state.ids, id],
                 editing: [id],

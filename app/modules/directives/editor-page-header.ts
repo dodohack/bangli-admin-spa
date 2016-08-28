@@ -61,6 +61,9 @@ export class EditorPageHeader {
     }
     
     get previewLink() {
+        if (!(this.entity.id || this.entity.guid))
+            return '';
+        
         let url = this.authState.domains[this.authState.key].url + '/';
         if (this.isPost)
             return url + this.entity.id + '.html';
