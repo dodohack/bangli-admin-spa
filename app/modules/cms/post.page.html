@@ -38,7 +38,8 @@
 
         <div class="form-group post-meta">
             <label>作者</label>
-            <select class="form-control form-control-sm custom-select" name="author_id" [(ngModel)]="post.author_id">
+            <select class="form-control form-control-sm custom-select"
+                    name="author_id" [(ngModel)]="post.author_id">
                 <option *ngFor="let author of cmsState.authors"
                         [selected]="author.id === post.author_id"
                         [value]="author.id">{{ author.display_name }}</option>
@@ -47,7 +48,8 @@
 
         <div class="form-group post-meta">
             <label>编辑</label>
-            <select class="form-control form-control-sm custom-select" name="editor_id" [(ngModel)]="post.editor_id">
+            <select class="form-control form-control-sm custom-select"
+                    name="editor_id" [(ngModel)]="post.editor_id">
                 <option *ngFor="let editor of cmsState.editors"
                         [selected]="editor.id === post.editor_id"
                         [value]="editor.id">{{ editor.display_name }}</option>
@@ -56,7 +58,8 @@
 
         <div class="form-group post-meta">
             <label>文章类型</label>
-            <select class="form-control form-control-sm custom-select" name="post_type" [(ngModel)]="post.post_type">
+            <select class="form-control form-control-sm custom-select"
+                    name="post_type" [(ngModel)]="post.post_type">
                 <option *ngFor="let pt of cmsState.post_types.available"
                         [selected]="post.post_type === pt.post_type"
                         [value]="pt.post_type">{{ zh[pt.post_type] }}</option>
@@ -65,7 +68,8 @@
 
         <div class="form-group post-meta">
             <label>原创类型</label>
-            <select class="form-control form-control-sm custom-select" name="c_type" [(ngModel)]="post.creative_type">
+            <select class="form-control form-control-sm custom-select"
+                    name="c_type" [(ngModel)]="post.creative_type">
                 <option *ngFor="let c_type of cmsState.post_creative_types.available"
                         [selected]="post.creative_type === c_type.creative_type"
                         [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
@@ -106,7 +110,7 @@
 </form>
 
 <!-- Right panel, we can trigger a seperate saving individually -->
-<right-panel [width]="'540px'" [isOpen]="openPanel">
+<right-panel [width]="'540px'" [isOpen]="openPanel" *ngIf="post">
     <accordion>
 
         <accordion-group isOpen="true">
@@ -126,7 +130,9 @@
             </div>
 
             <tag-cloud [tags]="cmsState.tags"
-                       (checkEvent)="addTag($event)"></tag-cloud>
+                       [selectedTags]="post.tags"
+                       (addTag)="addTag($event)"
+                       (removeTag)="removeTag($event)"></tag-cloud>
         </accordion-group>
 
         <accordion-group isOpen="true">
@@ -135,7 +141,9 @@
             </div>
 
             <topic-cloud [topics]="cmsState.post_topic_cats"
-                         (checkEvent)="addTopic($event)"></topic-cloud>
+                         [selectedTopics]="post.topics"
+                         (addTopic)="addTopic($event)"
+                         (removeTopic)="removeTopic($event)"></topic-cloud>
         </accordion-group>
 
     </accordion>

@@ -8,8 +8,8 @@ import { Post } from '../../models';
 
 @Component({
     selector: 'cms-tag-cloud',
-    template: require('./cms-tag-cloud.html')/*,
-    changeDetection: ChangeDetectionStrategy.OnPush*/
+    template: require('./cms-tag-cloud.html'),
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CmsTagCloud {
     /* Post information needs to modify */

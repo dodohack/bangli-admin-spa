@@ -1,10 +1,12 @@
 import { Component, EventEmitter } from '@angular/core';
 import { Input, Output }           from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { Category }                from '../../models';
 
 @Component({
     selector: 'category-tree',
-    template: require('./category-tree.html')
+    template: require('./category-tree.html'),
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryTree {
     /* Only show category filter on root level */

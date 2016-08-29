@@ -4,21 +4,12 @@
   .cms-tag-group {
     display: inline;
     padding-right: 1.5rem;
-
-    //span {
-    //  margin-right: 0.5rem;
-    //}
-
-    // This is a fix to the selected tag-cloud of single post/topic/...
-    .tag-item {
-      margin-right: 0.25rem;
-    }
   }
 }
 
 .tag-cloud {
   list-style: none;
-  display: inline-block;
+  display: inline;
   margin-bottom: 0;
   padding-left: 0;
 }

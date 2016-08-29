@@ -2,11 +2,24 @@
     <input placeholder="过滤" type="text" class="form-control"
            #box (keyup)="filterTag(box.value)">
 </div>
+
+<span class="tag tag-warning-outline tag-item">已选中标签:</span>
+<ul class="tag-cloud" *ngIf="selectedTags">
+    <li *ngFor="let tag of selectedTags"
+        class="tag-item tag tag-pill tag-primary-outline"
+        (click)="removeTag.emit(tag.id)" >
+        {{ tag.name }} x
+    </li>
+</ul>
+
+<hr>
+
+<span class="tag tag-warning-outline tag-item">可用标签:</span>
 <ul class="tag-cloud">
-    <template ngFor let-tag [ngForOf]="tags">
-        <li *ngIf="!tag.hidden" class="tag-item tag tag-pill tag-default-outline"
-            [class.active]="tag.checked"
-            (click)="checkEvent.emit(tag)" >
+    <template ngFor let-tag [ngForOf]="availableTags">
+        <li *ngIf="!tag.hidden"
+            class="tag-item tag tag-pill tag-default-outline"
+            (click)="addTag.emit(tag)">
             {{ tag.name }}
         </li>
     </template>

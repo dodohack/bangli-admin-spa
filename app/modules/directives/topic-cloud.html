@@ -2,11 +2,24 @@
     <input placeholder="过滤" type="text" class="form-control"
            #box (keyup)="filterTopic(box.value)">
 </div>
+
+<span class="tag tag-warning-outline tag-item">已选中专题:</span>
 <ul class="tag-cloud">
-    <template ngFor let-topic [ngForOf]="topics">
-        <li *ngIf="!topic.hidden" class="tag-item tag tag-pill tag-default-outline"
-            [class.active]="topic.checked"
-            (click)="checkEvent.emit(topic)" >
+    <li *ngFor="let topic of selectedTopics"
+        class="tag-item tag tag-pill tag-primary-outline"
+        (click)="removeTopic.emit(topic.id)">
+        {{ topic.title }} x
+    </li>
+</ul>
+
+<hr>
+
+<span class="tag tag-warning-outline tag-item">可用专题:</span>
+<ul class="tag-cloud">
+    <template ngFor let-topic [ngForOf]="availableTopics">
+        <li *ngIf="!topic.hidden"
+            class="tag-item tag tag-pill tag-default-outline"
+            (click)="addTopic.emit(topic)">
             {{ topic.title }}
         </li>
     </template>
