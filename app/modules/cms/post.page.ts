@@ -109,9 +109,13 @@ export class PostPage implements OnInit
     }
     
     // Category, tag, topic add/remove events
-    addCat(cat/*: Category*/) {
-        console.log("category state: ", cat);
-        //this.store.dispatch(PostActions.addCategory(cat));
+    selectCat(cat: Category) {
+        // Unselect a category if is is previously selected, vice versa
+        if (cat.checked) this.removeCat(cat.id);
+        else this.addCat(cat);
+    }
+    addCat(cat: Category) {
+        this.store.dispatch(PostActions.addCategory(cat));
     }
     addTag(tag: Tag) {
         this.store.dispatch(PostActions.addTag(tag));

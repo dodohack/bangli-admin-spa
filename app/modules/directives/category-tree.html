@@ -9,7 +9,7 @@
             <span class="checkbox" *ngIf="!hasChild(cat)">
                 <label>
                     <input type="checkbox" [checked]="cat.checked"
-                           (change)="checkEvent.emit($event)" />
+                           (change)="checkEvent.emit(cat)" />
                     {{ cat.name }}
                 </label>
             </span>
