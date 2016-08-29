@@ -1,67 +1,7 @@
 
-/* includes selected categories, tags and topics */
-.post-tags {
-
-  .post-tag-group {
-    display: inline;
-    padding-right: 1rem;
-
-    ul {
-      margin: 0;
-      padding: 0;
-      display: inline;
-      list-style: none;
-
-      li {
-        cursor: pointer;
-        margin-left: 0.5rem;
-
-        &:hover {
-          background-color: #00ee00;
-        }
-      }
-    }
-  }
-}
-
 /* Froala editor */
 .fr-box {
   margin-bottom: 2rem;
-}
-
-.nav-tabs {
-  margin-bottom: 0.25rem;
-
-  a.active {
-    background-color: #f3f3f3 !important;
-  }
-}
-
-.tree-view, .tag-cloud, .topic-cloud {
-  list-style: none;
-}
-
-.tree-item, .tag-item, .topic-cloud {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.tag-cloud, .topic-cloud {
-  padding-left: 0;
-
-  li.active {
-    background-color: grey;
-  }
-}
-
-.tag-item, .topic-item {
-  font-size: 85%;
-  cursor: pointer;
-  &:hover {
-    background-color: grey;
-  }
 }
 
 .post-title {
@@ -70,9 +10,12 @@
 }
 
 .post-meta-row {
+
   margin-bottom: 1rem;
+
   .post-meta {
     padding-right: 1rem;
+
     label {
       font-size: 90%;
       color: darkgray;
@@ -80,19 +23,11 @@
   }
 }
 
-/* Author, editor and post type wrapper */
-.post-meta-wrapper, .post-ctt-wrapper {
-  margin-bottom: 1rem;
-  background: #eeeeee;
-  padding: 0.5rem;
-  white-space: nowrap;
-
-  .post-meta-item {
-    margin-right: 1rem;
-  }
-}
-
-.post-ctt-wrapper {
+.cms-tag-cloud-wrapper {
   padding: 0.4rem 0.5rem 0.5rem;
   white-space: normal;
+  background: #f1ffff;
+  margin-bottom: 1rem;
+  border: 1px solid #d8e6e6;
+  border-radius: 3px;
 }

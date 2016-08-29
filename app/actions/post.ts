@@ -1,5 +1,8 @@
-import { Action }  from '@ngrx/store';
-import { Post } from '../models';
+import { Action }   from '@ngrx/store';
+import { Post }     from '../models';
+import { Category } from "../models";
+import { Tag }      from "../models";
+import { Topic }    from "../models";
 
 export class PostActions {
     static SEARCH = '[Post] Search';
@@ -132,5 +135,53 @@ export class PostActions {
             type: PostActions.SAVE_POSTS,
             payload: posts
         };
+    }
+
+    static ADD_CATEGORY = '[Post] Add Category';
+    static addCategory(cat: Category): Action {
+        return {
+            type: PostActions.ADD_CATEGORY,
+            payload: cat
+        };
+    }
+
+    static ADD_TAG = '[Post] Add Tag';
+    static addTag(tag: Tag): Action {
+        return {
+            type: PostActions.ADD_TAG,
+            payload: tag
+        };
+    }
+
+    static ADD_TOPIC = '[Post] Add Topic';
+    static addTopic(topic: Topic): Action {
+        return {
+            type: PostActions.ADD_TOPIC,
+            payload: topic
+        }
+    }
+    
+    static REMOVE_CATEGORY = '[Post] Remove Category';
+    static removeCategory(cat_id: number): Action {
+        return {
+            type: PostActions.REMOVE_CATEGORY,
+            payload: cat_id
+        };
+    }
+
+    static REMOVE_TAG = '[Post] Remove Tag';
+    static removeTag(tag_id: number): Action {
+        return {
+            type: PostActions.REMOVE_TAG,
+            payload: tag_id
+        };
+    }
+
+    static REMOVE_TOPIC = '[Post] Remove Topic';
+    static removeTopic(topic_id: number): Action {
+        return {
+            type: PostActions.REMOVE_TOPIC,
+            payload: topic_id
+        }
     }
 }

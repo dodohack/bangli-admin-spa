@@ -19,6 +19,9 @@ import { AlertActions }      from "../../actions";
 
 import { FROALA_OPTIONS }    from '../../models/froala.option';
 import { Post }              from '../../models';
+import { Category }          from '../../models';
+import { Tag }               from '../../models';
+import { Topic }             from '../../models';
 import { zh_CN }             from '../../localization';
 
 
@@ -72,7 +75,8 @@ export class PostPage implements OnInit
             // When opening a single post, 'editing' always contains 1 id
             // Do a copy of the post, do not modify on the original one.
             this.inputPost = postsState.entities[postsState.editing[0]];
-            if (this.inputPost) this.post = Object.assign({}, this.inputPost);
+            if (this.inputPost) 
+                this.post = Object.assign({}, this.inputPost, {author_id: this.myId});
         });
     }
     
@@ -89,6 +93,7 @@ export class PostPage implements OnInit
     get isDraft()   { return this.post.state === 'draft'; }
     get isPending() { return this.post.state === 'pending'; }
     get isPublish() { return this.post.state === 'publish'; }
+    get myId() { return this.authState.users[this.authState.key].id; }
     get hasEditorRole() { return this.store.let(hasEditorRole()); }
 
     get zh() { return zh_CN.post; } // Localization
@@ -100,8 +105,30 @@ export class PostPage implements OnInit
         setTimeout(() => {
             console.log("Post content changed!");
             this.post.content = $event;
-        }, 5);
+        });
     }
+    
+    // Category, tag, topic add/remove events
+    addCat(cat: Category) {
+        this.store.dispatch(PostActions.addCategory(cat));
+    }
+    addTag(tag: Tag) {
+        this.store.dispatch(PostActions.addTag(tag));
+    }
+    addTopic(topic: Topic) {
+        this.store.dispatch(PostActions.addTopic(topic));
+    }
+    removeCat(id: number) {
+        this.store.dispatch(PostActions.removeCategory(id));
+    }
+    removeTag(id: number) {
+        this.store.dispatch(PostActions.removeTag(id));
+    }
+    removeTopic(id: number) {
+        this.store.dispatch(PostActions.removeTopic(id));
+    }
+
+
 
     // TODO: Need to get back a save success status and enable canDeactivate
     save() {

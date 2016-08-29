@@ -1,32 +1,12 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Category } from '../../models';
+import { Component, EventEmitter } from '@angular/core';
+import { Input, Output }           from '@angular/core';
+import { Category }                from '../../models';
 
 @Component({
     selector: 'category-tree',
-    template:
-    `
-    <div *ngIf="isTreeRoot" class="filter-wrapper">
-         <input placeholder="过滤" type="text" class="form-control"
-         #box (keyup)="filterTree(box.value)">
-    </div>
-    <ul *ngIf="categories" class="tree-view">
-        <template ngFor let-cat [ngForOf]="categories">
-        <li *ngIf="!cat.hidden" class="tree-item">
-            <div class="checkbox" *ngIf="!cat.children">
-                <label>
-                    <input type="checkbox" [checked]="cat.checked" (click)="check(cat)" />
-                    {{ cat.name }} | {{ cat.slug }}
-                </label>
-            </div>
-            <span *ngIf="cat.children">+ {{cat.name}}</span>
-            <category-tree [categories]="cat.children" (checkEvent)="addCat($event)"></category-tree>
-        </li>
-        </template>
-    </ul>
-    `,
-    directives: [CategoryTreeComponent]
+    template: require('./category-tree.html')
 })
-export class CategoryTreeComponent {
+export class CategoryTree {
     /* Only show category filter on root level */
     @Input()
     isTreeRoot: boolean;
@@ -36,16 +16,6 @@ export class CategoryTreeComponent {
 
     @Output()
     checkEvent = new EventEmitter();
-
-    check(cat) {
-        cat.checked = !cat.checked;
-        /* Notify parent */
-        this.checkEvent.emit(cat);
-    }
-
-    addCat(cat) {
-        this.checkEvent.emit(cat);
-    }
 
     filterTree(str: string)
     {

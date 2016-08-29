@@ -36,53 +36,54 @@
 <div class="row post-meta-row">
     <div class="col-xs-12 form-inline">
 
-            <div class="form-group post-meta">
-                <label>作者</label>
-                <select class="form-control form-control-sm custom-select" name="author_id" [(ngModel)]="post.author_id">
-                    <option *ngFor="let author of cmsState.authors"
-                            [selected]="author.id === post.author_id || (!post.author_id && authState.users[authState.key].id === author.id)"
-                            [value]="author.id">{{ author.display_name }}</option>
-                </select>
-            </div>
-
-            <div class="form-group post-meta">
-                <label>编辑</label>
-                <select class="form-control form-control-sm custom-select" name="editor_id" [(ngModel)]="post.editor_id">
-                    <option *ngFor="let editor of cmsState.editors"
-                            [selected]="editor.id === post.editor_id || (!post.editor_id && authState.users[authState.key].id === editor.id)"
-                            [value]="editor.id">{{ editor.display_name }}</option>
-                </select>
-            </div>
-
-            <div class="form-group post-meta">
-                <label>文章类型</label>
-                <select class="form-control form-control-sm custom-select" name="post_type" [(ngModel)]="post.post_type">
-                    <option *ngFor="let pt of cmsState.post_types.available"
-                            [selected]="post.post_type === pt.post_type"
-                            [value]="pt.post_type">{{ zh[pt.post_type] }}</option>
-                </select>
-            </div>
-
-            <div class="form-group post-meta">
-                <label>原创类型</label>
-                <select class="form-control form-control-sm custom-select" name="c_type" [(ngModel)]="post.creative_type">
-                    <option *ngFor="let c_type of cmsState.post_creative_types.available"
-                            [selected]="post.creative_type === c_type.creative_type"
-                            [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
-                </select>
-            </div>
-
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-xs-12">
-        <div class="form-inline post-ctt-wrapper">
-            <!-- Post category, tag, topic etc -->
-            <post-ctt-cloud [post]="post" (toggle)="toggleRightBar($event)"></post-ctt-cloud>
+        <div class="form-group post-meta">
+            <label>作者</label>
+            <select class="form-control form-control-sm custom-select" name="author_id" [(ngModel)]="post.author_id">
+                <option *ngFor="let author of cmsState.authors"
+                        [selected]="author.id === post.author_id"
+                        [value]="author.id">{{ author.display_name }}</option>
+            </select>
         </div>
+
+        <div class="form-group post-meta">
+            <label>编辑</label>
+            <select class="form-control form-control-sm custom-select" name="editor_id" [(ngModel)]="post.editor_id">
+                <option *ngFor="let editor of cmsState.editors"
+                        [selected]="editor.id === post.editor_id"
+                        [value]="editor.id">{{ editor.display_name }}</option>
+            </select>
+        </div>
+
+        <div class="form-group post-meta">
+            <label>文章类型</label>
+            <select class="form-control form-control-sm custom-select" name="post_type" [(ngModel)]="post.post_type">
+                <option *ngFor="let pt of cmsState.post_types.available"
+                        [selected]="post.post_type === pt.post_type"
+                        [value]="pt.post_type">{{ zh[pt.post_type] }}</option>
+            </select>
+        </div>
+
+        <div class="form-group post-meta">
+            <label>原创类型</label>
+            <select class="form-control form-control-sm custom-select" name="c_type" [(ngModel)]="post.creative_type">
+                <option *ngFor="let c_type of cmsState.post_creative_types.available"
+                        [selected]="post.creative_type === c_type.creative_type"
+                        [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
+            </select>
+        </div>
+
+        <a class="float-right btn btn-sm btn-outline-warning" (click)="openPanel = true">展开侧栏</a>
     </div>
 </div>
+
+
+<!-- Post category, tag, topic etc -->
+<cms-tag-cloud [post]="post"
+               (toggle)="openPanel = !openPanel"
+               (deleteCat)="removeCat($event)"
+               (deleteTag)="removeTag($event)"
+               (deleteTopic)="removeTopic($event)"></cms-tag-cloud>
+
 
 <!-- Froala Editor -->
 <froala *ngIf="inputPost" [froalaOptions]="froalaOptions"
@@ -104,26 +105,38 @@
 
 </form>
 
-<!-- Right panel -->
-<right-panel [width]="'400px'" [isOpen]="false">
-    <tabset [justified]="true">
-        <tab heading="分类" [active]="tabs['cat']"
-             (select)="tabs['cat'] = true" (deselect)="tabs['cat'] = false">
+<!-- Right panel, we can trigger a seperate saving individually -->
+<right-panel [width]="'540px'" [isOpen]="openPanel">
+    <accordion>
+
+        <accordion-group isOpen="true">
+            <div accordion-heading>
+                文章分类<i class="pull-right fa fa-chevron-circle-down"></i>
+            </div>
+
             <category-tree [isTreeRoot]="showFilter"
                            [categories]="cmsState.categories"
-                           (checkEvent)="checkCat($event)">
+                           (checkEvent)="addCat($event)">
             </category-tree>
-        </tab>
+        </accordion-group>
 
-        <tab heading="标签" [active]="tabs['tag']"
-             (select)="tabs['tag'] = true" (deselect)="tabs['tag'] = false">
-            <tag-cloud [tags]="cmsState.tags" (checkEvent)="checkTag($event)"></tag-cloud>
-        </tab>
+        <accordion-group isOpen="true">
+            <div accordion-heading>
+                文章标签<i class="pull-right fa fa-chevron-circle-down"></i>
+            </div>
 
-        <tab heading="专题" [active]="tabs['topic']"
-             (select)="tabs['topic'] = true" (deselect)="tabs['topic'] = false">
+            <tag-cloud [tags]="cmsState.tags"
+                       (checkEvent)="addTag($event)"></tag-cloud>
+        </accordion-group>
+
+        <accordion-group isOpen="true">
+            <div accordion-heading>
+                文章专题分类<i class="pull-right fa fa-chevron-circle-down"></i>
+            </div>
+
             <topic-cloud [topics]="cmsState.post_topic_cats"
-                         (checkEvent)="checkTopic($event)"></topic-cloud>
-        </tab>
-    </tabset>
+                         (checkEvent)="addTopic($event)"></topic-cloud>
+        </accordion-group>
+
+    </accordion>
 </right-panel>

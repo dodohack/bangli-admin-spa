@@ -1,0 +1,37 @@
+
+/* includes selected categories, tags and topics */
+.cms-tags {
+  .cms-tag-group {
+    display: inline;
+    padding-right: 1.5rem;
+
+    //span {
+    //  margin-right: 0.5rem;
+    //}
+
+    // This is a fix to the selected tag-cloud of single post/topic/...
+    .tag-item {
+      margin-right: 0.25rem;
+    }
+  }
+}
+
+.tag-cloud {
+  list-style: none;
+  display: inline-block;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+
+.tag-item {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  cursor: pointer;
+  &:hover {
+    color: #000;
+    background-color: #e5ffd4;
+  }
+}

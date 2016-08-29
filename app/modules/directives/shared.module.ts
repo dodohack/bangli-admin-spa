@@ -16,15 +16,15 @@ import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
 import { RightPanel }                from './right-panel';
 import { Paginator }                 from './paginator';
-import { CategoryTreeComponent }     from './category-tree.component';
+import { CategoryTree }              from './category-tree';
+import { TopicCloud }                from './topic-cloud';
+import { TagCloud }                  from './tag-cloud';
+import { CmsTagCloud }               from './cms-tag-cloud';
 import { EditorPageHeader }          from './editor-page-header';
 import { ListPageHeader }            from './list-page-header';
 import { ListPageMenuComponent }     from './list-page-menu.component';
 import { FastEditPostFormComponent } from './fast-edit-post-form.component';
-import { PostCttCloudComponent}      from './post-ctt-cloud.component';
 import { SearchBoxComponent }        from './search-box.component';
-import { TagCloudComponent }         from './tag-cloud.component';
-import { TopicCloudComponent }       from './topic-cloud.component';
 import { DateFilterComponent }       from './date-filter.component';
 
 @NgModule({
@@ -42,13 +42,13 @@ import { DateFilterComponent }       from './date-filter.component';
         Paginator,
         ListPageHeader,
         ListPageMenuComponent,
-        CategoryTreeComponent,
+        CategoryTree,
+        TopicCloud,
+        TagCloud,
         EditorPageHeader,
+        CmsTagCloud,
         FastEditPostFormComponent,
-        PostCttCloudComponent,
         SearchBoxComponent,
-        TagCloudComponent,
-        TopicCloudComponent,
         DateFilterComponent,
     ],
     exports: [
@@ -64,13 +64,13 @@ import { DateFilterComponent }       from './date-filter.component';
         Paginator,
         ListPageHeader,
         ListPageMenuComponent,
-        CategoryTreeComponent,
+        CategoryTree,
+        TopicCloud,
+        TagCloud,
         EditorPageHeader,
+        CmsTagCloud,
         FastEditPostFormComponent,
-        PostCttCloudComponent,
         SearchBoxComponent,
-        TagCloudComponent,
-        TopicCloudComponent,
         DateFilterComponent,
 
         CommonModule,

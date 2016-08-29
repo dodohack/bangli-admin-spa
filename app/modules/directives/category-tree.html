@@ -1,0 +1,19 @@
+<div *ngIf="isTreeRoot" class="filter-wrapper">
+    <input placeholder="过滤" type="text" class="form-control"
+           #box (keyup)="filterTree(box.value)">
+</div>
+<ul *ngIf="categories" class="tree-view">
+    <template ngFor let-cat [ngForOf]="categories">
+        <li *ngIf="!cat.hidden" class="tree-item">
+            <div class="checkbox" *ngIf="!cat.children">
+                <label>
+                    <input type="checkbox" [checked]="cat.checked" (click)="checkEvent.emit(cat)" />
+                    {{ cat.name }} | {{ cat.slug }}
+                </label>
+            </div>
+            <span *ngIf="cat.children">+ {{cat.name}}</span>
+            <category-tree [categories]="cat.children"
+                           (checkEvent)="checkEvent.emit($event)"></category-tree>
+        </li>
+    </template>
+</ul>

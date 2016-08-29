@@ -1,0 +1,13 @@
+<div class="filter-wrapper">
+    <input placeholder="过滤" type="text" class="form-control"
+           #box (keyup)="filterTopic(box.value)">
+</div>
+<ul class="tag-cloud">
+    <template ngFor let-topic [ngForOf]="topics">
+        <li *ngIf="!topic.hidden" class="tag-item tag tag-pill tag-default-outline"
+            [class.active]="topic.checked"
+            (click)="checkEvent.emit(topic)" >
+            {{ topic.title }}
+        </li>
+    </template>
+</ul>
