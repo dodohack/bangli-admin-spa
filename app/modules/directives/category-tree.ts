@@ -35,7 +35,8 @@ export class CategoryTree implements OnInit {
     }
 
     get updatedCats(): Category[] {
-        let selectedIds = this.selectedCats.map(c => c.id);
+        let selectedIds: number[] = [];
+        if (this.selectedCats) selectedIds = this.selectedCats.map(c => c.id);
         return this.categories.map(c => {
             let checked = selectedIds.indexOf(c.id) !== -1;
             return Object.assign({}, c, {checked: checked});

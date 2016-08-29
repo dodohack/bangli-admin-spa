@@ -4,110 +4,107 @@
 
 <form *ngIf="post" (ngSubmit)="save()" #postForm="ngForm">
 
-<!-- Post title and main buttons -->
-<div class="row post-meta-row">
-    <div class="col-xs-7 col-sm-7 col-md-8">
-        <div class="input-group">
-            <span class="input-group-addon">标题</span>
-            <input type="text" name="title" class="form-control post-title"
-                   [(ngModel)]="post.title" placeholder="文章标题" required>
+    <!-- Post title and main buttons -->
+    <div class="row post-meta-row">
+        <div class="col-xs-7 col-sm-7 col-md-8">
+            <div class="input-group">
+                <span class="input-group-addon">标题</span>
+                <input type="text" name="title" class="form-control post-title"
+                       [(ngModel)]="post.title" placeholder="文章标题" required>
+            </div>
+        </div>
+
+        <div class="col-xs-5 col-sm-5 col-md-4">
+            <!-- Save buttons -->
+            <div class="float-right">
+                <button type="submit" class="btn btn-sm btn-outline-success"
+                        [disabled]="!postForm.form.dirty && postForm.form.valid">保存</button>
+
+                <button class="btn btn-sm btn-outline-primary"
+                        (click)="save2Pending()" [disabled]="!isDraft">提交审稿</button>
+
+                <button class="btn btn-sm btn-outline-danger"
+                        (click)="save2Draft()" *ngIf="isPending || isPublish">保存为草稿</button>
+
+                <button class="btn btn-sm btn-outline-danger"
+                        (click)="save2Publish()" [disabled]="isPublish">发布</button>
+            </div>
         </div>
     </div>
 
-    <div class="col-xs-5 col-sm-5 col-md-4">
-        <!-- Save buttons -->
-        <div class="float-right">
-            <button type="submit" class="btn btn-sm btn-outline-success"
-                    [disabled]="!postForm.form.dirty && postForm.form.valid">保存</button>
+    <!-- author/editor/post_type/creative_type selectors -->
+    <div class="row post-meta-row">
+        <div class="col-xs-12 form-inline">
 
-            <button class="btn btn-sm btn-outline-primary"
-                    (click)="save2Pending()" [disabled]="!isDraft">提交审稿</button>
+            <div class="form-group post-meta">
+                <label>作者</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="author_id" [(ngModel)]="post.author_id">
+                    <option *ngFor="let author of cmsState.authors"
+                            [selected]="author.id === post.author_id"
+                            [value]="author.id">{{ author.display_name }}</option>
+                </select>
+            </div>
 
-            <button class="btn btn-sm btn-outline-danger"
-                    (click)="save2Draft()" *ngIf="isPending || isPublish">保存为草稿</button>
+            <div class="form-group post-meta">
+                <label>编辑</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="editor_id" [(ngModel)]="post.editor_id">
+                    <option *ngFor="let editor of cmsState.editors"
+                            [selected]="editor.id === post.editor_id"
+                            [value]="editor.id">{{ editor.display_name }}</option>
+                </select>
+            </div>
 
-            <button class="btn btn-sm btn-outline-danger"
-                    (click)="save2Publish()" [disabled]="isPublish">发布</button>
-        </div>
-    </div>
-</div>
+            <div class="form-group post-meta">
+                <label>文章类型</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="post_type" [(ngModel)]="post.post_type">
+                    <option *ngFor="let pt of cmsState.post_types.available"
+                            [selected]="post.post_type === pt.post_type"
+                            [value]="pt.post_type">{{ zh[pt.post_type] }}</option>
+                </select>
+            </div>
 
-<!-- author/editor/post_type/creative_type selectors -->
-<div class="row post-meta-row">
-    <div class="col-xs-12 form-inline">
+            <div class="form-group post-meta">
+                <label>原创类型</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="c_type" [(ngModel)]="post.creative_type">
+                    <option *ngFor="let c_type of cmsState.post_creative_types.available"
+                            [selected]="post.creative_type === c_type.creative_type"
+                            [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
+                </select>
+            </div>
 
-        <div class="form-group post-meta">
-            <label>作者</label>
-            <select class="form-control form-control-sm custom-select"
-                    name="author_id" [(ngModel)]="post.author_id">
-                <option *ngFor="let author of cmsState.authors"
-                        [selected]="author.id === post.author_id"
-                        [value]="author.id">{{ author.display_name }}</option>
-            </select>
-        </div>
-
-        <div class="form-group post-meta">
-            <label>编辑</label>
-            <select class="form-control form-control-sm custom-select"
-                    name="editor_id" [(ngModel)]="post.editor_id">
-                <option *ngFor="let editor of cmsState.editors"
-                        [selected]="editor.id === post.editor_id"
-                        [value]="editor.id">{{ editor.display_name }}</option>
-            </select>
-        </div>
-
-        <div class="form-group post-meta">
-            <label>文章类型</label>
-            <select class="form-control form-control-sm custom-select"
-                    name="post_type" [(ngModel)]="post.post_type">
-                <option *ngFor="let pt of cmsState.post_types.available"
-                        [selected]="post.post_type === pt.post_type"
-                        [value]="pt.post_type">{{ zh[pt.post_type] }}</option>
-            </select>
-        </div>
-
-        <div class="form-group post-meta">
-            <label>原创类型</label>
-            <select class="form-control form-control-sm custom-select"
-                    name="c_type" [(ngModel)]="post.creative_type">
-                <option *ngFor="let c_type of cmsState.post_creative_types.available"
-                        [selected]="post.creative_type === c_type.creative_type"
-                        [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
-            </select>
-        </div>
-
-        <a class="float-right btn btn-sm btn-outline-warning" (click)="openPanel = true">展开侧栏</a>
-    </div>
-</div>
-
-
-<!-- Post category, tag, topic etc -->
-<cms-tag-cloud [post]="post"
-               (toggle)="openPanel = !openPanel"
-               (deleteCat)="removeCat($event)"
-               (deleteTag)="removeTag($event)"
-               (deleteTopic)="removeTopic($event)"></cms-tag-cloud>
-
-<!-- Thumbnail and excerpt -->
-<div class="row" style="background: #fff; margin-bottom: 1rem;">
-    <div class="col-xs-4">
-        <div style="width: 300px; height: 200px; border: 3px solid green;">
-            缩略图
+            <a class="float-right btn btn-sm btn-outline-warning" (click)="openPanel = true">展开侧栏</a>
         </div>
     </div>
 
-    <div class="col-xs-8">
-        <div class="form-group">
-            <label>摘要</label>
-            <textarea name="excerpt" [(ngModel)]="post.excerpt"
-                      class="form-control" rows="3"></textarea>
+
+    <!-- Post category, tag, topic etc -->
+    <cms-tag-cloud [post]="post"
+                   (toggle)="openPanel = !openPanel"
+                   (deleteCat)="removeCat($event)"
+                   (deleteTag)="removeTag($event)"
+                   (deleteTopic)="removeTopic($event)"></cms-tag-cloud>
+
+    <!-- Thumbnail and excerpt -->
+    <div class="row" style="background: #fff; margin-bottom: 1rem;">
+        <div class="col-xs-4">
+            <div style="width: 200px; height: 150px; border: 3px solid green;">
+                缩略图
+            </div>
+        </div>
+
+        <div class="col-xs-8">
+            <textarea name="excerpt" [(ngModel)]="post.excerpt" placeholder="摘要"
+                      class="form-control" style="height: 150px;"></textarea>
         </div>
     </div>
-</div>
 
-<!-- Froala Editor -->
-<froala *ngIf="inputPost" [froalaOptions]="froalaOptions"
-        [froalaData]="inputPost.content" (model)="postContentChanged($event)"></froala>
+    <!-- Froala Editor -->
+    <froala *ngIf="inputPost" [froalaOptions]="froalaOptions"
+            [froalaData]="inputPost.content" (model)="postContentChanged($event)"></froala>
 
 </form>
 

@@ -34,7 +34,8 @@ export class TopicCloud implements OnInit {
     }
     
     get unselectedTopics() {
-        let selectedIds = this.selectedTopics.map(t => t.id);
+        let selectedIds: number[] = [];
+        if (this.selectedTopics) selectedIds = this.selectedTopics.map(t => t.id);
         return this.topics.filter(t =>
             (selectedIds.indexOf(t.id) === -1) ? true : false);
     }

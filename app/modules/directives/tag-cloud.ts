@@ -35,7 +35,8 @@ export class TagCloud implements OnInit {
     }
 
     get unselectedTags(): Tag[] {
-        let selectedIds = this.selectedTags.map(t => t.id);
+        let selectedIds: number[] = [];
+        if (this.selectedTags) selectedIds = this.selectedTags.map(t => t.id);
         return this.tags.filter(t =>
             (selectedIds.indexOf(t.id) === -1) ? true : false);
     }
