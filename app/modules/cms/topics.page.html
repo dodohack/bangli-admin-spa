@@ -1,15 +1,4 @@
-<list-page-header [isTopic]="true"></list-page-header>
-
-<!-- list page menu -->
-<nav class="navbar page-sub-menu">
-    <list-page-menu
-            [baseUrl]="baseUrl" [byMe]=""
-            [statuses]="statuses"
-            [editors]="editors"
-            [localization]="zh"></list-page-menu>
-
-    <search-box></search-box>
-</nav>
+<list-page-header [isTopic]="true" [states]="cms.topic_states.actual" ></list-page-header>
 
 <!-- Filter toolbar -->
 <div class="list-toolbar">

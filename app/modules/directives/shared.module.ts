@@ -15,14 +15,13 @@ import { DROPDOWN_DIRECTIVES }  from 'ng2-bootstrap';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
 import { RightPanel }                from './right-panel';
-import { Paginator }                 from './paginator';
 import { CategoryTree }              from './category-tree';
 import { TopicCloud }                from './topic-cloud';
 import { TagCloud }                  from './tag-cloud';
 import { CmsTagCloud }               from './cms-tag-cloud';
 import { EditorPageHeader }          from './editor-page-header';
 import { ListPageHeader }            from './list-page-header';
-import { ListPageMenuComponent }     from './list-page-menu.component';
+import { ListFilterBar }             from './list-filter-bar';
 import { FastEditPostFormComponent } from './fast-edit-post-form.component';
 import { SearchBoxComponent }        from './search-box.component';
 import { DateFilterComponent }       from './date-filter.component';
@@ -39,9 +38,8 @@ import { DateFilterComponent }       from './date-filter.component';
         FroalaEditorCompnoent,
 
         RightPanel,
-        Paginator,
         ListPageHeader,
-        ListPageMenuComponent,
+        ListFilterBar,
         CategoryTree,
         TopicCloud,
         TagCloud,
@@ -61,9 +59,8 @@ import { DateFilterComponent }       from './date-filter.component';
         FroalaEditorCompnoent,
 
         RightPanel,
-        Paginator,
         ListPageHeader,
-        ListPageMenuComponent,
+        ListFilterBar,
         CategoryTree,
         TopicCloud,
         TagCloud,

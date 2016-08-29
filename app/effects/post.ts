@@ -95,12 +95,14 @@ export class PostEffects {
      */
     private getPosts(filters: any): Observable<any> {
         let cur_page = filters.cur_page;
-        //let status   = filters.status;
+        let state    = filters.state;
         let api = AuthCache.API() + AuthCache.API_PATH().cms_posts +
             '?page=' + cur_page +
             '&per_page=' + PrefCache.getPerPage() +
-            //'&status=' + status +
+            '&state=' + state +
             '&token=' + AuthCache.token();
+
+        console.log("LOAD POST FROM URL: ", api);
 
         return this.http.get(api).map(res => res.json());
     }

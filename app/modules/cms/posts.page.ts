@@ -8,6 +8,9 @@ import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
 import { AppState }          from '../../reducers';
+import { PostsState }        from '../../reducers/posts';
+import { AuthState }         from '../../reducers/auth';
+import { CmsAttrsState }     from '../../reducers/cmsattrs';
 import { PostActions }       from '../../actions';
 
 import { User, Post, Category, Tag, Topic,
@@ -18,23 +21,32 @@ import { zh_CN } from '../../localization';
 @Component({ template: require('./posts.page.html') })
 export class PostsPage implements OnInit
 {   
-    /* Posts state in ngrx */
-    postsState$: Observable<any>;
-
-    tabs = {'cat': false, 'tag': false, 'topic': false};
+    /* Posts states*/
+    authState:  AuthState;
+    cmsState:   CmsAttrsState;
+    postsState: PostsState;
 
     constructor(private route: ActivatedRoute,
-                private store: Store<AppState>) {
-        this.postsState$ = this.store.select('posts');
-    }
+                private store: Store<AppState>) {}
+
 
     
     ngOnInit() {
-        /* TODO: Get status/author/editor from url as well */
+        this.store.select<AuthState>('auth')
+            .subscribe(authState => this.authState = authState);
+        this.store.select<CmsAttrsState>('cms')
+            .subscribe(cmsState => this.cmsState = cmsState);
+
         this.route.params.subscribe(params => {
-           let cur_page = params['page'] ? params['page'] : '1';
-            this.store.dispatch(PostActions.loadPosts({cur_page: cur_page}));
+            let cur_page   = params['page'] ? params['page'] : '1';
+            let state      = params['state'] ? params['state'] : 'all';
+            this.store.dispatch(PostActions.loadPosts({cur_page: cur_page,
+                state: state}));
         });
+
+        // Load the post list
+        this.store.select<PostsState>('posts')
+            .subscribe(postsState => this.postsState = postsState);
     }
 
     canDeactivate() {

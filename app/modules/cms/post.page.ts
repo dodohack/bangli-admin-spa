@@ -31,14 +31,9 @@ export class PostPage implements OnInit
 {
     @ViewChild('postForm') postForm;
 
-    authState: AuthState;
-    //authState$: Observable<AuthState>;
-    cmsState: CmsAttrsState;
-    //cmsState$: Observable<CmsAttrsState>;
-
-    // PostsState in post reducer
+    authState:  AuthState;
+    cmsState:   CmsAttrsState;
     postsState: PostsState;
-    //postsState$: Observable<PostsState>;
 
     // Current post, inputPost is only used to initialize forala editor, cause
     // it is bugged when both input/output model are the same
@@ -46,8 +41,6 @@ export class PostPage implements OnInit
     post: Post;
     
     froalaEditor: any;
-
-    tabs = {'cat': false, 'tag': false, 'topic': false};
 
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) { }
@@ -75,7 +68,7 @@ export class PostPage implements OnInit
             // When opening a single post, 'editing' always contains 1 id
             // Do a copy of the post, do not modify on the original one.
             this.inputPost = postsState.entities[postsState.editing[0]];
-            if (this.inputPost) 
+            if (this.inputPost)
                 this.post = Object.assign({}, this.inputPost, {author_id: this.myId});
         });
     }

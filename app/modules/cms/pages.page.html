@@ -1,15 +1,4 @@
-<list-page-header [isPage]="true"></list-page-header>
-
-<!-- list page menu -->
-<nav class="navbar page-sub-menu">
-    <list-page-menu
-            [baseUrl]="baseUrl"
-            [statuses]="statuses"
-            [editors]="editors"
-            [localization]="zh"></list-page-menu>
-
-    <search-box></search-box>
-</nav>
+<list-page-header [isPage]="true" [states]="cms.page_states.actual"></list-page-header>
 
 
 <h2>This is list of pages</h2>

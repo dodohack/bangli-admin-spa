@@ -150,7 +150,7 @@ export class UserEffects {
 
 
     private getUserDomains(uuid: string): Observable<Domain[]> {
-        let api = AuthCache.API() + AUTH.domains + '/' + uuid + '&token=' + AuthCache.token();
+        let api = AUTH.domains + '/' + uuid + '&token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }
 
@@ -158,7 +158,7 @@ export class UserEffects {
         let body = ''; //JSON.stringify(user.domains);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API() + AUTH.domains + '/' + user.uuid;
+        let api = AUTH.domains + '/' + user.uuid;
         return this.http.post(api, body, options);
     }
 }

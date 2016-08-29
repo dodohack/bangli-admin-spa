@@ -1,12 +1,18 @@
 import { Component, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
+import { zh_CN } from '../../localization';
+
 @Component({
     selector: 'list-page-header',
     template: require('./list-page-header.html')
 })
 export class ListPageHeader {
-    /* The type of lists passed in */
+
+    // States of given list
+    @Input() states: any[];
+
+    // The type of lists passed in
     @Input() isPost: boolean;
     @Input() isTopic: boolean;
     @Input() isProduct: boolean;
@@ -32,4 +38,12 @@ export class ListPageHeader {
         if (this.isPage)    return 'page';
         if (this.isUser)    return 'user';
     }
+
+    get total() {
+        return this.states.map(state => state.count)
+            .reduce((total, count) => total + count);
+    }
+    
+    get zh() { return zh_CN[this.baseUrl]; }
+
 }

@@ -1,58 +1,23 @@
-<list-page-header [isPost]="true"></list-page-header>
+<list-page-header [isPost]="true" [states]="cmsState.post_states.actual"></list-page-header>
 
-<!-- list page menu -->
-<nav class="navbar page-sub-menu">
-    <list-page-menu
-            [baseUrl]="baseUrl" [byMe]=""
-            [statuses]="statuses"
-            [authors]="authors" [editors]="editors"
-            [localization]="zh"></list-page-menu>
-
-    <search-box></search-box>
-</nav>
-
-<!-- Filter toolbar -->
-<div class="list-toolbar">
-    <div class="float-left bulk-actions">
-        <select class="custom-select-sm" [(ngModel)]="bulkAction">
-            <option value="none">批量操作</option>
-            <option value="deleting">移到回收站</option>
-            <option value="editing">批量修改</option>
-        </select>
-        <button class="btn btn-secondary btn-sm" (click)="applyBulkAction()">应用</button>
-    </div>
-
-    <div class="float-left filters">
-        <select class="c-select select-sm">
-            <option value="0" selected>所有分类</option>
-            <option value="x">分类1</option>
-            <option value="y">分类2</option>
-            <option value="y">分类3</option>
-        </select>
-        <select class="c-select select-sm">
-            <option value="0" selected>所有专题</option>
-            <option value="x">专题1</option>
-            <option value="y">专题2</option>
-            <option value="y">专题3</option>
-        </select>
-
-        <date-filter></date-filter>
-        <button type="submit" class="btn btn-secondary btn-sm">筛选</button>
-    </div>
-
-    <!--<paginator [baseUrl]="deepUrl" [paginator]="pagination"></paginator>-->
-</div>
+<!-- Post filter/tool bar at top -->
+<list-filter-bar [isPost]="true" [authors]="cmsState.authors"
+                 [editors]="cmsState.editors"
+                 [categories]="cmsState.categories"
+                 [paginator]="postsState.paginator"></list-filter-bar>
 
 <!-- Post list table -->
-<posts-list [postsState]="postsState$ | async"></posts-list>
+<posts-list [postsState]="postsState"></posts-list>
 
-<!-- Pagination at the end -->
-<!--
-<div class="list-toolbar">
-    <paginator [baseUrl]="deepUrl" [pagination]="pagination"></paginator>
-</div>
--->
+<hr>
 
+<!-- Post filter/tool bar at bottom -->
+<list-filter-bar [isPost]="true" [authors]="cmsState.authors"
+                 [editors]="cmsState.editors"
+                 [categories]="cmsState.categories"
+                 [paginator]="postsState.paginator"></list-filter-bar>
+
+<hr>
 
 <!-- Right side bar -->
 <!--

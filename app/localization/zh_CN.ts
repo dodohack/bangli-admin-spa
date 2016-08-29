@@ -10,7 +10,7 @@ export const zh_CN = {
         featured:  '置顶',
         pending:   '待审',
         draft:     '草稿',
-        trashed:   '回收站',
+        trash:   '回收站',
 
         /* Creative type */
         creative:      '原创',

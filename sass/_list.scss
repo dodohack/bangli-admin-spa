@@ -2,11 +2,21 @@
  * Style used by all kind of list pages, such as products, orders, posts.
  */
 
+.navbar {
+    a {
+        span {
+            color: grey;
+        }
+
+        &.active {
+            color: grey;
+        }
+    }
+}
+
 .list-toolbar {
     font-size: 80%;
-    height: 2rem;
-    margin-bottom: 0.25rem;
-    clear: both;
+    padding: 0.5rem 0;
 }
 /* links of fast-edit, delete, preview etc */
 .row-actions {
