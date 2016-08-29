@@ -1,0 +1,11 @@
+.tree-view {
+  list-style: none;
+  padding-left: 1rem;
+  margin-bottom: 0;
+
+  .tree-root-item {
+    display: inline;
+    float: left;
+    width: 33%;
+  }
+}

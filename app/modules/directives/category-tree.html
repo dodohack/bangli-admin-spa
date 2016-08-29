@@ -3,16 +3,16 @@
            [value]="filterText" [formControl]="filterControl">
 </div>
 
-<ul *ngIf="categories" class="tree-view">
+<ul *ngIf="categories" class="tree-view clearfix">
     <template ngFor let-cat [ngForOf]="availableCats">
-        <li class="tree-item">
-            <div class="checkbox" *ngIf="!hasChild(cat)">
+        <li class="tree-item" [class.tree-root-item]="isTreeRoot">
+            <span class="checkbox" *ngIf="!hasChild(cat)">
                 <label>
                     <input type="checkbox" [checked]="cat.checked"
                            (change)="checkEvent.emit($event)" />
                     {{ cat.name }}
                 </label>
-            </div>
+            </span>
 
             <span *ngIf="hasChild(cat)">+ {{cat.name}}</span>
             <category-tree [categories]="getChild(cat)"
