@@ -1,5 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
+import { ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { FormControl } from '@angular/forms';
+
 import { Topic } from '../../models';
 
 @Component({
@@ -7,38 +9,42 @@ import { Topic } from '../../models';
     template: require('./topic-cloud.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TopicCloud {
+export class TopicCloud implements OnInit {
     
-    @Input() 
-    selectedTopics: Topic[];
-    
-    @Input()
-    topics: Topic[];
+    filterControl = new FormControl();
+    filterText: string = '';
+    filteredTopics: Topic[] = [];
+
+    @Input() selectedTopics: Topic[];
+    @Input() topics: Topic[];
 
     @Output() addTopic    = new EventEmitter();
     @Output() removeTopic = new EventEmitter();
+
+    constructor(private cd: ChangeDetectorRef) {}
     
-    get availableTopics()
-    {
-        let selectedIds = this.selectedTopics.map(t => t.id);
-        return this.topics.filter(t => {
-            let idx = selectedIds.indexOf(t.id);
-            return (idx === -1) ? true : false;
+    ngOnInit() {
+        this.filterControl.valueChanges
+            .debounceTime(100).subscribe(text => {
+            this.filterText = text;
+            this.filteredTopics = this.unselectedTopics.filter(t =>
+                (t.guid.includes(text) || t.title.includes(text)) ? true : false);
+            this.cd.markForCheck();
         });
     }
+    
+    get unselectedTopics() {
+        let selectedIds = this.selectedTopics.map(t => t.id);
+        return this.topics.filter(t =>
+            (selectedIds.indexOf(t.id) === -1) ? true : false);
+    }
 
-    filterTopic(str: string)
-    {
-        /*
-        for (let i in this.topics)
-        {
-            // Set initial state
-            this.topics[i].hidden = true;
-
-            if (this.topics[i].title.includes(str) ||
-                this.topics[i].guid.includes(str))
-                this.topics[i].hidden = false;
-        }
-        */
+    /**
+     * Get filteredTopics if there is filter text, otherwise return
+     * default unselectedTopics.
+     * @returns {Topic[]}
+     */
+    get availableTopics() {
+        return this.filterText === '' ?  this.unselectedTopics : this.filteredTopics;
     }
 }

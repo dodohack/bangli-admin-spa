@@ -7,7 +7,4 @@ export class Tag {
     slug: string;
     name: string;
     description: string;
-
-    hidden: boolean;
-    checked: boolean;
 }

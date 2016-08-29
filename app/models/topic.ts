@@ -20,7 +20,7 @@ export class TopicType {
 
 export class Topic {
     id: number;
-    selected: boolean;
+    hide: boolean; // Only used by filtering
     editor_id: number;
     topic_type: string;
     status: string;
