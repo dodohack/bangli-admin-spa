@@ -59,7 +59,7 @@
     <tabset>
         <tab heading="分类" [active]="tabs['cat']"
              (select)="tabs['cat'] = true" (deselect)="tabs['cat'] = false">
-            <category-tree [isTreeRoot]="showFilter"
+            <category-tree [parentId]="0"
                            [categories]="categories"
                            (checkEvent)="checkCat($event)">
             </category-tree>

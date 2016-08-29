@@ -3,6 +3,18 @@
   padding-left: 1rem;
   margin-bottom: 0;
 
+  .tree-item label {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    cursor: pointer;
+    &:hover {
+      color: blue;
+    }
+  }
+
   .tree-root-item {
     display: inline;
     float: left;

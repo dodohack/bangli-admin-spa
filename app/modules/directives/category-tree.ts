@@ -17,7 +17,7 @@ export class CategoryTree implements OnInit {
     filteredCats: Category[] = [];
 
     /* Only show category filter on root level */
-    @Input() isTreeRoot: boolean;
+    @Input() parentId: number;
     @Input() selectedCats: Category[];
     @Input() categories: Category[];
 
