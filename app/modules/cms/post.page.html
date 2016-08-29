@@ -88,29 +88,32 @@
                (deleteTag)="removeTag($event)"
                (deleteTopic)="removeTopic($event)"></cms-tag-cloud>
 
+<!-- Thumbnail and excerpt -->
+<div class="row" style="background: #fff; margin-bottom: 1rem;">
+    <div class="col-xs-4">
+        <div style="width: 300px; height: 200px; border: 3px solid green;">
+            缩略图
+        </div>
+    </div>
+
+    <div class="col-xs-8">
+        <div class="form-group">
+            <label>摘要</label>
+            <textarea name="excerpt" [(ngModel)]="post.excerpt"
+                      class="form-control" rows="3"></textarea>
+        </div>
+    </div>
+</div>
 
 <!-- Froala Editor -->
 <froala *ngIf="inputPost" [froalaOptions]="froalaOptions"
         [froalaData]="inputPost.content" (model)="postContentChanged($event)"></froala>
 
-<div class="row">
-    <div class="col-xs-8">
-        <div class="form-group">
-            <label>摘要</label>
-            <textarea name="excerpt" [(ngModel)]="post.excerpt" class="form-control" rows="3"></textarea>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div style="width: 300px; height: 300px; border: 3px solid green;">
-            缩略图
-        </div>
-    </div>
-</div>
-
 </form>
 
 <!-- Right panel, we can trigger a seperate saving individually -->
-<right-panel [width]="'540px'" [isOpen]="openPanel" *ngIf="post">
+<right-panel [width]="'540px'" [isOpen]="openPanel"
+             (toggle)="openPanel = !openPanel" *ngIf="post">
     <accordion>
 
         <accordion-group isOpen="true">
