@@ -1,18 +1,22 @@
 <div *ngIf="isTreeRoot" class="filter-wrapper">
     <input placeholder="过滤" type="text" class="form-control"
-           #box (keyup)="filterTree(box.value)">
+           [value]="filterText" [formControl]="filterControl">
 </div>
+
 <ul *ngIf="categories" class="tree-view">
-    <template ngFor let-cat [ngForOf]="categories">
-        <li *ngIf="!cat.hidden" class="tree-item">
-            <div class="checkbox" *ngIf="!cat.children">
+    <template ngFor let-cat [ngForOf]="availableCats">
+        <li class="tree-item">
+            <div class="checkbox" *ngIf="!hasChild(cat)">
                 <label>
-                    <input type="checkbox" [checked]="cat.checked" (click)="checkEvent.emit(cat)" />
-                    {{ cat.name }} | {{ cat.slug }}
+                    <input type="checkbox" [checked]="cat.checked"
+                           (change)="checkEvent.emit($event)" />
+                    {{ cat.name }}
                 </label>
             </div>
-            <span *ngIf="cat.children">+ {{cat.name}}</span>
-            <category-tree [categories]="cat.children"
+
+            <span *ngIf="hasChild(cat)">+ {{cat.name}}</span>
+            <category-tree [categories]="getChild(cat)"
+                           [selectedCats]="selectedCats"
                            (checkEvent)="checkEvent.emit($event)"></category-tree>
         </li>
     </template>

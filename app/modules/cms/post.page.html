@@ -118,8 +118,9 @@
                 文章分类<i class="pull-right fa fa-chevron-circle-down"></i>
             </div>
 
-            <category-tree [isTreeRoot]="showFilter"
+            <category-tree [isTreeRoot]="'true'"
                            [categories]="cmsState.categories"
+                           [selectedCats]="post.categories"
                            (checkEvent)="addCat($event)">
             </category-tree>
         </accordion-group>

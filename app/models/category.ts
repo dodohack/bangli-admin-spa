@@ -11,5 +11,4 @@ export class Category {
 
     hidden: boolean;
     checked: boolean;
-    children: Category[];
 }

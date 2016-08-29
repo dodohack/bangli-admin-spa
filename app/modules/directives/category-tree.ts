@@ -1,6 +1,8 @@
 import { Component, EventEmitter } from '@angular/core';
-import { Input, Output }           from '@angular/core';
+import { Input, Output, OnInit }   from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectorRef }       from '@angular/core';
+import { FormControl }             from '@angular/forms';
 import { Category }                from '../../models';
 
 @Component({
@@ -8,53 +10,62 @@ import { Category }                from '../../models';
     template: require('./category-tree.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CategoryTree {
+export class CategoryTree implements OnInit {
+
+    filterControl = new FormControl;
+    filterText: string = '';
+    filteredCats: Category[] = [];
+
     /* Only show category filter on root level */
-    @Input()
-    isTreeRoot: boolean;
+    @Input() isTreeRoot: boolean;
+    @Input() selectedCats: Category[];
+    @Input() categories: Category[];
 
-    @Input()
-    categories: Category[];
+    @Output() checkEvent = new EventEmitter();
 
-    @Output()
-    checkEvent = new EventEmitter();
+    constructor(private cd: ChangeDetectorRef) {}
 
-    filterTree(str: string)
-    {
-        for (let i in this.categories)
-        {
-            // Set initial state
-            this.categories[i].hidden = true;
-
-            if (this.categories[i].name.includes(str) ||
-                this.categories[i].slug.includes(str))
-                this.categories[i].hidden = false;
-
-            if (this.categories[i].children) {
-                this.filterChildren(this.categories[i], str)
-            }
-        }
+    ngOnInit() {
+        this.filterControl.valueChanges
+            .debounceTime(100).subscribe(text => {
+            this.filterText = text;
+            this.filteredCats = this.filterCats(text, this.categories);
+            this.cd.markForCheck();
+        });
     }
 
-    filterChildren(cat: Category, str: string)
-    {
-        let isChildShown = false;
-        for (let i in cat.children) {
-            /* Set initial state */
-            cat.children[i].hidden = true;
+    get updatedCats(): Category[] {
+        let selectedIds = this.selectedCats.map(c => c.id);
+        return this.categories.map(c => {
+            let checked = selectedIds.indexOf(c.id) !== -1;
+            return Object.assign({}, c, {checked: checked});
+        });
+    }
+    
+    get availableCats(): Category[] {
+        return this.filterText === '' ? this.updatedCats : this.filteredCats;
+    }
 
-            if (cat.children[i].children) {
-                this.filterChildren(cat.children[i], str);
-            } else {
-                if (cat.children[i].name.includes(str) ||
-                    cat.children[i].slug.includes(str)) {
-                    cat.children[i].hidden = false;
-                    isChildShown = true;
-                }
+    getChild(cat: Category) {
+        return this.categories.filter(v => v.parent_id === cat.id);
+    }
+
+    hasChild(cat: Category) {
+        return this.getChild(cat).length;
+    }
+
+    /**
+     * Return filtered categories and child categories
+     */
+    filterCats(text: string, cats: Category[]): Category[] {
+        return cats.filter(pcat => {
+            let isFound = pcat.slug.includes(text) || pcat.name.includes(text);
+            if (!isFound) {
+                // Search it's children
+                let children = cats.filter(c => c.parent_id === pcat.id);
+                return this.filterCats(text, children);
             }
-        }
-
-        if (isChildShown)
-            cat.hidden = false;
+            return isFound;
+        });
     }
 }

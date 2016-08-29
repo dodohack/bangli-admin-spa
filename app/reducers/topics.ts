@@ -30,7 +30,6 @@ export default function (state = initialState, action: Action): TopicsState {
             const ids: number[]       = topics.map(p => p.id);
             const entities            = topics.reduce(
                 (entities: { [id: number]: Topic }, topic: Topic) => {
-                    topic.selected = false;
                     return Object.assign(entities, { [topic.id]: topic });
                 }, {});
 
