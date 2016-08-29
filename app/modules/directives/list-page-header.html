@@ -26,33 +26,9 @@
             </a>
         </li>
 
-        <!--
-        <li *ngIf="byMe">
-            <a class="nav-link" routerLinkActive="active">我的</a>
+        <li class="nav-item">
+            <a class="nav-link" [routerLink]="['/', baseUrl ]" routerLinkActive="active">我的(TODO)</a>
         </li>
-
-        <li *ngIf="authors" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">作者<span style="color:grey">（{{ authors.length }}）</span></a>
-
-            <div class="dropdown-menu">
-                <a *ngFor="let author of authors; let i=index" class="dropdown-item"
-                   [routerLink]="['/', baseUrl, '/author', author.id]">
-                    {{ i+1 }}. {{ author.nicename }}（{{ author.name }}）
-                </a>
-            </div>
-        </li>
-
-        <li *ngIf="editors" class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">编辑<span style="color: grey">（{{ editors.length }}）</span></a>
-
-            <div class="dropdown-menu">
-                <a *ngFor="let editor of editors; let i=index" class="dropdown-item"
-                   [routerLink]="['/', baseUrl, '/editor', editor.id]">
-                    {{ i+1 }}. {{ editor.nicename }}（{{ editor.name }}）
-                </a>
-            </div>
-        </li>
-        -->
 
     </ul>
 

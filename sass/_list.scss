@@ -17,6 +17,10 @@
 .list-toolbar {
     font-size: 80%;
     padding: 0.5rem 0;
+
+    select {
+        max-width: 7rem;
+    }
 }
 /* links of fast-edit, delete, preview etc */
 .row-actions {

@@ -1,5 +1,5 @@
 import { Component, Input }        from '@angular/core';
-import { ActivatedRoute }          from '@angular/router';
+import { ActivatedRoute, Router }  from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 import { zh_CN }    from '../../localization';
@@ -27,10 +27,28 @@ export class ListFilterBar {
     // The state type of current list
     state: string;
 
-    constructor(private route: ActivatedRoute) {
+    // current url
+    url: string;
+
+    // Filters
+    filterAuthor = '';
+    filterEditor = '';
+    filterCat    = '';
+    filterDate   = '';
+
+    constructor(private route: ActivatedRoute,
+                private router: Router) {
         this.route.params.subscribe(params => {
             this.state = params['state'] ? params['state'] : 'all';
         });
+
+        this.route.url.subscribe(url => {
+            console.log("CURRENT URL: ", url);
+        });
+
+        this.route.queryParams.subscribe(qp => {
+            console.log("CURRENT QUERY STR: ", qp);
+        })
     }
 
     get baseUrl() {
@@ -54,6 +72,17 @@ export class ListFilterBar {
         if (this.isPost) return editor.posts_by_editor_count;
         if (this.isTopic) return editor.topics_by_editor_count;
         if (this.isProduct) return editor.products_by_editor_count;
+    }
+
+    // Submit filter
+    // TODO: filterDate from start/to
+    onSubmitFilter() {
+        let query =
+            '?author=' + this.filterAuthor +
+            '&editor=' + this.filterEditor +
+            '&category=' + this.filterCat;
+
+        this.router.navigate([this.url, query]);
     }
     
 

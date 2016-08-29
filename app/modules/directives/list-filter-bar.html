@@ -3,7 +3,7 @@
     <div class="col-xs-12 form-inline">
 
         <div class="form-group" style="margin-right: 2rem">
-            <select class="form-control form-control-sm custom-select" style="max-width: 7rem"
+            <select class="form-control form-control-sm custom-select"
                     [(ngModel)]="bulkAction">
                 <option value="none">批量操作</option>
                 <option value="deleting">移到回收站</option>
@@ -13,41 +13,52 @@
                     (click)="applyBulkAction()">应用</button>
         </div>
 
-        <div class="form-group" *ngIf="authors">
-            <select class="form-control form-control-sm custom-select" style="max-width: 7rem">
-                <option selected>所有作者</option>
-                <option *ngFor="let author of authors" [value]="author.id">
-                    {{ author.display_name }} ({{ author.posts_by_author_count }})
-                </option>
+        <form (ngSubmit)="onSubmitFilter()" #filterForm="ngForm" style="display: inline-block">
+
+            <div class="form-group" *ngIf="authors">
+                <select [(ngModel)]="filterAuthor" name="a"
+                        class="form-control form-control-sm custom-select">
+                    <option value="" selected>所有作者</option>
+                    <option *ngFor="let author of authors" [value]="author.id">
+                        {{ author.display_name }} ({{ author.posts_by_author_count }})
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group" *ngIf="editors">
+                <select [(ngModel)]="filterEditor" name="e"
+                        class="form-control form-control-sm custom-select">
+                    <option value="" selected>所有编辑</option>
+                    <option *ngFor="let editor of editors" [value]="editor.id">
+                        {{ editor.display_name }} ({{ editorWorkCount(editor) }})
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group" *ngIf="categories">
+                <select [(ngModel)]="filterCat" name="c"
+                        class="form-control form-control-sm custom-select">
+                    <option value="" selected>所有分类</option>
+                    <option *ngFor="let cat of categories" [value]="cat.id">
+                        {{ cat.name }} ({{ catCount(cat) }})
+                    </option>
+                </select>
+            </div>
+
+            <select [(ngModel)]="filterDate" name="d"
+                    class="form-control form-control-sm custom-select">
+                <option value="" selected>全部日期</option>
+                <option value="x">2016年5月</option>
+                <option value="y">2016年4月</option>
+                <option value="y">2016年3月</option>
             </select>
-        </div>
 
-        <div class="form-group" *ngIf="editors">
-            <select class="form-control form-control-sm custom-select" style="max-width: 7rem">
-                <option selected>所有编辑</option>
-                <option *ngFor="let editor of editors" [value]="editor.id">
-                    {{ editor.display_name }} ({{ editorWorkCount(editor) }})
-                </option>
-            </select>
-        </div>
+            <button type="submit" class="btn btn-secondary btn-sm"
+                    [disabled]="!filterForm.form.dirty">筛选</button>
 
-        <div class="form-group" *ngIf="categories">
-            <select class="form-control form-control-sm custom-select" style="max-width: 7rem">
-                <option selected>所有分类</option>
-                <option *ngFor="let cat of categories" [value]="cat.id">
-                    {{ cat.name }} ({{ catCount(cat) }})
-                </option>
-            </select>
-        </div>
-
-        <select class="form-control form-control-sm custom-select" style="max-width: 7rem">
-            <option value="0" selected>全部日期</option>
-            <option value="x">2016年5月</option>
-            <option value="y">2016年4月</option>
-            <option value="y">2016年3月</option>
-        </select>
-        <button type="submit" class="btn btn-secondary btn-sm">筛选</button>
-
+            <!-- FIXME: This may trigger submit event -->
+            <button class="btn btn-secondary btn-sm">重置</button>
+        </form>
 
         <!-- Paginator -->
         <div class="float-right paginator">
