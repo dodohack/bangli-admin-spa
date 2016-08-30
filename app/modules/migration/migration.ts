@@ -33,32 +33,32 @@ export class MigrationPage
     }
 
     public migrateUser(domainKey: string) {
-        this.message = "正在移植${domainKey}用户表,可能需要等几分钟或更长时间,请不要刷新页面";
+        this.message = "正在移植" + domainKey + "用户表,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('user', domainKey);
     }
 
     public migrateUserData(domainKey: string) {
-        this.message = "正在移植${domainKey}用户基本数据,可能需要等几分钟或更长时间,请不要刷新页面";
+        this.message = "正在移植" + domainKey + "用户基本数据,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('userdata', domainKey);
     }
 
     public migrateAttachment(domainKey: string) {
-        this.message = "正在移植${domainKey}附件表,可能需要等几分钟或更长时间,请不要刷新页面";
+        this.message = "正在移植" + domainKey + "附件表,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('attachment', domainKey);
     }
 
     public migratePost(domainKey: string) {
-        this.message = "正在移植${domainKey}文章和专题,可能需要等几分钟或更长时间,请不要刷新页面";
+        this.message = "正在移植" + domainKey + "文章和专题,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('post', domainKey);
     }
 
     public migrateProduct(domainKey: string) {
-        this.message = "正在移植${domainKey}产品库,可能需要等几分钟或更长时间,请不要刷新页面";
+        this.message = "正在移植" + domainKey + "产品库,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('product', domainKey);
     }
 
     public migrateOrder(domainKey: string) {
-        this.message = "正在移植${domainKey}订单数据,可能需要等几分钟或更长时间,请不要刷新页面";
+        this.message = "正在移植" + domainKey + "订单数据,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('order', domainKey);
     }
 
