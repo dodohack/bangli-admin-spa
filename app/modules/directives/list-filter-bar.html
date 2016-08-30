@@ -18,7 +18,7 @@
             <div class="form-group" *ngIf="authors">
                 <select [(ngModel)]="filterAuthor" name="a"
                         class="form-control form-control-sm custom-select">
-                    <option value="" selected>所有作者</option>
+                    <option value="">所有作者</option>
                     <option *ngFor="let author of authors" [value]="author.id">
                         {{ author.display_name }} ({{ author.posts_by_author_count }})
                     </option>
@@ -28,7 +28,7 @@
             <div class="form-group" *ngIf="editors">
                 <select [(ngModel)]="filterEditor" name="e"
                         class="form-control form-control-sm custom-select">
-                    <option value="" selected>所有编辑</option>
+                    <option value="">所有编辑</option>
                     <option *ngFor="let editor of editors" [value]="editor.id">
                         {{ editor.display_name }} ({{ editorWorkCount(editor) }})
                     </option>
@@ -38,7 +38,7 @@
             <div class="form-group" *ngIf="categories">
                 <select [(ngModel)]="filterCat" name="c"
                         class="form-control form-control-sm custom-select">
-                    <option value="" selected>所有分类</option>
+                    <option value="">所有分类</option>
                     <option *ngFor="let cat of categories" [value]="cat.id">
                         {{ cat.name }} ({{ catCount(cat) }})
                     </option>
@@ -48,7 +48,7 @@
             <div class="form-group">
                 <select [(ngModel)]="filterDateFrom" name="from"
                         class="form-control form-control-sm custom-select">
-                    <option value="" selected>开始日期</option>
+                    <option value="">开始日期</option>
                     <option value="20160501">2016年5月</option>
                     <option value="20160401">2016年4月</option>
                     <option value="20160301">2016年3月</option>
@@ -56,7 +56,7 @@
 
                 <select [(ngModel)]="filterDateTo" name="to"
                         class="form-control form-control-sm custom-select">
-                    <option value="" selected>开始日期</option>
+                    <option value="">开始日期</option>
                     <option value="20160501">2016年5月</option>
                     <option value="20160401">2016年4月</option>
                     <option value="20160301">2016年3月</option>

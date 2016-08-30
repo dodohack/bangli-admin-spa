@@ -25,32 +25,27 @@ export class ListFilterBar {
     @Input() isPage: boolean;
     @Input() isUser: boolean;
 
-    // The state type of current list
+    // URL parameters and query parameters
     state: string;
-    
-    // current url
-    url: string;
-
-    // Filters
-    filterAuthor = '';
-    filterEditor = '';
-    filterCat    = '';
-    filterDateFrom = '';
-    filterDateTo   = '';
+    filterAuthor: string;
+    filterEditor: string;
+    filterCat: string;
+    filterDateFrom: string;
+    filterDateTo: string;
 
     constructor(private route: ActivatedRoute,
                 private router: Router) {
         this.route.params.subscribe(params => {
-            this.state = params['state'] ? params['state'] : 'all';
+            this.state = params['state'] || 'all';
         });
-
-        this.route.url.subscribe(url => {
-            console.log("CURRENT URL: ", url);
+        
+        this.route.queryParams.subscribe(queryParams => {
+            this.filterAuthor = queryParams['author'] || '';
+            this.filterEditor = queryParams['editor'] || '';
+            this.filterCat    = queryParams['category'] || '';
+            this.filterDateFrom = queryParams['datefrom'] || '';
+            this.filterDateTo = queryParams['dateto'] || '';
         });
-
-        this.route.queryParams.subscribe(qp => {
-            console.log("CURRENT QUERY STR: ", qp);
-        })
     }
 
     get baseUrl() {
@@ -88,7 +83,7 @@ export class ListFilterBar {
                 'dateto':   this.filterDateTo }
         };
 
-        console.error("FIXME: hardcoded params with optional parameters: ", navigationExtras);
+        // FIXME: Hardcoded path
         this.router.navigate(['/post/page/1/state/all'], navigationExtras);
     }
     
