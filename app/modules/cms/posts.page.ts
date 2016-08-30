@@ -34,6 +34,8 @@ export class PostsPage implements OnInit
             .subscribe(authState => this.authState = authState);
         this.store.select<CmsAttrsState>('cms')
             .subscribe(cmsState => this.cmsState = cmsState);
+        this.store.select<PostsState>('posts')
+            .subscribe(postsState => this.postsState = postsState);
 
         // Load posts when any url parameter changes
         let mergedParams = Observable.merge(this.route.params, this.route.queryParams);
@@ -57,7 +59,7 @@ export class PostsPage implements OnInit
         let dateto = params['dateto'] || '';     // filter: end date
         let query = params['query'] || '';       // search query string
 
-        let postParams: PostParams = PostParams(cur_page, state,
+        let postParams: PostParams = new PostParams(cur_page, state,
         author, editor, category, datefrom, dateto, query);
 
         // Load list of posts from API server
