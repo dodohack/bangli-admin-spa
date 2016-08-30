@@ -1,5 +1,5 @@
 {
-  "name": "huluwa-admin-spa",
+  "name": "bangli-admin-spa",
   "version": "0.1.0",
   "scripts": {
     "start": "webpack-dev-server --inline --progress --port 8080",
