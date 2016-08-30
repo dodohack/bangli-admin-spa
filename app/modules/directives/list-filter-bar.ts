@@ -79,21 +79,16 @@ export class ListFilterBar {
     // Submit filter
     // TODO: filterDate from start/to
     onSubmitFilter() {
-        let query =
-            '?author=' + this.filterAuthor +
-            '&editor=' + this.filterEditor +
-            '&category=' + this.filterCat;
-
         let navigationExtras: NavigationExtras = {
             queryParams: {
                 'author':   this.filterAuthor,
                 'editor':   this.filterEditor,
                 'category': this.filterCat,
-                'from':     this.filterDateFrom,
-                'to':       this.filterDateTo }
+                'datefrom': this.filterDateFrom,
+                'dateto':   this.filterDateTo }
         };
 
-        console.log("optional parameters: ", navigationExtras);
+        console.error("FIXME: hardcoded params with optional parameters: ", navigationExtras);
         this.router.navigate(['/post/page/1/state/all'], navigationExtras);
     }
     

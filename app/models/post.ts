@@ -44,6 +44,18 @@ export class PostState {
     count: number;
 };
 
+// API request parameters to filter list of posts
+export class PostParams {
+    constructor(public cur_page: string = '1',
+                public state: string = 'all',
+                public author?: string,
+                public editor?: string,
+                public category?: string,
+                public datefrom?: string,
+                public dateto?: string,
+                public query?: string) {}
+};
+
 export class Post {
     id: number;
     editor_id: number;

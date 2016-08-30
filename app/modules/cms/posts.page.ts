@@ -7,14 +7,12 @@ import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
+import { PostParams }        from '../../models';
 import { AppState }          from '../../reducers';
 import { PostsState }        from '../../reducers/posts';
 import { AuthState }         from '../../reducers/auth';
 import { CmsAttrsState }     from '../../reducers/cmsattrs';
 import { PostActions }       from '../../actions';
-
-import { User, Post, Category, Tag, Topic,
-         Paginator } from '../../models';
 
 import { zh_CN } from '../../localization';
 
@@ -36,6 +34,10 @@ export class PostsPage implements OnInit
             .subscribe(authState => this.authState = authState);
         this.store.select<CmsAttrsState>('cms')
             .subscribe(cmsState => this.cmsState = cmsState);
+
+        let mergedParams = Observable.merge(this.route.params, this.route.queryParams);
+
+        mergedParams.subscribe(params => this.loadPosts(params));
 
         // Must have parameters defined in routes: :page, :state
         this.route.params.subscribe(params => {
@@ -67,6 +69,26 @@ export class PostsPage implements OnInit
 
     canDeactivate() {
         return true;
+    }
+
+    loadPosts(params: any) {
+        // Must have parameters come from route.params observable
+        let cur_page   = params['page'] || '1';
+        let state      = params['state'] || 'all';
+
+        // Optional parameters come from route.queryParams observable
+        let author = params['author'] || '';     // filter by author id
+        let editor = params['editor'] || '';     // filter by editor id
+        let category = params['category'] || ''; // filter by category
+        let datefrom = params['datefrom'] || ''; // filter: start date
+        let dateto = params['dateto'] || '';     // filter: end date
+        let query = params['query'] || '';       // search query string
+
+        let postParams: PostParams = PostParams(cur_page, state,
+        author, editor, category, datefrom, dateto, query);
+
+        // Load list of posts from API server
+        this.store.dispatch(PostActions.loadPosts(postParams));
     }
 
     /* Localization, have to wrapper it as template only access 
