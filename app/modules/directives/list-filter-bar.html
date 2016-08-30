@@ -45,13 +45,23 @@
                 </select>
             </div>
 
-            <select [(ngModel)]="filterDate" name="d"
-                    class="form-control form-control-sm custom-select">
-                <option value="" selected>全部日期</option>
-                <option value="x">2016年5月</option>
-                <option value="y">2016年4月</option>
-                <option value="y">2016年3月</option>
-            </select>
+            <div class="form-group">
+                <select [(ngModel)]="filterDateFrom" name="from"
+                        class="form-control form-control-sm custom-select">
+                    <option value="" selected>开始日期</option>
+                    <option value="20160501">2016年5月</option>
+                    <option value="20160401">2016年4月</option>
+                    <option value="20160301">2016年3月</option>
+                </select>
+
+                <select [(ngModel)]="filterDateTo" name="to"
+                        class="form-control form-control-sm custom-select">
+                    <option value="" selected>开始日期</option>
+                    <option value="20160501">2016年5月</option>
+                    <option value="20160401">2016年4月</option>
+                    <option value="20160301">2016年3月</option>
+                </select>
+            </div>
 
             <button type="submit" class="btn btn-secondary btn-sm"
                     [disabled]="!filterForm.form.dirty">筛选</button>

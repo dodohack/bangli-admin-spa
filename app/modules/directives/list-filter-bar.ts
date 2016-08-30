@@ -1,6 +1,7 @@
 import { Component, Input }        from '@angular/core';
-import { ActivatedRoute, Router }  from '@angular/router';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { ActivatedRoute, Router }  from '@angular/router';
+import { NavigationExtras }        from '@angular/router';
 
 import { zh_CN }    from '../../localization';
 
@@ -34,7 +35,8 @@ export class ListFilterBar {
     filterAuthor = '';
     filterEditor = '';
     filterCat    = '';
-    filterDate   = '';
+    filterDateFrom = '';
+    filterDateTo   = '';
 
     constructor(private route: ActivatedRoute,
                 private router: Router) {
@@ -82,7 +84,17 @@ export class ListFilterBar {
             '&editor=' + this.filterEditor +
             '&category=' + this.filterCat;
 
-        this.router.navigate([this.url, query]);
+        let navigationExtras: NavigationExtras = {
+            queryParams: {
+                'author':   this.filterAuthor,
+                'editor':   this.filterEditor,
+                'category': this.filterCat,
+                'from':     this.filterDateFrom,
+                'to':       this.filterDateTo }
+        };
+
+        console.log("optional parameters: ", navigationExtras);
+        this.router.navigate(['/post/page/1/state/all'], navigationExtras);
     }
     
 
