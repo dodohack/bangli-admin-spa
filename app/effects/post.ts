@@ -10,6 +10,7 @@ import { AuthCache }       from '../auth.cache';
 import { PrefCache }       from '../pref.cache';
 import { PostActions }     from '../actions';
 import { AlertActions }    from '../actions';
+import { PostParams }      from "../models";
 import { Post }            from "../models";
 
 @Injectable()
@@ -93,14 +94,11 @@ export class PostEffects {
     /**
      * Get posts
      */
-    private getPosts(filters: any): Observable<any> {
-        let cur_page = filters.cur_page;
-        let state    = filters.state;
-        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts +
-            '?page=' + cur_page +
-            '&per_page=' + PrefCache.getPerPage() +
-            '&state=' + state +
-            '&token=' + AuthCache.token();
+    private getPosts(params: PostParams): Observable<any> {
+          let api = AuthCache.API() + AuthCache.API_PATH().cms_posts
+              + params.toQueryString() 
+              + '&per_page=' + PrefCache.getPerPage() 
+              + '&token=' + AuthCache.token();
 
         console.log("LOAD POST FROM URL: ", api);
 

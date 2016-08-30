@@ -35,36 +35,9 @@ export class PostsPage implements OnInit
         this.store.select<CmsAttrsState>('cms')
             .subscribe(cmsState => this.cmsState = cmsState);
 
+        // Load posts when any url parameter changes
         let mergedParams = Observable.merge(this.route.params, this.route.queryParams);
-
         mergedParams.subscribe(params => this.loadPosts(params));
-
-        // Must have parameters defined in routes: :page, :state
-        this.route.params.subscribe(params => {
-            let cur_page   = params['page'] || '1';
-            let state      = params['state'] || 'all';
-            this.store.dispatch(PostActions.loadPosts({cur_page: cur_page,
-                state: state}));
-        });
-
-        //
-        // FIXME: We need to dispatch single 'loadPosts' action whether
-        // route.params or route.queryParams changes, NEED merge 2 observables!
-        //
-
-        // Optional query parameters: author, editor, category, from, to, query
-        this.route.queryParams.subscribe(params => {
-            let author = params['author'] || '';     // filter by author id
-            let editor = params['editor'] || '';     // filter by editor id
-            let category = params['category'] || ''; // filter by category
-            let from_date = params['from'] || '';    // filter: start date
-            let to_date = params['to'] || '';        // filter: end date
-            let query = params['query'] || '';       // search query string
-        });
-
-        // Load the post list
-        this.store.select<PostsState>('posts')
-            .subscribe(postsState => this.postsState = postsState);
     }
 
     canDeactivate() {
@@ -91,8 +64,6 @@ export class PostsPage implements OnInit
         this.store.dispatch(PostActions.loadPosts(postParams));
     }
 
-    /* Localization, have to wrapper it as template only access 
-     * component local methods/properties */
     get zh() { return zh_CN.post; }
     //get authors() { return this.userService.authors; }
     //get editors() { return this.userService.editors; }

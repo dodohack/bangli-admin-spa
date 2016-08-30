@@ -1,15 +1,16 @@
-import { Action }   from '@ngrx/store';
-import { Post }     from '../models';
-import { Category } from "../models";
-import { Tag }      from "../models";
-import { Topic }    from "../models";
+import { Action }     from '@ngrx/store';
+import { PostParams } from '../models';
+import { Post }       from '../models';
+import { Category }   from "../models";
+import { Tag }        from "../models";
+import { Topic }      from "../models";
 
 export class PostActions {
     static SEARCH = '[Post] Search';
-    static search(query: string): Action {
+    static search(params: PostParams): Action {
         return {
             type: PostActions.SEARCH,
-            payload: query
+            payload: params
         };
     }
 
@@ -22,10 +23,10 @@ export class PostActions {
     }
 
     static LOAD_POSTS = '[Post] Load Posts';
-    static loadPosts(filters:any): Action {
+    static loadPosts(params: PostParams): Action {
         return {
             type: PostActions.LOAD_POSTS,
-            payload: filters
+            payload: params
         };
     }
 

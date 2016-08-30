@@ -54,6 +54,18 @@ export class PostParams {
                 public datefrom?: string,
                 public dateto?: string,
                 public query?: string) {}
+    
+    // Form a API query string
+    toQueryString(): string {
+        let s = '?page=' + this.cur_page;
+        if (this.author) s = s + '&author=' + this.author;
+        if (this.editor) s = s + '&editor=' + this.editor;
+        if (this.category) s = s + '&category=' + this.category;
+        if (this.datefrom) s = s + '&datefrom=' + this.datefrom;
+        if (this.dateto) s = s + '&dateto=' + this.dateto;
+        if (this.query) s = s + '&query=' + this.query;
+        return s;
+    }
 };
 
 export class Post {
