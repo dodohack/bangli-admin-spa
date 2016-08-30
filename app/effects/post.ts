@@ -2,6 +2,7 @@
  * Post[s] side effects
  */
 import { Injectable }                     from '@angular/core';
+import { ActivatedRoute }                 from '@angular/router';
 import { Http, Headers, RequestOptions }  from '@angular/http';
 import { Effect, Actions }                from '@ngrx/effects';
 import { Observable }                     from 'rxjs/Observable';
@@ -10,8 +11,8 @@ import { AuthCache }       from '../auth.cache';
 import { PrefCache }       from '../pref.cache';
 import { PostActions }     from '../actions';
 import { AlertActions }    from '../actions';
-import { PostParams }      from "../models";
 import { Post }            from "../models";
+import { PostParams }      from "../models";
 
 @Injectable()
 export class PostEffects {
@@ -95,8 +96,8 @@ export class PostEffects {
      * Get posts
      */
     private getPosts(params: PostParams): Observable<any> {
-          let api = AuthCache.API() + AuthCache.API_PATH().cms_posts
-              + params.toQueryString() 
+        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts
+              + params.toQueryString()
               + '&per_page=' + PrefCache.getPerPage() 
               + '&token=' + AuthCache.token();
 

@@ -27,7 +27,7 @@ export class ListFilterBar {
 
     // The state type of current list
     state: string;
-
+    
     // current url
     url: string;
 

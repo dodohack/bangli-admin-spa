@@ -46,6 +46,15 @@ export class PostState {
 
 // API request parameters to filter list of posts
 export class PostParams {
+    cur_page: string = '1';
+    state: string;
+    author: string;
+    editor: string;
+    category: string;
+    datefrom: string;
+    dateto: string;
+    query: string;
+    /*
     constructor(public cur_page: string = '1',
                 public state: string = 'all',
                 public author?: string,
@@ -54,10 +63,11 @@ export class PostParams {
                 public datefrom?: string,
                 public dateto?: string,
                 public query?: string) {}
-    
+    */
     // Form a API query string
     toQueryString(): string {
         let s = '?page=' + this.cur_page;
+        if (this.state) s = s + '&state=' + this.state;
         if (this.author) s = s + '&author=' + this.author;
         if (this.editor) s = s + '&editor=' + this.editor;
         if (this.category) s = s + '&category=' + this.category;
