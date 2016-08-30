@@ -1,11 +1,14 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
+import { EventEmitter }             from '@angular/core';
+import { ChangeDetectionStrategy }  from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 import { zh_CN } from '../../localization';
 
 @Component({
     selector: 'list-page-header',
-    template: require('./list-page-header.html')
+    template: require('./list-page-header.html')/*,
+    changeDetection: ChangeDetectionStrategy.OnPush*/
 })
 export class ListPageHeader {
 
@@ -20,6 +23,8 @@ export class ListPageHeader {
     @Input() isPage: boolean;
     @Input() isUser: boolean;
 
+    // Input to childview search-box
+    @Input() loading: boolean;
 
     get title() {
         if (this.isPost)    return '文章';
@@ -45,5 +50,4 @@ export class ListPageHeader {
     }
     
     get zh() { return zh_CN[this.baseUrl]; }
-
 }

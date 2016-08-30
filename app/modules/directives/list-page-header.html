@@ -29,8 +29,7 @@
         <li class="nav-item">
             <a class="nav-link" [routerLink]="['/', baseUrl ]" routerLinkActive="active">我的(TODO)</a>
         </li>
-
     </ul>
 
-    <search-box></search-box>
+    <search-box [loading]="loading"></search-box>
 </nav>

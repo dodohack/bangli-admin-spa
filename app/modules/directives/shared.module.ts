@@ -6,6 +6,7 @@ import { CommonModule }                  from '@angular/common';
 import { FormsModule }                   from '@angular/forms';
 import { RouterModule }                  from '@angular/router';
 
+
 import { TAB_DIRECTIVES }       from 'ng2-bootstrap';
 import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
 import { AlertComponent }       from 'ng2-bootstrap';
@@ -23,7 +24,7 @@ import { EditorPageHeader }          from './editor-page-header';
 import { ListPageHeader }            from './list-page-header';
 import { ListFilterBar }             from './list-filter-bar';
 import { FastEditPostFormComponent } from './fast-edit-post-form.component';
-import { SearchBoxComponent }        from './search-box.component';
+import { SearchBox }                 from './search-box';
 import { DateFilterComponent }       from './date-filter.component';
 
 @NgModule({
@@ -46,7 +47,7 @@ import { DateFilterComponent }       from './date-filter.component';
         EditorPageHeader,
         CmsTagCloud,
         FastEditPostFormComponent,
-        SearchBoxComponent,
+        SearchBox,
         DateFilterComponent,
     ],
     exports: [
@@ -67,7 +68,7 @@ import { DateFilterComponent }       from './date-filter.component';
         EditorPageHeader,
         CmsTagCloud,
         FastEditPostFormComponent,
-        SearchBoxComponent,
+        SearchBox,
         DateFilterComponent,
 
         CommonModule,

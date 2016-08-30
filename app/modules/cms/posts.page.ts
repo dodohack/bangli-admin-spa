@@ -26,6 +26,9 @@ export class PostsPage implements OnInit
     params: any;
     queryParams: any;
 
+    // Is search is running
+    loading: boolean;
+
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) {}
 
@@ -35,7 +38,11 @@ export class PostsPage implements OnInit
         this.store.select<CmsAttrsState>('cms')
             .subscribe(cmsState => this.cmsState = cmsState);
         this.store.select<PostsState>('posts')
-            .subscribe(postsState => this.postsState = postsState);
+            .subscribe(postsState => {
+                // Set search loading to false if posts is loaded
+                this.loading = false;
+                this.postsState = postsState;
+            });
 
         // THIS IS A TEMPORARY FIX
         // FIXME: Previous request is cancel by the second one if exists
@@ -47,6 +54,7 @@ export class PostsPage implements OnInit
         });
         this.route.queryParams.subscribe(params => {
             this.queryParams = params;
+            this.loading = true;
             this.loadPosts();
         });
     }
