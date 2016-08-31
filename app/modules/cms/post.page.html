@@ -32,75 +32,86 @@
         </div>
     </div>
 
-    <!-- author/editor/post_type/creative_type selectors -->
-    <div class="row post-meta-row">
-        <div class="col-xs-12 form-inline">
+    <!-- User can hide some info if the do not want to see it -->
+    <accordion>
 
-            <div class="form-group post-meta">
-                <label>作者</label>
-                <select class="form-control form-control-sm custom-select"
-                        name="author_id" [(ngModel)]="post.author_id">
-                    <option *ngFor="let author of cmsState.authors"
-                            [selected]="author.id === post.author_id"
-                            [value]="author.id">{{ author.display_name }}</option>
-                </select>
+        <accordion-group isOpen="true">
+            <div accordion-heading>
+                文章属性<i class="pull-right fa fa-chevron-circle-down"></i>
             </div>
 
-            <div class="form-group post-meta">
-                <label>编辑</label>
-                <select class="form-control form-control-sm custom-select"
-                        name="editor_id" [(ngModel)]="post.editor_id">
-                    <option *ngFor="let editor of cmsState.editors"
-                            [selected]="editor.id === post.editor_id"
-                            [value]="editor.id">{{ editor.display_name }}</option>
-                </select>
+            <!-- author/editor/post_type/creative_type selectors -->
+            <div class="row post-meta-row">
+                <div class="col-xs-12 form-inline">
+
+                    <div class="form-group post-meta">
+                        <label>作者</label>
+                        <select class="form-control form-control-sm custom-select"
+                                name="author_id" [(ngModel)]="post.author_id">
+                            <option *ngFor="let author of cmsState.authors"
+                                    [selected]="author.id === post.author_id"
+                                    [value]="author.id">{{ author.display_name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group post-meta">
+                        <label>编辑</label>
+                        <select class="form-control form-control-sm custom-select"
+                                name="editor_id" [(ngModel)]="post.editor_id">
+                            <option *ngFor="let editor of cmsState.editors"
+                                    [selected]="editor.id === post.editor_id"
+                                    [value]="editor.id">{{ editor.display_name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group post-meta">
+                        <label>文章类型</label>
+                        <select class="form-control form-control-sm custom-select"
+                                name="post_type" [(ngModel)]="post.post_type">
+                            <option *ngFor="let pt of cmsState.post_types.available"
+                                    [selected]="post.post_type === pt.post_type"
+                                    [value]="pt.post_type">{{ zh[pt.post_type] }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group post-meta">
+                        <label>原创类型</label>
+                        <select class="form-control form-control-sm custom-select"
+                                name="c_type" [(ngModel)]="post.creative_type">
+                            <option *ngFor="let c_type of cmsState.post_creative_types.available"
+                                    [selected]="post.creative_type === c_type.creative_type"
+                                    [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
+                        </select>
+                    </div>
+
+                    <a class="float-right btn btn-sm btn-outline-warning" (click)="openPanel = true">展开侧栏</a>
+                </div>
             </div>
 
-            <div class="form-group post-meta">
-                <label>文章类型</label>
-                <select class="form-control form-control-sm custom-select"
-                        name="post_type" [(ngModel)]="post.post_type">
-                    <option *ngFor="let pt of cmsState.post_types.available"
-                            [selected]="post.post_type === pt.post_type"
-                            [value]="pt.post_type">{{ zh[pt.post_type] }}</option>
-                </select>
+
+            <!-- Post category, tag, topic etc -->
+            <cms-tag-cloud [post]="post"
+                           (toggle)="openPanel = !openPanel"
+                           (deleteCat)="removeCat($event)"
+                           (deleteTag)="removeTag($event)"
+                           (deleteTopic)="removeTopic($event)"></cms-tag-cloud>
+
+            <!-- Thumbnail and excerpt -->
+            <div class="row">
+                <div class="col-xs-4">
+                    <div style="width: 200px; height: 150px; border: 3px solid green;">
+                        缩略图
+                    </div>
+                </div>
+
+                <div class="col-xs-8">
+                    <textarea name="excerpt" [(ngModel)]="post.excerpt" placeholder="摘要"
+                              class="form-control" style="height: 150px;"></textarea>
+                </div>
             </div>
 
-            <div class="form-group post-meta">
-                <label>原创类型</label>
-                <select class="form-control form-control-sm custom-select"
-                        name="c_type" [(ngModel)]="post.creative_type">
-                    <option *ngFor="let c_type of cmsState.post_creative_types.available"
-                            [selected]="post.creative_type === c_type.creative_type"
-                            [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
-                </select>
-            </div>
-
-            <a class="float-right btn btn-sm btn-outline-warning" (click)="openPanel = true">展开侧栏</a>
-        </div>
-    </div>
-
-
-    <!-- Post category, tag, topic etc -->
-    <cms-tag-cloud [post]="post"
-                   (toggle)="openPanel = !openPanel"
-                   (deleteCat)="removeCat($event)"
-                   (deleteTag)="removeTag($event)"
-                   (deleteTopic)="removeTopic($event)"></cms-tag-cloud>
-
-    <!-- Thumbnail and excerpt -->
-    <div class="row" style="background: #fff; margin-bottom: 1rem;">
-        <div class="col-xs-4">
-            <div style="width: 200px; height: 150px; border: 3px solid green;">
-                缩略图
-            </div>
-        </div>
-
-        <div class="col-xs-8">
-            <textarea name="excerpt" [(ngModel)]="post.excerpt" placeholder="摘要"
-                      class="form-control" style="height: 150px;"></textarea>
-        </div>
-    </div>
+        </accordion-group>
+    </accordion>
 
     <!-- Froala Editor -->
     <froala *ngIf="inputPost" [froalaOptions]="froalaOptions"
