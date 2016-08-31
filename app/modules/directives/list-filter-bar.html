@@ -2,17 +2,6 @@
 <div class="row list-toolbar">
     <div class="col-xs-12 form-inline">
 
-        <div class="form-group" style="margin-right: 2rem">
-            <select class="form-control form-control-sm custom-select"
-                    [(ngModel)]="bulkAction">
-                <option value="none">批量操作</option>
-                <option value="deleting">移到回收站</option>
-                <option value="editing">批量修改</option>
-            </select>
-            <button class="btn btn-secondary btn-sm"
-                    (click)="applyBulkAction()">应用</button>
-        </div>
-
         <form (ngSubmit)="onSubmitFilter()" #filterForm="ngForm" style="display: inline-block">
 
             <div class="form-group" *ngIf="authors">
@@ -46,18 +35,28 @@
             </div>
 
             <div class="form-group">
+                <!-- Use database post date type of a post, may not applicable to non-post -->
+                <select [(ngModel)]="filterDateType" name="dtype"
+                        class="form-control form-control-sm custom-select">
+                    <option value="" disabled>日期类型</option>
+                    <option value="fake_published_at">前端发布日期</option>
+                    <option value="published_at">发布日期</option>
+                    <option value="updated_at">更新日期</option>
+                    <option value="created_at">创建日期</option>
+                </select>
+
                 <select [(ngModel)]="filterDateFrom" name="from"
                         class="form-control form-control-sm custom-select">
-                    <option value="">开始日期</option>
-                    <option value="20160501">2016年5月</option>
+                    <option value="" disabled>开始日期</option>
+                    <option value="2016-05-01">2016年5月01</option>
                     <option value="20160401">2016年4月</option>
                     <option value="20160301">2016年3月</option>
                 </select>
 
                 <select [(ngModel)]="filterDateTo" name="to"
                         class="form-control form-control-sm custom-select">
-                    <option value="" selected>开始日期</option>
-                    <option value="20160501">2016年5月</option>
+                    <option value="" disabled>开始日期</option>
+                    <option value="2016-08-31">2016年08月31</option>
                     <option value="20160401">2016年4月</option>
                     <option value="20160301">2016年3月</option>
                 </select>
@@ -69,6 +68,20 @@
             <!-- FIXME: This may trigger submit event -->
             <button class="btn btn-secondary btn-sm">重置</button>
         </form>
+    </div>
+
+    <div class="col-xs-12 form-inline">
+
+        <div class="form-group" style="margin-right: 2rem">
+            <select class="form-control form-control-sm custom-select"
+                    [(ngModel)]="bulkAction">
+                <option value="none">批量操作</option>
+                <option value="deleting">移到回收站</option>
+                <option value="editing">批量修改</option>
+            </select>
+            <button class="btn btn-secondary btn-sm"
+                    (click)="applyBulkAction()">应用</button>
+        </div>
 
         <!-- Paginator -->
         <div class="float-right paginator">

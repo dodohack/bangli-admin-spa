@@ -51,6 +51,7 @@ export class PostParams {
     author: string;
     editor: string;
     category: string;
+    datetype: string;
     datefrom: string;
     dateto: string;
     query: string;
@@ -71,6 +72,7 @@ export class PostParams {
         if (this.author) s = s + '&author=' + this.author;
         if (this.editor) s = s + '&editor=' + this.editor;
         if (this.category) s = s + '&category=' + this.category;
+        if (this.datetype) s = s + '&datetype=' + this.datetype;
         if (this.datefrom) s = s + '&datefrom=' + this.datefrom;
         if (this.dateto) s = s + '&dateto=' + this.dateto;
         if (this.query) s = s + '&query=' + this.query;

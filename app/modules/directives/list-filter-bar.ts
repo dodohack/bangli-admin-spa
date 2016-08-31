@@ -30,6 +30,7 @@ export class ListFilterBar {
     filterAuthor: string;
     filterEditor: string;
     filterCat: string;
+    filterDateType: string;
     filterDateFrom: string;
     filterDateTo: string;
 
@@ -43,6 +44,7 @@ export class ListFilterBar {
             this.filterAuthor = queryParams['author'] || '';
             this.filterEditor = queryParams['editor'] || '';
             this.filterCat    = queryParams['category'] || '';
+            this.filterDateType = queryParams['datetype'] || '';
             this.filterDateFrom = queryParams['datefrom'] || '';
             this.filterDateTo = queryParams['dateto'] || '';
         });
@@ -79,6 +81,7 @@ export class ListFilterBar {
                 'author':   this.filterAuthor,
                 'editor':   this.filterEditor,
                 'category': this.filterCat,
+                'datetype': this.filterDateType,
                 'datefrom': this.filterDateFrom,
                 'dateto':   this.filterDateTo }
         };

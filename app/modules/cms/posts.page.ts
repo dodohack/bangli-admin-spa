@@ -50,6 +50,7 @@ export class PostsPage implements OnInit
         // Load posts when any url parameter changes
         this.route.params.subscribe(params => {
             this.params = params;
+            this.loading = true;
             this.loadPosts();
         });
         this.route.queryParams.subscribe(params => {
@@ -73,6 +74,7 @@ export class PostsPage implements OnInit
             postParams.author   = this.queryParams['author'];
             postParams.editor   = this.queryParams['editor'];
             postParams.category = this.queryParams['category'];
+            postParams.datetype = this.queryParams['datetype'];
             postParams.datefrom = this.queryParams['datefrom'];
             postParams.dateto   = this.queryParams['dateto'];
             postParams.query    = this.queryParams['query'];
