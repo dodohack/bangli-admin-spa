@@ -45,6 +45,35 @@ export class PostActions {
         };
     }
 
+    static BATCH_EDIT_POSTS = '[Post] Batch Edit Posts';
+    static batchEditPosts(ids: number[]): Action {
+        return {
+            type: PostActions.BATCH_EDIT_POSTS,
+            payload: ids
+        };
+    }
+
+    static CANCEL_BATCH_EDIT_POSTS = '[Post] Cancel Batch Edit Posts';
+    static cancelBatchEditPosts(): Action {
+        return {
+            type: PostActions.CANCEL_BATCH_EDIT_POSTS
+        };
+    }
+
+    static BATCH_EDIT_PREVIOUS_POST = '[Post] Batch Edit Previous Post';
+    static batchEditPreviousPost(): Action {
+        return {
+            type: PostActions.BATCH_EDIT_PREVIOUS_POST
+        };
+    }
+
+    static BATCH_EDIT_NEXT_POST = '[Post] Batch Edit Next Post';
+    static batchEditNextPost(): Action {
+        return {
+            type: PostActions.BATCH_EDIT_NEXT_POST
+        };
+    }
+
     static NEW_POST = '[Post] New Post';
     static newPost(): Action {
         return {

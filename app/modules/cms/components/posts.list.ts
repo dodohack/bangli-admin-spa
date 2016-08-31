@@ -26,6 +26,9 @@ export class PostsList
     @Input() set postsState(value) { this._postsState = Object.assign({}, value); }
     get postsState() { return this._postsState; }
 
+    // Fast edit single or multiple posts in posts page
+    @Output() batchEdit = new EventEmitter();
+
     get zh() { return zh_CN.post; }
     get ids() { return this._postsState.ids; }
     get posts() { return this._postsState.entities; }

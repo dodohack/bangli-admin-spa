@@ -19,9 +19,7 @@
 
     <!-- table row of post -->
     <template ngFor let-id [ngForOf]="ids" let-i="index">
-        <!-- displaying -->
-        <!--<tr id="{{i}}" (dblclick)="">-->
-        <tr>
+        <tr (dblclick)="batchEdit.emit([id])">
             <th>{{i+1}}</th>
             <td><input type="checkbox" name="post[]" [(ngModel)]="posts[id].checked"></td>
             <td>

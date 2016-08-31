@@ -7,7 +7,8 @@ import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
-import { PostParams }        from '../../models';
+import { Post, PostParams }  from '../../models';
+import { Category, Tag, Topic} from '../../models';
 import { AppState }          from '../../reducers';
 import { PostsState }        from '../../reducers/posts';
 import { AuthState }         from '../../reducers/auth';
@@ -22,6 +23,9 @@ export class PostsPage implements OnInit
     authState:  AuthState;
     cmsState:   CmsAttrsState;
     postsState: PostsState;
+    
+    // Batch editing posts
+    postsInEdit: Post[];
 
     params: any;
     queryParams: any;
@@ -29,6 +33,8 @@ export class PostsPage implements OnInit
     // Is search is running
     loading: boolean;
 
+    get zh() { return zh_CN.post; }
+    
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) {}
 
@@ -42,6 +48,9 @@ export class PostsPage implements OnInit
                 // Set search loading to false if posts is loaded
                 this.loading = false;
                 this.postsState = postsState;
+                // Create new copies of posts
+                this.postsInEdit = this.postsState.editing
+                    .map(id => Object.assign({}, this.postsState.entities[id]));
             });
 
         // THIS IS A TEMPORARY FIX
@@ -83,16 +92,78 @@ export class PostsPage implements OnInit
         // Load list of posts from API server
         this.store.dispatch(PostActions.loadPosts(postParams));
     }
+    
+    // In page edit single or multiple posts
+    batchEdit(ids: number[]) {
+        this.store.dispatch(PostActions.batchEditPosts(ids));
+    }
+    cancelBatchEdit() {
+        this.store.dispatch(PostActions.cancelBatchEditPosts());
+    }
+    editPreviousPost() {
+        this.store.dispatch(PostActions.batchEditPreviousPost());
+    }
+    editNextPost() {
+        this.store.dispatch(PostActions.batchEditNextPost());
+    }
+    
+    // Get shared tags for posts in editing mode
+    get sharedTags() {
+        if (!this.postsInEdit.length) return;
 
-    get zh() { return zh_CN.post; }
-    //get authors() { return this.userService.authors; }
-    //get editors() { return this.userService.editors; }
+        if (this.postsInEdit.length === 1) {
+            return this.postsInEdit[0].tags;
+        } else {
+            console.error("TODO, sharedTags");
+        }
+    }
 
-    //get statuses()   { return this.postService.statuses; }
-    //get categories() { return this.postService.categories; }
-    //get tags()       { return this.postService.tags; }
-    //get topics()     { return this.postService.topics; }
+    get sharedCats() {
+        if (!this.postsInEdit.length) return;
 
+        if (this.postsInEdit.length === 1) {
+            return this.postsInEdit[0].categories;
+        } else {
+            console.error("TODO, sharedCats");
+        }
+    }
+
+    get sharedTopics() {
+        if (!this.postsInEdit.length) return;
+
+        if (this.postsInEdit.length === 1) {
+            return this.postsInEdit[0].topics;
+        } else {
+            console.error("TODO, sharedTopics");
+        }
+    }
+
+    /////////////////////////////////////////////////////////////////////////
+    // NOTE: Following add/remove actions are the same as single post
+    // Category, tag, topic add/remove events
+    selectCat(cat: Category) {
+        // Unselect a category if is is previously selected, vice versa
+        if (cat.checked) this.removeCat(cat.id);
+        else this.addCat(cat);
+    }
+    addCat(cat: Category) {
+        this.store.dispatch(PostActions.addCategory(cat));
+    }
+    addTag(tag: Tag) {
+        this.store.dispatch(PostActions.addTag(tag));
+    }
+    addTopic(topic: Topic) {
+        this.store.dispatch(PostActions.addTopic(topic));
+    }
+    removeCat(id: number) {
+        this.store.dispatch(PostActions.removeCategory(id));
+    }
+    removeTag(id: number) {
+        this.store.dispatch(PostActions.removeTag(id));
+    }
+    removeTopic(id: number) {
+        this.store.dispatch(PostActions.removeTopic(id));
+    }
 
     canDeactivate() {
         return true;

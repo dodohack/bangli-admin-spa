@@ -4,13 +4,14 @@
         <button type="button" class="btn btn-outline-danger btn-sm close"
                 (click)="toggle.emit()">x</button>
 
-        <div *ngIf="hasNav" class="btn btn-group">
-            <button type="button" (click)="edit(index-1)"
+        <div *ngIf="hasNav" class="btn btn-group panel-btn-group">
+            <button type="button" (click)="previous.emit()"
                     class="btn btn-outline-primary btn-sm"><i class="fa fa-arrow-left"></i></button>
-            <button type="button" (click)="edit(index+1)"
+            <button type="button" (click)="next.emit()"
                     class="btn btn-outline-primary btn-sm"><i class="fa fa-arrow-right"></i></button>
-            <span class="title">第{{ index+1 }}个, ID号: </span>
         </div>
+
+        <span class="title" *ngIf="entity"> {{ entity.title || '#' + entity.id }} </span>
 
     </div>
     <div class="panel-content">

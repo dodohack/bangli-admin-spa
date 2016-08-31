@@ -43,6 +43,58 @@ export default function (state = initialState, action: Action): PostsState {
             };
         }
 
+        case PostActions.BATCH_EDIT_POSTS: {
+            return {
+                ids: [...state.ids],
+                editing: [...action.payload],
+                entities: Object.assign({}, state.entities),
+                paginator: Object.assign({}, state.paginator)
+            };
+        }
+
+        case PostActions.CANCEL_BATCH_EDIT_POSTS: {
+            return {
+                ids: [...state.ids],
+                editing: [],
+                entities: Object.assign({}, state.entities),
+                paginator: Object.assign({}, state.paginator)
+            };
+        }
+
+        case PostActions.BATCH_EDIT_PREVIOUS_POST: {
+            // DO NOTHING IF WE ARE NOT FAST EDITING SINGLE POST
+            if (state.editing.length !== 1) return state;
+
+            // Get previous post id
+            let idx = state.ids.indexOf(state.editing[0]) - 1;
+            if (idx < 0) idx = 0;
+            const previousId = state.ids[idx];
+
+            return {
+                ids: [...state.ids],
+                editing: [previousId],
+                entities: Object.assign({}, state.entities),
+                paginator: Object.assign({}, state.paginator)
+            };
+        }
+
+        case PostActions.BATCH_EDIT_NEXT_POST: {
+            // DO NOTHING IF WE ARE NOT FAST EDITING SINGLE POST
+            if (state.editing.length !== 1) return state;
+
+            // Get next post id
+            let idx = state.ids.indexOf(state.editing[0]) + 1;
+            if (idx > state.ids.length - 1) idx = state.ids.length - 1;
+            const nextId = state.ids[idx];
+
+            return {
+                ids: [...state.ids],
+                editing: [nextId],
+                entities: Object.assign({}, state.entities),
+                paginator: Object.assign({}, state.paginator)
+            };
+        }
+
         case PostActions.SAVE_POST_SUCCESS:
         case PostActions.LOAD_POST_SUCCESS: {
             // Post id
@@ -76,122 +128,66 @@ export default function (state = initialState, action: Action): PostsState {
         }
 
 
+        // Add a tag/topic/category to single/multiple post[s]
+        case PostActions.ADD_TAG:
+        case PostActions.ADD_TOPIC:
         case PostActions.ADD_CATEGORY: {
-            const postId  = state.editing[0];
-            const oldPost = state.entities[postId];
-            // If the category we add is already added
-            let isDup = oldPost.categories
-                .filter(cat => cat.id === action.payload.id);
+            let key = 'categories';
+            if (action.type == PostActions.ADD_TAG) key = 'tags';
+            if (action.type == PostActions.ADD_TOPIC) key = 'topics';
 
-            let newPost: Post;
-            if (isDup.length) { // Do not create a new post as nothing modified
-                newPost = oldPost;
-            } else { // Create a new post with updated categories
-                const newCats = [...oldPost.categories, action.payload];
-                newPost = Object.assign({}, oldPost, {categories: newCats});
-            }
+            const newPostArray = state.editing.map(id => {
+                const oldPost  = state.entities[id];
+                const isDup = oldPost[key]
+                    .filter(item => item.id === action.payload.id);
+                if (isDup && isDup.length) {
+                    // Use old post in next state as nothing changes
+                    return oldPost;
+                } else {
+                    // Create a new post
+                    const newItems = [...oldPost[key], action.payload];
+                    return Object.assign({}, oldPost, {[key]: newItems});
+                }
+            });
+
+            let newPosts: { [id: number]: Post } = {};
+            newPostArray.forEach(post => newPosts[post.id] = post);
 
             return {
                 ids: [...state.ids],
                 editing: [...state.editing],
-                entities: Object.assign({}, state.entities, {[postId]: newPost}),
+                entities: Object.assign({}, state.entities, newPosts),
                 paginator: Object.assign({}, state.paginator)
             };
         }
 
-        case PostActions.ADD_TAG: {
-            const postId  = state.editing[0];
-            const oldPost = state.entities[postId];
-            // If the tag we add is already added
-            let isDup = oldPost.tags
-                .filter(tag => tag.id === action.payload.id);
-
-            let newPost: Post;
-            if (isDup.length) { // Do not create a new post as nothing modified
-                newPost = oldPost;
-            } else { // Create a new post with updated tags
-                const newTags = [...oldPost.tags, action.payload];
-                newPost = Object.assign({}, oldPost, {tags: newTags});
-            }
-
-            return {
-                ids: [...state.ids],
-                editing: [...state.editing],
-                entities: Object.assign({}, state.entities, {[postId]: newPost}),
-                paginator: Object.assign({}, state.paginator)
-            };
-        }
-
-        case PostActions.ADD_TOPIC: {
-            const postId  = state.editing[0];
-            const oldPost = state.entities[postId];
-            // If the topic we add is already added
-            let isDup = oldPost.topics
-                .filter(t => t.id === action.payload.id);
-
-            let newPost: Post;
-            if (isDup.length) { // Do not create a new post as nothing modified
-                newPost = oldPost;
-            } else { // Create a new post with updated topics
-                const newTopics = [...oldPost.topics, action.payload];
-                newPost = Object.assign({}, oldPost, {topics: newTopics});
-            }
-
-            return {
-                ids: [...state.ids],
-                editing: [...state.editing],
-                entities: Object.assign({}, state.entities, {[postId]: newPost}),
-                paginator: Object.assign({}, state.paginator)
-            };
-        }   
-
+        // Remove a tag/topic/category from single/multiple post[s]
+        case PostActions.REMOVE_TAG:
+        case PostActions.REMOVE_TOPIC:
         case PostActions.REMOVE_CATEGORY: {
-            // TODO: state.editing should always contains 1, bulk editing does
-            // not use this action
-            const postId = state.editing[0];
-            let newCats = state.entities[postId].categories
-                .filter(cat => cat.id !== action.payload);
-            let newPost: Post = Object.assign({},
-                state.entities[postId], {categories: newCats});
+            let key = 'categories';
+            if (action.type == PostActions.REMOVE_TAG) key = 'tags';
+            if (action.type == PostActions.REMOVE_TOPIC) key = 'topics';
+
+            const newPostArray = state.editing.map(id => {
+                const oldPost = state.entities[id];
+                const leftItems = oldPost[key]
+                    .filter(item => item.id !== action.payload);
+                // Always return a new object
+                return Object.assign({}, oldPost, {[key]: leftItems});
+            });
+
+            let newPosts: { [id: number]: Post } = {};
+            newPostArray.forEach(post => newPosts[post.id] = post);
 
             return {
                 ids: [...state.ids],
                 editing: [...state.editing],
-                entities: Object.assign({}, state.entities, {[postId]: newPost}),
+                entities: Object.assign({}, state.entities, newPosts),
                 paginator: Object.assign({}, state.paginator)
             };
         }
 
-        case PostActions.REMOVE_TAG: {
-            const postId = state.editing[0];
-            let newTags = state.entities[postId].tags
-                .filter(tag => tag.id !== action.payload);
-            let newPost: Post = Object.assign({},
-                state.entities[postId], {tags: newTags});
-
-            return {
-                ids: [...state.ids],
-                editing: [...state.editing],
-                entities: Object.assign({}, state.entities, {[postId]: newPost}),
-                paginator: Object.assign({}, state.paginator)
-            };
-        }
-
-        case PostActions.REMOVE_TOPIC: {
-            const postId  = state.editing[0];
-            let newTopics = state.entities[postId].topics
-                .filter(t => t.id !== action.payload);
-            let newPost: Post = Object.assign({},
-                state.entities[postId], {topics: newTopics});
-
-            return {
-                ids: [...state.ids],
-                editing: [...state.editing],
-                entities: Object.assign({}, state.entities, {[postId]: newPost}),
-                paginator: Object.assign({}, state.paginator)
-            };
-        }
-            
         /* This is a must, as we can get the updated post from its subscriber */
         /*
         case PostActions.SAVE_POST: {

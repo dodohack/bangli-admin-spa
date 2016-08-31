@@ -9,7 +9,7 @@
 
 <!-- Post list table -->
 <posts-list [authState]="authState" [postsState]="postsState"
-            [cmsState]="cmsState"></posts-list>
+            [cmsState]="cmsState" (batchEdit)="batchEdit($event)"></posts-list>
 
 <hr>
 
@@ -22,6 +22,73 @@
 <hr>
 
 <!-- Right side bar -->
+
+<!-- Right panel, we can trigger a seperate saving individually -->
+<!-- Only show previous and next nav for fast editing single post -->
+<right-panel [width]="'600px'" [isOpen]="postsInEdit.length"
+             [hasNav]="postsInEdit.length === 1"
+             [entity]="postsInEdit[0]"
+             (toggle)="cancelBatchEdit()"
+             (previous)="editPreviousPost()"
+             (next)="editNextPost()">
+
+    <form (ngSubmit)="onSubmitPosts()">
+
+
+        <accordion>
+
+            <accordion-group isOpen="true">
+                <div accordion-heading>
+                    文章分类<i class="pull-right fa fa-chevron-circle-down"></i>
+                </div>
+
+                <category-tree [parentId]="0"
+                               [categories]="cmsState.categories"
+                               [selectedCats]="sharedCats"
+                               (checkEvent)="selectCat($event)">
+                </category-tree>
+            </accordion-group>
+
+            <accordion-group isOpen="true">
+                <div accordion-heading>
+                    文章标签<i class="pull-right fa fa-chevron-circle-down"></i>
+                </div>
+
+                <tag-cloud [tags]="cmsState.tags"
+                           [selectedTags]="sharedTags"
+                           (addTag)="addTag($event)"
+                           (removeTag)="removeTag($event)"></tag-cloud>
+            </accordion-group>
+
+            <accordion-group isOpen="true">
+                <div accordion-heading>
+                    文章专题分类<i class="pull-right fa fa-chevron-circle-down"></i>
+                </div>
+
+                <topic-cloud [topics]="cmsState.post_topic_cats"
+                             [selectedTopics]="sharedTopics"
+                             (addTopic)="addTopic($event)"
+                             (removeTopic)="removeTopic($event)"></topic-cloud>
+            </accordion-group>
+
+        </accordion>
+
+        <!-- Use form-group to wrap buttons so to pad bottom for right-panel 100% height issue -->
+        <div class="row form-group">
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-primary btn-block">保存</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Put this outside the form to avoid trigger submit event -->
+    <div class="row form-group"><div class="col-xs-12">
+        <button type="button" class="btn btn-danger btn-block"
+                (click)="cancelBatchEdit()">取消</button>
+    </div></div>
+
+</right-panel>
+
 <!--
 <right-panel [width]="'600px'" [isOpen]="false" [hasNav]="true">
     <tabset>

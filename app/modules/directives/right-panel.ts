@@ -17,16 +17,19 @@ import { Preference }     from '../../models';
 })
 export class RightPanel {
 
-    // Panel width with pixel, say, '600px'
-    @Input() width: string;
-    // Panel position offset the screen
-    get right() { return '-' + this.width; }
+    @Input() width: string; // Panel width with pixel, say, '600px'
+    get right() { return '-' + this.width; } // Panel position offset the screen
 
     @Input() isOpen: boolean;
-
     @Input() hasNav: boolean; // Show navigation bar or not
+    @Input() entity: any;  // Can be a post, product, order etc
+    
     @Input() auth: User;
     @Input() pref: Preference;
 
-    @Output() toggle = new EventEmitter();
+    @Output() toggle  = new EventEmitter();
+    
+    // Iterate to previous/next item with the list
+    @Output() previous = new EventEmitter();
+    @Output() next     = new EventEmitter();
 }

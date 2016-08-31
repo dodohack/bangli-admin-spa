@@ -16,19 +16,17 @@
     border-bottom: 2px dashed #7d7d7d;
     background-color: #b9b9b9;
 
+    .panel-btn-group {
+      padding: 0;
+    }
+
+    /* Panel title */
+    .title {
+      font-weight: 600;
+    }
+
     button {
-      margin: 0 0.5rem;
       height: 100%;
-
-      /* Panel title */
-      &.title {
-
-      }
-
-      &.pre,
-      &.next {
-
-      }
 
       /* Panel close button */
       &.close {
