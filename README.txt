@@ -11,6 +11,9 @@ auth.bangli.uk by using JWT(JSON Web Token).
 There are lots of 3 party libraries we are using, especially useful ones
 includes ng2-file-upload, n2g-dragular, ng2-bootstrap, ng2-charts etc, they
 are located at: https://github.com/valor-software/ng2-plans
+
+Post revision comparison javascript lib:
+https://code.google.com/p/google-diff-match-patch/ (a very good one)
 ##############################################################################
 
 # DEVELOPMENT #
