@@ -7,11 +7,12 @@ import { FormsModule }                   from '@angular/forms';
 import { RouterModule }                  from '@angular/router';
 
 
-import { TAB_DIRECTIVES }       from 'ng2-bootstrap';
-import { ACCORDION_DIRECTIVES } from 'ng2-bootstrap';
-import { AlertComponent }       from 'ng2-bootstrap';
-import { TYPEAHEAD_DIRECTIVES } from 'ng2-bootstrap';
-import { DROPDOWN_DIRECTIVES }  from 'ng2-bootstrap';
+import { TAB_DIRECTIVES }        from 'ng2-bootstrap';
+import { ACCORDION_DIRECTIVES }  from 'ng2-bootstrap';
+import { AlertComponent }        from 'ng2-bootstrap';
+import { TYPEAHEAD_DIRECTIVES }  from 'ng2-bootstrap';
+import { DROPDOWN_DIRECTIVES }   from 'ng2-bootstrap';
+//import { DATEPICKER_DIRECTIVES } from 'ng2-bootstrap';
 
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
@@ -35,6 +36,7 @@ import { DateFilterComponent }       from './date-filter.component';
         TYPEAHEAD_DIRECTIVES,
         DROPDOWN_DIRECTIVES,
         AlertComponent,
+        //DATEPICKER_DIRECTIVES,
 
         FroalaEditorCompnoent,
 
@@ -56,6 +58,7 @@ import { DateFilterComponent }       from './date-filter.component';
         TYPEAHEAD_DIRECTIVES,
         DROPDOWN_DIRECTIVES,
         AlertComponent,
+        //DATEPICKER_DIRECTIVES,
 
         FroalaEditorCompnoent,
 

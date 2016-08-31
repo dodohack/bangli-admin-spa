@@ -108,4 +108,9 @@ export class ListFilterBar {
               disabled: this.paginator.cur_page === this.paginator.last_page},
         ];
     }
+
+    dateFromOnClick($event)
+    {
+        console.log("select date_from clicked");
+    }
 }

@@ -8,7 +8,8 @@
                  [paginator]="postsState.paginator"></list-filter-bar>
 
 <!-- Post list table -->
-<posts-list [postsState]="postsState"></posts-list>
+<posts-list [authState]="authState" [postsState]="postsState"
+            [cmsState]="cmsState"></posts-list>
 
 <hr>
 
