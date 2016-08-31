@@ -5,11 +5,14 @@
 <list-filter-bar [isPost]="true" [authors]="cmsState.authors"
                  [editors]="cmsState.editors"
                  [categories]="cmsState.categories"
-                 [paginator]="postsState.paginator"></list-filter-bar>
+                 [paginator]="postsState.paginator"
+                 (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Post list table -->
 <posts-list [authState]="authState" [postsState]="postsState"
-            [cmsState]="cmsState" (batchEdit)="batchEdit($event)"></posts-list>
+            [cmsState]="cmsState"
+            (batchEdit)="batchEdit($event)"
+            (batchDelete)="batchDelete($event)"></posts-list>
 
 <hr>
 

@@ -68,25 +68,11 @@
             <!-- FIXME: This may trigger submit event -->
             <button class="btn btn-secondary btn-sm">重置</button>
         </form>
-    </div>
-
-    <div class="col-xs-12 form-inline">
-
-        <div class="form-group" style="margin-right: 2rem">
-            <select class="form-control form-control-sm custom-select"
-                    [(ngModel)]="bulkAction">
-                <option value="none">批量操作</option>
-                <option value="deleting">移到回收站</option>
-                <option value="editing">批量修改</option>
-            </select>
-            <button class="btn btn-secondary btn-sm"
-                    (click)="applyBulkAction()">应用</button>
-        </div>
 
         <!-- Paginator -->
         <div class="float-right paginator">
             <span>共{{ paginator.total }}条 |
-                第{{ paginator.cur_page }} / {{ paginator.last_page }}页</span>
+                {{ paginator.cur_page }}/{{ paginator.last_page }}页</span>
             <a *ngFor="let p of pagers" class="btn btn-sm btn-secondary"
                [class.disabled]="p.disabled"
                [routerLink]="['/', baseUrl, 'page', p.index, 'state', state]"

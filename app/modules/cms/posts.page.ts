@@ -106,6 +106,11 @@ export class PostsPage implements OnInit
     editNextPost() {
         this.store.dispatch(PostActions.batchEditNextPost());
     }
+    // Delete multiple posts
+    batchDelete(ids: number[]) {
+        console.error("TODO: GOING TO DISPATCH ACTION TO DELETE POST: ", ids);
+        //this.store.dispatch(PostActions.batchEditPosts(ids));
+    }
     
     // Get shared tags for posts in editing mode
     get sharedTags() {

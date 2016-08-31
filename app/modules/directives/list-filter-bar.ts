@@ -1,4 +1,5 @@
-import { Component, Input }        from '@angular/core';
+import { Component, Input, Output }from '@angular/core';
+import { EventEmitter }            from '@angular/core';   
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router }  from '@angular/router';
 import { NavigationExtras }        from '@angular/router';
@@ -24,7 +25,7 @@ export class ListFilterBar {
     @Input() isOrder: boolean;
     @Input() isPage: boolean;
     @Input() isUser: boolean;
-
+    
     // URL parameters and query parameters
     state: string;
     filterAuthor: string;
