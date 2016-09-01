@@ -1,0 +1,26 @@
+<!-- This template shows a list of revisions for current entity -->
+<div class="row" *ngIf="post.revisions">
+    <h3>历史版本，点击进行和当前版本对比，展开在本页下方编辑，不用开启新页面</h3>
+    <div class="col-xs-12">
+        <ul class="revision-history">
+            <li *ngFor="let revision of post.revisions; let i=index">
+                <label class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input"
+                           [ngModel]="isSelected(revision)"
+                           name="d[]" (change)="checkRevison(revision)">
+                    <span class="custom-control-indicator"></span>
+                    <span class="custom-control-description">
+                        {{ i }} | {{ revision.state }} |
+                        {{ authors[revision.user_id] }} @ {{ revision.created_at }}
+                    </span>
+                </label>
+            </li>
+        </ul>
+        <button (click)="runDiff()" class="btn btn-secondary-outline"
+                [disabled]="!canCompare">比较</button>
+    </div>
+
+    <div class="col-xs-12" *ngIf="diffHtml">
+        {{ diffHtml }}
+    </div>
+</div>

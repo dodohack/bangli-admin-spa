@@ -24,8 +24,6 @@ import { Tag }               from '../../models';
 import { Topic }             from '../../models';
 import { zh_CN }             from '../../localization';
 
-
-
 @Component({ template: require('./post.page.html') })
 export class PostPage implements OnInit
 {

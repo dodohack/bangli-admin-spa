@@ -2,6 +2,7 @@
  * CMS Post related model
  */
 
+import { Revision } from './revision';
 import { Category } from './category';
 import { Tag }      from './tag';
 import { Topic }    from './topic';
@@ -38,11 +39,11 @@ export class CreativeType {
 export class PostType {
     post_type: string;
     count: number;
-};
+}
 export class PostState {
     state: string;
     count: number;
-};
+}
 
 // API request parameters to filter list of posts
 export class PostParams {
@@ -78,7 +79,7 @@ export class PostParams {
         if (this.query) s = s + '&query=' + this.query;
         return s;
     }
-};
+}
 
 export class Post {
     id: number;
@@ -98,6 +99,7 @@ export class Post {
     published_at: string;
     created_at: string;
     updated_at: string;
+    revisions: Revision[];
 
     /* This is a fix to froala editor when creating a new post, post.content
      * should be immediate avaiable to it */

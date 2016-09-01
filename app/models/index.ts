@@ -18,6 +18,7 @@ export * from './paginator';
 export * from './category';
 export * from './tag';
 export * from './topic';
+export * from './revision';
 export * from './post';
 export * from './page';
 export * from './deal';
