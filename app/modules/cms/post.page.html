@@ -111,13 +111,20 @@
             </div>
 
         </accordion-group>
+
+        <accordion-group isOpen="true">
+            <div accordion-heading>
+                文章内容<i class="pull-right fa fa-chevron-circle-down"></i>
+            </div>
+            <!-- Froala Editor -->
+            <froala *ngIf="inputPost" [froalaOptions]="froalaOptions"
+                    [froalaData]="inputPost.content" (model)="postContentChanged($event)"></froala>
+        </accordion-group>
+
     </accordion>
-
-    <!-- Froala Editor -->
-    <froala *ngIf="inputPost" [froalaOptions]="froalaOptions"
-            [froalaData]="inputPost.content" (model)="postContentChanged($event)"></froala>
-
 </form>
+
+<revision-history [entity]="post" [cmsState]="cmsState"></revision-history>
 
 <!-- Right panel, we can trigger a seperate saving individually -->
 <right-panel [width]="'540px'" [isOpen]="openPanel"

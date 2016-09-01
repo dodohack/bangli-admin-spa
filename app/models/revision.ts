@@ -5,9 +5,9 @@
 export class Revision {
     id: number;
     state: string; // 'draft', 'pending', 'publish'
-    content_type: string; // 'post', 'page', 'topic', 'product', 'newsletter'
+    content_type: string; // 'cms_post', 'cms_page', 'shop_product', etc
     content_id: number;  // corresponding entity id
     user_id: number;     // who submits the change
-    content: number;
+    body: string;
     created_at: string;
 }

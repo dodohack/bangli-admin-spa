@@ -1,0 +1,13 @@
+.revision-history {
+  list-style: none;
+}
+
+.revision-diff {
+  del {
+    color: red;
+  }
+
+  ins {
+    color: green;
+  }
+}

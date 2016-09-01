@@ -16,6 +16,7 @@ import { DROPDOWN_DIRECTIVES }   from 'ng2-bootstrap';
 
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
+import { RevisionHistory }           from './revision-history';
 import { RightPanel }                from './right-panel';
 import { CategoryTree }              from './category-tree';
 import { TopicCloud }                from './topic-cloud';
@@ -50,6 +51,7 @@ import { DateFilterComponent }       from './date-filter.component';
         CmsTagCloud,
         FastEditPostFormComponent,
         SearchBox,
+        RevisionHistory,
         DateFilterComponent,
     ],
     exports: [
@@ -72,6 +74,7 @@ import { DateFilterComponent }       from './date-filter.component';
         CmsTagCloud,
         FastEditPostFormComponent,
         SearchBox,
+        RevisionHistory,
         DateFilterComponent,
 
         CommonModule,
