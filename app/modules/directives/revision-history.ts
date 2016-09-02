@@ -13,8 +13,16 @@ import { CmsAttrsState } from "../../reducers/cmsattrs";
 import { zh_CN }         from '../../localization';
 
 var jsdiff = require('diff');
+var htmlTag = {'&': '&amp;', '<': '&lt;', '>': '&gt;',
+    '/p>': '/p&gt;<br>',
+    '/h1>': '/h1&gt;<br>',
+    '/h2>': '/h2&gt;<br>',
+    '/h3>': '/h3&gt;<br>',
+    '/h4>': '/h4&gt;<br>',
+    '/h5>': '/h5&gt;<br>',
+    '/h6>': '/h6&gt;<br>'};
 
-@Component({
+    @Component({
     selector: 'revision-history',
     template: require('./revision-history.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -64,24 +72,33 @@ export class RevisionHistory
 
         // Only add when it is not found
         if (idx === -1) this.selectedRevisions.push(revision);
+
+        this.diffHtml = ''; // reset the diff output
+        this.cd.markForCheck(); // Do change detection
+    }
+
+    replaceTag(tag) {
+        return htmlTag[tag] || tag;
     }
 
     // TODO: We should escape html before doing diff, when doing escape, we should
     // TODO: put line end to the end tag such as </p>, </h1>, </h2> etc.
     // Diff selectedRevisions w/wo current version
     runDiff() {
-        let regexp = /(<([^>]+)>)/ig;
-        let firstBody = this.selectedRevisions[0].body.replace(regexp, "");
+        // NOTE: regexp shouldn't be quoted as string.
+        // This regexp matches html tag: '<', '>', '&', '/p>', '/h[123456]>'
+        let regexp = /[\/]?[h]?[123456p]?[&<>]/g;
+        let firstBody = this.selectedRevisions[0].body.replace(regexp, this.replaceTag);
         let secondBody;
 
         // Load revisions from server.
         if (this.selectedRevisions.length == 2)
-            secondBody = this.selectedRevisions[1].body.replace(regexp, "");
+            secondBody = this.selectedRevisions[1].body.replace(regexp, this.replaceTag);
         else if (this.selectedRevisions.length == 1)
-            secondBody = this.entity.content.replace(regexp, "");
+            secondBody = this.entity.content.replace(regexp, this.replaceTag);
 
         let diff = jsdiff.diffChars(firstBody, secondBody);
-        var output = '';
+        var output = ''; // must be global variable
         diff.forEach(function(part) {
             if (part.added)
                 output += '<ins>' + part.value + '</ins>';
@@ -91,6 +108,8 @@ export class RevisionHistory
                 output += part.value;
         });
         this.diffHtml = output;
+        //console.log("****untouched body: ", this.entity.content);
+        //console.log("*****diff content: ", this.diffHtml);
         this.cd.markForCheck();
     }
 }
