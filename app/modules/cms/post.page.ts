@@ -50,25 +50,33 @@ export class PostPage implements OnInit
             .subscribe(cmsState => this.cmsState = cmsState);
 
         // Dispatch an action to create or load a post
-        this.route.params.subscribe(params => {
-            if (Object.keys(params).length === 0) {
-                // New a post
-                this.store.dispatch(PostActions.newPost());
-            } else {
-                // Edit a post
-                this.store.dispatch(PostActions.loadPost(+params['id']));
-            }
-        });
-
+        this.dispatchLoadPost();
         // Load the post
+        this.loadPost();
+    }
+
+    /**
+     * Kick an action to load the post when URL changes
+     */
+    dispatchLoadPost() {
+        this.route.params.subscribe(params => {
+            if (Object.keys(params).length === 0) // New a post
+                this.store.dispatch(PostActions.newPost(/* FIXME: current user id */)); 
+            else                                  // Edit a post
+                this.store.dispatch(PostActions.loadPost(+params['id']));
+        });
+    }
+
+    /**
+     * Listen on ngrx/store, create a post from 'store' if state is changed
+     */
+    loadPost() {
         this.store.select<PostsState>('posts').subscribe(postsState => {
             this.postsState = postsState;
             // When opening a single post, 'editing' always contains 1 id
-            // Do a copy of the post, do not modify on the original one.
-            console.log("*****New post emitted");
+            // FIXME: Remove inputPost after updating to new angular2-froala binding
             this.inputPost = postsState.entities[postsState.editing[0]];
-            if (this.inputPost)
-                this.post = Object.assign({}, this.inputPost, {author_id: this.myId});
+            this.post = Object.assign({}, this.inputPost);
         });
     }
     
@@ -132,8 +140,10 @@ export class PostPage implements OnInit
     }
 
     // TODO: Need to get back a save success status and enable canDeactivate
+    // TODO: We can listen on 'alerts' changes, if a successful alert is 
+    // back with the id, type of current post, we can say enable 
+    // canDeactivate
     save() {
-        console.error("***save()***");
         this.store.dispatch(PostActions.savePost(this.post));
     }
     save2Pending() { this.post.state = 'pending'; this.save(); }
