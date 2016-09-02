@@ -119,6 +119,14 @@ export class PostActions {
             payload: post
         };
     }
+
+    static APPLY_REVISION = '[Post] Apply Revision';
+    static applyRevision(ids: number[]): Action {
+        return {
+            type: PostActions.APPLY_REVISION,
+            payload: ids
+        };
+    }
 /*
     static SAVE_POST_AS_PENDING = '[Post] Save Post As Pending';
     static savePostAsPending(post: Post): Action {

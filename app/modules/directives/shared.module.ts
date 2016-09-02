@@ -14,6 +14,7 @@ import { TYPEAHEAD_DIRECTIVES }  from 'ng2-bootstrap';
 import { DROPDOWN_DIRECTIVES }   from 'ng2-bootstrap';
 //import { DATEPICKER_DIRECTIVES } from 'ng2-bootstrap';
 
+//import { FroalaEditorDirective } from 'angular2-froala-wysiwyg/lib/froala.directives';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
 import { RevisionHistory }           from './revision-history';
@@ -40,6 +41,7 @@ import { DateFilterComponent }       from './date-filter.component';
         //DATEPICKER_DIRECTIVES,
 
         FroalaEditorCompnoent,
+        //FroalaEditorDirective,
 
         RightPanel,
         ListPageHeader,
@@ -63,6 +65,7 @@ import { DateFilterComponent }       from './date-filter.component';
         //DATEPICKER_DIRECTIVES,
 
         FroalaEditorCompnoent,
+        //FroalaEditorDirective,
 
         RightPanel,
         ListPageHeader,

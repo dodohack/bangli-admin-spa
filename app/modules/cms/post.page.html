@@ -116,15 +116,20 @@
             <div accordion-heading>
                 文章内容<i class="pull-right fa fa-chevron-circle-down"></i>
             </div>
+
             <!-- Froala Editor -->
+            <!-- TODO: Use official one when ngModule bug is fixed -->
+            <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions" [(froalaModel)]="inputPost.content"></div>-->
             <froala *ngIf="inputPost" [froalaOptions]="froalaOptions"
                     [froalaData]="inputPost.content" (model)="postContentChanged($event)"></froala>
+
         </accordion-group>
 
     </accordion>
 </form>
 
-<revision-history [entity]="post" [cmsState]="cmsState"></revision-history>
+<revision-history [entity]="post" [cmsState]="cmsState"
+                  (restore2Revision)="restoreRevision($event)"></revision-history>
 
 <!-- Right panel, we can trigger a seperate saving individually -->
 <right-panel [width]="'540px'" [isOpen]="openPanel"

@@ -37,8 +37,8 @@ export class RevisionHistory
     // Load selected revisions from server
     //@Output() loadRevisions = new EventEmitter();
 
-    // Apply selected revision content to current reversion
-    //@Output() applyRevision = new EventEmitter();
+    // Restore current entity content to selected revision
+    @Output() restore2Revision = new EventEmitter();
 
     // Diff output in html format
     diffHtml: string;
@@ -54,7 +54,7 @@ export class RevisionHistory
         if (!this.selectedRevisions.length) return false;
         return this.selectedRevisions.indexOf(revision) !== -1;
     }
-
+    
     // Compare can be done with 2 selected revisions or
     // 1 selected revision + current version.
     get canCompare() {

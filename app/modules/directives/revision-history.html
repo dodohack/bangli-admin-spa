@@ -20,6 +20,9 @@
                                 修改日期：{{ revision.created_at }} @ {{ authors[revision.user_id].display_name }}
                             </span>
                         </label>
+
+                        <button class="btn btn-sm btn-secondary-outline"
+                                (click)="restore2Revision.emit(revision.id)">恢复此版本</button>
                     </li>
                 </ul>
 

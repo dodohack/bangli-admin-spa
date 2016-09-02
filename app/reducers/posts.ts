@@ -188,6 +188,23 @@ export default function (state = initialState, action: Action): PostsState {
             };
         }
 
+        case PostActions.APPLY_REVISION: {
+            const postid = action.payload[0];
+            const revid = action.payload[1];
+            // Get revision.body
+            const newBody = state.entities[postid].revisions
+                .filter(r => r.id === revid).map(r => r.body);
+            // Apply revision.body to post.content
+            const newPost = Object.assign({}, state.entities[postid],
+                { content: newBody });
+            return {
+                ids: [...state.ids],
+                editing: [...state.editing],
+                entities: Object.assign({}, state.entities, {[postid]: newPost}),
+                paginator: Object.assign({}, state.paginator)
+            }
+        }
+
         /* This is a must, as we can get the updated post from its subscriber */
         /*
         case PostActions.SAVE_POST: {

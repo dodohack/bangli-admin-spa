@@ -65,6 +65,7 @@ export class PostPage implements OnInit
             this.postsState = postsState;
             // When opening a single post, 'editing' always contains 1 id
             // Do a copy of the post, do not modify on the original one.
+            console.log("*****New post emitted");
             this.inputPost = postsState.entities[postsState.editing[0]];
             if (this.inputPost)
                 this.post = Object.assign({}, this.inputPost, {author_id: this.myId});
@@ -74,7 +75,7 @@ export class PostPage implements OnInit
     canDeactivate() {
         console.log("form status: ", this.postForm);
         if (this.postForm.dirty) {
-            this.store.dispatch(AlertActions.error('请先保存当前更改再退出此页面'));
+            this.store.dispatch(AlertActions.error('请先保存当前更改，或取消保存'));
             return false;
         } else {
             return true;
@@ -124,7 +125,11 @@ export class PostPage implements OnInit
         this.store.dispatch(PostActions.removeTopic(id));
     }
 
-
+    // Restore current content to given revision
+    restoreRevision(rid: number) {
+        this.store.dispatch(PostActions.applyRevision([this.post.id, rid]));
+        this.store.dispatch(AlertActions.warning('请确认版本恢复正确后点击保存到服务器'));
+    }
 
     // TODO: Need to get back a save success status and enable canDeactivate
     save() {
