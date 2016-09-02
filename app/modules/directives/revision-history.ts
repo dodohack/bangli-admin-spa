@@ -1,5 +1,5 @@
 /**
- * Display a list of revisions for current entity
+ * Display a list of revisions for current entity and
  */
 import { Component }     from '@angular/core';
 import { Input, Output } from '@angular/core';
@@ -22,7 +22,7 @@ var htmlTag = {'&': '&amp;', '<': '&lt;', '>': '&gt;',
     '/h5>': '/h5&gt;<br>',
     '/h6>': '/h6&gt;<br>'};
 
-    @Component({
+@Component({
     selector: 'revision-history',
     template: require('./revision-history.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -42,6 +42,7 @@ export class RevisionHistory
 
     // Diff output in html format
     diffHtml: string;
+    diffCount: number;
 
     constructor(private cd: ChangeDetectorRef) {}
 
@@ -81,35 +82,46 @@ export class RevisionHistory
         return htmlTag[tag] || tag;
     }
 
-    // TODO: We should escape html before doing diff, when doing escape, we should
-    // TODO: put line end to the end tag such as </p>, </h1>, </h2> etc.
     // Diff selectedRevisions w/wo current version
     runDiff() {
         // NOTE: regexp shouldn't be quoted as string.
         // This regexp matches html tag: '<', '>', '&', '/p>', '/h[123456]>'
         let regexp = /[\/]?[h]?[123456p]?[&<>]/g;
-        let firstBody = this.selectedRevisions[0].body.replace(regexp, this.replaceTag);
-        let secondBody;
+
+        let oldBody;
+        let newBody;
 
         // Load revisions from server.
-        if (this.selectedRevisions.length == 2)
-            secondBody = this.selectedRevisions[1].body.replace(regexp, this.replaceTag);
-        else if (this.selectedRevisions.length == 1)
-            secondBody = this.entity.content.replace(regexp, this.replaceTag);
+        if (this.selectedRevisions.length == 2) {
+            if (this.selectedRevisions[0].id > this.selectedRevisions[1].id) {
+                // newer revision has bigger id than older revision
+                let tmp = this.selectedRevisions[0];
+                this.selectedRevisions[0] = this.selectedRevisions[1];
+                this.selectedRevisions[1] = tmp;
+            }
+            oldBody = this.selectedRevisions[0].body.replace(regexp, this.replaceTag);
+            newBody = this.selectedRevisions[1].body.replace(regexp, this.replaceTag);
+        } else if (this.selectedRevisions.length == 1) {
+            oldBody = this.selectedRevisions[0].body.replace(regexp, this.replaceTag);
+            newBody = this.entity.content.replace(regexp, this.replaceTag);
+        }
 
-        let diff = jsdiff.diffChars(firstBody, secondBody);
+        let diff = jsdiff.diffChars(oldBody, newBody);
         var output = ''; // must be global variable
+        var count = 0;   // count of different
         diff.forEach(function(part) {
-            if (part.added)
+            if (part.added) {
                 output += '<ins>' + part.value + '</ins>';
-            else if (part.removed)
+                count++;
+            } else if (part.removed) {
                 output += '<del>' + part.value + '</del>';
-            else
+                count++;
+            } else {
                 output += part.value;
+            }
         });
         this.diffHtml = output;
-        //console.log("****untouched body: ", this.entity.content);
-        //console.log("*****diff content: ", this.diffHtml);
+        this.diffCount = count;
         this.cd.markForCheck();
     }
 }
