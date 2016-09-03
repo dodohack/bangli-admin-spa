@@ -25,7 +25,11 @@
             <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
                 <li role="menuitem" *ngFor="let key of auth.keys">
                     <a class="dropdown-item" role="button"
-                       (click)="loginDomain.emit(key)">{{ auth.domains[key].name }}</a>
+                       (click)="loginDomain.emit(key)">
+                        {{ auth.domains[key].name }}
+                        <span class="tag" [class.tag-danger-outline]="isOffline(key)"
+                              [class.tag-success-outline]="!isOffline(key)">{{ latency(key) }}</span>
+                    </a>
                 </li>
             </ul>
         </li>
@@ -49,6 +53,8 @@
         </li>
 
         <li class="float-right">
+            <span class="tag" [class.tag-danger-outline]="isOffline(auth.key)"
+                  [class.tag-success-outline]="!isOffline(auth.key)">{{ latency(auth.key) }}</span>
             <a [routerLink]="['/user', auth.jwt.sub]" routerLinkActive="active"
                [style.color]="pref.menuColor">
                 <i class="fa fa-user"></i>{{ auth.jwt.aud }}

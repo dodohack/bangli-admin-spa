@@ -9,11 +9,13 @@ import { Observable }        from 'rxjs/Observable';
 
 import { Post, PostParams }  from '../../models';
 import { Category, Tag, Topic} from '../../models';
+import { Activity }          from '../../models';
 import { AppState }          from '../../reducers';
 import { PostsState }        from '../../reducers/posts';
 import { AuthState }         from '../../reducers/auth';
 import { CmsAttrsState }     from '../../reducers/cmsattrs';
 import { PostActions }       from '../../actions';
+import { Ping }              from '../../ping';
 
 import { zh_CN } from '../../localization';
 
@@ -33,10 +35,13 @@ export class PostsPage implements OnInit
     // Is search is running
     loading: boolean;
 
+    _activity: {[key: string]: Activity[]};
+
     get zh() { return zh_CN.post; }
     
     constructor(private route: ActivatedRoute,
-                private store: Store<AppState>) {}
+                private store: Store<AppState>,
+                private ping: Ping) {}
 
     ngOnInit() {
         this.store.select<AuthState>('auth')
@@ -52,6 +57,12 @@ export class PostsPage implements OnInit
                 this.postsInEdit = this.postsState.editing
                     .map(id => Object.assign({}, this.postsState.entities[id]));
             });
+
+        this.ping.activity$.subscribe(activity => {
+            this._activity = activity;
+            if (this._activity.hasOwnProperty('cms_post'))
+                this.store.dispatch(PostActions.refreshActivityStatus(this._activity['cms_post']));
+        })
 
         // THIS IS A TEMPORARY FIX
         // FIXME: Previous request is cancel by the second one if exists

@@ -17,7 +17,7 @@ import { CmsAttrActions }    from './actions';
 import { PreferenceActions } from './actions';
 import { Alert }             from './models';
 import { Preference }        from "./models";
-
+import { Ping }              from './ping';
 
 @Component({
     selector: 'admin-spa',
@@ -32,7 +32,8 @@ export class App implements OnInit
     pref: Preference;
 
     constructor(private store: Store<AppState>,
-                private router: Router) {}
+                private router: Router,
+                private ping: Ping) {}
 
     ngOnInit() {
         this.alerts$ = this.store.select<Alert[]>('alerts');
@@ -83,5 +84,8 @@ export class App implements OnInit
         // Get user profile from given domain
         this.store.dispatch(AuthActions.loginDomain(this.auth));
     }
-    toggleSidebar($event) { this.store.dispatch(PreferenceActions.toggleSidebar()); }
+
+    toggleSidebar($event) {
+        this.store.dispatch(PreferenceActions.toggleSidebar());
+    }
 }

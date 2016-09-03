@@ -2,6 +2,8 @@
  * CMS Post related model
  */
 
+import { Statistic }from './statistic';
+import { Activity } from './activity';
 import { Revision } from './revision';
 import { Category } from './category';
 import { Tag }      from './tag';
@@ -95,11 +97,14 @@ export class Post {
     topics: Topic[];
     excerpt: string;
     content: string;
+    internal_note: string;
     fake_published_at: string;
     published_at: string;
     created_at: string;
     updated_at: string;
     revisions: Revision[];
+    statistics: Statistic[];
+    activities: Activity[]; // Only have edit_lock currently
 
     /* This is a fix to froala editor when creating a new post, post.content
      * should be immediate avaiable to it */

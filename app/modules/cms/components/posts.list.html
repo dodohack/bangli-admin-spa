@@ -40,11 +40,23 @@
                        (change)="updateEditList(id)"></td>
             <!-- Enable fast editing if double click on title column -->
             <td (dblclick)="batchEdit.emit([id])">
+                <!-- Locked post -->
+                <i class="fa fa-lock" style="color: red" *ngIf="posts[id].lock"></i>
+                <!-- Online edit lock -->
+                <i class="fa fa-pencil" style="color: red"
+                   *ngIf="hasActivity(id) && getActivity(id).edit_lock == 1"></i>
+                <!-- Offline edit lock -->
+                <i class="fa fa-pencil" style="color: blue"
+                   *ngIf="hasActivity(id) && getActivity(id).edit_lock == 2"></i>
+
                 <span *ngIf="posts[id].state != 'publish'" class="tag tag-danger-outline">
                     {{ zh[posts[id].state] }}
                 </span>
                 <span class="tag tag-default-outline">{{ zh[posts[id].creative_type] }}</span>
                 <strong><a [routerLink]="['/post', id ]">{{ posts[id].title }}</a></strong>
+                <span class="tag tag-default-outline" *ngIf="hasActivity(id) && getActivity(id).user_id">
+                    {{ authors[getActivity(id).user_id].name }} 正在编辑
+                </span>
                 <div class="row-actions">
                     <span class="trash"><a>删除</a> | </span>
                     <span><a href="{{ previewLink(id) }}" target="_blank">查看</a> | </span>

@@ -50,19 +50,27 @@ export class PostsList
     get isAllSelected() {
         return this._postsState.ids.length <= this._postsState.editing.length;
     }
-
+    
     isEditing(id) {
-        return this.postsState.editing.filter(eid => eid === id).length;
+        return this._postsState.editing.filter(eid => eid === id).length;
+    }
+    
+    hasActivity(id): boolean {
+        return this.posts[id].activities && this.posts[id].activities.length > 0;
+    }
+    
+    getActivity(id) {
+        return this.posts[id].activities[0];
     }
 
     // Add id to editing list if it is not added, or
     // Remove id from editing list if it is already exists
     updateEditList(id) {
-        let idx = this.postsState.editing.indexOf(id);
+        let idx = this._postsState.editing.indexOf(id);
         if (idx === -1)
-            this.postsState.editing.push(id);
+            this._postsState.editing.push(id);
         else
-            this.postsState.editing.splice(idx, 1);
+            this._postsState.editing.splice(idx, 1);
     }
 
     // Select all or deselect all

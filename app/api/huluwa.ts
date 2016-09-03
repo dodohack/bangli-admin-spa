@@ -14,6 +14,9 @@ export const API_HULUWA = {
 
     /* Authentication callback with JWT token */
     register_callback: '/register',
+    
+    /* Beacon, test if API server online, can carry optional data */
+    ping: '/ping',
 
     /* Retrieve users, authors, editors etc; Retrieve/update single user */
     users: '/users',

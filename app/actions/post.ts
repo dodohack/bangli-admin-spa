@@ -4,6 +4,7 @@ import { Post }       from '../models';
 import { Category }   from "../models";
 import { Tag }        from "../models";
 import { Topic }      from "../models";
+import { Activity }   from '../models';
 
 export class PostActions {
     static SEARCH = '[Post] Search';
@@ -221,5 +222,13 @@ export class PostActions {
             type: PostActions.REMOVE_TOPIC,
             payload: topic_id
         }
+    }
+    
+    static REFRESH_ACTIVITY_STATUS = '[Post] Refresh Activity Status';
+    static refreshActivityStatus(activities: Activity[]): Action {
+        return {
+            type: PostActions.REFRESH_ACTIVITY_STATUS,
+            payload: activities
+        };
     }
 }

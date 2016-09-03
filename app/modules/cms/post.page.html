@@ -24,7 +24,7 @@
                         (click)="save2Pending()" [disabled]="!isDraft">提交审稿</button>
 
                 <button class="btn btn-sm btn-outline-danger"
-                        (click)="save2Draft()" *ngIf="isPending || isPublish">保存为草稿</button>
+                        (click)="save2Draft()" *ngIf="isPending || isPublish">撤销发布</button>
 
                 <button class="btn btn-sm btn-outline-danger"
                         (click)="save2Publish()" [disabled]="isPublish">发布</button>
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="form-group post-meta">
-                        <label>原创类型</label>
+                        <label>稿件属性</label>
                         <select class="form-control form-control-sm custom-select"
                                 name="c_type" [(ngModel)]="post.creative_type">
                             <option *ngFor="let c_type of cmsState.post_creative_types.available"

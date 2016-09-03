@@ -11,12 +11,14 @@ import { PageActions } from '../actions';
 
 export interface PagesState {
     ids: number[];
+    editing: number[];
     entities: { [id: number]: Page };
     paginator: Paginator;
 };
 
 const initialState: PagesState = {
     ids: [],
+    editing: [],
     entities: {},
     paginator: new Paginator
 };
@@ -36,6 +38,7 @@ export default function (state = initialState, action: Action): PagesState {
 
             return {
                 ids: [...ids],
+                editing: [...state.editing],
                 entities: Object.assign({}, entities),
                 paginator: Object.assign({}, action.payload.paginator)
             };
@@ -50,13 +53,14 @@ export default function (state = initialState, action: Action): PagesState {
             if (state.ids.indexOf(id) !== -1) {
                 return {
                     ids: [...state.ids],
-                    // FIXME: 'selected' state is lost
+                    editing: [...state.editing],
                     entities: Object.assign({}, state.entities, {[id]: action.payload}),
                     paginator: Object.assign({}, state.paginator)
                 };
             } else {
                 return {
                     ids: [id],
+                    editing: [...state.editing],
                     entities: Object.assign({}, {[id]: action.payload}),
                     // paginator should be empty
                     paginator: Object.assign({}, state.paginator)

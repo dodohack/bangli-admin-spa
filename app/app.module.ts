@@ -14,6 +14,7 @@ import { ShopMgrGuard }  from './guard';
 import { AdminGuard }    from './guard';
 import { SuperUserGuard} from './guard';
 
+import { Ping }          from './ping';
 import { routing }       from './app.routes';
 import { App }           from './app';
 import { Sidebar }       from './modules/directives/sidebar';
@@ -89,6 +90,7 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
     ],
     providers: [
         Title,
+        Ping,
         UnauthGuard,
         BaseGuard,
         AuthorGuard,

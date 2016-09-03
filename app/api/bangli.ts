@@ -22,6 +22,9 @@ export const API_BANGLI = {
     /* List of user roles */
     users_roles: '/users/roles',
 
+    /* Beacon, test if API server online, can carry optional data */
+    ping: '/ping',
+
     /*************************************************************************
      * CMS
      *************************************************************************/
