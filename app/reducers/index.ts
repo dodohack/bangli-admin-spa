@@ -183,6 +183,10 @@ export function getPost(id: number) {
     return compose(fromPosts.getPost(id), getPostsState());
 }
 
+export function isPostLocked() {
+    
+}
+
 
 /*****************************************************************************
  * Topic

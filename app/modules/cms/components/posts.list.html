@@ -12,8 +12,10 @@
                     <select class="form-control form-control-sm custom-select"
                             [(ngModel)]="batchAction" [disabled]="!canEdit">
                         <option value="" selected disabled>批量操作</option>
-                        <option value="delete">移到回收站</option>
                         <option value="edit">批量修改</option>
+                        <option value="offline_edit">离线编辑</option>
+                        <option value="lock">批量锁定</option>
+                        <option value="delete">移到回收站</option>
                     </select>
 
                     <button class="btn btn-sm btn-default" [disabled]="!canEdit"
@@ -43,20 +45,24 @@
                 <!-- Locked post -->
                 <i class="fa fa-lock" style="color: red" *ngIf="posts[id].lock"></i>
                 <!-- Online edit lock -->
-                <i class="fa fa-pencil" style="color: red"
-                   *ngIf="hasActivity(id) && getActivity(id).edit_lock == 1"></i>
+                <span class="tag tag-default-outline"
+                      *ngIf="hasActivity(id) && getActivity(id).edit_lock == 1">
+                    <i class="fa fa-pencil" style="color: red"></i>
+                    {{ authors[getActivity(id).user_id].name }} 正在编辑
+                </span>
                 <!-- Offline edit lock -->
-                <i class="fa fa-pencil" style="color: blue"
-                   *ngIf="hasActivity(id) && getActivity(id).edit_lock == 2"></i>
+                <span class="tag tag-default-outline"
+                      *ngIf="hasActivity(id) && getActivity(id).edit_lock == 2">
+                    <i class="fa fa-pencil" style="color: blue"></i>
+                    {{ authors[getActivity(id).user_id].name }} 正在离线编辑
+                </span>
 
                 <span *ngIf="posts[id].state != 'publish'" class="tag tag-danger-outline">
                     {{ zh[posts[id].state] }}
                 </span>
                 <span class="tag tag-default-outline">{{ zh[posts[id].creative_type] }}</span>
                 <strong><a [routerLink]="['/post', id ]">{{ posts[id].title }}</a></strong>
-                <span class="tag tag-default-outline" *ngIf="hasActivity(id) && getActivity(id).user_id">
-                    {{ authors[getActivity(id).user_id].name }} 正在编辑
-                </span>
+
                 <div class="row-actions">
                     <span class="trash"><a>删除</a> | </span>
                     <span><a href="{{ previewLink(id) }}" target="_blank">查看</a> | </span>

@@ -60,6 +60,30 @@ export class PostActions {
             type: PostActions.CANCEL_BATCH_EDIT_POSTS
         };
     }
+    
+    static BATCH_DELETE_POSTS = '[Post] Batch Delete Posts';
+    static batchDeletePosts(ids: number[]): Action {
+        return {
+            type: PostActions.BATCH_DELETE_POSTS,
+            payload: ids
+        };
+    }
+    
+    static BATCH_OFFLINE_EDIT_POSTS = '[Post] Batch Offline Edit Posts';
+    static batchOfflineEditPosts(ids: number[]): Action {
+        return {
+            type: PostActions.BATCH_OFFLINE_EDIT_POSTS,
+            payload: ids
+        };
+    }
+
+    static BATCH_LOCK_POSTS = '[Post] Batch Lock Posts';
+    static batchLockPosts(ids: number[]): Action {
+        return {
+            type: PostActions.BATCH_LOCK_POSTS,
+            payload: ids
+        };
+    }
 
     static BATCH_EDIT_PREVIOUS_POST = '[Post] Batch Edit Previous Post';
     static batchEditPreviousPost(): Action {

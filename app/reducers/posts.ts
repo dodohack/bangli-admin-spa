@@ -205,6 +205,27 @@ export default function (state = initialState, action: Action): PostsState {
             }
         }
 
+        case PostActions.REFRESH_ACTIVITY_STATUS: {
+            let newPosts: { [id: number]: Post } = {};
+            if (action.payload === null) {
+                state.ids.forEach(id =>
+                    newPosts[id] = Object.assign({},
+                        state.entities[id], {activities: []}));
+            } else {
+                state.ids.forEach(id => {
+                    const activities = action.payload.filter(a => a.content_id === id);
+                    newPosts[id] = Object.assign({},
+                        state.entities[id], {activities: activities})
+                });
+            }
+            return {
+                ids: [...state.ids],
+                editing: [...state.editing],
+                entities: Object.assign({}, state.entities, newPosts),
+                paginator: Object.assign({}, state.paginator)
+            };
+        }
+
         /* This is a must, as we can get the updated post from its subscriber */
         /*
         case PostActions.SAVE_POST: {

@@ -15,6 +15,7 @@ import { hasEditorRole }          from './reducers';
 import { hasShopManagerRole }     from './reducers';
 import { hasAdminRole }           from './reducers';
 import { hasSuperUserRole }       from './reducers';
+import { isPostLocked }           from './reducers';
 
 /**
  * Only un-logged user can visit, such as login, register pages etc
@@ -122,9 +123,32 @@ export class AdminGuard implements CanActivate {
 /* Super user guard */
 @Injectable()
 export class SuperUserGuard implements CanActivate {
-    constructor(private store: Store<AppState>, private router: Router) {}    
-    
+    constructor(private store: Store<AppState>, private router: Router) {}
+
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         return this.store.let<boolean>(hasSuperUserRole()).take(1);
+    }
+}
+
+/* Post lock guard */
+@Injectable()
+export class LockGuard implements CanActivate {
+    constructor(private store: Store<AppState>, private router: Router) {}
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        console.log("LockGuard::canActivate route: ", route)
+        return true;
+    }
+}
+
+/* Post edit lock guard */
+@Injectable()
+export class EditLockGuard implements CanActivate {
+    constructor(private store: Store<AppState>, private router: Router) {}
+
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+        console.log("EditLockGuard::canActivate route: ", route)
+        //return this.store.let<boolean>(isPostLocked()).take(1);
+        return true;
     }
 }

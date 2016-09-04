@@ -12,7 +12,9 @@
 <posts-list [authState]="authState" [postsState]="postsState"
             [cmsState]="cmsState"
             (batchEdit)="batchEdit($event)"
-            (batchDelete)="batchDelete($event)"></posts-list>
+            (batchDelete)="batchDelete($event)"
+            (batchOfflineEdit)="batchOfflineEdit($event)"
+            (batchLock)="batchLock($event)"></posts-list>
 
 <hr>
 

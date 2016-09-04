@@ -13,6 +13,8 @@ import { EditorGuard }   from './guard';
 import { ShopMgrGuard }  from './guard';
 import { AdminGuard }    from './guard';
 import { SuperUserGuard} from './guard';
+import { LockGuard }     from './guard';
+import { EditLockGuard } from './guard';
 
 import { Ping }          from './ping';
 import { routing }       from './app.routes';
@@ -98,6 +100,8 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         ShopMgrGuard,
         AdminGuard,
         SuperUserGuard,
+        LockGuard,
+        EditLockGuard,
         provideStore(reducer),
 
         /**

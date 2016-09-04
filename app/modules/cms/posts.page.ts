@@ -35,8 +35,6 @@ export class PostsPage implements OnInit
     // Is search is running
     loading: boolean;
 
-    _activity: {[key: string]: Activity[]};
-
     get zh() { return zh_CN.post; }
     
     constructor(private route: ActivatedRoute,
@@ -58,13 +56,26 @@ export class PostsPage implements OnInit
                     .map(id => Object.assign({}, this.postsState.entities[id]));
             });
 
-        this.ping.activity$.subscribe(activity => {
-            this._activity = activity;
-            if (this._activity.hasOwnProperty('cms_post'))
-                this.store.dispatch(PostActions.refreshActivityStatus(this._activity['cms_post']));
-        })
+        // Dispatch activity update action when we have the activities
+        // changed(empty => sth, sth => sth; sth => empty)
+        // FIXME: Need to check if ids in 'cms_post' activity is changed
+        // FIXME: We are checking the who array listed in a['cms_post'] which
+        // FIXME: is not a optimal method, we should check the id in array
+        // FIXME: a['cms_posts'].
+        this.ping.activity$
+            .filter(a => a['cms_post'])
+            //.distinctUntilChanged(a => a['cms_post'])
+            .subscribe(a =>
+                this.store.dispatch(PostActions.refreshActivityStatus(a['cms_post'])));
 
-        // THIS IS A TEMPORARY FIX
+        // Reset if we don't have any 'cms_post'
+        this.ping.activity$
+            .filter(a => !a['cms_post'])
+            .distinctUntilChanged(x => x)
+            .subscribe(a =>
+                this.store.dispatch(PostActions.refreshActivityStatus(null)));
+
+                // THIS IS A TEMPORARY FIX
         // FIXME: Previous request is cancel by the second one if exists
         // FIXME: and potential other kind of issues
         // Load posts when any url parameter changes
@@ -108,19 +119,35 @@ export class PostsPage implements OnInit
     batchEdit(ids: number[]) {
         this.store.dispatch(PostActions.batchEditPosts(ids));
     }
+
+    // FIXME: Should be Cancel batch options
     cancelBatchEdit() {
         this.store.dispatch(PostActions.cancelBatchEditPosts());
     }
+
+    // Edit previous post in current posts list
     editPreviousPost() {
         this.store.dispatch(PostActions.batchEditPreviousPost());
     }
+
+    // Edit next post in current posts list
     editNextPost() {
         this.store.dispatch(PostActions.batchEditNextPost());
     }
+
     // Delete multiple posts
     batchDelete(ids: number[]) {
-        console.error("TODO: GOING TO DISPATCH ACTION TO DELETE POST: ", ids);
-        //this.store.dispatch(PostActions.batchEditPosts(ids));
+        this.store.dispatch(PostActions.batchDeletePosts(ids));
+    }
+
+    // Lock posts to offline edit
+    batchOfflineEdit(ids: number[]) {
+        this.store.dispatch(PostActions.batchOfflineEditPosts(ids));
+    }
+
+    // Add lock to posts, so no one can edit the post
+    batchLock(ids: number[]) {
+        this.store.dispatch(PostActions.batchLockPosts(ids));
     }
     
     // Get shared tags for posts in editing mode

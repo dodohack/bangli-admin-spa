@@ -1,7 +1,7 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { AuthorGuard, EditorGuard }      from '../../guard';
-import { PostsEditGuard, PostEditGuard } from './guard';
+import { AuthorGuard, EditorGuard, LockGuard } from '../../guard';
+import { PostsEditGuard, PostEditGuard }       from './guard';
 
 import { PostsPage }    from './posts.page';
 import { PostPage }     from './post.page';
@@ -17,17 +17,19 @@ const routes: Routes = [
          * Posts path
          */
         path: 'post',
-        canActivate: [AuthorGuard],
         children: [
 
             /* List of posts */
             { path: '', pathMatch: 'full', redirectTo: 'page/1/state/all' },
             { path: 'page/:page',          redirectTo: 'page/:page/state/all' },
-            { path: 'page/:page/state/:state', component: PostsPage, canDeactivate: [PostsEditGuard]},
+            { path: 'page/:page/state/:state', component: PostsPage,
+                canActivate: [AuthorGuard], canDeactivate: [PostsEditGuard]},
 
             /* Single post */
-            { path: 'new', component: PostPage, canDeactivate: [PostEditGuard] },
-            { path: ':id', component: PostPage, canDeactivate: [PostEditGuard] }
+            { path: 'new', component: PostPage,
+                canActivate: [AuthorGuard], canDeactivate: [PostEditGuard] },
+            { path: ':id', component: PostPage,
+                canActivate: [AuthorGuard, LockGuard], canDeactivate: [PostEditGuard] }
         ]
     },
 

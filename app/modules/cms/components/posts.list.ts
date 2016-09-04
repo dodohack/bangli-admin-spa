@@ -30,6 +30,10 @@ export class PostsList
     @Output() batchEdit = new EventEmitter();
     // Delete multiple posts
     @Output() batchDelete = new EventEmitter();
+    // Lock posts for offline edit
+    @Output() batchOfflineEdit = new EventEmitter();
+    // Lock posts, so no one can edit it except admin.
+    @Output() batchLock = new EventEmitter();
 
     batchAction: string = '';
     
@@ -89,6 +93,12 @@ export class PostsList
                 break;
             case 'delete':
                 this.batchDelete.emit(this._postsState.editing);
+                break;
+            case 'offline_edit':
+                this.batchOfflineEdit.emit(this._postsState.editing);
+                break;
+            case 'lock':
+                this.batchLock.emit(this._postsState.editing);
                 break;
             default:
                 break;
