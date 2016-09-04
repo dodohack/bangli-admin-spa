@@ -18,7 +18,7 @@ import { CmsAttrsState }     from '../../reducers/cmsattrs';
 import { PostActions }       from '../../actions';
 import { AlertActions }      from "../../actions";
 
-import { FROALA_OPTIONS }    from '../../models/froala.option';
+import { FroalaOptions }     from '../../models/froala.option';
 import { Post }              from '../../models';
 import { Category }          from '../../models';
 import { Tag }               from '../../models';
@@ -112,7 +112,7 @@ export class PostPage implements OnInit, OnDestroy
     get hasEditorRole() { return this.store.let(hasEditorRole()); }
 
     get zh() { return zh_CN.post; } // Localization
-    get froalaOptions() { return FROALA_OPTIONS; }
+    get froalaOptions() { return FroalaOptions.getDefault(); }
     
 
     postContentChanged($event) {

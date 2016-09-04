@@ -42,7 +42,7 @@ export class Ping {
      * Ping server in every 20 seconds
      */
     run() {
-        this.timer = Observable.interval(5000).subscribe(x => {
+        this.timer = Observable.interval(20000).subscribe(x => {
 
             let timeStart: number = performance.now();
             
@@ -58,7 +58,7 @@ export class Ping {
                         },
                         err => this.latency$.next({[key]: -1})
                     );
-                } else {
+                } else if (0) {
                     // Idle API server, test connectivity only
                     this.ping(key, false).subscribe(
                         res => {

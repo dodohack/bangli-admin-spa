@@ -25,6 +25,9 @@ export const API_HULUWA = {
     /* List of user roles */
     users_roles: '/users/roles',
 
+    /* File upload */
+    file_upload: '/file/upload',
+
     /*************************************************************************
      * CMS
      *************************************************************************/

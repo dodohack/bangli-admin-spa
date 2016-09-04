@@ -25,6 +25,9 @@ export const API_BANGLI = {
     /* Beacon, test if API server online, can carry optional data */
     ping: '/ping',
 
+    /* File upload */
+    file_upload: '/file/upload',
+
     /*************************************************************************
      * CMS
      *************************************************************************/

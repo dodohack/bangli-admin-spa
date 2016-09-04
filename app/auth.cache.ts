@@ -3,7 +3,7 @@
  * globally, all the information is manually cached in session storage
  */
 import { APIS, API_PATH } from './api';
-import { JwtPayload }           from "./models";
+import { JwtPayload }     from "./models";
 
 /**
  * FIXME: Can not use following getters in any constructors, as the data is

@@ -4,7 +4,7 @@ import { BaseGuard }     from '../../guard';
 import { GalleryPage }   from './gallery.page';
 
 export const routes: Routes = [
-    { path: 'gallery', canActivate: [BaseGuard], component: GalleryPage }
+    { path: 'attachment', component: GalleryPage, canActivate: [BaseGuard] }
 ];
 
 export const routing = RouterModule.forChild(routes);
