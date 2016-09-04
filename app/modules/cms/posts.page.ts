@@ -2,7 +2,8 @@
  * This is the post list management page component
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component }         from '@angular/core';
+import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
@@ -20,8 +21,17 @@ import { Ping }              from '../../ping';
 import { zh_CN } from '../../localization';
 
 @Component({ template: require('./posts.page.html') })
-export class PostsPage implements OnInit
-{   
+export class PostsPage implements OnInit, OnDestroy
+{
+    // All subscribers, needs to unsubscribe on destory
+    subAuth: any;
+    subCms: any;
+    subPosts: any;
+    subActivityOn: any;
+    subActivityOff: any;
+    subParams: any;
+    subQueryParams: any;
+
     authState:  AuthState;
     cmsState:   CmsAttrsState;
     postsState: PostsState;
@@ -42,11 +52,11 @@ export class PostsPage implements OnInit
                 private ping: Ping) {}
 
     ngOnInit() {
-        this.store.select<AuthState>('auth')
+        this.subAuth = this.store.select<AuthState>('auth')
             .subscribe(authState => this.authState = authState);
-        this.store.select<CmsAttrsState>('cms')
+        this.subCms = this.store.select<CmsAttrsState>('cms')
             .subscribe(cmsState => this.cmsState = cmsState);
-        this.store.select<PostsState>('posts')
+        this.subPosts = this.store.select<PostsState>('posts')
             .subscribe(postsState => {
                 // Set search loading to false if posts is loaded
                 this.loading = false;
@@ -62,14 +72,14 @@ export class PostsPage implements OnInit
         // FIXME: We are checking the who array listed in a['cms_post'] which
         // FIXME: is not a optimal method, we should check the id in array
         // FIXME: a['cms_posts'].
-        this.ping.activity$
+        this.subActivityOn = this.ping.activity$
             .filter(a => a['cms_post'])
             //.distinctUntilChanged(a => a['cms_post'])
             .subscribe(a =>
                 this.store.dispatch(PostActions.refreshActivityStatus(a['cms_post'])));
 
         // Reset if we don't have any 'cms_post'
-        this.ping.activity$
+        this.subActivityOff = this.ping.activity$
             .filter(a => !a['cms_post'])
             .distinctUntilChanged(x => x)
             .subscribe(a =>
@@ -79,16 +89,26 @@ export class PostsPage implements OnInit
         // FIXME: Previous request is cancel by the second one if exists
         // FIXME: and potential other kind of issues
         // Load posts when any url parameter changes
-        this.route.params.subscribe(params => {
+        this.subParams = this.route.params.subscribe(params => {
             this.params = params;
             this.loading = true;
             this.loadPosts();
         });
-        this.route.queryParams.subscribe(params => {
+        this.subQueryParams = this.route.queryParams.subscribe(params => {
             this.queryParams = params;
             this.loading = true;
             this.loadPosts();
         });
+    }
+
+    ngOnDestroy() {
+        this.subAuth.unsubscribe();
+        this.subCms.unsubscribe();
+        this.subPosts.unsubscribe();
+        this.subActivityOn.unsubscribe();
+        this.subActivityOff.unsubscribe();
+        this.subParams.unsubscribe();
+        this.subQueryParams.unsubscribe();
     }
 
     loadPosts() {

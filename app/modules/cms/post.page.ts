@@ -2,8 +2,9 @@
  * This is the single post page
  */
 
-import { Component, OnInit } from '@angular/core';
-import { ViewChild}          from '@angular/core';
+import { Component }         from '@angular/core';
+import { OnInit, OnDestroy } from "@angular/core";
+import { ViewChild }         from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 
 import { Store }             from '@ngrx/store';
@@ -25,9 +26,16 @@ import { Topic }             from '../../models';
 import { zh_CN }             from '../../localization';
 
 @Component({ template: require('./post.page.html') })
-export class PostPage implements OnInit
+export class PostPage implements OnInit, OnDestroy
 {
     @ViewChild('postForm') postForm;
+
+    // subscriptions
+    subAuth: any;
+    subCms: any;
+    subPosts: any;
+    subParams: any;
+
 
     authState:  AuthState;
     cmsState:   CmsAttrsState;
@@ -44,9 +52,9 @@ export class PostPage implements OnInit
                 private store: Store<AppState>) { }
 
     ngOnInit() {
-        this.store.select<AuthState>('auth')
+        this.subAuth = this.store.select<AuthState>('auth')
             .subscribe(authState => this.authState = authState);
-        this.store.select<CmsAttrsState>('cms')
+        this.subCms = this.store.select<CmsAttrsState>('cms')
             .subscribe(cmsState => this.cmsState = cmsState);
 
         // Dispatch an action to create or load a post
@@ -55,11 +63,18 @@ export class PostPage implements OnInit
         this.loadPost();
     }
 
+    ngOnDestroy() {
+        this.subAuth.unsubscribe();
+        this.subCms.unsubscribe();
+        this.subPosts.unsubscribe();
+        this.subParams.unsubscribe();
+    }
+
     /**
      * Kick an action to load the post when URL changes
      */
     dispatchLoadPost() {
-        this.route.params.subscribe(params => {
+        this.subParams = this.route.params.subscribe(params => {
             if (Object.keys(params).length === 0) // New a post
                 this.store.dispatch(PostActions.newPost(/* FIXME: current user id */)); 
             else                                  // Edit a post
@@ -71,7 +86,7 @@ export class PostPage implements OnInit
      * Listen on ngrx/store, create a post from 'store' if state is changed
      */
     loadPost() {
-        this.store.select<PostsState>('posts').subscribe(postsState => {
+        this.subPosts = this.store.select<PostsState>('posts').subscribe(postsState => {
             this.postsState = postsState;
             // When opening a single post, 'editing' always contains 1 id
             // FIXME: Remove inputPost after updating to new angular2-froala binding

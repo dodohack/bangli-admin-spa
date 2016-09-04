@@ -2,7 +2,8 @@
  * This is the entry point of admin.huluwa.uk
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component }         from '@angular/core';
+import { OnInit, OnDestroy } from '@angular/core';
 import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
@@ -23,10 +24,14 @@ import { Ping }              from './ping';
     selector: 'admin-spa',
     template: require('./app.html')
 })
-export class App implements OnInit
+export class App implements OnInit, OnDestroy
 {
     /* TODO: This array will grow large, need to clean it periodically */
     alerts$: Observable<Alert[]>;
+
+    // Subscriptions
+    subAuth: any;
+    subPref: any;
 
     auth: AuthState;
     pref: Preference;
@@ -45,7 +50,7 @@ export class App implements OnInit
          * FIXME: as 'auth' state is cleared by it!!
          * FIXME: We can have a workaround by set initialState from localStorage.
          */
-        this.store.select<AuthState>('auth').subscribe(auth => {
+        this.subAuth = this.store.select<AuthState>('auth').subscribe(auth => {
             console.log("APP INIT: authState is: ", auth);
             this.auth = auth;
             if (auth.token) {
@@ -63,10 +68,15 @@ export class App implements OnInit
             }
         });
         
-        this.store.select<Preference>('pref').subscribe(pref => {
+        this.subPref = this.store.select<Preference>('pref').subscribe(pref => {
             this.pref = pref;
             PrefCache.setPerPage(this.pref.listItemCount.toString());
         });
+    }
+
+    ngOnDestroy() {
+        this.subAuth.unsubscribe();
+        this.subPref.unsubscribe();
     }
 
     get isLoggedIn() { return this.store.let<boolean>(isDashboardUser()); }
