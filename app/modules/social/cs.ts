@@ -3,13 +3,8 @@
  */
 
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 
-let template = require('./cs.html');
-@Component({
-    template: template,
-    directives: [ROUTER_DIRECTIVES]
-})
+@Component({ template: require('./cs.html') })
 export class CsPage
 {
     constructor() {}

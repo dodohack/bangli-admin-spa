@@ -3,13 +3,8 @@
  */
 
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 
-let template = require('./comment.html');
-@Component({
-    template: template,
-    directives: [ROUTER_DIRECTIVES]
-})
+@Component({ template: require('./comment.html') })
 export class CommentPage
 {
     constructor() {}

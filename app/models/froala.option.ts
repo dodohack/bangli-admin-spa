@@ -28,7 +28,7 @@ export class FroalaOptions {
 
             // Image upload
             imageAllowTypes: ['jpeg', 'jpg', 'png', 'gif'],
-            imageUploadParam: 'image',
+            imageUploadParam: 'file',
             imageUploadMethod: 'POST',
             imageUploadParams: {token: AuthCache.token()},
             imageUploadURL: APIS[AuthCache.domainKey()] + 

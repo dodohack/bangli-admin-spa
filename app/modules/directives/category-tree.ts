@@ -2,7 +2,7 @@ import { Component, EventEmitter } from '@angular/core';
 import { Input, Output, OnInit }   from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ChangeDetectorRef }       from '@angular/core';
-import { FormControl }             from '@angular/forms';
+import { FormGroup, FormControl }  from '@angular/forms';
 import { Category }                from '../../models';
 
 @Component({

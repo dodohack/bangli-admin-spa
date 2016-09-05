@@ -1,27 +1,44 @@
 /**
  *
  */
+import { Component }      from '@angular/core';
+import { OnInit, NgZone } from '@angular/core';
+import { EventEmitter }   from '@angular/core';
 
-import { Component }                            from '@angular/core';
-import { FILE_UPLOAD_DIRECTIVES, FileUploader } from 'ng2-file-upload';
+import { AuthCache } from '../../auth.cache';
 
-const URL = 'https://evening-anchorage-3159.herokuapp.com/api/';
-
-@Component({
-    template: require('./gallery.page.html'),
-    directives: [FILE_UPLOAD_DIRECTIVES]
-})
-export class GalleryPage
+@Component({ template: require('./gallery.page.html') })
+export class GalleryPage implements OnInit
 {
-    public hideRightBar:boolean = true;
-    public uploader:FileUploader = new FileUploader({url: URL});
-    public hasDropZoneOver:boolean = false;
+    zone: NgZone;
+    options: Object;
+    progress: number = 0;
+    response: any = {};
 
-    public fileOverBase(e:any):void {
-        this.hasDropZoneOver = e;
+    uploadEvents = new EventEmitter();
+
+    ngOnInit() {
+        this.zone = new NgZone({ enableLongStackTrace: false });
+        this.options = {
+            filterExtensions: true,
+            allowedExtensions: ['image/png', 'image/jpg'],
+            calculateSpeed: true,
+            autoUpload: false,
+            authToken: AuthCache.token(),
+            authTokenPrefix: 'Bearer',
+            url: AuthCache.API() + AuthCache.API_PATH().file_upload
+        };
     }
 
-    public toggleRightBar(e:any):void {
-        this.hideRightBar = !this.hideRightBar;
+    handleUpload(data: any): void {
+        console.log("handleUpload, data: ", data);
+        this.zone.run(() => {
+            this.response = data;
+            this.progress = data.progress.percent / 100;
+        });
+    }
+
+    startUpload() {
+        this.uploadEvents.emit('startUpload');
     }
 }

@@ -7,7 +7,7 @@ import { ActivatedRoute }        from '@angular/router';
 import { Store }                 from '@ngrx/store';
 import { Observable }            from 'rxjs/Observable';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
-import { FROALA_OPTIONS }        from '../../models/froala.option';
+import { FroalaOptions }         from '../../models/froala.option';
 
 import { AppState, getProduct }         from '../../reducers';
 import { ProductActions }               from '../../actions';
@@ -43,7 +43,7 @@ export class ProductPage implements OnInit
 
     get zh() { return zh_CN.product };
     /* Froala editor options */
-    get froalaOptions () { return FROALA_OPTIONS; }
+    get froalaOptions () { return FroalaOptions.getDefault(); }
     //get editors() { return this.userService.editors; }
     //get categories() { return this.productService.categories; }
     //get tags()       { return this.productService.tags; }

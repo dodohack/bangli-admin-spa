@@ -49,15 +49,16 @@ import { AttachmentModule }from './modules/attachment/attachment.module';
 import { MigrationModule } from './modules/migration/migration.module';
 
 /* Debug tools */
-import { StoreLogMonitorComponent } from '@ngrx/store-log-monitor';
-import { instrumentStore } from '@ngrx/store-devtools';
-import { useLogMonitor } from '@ngrx/store-log-monitor';
+import { StoreLogMonitorModule } from '@ngrx/store-log-monitor';
+import { useLogMonitor }         from '@ngrx/store-log-monitor';
+import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
 
 @NgModule({
     imports: [
         routing,
         BrowserModule,
         HttpModule,
+        //Ng2BootstrapModule,
         AuthModule,
         DashboardModule,
         CmsModule,
@@ -80,11 +81,15 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         EffectsModule.run(TopicEffects),
         EffectsModule.run(PageEffects),
         EffectsModule.run(CmsAttrEffects),
+        StoreDevtoolsModule.instrumentStore({
+            monitor: useLogMonitor({
+                visible: true,
+                position: 'right'
+            })
+        }),
+        StoreLogMonitorModule
     ],
     declarations: [
-        /* Debug only */
-        StoreLogMonitorComponent,
-        
         App,
 
         Topbar,
@@ -103,16 +108,6 @@ import { useLogMonitor } from '@ngrx/store-log-monitor';
         LockGuard,
         EditLockGuard,
         provideStore(reducer),
-
-        /**
-         * instrumentStore() sets up the @ngrx/store-devtools providers
-         */
-        instrumentStore({
-            monitor: useLogMonitor({
-                position: 'right',
-                visible: true
-            })
-        }),
     ],
     bootstrap: [ App ]
 })

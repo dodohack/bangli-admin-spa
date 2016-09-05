@@ -4,15 +4,13 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule }                  from '@angular/common';
 import { FormsModule }                   from '@angular/forms';
+import { ReactiveFormsModule }           from '@angular/forms';
 import { RouterModule }                  from '@angular/router';
 
-
-import { TAB_DIRECTIVES }        from 'ng2-bootstrap';
-import { ACCORDION_DIRECTIVES }  from 'ng2-bootstrap';
-import { AlertComponent }        from 'ng2-bootstrap';
-import { TYPEAHEAD_DIRECTIVES }  from 'ng2-bootstrap';
-import { DROPDOWN_DIRECTIVES }   from 'ng2-bootstrap';
-//import { DATEPICKER_DIRECTIVES } from 'ng2-bootstrap';
+import { UPLOAD_DIRECTIVES }             from 'ng2-uploader';
+import { Ng2BootstrapModule }            from 'ng2-bootstrap/ng2-bootstrap';
+//import { AccordionModule }             from 'ng2-bootstrap/ng2-bootstrap';
+//import { TabsModule }                  from 'ng2-bootstrap/ng2-bootstrap';
 
 //import { FroalaEditorDirective } from 'angular2-froala-wysiwyg/lib/froala.directives';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
@@ -31,14 +29,17 @@ import { SearchBox }                 from './search-box';
 import { DateFilterComponent }       from './date-filter.component';
 
 @NgModule({
-    imports: [ CommonModule, FormsModule, RouterModule ],
+    imports: [
+        Ng2BootstrapModule,
+        //AccordionModule,
+        //TabsModule,
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule ,
+    ],
     declarations: [
-        TAB_DIRECTIVES,
-        ACCORDION_DIRECTIVES,
-        TYPEAHEAD_DIRECTIVES,
-        DROPDOWN_DIRECTIVES,
-        AlertComponent,
-        //DATEPICKER_DIRECTIVES,
+        UPLOAD_DIRECTIVES,
 
         FroalaEditorCompnoent,
         //FroalaEditorDirective,
@@ -57,12 +58,11 @@ import { DateFilterComponent }       from './date-filter.component';
         DateFilterComponent,
     ],
     exports: [
-        TAB_DIRECTIVES,
-        ACCORDION_DIRECTIVES,
-        TYPEAHEAD_DIRECTIVES,
-        DROPDOWN_DIRECTIVES,
-        AlertComponent,
-        //DATEPICKER_DIRECTIVES,
+        Ng2BootstrapModule,
+        //AccordionModule,
+        //TabsModule,
+
+        UPLOAD_DIRECTIVES,
 
         FroalaEditorCompnoent,
         //FroalaEditorDirective,

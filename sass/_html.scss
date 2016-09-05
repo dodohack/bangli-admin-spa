@@ -44,6 +44,11 @@ body {
     float: right;
 }
 
+/* Hide a tag */
+.hidden {
+    display: none;
+}
+
 /* Logo font color */
 .light-blue {
     color: $light-blue;
