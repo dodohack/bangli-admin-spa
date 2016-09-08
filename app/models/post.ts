@@ -17,7 +17,7 @@ export const CREATIVE_TYPES = [
     {creative_type: 'review',        count: 0}
 ];
 
-/* TODO: This is massively used by bangli domain */
+/* TODO: This is massively used by bangli domain, normally 1:1 match channels */
 export const POST_TYPES = [
     {post_type: 'unset',     count: 0},
     {post_type: 'product',   count: 0},
