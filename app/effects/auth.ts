@@ -73,7 +73,7 @@ export class AuthEffects {
         let uuid = '';
 
         if (!auth.key && !auth.domains)
-            return Observable.throw('No permission to manage any domains');
+            return Observable.throw('No permission to manage any domain');
 
         // Get first domain as default
         if (!auth.key)
