@@ -87,10 +87,7 @@ export class TopicsPage implements OnInit, OnDestroy
         this.subQueryParams.unsubscribe();
     }
 
-    get zh() { return zh_CN.cms; };
-    //get editors() { return this.userService.editors; };
-    //get categories() { return this.postService.categories; };
-    //get statuses() { return this.topicService.statuses; }
+    get zh() { return zh_CN.cms; }
     
     loadTopics() {
         let topicParams: TopicParams = new TopicParams;
@@ -125,27 +122,27 @@ export class TopicsPage implements OnInit, OnDestroy
         this.store.dispatch(TopicActions.cancelBatchEditTopics());
     }
 
-    // Edit previous post in current posts list
-    editPreviousPost() {
+    // Edit previous post in current topics list
+    editPreviousTopic() {
         this.store.dispatch(TopicActions.batchEditPreviousTopic());
     }
 
-    // Edit next post in current posts list
-    editNextPost() {
+    // Edit next post in current topics list
+    editNextTopic() {
         this.store.dispatch(TopicActions.batchEditNextTopic());
     }
-
+    
     // Delete multiple topics
     batchDelete(ids: number[]) {
         this.store.dispatch(TopicActions.batchDeleteTopics(ids));
     }
 
-    // Lock posts to offline edit
+    // Lock topics to offline edit
     batchOfflineEdit(ids: number[]) {
         this.store.dispatch(TopicActions.batchOfflineEditTopics(ids));
     }
 
-    // Add lock to posts, so no one can edit the post
+    // Add lock to topics, so no one can edit the topic
     batchLock(ids: number[]) {
         this.store.dispatch(TopicActions.batchLockTopics(ids));
     }

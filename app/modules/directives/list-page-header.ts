@@ -61,6 +61,8 @@ export class ListPageHeader {
     }
 
     get total() {
+        if (!this.states.length) return 0;
+
         return this.states.map(state => state.count)
             .reduce((total, count) => total + count);
     }
