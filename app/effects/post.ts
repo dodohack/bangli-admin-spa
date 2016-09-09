@@ -2,7 +2,6 @@
  * Post[s] side effects
  */
 import { Injectable }                     from '@angular/core';
-import { ActivatedRoute }                 from '@angular/router';
 import { Http, Headers, RequestOptions }  from '@angular/http';
 import { Effect, Actions }                from '@ngrx/effects';
 import { Observable }                     from 'rxjs/Observable';
@@ -37,13 +36,13 @@ export class PostEffects {
             .map(post => PostActions.loadPostSuccess(post))
             .catch(() => Observable.of(PostActions.loadPostFail()))
         );
-
+    
     @Effect() putPost$ = this.actions$.ofType(PostActions.SAVE_POST)
         .switchMap(action => this.savePost(action.payload)
             .map(post => PostActions.savePostSuccess(post))
             .catch(() => Observable.of(PostActions.savePostFail()))
         );
-
+    
     @Effect() savePostSuccess$ = this.actions$.ofType(PostActions.SAVE_POST_SUCCESS)
         .map(action => AlertActions.success('文章保存成功!'));
     
@@ -68,18 +67,16 @@ export class PostEffects {
     private savePost(post: Post): Observable<Post> {
         console.log("SAVING POST: ", post);
 
+        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts;
         let body = JSON.stringify(post);
         let options = new RequestOptions({ headers: this.headers });
-        
-        if (post.id && post.id !== 0) {
-            // Update an existing post
-            let api = AuthCache.API() + AuthCache.API_PATH().cms_posts + '/' + post.id;
-            return this.http.put(api, body, options).map(res => res.json());            
-        } else {
-            // Create a new post
-            let api = AuthCache.API() + AuthCache.API_PATH().cms_posts;
-            return this.http.post(api, body, options).map(res => res.json());
-        }
+
+        // Update an existing post
+        if (post.id && post.id !== 0)
+            api = api + '/' + post.id;
+
+        // Create/Update a post
+        return this.http.post(api, body, options).map(res => res.json());
     }
 
     /**

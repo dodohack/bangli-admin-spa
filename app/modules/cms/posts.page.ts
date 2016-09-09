@@ -85,7 +85,7 @@ export class PostsPage implements OnInit, OnDestroy
             .subscribe(a =>
                 this.store.dispatch(PostActions.refreshActivityStatus(null)));
 
-                // THIS IS A TEMPORARY FIX
+        // THIS IS A TEMPORARY FIX
         // FIXME: Previous request is cancel by the second one if exists
         // FIXME: and potential other kind of issues
         // Load posts when any url parameter changes
@@ -180,7 +180,7 @@ export class PostsPage implements OnInit, OnDestroy
             console.error("TODO, sharedTags");
         }
     }
-
+    
     get sharedCats() {
         if (!this.postsInEdit.length) return;
 
@@ -228,6 +228,7 @@ export class PostsPage implements OnInit, OnDestroy
         this.store.dispatch(PostActions.removeTopic(id));
     }
 
+    // TODO:
     canDeactivate() {
         return true;
     }

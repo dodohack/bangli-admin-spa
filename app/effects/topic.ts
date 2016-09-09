@@ -8,11 +8,14 @@ import { Observable }                     from 'rxjs/Observable';
 
 import { AuthCache }       from '../auth.cache';
 import { PrefCache }       from '../pref.cache';
-import { TopicActions }  from '../actions';
-import { Topic }         from "../models";
+import { TopicActions }    from '../actions';
+import { AlertActions }    from '../actions';
+import { Topic }           from "../models";
+import { TopicParams }     from "../models";
 
 @Injectable()
 export class TopicEffects {
+
     constructor (private actions$: Actions,
                  private http: Http) {}
 
@@ -32,12 +35,23 @@ export class TopicEffects {
         .map(topic => TopicActions.loadTopicSuccess(topic))
         .catch(() => Observable.of(TopicActions.loadTopicFail()));
 
+    @Effect() putTopic$ = this.actions$.ofType(TopicActions.SAVE_TOPIC)
+        .switchMap(action => this.saveTopic(action.payload)
+            .map(topic => TopicActions.saveTopicSuccess(topic))
+            .catch(() => Observable.of(TopicActions.saveTopicFail()))
+        );
+
+    @Effect() saveTopicSuccess$ = this.actions$.ofType(TopicActions.SAVE_TOPIC_SUCCESS)
+        .map(action => AlertActions.success('专题保存成功!'));
+
+    @Effect() saveTopicFail$ = this.actions$.ofType(TopicActions.SAVE_TOPIC_FAIL)
+        .map(action => AlertActions.error('专题保存失败!'));
+
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
 
-
     /**
-     * Get single topic(may not use)
+     * Get single topic
      */
     private getTopic(id: number): Observable<Topic> {
         let api = AuthCache.API() + AuthCache.API_PATH().cms_topics +
@@ -46,26 +60,19 @@ export class TopicEffects {
     }
 
     /**
-     * Update single topic
+     * Create/update a topic
      */
-    private putTopic(topic: Topic): Observable<Topic> {
-        let body = JSON.stringify(topic);
-        let options = new RequestOptions({ headers: this.headers });
-
-        let api = AuthCache.API() + AuthCache.API_PATH().cms_topics + '/' + topic.id;
-        return this.http.put(api, body, options).map(res => res.json());
-    }
-
-    /**
-     * Create a new topic
-     */
-    private postTopic(topic: Topic): Observable<Topic> {
-        let body = JSON.stringify(topic);
-
-        let options = new RequestOptions({ headers: this.headers });
-
+    private saveTopic(topic: Topic): Observable<Topic> {
         let api = AuthCache.API() + AuthCache.API_PATH().cms_topics;
-        return this.http.post(api, body, options).map(res => res.json());
+        let body = JSON.stringify(topic);
+        let options = new RequestOptions({ headers: this.headers });
+
+        // Update an existing topic
+        if (topic.id && topic.id !== 0)
+            api = api + '/' + topic.id;
+
+        // Create/update a topic
+        return this.http.put(api, body, options).map(res => res.json());
     }
 
     /**
@@ -81,15 +88,13 @@ export class TopicEffects {
     /**
      * Get topics
      */
-    private getTopics(filters: any): Observable<any> {
-        let cur_page = filters.cur_page;
-        let status   = filters.status;
+    private getTopics(params: TopicParams): Observable<any> {
+        let api = AuthCache.API() + AuthCache.API_PATH().cms_topics
+            + params.toQueryString()
+            + '&per_page=' + PrefCache.getPerPage()
+            + '&token=' + AuthCache.token();
 
-        let api = AuthCache.API() + AuthCache.API_PATH().topics +
-            '?page=' + cur_page +
-            '&per_page=' + PrefCache.getPerPage() +
-            '&status=' + status +
-            '&token=' + AuthCache.token();
+        console.log("LOAD TOPIC FROM URL: ", api);
 
         return this.http.get(api).map(res => res.json());
     }

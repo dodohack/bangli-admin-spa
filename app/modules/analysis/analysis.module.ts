@@ -4,14 +4,19 @@
 import { NgModule }     from '@angular/core';
 import { SharedModule } from '../directives/shared.module';
 
-import { routing }      from './routing';
-
-import { HomePage }     from './home.page';
+import { routing }           from './routing';
+import { AnalysisPage }      from './analysis.page';
+import { CmsAnalysisPage }   from './cms.page';
+import { ShopAnalysisPage } from './shop.page';
+import { BbsAnalysisPage }   from './bbs.page';
 
 @NgModule({
     imports: [ SharedModule, routing ],
     declarations: [
-        HomePage
+        AnalysisPage,
+        CmsAnalysisPage,
+        ShopAnalysisPage,
+        BbsAnalysisPage
     ]
 })
 export class AnalysisModule {}

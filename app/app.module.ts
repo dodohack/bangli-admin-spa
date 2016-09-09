@@ -47,6 +47,7 @@ import { AffiliateModule } from './modules/affiliate/affiliate.module';
 import { AnalysisModule }  from './modules/analysis/analysis.module';
 import { AttachmentModule }from './modules/attachment/attachment.module';
 import { MigrationModule } from './modules/migration/migration.module';
+import { SystemModule }    from './modules/system/system.module';
 
 /* Debug tools */
 import { StoreLogMonitorModule } from '@ngrx/store-log-monitor';
@@ -70,6 +71,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         AnalysisModule,
         AttachmentModule,
         MigrationModule,
+        SystemModule,
         SharedModule.forRoot(),
         EffectsModule.run(AuthEffects),
         EffectsModule.run(UserEffects),

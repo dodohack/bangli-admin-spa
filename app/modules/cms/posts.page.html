@@ -1,4 +1,5 @@
-<list-page-header [isPost]="true" [states]="cmsState.post_states.actual"
+<list-page-header [cmsChannels]="cmsState.channels"
+                  [isPost]="true" [states]="cmsState.post_states.actual"
                   [loading]="loading"></list-page-header>
 
 <!-- Post filter/tool bar at top -->
@@ -9,12 +10,13 @@
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Post list table -->
-<posts-list [authState]="authState" [postsState]="postsState"
-            [cmsState]="cmsState"
-            (batchEdit)="batchEdit($event)"
-            (batchDelete)="batchDelete($event)"
-            (batchOfflineEdit)="batchOfflineEdit($event)"
-            (batchLock)="batchLock($event)"></posts-list>
+<cms-list [isPost]="true"
+          [authState]="authState" [listState]="postsState"
+          [cmsState]="cmsState"
+          (batchEdit)="batchEdit($event)"
+          (batchDelete)="batchDelete($event)"
+          (batchOfflineEdit)="batchOfflineEdit($event)"
+          (batchLock)="batchLock($event)"></cms-list>
 
 <hr>
 

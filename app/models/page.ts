@@ -1,3 +1,10 @@
+export class PageParams {
+    cur_page: string = '1';
+    state: string;
+    editor: string;
+    query: string;
+}
+
 export class Page {
     id: number;
     selected: boolean;

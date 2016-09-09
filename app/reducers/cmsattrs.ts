@@ -4,16 +4,11 @@ import { User }           from '../models';
 import { Category }       from "../models";
 import { Tag }            from "../models";
 import { Topic }          from "../models";
-
+import { Channel }        from '../models';
 import { POST_STATES }    from '../models';
-import { TOPIC_TYPES }    from '../models';
-import { POST_TYPES }     from '../models';
 import { CREATIVE_TYPES } from '../models';
-
 import { PostState }      from '../models';
-import { PostType }       from '../models';
 import { CreativeType }   from '../models';
-import { TopicType }      from '../models';
 
 import { CmsAttrActions } from '../actions';
 
@@ -24,13 +19,12 @@ export interface CmsAttrsState {
     categories: Category[];
     post_topic_cats: Topic[]; // Topic cats for post
     tags: Tag[];
+    channels:  Channel[];
     // available - all available options for given attributes defined locally
     // actual    - attributes with number of posts retrieved from server
     post_states: {available: PostState[], actual: PostState[]};
-    post_types:  {available: PostType[],  actual: PostType[]};
     post_creative_types: {available: CreativeType[], actual: CreativeType[]};
     topic_states: {available: PostState[], actual: PostState[]};
-    topic_types: {available: TopicType[],  actual: TopicType[]};
     page_states: {available: PostState[],  actual: PostState[]};
 };
 
@@ -40,11 +34,10 @@ const initialState: CmsAttrsState = {
     categories: [],
     post_topic_cats: [],
     tags: [],
+    channels:  [],
     post_states: {available: POST_STATES, actual: []},
-    post_types:  {available: POST_TYPES, actual: []},
     post_creative_types: {available: CREATIVE_TYPES, actual: []},
     topic_states: {available: POST_STATES, actual: []},
-    topic_types:  {available: TOPIC_TYPES, actual: []},
     page_states:  {available: POST_STATES, actual: []}
 };
 
@@ -68,6 +61,10 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             if (action.payload.tags)
                 tags = action.payload.tags;
 
+            let channels: Channel[];
+            if (action.payload.channels)
+                channels = action.payload.channels;
+
             let post_topic_cats: Topic[];
             if (action.payload.post_topic_cats)
                 post_topic_cats = action.payload.post_topic_cats;
@@ -76,10 +73,6 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             if (action.payload.post_states)
                 post_states = action.payload.post_states;
 
-            let post_types: PostType[];
-            if (action.payload.post_types)
-                post_types = action.payload.post_types;
-
             let post_creative_types: CreativeType[];
             if (action.payload.post_creative_types)
                 post_creative_types = action.payload.post_creative_types;
@@ -87,10 +80,6 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             let topic_states: PostState[];
             if (action.payload.topic_states)
                 topic_states = action.payload.topic_states;
-
-            let topic_types: TopicType[];
-            if (action.payload.topic_types)
-                topic_types = action.payload.topic_types;
 
             let page_states: PostState[];
             if (action.payload.page_states)
@@ -102,11 +91,10 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                 categories: [...categories],
                 post_topic_cats: [...post_topic_cats],
                 tags: [...tags],
+                channels: [...channels],
                 post_states: Object.assign({}, state.post_states, {actual: post_states}),
-                post_types: Object.assign({}, state.post_types, {actual: post_types}),
-                post_creative_types: Object.assign({}, state.post_creative_types, {actual: post_creative_types}),
+                  post_creative_types: Object.assign({}, state.post_creative_types, {actual: post_creative_types}),
                 topic_states: Object.assign({}, state.topic_states, {actual: topic_states}),
-                topic_types: Object.assign({}, state.topic_types, {actual: topic_types}),
                 page_states: Object.assign({}, state.page_states, {actual: page_states})
             };
         }

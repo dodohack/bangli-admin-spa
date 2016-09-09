@@ -3,6 +3,8 @@ import { EventEmitter }             from '@angular/core';
 import { ChangeDetectionStrategy }  from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
+import { Channel }                  from '../../models';
+
 import { zh_CN } from '../../localization';
 
 @Component({
@@ -14,6 +16,12 @@ export class ListPageHeader {
 
     // States of given list
     @Input() states: any[];
+
+    // Cms channels
+    @Input() cmsChannels: Channel[];
+
+    // Activiate cms channel
+    @Input() activeChannel: Channel;
 
     // The type of lists passed in
     @Input() isPost: boolean;
@@ -42,6 +50,14 @@ export class ListPageHeader {
         if (this.isOrder)   return 'order';
         if (this.isPage)    return 'page';
         if (this.isUser)    return 'user';
+    }
+
+    get isCms() {
+        return (this.isPost || this.isTopic || this.isPage) ? true : false;
+    }
+
+    get isShop() {
+        return (this.isOrder || this.isProduct) ? true : false;
     }
 
     get total() {

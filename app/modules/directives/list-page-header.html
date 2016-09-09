@@ -1,9 +1,24 @@
+<!-- Cms channels menu -->
+<div class="panel" *ngIf="cmsChannels">
+    <ul class="panel-heading">
+        <li *ngFor="let ch of cmsChannels"><a [routerLink]="['/', baseUrl, ch]"><h4 class="panel-title">{{ ch.name }}</h4></a></li>
+    </ul>
+</div>
+
 <!-- header -->
 <div class="page-header">
     <h1 class="title">
         {{ title }}列表
+        <span *ngIf="activeChannel"> - {{ activeChannel.name }}频道</span>
         <a class="page-title-action btn btn-sm btn-outline-info"
            [routerLink]="['/', baseUrl, 'new']">新建{{ title }}</a>
+
+        <a class="page-title-action btn btn-sm btn-outline-info"
+           *ngIf="isCms" [routerLink]="['/cms']">内容系统设置</a>
+
+        <a class="page-title-action btn btn-sm btn-outline-info"
+           *ngIf="isShop" [routerLink]="['/shop']">商店设置</a>
+
         <button class="page-title-action btn btn-sm btn-outline-info float-right">详简切换</button>
     </h1>
 </div>

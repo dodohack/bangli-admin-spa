@@ -34,7 +34,7 @@
 
     <tbody>
 
-    <!-- table row of post -->
+    <!-- table row of cms entities -->
     <template ngFor let-id [ngForOf]="ids" let-i="index">
         <tr>
             <th>{{i+1}}</th>
@@ -42,49 +42,48 @@
                        (change)="updateEditList(id)"></td>
             <!-- Enable fast editing if double click on title column -->
             <td (dblclick)="batchEdit.emit([id])">
-                <!-- Locked post -->
-                <i class="fa fa-lock" style="color: red" *ngIf="posts[id].lock"></i>
-                <!-- Online edit lock -->
+                <!-- Badge: Locked post -->
+                <i class="fa fa-lock" style="color: red" *ngIf="entities[id].lock"></i>
+                <!-- Badge: Online edit lock -->
                 <span class="tag tag-default-outline"
                       *ngIf="hasActivity(id) && getActivity(id).edit_lock == 1">
                     <i class="fa fa-pencil" style="color: red"></i>
                     {{ authors[getActivity(id).user_id].name }} 正在编辑
                 </span>
-                <!-- Offline edit lock -->
+                <!-- Badge: Offline edit lock -->
                 <span class="tag tag-default-outline"
                       *ngIf="hasActivity(id) && getActivity(id).edit_lock == 2">
                     <i class="fa fa-pencil" style="color: blue"></i>
                     {{ authors[getActivity(id).user_id].name }} 正在离线编辑
                 </span>
 
-                <span *ngIf="posts[id].state != 'publish'" class="tag tag-danger-outline">
-                    {{ zh[posts[id].state] }}
+                <span *ngIf="entities[id].state != 'publish'" class="tag tag-danger-outline">
+                    {{ zh[entities[id].state] }}
                 </span>
-                <span class="tag tag-default-outline">{{ zh[posts[id].creative_type] }}</span>
-                <strong><a [routerLink]="['/post', id ]">{{ posts[id].title }}</a></strong>
+                <span class="tag tag-default-outline">{{ zh[entities[id].creative_type] }}</span>
+                <strong><a [routerLink]="['/post', id ]">{{ entities[id].title }}</a></strong>
 
                 <div class="row-actions">
                     <span class="trash"><a>删除</a> | </span>
                     <span><a href="{{ previewLink(id) }}" target="_blank">查看</a> | </span>
                     <span>双击快速编辑 | </span>
-                    <span class="tag tag-default-outline">{{ zh[posts[id].post_type] }}</span>
                 </div>
             </td>
-            <td *ngIf="authors[posts[id].author_id]">
-                <span>作者: {{ authors[posts[id].author_id].name }}</span>
-                <div *ngIf="posts[id].author_id !== posts[id].editor_id">
-                    编辑: {{ editors[posts[id].editor_id].name }}
-                </div>
-            </td>
-            <td *ngIf="!authors[posts[id].author_id]">
-                FIXME
-            </td>
+
             <td>
-                <span *ngFor="let cat of posts[id].categories">
+                编辑: {{ editorName(id) }}
+                <div>作者
+                    <span *ngIf="hasAuthor(id)">{{ authorName(id) }}</span>
+                    <span *ngIf="!hasAuthor(id)">FIXME</span>
+                </div>
+            </td>
+
+            <td>
+                <span *ngFor="let cat of entities[id].categories">
                 <a [routerLink]="['/cms/category', cat.id]">{{ cat.name }}</a>, </span>
             </td>
-            <td>{{ posts[id].published_at }}</td>
-            <td>{{ posts[id].updated_at }}</td>
+            <td>{{ entities[id].published_at }}</td>
+            <td>{{ entities[id].updated_at }}</td>
             <td>
                 <span>0</span>
                 <div><span>0</span></div> <!-- Comments -->

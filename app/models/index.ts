@@ -31,3 +31,6 @@ export * from './alert';
 export * from './preference';
 export * from './statistic';
 export * from './activity';
+export * from './channel';
+export * from './location';
+

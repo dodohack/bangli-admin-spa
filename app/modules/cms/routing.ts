@@ -3,6 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthorGuard, EditorGuard, LockGuard } from '../../guard';
 import { PostsEditGuard, PostEditGuard }       from './guard';
 
+import { SettingPage }    from './setting.page';
+import { CategoriesPage } from './categories.page';
+import { TagsPage }       from './tags.page';
+import { ChannelsPage }   from './channels.page';
+
 import { PostsPage }    from './posts.page';
 import { PostPage }     from './post.page';
 import { TopicsPage }   from './topics.page';
@@ -12,6 +17,25 @@ import { PagePage }     from './page.page';
 
 
 const routes: Routes = [
+
+    {
+        /**
+         * Cms setting path
+         */
+        path: 'cms',
+        canActivate: [EditorGuard],
+        children: [
+            /* cms setting index */
+            { path: '',  component: SettingPage },
+            /* Categories settings */
+            { path: 'category', component: CategoriesPage },
+            /* Tags settings */
+            { path: 'tag',      component: TagsPage },
+            /* Channels settings */
+            { path: 'channel',  component: ChannelsPage },
+        ]
+    },
+
     {
         /**
          * Posts path

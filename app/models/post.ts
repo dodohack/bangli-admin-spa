@@ -2,6 +2,7 @@
  * CMS Post related model
  */
 
+import { Location } from './location';
 import { Statistic }from './statistic';
 import { Activity } from './activity';
 import { Revision } from './revision';
@@ -15,13 +16,6 @@ export const CREATIVE_TYPES = [
     {creative_type: 'semi_creative', count: 0},
     {creative_type: 'integration',   count: 0},
     {creative_type: 'review',        count: 0}
-];
-
-/* TODO: This is massively used by bangli domain, normally 1:1 match channels */
-export const POST_TYPES = [
-    {post_type: 'unset',     count: 0},
-    {post_type: 'product',   count: 0},
-    {post_type: 'knowledge', count: 0}
 ];
 
 /* POST_STATES definition, all possible entries of table column cms_post.status */
@@ -38,10 +32,7 @@ export class CreativeType {
     creative_type: string;
     count: number;
 }
-export class PostType {
-    post_type: string;
-    count: number;
-}
+
 export class PostState {
     state: string;
     count: number;
@@ -89,7 +80,8 @@ export class Post {
     author_id: number;
     image_id: number;
     state: string;
-    post_type: string;
+    channel_id: number;
+    locations: Location[];
     creative_type: string;
     title: string;
     categories: Category[];

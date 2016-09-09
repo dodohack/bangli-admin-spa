@@ -5,13 +5,15 @@ import '@ngrx/core/add/operator/select';
 import { Observable } from 'rxjs/Observable';
 import { Action }     from '@ngrx/store';
 
-import { Paginator }      from '../models';
+import { cmsReducer } from './cms.generic';
+
+import { Paginator }    from '../models';
 import { Topic }        from '../models';
 import { TopicActions } from '../actions';
 
 export interface TopicsState {
     ids: number[];
-    editing: number[];
+    editing: number[]; // Topic in editing state
     entities: { [id: number]: Topic };
     paginator: Paginator;
 };
@@ -23,54 +25,9 @@ const initialState: TopicsState = {
     paginator: new Paginator
 };
 
+// This reducer is commonized to cmsReducer
 export default function (state = initialState, action: Action): TopicsState {
-    switch (action.type)
-    {
-        case TopicActions.SEARCH_COMPLETE:
-        case TopicActions.LOAD_TOPICS_SUCCESS: {
-            const topics: Topic[] = action.payload.topics;
-            const ids: number[]       = topics.map(p => p.id);
-            const entities            = topics.reduce(
-                (entities: { [id: number]: Topic }, topic: Topic) => {
-                    return Object.assign(entities, { [topic.id]: topic });
-                }, {});
-
-            return {
-                ids: [...ids],
-                editing: [...state.editing],
-                entities: Object.assign({}, entities),
-                paginator: Object.assign({}, action.payload.paginator)
-            };
-        }
-
-        case TopicActions.LOAD_TOPIC_SUCCESS: {
-            // Topic id
-            const id: number = +action.payload['id'];
-
-            // Update corresponding topic from current topics list with
-            // detailed information.
-            if (state.ids.indexOf(id) !== -1) {
-                return {
-                    ids: [...state.ids],
-                    editing: [...state.editing],
-                    entities: Object.assign({}, state.entities, {[id]: action.payload}),
-                    paginator: Object.assign({}, state.paginator)
-                };
-            } else {
-                // Return single topic in the TopicsState
-                return {
-                    ids: [id],
-                    editing: [...state.editing],
-                    entities: Object.assign({}, {[id]: action.payload}),
-                    // paginator should be empty
-                    paginator: Object.assign({}, state.paginator)
-                };
-            }
-        }
-
-        default:
-            return state;
-    }
+    return cmsReducer<Topic, TopicActions, TopicsState>(state, action);
 }
 
 /**

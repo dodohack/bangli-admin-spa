@@ -1,5 +1,21 @@
-<list-page-header [isPage]="true" [states]="cms.page_states.actual"></list-page-header>
+<list-page-header [cmsChannels]="cmsState.channels"
+                  [isPage]="true"
+                  [states]="cmsState.page_states.actual"
+                  [loading]="loading"></list-page-header>
 
+<!-- Page filter/tool bar at top -->
+<list-filter-bar [isPage]="true"
+                 [editors]="cmsState.editors"
+                 [paginator]="topicsState.paginator"
+                 (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
-<h2>This is list of pages</h2>
+<!-- Page list table -->
+<cms-list [isPage]="true"
+          [authState]="authState" [listState]="pagesState"
+          [cmsState]="cmsState"
+          (batchEdit)="batchEdit($event)"
+          (batchDelete)="batchDelete($event)"
+          (batchOfflineEdit)="batchOfflineEdit($event)"
+          (batchLock)="batchLock($event)"></cms-list>
 
+<hr>

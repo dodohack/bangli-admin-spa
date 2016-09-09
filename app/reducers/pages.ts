@@ -5,6 +5,8 @@ import '@ngrx/core/add/operator/select';
 import { Observable } from 'rxjs/Observable';
 import { Action }     from '@ngrx/store';
 
+import { cmsReducer }  from './cms.generic';
+
 import { Paginator }      from '../models';
 import { Page }        from '../models';
 import { PageActions } from '../actions';
@@ -23,54 +25,9 @@ const initialState: PagesState = {
     paginator: new Paginator
 };
 
+// This reducer is commonized to cmsReducer
 export default function (state = initialState, action: Action): PagesState {
-    switch (action.type)
-    {
-        case PageActions.SEARCH_COMPLETE:
-        case PageActions.LOAD_PAGES_SUCCESS: {
-            const pages: Page[] = action.payload.pages;
-            const ids: number[]       = pages.map(p => p.id);
-            const entities            = pages.reduce(
-                (entities: { [id: number]: Page }, page: Page) => {
-                    page.selected = false;
-                    return Object.assign(entities, { [page.id]: page });
-                }, {});
-
-            return {
-                ids: [...ids],
-                editing: [...state.editing],
-                entities: Object.assign({}, entities),
-                paginator: Object.assign({}, action.payload.paginator)
-            };
-        }
-
-        case PageActions.LOAD_PAGE_SUCCESS: {
-            // Page id
-            const id: number = +action.payload['id'];
-
-            // Update corresponding page from current pages list with
-            // detailed information.
-            if (state.ids.indexOf(id) !== -1) {
-                return {
-                    ids: [...state.ids],
-                    editing: [...state.editing],
-                    entities: Object.assign({}, state.entities, {[id]: action.payload}),
-                    paginator: Object.assign({}, state.paginator)
-                };
-            } else {
-                return {
-                    ids: [id],
-                    editing: [...state.editing],
-                    entities: Object.assign({}, {[id]: action.payload}),
-                    // paginator should be empty
-                    paginator: Object.assign({}, state.paginator)
-                };
-            }
-        }
-
-        default:
-            return state;
-    }
+    return cmsReducer<Page, PageActions, PagesState>(state, action);
 }
 
 /**
