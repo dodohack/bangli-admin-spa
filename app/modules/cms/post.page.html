@@ -65,22 +65,31 @@
                     </div>
 
                     <div class="form-group post-meta">
-                        <label>文章类型</label>
-                        <select class="form-control form-control-sm custom-select"
-                                name="post_type" [(ngModel)]="post.post_type">
-                            <option *ngFor="let pt of cmsState.post_types.available"
-                                    [selected]="post.post_type === pt.post_type"
-                                    [value]="pt.post_type">{{ zh[pt.post_type] }}</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group post-meta">
                         <label>稿件属性</label>
                         <select class="form-control form-control-sm custom-select"
                                 name="c_type" [(ngModel)]="post.creative_type">
                             <option *ngFor="let c_type of cmsState.post_creative_types.available"
                                     [selected]="post.creative_type === c_type.creative_type"
                                     [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group post-meta">
+                        <label>频道</label>
+                        <select class="form-control form-control-sm custom-select"
+                                name="cid" [(ngModel)]="post.channel_id">
+                            <option *ngFor="let ch of cmsState.channels"
+                                    [selected]="post.channel_id === ch.id"
+                                    [value]="ch.id">{{ ch.name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group post-meta">
+                        <label>坐标</label>
+                        <select class="form-control form-control-sm custom-select"
+                                name="lid" [(ngModel)]="post.location_id">
+                            <option value="0">typeahead select</option>
+                            <option value="1">typeahead select</option>
                         </select>
                     </div>
 

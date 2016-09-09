@@ -10,3 +10,9 @@ ul.nav li.dropdown:hover > div.dropdown-menu {
 .btn-sm, .btn-group-sm > .btn {
   padding: 0.25rem 0.5rem;
 }
+
+// Overwrite style for <select> tag
+.custom-select {
+  max-width: 7rem;
+  padding: 0.325rem 1.5rem 0.375rem 0.50rem;
+}
