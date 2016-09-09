@@ -111,7 +111,7 @@ export class PostPage implements OnInit, OnDestroy
     get myId() { return this.authState.users[this.authState.key].id; }
     get hasEditorRole() { return this.store.let(hasEditorRole()); }
 
-    get zh() { return zh_CN.post; } // Localization
+    get zh() { return zh_CN.cms; } // Localization
     get froalaOptions() { return FroalaOptions.getDefault(); }
     
 

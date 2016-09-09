@@ -3,13 +3,14 @@
  * by administrator.
  */
 import { NgModule } from '@angular/core';
+import { SharedModule } from '../directives/shared.module';
 
 import { routing }         from './routing';
 import { SettingPage }     from './setting.page';
 import { LocationsPage }   from './locations.page';
 
 @NgModule({
-    imports: [ routing ],
+    imports: [ SharedModule, routing ],
     declarations: [
         SettingPage,
         LocationsPage

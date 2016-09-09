@@ -27,7 +27,7 @@ const initialState: PostsState = {
 
 // This reducer is commonized to cmsReducer
 export default function (state = initialState, action: Action): PostsState {
-    return cmsReducer<Post, PostActions, PostsState>(state, action);
+    return cmsReducer(state, action);
 }
 
 /**

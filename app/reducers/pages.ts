@@ -27,7 +27,7 @@ const initialState: PagesState = {
 
 // This reducer is commonized to cmsReducer
 export default function (state = initialState, action: Action): PagesState {
-    return cmsReducer<Page, PageActions, PagesState>(state, action);
+    return cmsReducer(state, action);
 }
 
 /**

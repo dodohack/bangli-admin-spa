@@ -27,7 +27,7 @@ const initialState: TopicsState = {
 
 // This reducer is commonized to cmsReducer
 export default function (state = initialState, action: Action): TopicsState {
-    return cmsReducer<Topic, TopicActions, TopicsState>(state, action);
+    return cmsReducer(state, action);
 }
 
 /**

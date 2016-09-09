@@ -3,25 +3,20 @@
  */
 
 export const zh_CN = {
-    post: {
-        /* Post status */
+    cms: {
+        /* Post/Topic/Page status */
         unsaved:   '未保存',
         publish:   '已发布',
         featured:  '置顶',
         pending:   '待审',
         draft:     '草稿',
-        trash:   '回收站',
+        trash:     '回收站',
 
-        /* Creative type */
+        /* Post ccreative type */
         creative:      '原创',
         semi_creative: '伪原创',
         integration:   '整理',
         review:        '审稿',
-        
-        /* Post type */
-        unset:    '未分类',
-        product:  '产品类',
-        knowledge:'知识类'
     },
 
     product: {

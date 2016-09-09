@@ -85,47 +85,47 @@ export class PageActions {
         };
     }
 
-    static BATCH_EDIT_PREVIOUS_ENTITIY = '[Page] Batch Edit Previous Page';
+    static BATCH_EDIT_PREVIOUS_ENTITY = '[Page] Batch Edit Previous Page';
     static batchEditPreviousPage(): Action {
         return {
-            type: PageActions.BATCH_EDIT_PREVIOUS_ENTITIY
+            type: PageActions.BATCH_EDIT_PREVIOUS_ENTITY
         };
     }
 
-    static BATCH_EDIT_NEXT_ENTITIY = '[Page] Batch Edit Next Page';
+    static BATCH_EDIT_NEXT_ENTITY = '[Page] Batch Edit Next Page';
     static batchEditNextPage(): Action {
         return {
-            type: PageActions.BATCH_EDIT_NEXT_ENTITIY
+            type: PageActions.BATCH_EDIT_NEXT_ENTITY
         };
     }
 
-    static NEW_ENTITIY = '[Page] New Page';
+    static NEW_ENTITY = '[Page] New Page';
     static newPage(): Action {
         return {
-            type: PageActions.NEW_ENTITIY
+            type: PageActions.NEW_ENTITY
         };
     }
 
-    static LOAD_ENTITIY = '[Page] Load Page';
+    static LOAD_ENTITY = '[Page] Load Page';
     static loadPage(id: number): Action {
         return {
-            type: PageActions.LOAD_ENTITIY,
+            type: PageActions.LOAD_ENTITY,
             payload: id
         };
     }
 
-    static LOAD_ENTITIY_SUCCESS = '[Page] Load Page Success';
+    static LOAD_ENTITY_SUCCESS = '[Page] Load Page Success';
     static loadPageSuccess(post: Page): Action {
         return {
-            type: PageActions.LOAD_ENTITIY_SUCCESS,
+            type: PageActions.LOAD_ENTITY_SUCCESS,
             payload: post
         };
     }
 
-    static LOAD_ENTITIY_FAIL = '[Page] Load Page Fail';
+    static LOAD_ENTITY_FAIL = '[Page] Load Page Fail';
     static loadPageFail(): Action {
         return {
-            type: PageActions.LOAD_ENTITIY_FAIL,
+            type: PageActions.LOAD_ENTITY_FAIL,
         };
     }
 
@@ -137,10 +137,10 @@ export class PageActions {
         };
     }
 
-    static SAVE_ENTITIY = '[Page] Save Page';
+    static SAVE_ENTITY = '[Page] Save Page';
     static savePage(post: Page): Action {
         return {
-            type: PageActions.SAVE_ENTITIY,
+            type: PageActions.SAVE_ENTITY,
             payload: post
         };
     }
@@ -153,42 +153,42 @@ export class PageActions {
         };
     }
     /*
-     static SAVE_ENTITIY_AS_PENDING = '[Page] Save Page As Pending';
+     static SAVE_ENTITY_AS_PENDING = '[Page] Save Page As Pending';
      static savePageAsPending(post: Page): Action {
      return {
-     type: PageActions.SAVE_ENTITIY_AS_PENDING,
+     type: PageActions.SAVE_ENTITY_AS_PENDING,
      payload: post
      };
      }
 
-     static SAVE_ENTITIY_AS_DRAFT = '[Page] Save Page As Draft';
+     static SAVE_ENTITY_AS_DRAFT = '[Page] Save Page As Draft';
      static savePageAsDraft(post: Page): Action {
      return {
-     type: PageActions.SAVE_ENTITIY_AS_DRAFT,
+     type: PageActions.SAVE_ENTITY_AS_DRAFT,
      payload: post
      };
      }
 
-     static SAVE_ENTITIY_AS_PUBLISH = '[Page] Save Page As Publish';
+     static SAVE_ENTITY_AS_PUBLISH = '[Page] Save Page As Publish';
      static savePageAsPublish(post: Page): Action {
      return {
-     type: PageActions.SAVE_ENTITIY_AS_PUBLISH,
+     type: PageActions.SAVE_ENTITY_AS_PUBLISH,
      payload: post
      };
      }
      */
-    static SAVE_ENTITIY_SUCCESS = '[Page] Save Page Success';
+    static SAVE_ENTITY_SUCCESS = '[Page] Save Page Success';
     static savePageSuccess(post: Page): Action {
         return {
-            type: PageActions.SAVE_ENTITIY_SUCCESS,
+            type: PageActions.SAVE_ENTITY_SUCCESS,
             payload: post
         };
     }
 
-    static SAVE_ENTITIY_FAIL = '[Page] Save Page Fail';
+    static SAVE_ENTITY_FAIL = '[Page] Save Page Fail';
     static savePageFail(): Action {
         return {
-            type: PageActions.SAVE_ENTITIY_FAIL
+            type: PageActions.SAVE_ENTITY_FAIL
         };
     }
 
@@ -255,3 +255,4 @@ export class PageActions {
             payload: activities
         };
     }
+}

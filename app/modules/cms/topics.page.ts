@@ -9,7 +9,7 @@ import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
 import { Category, Tag, Paginator } from '../../models';
-import { Topic, TopicParams }  from '../../models';
+import { Post, Topic, TopicParams } from '../../models';
 
 import { Ping }              from '../../ping';
 import { AppState }          from '../../reducers';
@@ -87,7 +87,7 @@ export class TopicsPage implements OnInit, OnDestroy
         this.subQueryParams.unsubscribe();
     }
 
-    get zh() { return zh_CN.post; };
+    get zh() { return zh_CN.cms; };
     //get editors() { return this.userService.editors; };
     //get categories() { return this.postService.categories; };
     //get statuses() { return this.topicService.statuses; }
@@ -175,8 +175,8 @@ export class TopicsPage implements OnInit, OnDestroy
     addTag(tag: Tag) {
         this.store.dispatch(TopicActions.addTag(tag));
     }
-    addPost(topic: Topic) {
-        this.store.dispatch(TopicActions.addPost(topic));
+    addPost(post: Post) {
+        this.store.dispatch(TopicActions.addPost(post));
     }
     removeCat(id: number) {
         this.store.dispatch(TopicActions.removeCategory(id));

@@ -85,47 +85,47 @@ export class PostActions {
         };
     }
 
-    static BATCH_EDIT_PREVIOUS_ENTITIY = '[Post] Batch Edit Previous Post';
+    static BATCH_EDIT_PREVIOUS_ENTITY = '[Post] Batch Edit Previous Post';
     static batchEditPreviousPost(): Action {
         return {
-            type: PostActions.BATCH_EDIT_PREVIOUS_ENTITIY
+            type: PostActions.BATCH_EDIT_PREVIOUS_ENTITY
         };
     }
 
-    static BATCH_EDIT_NEXT_ENTITIY = '[Post] Batch Edit Next Post';
+    static BATCH_EDIT_NEXT_ENTITY = '[Post] Batch Edit Next Post';
     static batchEditNextPost(): Action {
         return {
-            type: PostActions.BATCH_EDIT_NEXT_ENTITIY
+            type: PostActions.BATCH_EDIT_NEXT_ENTITY
         };
     }
 
-    static NEW_ENTITIY = '[Post] New Post';
+    static NEW_ENTITY = '[Post] New Post';
     static newPost(): Action {
         return {
-            type: PostActions.NEW_ENTITIY
+            type: PostActions.NEW_ENTITY
         };
     }
 
-    static LOAD_ENTITIY = '[Post] Load Post';
+    static LOAD_ENTITY = '[Post] Load Post';
     static loadPost(id: number): Action {
         return {
-            type: PostActions.LOAD_ENTITIY,
+            type: PostActions.LOAD_ENTITY,
             payload: id
         };
     }
 
-    static LOAD_ENTITIY_SUCCESS = '[Post] Load Post Success';
+    static LOAD_ENTITY_SUCCESS = '[Post] Load Post Success';
     static loadPostSuccess(post: Post): Action {
         return {
-            type: PostActions.LOAD_ENTITIY_SUCCESS,
+            type: PostActions.LOAD_ENTITY_SUCCESS,
             payload: post
         };
     }
 
-    static LOAD_ENTITIY_FAIL = '[Post] Load Post Fail';
+    static LOAD_ENTITY_FAIL = '[Post] Load Post Fail';
     static loadPostFail(): Action {
         return {
-            type: PostActions.LOAD_ENTITIY_FAIL,
+            type: PostActions.LOAD_ENTITY_FAIL,
         };
     }
 
@@ -137,10 +137,10 @@ export class PostActions {
         };
     }
 
-    static SAVE_ENTITIY = '[Post] Save Post';
+    static SAVE_ENTITY = '[Post] Save Post';
     static savePost(post: Post): Action {
         return {
-            type: PostActions.SAVE_ENTITIY,
+            type: PostActions.SAVE_ENTITY,
             payload: post
         };
     }
@@ -153,42 +153,42 @@ export class PostActions {
         };
     }
 /*
-    static SAVE_ENTITIY_AS_PENDING = '[Post] Save Post As Pending';
+    static SAVE_ENTITY_AS_PENDING = '[Post] Save Post As Pending';
     static savePostAsPending(post: Post): Action {
         return {
-            type: PostActions.SAVE_ENTITIY_AS_PENDING,
+            type: PostActions.SAVE_ENTITY_AS_PENDING,
             payload: post
         };
     }
 
-    static SAVE_ENTITIY_AS_DRAFT = '[Post] Save Post As Draft';
+    static SAVE_ENTITY_AS_DRAFT = '[Post] Save Post As Draft';
     static savePostAsDraft(post: Post): Action {
         return {
-            type: PostActions.SAVE_ENTITIY_AS_DRAFT,
+            type: PostActions.SAVE_ENTITY_AS_DRAFT,
             payload: post
         };
     }
 
-    static SAVE_ENTITIY_AS_PUBLISH = '[Post] Save Post As Publish';
+    static SAVE_ENTITY_AS_PUBLISH = '[Post] Save Post As Publish';
     static savePostAsPublish(post: Post): Action {
         return {
-            type: PostActions.SAVE_ENTITIY_AS_PUBLISH,
+            type: PostActions.SAVE_ENTITY_AS_PUBLISH,
             payload: post
         };
     }
 */
-    static SAVE_ENTITIY_SUCCESS = '[Post] Save Post Success';
+    static SAVE_ENTITY_SUCCESS = '[Post] Save Post Success';
     static savePostSuccess(post: Post): Action {
         return {
-            type: PostActions.SAVE_ENTITIY_SUCCESS,
+            type: PostActions.SAVE_ENTITY_SUCCESS,
             payload: post
         };
     }
 
-    static SAVE_ENTITIY_FAIL = '[Post] Save Post Fail';
+    static SAVE_ENTITY_FAIL = '[Post] Save Post Fail';
     static savePostFail(): Action {
         return {
-            type: PostActions.SAVE_ENTITIY_FAIL
+            type: PostActions.SAVE_ENTITY_FAIL
         };
     }
 

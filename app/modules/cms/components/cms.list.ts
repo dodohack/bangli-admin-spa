@@ -30,7 +30,7 @@ export class CmsList
     @Input() isPage:  boolean;
 
     // listState is one of 3 major cms content state
-    _listState: PostsState | TopicsState | PagesState;
+    _listState: any;
     @Input() set listState(value) { this._listState = Object.assign({}, value); }
     get listState() { return this._listState; }
 

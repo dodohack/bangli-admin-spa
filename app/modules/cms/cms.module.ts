@@ -9,8 +9,11 @@ import { routing }      from './routing';
 import { PostsEditGuard } from './guard';
 import { PostEditGuard }  from './guard';
 
-import { PostsList }    from './components/posts.list';
-import { TopicsList }   from './components/topics.list';
+import { CmsList }      from './components/cms.list';
+import { SettingPage }  from './setting.page';
+import { CategoriesPage } from './categories.page';
+import { TagsPage }     from './tags.page';
+import { ChannelsPage } from './channels.page';
 
 import { PostsPage }    from './posts.page';
 import { PostPage }     from './post.page';
@@ -23,7 +26,10 @@ import { PagePage }     from './page.page';
 @NgModule({
     imports: [ SharedModule, routing ],
     declarations: [
-        PostsList, TopicsList,
+        CmsList,
+        SettingPage,
+        CategoriesPage, TagsPage,
+        ChannelsPage,
         PostsPage, PostPage,
         TopicsPage, TopicPage, 
         PagesPage, PagePage 

@@ -27,7 +27,7 @@ export class EditorPageHeader {
         if (this.isProduct)
             return zh_CN.product;
         else
-            return zh_CN.post;
+            return zh_CN.cms;
     }
 
     get title() {

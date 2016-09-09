@@ -45,7 +45,7 @@ export class PostsPage implements OnInit, OnDestroy
     // Is search is running
     loading: boolean;
 
-    get zh() { return zh_CN.post; }
+    get zh() { return zh_CN.cms; }
     
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>,

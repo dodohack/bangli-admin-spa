@@ -25,28 +25,28 @@ export class PostEffects {
             'Content-Type': 'application/json'});
     }
     
-    @Effect() loadPosts$ = this.actions$.ofType(PostActions.LOAD_POSTS)
+    @Effect() loadPosts$ = this.actions$.ofType(PostActions.LOAD_ENTITIES)
         .switchMap(action => this.getPosts(action.payload)
             .map(posts => PostActions.loadPostsSuccess(posts))
             .catch(() => Observable.of(PostActions.loadPostsFail()))
         );
 
-    @Effect() loadPost$ = this.actions$.ofType(PostActions.LOAD_POST)
+    @Effect() loadPost$ = this.actions$.ofType(PostActions.LOAD_ENTITY)
         .switchMap(action => this.getPost(action.payload)
             .map(post => PostActions.loadPostSuccess(post))
             .catch(() => Observable.of(PostActions.loadPostFail()))
         );
     
-    @Effect() putPost$ = this.actions$.ofType(PostActions.SAVE_POST)
+    @Effect() putPost$ = this.actions$.ofType(PostActions.SAVE_ENTITY)
         .switchMap(action => this.savePost(action.payload)
             .map(post => PostActions.savePostSuccess(post))
             .catch(() => Observable.of(PostActions.savePostFail()))
         );
     
-    @Effect() savePostSuccess$ = this.actions$.ofType(PostActions.SAVE_POST_SUCCESS)
+    @Effect() savePostSuccess$ = this.actions$.ofType(PostActions.SAVE_ENTITY_SUCCESS)
         .map(action => AlertActions.success('文章保存成功!'));
     
-    @Effect() savePostFail$ = this.actions$.ofType(PostActions.SAVE_POST_FAIL)
+    @Effect() savePostFail$ = this.actions$.ofType(PostActions.SAVE_ENTITY_FAIL)
         .map(action => AlertActions.error('文章保存失败!'));
 
     //////////////////////////////////////////////////////////////////////////

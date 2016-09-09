@@ -38,7 +38,7 @@ export class FastEditPostFormComponent implements AfterContentInit {
 
     constructor() {}
 
-    get zh() { return zh_CN.post; }
+    get zh() { return zh_CN.cms; }
     
     ngAfterContentInit() {
         if (this.posts) {

@@ -46,7 +46,7 @@ export class RevisionHistory
 
     constructor(private cd: ChangeDetectorRef) {}
 
-    get zh() { return zh_CN.post; }
+    get zh() { return zh_CN.cms; }
     get authors() { return this.cmsState.authors; }
     get revisions() { return this.entity.revisions.slice().reverse(); }
 
