@@ -25,26 +25,26 @@ export class TopicEffects {
             'Content-Type': 'application/json'});
     }
 
-    @Effect() loadTopics$ = this.actions$.ofType(TopicActions.LOAD_ENTITIES)
+    @Effect() loadTopics$ = this.actions$.ofType(TopicActions.LOAD_TOPICS)
         .switchMap(action => this.getTopics(action.payload))
         .map(topics => TopicActions.loadTopicsSuccess(topics))
         .catch(() => Observable.of(TopicActions.loadTopicsFail()));
 
-    @Effect() loadTopic$ = this.actions$.ofType(TopicActions.LOAD_ENTITY)
+    @Effect() loadTopic$ = this.actions$.ofType(TopicActions.LOAD_TOPIC)
         .switchMap(action => this.getTopic(action.payload))
         .map(topic => TopicActions.loadTopicSuccess(topic))
         .catch(() => Observable.of(TopicActions.loadTopicFail()));
 
-    @Effect() putTopic$ = this.actions$.ofType(TopicActions.SAVE_ENTITY)
+    @Effect() putTopic$ = this.actions$.ofType(TopicActions.SAVE_TOPIC)
         .switchMap(action => this.saveTopic(action.payload)
             .map(topic => TopicActions.saveTopicSuccess(topic))
             .catch(() => Observable.of(TopicActions.saveTopicFail()))
         );
 
-    @Effect() saveTopicSuccess$ = this.actions$.ofType(TopicActions.SAVE_ENTITY_SUCCESS)
+    @Effect() saveTopicSuccess$ = this.actions$.ofType(TopicActions.SAVE_TOPIC_SUCCESS)
         .map(action => AlertActions.success('专题保存成功!'));
 
-    @Effect() saveTopicFail$ = this.actions$.ofType(TopicActions.SAVE_ENTITY_FAIL)
+    @Effect() saveTopicFail$ = this.actions$.ofType(TopicActions.SAVE_TOPIC_FAIL)
         .map(action => AlertActions.error('专题保存失败!'));
 
     //////////////////////////////////////////////////////////////////////////

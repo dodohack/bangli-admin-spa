@@ -22,12 +22,12 @@ export class PageEffects {
             'Content-Type': 'application/json'});
     }
 
-    @Effect() loadPages$ = this.actions$.ofType(PageActions.LOAD_ENTITIES)
+    @Effect() loadPages$ = this.actions$.ofType(PageActions.LOAD_PAGES)
         .switchMap(action => this.getPages(action.payload))
         .map(pages => PageActions.loadPagesSuccess(pages))
         .catch(() => Observable.of(PageActions.loadPagesFail()));
 
-    @Effect() loadPage$ = this.actions$.ofType(PageActions.LOAD_ENTITY)
+    @Effect() loadPage$ = this.actions$.ofType(PageActions.LOAD_PAGE)
         .switchMap(action => this.getPage(action.payload))
         .map(page => PageActions.loadPageSuccess(page))
         .catch(() => Observable.of(PageActions.loadPageFail()));

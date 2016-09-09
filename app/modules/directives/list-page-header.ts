@@ -65,5 +65,10 @@ export class ListPageHeader {
             .reduce((total, count) => total + count);
     }
     
-    get zh() { return zh_CN[this.baseUrl]; }
+    get zh() {
+        if (this.isCms)
+            return zh_CN.cms;
+        else
+            return zh_CN[this.baseUrl];
+    }
 }

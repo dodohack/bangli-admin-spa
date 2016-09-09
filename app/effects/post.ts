@@ -2,6 +2,7 @@
  * Post[s] side effects
  */
 import { Injectable }                     from '@angular/core';
+import { ActivatedRoute }                 from '@angular/router';
 import { Http, Headers, RequestOptions }  from '@angular/http';
 import { Effect, Actions }                from '@ngrx/effects';
 import { Observable }                     from 'rxjs/Observable';
@@ -25,28 +26,28 @@ export class PostEffects {
             'Content-Type': 'application/json'});
     }
     
-    @Effect() loadPosts$ = this.actions$.ofType(PostActions.LOAD_ENTITIES)
+    @Effect() loadPosts$ = this.actions$.ofType(PostActions.LOAD_POSTS)
         .switchMap(action => this.getPosts(action.payload)
             .map(posts => PostActions.loadPostsSuccess(posts))
             .catch(() => Observable.of(PostActions.loadPostsFail()))
         );
 
-    @Effect() loadPost$ = this.actions$.ofType(PostActions.LOAD_ENTITY)
+    @Effect() loadPost$ = this.actions$.ofType(PostActions.LOAD_POST)
         .switchMap(action => this.getPost(action.payload)
             .map(post => PostActions.loadPostSuccess(post))
             .catch(() => Observable.of(PostActions.loadPostFail()))
         );
-    
-    @Effect() putPost$ = this.actions$.ofType(PostActions.SAVE_ENTITY)
+
+    @Effect() putPost$ = this.actions$.ofType(PostActions.SAVE_POST)
         .switchMap(action => this.savePost(action.payload)
             .map(post => PostActions.savePostSuccess(post))
             .catch(() => Observable.of(PostActions.savePostFail()))
         );
-    
-    @Effect() savePostSuccess$ = this.actions$.ofType(PostActions.SAVE_ENTITY_SUCCESS)
+
+    @Effect() savePostSuccess$ = this.actions$.ofType(PostActions.SAVE_POST_SUCCESS)
         .map(action => AlertActions.success('文章保存成功!'));
     
-    @Effect() savePostFail$ = this.actions$.ofType(PostActions.SAVE_ENTITY_FAIL)
+    @Effect() savePostFail$ = this.actions$.ofType(PostActions.SAVE_POST_FAIL)
         .map(action => AlertActions.error('文章保存失败!'));
 
     //////////////////////////////////////////////////////////////////////////
@@ -67,16 +68,18 @@ export class PostEffects {
     private savePost(post: Post): Observable<Post> {
         console.log("SAVING POST: ", post);
 
-        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts;
         let body = JSON.stringify(post);
         let options = new RequestOptions({ headers: this.headers });
-
-        // Update an existing post
-        if (post.id && post.id !== 0)
-            api = api + '/' + post.id;
-
-        // Create/Update a post
-        return this.http.post(api, body, options).map(res => res.json());
+        
+        if (post.id && post.id !== 0) {
+            // Update an existing post
+            let api = AuthCache.API() + AuthCache.API_PATH().cms_posts + '/' + post.id;
+            return this.http.put(api, body, options).map(res => res.json());            
+        } else {
+            // Create a new post
+            let api = AuthCache.API() + AuthCache.API_PATH().cms_posts;
+            return this.http.post(api, body, options).map(res => res.json());
+        }
     }
 
     /**

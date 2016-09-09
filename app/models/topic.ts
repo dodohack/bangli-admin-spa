@@ -2,8 +2,13 @@
  * This is the definition of topic model
  */
 
-import { Category } from "./category";
-import { Location } from './location';
+import { Category }  from "./category";
+import { Tag }       from './tag';
+import { Location }  from './location';
+import { Statistic } from './statistic';
+import { Revision }  from './revision';
+import { Activity }  from './activity';
+import { Post }      from './post';
 
 // API request parameters to filter list of topics
 export class TopicParams {
@@ -47,8 +52,13 @@ export class Topic {
     state: string;
     guid: string;
     title: string;
+    tags: Tag[];
     categories: Category[];
+    posts: Post[];
     content: string;
     created_at: string;
     updated_at: string;
+    revisions: Revision[];
+    statistics: Statistic[];
+    activities: Activity[];
 }

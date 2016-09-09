@@ -73,7 +73,7 @@ export class CmsList
     }
     // Get editor name of given entity
     editorName(id) {
-        return this.editors[this.entities[id].author_id].name;
+        return this.editors[this.entities[id].editor_id].name;
     }
     // If the the entity is in editing
     isEditing(id) {
@@ -125,6 +125,16 @@ export class CmsList
             default:
                 break;
         }
+    }
+    
+    // Entity editing link
+    editLink(id: number) {
+        if (this.isPost)
+            return '/post/' + id;
+        else if (this.isTopic)
+            return '/topic/' + this.entities[id].guid;
+        else if (this.isPage)
+            return '/page/' + id;
     }
 
     // Frontend preview link

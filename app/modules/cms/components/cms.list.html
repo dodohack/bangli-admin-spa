@@ -26,7 +26,9 @@
         </th>
         <th width="16%">作者 / 编辑</th>
         <th width="18%">分类</th>
-        <th width="12%">发布日期</th>
+        <th width="12%">
+            <span *ngIf="isPost">发布日期</span><span *ngIf="!isPost">创建时间</span>
+        </th>
         <th width="12%">更新日期</th>
         <th width="6%">view</th>
     </tr>
@@ -61,7 +63,9 @@
                     {{ zh[entities[id].state] }}
                 </span>
                 <span class="tag tag-default-outline">{{ zh[entities[id].creative_type] }}</span>
-                <strong><a [routerLink]="['/post', id ]">{{ entities[id].title }}</a></strong>
+
+                <!-- Title -->
+                <strong><a [routerLink]="[editLink(id)]">{{ entities[id].title }}</a></strong>
 
                 <div class="row-actions">
                     <span class="trash"><a>删除</a> | </span>
@@ -71,8 +75,9 @@
             </td>
 
             <td>
+                <span class="tag tag-danger">bug in ng2</span>
                 编辑: {{ editorName(id) }}
-                <div>作者
+                <div *ngIf="isPost">作者
                     <span *ngIf="hasAuthor(id)">{{ authorName(id) }}</span>
                     <span *ngIf="!hasAuthor(id)">FIXME</span>
                 </div>
@@ -82,7 +87,10 @@
                 <span *ngFor="let cat of entities[id].categories">
                 <a [routerLink]="['/cms/category', cat.id]">{{ cat.name }}</a>, </span>
             </td>
-            <td>{{ entities[id].published_at }}</td>
+            <td>
+                <span *ngIf="isPost">{{ entities[id].published_at }}</span>
+                <span *ngIf="!isPost">{{ entities[id].created_at }}</span>
+            </td>
             <td>{{ entities[id].updated_at }}</td>
             <td>
                 <span>0</span>

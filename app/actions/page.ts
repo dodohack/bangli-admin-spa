@@ -23,109 +23,109 @@ export class PageActions {
         };
     }
 
-    static LOAD_ENTITIES = '[Page] Load Pages';
+    static LOAD_PAGES = '[Page] Load Pages';
     static loadPages(params: PageParams): Action {
         return {
-            type: PageActions.LOAD_ENTITIES,
+            type: PageActions.LOAD_PAGES,
             payload: params
         };
     }
 
-    static LOAD_ENTITIES_SUCCESS = '[Page] Load Pages Success';
+    static LOAD_PAGES_SUCCESS = '[Page] Load Pages Success';
     static loadPagesSuccess(posts: Page[]): Action {
         return {
-            type: PageActions.LOAD_ENTITIES_SUCCESS,
+            type: PageActions.LOAD_PAGES_SUCCESS,
             payload: posts
         };
     }
 
-    static LOAD_ENTITIES_FAIL = '[Page] Load Pages Fail';
+    static LOAD_PAGES_FAIL = '[Page] Load Pages Fail';
     static loadPagesFail(): Action {
         return {
-            type: PageActions.LOAD_ENTITIES_FAIL,
+            type: PageActions.LOAD_PAGES_FAIL,
         };
     }
 
-    static BATCH_EDIT_ENTITIES = '[Page] Batch Edit Pages';
+    static BATCH_EDIT_PAGES = '[Page] Batch Edit Pages';
     static batchEditPages(ids: number[]): Action {
         return {
-            type: PageActions.BATCH_EDIT_ENTITIES,
+            type: PageActions.BATCH_EDIT_PAGES,
             payload: ids
         };
     }
 
-    static CANCEL_BATCH_EDIT_ENTITIES = '[Page] Cancel Batch Edit Pages';
+    static CANCEL_BATCH_EDIT_PAGES = '[Page] Cancel Batch Edit Pages';
     static cancelBatchEditPages(): Action {
         return {
-            type: PageActions.CANCEL_BATCH_EDIT_ENTITIES
+            type: PageActions.CANCEL_BATCH_EDIT_PAGES
         };
     }
 
-    static BATCH_DELETE_ENTITIES = '[Page] Batch Delete Pages';
+    static BATCH_DELETE_PAGES = '[Page] Batch Delete Pages';
     static batchDeletePages(ids: number[]): Action {
         return {
-            type: PageActions.BATCH_DELETE_ENTITIES,
+            type: PageActions.BATCH_DELETE_PAGES,
             payload: ids
         };
     }
 
-    static BATCH_OFFLINE_EDIT_ENTITIES = '[Page] Batch Offline Edit Pages';
+    static BATCH_OFFLINE_EDIT_PAGES = '[Page] Batch Offline Edit Pages';
     static batchOfflineEditPages(ids: number[]): Action {
         return {
-            type: PageActions.BATCH_OFFLINE_EDIT_ENTITIES,
+            type: PageActions.BATCH_OFFLINE_EDIT_PAGES,
             payload: ids
         };
     }
 
-    static BATCH_LOCK_ENTITIES = '[Page] Batch Lock Pages';
+    static BATCH_LOCK_PAGES = '[Page] Batch Lock Pages';
     static batchLockPages(ids: number[]): Action {
         return {
-            type: PageActions.BATCH_LOCK_ENTITIES,
+            type: PageActions.BATCH_LOCK_PAGES,
             payload: ids
         };
     }
 
-    static BATCH_EDIT_PREVIOUS_ENTITY = '[Page] Batch Edit Previous Page';
+    static BATCH_EDIT_PREVIOUS_PAGE = '[Page] Batch Edit Previous Page';
     static batchEditPreviousPage(): Action {
         return {
-            type: PageActions.BATCH_EDIT_PREVIOUS_ENTITY
+            type: PageActions.BATCH_EDIT_PREVIOUS_PAGE
         };
     }
 
-    static BATCH_EDIT_NEXT_ENTITY = '[Page] Batch Edit Next Page';
+    static BATCH_EDIT_NEXT_PAGE = '[Page] Batch Edit Next Page';
     static batchEditNextPage(): Action {
         return {
-            type: PageActions.BATCH_EDIT_NEXT_ENTITY
+            type: PageActions.BATCH_EDIT_NEXT_PAGE
         };
     }
 
-    static NEW_ENTITY = '[Page] New Page';
+    static NEW_PAGE = '[Page] New Page';
     static newPage(): Action {
         return {
-            type: PageActions.NEW_ENTITY
+            type: PageActions.NEW_PAGE
         };
     }
 
-    static LOAD_ENTITY = '[Page] Load Page';
+    static LOAD_PAGE = '[Page] Load Page';
     static loadPage(id: number): Action {
         return {
-            type: PageActions.LOAD_ENTITY,
+            type: PageActions.LOAD_PAGE,
             payload: id
         };
     }
 
-    static LOAD_ENTITY_SUCCESS = '[Page] Load Page Success';
+    static LOAD_PAGE_SUCCESS = '[Page] Load Page Success';
     static loadPageSuccess(post: Page): Action {
         return {
-            type: PageActions.LOAD_ENTITY_SUCCESS,
+            type: PageActions.LOAD_PAGE_SUCCESS,
             payload: post
         };
     }
 
-    static LOAD_ENTITY_FAIL = '[Page] Load Page Fail';
+    static LOAD_PAGE_FAIL = '[Page] Load Page Fail';
     static loadPageFail(): Action {
         return {
-            type: PageActions.LOAD_ENTITY_FAIL,
+            type: PageActions.LOAD_PAGE_FAIL,
         };
     }
 
@@ -137,10 +137,10 @@ export class PageActions {
         };
     }
 
-    static SAVE_ENTITY = '[Page] Save Page';
+    static SAVE_PAGE = '[Page] Save Page';
     static savePage(post: Page): Action {
         return {
-            type: PageActions.SAVE_ENTITY,
+            type: PageActions.SAVE_PAGE,
             payload: post
         };
     }
@@ -153,49 +153,49 @@ export class PageActions {
         };
     }
     /*
-     static SAVE_ENTITY_AS_PENDING = '[Page] Save Page As Pending';
+     static SAVE_PAGE_AS_PENDING = '[Page] Save Page As Pending';
      static savePageAsPending(post: Page): Action {
      return {
-     type: PageActions.SAVE_ENTITY_AS_PENDING,
+     type: PageActions.SAVE_PAGE_AS_PENDING,
      payload: post
      };
      }
 
-     static SAVE_ENTITY_AS_DRAFT = '[Page] Save Page As Draft';
+     static SAVE_PAGE_AS_DRAFT = '[Page] Save Page As Draft';
      static savePageAsDraft(post: Page): Action {
      return {
-     type: PageActions.SAVE_ENTITY_AS_DRAFT,
+     type: PageActions.SAVE_PAGE_AS_DRAFT,
      payload: post
      };
      }
 
-     static SAVE_ENTITY_AS_PUBLISH = '[Page] Save Page As Publish';
+     static SAVE_PAGE_AS_PUBLISH = '[Page] Save Page As Publish';
      static savePageAsPublish(post: Page): Action {
      return {
-     type: PageActions.SAVE_ENTITY_AS_PUBLISH,
+     type: PageActions.SAVE_PAGE_AS_PUBLISH,
      payload: post
      };
      }
      */
-    static SAVE_ENTITY_SUCCESS = '[Page] Save Page Success';
+    static SAVE_PAGE_SUCCESS = '[Page] Save Page Success';
     static savePageSuccess(post: Page): Action {
         return {
-            type: PageActions.SAVE_ENTITY_SUCCESS,
+            type: PageActions.SAVE_PAGE_SUCCESS,
             payload: post
         };
     }
 
-    static SAVE_ENTITY_FAIL = '[Page] Save Page Fail';
+    static SAVE_PAGE_FAIL = '[Page] Save Page Fail';
     static savePageFail(): Action {
         return {
-            type: PageActions.SAVE_ENTITY_FAIL
+            type: PageActions.SAVE_PAGE_FAIL
         };
     }
 
-    static SAVE_ENTITIES = '[Page] Save Pages';
+    static SAVE_PAGES = '[Page] Save Pages';
     static savePages(posts: Page[]): Action {
         return {
-            type: PageActions.SAVE_ENTITIES,
+            type: PageActions.SAVE_PAGES,
             payload: posts
         };
     }

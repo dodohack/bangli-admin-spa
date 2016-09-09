@@ -23,109 +23,109 @@ export class TopicActions {
         };
     }
 
-    static LOAD_ENTITIES = '[Topic] Load Topics';
+    static LOAD_TOPICS = '[Topic] Load Topics';
     static loadTopics(filters:any):Action {
         return {
-            type: TopicActions.LOAD_ENTITIES,
+            type: TopicActions.LOAD_TOPICS,
             payload: filters
         };
     }
 
-    static LOAD_ENTITIES_SUCCESS = '[Topic] Load Topics Success';
+    static LOAD_TOPICS_SUCCESS = '[Topic] Load Topics Success';
     static loadTopicsSuccess(topics:Topic[]):Action {
         return {
-            type: TopicActions.LOAD_ENTITIES_SUCCESS,
+            type: TopicActions.LOAD_TOPICS_SUCCESS,
             payload: topics
         };
     }
 
-    static LOAD_ENTITIES_FAIL = '[Topic] Load Topics Fail';
+    static LOAD_TOPICS_FAIL = '[Topic] Load Topics Fail';
     static loadTopicsFail():Action {
         return {
-            type: TopicActions.LOAD_ENTITIES_FAIL,
+            type: TopicActions.LOAD_TOPICS_FAIL,
         };
     }
 
-    static BATCH_EDIT_ENTITIES = '[Topic] Batch Edit Topics';
+    static BATCH_EDIT_TOPICS = '[Topic] Batch Edit Topics';
     static batchEditTopics(ids: number[]): Action {
         return {
-            type: TopicActions.BATCH_EDIT_ENTITIES,
+            type: TopicActions.BATCH_EDIT_TOPICS,
             payload: ids
         };
     }
 
-    static CANCEL_BATCH_EDIT_ENTITIES = '[Topic] Cancel Batch Edit Topics';
+    static CANCEL_BATCH_EDIT_TOPICS = '[Topic] Cancel Batch Edit Topics';
     static cancelBatchEditTopics(): Action {
         return {
-            type: TopicActions.CANCEL_BATCH_EDIT_ENTITIES
+            type: TopicActions.CANCEL_BATCH_EDIT_TOPICS
         };
     }
 
-    static BATCH_DELETE_ENTITIES = '[Topic] Batch Delete Topics';
+    static BATCH_DELETE_TOPICS = '[Topic] Batch Delete Topics';
     static batchDeleteTopics(ids: number[]): Action {
         return {
-            type: TopicActions.BATCH_DELETE_ENTITIES,
+            type: TopicActions.BATCH_DELETE_TOPICS,
             payload: ids
         };
     }
 
-    static BATCH_OFFLINE_EDIT_ENTITIES = '[Topic] Batch Offline Edit Topics';
+    static BATCH_OFFLINE_EDIT_TOPICS = '[Topic] Batch Offline Edit Topics';
     static batchOfflineEditTopics(ids: number[]): Action {
         return {
-            type: TopicActions.BATCH_OFFLINE_EDIT_ENTITIES,
+            type: TopicActions.BATCH_OFFLINE_EDIT_TOPICS,
             payload: ids
         };
     }
 
-    static BATCH_LOCK_ENTITIES = '[Topic] Batch Lock Topics';
+    static BATCH_LOCK_TOPICS = '[Topic] Batch Lock Topics';
     static batchLockTopics(ids: number[]): Action {
         return {
-            type: TopicActions.BATCH_LOCK_ENTITIES,
+            type: TopicActions.BATCH_LOCK_TOPICS,
             payload: ids
         };
     }
 
-    static BATCH_EDIT_PREVIOUS_ENTITY = '[Topic] Batch Edit Previous Topic';
+    static BATCH_EDIT_PREVIOUS_TOPIC = '[Topic] Batch Edit Previous Topic';
     static batchEditPreviousTopic(): Action {
         return {
-            type: TopicActions.BATCH_EDIT_PREVIOUS_ENTITY
+            type: TopicActions.BATCH_EDIT_PREVIOUS_TOPIC
         };
     }
 
-    static BATCH_EDIT_NEXT_ENTITY = '[Topic] Batch Edit Next Topic';
+    static BATCH_EDIT_NEXT_TOPIC = '[Topic] Batch Edit Next Topic';
     static batchEditNextTopic(): Action {
         return {
-            type: TopicActions.BATCH_EDIT_NEXT_ENTITY
+            type: TopicActions.BATCH_EDIT_NEXT_TOPIC
         };
     }
 
-    static NEW_ENTITY = '[Topic] New Topic';
+    static NEW_TOPIC = '[Topic] New Topic';
     static newTopic(): Action {
         return {
-            type: TopicActions.NEW_ENTITY
+            type: TopicActions.NEW_TOPIC
         };
     }
 
-    static LOAD_ENTITY = '[Topic] Load Topic';
+    static LOAD_TOPIC = '[Topic] Load Topic';
     static loadTopic(id:string):Action {
         return {
-            type: TopicActions.LOAD_ENTITY,
+            type: TopicActions.LOAD_TOPIC,
             payload: id
         };
     }
 
-    static LOAD_ENTITY_SUCCESS = '[Topic] Load Topic Success';
+    static LOAD_TOPIC_SUCCESS = '[Topic] Load Topic Success';
     static loadTopicSuccess(topic:Topic):Action {
         return {
-            type: TopicActions.LOAD_ENTITY_SUCCESS,
+            type: TopicActions.LOAD_TOPIC_SUCCESS,
             payload: topic
         };
     }
 
-    static LOAD_ENTITY_FAIL = '[Topic] Load Topic Fail';
+    static LOAD_TOPIC_FAIL = '[Topic] Load Topic Fail';
     static loadTopicFail():Action {
         return {
-            type: TopicActions.LOAD_ENTITY_FAIL,
+            type: TopicActions.LOAD_TOPIC_FAIL,
         };
     }
 
@@ -137,10 +137,10 @@ export class TopicActions {
         };
     }
 
-    static SAVE_ENTITY = '[Topic] Save Topic';
+    static SAVE_TOPIC = '[Topic] Save Topic';
     static saveTopic(topic:Topic):Action {
         return {
-            type: TopicActions.SAVE_ENTITY,
+            type: TopicActions.SAVE_TOPIC,
             payload: topic
         };
     }
@@ -153,25 +153,25 @@ export class TopicActions {
         };
     }
 
-    static SAVE_ENTITY_SUCCESS = '[Topic] Save Topic Success';
+    static SAVE_TOPIC_SUCCESS = '[Topic] Save Topic Success';
     static saveTopicSuccess(topic: Topic): Action {
         return {
-            type: TopicActions.SAVE_ENTITY_SUCCESS,
+            type: TopicActions.SAVE_TOPIC_SUCCESS,
             payload: topic
         };
     }
 
-    static SAVE_ENTITY_FAIL = '[Topic] Save Topic Fail';
+    static SAVE_TOPIC_FAIL = '[Topic] Save Topic Fail';
     static saveTopicFail(): Action {
         return {
-            type: TopicActions.SAVE_ENTITY_FAIL
+            type: TopicActions.SAVE_TOPIC_FAIL
         };
     }
 
-    static SAVE_ENTITIES = '[Topic] Save Topics';
+    static SAVE_TOPICS = '[Topic] Save Topics';
     static saveTopics(topics: Topic[]): Action {
         return {
-            type: TopicActions.SAVE_ENTITIES,
+            type: TopicActions.SAVE_TOPICS,
             payload: topics
         };
     }
