@@ -63,6 +63,10 @@ export class EntityList
     authorName(id) {
         return this.authors[this.entities[id].author_id].name;
     }
+    // Is given entity has a editor
+    hasEditor(id) {
+        return this.editors[this.entities[id].editor_id];
+    }
     // Get editor name of given entity
     editorName(id) {
         return this.editors[this.entities[id].editor_id].name;

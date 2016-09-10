@@ -75,11 +75,9 @@
             </td>
 
             <td>
-                <span class="tag tag-danger">bug in ng2</span>
-                编辑: {{ editorName(id) }}
-                <div *ngIf="isPost">作者
-                    <span *ngIf="hasAuthor(id)">{{ authorName(id) }}</span>
-                    <span *ngIf="!hasAuthor(id)">FIXME</span>
+                <span *ngIf="hasEditor(id)">编辑: {{ editorName(id) }}</span>
+                <div *ngIf="isPost">
+                    <span *ngIf="hasAuthor(id)">作者: {{ authorName(id) }}</span>
                 </div>
             </td>
 
