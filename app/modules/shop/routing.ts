@@ -17,9 +17,9 @@ const routes: Routes = [
         children: [
 
             /* List of products */
-            { path: '', pathMatch: 'full', redirectTo: 'page/1/status/all' },
-            { path: 'page/:page',          redirectTo: 'page/:page/status/all' },
-            { path: 'page/:page/status/:status', component: ProductsPage },
+            { path: '', pathMatch: 'full', redirectTo: 'page/1/state/all' },
+            { path: 'page/:page',          redirectTo: 'page/:page/state/all' },
+            { path: 'page/:page/state/:state', component: ProductsPage },
 
             /* Single product */
             { path: 'new', component: ProductPage },
@@ -36,9 +36,9 @@ const routes: Routes = [
         children: [
 
             /* List of orders */
-            { path: '', pathMatch: 'full',      redirectTo: 'page/1/status/all' },
-            { path: 'page/:page',               redirectTo: 'page/:page/status/all' },
-            { path: 'page/:page/status/:status', component: OrdersPage },
+            { path: '', pathMatch: 'full',      redirectTo: 'page/1/state/all' },
+            { path: 'page/:page',               redirectTo: 'page/:page/state/all' },
+            { path: 'page/:page/state/:state', component: OrdersPage },
         ]
     },
 
@@ -47,9 +47,9 @@ const routes: Routes = [
         path: 'voucher',
         canActivate: [ShopMgrGuard],
         children: [
-            { path: '', pathMatch: 'full', redirectTo: 'all/all/1' },
-            { path: ':filter/:cond', redirectTo: ':filter/:cond/1' },
-            { path: ':filter/:cond/:page', component: VouchersPage }
+            { path: '', pathMatch: 'full', redirectTo: 'page/1/state/all' },
+            { path: 'page/:page', redirectTo: 'page/:page/state/all' },
+            { path: 'page/:page/state/:state', component: VouchersPage }
         ]
     },
 

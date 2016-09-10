@@ -85,7 +85,7 @@
                 {{ paginator.cur_page }}/{{ paginator.last_page }}页</span>
             <a *ngFor="let p of pagers" class="btn btn-sm btn-secondary"
                [class.disabled]="p.disabled"
-               [routerLink]="['/', baseUrl, 'page', p.index, 'state', state]"
+               [routerLink]="[pageUrl(p.index, state)]"
                [queryParams]="route.queryParams | async">
                 <i class="fa {{ p.icon }}"></i>
             </a>

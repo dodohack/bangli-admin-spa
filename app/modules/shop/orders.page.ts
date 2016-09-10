@@ -27,7 +27,7 @@ export class OrdersPage implements OnInit, OnDestroy
     subShop: any;
     subOrders: any;
     subParams: any;
-    subQueryParams: any;    
+    subQueryParams: any;
 
     /* Order index and order, the order we are current editing */
     index: number;
@@ -90,7 +90,7 @@ export class OrdersPage implements OnInit, OnDestroy
 
     get zh() { return zh_CN.order; }
     get availableCarriers() { return CARRIERS; }
-
+    
     loadOrders() {
         let orderParams: OrderParams = new OrderParams;
 

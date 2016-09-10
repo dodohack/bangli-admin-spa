@@ -7,8 +7,7 @@ import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 import { EntityList } from '../../base/entity.list';
-
-import { OrdersState } from '../../../reducers/orders';
+import { zh_CN }      from '../../../localization';
 
 @Component({
     selector: 'order-list',
@@ -17,4 +16,5 @@ import { OrdersState } from '../../../reducers/orders';
 })
 export class OrderList extends EntityList
 {
+    get zh() { return zh_CN.order; }
 }

@@ -19,6 +19,7 @@ export class EntityList
     @Input() isTopic:   boolean;
     @Input() isPage:    boolean;
     @Input() isProduct: boolean;
+    @Input() isUser:    boolean;
 
     // listState is one of entity type content state
     _listState: any;
@@ -131,6 +132,9 @@ export class EntityList
         
         if (this.isProduct)
             return '/product/' + id;
+
+        if (this.isUser)
+            return '/user/' + id;
     }
 
     // Frontend preview link

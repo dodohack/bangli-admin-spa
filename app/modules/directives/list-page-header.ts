@@ -51,6 +51,13 @@ export class ListPageHeader {
         if (this.isPage)    return 'page';
         if (this.isUser)    return 'user';
     }
+    
+    navUrl($state) {
+        if (this.isUser)
+            return '/' + this.baseUrl + '/page/1/role/' + $state;
+        else
+            return '/' + this.baseUrl + '/page/1/state/' + $state;
+    }
 
     get isCms() {
         return (this.isPost || this.isTopic || this.isPage) ? true : false;
@@ -61,7 +68,7 @@ export class ListPageHeader {
     }
 
     get total() {
-        if (!this.states.length) return 0;
+        if (!this.states || !this.states.length) return 0;
 
         return this.states.map(state => state.count)
             .reduce((total, count) => total + count);

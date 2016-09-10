@@ -11,47 +11,85 @@ import { Store }             from '@ngrx/store';
 
 import { UserActions }        from '../../actions';
 import { AppState, getUsers } from '../../reducers';
-import { User, Paginator }    from '../../models';
+import { UsersState }         from '../../reducers/users';
+import { User, UserParams }   from '../../models';
+
 import { zh_CN }    from '../../localization';
 
 
 @Component({ template: require('./users.page.html') })
 export class UsersPage implements OnInit, OnDestroy
 {
-    sub: Subscription;
+    // Observable subscribers
+    subUsers: any;
+    subParams: any;
+    subQParams: any;
+
+    usersState: UsersState;
     
     routeRoleId: string;
 
-    usersState$: Observable<any>;
+    params: any;
+    queryParams: any;
 
+    // Is search is running
+    loading: boolean;
+    
     constructor(private route: ActivatedRoute,
-                private store: Store<AppState>) {
-        this.usersState$ = this.store.select('users');
-    }
+                private store: Store<AppState>) {}
 
     ngOnInit() {
-        // FIXME: Avoid nested observable subscription, it cause problems, such
-        // FIXME: as multiple subscription in inner subscibe.
-        // TODO:
-        // 1. UserActions.loadUsers() should be dispatched when url changes.
-        // 2. this.users$ is assigned to the list of users
-        // 3. support user role_id filters ('any' or role_id).
-        // route.params.subscribe is not a good solution, we should use
-        // route.params.switchMap() instead.
-        this.sub = this.route.params.subscribe(params => {
-            //let current_role = segment['role'] ? segment['role'] : 'any';
-            /* FIXME: Paginator is always redirected to page/:page/0 !!! */
-            let cur_page = params['page'] ? params['page'] : '1';
-            this.routeRoleId = params['role'] ? params['role'] : '';
-            this.store.dispatch(UserActions.loadUsers({cur_page: cur_page, role_id: this.routeRoleId}));
+        this.subUsers = this.store.select<UsersState>('users')
+            .subscribe(usersState => {
+                // Set search loading to false if users is loaded
+                this.loading = false;
+                this.usersState = usersState;
+            });
+
+        // THIS IS A TEMPORARY FIX
+        // FIXME: Previous request is cancel by the second one if exists
+        // FIXME: and potential other kind of issues
+        // Load users when any url parameter changes
+        this.subParams = this.route.params.subscribe(params => {
+            this.params = params;
+            this.loading = true;
+            this.loadUsers();
+        });
+        this.subQParams = this.route.queryParams.subscribe(params => {
+            this.queryParams = params;
+            this.loading = true;
+            this.loadUsers();
         });
     }
 
     /* TODO: Check if memory leaks if we don't do this */
     ngOnDestroy() {
-        this.sub.unsubscribe();
+        this.subUsers.unsubscribe();
+        this.subParams.unsubscribe();
+        this.subQParams.unsubscribe();
     }
 
     get zh() { return zh_CN.user; }
     get userRoles() { return ''; /*this.userService.roles; */}
+
+    loadUsers() {
+        let userParams: UserParams = new UserParams;
+        
+        // Must have parameters come from route.params observable
+        if (this.params) {
+            userParams.cur_page = this.params['page'];
+        }
+
+        // Optional parameters come from route.queryParams observable
+        if (this.queryParams) {
+            userParams.datetype = this.queryParams['datetype'];
+            userParams.datefrom = this.queryParams['datefrom'];
+            userParams.dateto   = this.queryParams['dateto'];
+            userParams.query    = this.queryParams['query'];
+        }
+
+        // Load list of users from API server
+        this.store.dispatch(UserActions.loadUsers(userParams));
+    }
+    
 }

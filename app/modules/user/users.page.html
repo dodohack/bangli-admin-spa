@@ -1,35 +1,11 @@
-<list-page-header [isUser]="true"></list-page-header>
+<list-page-header [isUser]="true" [loading]="loading"></list-page-header>
 
-<!-- User role filter -->
-<nav class="navbar page-sub-menu">
 
-    <ul class="nav navbar-nav">
-        <!--
-        <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/user/list/5/1']">所有用户</a>
-        </li>
-        <li *ngFor="let role of userRoles" class="nav-item">
-            <a class="nav-link" [routerLink]="['/user/list', role.id, '1']">{{ role.display_name }}</a>
-        </li>
-        -->
-    </ul>
-
-    <search-box></search-box>
-</nav>
-
-<!-- Paginator -->
-<!--
-<div class="list-toolbar">
-    <paginator [base]="'user'" [lists]="usersState$ | async"></paginator>
-</div>
--->
+<!-- Post filter/tool bar at top -->
+<list-filter-bar [isUser]="true"
+                 [paginator]="usersState.paginator"
+                 (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- List of users -->
-<users-list [usersState]="usersState$ | async"></users-list>
+<user-list [isUser]="true" [listState]="usersState"></user-list>
 
-<!-- Paginator -->
-<!--
-<div class="list-toolbar">
-    <paginator [base]="'user'" [lists]="usersState$ | async"></paginator>
-</div>
--->

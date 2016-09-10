@@ -124,6 +124,16 @@ export class ListFilterBar implements OnInit, OnDestroy {
         ];
     }
 
+    /**
+     * Pagination url
+     */
+    pageUrl($page, $state) {
+        if (!this.isUser)
+            return '/' + this.baseUrl + '/page/' + $page + '/state/' + $state;
+        else
+            return '/' + this.baseUrl + '/page/' + $page + '/role/' + $state;
+    } 
+
     dateFromOnClick($event)
     {
         console.log("select date_from clicked");

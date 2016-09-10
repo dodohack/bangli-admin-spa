@@ -12,7 +12,6 @@ export const USER_GENDERS = [
     {key: 'U', display_name: '火星人'}
 ];
 
-
 interface UserRole {
     id: number;
     name: string;
@@ -35,6 +34,24 @@ interface UserProfile {
     profile_image: string;
     subscription: boolean;
     description: string;
+}
+
+// API request parameters to filter list of users
+export class UserParams {
+    cur_page: string = '1';
+    datetype: string;
+    datefrom: string;
+    dateto: string;
+    query: string;
+    // Form a API query string
+    toQueryString(): string {
+        let s = '?page=' + this.cur_page;
+        if (this.datetype) s = s + '&datetype=' + this.datetype;
+        if (this.datefrom) s = s + '&datefrom=' + this.datefrom;
+        if (this.dateto) s = s + '&dateto=' + this.dateto;
+        if (this.query) s = s + '&query=' + this.query;
+        return s;
+    }
 }
 
 /* This user is per domain data */
