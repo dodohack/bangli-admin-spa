@@ -43,12 +43,18 @@ const routes: Routes = [
         path: 'post',
         children: [
 
-            /* List of posts */
+            /* List of posts wo/ channels */
             { path: '', pathMatch: 'full', redirectTo: 'page/1/state/all' },
             { path: 'page/:page',          redirectTo: 'page/:page/state/all' },
             { path: 'page/:page/state/:state', component: PostsPage,
                 canActivate: [AuthorGuard], canDeactivate: [PostsEditGuard]},
-
+            
+            /* List of posts w/ channels */
+            { path: 'channel/:channel',            redirectTo: 'channel/:channel/page/1/state/all' },
+            { path: 'channel/:channel/page/:page', redirectTo: 'channel/:channel/page/:page/state/all' },
+            { path: 'channel/:channel/page/:page/state/:state', component: PostsPage,
+                canActivate: [AuthorGuard], canDeactivate: [PostsEditGuard]},
+            
             /* Single post */
             { path: 'new', component: PostPage,
                 canActivate: [AuthorGuard], canDeactivate: [PostEditGuard] },
