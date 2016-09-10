@@ -40,6 +40,7 @@ export class PostState {
 
 // API request parameters to filter list of posts
 export class PostParams {
+    channel: string  = 'all';
     cur_page: string = '1';
     state: string;
     author: string;
@@ -62,6 +63,7 @@ export class PostParams {
     // Form a API query string
     toQueryString(): string {
         let s = '?page=' + this.cur_page;
+        if (this.channel) s= s+ '&channel=' + this.channel;
         if (this.state) s = s + '&state=' + this.state;
         if (this.author) s = s + '&author=' + this.author;
         if (this.editor) s = s + '&editor=' + this.editor;

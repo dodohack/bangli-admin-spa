@@ -116,6 +116,7 @@ export class PostsPage implements OnInit, OnDestroy
 
         // Must have parameters come from route.params observable
         if (this.params) {
+            postParams.channel  = this.params['channel'];
             postParams.cur_page = this.params['page'];
             postParams.state    = this.params['state'];
         }

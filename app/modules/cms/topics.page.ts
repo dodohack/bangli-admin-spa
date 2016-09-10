@@ -94,6 +94,7 @@ export class TopicsPage implements OnInit, OnDestroy
 
         // Must have parameters come from route.params observable
         if (this.params) {
+            topicParams.channel  = this.params['channel'];
             topicParams.cur_page = this.params['page'];
             topicParams.state    = this.params['state'];
         }

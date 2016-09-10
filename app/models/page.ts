@@ -3,6 +3,15 @@ export class PageParams {
     state: string;
     editor: string;
     query: string;
+
+    // Form a API query string
+    toQueryString(): string {
+        let s = '?page=' + this.cur_page;
+        if (this.state) s = s + '&state=' + this.state;
+        if (this.editor) s = s + '&editor=' + this.editor;
+        if (this.query) s = s + '&query=' + this.query;
+        return s;
+    }    
 }
 
 export class Page {

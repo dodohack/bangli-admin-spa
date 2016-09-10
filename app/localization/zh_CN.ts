@@ -17,6 +17,15 @@ export const zh_CN = {
         semi_creative: '伪原创',
         integration:   '整理',
         review:        '审稿',
+        
+        /* Channels */
+        all: '全部',
+        shopping: '购物',
+        travel: '旅游',
+        life: '生活',
+        culture: '文化',
+        education: '教育',
+        university: '大学',
     },
 
     product: {

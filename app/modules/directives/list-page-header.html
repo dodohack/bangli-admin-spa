@@ -1,13 +1,13 @@
 <!-- Cms channels menu -->
-<div class="panel" *ngIf="cmsChannels">
-    <div class="panel-heading">
+<div class="channel-menu" *ngIf="cmsChannels">
+    <div class="channel-heading">
         <a [routerLink]="['/', baseUrl, 'channel', 'all']"
-           class="panel-title" routerLinkActive="active">
+           class="channel-title" routerLinkActive="active">
             <h4>所有频道</h4>
         </a>
         <a *ngFor="let ch of cmsChannels"
            [routerLink]="['/', baseUrl, 'channel', ch.slug]"
-           class="panel-title" routerLinkActive="active">
+           class="channel-title" routerLinkActive="active">
             <h4>{{ ch.name }}</h4>
         </a>
     </div>
@@ -16,9 +16,8 @@
 <!-- header -->
 <div class="page-header">
     <h1 class="title">
-        {{ title }}列表
-        <span *ngIf="activeChannel"> - {{ activeChannel.name }}频道</span>
-        <span *ngIf="!activeChannel"> - 所有频道</span>
+        <span *ngIf="activeChannel">{{ zh[activeChannel] }}频道{{ title }}</span>
+        <span *ngIf="!activeChannel">所有频道{{ title }}</span>
         <a class="page-title-action btn btn-sm btn-outline-info"
            [routerLink]="['/', baseUrl, 'new']">新建{{ title }}</a>
 

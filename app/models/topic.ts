@@ -12,6 +12,7 @@ import { Post }      from './post';
 
 // API request parameters to filter list of topics
 export class TopicParams {
+    channel: string = 'all';
     cur_page: string = '1';
     state: string;
     editor: string;
@@ -32,6 +33,7 @@ export class TopicParams {
     // Form a API query string
     toQueryString(): string {
         let s = '?page=' + this.cur_page;
+        if (this.channel) s = s + '&channel=' + this.channel;
         if (this.state) s = s + '&state=' + this.state;
         if (this.editor) s = s + '&editor=' + this.editor;
         if (this.category) s = s + '&category=' + this.category;

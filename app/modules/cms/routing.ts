@@ -71,11 +71,16 @@ const routes: Routes = [
         canActivate: [EditorGuard],
         children: [
 
-            /* List of topics */
-            /* List of posts */
+            /* List of topics wo/ channels */
             { path: '', pathMatch: 'full', redirectTo: 'page/1/state/all' },
             { path: 'page/:page',          redirectTo: 'page/:page/state/all' },
             { path: 'page/:page/state/:state', component: TopicsPage },
+
+            /* List of topics w/ channels */
+            { path: 'channel/:channel',            redirectTo: 'channel/:channel/page/1/state/all' },
+            { path: 'channel/:channel/page/:page', redirectTo: 'channel/:channel/page/:page/state/all' },
+            { path: 'channel/:channel/page/:page/state/:state', component: TopicsPage },
+
 
             /* Single topic */
             { path: 'new', component: TopicPage },
