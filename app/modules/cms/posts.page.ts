@@ -100,7 +100,7 @@ export class PostsPage implements OnInit, OnDestroy
             this.loadPosts();
         });
     }
-
+    
     ngOnDestroy() {
         this.subAuth.unsubscribe();
         this.subCms.unsubscribe();

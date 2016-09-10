@@ -9,11 +9,11 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { OrdersState } from '../../../reducers/orders';
 
 @Component({
-    selector: 'orders-list',
-    template: require('./orders.list.html'),
+    selector: 'order-list',
+    template: require('./order.list.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OrdersList
+export class OrderList
 {
     _ordersState: OrdersState;
     @Input() set ordersState(value) { this._ordersState = Object.assign({}, value); }

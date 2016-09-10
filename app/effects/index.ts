@@ -9,6 +9,7 @@ import { TopicEffects }   from './topic';
 import { PageEffects }    from './page';
 import { DealEffects }    from './deal';
 import { CmsAttrEffects } from './cmsattr';
+import { ShopAttrEffects } from './shopattr';
 
 export {
     AuthEffects,
@@ -21,7 +22,8 @@ export {
     TopicEffects,
     PageEffects,
     DealEffects,
-    CmsAttrEffects
+    CmsAttrEffects,
+    ShopAttrEffects,
 };
 
 export default [
@@ -35,5 +37,6 @@ export default [
     TopicEffects,
     PageEffects,
     DealEffects,
-    CmsAttrEffects
+    CmsAttrEffects,
+    ShopAttrEffects
 ];

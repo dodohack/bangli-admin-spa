@@ -11,7 +11,7 @@ import { PostActions } from '../actions';
 
 export interface PostsState {
     ids: number[];
-    editing: number[]; // Post in editing/dirty state
+    editing: number[]; // Post in editing state
     entities: { [id: number]: Post };
     paginator: Paginator;
 };

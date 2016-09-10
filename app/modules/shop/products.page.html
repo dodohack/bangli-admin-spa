@@ -1,44 +1,20 @@
-<list-page-header [isProduct]="true"></list-page-header>
+<list-page-header [isProduct]="true"
+                  [states]="shopState.product_states.actual"
+                  [loading]="loading"></list-page-header>
 
-<!-- Filter toolbar -->
-<div class="list-toolbar">
-    <div class="float-left bulk-actions">
-        <select class="c-select select-sm">
-            <option value="0" selected>批量操作</option>
-            <option value="x">移到回收站</option>
-            <option value="y">批量修改</option>
-        </select>
-        <button type="submit" class="btn btn-secondary btn-sm">应用</button>
-    </div>
+<!-- Product filter/tool bar -->
+<list-filter-bar [isProduct]="true"
+                 [editors]="cmsState.editors"
+                 [categories]="shopState.categories"
+                 [paginator]="productsState.paginator"
+                 (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
-    <div class="float-left filters">
-        <select class="c-select select-sm">
-            <option value="0" selected>全部日期</option>
-            <option value="x">2016年5月</option>
-            <option value="y">2016年4月</option>
-            <option value="y">2016年3月</option>
-        </select>
-        <select class="c-select select-sm">
-            <option value="0" selected>所有分类</option>
-            <option value="x">分类1</option>
-            <option value="y">分类2</option>
-            <option value="y">分类3</option>
-        </select>
-        <button type="submit" class="btn btn-secondary btn-sm">筛选</button>
-    </div>
+<!-- Product list table -->
+<product-list [authState]="authState" [productsState]="productsState"
+              [cmsState]="cmsState"
+              (batchEdit)="batchEdit($event)"
+              (batchDelete)="batchDelete($event)"
+              (batchOfflineEdit)="batchOfflineEdit($event)"
+              (batchLock)="batchLock($event)"></product-list>
 
-    <!--<paginator [base]="'product'" [lists]="productsState$ | async"></paginator>-->
-</div>
-
-<!-- Products list table -->
-<products-list [productsState]="productsState$ | async"
-               (quickEdit)="quickEdit($event)"></products-list>
-
-
-<!-- Pagination at the end -->
-
-<!--
-<div class="list-toolbar">
-    <paginator [base]="'product'" [lists]="productsState$ | async"></paginator>
-</div>
--->
+<hr>

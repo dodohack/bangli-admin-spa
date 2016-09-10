@@ -1,6 +1,6 @@
 /**
  * Action to get CMS attributes, includes:
- * authors, editors, categories, tags, topic_cats, status, post_types etc
+ * authors, editors, categories, tags, topic_cats, state, channels etc
  */
 import { Action }          from '@ngrx/store';
 import { AuthState }       from '../reducers/auth';

@@ -15,6 +15,7 @@ import { AuthState }         from './reducers/auth';
 import { isDashboardUser }   from './reducers';
 import { AuthActions }       from './actions';
 import { CmsAttrActions }    from './actions';
+import { ShopAttrActions }   from './actions';
 import { PreferenceActions } from './actions';
 import { Alert }             from './models';
 import { Preference }        from "./models";
@@ -63,6 +64,10 @@ export class App implements OnInit, OnDestroy
                 // as sessionStorage may not be written when we kick the network
                 // access
                 this.store.dispatch(CmsAttrActions.loadAll(auth));
+                if (auth.key === 'huluwa_uk') {
+                    console.log("LOAD ShopAttr from huluwa_uk");
+                    this.store.dispatch(ShopAttrActions.loadAll(auth));
+                }
             } else {
                 AuthCache.clean();
             }

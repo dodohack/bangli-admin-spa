@@ -6,8 +6,8 @@ import { SharedModule } from '../directives/shared.module';
 
 import { routing }      from './routing';
 
-import { ProductsList } from './components/products.list';
-import { OrdersList }   from './components/orders.list';
+import { ProductList }  from './components/product.list';
+import { OrderList }    from './components/order.list';
 import { ProductsPage } from './products.page';
 import { ProductPage }  from './product.page';
 import { OrdersPage }   from './orders.page';
@@ -17,8 +17,8 @@ import { CategoriesPage } from './categories.page';
 @NgModule({
     imports: [ SharedModule, routing ],
     declarations: [
-        ProductsList,
-        OrdersList,
+        ProductList,
+        OrderList,
         ProductsPage,
         ProductPage,
         OrdersPage,

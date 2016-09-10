@@ -11,7 +11,7 @@ import { TopicActions }      from './topic';
 import { PageActions }       from './page';
 import { PreferenceActions } from './preference';
 import { CmsAttrActions }    from './cmsattr';
-
+import { ShopAttrActions }   from './shopattr';
 
 export {
     AlertActions,
@@ -26,7 +26,8 @@ export {
     TopicActions,
     PageActions,
     PreferenceActions,
-    CmsAttrActions
+    CmsAttrActions,
+    ShopAttrActions
 };
 
 export default [
@@ -42,5 +43,6 @@ export default [
     TopicActions,
     PageActions,
     PreferenceActions,
-    CmsAttrActions
+    CmsAttrActions,
+    ShopAttrActions
 ];

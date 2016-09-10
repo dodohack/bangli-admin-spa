@@ -15,6 +15,7 @@
 export * from './menu';
 export * from './user';
 export * from './paginator';
+export * from './brand';
 export * from './category';
 export * from './tag';
 export * from './topic';
@@ -33,4 +34,3 @@ export * from './statistic';
 export * from './activity';
 export * from './channel';
 export * from './location';
-

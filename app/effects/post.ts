@@ -61,7 +61,7 @@ export class PostEffects {
             '/' + id + '?token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }
-
+    
     /**
      * Create/Update a post
      */

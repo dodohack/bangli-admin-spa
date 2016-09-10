@@ -34,6 +34,7 @@ import { PostEffects }    from './effects';
 import { TopicEffects }   from './effects';
 import { PageEffects }    from './effects';
 import { CmsAttrEffects } from './effects';
+import { ShopAttrEffects } from './effects';
 
 import { SharedModule }    from './modules/directives/shared.module';
 import { AuthModule }      from './modules/auth/auth.module';
@@ -83,6 +84,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         EffectsModule.run(TopicEffects),
         EffectsModule.run(PageEffects),
         EffectsModule.run(CmsAttrEffects),
+        EffectsModule.run(ShopAttrEffects),
         StoreDevtoolsModule.instrumentStore({
             monitor: useLogMonitor({
                 visible: true,

@@ -21,7 +21,7 @@ export const CREATIVE_TYPES = [
 /* POST_STATES definition, all possible entries of table column cms_post.status */
 export const POST_STATES = [
     {state: 'unsaved',  count: 0}, // Initial state for offline display
-    {state: 'publish',   count: 0},
+    {state: 'publish',  count: 0},
     {state: 'featured', count: 0},
     {state: 'pending',  count: 0},
     {state: 'draft',    count: 0},

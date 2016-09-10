@@ -1,0 +1,102 @@
+<!-- Product list table -->
+<table class="table table-hover entity-list">
+    <thead class="thead-default">
+        <tr>
+            <th width="2%"></th>
+            <th width="2%">
+                <input type="checkbox" name="sa"
+                       [ngModel]="isAllSelected" (change)="updateAll()">
+            </th>
+            <th width="25%">
+                <div class="form-inline">
+                    <div class="form-group" style="margin-right: 2rem">
+                        <select class="form-control form-control-sm custom-select"
+                                [(ngModel)]="batchAction" [disabled]="!canEdit">
+                            <option value="" selected disabled>批量操作</option>
+                            <option value="edit">批量修改</option>
+                            <option value="offline_edit">离线编辑</option>
+                            <option value="lock">批量锁定</option>
+                            <option value="delete">移到回收站</option>
+                        </select>
+
+                        <button class="btn btn-sm btn-default" [disabled]="!canEdit"
+                                (click)="submitBatchAction()">应用</button>
+                    </div>
+                    <span>产品名称</span>
+                </div>
+            </th>
+
+            <th width="5%">图片</th>
+            <th width="8%">SKU</th>
+            <th width="8%">库存</th>
+            <th width="6%">销量</th>
+            <th width="8%">价格</th>
+            <th width="10%">分类</th>
+            <th width="12%">年龄段</th>
+            <th width="12%">更新日期</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        <template ngFor let-id [ngForOf]="ids" let-i="index">
+            <tr>
+                <th>{{i+1}}</th>
+                <td><input type="checkbox" name="p[]" [ngModel]="isEditing(id)"
+                           (change)="updateEditList(id)"></td>
+                <!-- Fast edit by double clicking on title column -->
+                <td (dblclick)="batchEdit.emit([id])">
+                    <!-- Badge: Locked post -->
+                    <i class="fa fa-lock" style="color: red" *ngIf="products[id].lock"></i>
+                    <!-- Badge: Online edit lock -->
+                    <span class="tag tag-default-outline"
+                          *ngIf="hasActivity(id) && getActivity(id).edit_lock == 1">
+                        <i class="fa fa-pencil" style="color: red"></i>
+                        {{ editors[getActivity(id).user_id].name }} 正在编辑
+                    </span>
+
+                    <!-- Badge: Offline edit lock -->
+                    <span class="tag tag-default-outline"
+                          *ngIf="hasActivity(id) && getActivity(id).edit_lock == 2">
+                        <i class="fa fa-pencil" style="color: blue"></i>
+                        {{ editors[getActivity(id).user_id].name }} 正在离线编辑
+                    </span>
+
+                    <span *ngIf="products[id].state != 'publish'" class="tag tag-danger-outline">
+                        {{ zh[products[id].state] }}
+                    </span>
+
+                    <!-- Title -->
+                    <strong><a [routerLink]="['/product', id ]">{{ products[id].title }}</a></strong>
+
+                    <div class="row-actions">
+                        <span class="trash"><a>删除</a> | </span>
+                        <span><a href="{{ previewLink(id) }}" target="_blank">查看</a> | </span>
+                        <span>双击快速编辑</span>
+                    </div>
+                </td>
+
+                <td>{{ products[id].image_id }}</td>
+                <td>{{ products[id].sku }}</td>
+                <td>
+                    <span>实际库存: xxx</span>
+                    <div>
+                        <span>显示库存: xxx</span>
+                    </div>
+                </td>
+                <td> xxx </td>
+                <td>£ xxx </td>
+                <td>
+                    <span *ngFor="let cat of products[id].categories">
+                        <a [routerLink]="['/category', cat.id]">{{ cat.name }}</a>,
+                    </span>
+                </td>
+
+                <td>{{ products[id].min_age }} - {{ products[id].max_age }}</td>
+                <td>{{ products[id].updated_at }}</td>
+            </tr>
+        </template>
+
+    </tbody>
+
+</table>

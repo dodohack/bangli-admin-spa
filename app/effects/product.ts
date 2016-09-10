@@ -6,10 +6,12 @@ import { Http, Headers, RequestOptions }  from '@angular/http';
 import { Effect, Actions }                from '@ngrx/effects';
 import { Observable }                     from 'rxjs/Observable';
 
+import { AlertActions }    from '../actions';
 import { AuthCache }       from '../auth.cache';
 import { PrefCache }       from '../pref.cache';
 import { ProductActions }  from '../actions';
 import { Product }         from "../models";
+import { ProductParams }   from "../models";
 
 @Injectable()
 export class ProductEffects {
@@ -31,7 +33,19 @@ export class ProductEffects {
         .switchMap(action => this.getProduct(action.payload))
         .map(product => ProductActions.loadProductSuccess(product))
         .catch(() => Observable.of(ProductActions.loadProductFail()));
-    
+
+    @Effect() putProduct$ = this.actions$.ofType(ProductActions.SAVE_PRODUCT)
+        .switchMap(action => this.saveProduct(action.payload)
+            .map(product => ProductActions.saveProductSuccess(product))
+            .catch(() => Observable.of(ProductActions.saveProductFail()))
+        );
+
+    @Effect() saveProductSuccess$ = this.actions$.ofType(ProductActions.SAVE_PRODUCT_SUCCESS)
+        .map(action => AlertActions.success('产品保存成功!'));
+
+    @Effect() saveProductFail$ = this.actions$.ofType(ProductActions.SAVE_PRODUCT_FAIL)
+        .map(action => AlertActions.error('产品保存失败!'));
+
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
 
@@ -45,27 +59,25 @@ export class ProductEffects {
     }
 
     /**
-     * Update single product
+     * Create/Update a post
      */
-    private putProduct(product: Product): Observable<Product> {
+    private saveProduct(product: Product): Observable<Product> {
+        console.log("SAVING PRODUCT: ", product);
+
         let body = JSON.stringify(product);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API() + AuthCache.API_PATH().shop_products + '/' + product.id;
-        return this.http.put(api, body, options).map(res => res.json());
+        if (product.id && product.id !== 0) {
+            // Update an existing post
+            let api = AuthCache.API() + AuthCache.API_PATH().shop_products + '/' + product.id;
+            return this.http.put(api, body, options).map(res => res.json());
+        } else {
+            // Create a new post
+            let api = AuthCache.API() + AuthCache.API_PATH().cms_posts;
+            return this.http.post(api, body, options).map(res => res.json());
+        }
     }
 
-    /**
-     * Create a new product
-     */
-    private productProduct(product: Product): Observable<Product> {
-        let body = JSON.stringify(product);
-
-        let options = new RequestOptions({ headers: this.headers });
-
-        let api = AuthCache.API() + AuthCache.API_PATH().shop_products;
-        return this.http.post(api, body, options).map(res => res.json());
-    }
 
     /**
      * Delete a product
@@ -80,15 +92,11 @@ export class ProductEffects {
     /**
      * Get products
      */
-    private getProducts(filters: any): Observable<any> {
-        let cur_page = filters.cur_page;
-        let status   = filters.status;
-
-        let api = AuthCache.API() + AuthCache.API_PATH().products +
-            '?page=' + cur_page +
-            '&per_page=' + PrefCache.getPerPage() +
-            '&status=' + status +
-            '&token=' + AuthCache.token();
+    private getProducts(params: ProductParams): Observable<any> {
+        let api = AuthCache.API() + AuthCache.API_PATH().shop_products
+            + params.toQueryString()
+            + '&per_page=' + PrefCache.getPerPage()
+            + '&token=' + AuthCache.token();
 
         return this.http.get(api).map(res => res.json());
     }

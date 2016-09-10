@@ -67,6 +67,8 @@ export const API_HULUWA = {
     /*************************************************************************
      * Shop
      *************************************************************************/
+    /* Shop attributes includes product categories, brands etc */
+    shop_attrs:       '/shop/attributes',
 
     /* Orders/Order */
     shop_orders:       '/shop/orders',
