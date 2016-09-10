@@ -11,7 +11,7 @@
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Product list table -->
-<product-list [authState]="authState" [productsState]="productsState"
+<product-list [authState]="authState" [listState]="productsState"
               [cmsState]="cmsState"
               (batchEdit)="batchEdit($event)"
               (batchDelete)="batchDelete($event)"

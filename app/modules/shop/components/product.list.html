@@ -47,7 +47,7 @@
                 <!-- Fast edit by double clicking on title column -->
                 <td (dblclick)="batchEdit.emit([id])">
                     <!-- Badge: Locked post -->
-                    <i class="fa fa-lock" style="color: red" *ngIf="products[id].lock"></i>
+                    <i class="fa fa-lock" style="color: red" *ngIf="entities[id].lock"></i>
                     <!-- Badge: Online edit lock -->
                     <span class="tag tag-default-outline"
                           *ngIf="hasActivity(id) && getActivity(id).edit_lock == 1">
@@ -62,12 +62,12 @@
                         {{ editors[getActivity(id).user_id].name }} 正在离线编辑
                     </span>
 
-                    <span *ngIf="products[id].state != 'publish'" class="tag tag-danger-outline">
-                        {{ zh[products[id].state] }}
+                    <span *ngIf="entities[id].state != 'publish'" class="tag tag-danger-outline">
+                        {{ zh[entities[id].state] }}
                     </span>
 
                     <!-- Title -->
-                    <strong><a [routerLink]="['/product', id ]">{{ products[id].title }}</a></strong>
+                    <strong><a [routerLink]="['/product', id ]">{{ entities[id].title }}</a></strong>
 
                     <div class="row-actions">
                         <span class="trash"><a>删除</a> | </span>
@@ -76,8 +76,8 @@
                     </div>
                 </td>
 
-                <td>{{ products[id].image_id }}</td>
-                <td>{{ products[id].sku }}</td>
+                <td>{{ entities[id].image_id }}</td>
+                <td>{{ entities[id].sku }}</td>
                 <td>
                     <span>实际库存: xxx</span>
                     <div>
@@ -87,13 +87,13 @@
                 <td> xxx </td>
                 <td>£ xxx </td>
                 <td>
-                    <span *ngFor="let cat of products[id].categories">
+                    <span *ngFor="let cat of entities[id].categories">
                         <a [routerLink]="['/category', cat.id]">{{ cat.name }}</a>,
                     </span>
                 </td>
 
-                <td>{{ products[id].min_age }} - {{ products[id].max_age }}</td>
-                <td>{{ products[id].updated_at }}</td>
+                <td>{{ entities[id].min_age }} - {{ entities[id].max_age }}</td>
+                <td>{{ entities[id].updated_at }}</td>
             </tr>
         </template>
 

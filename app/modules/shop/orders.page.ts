@@ -2,66 +2,117 @@
  * This is the component for orders list, single order editing.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component }         from '@angular/core';
+import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
 import { AppState }          from '../../reducers';
+import { AuthState }         from '../../reducers/auth';
+import { OrdersState }       from '../../reducers/orders';
 import { OrderActions }      from '../../actions';
+import { ShopAttrsState }    from '../../reducers/shopattrs';
 
-import { CARRIERS, ORDER_STATUSES, Order, Paginator } from '../../models';
-import { zh_CN }    from '../../localization';
+import { CARRIERS }           from '../../models';
+import { Order, OrderParams } from '../../models';
+
+import { zh_CN } from '../../localization';
 
 @Component({ template: require('./orders.page.html') })
-export class OrdersPage implements OnInit
+export class OrdersPage implements OnInit, OnDestroy
 {
-    hideRightPanel = true;
+    // All subscribers, needs to unsubscribe on destroy
+    subAuth: any;
+    subShop: any;
+    subOrders: any;
+    subParams: any;
+    subQueryParams: any;    
 
     /* Order index and order, the order we are current editing */
     index: number;
     order: Order;
 
-    /* If select all checkbox is checked or not */
-    checkedAll: boolean = false;
+    authState:     AuthState;
+    shopState:     ShopAttrsState;
+    ordersState:   OrdersState;
 
-    /* Orders state in ngrx */
-    ordersState$: Observable<any>;
+    // Batch editing orders
+    ordersInEdit: Order[];
+
+    params: any;
+    queryParams: any;
+
+    // Is search is running
+    loading: boolean;
 
     constructor(private route: ActivatedRoute,
-                private store: Store<AppState>) {
-        this.ordersState$ = this.store.select('orders');
-    }
+                private store: Store<AppState>) {}
 
 
-    ngOnInit()
-    {
-        /* TODO: Get status from url as well*/
-        this.route.params.subscribe(params => {
-            let cur_page = params['page'] ? params['page'] : '1';
-            this.store.dispatch(OrderActions.loadOrders({cur_page: cur_page}));
+    ngOnInit() {
+        this.subAuth = this.store.select<AuthState>('auth')
+            .subscribe(authState => this.authState = authState);
+        this.subAuth = this.store.select<ShopAttrsState>('shop')
+            .subscribe(shopState => this.shopState = shopState);
+        this.subOrders = this.store.select<OrdersState>('orders')
+            .subscribe(ordersState => {
+                // Set search loading to false if orders is loaded
+                this.loading = false;
+                this.ordersState = ordersState;
+                // Create new copies of orders
+                this.ordersInEdit = this.ordersState.editing
+                    .map(id => Object.assign({}, this.ordersState.entities[id]));
+            });
+
+        // THIS IS A TEMPORARY FIX
+        // FIXME: Previous request is cancel by the second one if exists
+        // FIXME: and potential other kind of issues
+        // Load orders when any url parameter changes
+        this.subParams = this.route.params.subscribe(params => {
+            this.params = params;
+            this.loading = true;
+            this.loadOrders();
         });
+        this.subQueryParams = this.route.queryParams.subscribe(params => {
+            this.queryParams = params;
+            this.loading = true;
+            this.loadOrders();
+        });        
+    }
+    
+    ngOnDestroy() {
+        this.subAuth.unsubscribe();
+        this.subOrders.unsubscribe();
+        this.subParams.unsubscribe();
+        this.subQueryParams.unsubscribe();        
     }
 
     get zh() { return zh_CN.order; }
-
-    //get statuses() { return this.orderService.statuses; }
-    get availableStatuses() { return ORDER_STATUSES; }
     get availableCarriers() { return CARRIERS; }
 
-    /**
-     * Change current table row to editable mode if double click on this
-     * row is detected.
-     *
-     * @param $event  - mouse double click event
-     * @param i       - index of table row, starts from 0
-     */
-    private fastEditCurrentOrder($event, i)
-    {
-        //this.orders[i].editing = !this.orders[i].editing;
-        //console.log("double clicked detected: " + i);
-        //console.log($event);
+    loadOrders() {
+        let orderParams: OrderParams = new OrderParams;
+
+        // Must have parameters come from route.params observable
+        if (this.params) {
+            orderParams.cur_page = this.params['page'];
+            orderParams.state    = this.params['state'];
+        }
+
+        // Optional parameters come from route.queryParams observable
+        if (this.queryParams) {
+            orderParams.datetype = this.queryParams['datetype'];
+            orderParams.datefrom = this.queryParams['datefrom'];
+            orderParams.dateto   = this.queryParams['dateto'];
+            orderParams.query    = this.queryParams['query'];
+        }
+
+        // Load list of orders from API server
+        this.store.dispatch(OrderActions.loadOrders(orderParams));
     }
+
+
 
     /**
      * Get amount of products in given order
@@ -102,22 +153,4 @@ export class OrdersPage implements OnInit
         return tracking;
     }
     
-    private editOrder(index: number)
-    {
-        /*
-        if (index < 0) {
-            index = 0;
-            this.alerts.push({type: 'danger', msg: '已经是第一个订单了!'});
-        }
-
-        if (index > this.orders.length - 1) {
-            index = this.orders.length - 1;
-            this.alerts.push({type: 'danger', msg: '已经是最后一个订单了!'});
-        }
-
-        this.hideRightPanel = false;
-        this.index = index;
-        this.order = this.orders[this.index];
-        */
-    }
 }

@@ -36,11 +36,11 @@ export class ProductsPage implements OnInit, OnDestroy
     subParams: any;
     subQueryParams: any;
 
-    authState:  AuthState;
-    cmsState:   CmsAttrsState;
-    shopState:   ShopAttrsState;
+    authState:     AuthState;
+    cmsState:      CmsAttrsState;
+    shopState:     ShopAttrsState;
     productsState: ProductsState;
-
+    
     // Batch editing products
     productsInEdit: Product[];
 

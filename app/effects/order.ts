@@ -9,7 +9,9 @@ import { Observable }                     from 'rxjs/Observable';
 import { AuthCache }       from '../auth.cache';
 import { PrefCache }       from '../pref.cache';
 import { OrderActions }    from '../actions';
+import { AlertActions }    from '../actions';
 import { Order }           from "../models";
+import { OrderParams }     from "../models";
 
 @Injectable()
 export class OrderEffects {
@@ -28,6 +30,25 @@ export class OrderEffects {
         .map(orders => OrderActions.loadOrdersSuccess(orders))
         .catch(() => Observable.of(OrderActions.loadOrdersFail()));
 
+    @Effect() loadOrder$ = this.actions$.ofType(OrderActions.LOAD_ORDER)
+        .switchMap(action => this.getOrder(action.payload)
+            .map(order => OrderActions.loadOrderSuccess(order))
+            .catch(() => Observable.of(OrderActions.loadOrderFail()))
+        );
+
+    @Effect() putOrder$ = this.actions$.ofType(OrderActions.SAVE_ORDER)
+        .switchMap(action => this.saveOrder(action.payload)
+            .map(order => OrderActions.saveOrderSuccess(order))
+            .catch(() => Observable.of(OrderActions.saveOrderFail()))
+        );
+
+    @Effect() saveOrderSuccess$ = this.actions$.ofType(OrderActions.SAVE_ORDER_SUCCESS)
+        .map(action => AlertActions.success('订单保存成功!'));
+
+    @Effect() saveOrderFail$ = this.actions$.ofType(OrderActions.SAVE_ORDER_FAIL)
+        .map(action => AlertActions.error('订单保存失败!'));
+
+
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
 
@@ -39,27 +60,25 @@ export class OrderEffects {
             '/' + id + '?token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }
-    
+
     /**
-     * Update single order
+     * Create/Update a order
      */
-    private putOrder(order: Order): Observable<Order> {
+    private saveOrder(order: Order): Observable<Order> {
+        console.log("SAVING ORDER: ", order);
+
         let body = JSON.stringify(order);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API() + AuthCache.API_PATH().shop_orders + '/' + order.id;
-        return this.http.put(api, body, options).map(res => res.json());
-    }
-
-    /**
-     * Create a new order
-     */
-    private postOrder(order: Order): Observable<Order> {
-        let body = JSON.stringify(order);
-        let options = new RequestOptions({ headers: this.headers });
-
-        let api = AuthCache.API() + AuthCache.API_PATH().shop_orders;
-        return this.http.post(api, body, options).map(res => res.json());
+        if (order.id && order.id !== 0) {
+            // Update an existing order
+            let api = AuthCache.API() + AuthCache.API_PATH().shop_orders + '/' + order.id;
+            return this.http.put(api, body, options).map(res => res.json());
+        } else {
+            // Create a new post
+            let api = AuthCache.API() + AuthCache.API_PATH().shop_orders;
+            return this.http.post(api, body, options).map(res => res.json());
+        }
     }
 
     /**
@@ -75,15 +94,13 @@ export class OrderEffects {
     /**
      * Get orders
      */
-    private getOrders(filters: any): Observable<any> {
-        let cur_page = filters.cur_page;
-        let status   = filters.status;
+    private getOrders(params: OrderParams): Observable<any> {
+        let api = AuthCache.API() + AuthCache.API_PATH().shop_orders
+            + params.toQueryString()
+            + '&per_page=' + PrefCache.getPerPage()
+            + '&token=' + AuthCache.token();
 
-        let api = AuthCache.API() + AuthCache.API_PATH().orders +
-            '?page=' + cur_page +
-            '&per_page=' + PrefCache.getPerPage() +
-            '&status=' + status +
-            '&token=' + AuthCache.token();
+        console.log("LOAD ORDER FROM URL: ", api);
 
         return this.http.get(api).map(res => res.json());
     }

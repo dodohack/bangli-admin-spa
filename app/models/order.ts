@@ -2,26 +2,49 @@
  * Order statuses and number of orders per status
  */
 
-export const ORDER_STATUSES = [
-    'pending',
-    'processing',
-    'shipped',
-    'completed',
-    'cancelled',
-    'refunded',
-    'failed',
-    'trash'
+export const ORDER_STATES = [
+    {state: 'pending',    count: 0},
+    {state: 'processing', count: 0},
+    {state: 'shipped',    count: 0},
+    {state: 'completed',  count: 0},
+    {state: 'cancelled',  count: 0},
+    {state: 'refunded',   count: 0},
+    {state: 'failed',     count: 0},
+    {state: 'trash',      count: 0}
 ];
 
 export const CARRIERS = [ 'BP', 'PF' ];
 
-export class OrderStatus {
-    /* Number of orders in current status */
+export class OrderState {
+    /* The state name */
+    state: string;
+    
+    /* Number of orders in current state */
     count: number;
-
-    /* The status name */
-    status: string;
 }
+
+
+// API request parameters to filter list of orders
+export class OrderParams {
+    cur_page: string = '1';
+    state: string;
+    datetype: string;
+    datefrom: string;
+    dateto: string;
+    query: string;
+
+    // Form a API query string
+    toQueryString(): string {
+        let s = '?page=' + this.cur_page;
+        if (this.state) s = s + '&state=' + this.state;
+        if (this.datetype) s = s + '&datetype=' + this.datetype;
+        if (this.datefrom) s = s + '&datefrom=' + this.datefrom;
+        if (this.dateto) s = s + '&dateto=' + this.dateto;
+        if (this.query) s = s + '&query=' + this.query;
+        return s;
+    }
+}
+
 
 export class Shipping {
     country: string;
@@ -67,9 +90,8 @@ export class OrderHistory {
 
 export class Order {
     id: number;
-    selected: boolean;
     user_id: number;
-    status: string;
+    state: string;
     user_ip: string;
     user_agent: string;
     currency: string;

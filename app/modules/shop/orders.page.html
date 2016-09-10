@@ -1,35 +1,24 @@
-<list-page-header [isOrder]="true"></list-page-header>
+<list-page-header [isOrder]="true"
+                  [states]="shopState.order_states.actual"
+                  [loading]="loading"></list-page-header>
 
-<!-- Filter toolbar -->
-<div class="list-toolbar">
-    <div class="float-left bulk-actions">
-        <select class="c-select select-sm">
-            <option value="0" selected>批量操作</option>
-            <option value="x">移到回收站</option>
-            <option value="y">标记为处理中</option>
-            <option value="y">完成</option>
-            <option value="y">打印</option>
-        </select>
-        <button type="submit" class="btn btn-secondary btn-sm">应用</button>
-    </div>
+<!-- Order filter/tool bar -->
+<list-filter-bar [isOrder]="true"
+                 [paginator]="ordersState.paginator"
+                 (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
-   <!--<paginator [base]="'order'" [lists]="ordersState | async"></paginator>-->
-</div>
+<!-- Product list table -->
+<order-list [authState]="authState" [listState]="ordersState"
+            (batchEdit)="batchEdit($event)"
+            (batchDelete)="batchDelete($event)"
+            (batchOfflineEdit)="batchOfflineEdit($event)"
+            (batchLock)="batchLock($event)"></order-list>
 
-<!-- Order list table -->
-<order-list [ordersState]="ordersState$ | async"
-             (quickEdit)="quickEdit($event)"></order-list>
+<hr>
 
-
-<!-- Pagination at the end -->
-<!--
-<div class="list-toolbar">
-    <paginator [base]="'order'" [list]="ordersState$ | async"></paginator>
-</div>
--->
 
 <!-- Fixed right panel - order editing -->
-<right-panel [width]="'600px'" [isOpen]="false" [hasNav]="true">
+<right-panel [width]="'600px'" [isOpen]="false" [hasNav]="true" *ngIf="order">
     <form (ngSubmit)="onSubmitOrder()">
         <accordion>
 

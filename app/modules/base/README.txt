@@ -1,0 +1,1 @@
+This folder defines common used class across the app.
