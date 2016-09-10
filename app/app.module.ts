@@ -44,6 +44,8 @@ import { CmsModule }       from './modules/cms/cms.module';
 import { DealModule }      from './modules/deal/deal.module';
 import { EmailModule }     from './modules/email/email.module';
 import { ShopModule }      from './modules/shop/shop.module';
+import { CsModule }        from './modules/cs/cs.module';
+import { SocialModule }    from './modules/social/social.module';
 import { AffiliateModule } from './modules/affiliate/affiliate.module';
 import { AnalysisModule }  from './modules/analysis/analysis.module';
 import { AttachmentModule }from './modules/attachment/attachment.module';
@@ -67,7 +69,9 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         DealModule,
         EmailModule,
         ShopModule,
+        CsModule,
         UserModule,
+        SocialModule,
         AffiliateModule,
         AnalysisModule,
         AttachmentModule,
