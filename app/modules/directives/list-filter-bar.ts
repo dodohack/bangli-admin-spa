@@ -1,5 +1,6 @@
 import { Component, Input, Output }from '@angular/core';
-import { EventEmitter }            from '@angular/core';   
+import { EventEmitter }            from '@angular/core';
+import { OnInit, OnDestroy }       from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router }  from '@angular/router';
 import { NavigationExtras }        from '@angular/router';
@@ -11,11 +12,12 @@ import { zh_CN }    from '../../localization';
     template: require('./list-filter-bar.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListFilterBar {
+export class ListFilterBar implements OnInit, OnDestroy {
 
     @Input() authors: any;
     @Input() editors: any;
     @Input() categories: any;
+    @Input() brands: any;
     @Input() paginator: any;
 
     // The type of lists passed in
@@ -31,24 +33,37 @@ export class ListFilterBar {
     filterAuthor: string;
     filterEditor: string;
     filterCat: string;
+    filterBrand: string;
     filterDateType: string;
     filterDateFrom: string;
     filterDateTo: string;
 
+    // Subscribers
+    subParams;
+    subQParams;
+
     constructor(private route: ActivatedRoute,
-                private router: Router) {
-        this.route.params.subscribe(params => {
+                private router: Router) {}
+
+    ngOnInit() {
+        this.subParams = this.route.params.subscribe(params => {
             this.state = params['state'] || 'all';
         });
-        
-        this.route.queryParams.subscribe(queryParams => {
+
+        this.subQParams = this.route.queryParams.subscribe(queryParams => {
             this.filterAuthor = queryParams['author'] || '';
             this.filterEditor = queryParams['editor'] || '';
             this.filterCat    = queryParams['category'] || '';
+            this.filterBrand    = queryParams['brand'] || '';
             this.filterDateType = queryParams['datetype'] || '';
             this.filterDateFrom = queryParams['datefrom'] || '';
             this.filterDateTo = queryParams['dateto'] || '';
         });
+    }
+
+    ngOnDestroy() {
+        this.subParams.unsubscribe();
+        this.subQParams.unsubscribe();
     }
 
     get baseUrl() {
@@ -82,15 +97,14 @@ export class ListFilterBar {
                 'author':   this.filterAuthor,
                 'editor':   this.filterEditor,
                 'category': this.filterCat,
+                'brand':    this.filterBrand,
                 'datetype': this.filterDateType,
                 'datefrom': this.filterDateFrom,
                 'dateto':   this.filterDateTo }
         };
 
-        // FIXME: Hardcoded path
-        this.router.navigate(['/post/page/1/state/all'], navigationExtras);
+        this.router.navigate(['/', this.baseUrl], navigationExtras);
     }
-    
 
     /**
      * We can loop over the array returned by this function to greatly simplify

@@ -42,7 +42,7 @@ export class ListPageHeader {
         if (this.isPage)    return '页面';
         if (this.isUser)    return '用户';
     }
-
+    
     get baseUrl() {
         if (this.isPost)    return 'post';
         if (this.isTopic)   return 'topic';

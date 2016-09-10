@@ -34,6 +34,16 @@
                 </select>
             </div>
 
+            <div class="form-group" *ngIf="brands">
+                <select [(ngModel)]="filterBrand" name="b"
+                        class="form-control form-control-sm custom-select">
+                    <option value="">所有品牌</option>
+                    <option *ngFor="let brand of brands" [value]="brand.id">
+                        {{ brand.name }}
+                    </option>
+                </select>
+            </div>
+
             <div class="form-group">
                 <!-- Use database post date type of a post, may not applicable to non-post -->
                 <select [(ngModel)]="filterDateType" name="dtype"
