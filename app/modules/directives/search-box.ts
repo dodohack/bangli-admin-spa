@@ -6,8 +6,6 @@ import { EventEmitter }              from '@angular/core';
 import { FormControl }               from '@angular/forms';
 import { ActivatedRoute }            from '@angular/router';
 import { Router, NavigationExtras }  from '@angular/router';
-// FIXME: Tried moving this to shared.module, but it reports duplicated declare
-//import { FORM_DIRECTIVES, REACTIVE_FORM_DIRECTIVES } from '@angular/forms';
 
 @Component({
     selector: 'search-box',
@@ -18,6 +16,7 @@ export class SearchBox implements OnInit {
     searchCtrl = new FormControl();
     searchText: string = '';
 
+    @Input() baseUrl: string;
     @Input() loading: boolean;
 
     constructor(private route: ActivatedRoute,
@@ -33,7 +32,7 @@ export class SearchBox implements OnInit {
         this.searchCtrl.valueChanges
             .debounceTime(500).subscribe(text => {
             let param: NavigationExtras = { queryParams: { 'query': text }};
-            this.router.navigate(['/post/page/1/state/all'], param);
+            this.router.navigate(['/', this.baseUrl], param);
         });
     }
 }
