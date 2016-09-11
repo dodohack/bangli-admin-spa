@@ -1,5 +1,5 @@
 /**
- * Created by wanghuan on 2016/6/13.
+ * 
  */
 var webpackMerge = require('webpack-merge');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');

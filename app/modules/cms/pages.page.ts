@@ -2,7 +2,8 @@
  * This is the component for page list page
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component }         from '@angular/core';
+import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
@@ -21,7 +22,7 @@ import { Page, PageParams }  from '../../models';
 import { zh_CN } from '../../localization';
 
 @Component({ template: require('./pages.page.html') })
-export class PagesPage implements OnInit
+export class PagesPage implements OnInit, OnDestroy
 {
     // All subscribers, needs to unsubscribe on destroy
     subAuth: any;
