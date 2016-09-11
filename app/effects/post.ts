@@ -2,7 +2,6 @@
  * Post[s] side effects
  */
 import { Injectable }                     from '@angular/core';
-import { ActivatedRoute }                 from '@angular/router';
 import { Http, Headers, RequestOptions }  from '@angular/http';
 import { Effect, Actions }                from '@ngrx/effects';
 import { Observable }                     from 'rxjs/Observable';
