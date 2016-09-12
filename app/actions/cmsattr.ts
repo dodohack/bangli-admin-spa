@@ -87,4 +87,51 @@ export class CmsAttrActions {
             type: CmsAttrActions.LOAD_ATTR_FAIL
         };
     }
+    
+    static SAVE_TAG = '[CmsAttr] Save Tag';
+    static saveTag(tag: Tag): Action {
+        return {
+            type: CmsAttrActions.SAVE_TAG,
+            payload: tag
+        }
+    }
+
+    static SAVE_CATEGORY = '[CmsAttr] Save Category';
+    static saveCategory(cat: Category): Action {
+        return {
+            type: CmsAttrActions.SAVE_CATEGORY,
+            payload: cat
+        }
+    }
+    
+    static DELETE_TAG = '[CmsAttr] Delete Tag';
+    static deleteTag(tag: Tag): Action {
+        return {
+            type: CmsAttrActions.DELETE_TAG,
+            payload: tag
+        }
+    }
+
+    static DELETE_CATEGORY = '[CmsAttr] Delete Category';
+    static deleteCategory(cat: Category): Action {
+        return {
+            type: CmsAttrActions.DELETE_CATEGORY,
+            payload: cat
+        }
+    }
+
+    static SAVE_SUCCESS = '[CmsAttr] Save Success';
+    static saveSuccess(): Action {
+        return {
+            type: CmsAttrActions.SAVE_SUCCESS
+        }
+    }
+
+    static SAVE_FAIL = '[CmsAttr] Save Fail';
+    static saveFail(): Action {
+        return {
+            type: CmsAttrActions.SAVE_FAIL
+        }
+    }
+    
 }

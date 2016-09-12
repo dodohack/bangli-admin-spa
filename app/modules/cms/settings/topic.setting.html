@@ -1,0 +1,10 @@
+<h5>{{ channel.name }}频道 - 设置专题/文章关系</h5>
+<ul class="tag-cloud tag-setting">
+    <li *ngFor="let topic of topics" class="tag-item">
+        <div (dblclick)="edit(topic)">
+            <div>{{ topic.name }}</div>
+            <div>{{ topic.guid }}</div>
+        </div>
+        <div (click)="remove(topic)">x</div>
+    </li>
+</ul>

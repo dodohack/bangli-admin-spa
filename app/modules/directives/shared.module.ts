@@ -19,10 +19,12 @@ import { CategoryTree }              from './category-tree';
 import { TopicCloud }                from './topic-cloud';
 import { TagCloud }                  from './tag-cloud';
 import { CmsTagCloud }               from './cms-tag-cloud';
+import { ModalAddTax }               from './modal-add-tax';
+import { ModalEditTax }              from './modal-edit-tax';
 import { EditorPageHeader }          from './editor-page-header';
 import { ListPageHeader }            from './list-page-header';
 import { ListFilterBar }             from './list-filter-bar';
-import { FastEditPostFormComponent } from './fast-edit-post-form.component';
+//import { FastEditPostFormComponent } from './fast-edit-post-form.component';
 import { SearchBox }                 from './search-box';
 import { DateFilterComponent }       from './date-filter.component';
 
@@ -49,7 +51,9 @@ import { DateFilterComponent }       from './date-filter.component';
         TagCloud,
         EditorPageHeader,
         CmsTagCloud,
-        FastEditPostFormComponent,
+        ModalAddTax,
+        ModalEditTax,
+        //FastEditPostFormComponent,
         SearchBox,
         RevisionHistory,
         DateFilterComponent,
@@ -70,7 +74,9 @@ import { DateFilterComponent }       from './date-filter.component';
         TagCloud,
         EditorPageHeader,
         CmsTagCloud,
-        FastEditPostFormComponent,
+        ModalAddTax,
+        ModalEditTax,
+        //FastEditPostFormComponent,
         SearchBox,
         RevisionHistory,
         DateFilterComponent,

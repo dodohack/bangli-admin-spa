@@ -15,6 +15,7 @@
 }
 
 .tag-item {
+  display: inline-block;
   margin-right: 0.25rem;
 
   -webkit-user-select: none;
@@ -32,8 +33,46 @@
 // This controls the different style for tag cloud in tag setting
 // page
 .tag-setting {
-  .tag-item {
+  .tag-setting-item {
+    display: inline-block;
     border: 1px solid lightgrey;
     width: 10rem;
+    padding: 0.25rem 0.5rem;
+
+    margin-right: 0.25rem;
+    margin-bottom: 0.25rem;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    div.tag-left, div.tag-right {
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    div.tag-left {
+      width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+
+      &:hover {
+        color: #000;
+        background-color: #e5ffd4;
+      }
+
+    }
+
+    div.tag-right {
+      border-left: 1px solid lightgrey;
+      width: 20%;
+
+      &:hover {
+        color: red;
+        background-color: #e5ffd4;
+      }
+
+    }
   }
 }

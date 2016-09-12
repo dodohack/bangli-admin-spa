@@ -1,4 +1,10 @@
-<cms-setting-menu cmsChannels="" activeSetting=""></cms-setting-menu>
-<p>
-    This is the entry to manage cms_categories, includes add/remove/update to table cms_categories.
-</p>
+<h5>{{ channel.name }}频道 - 设置分类</h5>
+<ul class="tag-cloud tag-setting" *ngIf="channel">
+    <li *ngFor="let cat of cats" class="tag-item">
+        <div (dblclick)="edit(cat)">
+            <div>{{ cat.name }}</div>
+            <div>{{ cat.slug }}</div>
+        </div>
+        <div (click)="remove(cat)">x</div>
+    </li>
+</ul>

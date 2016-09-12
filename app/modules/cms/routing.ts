@@ -28,17 +28,21 @@ const routes: Routes = [
         children: [
             /* cms setting index */
             { path: '',                   component: CmsSetting },
-            /* Category settings */
+            { path: ':taxonomy',          redirectTo: ':taxonomy/shopping'},
+            { path: ':taxonomy/:channel', component: CmsSetting },
+            /*
+            // Category settings
             { path: 'category',           redirectTo: 'category/shopping' },
             { path: 'category/:channel',  component: CategorySetting },
-            /* Tag settings */
+            // Tag settings
             { path: 'tag',                redirectTo: 'tag/shopping' },
             { path: 'tag/:channel',       component: TagSetting },
-            /* Topic settings */
+            // Topic settings
             { path: 'topic',              redirectTo: 'topic/shopping' },
             { path: 'topic/:channel',     component: TopicSetting },
-            /* Channel setting view only */
+            // Channel setting view only 
             { path: 'channel',            component: ChannelSetting },
+            */
         ]
     },
 

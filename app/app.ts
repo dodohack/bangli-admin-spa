@@ -28,8 +28,6 @@ import { Ping }              from './ping';
 })
 export class App implements OnInit, OnDestroy
 {
-    private viewContainerRef: ViewContainerRef;
-
     /* TODO: This array will grow large, need to clean it periodically */
     alerts$: Observable<Alert[]>;
 
@@ -44,8 +42,6 @@ export class App implements OnInit, OnDestroy
                 private store: Store<AppState>,
                 private router: Router,
                 private ping: Ping) {
-        // This is a hack to catch application root view container ref
-        this.viewContainerRef = viewContainerRef;
     }
 
     ngOnInit() {

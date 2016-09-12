@@ -13,7 +13,7 @@ import { Channel }                 from "../../../models";
 export class CmsSettingMenu
 {
     @Input() cmsChannels: Channel[];
-    @Input() activeSetting: string;
+    @Input() taxonomy: string;
  
     // We manage these settings here
     settings = ['category', 'tag', 'topic', 'channel'];

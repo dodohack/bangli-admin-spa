@@ -1,12 +1,25 @@
 /**
  * Cms categories settings, add/remove/update cms_categories
  */
-import { Component, OnInit } from '@angular/core';
+import { Component }         from '@angular/core';
+import { Input, Output }     from '@angular/core';
+import { EventEmitter }      from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 
-@Component({ template: require('./category.setting.html') })
-export class CategorySetting implements OnInit
+import { Category }          from "../../../models";
+import { Channel }           from "../../../models";
+
+@Component({
+    selector: 'category-setting',
+    template: require('./category.setting.html'),
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class CategorySetting
 {
-    ngOnInit() {
+    @Input() cats: Category[];
+    @Input() channel: Channel;
 
-    }
+    @Output() edit = new EventEmitter();
+    @Output() remove = new EventEmitter();
+    @Output() save = new EventEmitter();
 }

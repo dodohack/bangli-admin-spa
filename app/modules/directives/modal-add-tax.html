@@ -1,0 +1,45 @@
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="cancel.emit()">
+                    <span>&times;</span>
+                </button>
+                <h5 class="modal-title">新增{{ taxonomy }}</h5>
+            </div>
+            <div class="modal-body" *ngIf="tax">
+                <form (ngSubmit)="save.emit(tax)" #taxForm="ngForm">
+                    <div class="form-group">
+                        <label>{{taxonomy}} 名字</label>
+                        <input type="text" name="name" class="form-control"
+                               [(ngModel)]="tax.name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>{{taxonomy}} slug</label>
+                        <input type="text" name="slug" class="form-control"
+                               [(ngModel)]="tax.slug" required>
+                    </div>
+
+                    <div class="form-group" *ngIf="isCategory">
+                        <label>父分类</label>
+                        <select class="form-control form-control-sm custom-select"
+                                name="cid" [(ngModel)]="tax.parent_id">
+                            <option *ngFor="let cat of categories"
+                                    [selected]="tax.parent_id === cat.id"
+                                    [value]="cat.id">{{ ch.name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>频道</label>
+                        <select class="form-control form-control-sm custom-select"
+                                name="cid" [(ngModel)]="tax.channel_id">
+                            <option *ngFor="let ch of channels"
+                                    [selected]="tax.channel_id === ch.id"
+                                    [value]="ch.id">{{ ch.name }}</option>
+                        </select>
+                    </div>
+                </form>
+                <button class="btn btn-outline-danger btn-sm" (click)="cancel.emit()">取消</button>
+                <button type="submit" class="btn btn-outline-primary btn-sm" (click)="save.emit(tax)">保存</button>
+            </div>
+        </div>
