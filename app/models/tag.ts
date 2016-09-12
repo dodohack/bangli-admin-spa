@@ -4,6 +4,7 @@
 
 export class Tag {
     id: number;
+    channel_id: number;
     slug: string;
     name: string;
     description: string;

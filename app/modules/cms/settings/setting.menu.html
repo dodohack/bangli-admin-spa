@@ -1,0 +1,25 @@
+<!-- Cms setting menus -->
+<div class="channel-menu" *ngIf="cmsChannels">
+    <div class="channel-heading">
+        <a routerLink="/cms" routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: true }">设置首页</a>
+        <a *ngFor="let s of settings"
+           [routerLink]="['/cms', s]"
+           class="channel-title" routerLinkActive="active">
+            <h4>{{ s | uppercase }}</h4>
+        </a>
+    </div>
+</div>
+
+<!-- Cms channels menu -->
+<nav class="navbar page-sub-menu" *ngIf="cmsChannels && activeSetting">
+    <ul class="nav navbar-nav">
+        <li class="nav-item">
+            <a *ngFor="let ch of cmsChannels"
+               [routerLink]="['/cms', activeSetting, ch.slug]"
+               class="channel-title" routerLinkActive="active">
+                {{ ch.name }}
+            </a>
+        </li>
+    </ul>
+</nav>

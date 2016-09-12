@@ -5,6 +5,7 @@
 export class Category {
     id: number;
     parent_id: number;
+    channel_id: number;
     slug: string;
     name: string;
     description: string;

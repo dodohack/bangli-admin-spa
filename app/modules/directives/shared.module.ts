@@ -9,8 +9,6 @@ import { RouterModule }                  from '@angular/router';
 
 import { UPLOAD_DIRECTIVES }             from 'ng2-uploader';
 import { Ng2BootstrapModule }            from 'ng2-bootstrap/ng2-bootstrap';
-//import { AccordionModule }             from 'ng2-bootstrap/ng2-bootstrap';
-//import { TabsModule }                  from 'ng2-bootstrap/ng2-bootstrap';
 
 //import { FroalaEditorDirective } from 'angular2-froala-wysiwyg/lib/froala.directives';
 import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
@@ -31,8 +29,7 @@ import { DateFilterComponent }       from './date-filter.component';
 @NgModule({
     imports: [
         Ng2BootstrapModule,
-        //AccordionModule,
-        //TabsModule,
+
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
@@ -59,8 +56,6 @@ import { DateFilterComponent }       from './date-filter.component';
     ],
     exports: [
         Ng2BootstrapModule,
-        //AccordionModule,
-        //TabsModule,
 
         UPLOAD_DIRECTIVES,
 

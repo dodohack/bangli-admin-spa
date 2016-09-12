@@ -3,10 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthorGuard, EditorGuard, LockGuard } from '../../guard';
 import { PostsEditGuard, PostEditGuard }       from './guard';
 
-import { SettingPage }    from './setting.page';
-import { CategoriesPage } from './categories.page';
-import { TagsPage }       from './tags.page';
-import { ChannelsPage }   from './channels.page';
+import { CmsSetting }      from './settings/cms.setting.ts';
+import { CategorySetting } from './settings/category.setting.ts';
+import { TagSetting }      from './settings/tag.setting.ts';
+import { TopicSetting }    from './settings/topic.setting.ts';
+import { ChannelSetting }  from './settings/channel.setting.ts';
 
 import { PostsPage }    from './posts.page';
 import { PostPage }     from './post.page';
@@ -26,13 +27,18 @@ const routes: Routes = [
         canActivate: [EditorGuard],
         children: [
             /* cms setting index */
-            { path: '',  component: SettingPage },
-            /* Categories settings */
-            { path: 'category', component: CategoriesPage },
-            /* Tags settings */
-            { path: 'tag',      component: TagsPage },
-            /* Channels settings */
-            { path: 'channel',  component: ChannelsPage },
+            { path: '',                   component: CmsSetting },
+            /* Category settings */
+            { path: 'category',           redirectTo: 'category/shopping' },
+            { path: 'category/:channel',  component: CategorySetting },
+            /* Tag settings */
+            { path: 'tag',                redirectTo: 'tag/shopping' },
+            { path: 'tag/:channel',       component: TagSetting },
+            /* Topic settings */
+            { path: 'topic',              redirectTo: 'topic/shopping' },
+            { path: 'topic/:channel',     component: TopicSetting },
+            /* Channel setting view only */
+            { path: 'channel',            component: ChannelSetting },
         ]
     },
 

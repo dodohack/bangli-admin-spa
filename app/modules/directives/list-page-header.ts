@@ -9,8 +9,8 @@ import { zh_CN } from '../../localization';
 
 @Component({
     selector: 'list-page-header',
-    template: require('./list-page-header.html')/*,
-    changeDetection: ChangeDetectionStrategy.OnPush*/
+    template: require('./list-page-header.html'),
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListPageHeader {
 

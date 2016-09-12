@@ -28,3 +28,12 @@
     background-color: #e5ffd4;
   }
 }
+
+// This controls the different style for tag cloud in tag setting
+// page
+.tag-setting {
+  .tag-item {
+    border: 1px solid lightgrey;
+    width: 10rem;
+  }
+}

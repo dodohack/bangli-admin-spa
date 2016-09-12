@@ -3,8 +3,8 @@
  */
 import { Component, OnInit } from '@angular/core';
 
-@Component({ template: require('./categories.page.html') })
-export class CategoriesPage implements OnInit
+@Component({ template: require('./category.setting.html') })
+export class CategorySetting implements OnInit
 {
     ngOnInit() {
 

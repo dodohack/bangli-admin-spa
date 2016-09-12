@@ -16,25 +16,25 @@ import { CmsAttrActions } from '../actions';
 export interface CmsAttrsState {
     authors: User[];
     editors: User[];
+    channels:  Channel[];
     categories: Category[];
     post_topic_cats: Topic[]; // Topic cats for post
     tags: Tag[];
-    channels:  Channel[];
     // available - all available options for given attributes defined locally
     // actual    - attributes with number of posts retrieved from server
-    post_states: {available: PostState[], actual: PostState[]};
+    post_states:         {available: PostState[],    actual: PostState[]};
     post_creative_types: {available: CreativeType[], actual: CreativeType[]};
-    topic_states: {available: PostState[], actual: PostState[]};
-    page_states: {available: PostState[],  actual: PostState[]};
+    topic_states:        {available: PostState[],    actual: PostState[]};
+    page_states:         {available: PostState[],    actual: PostState[]};
 };
 
 const initialState: CmsAttrsState = {
     authors: [],
     editors: [],
+    channels:  [],
     categories: [],
     post_topic_cats: [],
     tags: [],
-    channels:  [],
     post_states: {available: POST_STATES, actual: []},
     post_creative_types: {available: CREATIVE_TYPES, actual: []},
     topic_states: {available: POST_STATES, actual: []},
@@ -88,10 +88,10 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             return {
                 authors: [...authors],
                 editors: [...editors],
+                channels: [...channels],
                 categories: [...categories],
                 post_topic_cats: [...post_topic_cats],
                 tags: [...tags],
-                channels: [...channels],
                 post_states: Object.assign({}, state.post_states, {actual: post_states}),
                   post_creative_types: Object.assign({}, state.post_creative_types, {actual: post_creative_types}),
                 topic_states: Object.assign({}, state.topic_states, {actual: topic_states}),

@@ -3,6 +3,7 @@
  */
 
 import { Component }         from '@angular/core';
+import { ViewContainerRef }  from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
@@ -27,6 +28,8 @@ import { Ping }              from './ping';
 })
 export class App implements OnInit, OnDestroy
 {
+    private viewContainerRef: ViewContainerRef;
+
     /* TODO: This array will grow large, need to clean it periodically */
     alerts$: Observable<Alert[]>;
 
@@ -37,9 +40,13 @@ export class App implements OnInit, OnDestroy
     auth: AuthState;
     pref: Preference;
 
-    constructor(private store: Store<AppState>,
+    constructor(private viewContainerRef: ViewContainerRef,
+                private store: Store<AppState>,
                 private router: Router,
-                private ping: Ping) {}
+                private ping: Ping) {
+        // This is a hack to catch application root view container ref
+        this.viewContainerRef = viewContainerRef;
+    }
 
     ngOnInit() {
         this.alerts$ = this.store.select<Alert[]>('alerts');
