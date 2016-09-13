@@ -18,7 +18,7 @@
     <button type="button" class="btn btn-primary"
             (click)="modalAdd.show()">新建{{ taxType }}</button>
 
-    <div class="modal" bsModal #modalAdd="bs-modal" tabindex="-1" role="dialog">
+    <div class="modal fade" bsModal #modalAdd="bs-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <modal-add-tax [taxType]="taxType"
                            [channels]="channels"
@@ -27,7 +27,7 @@
         </div>
     </div>
 
-    <div class="modal" bsModal #modalEdit="bs-modal" tabindex="-1" role="dialog">
+    <div class="modal fade" bsModal #modalEdit="bs-modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-sm">
             <modal-edit-tax [taxType]="taxType"
                             [tax]="tax" [channels]="channels"
