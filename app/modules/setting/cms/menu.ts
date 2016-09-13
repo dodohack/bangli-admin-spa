@@ -7,7 +7,7 @@ import { Channel }                 from "../../../models";
 
 @Component({ 
     selector: 'cms-setting-menu',
-    template: require('./setting.menu.html'),
+    template: require('./menu.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CmsSettingMenu
@@ -16,5 +16,5 @@ export class CmsSettingMenu
     @Input() taxonomy: string;
  
     // We manage these settings here
-    settings = ['category', 'tag', 'topic', 'channel'];
+    settings = ['category', 'tag', 'channel'];
 }

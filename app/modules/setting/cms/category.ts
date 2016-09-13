@@ -10,16 +10,22 @@ import { Category }          from "../../../models";
 import { Channel }           from "../../../models";
 
 @Component({
-    selector: 'category-setting',
-    template: require('./category.setting.html'),
+    selector: 'cms-category-setting',
+    template: require('./category.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CategorySetting
+export class CmsCategory
 {
     @Input() cats: Category[];
     @Input() channel: Channel;
+    
+    // Cat selected
+    cat: Category;
 
     @Output() edit = new EventEmitter();
     @Output() remove = new EventEmitter();
-    @Output() save = new EventEmitter();
+    
+    setCat(cat) {
+        this.cat = cat;
+    }
 }

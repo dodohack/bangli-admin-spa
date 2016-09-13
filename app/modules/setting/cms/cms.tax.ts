@@ -10,10 +10,10 @@ import { Channel }           from "../../../models";
 
 @Component({
     selector: 'cms-tax-setting',
-    template: require('./cms.tax.setting.html'),
+    template: require('./cms.tax.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CmsTaxSetting
+export class CmsTax
 {
     @Input() taxName: string; // Taxonomy name for display
     @Input() taxes: any; // Taxonomy: category, topic or tag

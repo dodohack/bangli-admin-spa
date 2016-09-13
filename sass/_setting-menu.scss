@@ -1,0 +1,35 @@
+
+.setting-menu-wrapper {
+  margin: 0 -1rem 1rem;
+  padding: 0 1rem;
+  border-bottom: 2px solid #3e3e3e;
+}
+
+.setting-menu {
+  display: inline-block;
+}
+
+a.setting-menu-title {
+  color: #3e3e3e;
+  text-decoration: none;
+
+  h4 {
+    padding: 0.5rem;
+    margin: 0;
+    font-size: 1.1rem;
+
+    display: inline-block;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  &:hover,
+  &.active {
+    h4 {
+      color: white;
+      background: #3e3e3e;
+    }
+  }
+}

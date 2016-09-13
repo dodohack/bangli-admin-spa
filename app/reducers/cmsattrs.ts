@@ -99,6 +99,59 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             };
         }
 
+        case CmsAttrActions.SAVE_CATEGORY_SUCCESS:
+        case CmsAttrActions.SAVE_TAG_SUCCESS: {
+            // Update local copy of saved category/tag
+            let taxes: any;
+            if (action.type === CmsAttrActions.SAVE_TAG_SUCCESS)
+                taxes = state.tags;
+            else
+                taxes = state.categories;
+
+            let newTax   = action.payload;
+            let newTaxes = taxes.map(t => {
+                if (t.id === newTax.id) return newTax; // Return new one
+                return t; // Return old one
+            });
+
+            if (action.type === CmsAttrActions.SAVE_TAG_SUCCESS)
+                return Object.assign({}, state, {tags: newTaxes});
+            else
+                return Object.assign({}, state, {categories: newTaxes});
+        }
+
+        case CmsAttrActions.ADD_CATEGORY_SUCCESS:
+        case CmsAttrActions.ADD_TAG_SUCCESS: {
+            // Add newly added category/tag to local copy
+            if (action.type === CmsAttrActions.ADD_TAG_SUCCESS)
+                return Object.assign({}, state,
+                    {tags: [...state.tags, action.payload]});
+            else
+                return Object.assign({}, state,
+                    {categories: [...state.categories, action.payload]});
+        }
+
+        case CmsAttrActions.DELETE_CATEGORY_SUCCESS:
+        case CmsAttrActions.DELETE_TAG_SUCCESS: {
+            // Delete local copy of deleted category/tag
+            let taxes: any;
+            if (action.type === CmsAttrActions.DELETE_TAG_SUCCESS) {
+                console.log("Tag ", action.payload, " is deleted");
+                taxes = state.tags;
+            } else {
+                console.log("Cat ", action.payload, " is deleted");
+                taxes = state.categories;
+            }
+
+            let deletedId = action.payload;
+            let newTaxes  = taxes.filter(t => t.id !== deletedId); 
+
+            if (action.type === CmsAttrActions.DELETE_TAG_SUCCESS)
+                return Object.assign({}, state, {tags: newTaxes});
+            else
+                return Object.assign({}, state, {categories: newTaxes});
+        }
+
         default:
             return state;
     }

@@ -1,0 +1,12 @@
+<!-- Cms setting menus -->
+<div class="setting-menu-wrapper">
+    <div class="setting-menu">
+        <a routerLink="/setting" routerLinkActive="active" class="setting-menu-title"
+           [routerLinkActiveOptions]="{ exact: true }"><h4>设置首页</h4></a>
+        <a *ngFor="let s of settings"
+           [routerLink]="['/setting', s.slug]"
+           class="setting-menu-title" routerLinkActive="active">
+            <h4>{{ s.name }}</h4>
+        </a>
+    </div>
+</div>

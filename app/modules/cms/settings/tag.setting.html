@@ -1,9 +1,0 @@
-<h5>{{ channel.name }}频道 - 设置标签</h5>
-<ul class="tag-cloud tag-setting" *ngIf="channel">
-    <li *ngFor="let tag of tags" class="tag-setting-item tag tag-default-outline">
-        <div (click)="edit.emit(tag)" class="tag-left">
-            {{ tag.name }}<br>({{ tag.slug }})
-        </div>
-        <div (click)="remove.emit(tag)" class="tag-right">x</div>
-    </li>
-</ul>

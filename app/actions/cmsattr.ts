@@ -87,6 +87,22 @@ export class CmsAttrActions {
             type: CmsAttrActions.LOAD_ATTR_FAIL
         };
     }
+
+    static ADD_TAG = '[CmsAttr] Add Tag';
+    static addTag(tag: Tag): Action {
+        return {
+            type: CmsAttrActions.ADD_TAG,
+            payload: tag
+        }
+    }
+
+    static ADD_CATEGORY = '[CmsAttr] Add Category';
+    static addCategory(cat: Category): Action {
+        return {
+            type: CmsAttrActions.ADD_CATEGORY,
+            payload: cat
+        }
+    }
     
     static SAVE_TAG = '[CmsAttr] Save Tag';
     static saveTag(tag: Tag): Action {
@@ -120,10 +136,51 @@ export class CmsAttrActions {
         }
     }
 
-    static SAVE_SUCCESS = '[CmsAttr] Save Success';
-    static saveSuccess(): Action {
+    static SAVE_CATEGORY_SUCCESS = '[CmsAttr] Save Category Success';
+    static saveCategorySuccess(cat: Category): Action {
         return {
-            type: CmsAttrActions.SAVE_SUCCESS
+            type: CmsAttrActions.SAVE_CATEGORY_SUCCESS,
+            payload: cat
+        }
+    }
+
+    static SAVE_TAG_SUCCESS = '[CmsAttr] Save Tag Success';
+    static saveTagSuccess(tag: Tag): Action {
+        return {
+            type: CmsAttrActions.SAVE_TAG_SUCCESS,
+            payload: tag
+        }
+    }
+
+    static ADD_CATEGORY_SUCCESS = '[CmsAttr] Add Category Success';
+    static addCategorySuccess(cat: Category): Action {
+        return {
+            type: CmsAttrActions.ADD_CATEGORY_SUCCESS,
+            payload: cat
+        }
+    }
+
+    static ADD_TAG_SUCCESS = '[CmsAttr] Add Tag Success';
+    static addTagSuccess(tag: Tag): Action {
+        return {
+            type: CmsAttrActions.ADD_TAG_SUCCESS,
+            payload: tag
+        }
+    }
+
+    static DELETE_CATEGORY_SUCCESS = '[CmsAttr] Delete Category Success';
+    static deleteCategorySuccess(catId: number): Action {
+        return {
+            type: CmsAttrActions.DELETE_CATEGORY_SUCCESS,
+            payload: catId
+        }
+    }
+
+    static DELETE_TAG_SUCCESS = '[CmsAttr] Delete Tag Success';
+    static deleteTagSuccess(tagId: number): Action {
+        return {
+            type: CmsAttrActions.DELETE_TAG_SUCCESS,
+            payload: tagId
         }
     }
 

@@ -3,12 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthorGuard, EditorGuard, LockGuard } from '../../guard';
 import { PostsEditGuard, PostEditGuard }       from './guard';
 
-import { CmsSetting }      from './settings/cms.setting.ts';
-import { CategorySetting } from './settings/category.setting.ts';
-import { TagSetting }      from './settings/tag.setting.ts';
-import { TopicSetting }    from './settings/topic.setting.ts';
-import { ChannelSetting }  from './settings/channel.setting.ts';
-
 import { PostsPage }    from './posts.page';
 import { PostPage }     from './post.page';
 import { TopicsPage }   from './topics.page';
@@ -18,33 +12,6 @@ import { PagePage }     from './page.page';
 
 
 const routes: Routes = [
-
-    {
-        /**
-         * Cms setting path
-         */
-        path: 'cms',
-        canActivate: [EditorGuard],
-        children: [
-            /* cms setting index */
-            { path: '',                   component: CmsSetting },
-            { path: ':taxonomy',          redirectTo: ':taxonomy/shopping'},
-            { path: ':taxonomy/:channel', component: CmsSetting },
-            /*
-            // Category settings
-            { path: 'category',           redirectTo: 'category/shopping' },
-            { path: 'category/:channel',  component: CategorySetting },
-            // Tag settings
-            { path: 'tag',                redirectTo: 'tag/shopping' },
-            { path: 'tag/:channel',       component: TagSetting },
-            // Topic settings
-            { path: 'topic',              redirectTo: 'topic/shopping' },
-            { path: 'topic/:channel',     component: TopicSetting },
-            // Channel setting view only 
-            { path: 'channel',            component: ChannelSetting },
-            */
-        ]
-    },
 
     {
         /**

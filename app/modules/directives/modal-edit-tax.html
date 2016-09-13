@@ -10,7 +10,7 @@
             </div>
             <br>
             <div class="modal-body" *ngIf="tax">
-                <form (ngSubmit)="save.emit(tax)" #taxForm="ngForm">
+                <form (ngSubmit)="save.emit(tax)" #taxEditForm="ngForm">
                     <div class="form-group">
                         <label>{{taxonomy}} 名字</label>
                         <input type="text" name="name" class="form-control"
@@ -43,8 +43,9 @@
                         </select>
                     </div>
                 </form>
-                <button type="button" class="btn btn-sm btn-outline-warning" (click)="cancel.emit()">取消</button>
-                <button type="button" class="btn btn-sm btn-outline-danger" (click)="remove.emit(tax)">删除</button>
-                <button type="button" class="btn btn-sm btn-outline-primary" (click)="save.emit(tax)">保存</button>
+                <button type="button" class="btn btn-block btn-outline-danger"
+                        (click)="cancel.emit()">取消</button>
+                <button type="button" class="btn btn-block btn-outline-primary"
+                        (click)="save.emit(tax)">保存</button>
             </div>
         </div>

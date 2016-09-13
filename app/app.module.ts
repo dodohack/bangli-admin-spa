@@ -50,7 +50,7 @@ import { AffiliateModule } from './modules/affiliate/affiliate.module';
 import { AnalysisModule }  from './modules/analysis/analysis.module';
 import { AttachmentModule }from './modules/attachment/attachment.module';
 import { MigrationModule } from './modules/migration/migration.module';
-import { SystemModule }    from './modules/system/system.module';
+import { SettingModule }   from './modules/setting/setting.module';
 
 /* Debug tools */
 import { StoreLogMonitorModule } from '@ngrx/store-log-monitor';
@@ -76,7 +76,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         AnalysisModule,
         AttachmentModule,
         MigrationModule,
-        SystemModule,
+        SettingModule,
         SharedModule.forRoot(),
         EffectsModule.run(AuthEffects),
         EffectsModule.run(UserEffects),

@@ -34,11 +34,12 @@
 // page
 .tag-setting {
   .tag-setting-item {
+    background: #f1f1f1;
     display: inline-block;
     border: 1px solid lightgrey;
     width: 10rem;
-    padding: 0.25rem 0.5rem;
 
+    padding: 0 !important;
     margin-right: 0.25rem;
     margin-bottom: 0.25rem;
 
@@ -50,6 +51,8 @@
     div.tag-left, div.tag-right {
       cursor: pointer;
       display: inline-block;
+      padding-top: 0.25rem;
+      padding-bottom: 0.3rem;
     }
 
     div.tag-left {
@@ -67,6 +70,9 @@
     div.tag-right {
       border-left: 1px solid lightgrey;
       width: 20%;
+      font-size: 1.6rem;
+      display: table-cell;
+      float: right;
 
       &:hover {
         color: red;

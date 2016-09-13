@@ -21,11 +21,11 @@
         <a class="page-title-action btn btn-sm btn-outline-info"
            [routerLink]="['/', baseUrl, 'new']">新建{{ title }}</a>
 
-        <a class="page-title-action btn btn-sm btn-outline-info"
-           *ngIf="isCms" [routerLink]="['/cms']">内容系统设置</a>
+        <a class="page-title-action btn btn-sm btn-outline-info float-right"
+           *ngIf="isCms" [routerLink]="['/setting/cms']">内容系统设置</a>
 
-        <a class="page-title-action btn btn-sm btn-outline-info"
-           *ngIf="isShop" [routerLink]="['/shop']">商店设置</a>
+        <a class="page-title-action btn btn-sm btn-outline-info float-right"
+           *ngIf="isShop" [routerLink]="['/setting/shop']">商店设置</a>
 
         <button class="page-title-action btn btn-sm btn-outline-info float-right">详简切换</button>
     </h1>

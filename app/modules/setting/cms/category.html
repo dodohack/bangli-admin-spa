@@ -1,0 +1,31 @@
+<h5>{{ channel.name }}频道 - 设置分类</h5>
+<ul class="tag-cloud tag-setting" *ngIf="channel">
+    <li *ngFor="let cat of cats" class="tag-setting-item tag tag-default-outline">
+        <div (click)="edit.emit(cat)" class="tag-left">
+            {{ cat.name }}<br>({{ cat.slug }})
+        </div>
+        <div (click)="setCat(cat); modal.show()" class="tag-right">&times;</div>
+    </li>
+</ul>
+
+
+<!-- A simple confirm modal -->
+<div class="modal" bsModal #modal="bs-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="modal.hide()">
+                    <span>&times;</span>
+                </button>
+                <h5 class="modal-title" *ngIf="cat">删除分类: {{ cat.name }}</h5>
+            </div>
+            <br>
+            <div class="modal-body">
+                <button type="button" class="btn btn-block btn-outline-success"
+                        (click)="modal.hide()">取消</button>
+                <button type="button" class="btn btn-block btn-outline-danger"
+                        (click)="remove.emit(cat); modal.hide()">删除</button>
+            </div>
+        </div>
+    </div>
+</div>

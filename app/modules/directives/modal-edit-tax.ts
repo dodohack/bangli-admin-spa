@@ -16,11 +16,15 @@ import { Channel }           from "../../models";
 export class ModalEditTax
 {
     @Input() taxType: string;
-    @Input() tax: any;
+    // Must do a local copy to edit, otherwise nothing is updated
+    _tax: any;
+    @Input() set tax(value) { this._tax = Object.assign({}, value); }
+    get tax() { return this._tax; }
+
     @Input() channels: Channel[];
 
     @Output() save   = new EventEmitter(); // save a tax
-    @Output() remove = new EventEmitter(); // delete a tax
+    //@Output() remove = new EventEmitter(); // delete a tax
     @Output() cancel = new EventEmitter(); // cancel operation
 
     get isCategory() { return this.taxType === 'category'; }

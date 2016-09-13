@@ -30,23 +30,33 @@ export class CmsAttrEffects {
             .catch(() => Observable.of(CmsAttrActions.loadAllFail())));
 
     @Effect() saveTag$ = this.actions$.ofType(CmsAttrActions.SAVE_TAG)
-        .switchMap(action => this.saveTag(action.payload)
-            .map(() => CmsAttrActions.saveSuccess())
+        .switchMap(action => this.putTag(action.payload)
+            .map(tag => CmsAttrActions.saveTagSuccess(tag))
             .catch(() => Observable.of(CmsAttrActions.saveFail())));
 
     @Effect() saveCat$ = this.actions$.ofType(CmsAttrActions.SAVE_CATEGORY)
-        .switchMap(action => this.saveCat(action.payload)
-            .map(() => CmsAttrActions.saveSuccess())
+        .switchMap(action => this.putCat(action.payload)
+            .map(cat => CmsAttrActions.saveCategorySuccess(cat))
+            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+
+    @Effect() addTag$ = this.actions$.ofType(CmsAttrActions.ADD_TAG)
+        .switchMap(action => this.postTag(action.payload)
+            .map(tag => CmsAttrActions.addTagSuccess(tag))
+            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+
+    @Effect() addCat$ = this.actions$.ofType(CmsAttrActions.ADD_CATEGORY)
+        .switchMap(action => this.postCat(action.payload)
+            .map(cat => CmsAttrActions.addCategorySuccess(cat))
             .catch(() => Observable.of(CmsAttrActions.saveFail())));
 
     @Effect() deleteTag$ = this.actions$.ofType(CmsAttrActions.DELETE_TAG)
         .switchMap(action => this.deleteTag(action.payload)
-            .map(() => CmsAttrActions.saveSuccess())
+            .map(tagId => CmsAttrActions.deleteTagSuccess(tagId))
             .catch(() => Observable.of(CmsAttrActions.saveFail())));
 
     @Effect() deleteCat$ = this.actions$.ofType(CmsAttrActions.DELETE_CATEGORY)
         .switchMap(action => this.deleteCat(action.payload)
-            .map(() => CmsAttrActions.saveSuccess())
+            .map(catId => CmsAttrActions.deleteCategorySuccess(catId))
             .catch(() => Observable.of(CmsAttrActions.saveFail())));
 
 
@@ -62,35 +72,53 @@ export class CmsAttrEffects {
     }
 
     /**
-     * Create/Update a tag
+     * Update a tag
      */
-    private saveTag(tag: Tag) {
-        return this.saveTax(tag, AuthCache.API_PATH().cms_tags);
+    private putTag(tag: Tag) {
+        return this.putTax(tag, AuthCache.API_PATH().cms_tags);
     }
 
     /**
-     * Create/Update a category
+     * Update a category
      */
-    private saveCat(cat: Category) {
-        return this.saveTax(cat, AuthCache.API_PATH().cms_cats);
+    private putCat(cat: Category) {
+        return this.putTax(cat, AuthCache.API_PATH().cms_cats);
     }
 
     /**
-     * Create/Update a tax
+     * Update a tax
      */
-    private saveTax(tax: any, apiPath: string) {
+    private putTax(tax: any, apiPath: string) {
         let body = JSON.stringify(tax);
         let options = new RequestOptions({ headers: this.headers });
 
-        if (tax.id && tax.id !== 0) {
-            // Update an existing tag
-            let api = AuthCache.API() + apiPath + '/' + tax.id;
-            return this.http.put(api, body, options).map(res => res.json());
-        } else {
-            // Create a new tag
-            let api = AuthCache.API() + apiPath;
-            return this.http.post(api, body, options).map(res => res.json());
-        }
+        let api = AuthCache.API() + apiPath + '/' + tax.id;
+        return this.http.put(api, body, options).map(res => res.json());
+    }
+
+    /**
+     * Create a tag
+     */
+    private postTag(tag: Tag) {
+        return this.postTax(tag, AuthCache.API_PATH().cms_tags);
+    }
+
+    /**
+     * Create category
+     */
+    private postCat(cat: Category) {
+        return this.postTax(cat, AuthCache.API_PATH().cms_cats);
+    }
+
+    /**
+     * Create a tax
+     */
+    private postTax(tax: any, apiPath: string) {
+        let body = JSON.stringify(tax);
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AuthCache.API() + apiPath;
+        return this.http.post(api, body, options).map(res => res.json());
     }
 
     /**
