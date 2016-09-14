@@ -2,136 +2,169 @@
  * This is the single product edit page component
  */
 
-import { Component, OnInit }     from '@angular/core';
+import { Component }             from '@angular/core';
+import { OnInit, OnDestroy }     from '@angular/core';
+import { ViewChild }             from '@angular/core';
 import { ActivatedRoute }        from '@angular/router';
 import { Store }                 from '@ngrx/store';
-import { Observable }            from 'rxjs/Observable';
-import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
+
+
+import { AppState, getProduct }  from '../../reducers';
+import { ProductActions }        from '../../actions';
+import { ProductsState }         from '../../reducers/products';
+import { AuthState }             from '../../reducers/auth';
+import { CmsAttrsState }         from '../../reducers/cmsattrs';
+import { ShopAttrsState }        from "../../reducers/shopattrs";
+import { AlertActions }          from "../../actions";
+
 import { FroalaOptions }         from '../../models/froala.option';
+import { Product }               from '../../models';
+import { Category }              from '../../models';
+import { Tag }                   from '../../models';
+import { Brand }                 from '../../models';
+import { zh_CN }                 from '../../localization';
 
-import { AppState, getProduct }         from '../../reducers';
-import { ProductActions }               from '../../actions';
-import { User, Product, Category, Tag } from '../../models';
-
-import { zh_CN } from '../../localization';
 
 @Component({ template: require('./product.page.html') })
-export class ProductPage implements OnInit
+export class ProductPage implements OnInit, OnDestroy
 {
+    @ViewChild('productForm') productForm;
+
+    // subscriptions
+    subAuth: any;
+    subCms: any;
+    subShop: any;
+    subProducts: any;
+    subParams: any;
+
+
+    authState:     AuthState;
+    cmsState:      CmsAttrsState;
+    shopState:     ShopAttrsState;
+    productsState: ProductsState;
+
+    // Current product, inputProduct is only used to initialize forala editor,
+    // cause it is bugged when both input/output model are the same
+    inputProduct: Product;
+    product: Product;
+
     froalaEditor: any;
-    hideRightBar = true;
-    tabs = { 'cat': false, 'tag': false };
-
-    /* Id of current product */
-    id$: Observable<number>;
-
-    /* List of products */
-    products$: Observable<any>;
 
     constructor(private route: ActivatedRoute,
-                private store: Store<AppState>) {
-        this.products$ = this.store.select('products');
-    }
+                private store: Store<AppState>) {}
 
     ngOnInit() {
-        this.route.params.subscribe(params => {
-            this.store.dispatch(ProductActions.loadProduct(params['id']));
-        });
+        this.subAuth = this.store.select<AuthState>('auth')
+            .subscribe(authState => this.authState = authState);
+        this.subCms = this.store.select<CmsAttrsState>('cms')
+            .subscribe(cmsState => this.cmsState = cmsState);
+        this.subShop = this.store.select<ShopAttrsState>('shop')
+            .subscribe(shopState => this.shopState = shopState);
 
-        this.id$ = this.route.params.select<number>('id');
+        // Dispatch an action to create or load a product
+        this.dispatchLoadProduct();
+        // Load the product
+        this.loadProduct();
     }
+
+    ngOnDestroy() {
+        this.subAuth.unsubscribe();
+        this.subCms.unsubscribe();
+        this.subShop.unsubscribe();
+        this.subProducts.unsubscribe();
+        this.subParams.unsubscribe();
+    }
+
+
+    /**
+     * Kick an action to load the product when URL changes
+     */
+    dispatchLoadProduct() {
+        this.subParams = this.route.params.subscribe(params => {
+            if (Object.keys(params).length === 0) // New a product
+                this.store.dispatch(ProductActions.newProduct(/* FIXME: current user id */));
+            else                                  // Edit a product
+                this.store.dispatch(ProductActions.loadProduct(+params['id']));
+        });
+    }
+
+    /**
+     * Listen on ngrx/store, create a post from 'store' if state is changed
+     */
+    loadProduct() {
+        this.subProducts = this.store.select<ProductsState>('products')
+            .subscribe(ps => {
+                this.productsState = ps;
+                // When opening a single product, 'editing' always contains 1 id
+                // FIXME: Remove inputProudct after updating to new angular2-froala binding
+                this.inputProduct = ps.entities[ps.editing[0]];
+                this.product = Object.assign({}, this.inputProduct);
+            });
+    }
+
+    canDeactivate() {
+        console.log("form status: ", this.productForm);
+        if (this.productForm.dirty) {
+            this.store.dispatch(AlertActions.error('请先保存当前更改，或取消保存'));
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+
+    get isDraft()   { return this.product.state === 'draft'; }
+    get isPending() { return this.product.state === 'pending'; }
+    get isPublish() { return this.product.state === 'publish'; }
+    get myId() { return this.authState.users[this.authState.key].id; }
 
     get zh() { return zh_CN.product };
-    /* Froala editor options */
     get froalaOptions () { return FroalaOptions.getDefault(); }
-    //get editors() { return this.userService.editors; }
-    //get categories() { return this.productService.categories; }
-    //get tags()       { return this.productService.tags; }
 
-    /* Get current product by id */
-    get product$(): Observable<any> {
-        return this.id$.switchMap(id => this.store.let(getProduct(id)));
-    }
 
-    /**
-     * This function is somehow bugged
-     * @param event
-     */
-    onFroalaModelChanged(event: any) {
+    productContentChanged($event) {
+        // If no timeout set, the editor will throw an exception
         setTimeout(() => {
-            //this.product.content = event;
-            console.log("onFroalaModelChanged");
+            console.log("Product content changed!");
+            this.product.content = $event;
         });
     }
 
-    onEditorInitialized(event?: any) {
-        console.log("onEditorInitialized");
-        this.froalaEditor = FroalaEditorCompnoent.getFroalaInstance();
-        this.froalaEditor.on('froalaEditor.focus', (e, editor) => {
-            console.log("editor is focused");
-        });
+    // Category, tag, topic add/remove events
+    selectCat(cat: Category) {
+        // Unselect a category if is is previously selected, vice versa
+        if (cat.checked) this.removeCat(cat.id);
+        else this.addCat(cat);
+    }
+    addCat(cat: Category) {
+        this.store.dispatch(ProductActions.addCategory(cat));
+    }
+    addTag(tag: Tag) {
+        this.store.dispatch(ProductActions.addTag(tag));
+    }
+    removeCat(id: number) {
+        this.store.dispatch(ProductActions.removeCategory(id));
+    }
+    removeTag(id: number) {
+        this.store.dispatch(ProductActions.removeTag(id));
     }
 
-    /*
-    private initProduct()
-    {
-        this.route.params.subscribe(
-            segment => {
-                // Get product id from URL segment
-                this.product.id = segment['id'] ? +segment['id'] : 0;
-            }
-        );
 
-        if (this.product.id) {
-            this.productService.getProduct(this.product.id).subscribe(
-                product => {
-                    this.product = product;
-                    // Till now, categories and tags should be ready
-                    if (this.product.categories)
-                        this.updateCategoryCheckStatus(this.categories);
-                    if (this.product.tags)
-                        this.updateTagCheckStatus();
-                }
-            )
-        } else {
-            // TODO: Create a new product
-        }
-    }
-    */
-
-    /**
-     * Set categories to checked status based on the value of post.categories
-     */
-    /*
-    private updateCategoryCheckStatus(categories: Category[])
-    {
-        for (let i in categories) {
-            if (categories[i].children) {
-                this.updateCategoryCheckStatus(categories[i].children);
-            } else {
-                for (let j in this.product.categories) {
-                    if (categories[i].id == this.product.categories[j].id) {
-                        categories[i].checked = true;
-                    }
-                }
-            }
-
-        }
+    // Restore current content to given revision
+    restoreRevision(rid: number) {
+        this.store.dispatch(ProductActions.applyRevision([this.product.id, rid]));
+        this.store.dispatch(AlertActions.warning('请确认版本恢复正确后点击保存到服务器'));
     }
 
-    private updateTagCheckStatus()
-    {
-        for (let i in this.product.tags) {
-            for (let j in this.tags) {
-                if (this.product.tags[i].id == this.tags[j].id) {
-                    this.tags[j].checked = true;
-                    break;
-                }
-            }
-        }
+    // TODO: Need to get back a save success status and enable canDeactivate
+    // TODO: We can listen on 'alerts' changes, if a successful alert is
+    // back with the id, type of current post, we can say enable
+    // canDeactivate
+    save() {
+        this.store.dispatch(ProductActions.saveProduct(this.product));
     }
-    */
-    private toggleRightBar(e: any): void {
-        this.hideRightBar = !this.hideRightBar;
-    }
+    save2Pending() { this.product.state = 'pending'; this.save(); }
+    save2Draft()   { this.product.state = 'draft';   this.save(); }
+    save2Publish() { this.product.state = 'publish'; this.save(); }
 }

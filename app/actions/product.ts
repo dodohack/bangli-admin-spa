@@ -108,7 +108,7 @@ export class ProductActions {
     }
 
     static LOAD_PRODUCT = '[Product] Load Product';
-    static loadProduct(id: string): Action {
+    static loadProduct(id: number): Action {
         return {
             type: ProductActions.LOAD_PRODUCT,
             payload: id

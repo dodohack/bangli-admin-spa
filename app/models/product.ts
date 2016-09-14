@@ -51,7 +51,11 @@ export class ProductParams {
 }
 
 export class ProductVariation {
-    RSP: number; // Retail Suggested Price
+    id: number;
+    image_id: number;   // Product variation specified image
+    parent_id: number;  // Base product id
+    backorder: boolean; // Allow backorder when out of stock
+    RSP: number;        // Retail Suggested Price
     cost: number;
     spec: string;
     price: number;
@@ -62,9 +66,9 @@ export class ProductVariation {
     sale_to: string; // Date of the end of sale
     sale_price: number;
     warehouse: string;
-    real_sales: number;
+    real_sale: number;
     real_stock: number;
-    virtual_sales: number;
+    virtual_sale: number;
     virtual_stock: number;
     gross_weight: number;
 }
@@ -80,7 +84,6 @@ export class Product {
     excerpt: string;
     content: string;
     sku: string;
-    backorder: boolean;
     made_in: string;
     min_age: number;
     max_age: number;

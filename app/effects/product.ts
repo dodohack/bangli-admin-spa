@@ -50,7 +50,7 @@ export class ProductEffects {
     // Private helper functions
 
     /**
-     * Get single product(may not use)
+     * Get a product
      */
     private getProduct(id: number): Observable<Product> {
         let api = AuthCache.API() + AuthCache.API_PATH().shop_products +

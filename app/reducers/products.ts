@@ -97,6 +97,7 @@ export default function (state = initialState, action: Action): ProductsState {
 
         case ProductActions.SAVE_PRODUCT_SUCCESS:
         case ProductActions.LOAD_PRODUCT_SUCCESS: {
+            console.log("Load product success");
             // Product id
             const id: number = +action.payload['id'];
 
