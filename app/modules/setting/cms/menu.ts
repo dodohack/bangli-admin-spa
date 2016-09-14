@@ -5,6 +5,8 @@ import { Component, Input }        from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { Channel }                 from "../../../models";
 
+import { zh_CN }                   from '../../../localization';
+
 @Component({ 
     selector: 'cms-setting-menu',
     template: require('./menu.html'),
@@ -17,4 +19,6 @@ export class CmsSettingMenu
  
     // We manage these settings here
     settings = ['category', 'tag', 'channel'];
+    
+    get zh() { return zh_CN; }
 }

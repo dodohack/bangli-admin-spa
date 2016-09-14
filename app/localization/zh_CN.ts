@@ -3,6 +3,11 @@
  */
 
 export const zh_CN = {
+    // Global viable translation
+    category: '分类',
+    tag: '标签',
+    channel: '频道',
+
     cms: {
         /* Post/Topic/Page status */
         unsaved:   '未保存',

@@ -3,7 +3,7 @@
                 <button type="button" class="close" (click)="cancel.emit()">
                     <span>&times;</span>
                 </button>
-                <h5 class="modal-title">新增{{ taxonomy }}</h5>
+                <h5 class="modal-title">新增{{ zh[taxType] }}</h5>
             </div>
             <div class="modal-body" *ngIf="tax">
                 <form (ngSubmit)="save.emit(tax)" #taxAddForm="ngForm">
@@ -25,7 +25,7 @@
                                 name="cid" [(ngModel)]="tax.parent_id">
                             <option *ngFor="let cat of categories"
                                     [selected]="tax.parent_id === cat.id"
-                                    [value]="cat.id">{{ ch.name }}</option>
+                                    [value]="cat.id">{{ cat.name }}</option>
                         </select>
                     </div>
 

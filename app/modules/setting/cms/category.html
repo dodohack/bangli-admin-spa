@@ -1,4 +1,23 @@
-<h5>{{ channel.name }}频道 - 设置分类</h5>
+<!-- Title -->
+<div class="page-title">
+    <h5 class="title">
+        {{ channel.name }}分类
+        <button class="page-title-action btn btn-outline-info btn-sm"
+                (click)="add.emit($event)">
+            <i class="fa fa-plus"></i> 新建分类
+        </button>
+    </h5>
+</div>
+
+<hr>
+
+<!-- List of categories -->
+<category-tree [parentId]="0"
+               [categories]="cats"
+               [selectedCats]="[]"
+               (checkEvent)="selectCat($event)">
+</category-tree>
+
 <ul class="tag-cloud tag-setting" *ngIf="channel">
     <li *ngFor="let cat of cats" class="tag-setting-item tag tag-default-outline">
         <div (click)="edit.emit(cat)" class="tag-left">

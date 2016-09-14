@@ -8,6 +8,8 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 import { Channel }           from "../../models";
 
+import { zh_CN }             from '../../localization';
+
 @Component({
     selector: 'modal-add-tax',
     template: require('./modal-add-tax.html'),
@@ -17,12 +19,15 @@ export class ModalAddTax
 {
     @Input() taxType: string;
     @Input() channels: Channel[];
+    @Input() categories: any; // Only true for category
 
     @Output() save   = new EventEmitter();
     @Output() cancel = new EventEmitter();
 
     // An object to save newly added taxonomy
-    tax: any = {name: null, slug: null, parent_id: null, channel_id: null};
+    tax: any = {name: null, slug: null, parent_id: 0, channel_id: null};
     
     get isCategory() { return this.taxType === 'category'; }
+
+    get zh() { return zh_CN; }
 }

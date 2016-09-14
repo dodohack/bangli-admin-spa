@@ -4,7 +4,7 @@
         <a *ngFor="let s of settings"
            [routerLink]="['/setting/cms', s]"
            class="channel-title" routerLinkActive="active">
-            <h4>{{ s | uppercase }}设置</h4>
+            <h4>{{ zh[s] }}</h4>
         </a>
     </div>
 </div>

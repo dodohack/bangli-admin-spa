@@ -24,6 +24,7 @@ export class CmsTag
     
     // Edit or remove tag actions
     @Output() edit = new EventEmitter();
+    @Output() add  = new EventEmitter();
     @Output() remove = new EventEmitter();
 
     setTag(tag) {
