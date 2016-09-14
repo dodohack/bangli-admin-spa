@@ -1,3 +1,6 @@
+/**
+ * This file is used by webpack.
+ */
 require('./froala_editor.js');
 require('./plugins/align.js');
 require('./plugins/char_counter.js');

@@ -25,10 +25,7 @@ module.exports = webpackMerge(commonConfig, {
         // If any error happens during the compiling, no file will be generated
         // if this plugin is enabled.
         //new webpack.NoErrorsPlugin(),
-
-        // Generate {output}/index.html with
-        new HtmlWebpackPlugin({ template: 'index.html' }),
-        new ExtractTextPlugin('[name].[hash].css'),
+        
         new webpack.optimize.DedupePlugin(),
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.DefinePlugin({
