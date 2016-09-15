@@ -16,7 +16,7 @@ import { Channel }           from "../../../models";
     template: require('./tag.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CmsTag extends OnChanges
+export class CmsTag implements OnChanges
 {
     @Input() tags: Tag[];
     @Input() channel: Channel;
