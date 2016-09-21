@@ -2,7 +2,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { AdminGuard } from '../../guard';
 
-import { SettingPage }   from './setting.page';
+import { SocialPage }   from './social.page';
+import { CommentsPage } from './comments.page';
+import { SettingPage }  from './setting.page';
 
 const routes: Routes = [
     {
@@ -13,7 +15,8 @@ const routes: Routes = [
         canActivate: [AdminGuard],
         children: [
             /* Index */
-            { path: '',   pathMatch: 'full', redirectTo: 'setting' },
+            { path: '',        component: SocialPage },
+            { path: 'comment', component: CommentsPage },
             { path: 'setting', component: SettingPage },
         ]
     }
