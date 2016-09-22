@@ -18,7 +18,7 @@ export const routes: Routes = [
         canActivate: [EditorGuard],
         children: [
             // Direct to list of deal post by default
-            {path: '', pathMatch: 'full', redirectTo: 'deal/post'},
+            {path: '', pathMatch: 'full', redirectTo: 'post'},
 
             {
                 // Deal post

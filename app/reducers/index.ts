@@ -210,6 +210,7 @@ export function getTopic(id: number) {
 /*****************************************************************************
  * Page
  *****************************************************************************/
+/*
 export function getPagesState() {
     return (state$: Observable<AppState>) =>
         state$.select(s => s.pages);
@@ -218,4 +219,4 @@ export function getPagesState() {
 export function getPage(id: number) {
     return compose(fromPages.getPage(id), getPagesState());
 }
-
+*/

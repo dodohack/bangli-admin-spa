@@ -30,15 +30,15 @@ export default function <T>(state = initialState, action: Action): EntitiesState
         case EntityActions.LOAD_ENTITIES_SUCCESS: {
             const entities: Entity[]  = action.payload.entities;
             const ids: number[]       = entities.map(p => p.id);
-            const entities            = entities.reduce(
-                (entities: { [id: number]: Entity }, entity: Entity) => {
+            const newEntities          = entities
+                .reduce((entities: {[id: number]: Entity}, entity: Entity) => {
                     return Object.assign(entities, { [entity.id]: entity });
                 }, {});
 
             return {
                 ids: [...ids],
                 editing: [],
-                entities: Object.assign({}, entities),
+                entities: Object.assign({}, newEntities),
                 paginator: Object.assign({}, action.payload.paginator)
             };
         }

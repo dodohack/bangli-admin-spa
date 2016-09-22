@@ -13,15 +13,24 @@ import { Topic }    from './topic';
 import { Brand }    from "./brand";
 
 /**
+ * Entity type constants, used by effects and others
+ */
+export const ENTITY_TYPE = [
+    
+];
+
+/**
  * CMS post:
  * CREATIVE_TYPES definition
  */
+/*
 export const CREATIVE_TYPES = [
     {creative_type: 'creative',      count: 0}, // 原创
     {creative_type: 'semi_creative', count: 0}, // 伪原创
     {creative_type: 'integration',   count: 0}, // 资料整理
     {creative_type: 'review',        count: 0}  // 审稿
 ];
+*/
 
 /** ALL:
  *  entity states, corresponding to each entity table column: state */
@@ -34,10 +43,12 @@ export const ENTITY_STATES = [
     {state: 'trash',    count: 0}
 ];
 
+/*
 export class CreativeType {
     creative_type: string;
     count: number;
 }
+*/
 
 export class EntityState {
     state: string;
@@ -82,6 +93,7 @@ export class EntityParams {
  * Shop product only:
  * Product variation
  */
+    /*
 export class ProductVariation {
     id: number;
     image_id: number;   // Product variation specified image
@@ -104,6 +116,7 @@ export class ProductVariation {
     virtual_stock: number;
     gross_weight: number;
 }
+*/
 
 export class Entity {
     id: number;
@@ -138,7 +151,7 @@ export class Entity {
     min_age: number;       // ...
     max_age: number;       // ...
     bbd: string;           // ...: best before date
-    variations: ProductVariation[]; // ...
+    //variations: ProductVariation[]; // ...
 
     brands: Brand[];
 

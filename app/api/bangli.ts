@@ -67,12 +67,16 @@ export const API_BANGLI = {
     /*************************************************************************
      * Deal
      *************************************************************************/
-    deals:       '/deals',
-    deals_batch: '/deals/batch',
+    deal_posts:        '/deal/posts',
+    deal_posts_batch:  '/deal/posts/batch',
+    deal_topics:       '/deal/topics',
+    deal_topics_batch: '/deal/topics/batch',
 
     /*************************************************************************
      * Emails
      *************************************************************************/
+    newsletter_posts:        '/newsletter/posts',
+    newsletter_posts_batch:  '/newsletter/posts/batch',
 
     /*************************************************************************
      * Affiliate

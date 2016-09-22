@@ -1,44 +1,52 @@
 /**
- * Entity[s] side effects
+ * Side effects for entities listed below:
+ * cms-post, cms-topic, cms-page, deal-post, deal-topic, shop-order,
+ * shop-product, voucher, newsletter
  */
-import { Injectable }                     from '@angular/core';
-import { Http, Headers, RequestOptions }  from '@angular/http';
-import { Effect, Actions }                from '@ngrx/effects';
-import { Observable }                     from 'rxjs/Observable';
+import { Injectable }      from '@angular/core';
+import { Http }            from '@angular/http';
+import { Effect, Actions } from '@ngrx/effects';
+import { Observable }      from 'rxjs/Observable';
 
-import { AuthCache }       from '../auth.cache';
-import { PrefCache }       from '../pref.cache';
-import { PostActions }     from '../actions';
+import { BaseEffects }       from './base';
+import { PostActions }       from '../actions';
+import { TopicActions }      from '../actions';
+import { DealPostActions }   from '../actions';
+import { DealTopicActions }  from '../actions';
+import { PageActions }       from '../actions';
+import { NewsletterActions } from '../actions';
+import { ProductActions }    from '../actions';
+import { OrderActions }      from '../actions';
+import { VoucherActions }    from '../actions';
+
 import { AlertActions }    from '../actions';
-import { Post }            from "../models";
-import { PostParams }      from "../models";
+
 
 @Injectable()
-export class PostEffects {
+export class EntityEffects extends BaseEffects {
 
     constructor (private actions$: Actions,
-                 private http: Http) {}
-    
-    get headers() { 
-        return new Headers({
-            'Authorization': 'Bearer' + AuthCache.token(),
-            'Content-Type': 'application/json'});
+                 protected http: Http) {
+        super(http);
     }
-    
+
+    /**************************************************************************
+     * CMS Post
+     *************************************************************************/
     @Effect() loadPosts$ = this.actions$.ofType(PostActions.LOAD_POSTS)
-        .switchMap(action => this.getPosts(action.payload)
+        .switchMap(action => this.getEntities('cms-post', action.payload)
             .map(posts => PostActions.loadPostsSuccess(posts))
             .catch(() => Observable.of(PostActions.loadPostsFail()))
         );
 
     @Effect() loadPost$ = this.actions$.ofType(PostActions.LOAD_POST)
-        .switchMap(action => this.getPost(action.payload)
+        .switchMap(action => this.getEntity('cms-post', action.payload)
             .map(post => PostActions.loadPostSuccess(post))
             .catch(() => Observable.of(PostActions.loadPostFail()))
         );
 
     @Effect() putPost$ = this.actions$.ofType(PostActions.SAVE_POST)
-        .switchMap(action => this.savePost(action.payload)
+        .switchMap(action => this.saveEntity('cms-post', action.payload)
             .map(post => PostActions.savePostSuccess(post))
             .catch(() => Observable.of(PostActions.savePostFail()))
         );
@@ -49,86 +57,206 @@ export class PostEffects {
     @Effect() savePostFail$ = this.actions$.ofType(PostActions.SAVE_POST_FAIL)
         .map(action => AlertActions.error('文章保存失败!'));
 
-    //////////////////////////////////////////////////////////////////////////
-    // Private helper functions
 
-    /**
-     * Get a post
-     */
-    private getPost(id: string): Observable<Post> {
-        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts +
-            '/' + id + '?token=' + AuthCache.token();
-        return this.http.get(api).map(res => res.json());
-    }
+    /**************************************************************************
+     * CMS Topic 
+     *************************************************************************/
+    @Effect() loadTopics$ = this.actions$.ofType(TopicActions.LOAD_TOPICS)
+        .switchMap(action => this.getEntities('cms-topic', action.payload))
+        .map(topics => TopicActions.loadTopicsSuccess(topics))
+        .catch(() => Observable.of(TopicActions.loadTopicsFail()));
+
+    @Effect() loadTopic$ = this.actions$.ofType(TopicActions.LOAD_TOPIC)
+        .switchMap(action => this.getEntity('cms-topic', action.payload))
+        .map(topic => TopicActions.loadTopicSuccess(topic))
+        .catch(() => Observable.of(TopicActions.loadTopicFail()));
+
+    @Effect() putTopic$ = this.actions$.ofType(TopicActions.SAVE_TOPIC)
+        .switchMap(action => this.saveEntity('cms-topic', action.payload)
+            .map(topic => TopicActions.saveTopicSuccess(topic))
+            .catch(() => Observable.of(TopicActions.saveTopicFail()))
+        );
+
+    @Effect() saveTopicSuccess$ = this.actions$.ofType(TopicActions.SAVE_TOPIC_SUCCESS)
+        .map(action => AlertActions.success('专题保存成功!'));
+
+    @Effect() saveTopicFail$ = this.actions$.ofType(TopicActions.SAVE_TOPIC_FAIL)
+        .map(action => AlertActions.error('专题保存失败!'));
+
+
+
+    /**************************************************************************
+     * Deal Post
+     *************************************************************************/
+    @Effect() loadDealPosts$ = this.actions$.ofType(DealPostActions.LOAD_POSTS)
+        .switchMap(action => this.getEntities('deal-post', action.payload)
+            .map(posts => DealPostActions.loadPostsSuccess(posts))
+            .catch(() => Observable.of(DealPostActions.loadPostsFail()))
+        );
+
+    @Effect() loadDealPost$ = this.actions$.ofType(DealPostActions.LOAD_POST)
+        .switchMap(action => this.getEntity('deal-post', action.payload)
+            .map(post => DealPostActions.loadPostSuccess(post))
+            .catch(() => Observable.of(DealPostActions.loadPostFail()))
+        );
+
+    @Effect() putDealPost$ = this.actions$.ofType(DealPostActions.SAVE_POST)
+        .switchMap(action => this.saveEntity('deal-post', action.payload)
+            .map(post => DealPostActions.savePostSuccess(post))
+            .catch(() => Observable.of(DealPostActions.savePostFail()))
+        );
+
+    @Effect() saveDealPostSuccess$ = this.actions$.ofType(DealPostActions.SAVE_POST_SUCCESS)
+        .map(action => AlertActions.success('优惠保存成功!'));
+
+    @Effect() saveDealPostFail$ = this.actions$.ofType(DealPostActions.SAVE_POST_FAIL)
+        .map(action => AlertActions.error('优惠保存失败!'));
+
+    /**************************************************************************
+     * Deal Topic
+     *************************************************************************/
+    @Effect() loadDealTopics$ = this.actions$.ofType(DealTopicActions.LOAD_TOPICS)
+        .switchMap(action => this.getEntities('deal-topic', action.payload))
+        .map(topics => DealTopicActions.loadTopicsSuccess(topics))
+        .catch(() => Observable.of(DealTopicActions.loadTopicsFail()));
+
+    @Effect() loadDealTopic$ = this.actions$.ofType(DealTopicActions.LOAD_TOPIC)
+        .switchMap(action => this.getEntity('deal-topic', action.payload))
+        .map(topic => DealTopicActions.loadTopicSuccess(topic))
+        .catch(() => Observable.of(DealTopicActions.loadTopicFail()));
+
+    @Effect() putDealTopic$ = this.actions$.ofType(DealTopicActions.SAVE_TOPIC)
+        .switchMap(action => this.saveEntity('deal-topic', action.payload)
+            .map(topic => DealTopicActions.saveTopicSuccess(topic))
+            .catch(() => Observable.of(DealTopicActions.saveTopicFail()))
+        );
+
+    @Effect() saveDealTopicSuccess$ = this.actions$.ofType(DealTopicActions.SAVE_TOPIC_SUCCESS)
+        .map(action => AlertActions.success('优惠专题保存成功!'));
+
+    @Effect() saveDealTopicFail$ = this.actions$.ofType(DealTopicActions.SAVE_TOPIC_FAIL)
+        .map(action => AlertActions.error('优惠专题保存失败!'));
+
+
+    /**************************************************************************
+     * Cms Page
+     *************************************************************************/    
+    @Effect() loadPages$ = this.actions$.ofType(PageActions.LOAD_PAGES)
+        .switchMap(action => this.getEntities('page-post', action.payload))
+        .map(pages => PageActions.loadPagesSuccess(pages))
+        .catch(() => Observable.of(PageActions.loadPagesFail()));
+
+    @Effect() loadPage$ = this.actions$.ofType(PageActions.LOAD_PAGE)
+        .switchMap(action => this.getEntity('page-post', action.payload))
+        .map(page => PageActions.loadPageSuccess(page))
+        .catch(() => Observable.of(PageActions.loadPageFail()));
+
+    @Effect() putPage$ = this.actions$.ofType(PageActions.SAVE_PAGE)
+        .switchMap(action => this.saveEntity('page-post', action.payload)
+            .map(post => PageActions.savePageSuccess(post))
+            .catch(() => Observable.of(PageActions.savePageFail()))
+        );
+
+
+    /**************************************************************************
+     * Newsletters
+     *************************************************************************/
+    @Effect() loadNLs$ = this.actions$.ofType(NewsletterActions.LOAD_NEWSLETTERS)
+        .switchMap(action => this.getEntities('newsletter-post', action.payload)
+            .map(posts => NewsletterActions.loadNewslettersSuccess(posts))
+            .catch(() => Observable.of(NewsletterActions.loadNewslettersFail()))
+        );
+
+    @Effect() loadNL$ = this.actions$.ofType(NewsletterActions.LOAD_NEWSLETTERS)
+        .switchMap(action => this.getEntity('newsletter-post', action.payload)
+            .map(post => NewsletterActions.loadNewsletterSuccess(post))
+            .catch(() => Observable.of(NewsletterActions.loadNewsletterFail()))
+        );
+
+    @Effect() putNL$ = this.actions$.ofType(NewsletterActions.SAVE_NEWSLETTERS)
+        .switchMap(action => this.saveEntity('newsletter-post', action.payload)
+            .map(post => NewsletterActions.saveNewsletterSuccess(post))
+            .catch(() => Observable.of(NewsletterActions.saveNewsletterFail()))
+        );
+
     
-    /**
-     * Create/Update a post
-     */
-    private savePost(post: Post): Observable<Post> {
-        console.log("SAVING POST: ", post);
+    /**************************************************************************
+     * Shop Products
+     *************************************************************************/
+    @Effect() loadProducts$ = this.actions$.ofType(ProductActions.LOAD_PRODUCTS)
+        .switchMap(action => this.getEntities('shop-product', action.payload))
+        .map(products => ProductActions.loadProductsSuccess(products))
+        .catch(() => Observable.of(ProductActions.loadProductsFail()));
 
-        let body = JSON.stringify(post);
-        let options = new RequestOptions({ headers: this.headers });
-        
-        if (post.id && post.id !== 0) {
-            // Update an existing post
-            let api = AuthCache.API() + AuthCache.API_PATH().cms_posts + '/' + post.id;
-            return this.http.put(api, body, options).map(res => res.json());            
-        } else {
-            // Create a new post
-            let api = AuthCache.API() + AuthCache.API_PATH().cms_posts;
-            return this.http.post(api, body, options).map(res => res.json());
-        }
-    }
+    @Effect() loadProduct$ = this.actions$.ofType(ProductActions.LOAD_PRODUCT)
+        .switchMap(action => this.getEntity('shop-product', action.payload))
+        .map(product => ProductActions.loadProductSuccess(product))
+        .catch(() => Observable.of(ProductActions.loadProductFail()));
 
-    /**
-     * Delete a post
-     */
-    private deletePost(post: Post): Observable<Post> {
-        let options = new RequestOptions({ headers: this.headers });
+    @Effect() putProduct$ = this.actions$.ofType(ProductActions.SAVE_PRODUCT)
+        .switchMap(action => this.saveEntity('shop-product', action.payload)
+            .map(product => ProductActions.saveProductSuccess(product))
+            .catch(() => Observable.of(ProductActions.saveProductFail()))
+        );
 
-        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts + '/' + post.id;
-        return this.http.delete(api, options).map(res => res.json());
-    }
+    @Effect() saveProductSuccess$ = this.actions$.ofType(ProductActions.SAVE_PRODUCT_SUCCESS)
+        .map(action => AlertActions.success('产品保存成功!'));
 
-    /**
-     * Get posts
-     */
-    private getPosts(params: PostParams): Observable<any> {
-        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts
-              + params.toQueryString()
-              + '&per_page=' + PrefCache.getPerPage() 
-              + '&token=' + AuthCache.token();
+    @Effect() saveProductFail$ = this.actions$.ofType(ProductActions.SAVE_PRODUCT_FAIL)
+        .map(action => AlertActions.error('产品保存失败!'));
 
-        console.log("LOAD POST FROM URL: ", api);
 
-        return this.http.get(api).map(res => res.json());
-    }
+    /**************************************************************************
+     * Shop Orders
+     *************************************************************************/
+    @Effect() loadOrders$ = this.actions$.ofType(OrderActions.LOAD_ORDERS)
+        .switchMap(action => this.getEntities('shop-order', action.payload))
+        .map(orders => OrderActions.loadOrdersSuccess(orders))
+        .catch(() => Observable.of(OrderActions.loadOrdersFail()));
 
-    /**
-     * Update posts
-     */
-    private putPosts(posts: Post[]): Observable<Post[]> {
-        let body = JSON.stringify(posts);
+    @Effect() loadOrder$ = this.actions$.ofType(OrderActions.LOAD_ORDER)
+        .switchMap(action => this.getEntity('shop-order', action.payload)
+            .map(order => OrderActions.loadOrderSuccess(order))
+            .catch(() => Observable.of(OrderActions.loadOrderFail()))
+        );
 
-        let options = new RequestOptions({ headers: this.headers });
+    @Effect() putOrder$ = this.actions$.ofType(OrderActions.SAVE_ORDER)
+        .switchMap(action => this.saveEntity('shop-order', action.payload)
+            .map(order => OrderActions.saveOrderSuccess(order))
+            .catch(() => Observable.of(OrderActions.saveOrderFail()))
+        );
 
-        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts_batch;
-        return this.http.put(api, body, options).map(res => res.json());
-    }
+    @Effect() saveOrderSuccess$ = this.actions$.ofType(OrderActions.SAVE_ORDER_SUCCESS)
+        .map(action => AlertActions.success('订单保存成功!'));
 
-    /**
-     * Delete posts
-     */
-    private deletePosts(posts: Post[]): Observable<Post[]> {
-        let body = JSON.stringify(posts);
+    @Effect() saveOrderFail$ = this.actions$.ofType(OrderActions.SAVE_ORDER_FAIL)
+        .map(action => AlertActions.error('订单保存失败!'));
 
-        let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API() + AuthCache.API_PATH().cms_posts_batch;
-        // TODO: http.delete can't have a body
-        console.error("Unimplemented: deletePosts");
-        return this.http.delete(api, options).map(res => res.json());
-    }
+    /**************************************************************************
+     * Shop Vouchers
+     *************************************************************************/
+    @Effect() loadVouchers$ = this.actions$.ofType(VoucherActions.LOAD_VOUCHERS)
+        .switchMap(action => this.getEntities('shop-voucher', action.payload)
+            .map(vouchers => VoucherActions.loadVouchersSuccess(vouchers))
+            .catch(() => Observable.of(VoucherActions.loadVouchersFail()))
+        );
 
+    @Effect() loadVoucher$ = this.actions$.ofType(VoucherActions.LOAD_VOUCHER)
+        .switchMap(action => this.getEntity('shop-voucher', action.payload)
+            .map(voucher => VoucherActions.loadVoucherSuccess(voucher))
+            .catch(() => Observable.of(VoucherActions.loadVoucherFail()))
+        );
+
+    @Effect() putVoucher$ = this.actions$.ofType(VoucherActions.SAVE_VOUCHER)
+        .switchMap(action => this.saveEntity('shop-voucher', action.payload)
+            .map(voucher => VoucherActions.saveVoucherSuccess(voucher))
+            .catch(() => Observable.of(VoucherActions.saveVoucherFail()))
+        );
+
+    @Effect() saveVoucherSuccess$ = this.actions$.ofType(VoucherActions.SAVE_VOUCHER_SUCCESS)
+        .map(action => AlertActions.success('优惠券保存成功!'));
+
+    @Effect() saveVoucherFail$ = this.actions$.ofType(VoucherActions.SAVE_VOUCHER_FAIL)
+        .map(action => AlertActions.error('优惠券保存失败!'));
 }

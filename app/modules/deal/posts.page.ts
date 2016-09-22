@@ -32,7 +32,41 @@ export class DealPostsPage implements OnInit, OnDestroy
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) {}
 
+
+    ngOnInit() {
+        this.subAuth = this.store.select<AuthState>('auth')
+            .subscribe(authState => this.authState = authState);
+
+        // Dispatch an action to create or load a post
+        this.dispatchLoadDealPost();
+        // Load the post
+        this.loadDealPost();
+    }
+
+    ngOnDestroy() {
+        this.subAuth.unsubscribe();
+        this.subParams.unsubscribe();
+    }
+
+    /**
+     * Kick an action to load the post when URL changes
+     */
+    dispatchLoadDealPost() {
+        this.subParams = this.route.params.subscribe(params => {
+            if (Object.keys(params).length === 0) // New a post
+                this.store.dispatch(EntityActions.newEntity(/* FIXME: current user id */));
+            else                                  // Edit a post
+                this.store.dispatch(EntityActions.loadEntity(+params['id']));
+        });
+    }
+
+    loadDealPost() {
+        
+    }
+
+
     canDeactivate() {
         return true;
     }
+
 }

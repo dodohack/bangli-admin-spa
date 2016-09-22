@@ -8,6 +8,7 @@ import { Action }     from '@ngrx/store';
 import { Paginator }   from '../models';
 import { Post }        from '../models';
 import { PostActions } from '../actions';
+import { PageActions } from '../actions';
 
 export interface PostsState {
     ids: number[];
@@ -28,7 +29,7 @@ export default function (state = initialState, action: Action): PostsState {
     {
         case PostActions.SEARCH_COMPLETE:
         case PostActions.LOAD_POSTS_SUCCESS: {
-            const posts: Post[] = action.payload.posts;
+            const posts: Post[]       = action.payload.posts;
             const ids: number[]       = posts.map(p => p.id);
             const entities            = posts.reduce(
                 (entities: { [id: number]: Post }, post: Post) => {

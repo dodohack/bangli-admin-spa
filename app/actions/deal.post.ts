@@ -10,6 +10,12 @@ import { Tag }        from "../models";
 import { Topic }      from "../models";
 import { Activity }   from '../models';
 
+import { BaseActions } from './base';
+
+export class DealPostActions extends BaseActions {
+}
+
+/*
 export class DealPostActions {
     static SEARCH = '[DealPost] Search';
     static search(params: PostParams): Action {
@@ -156,31 +162,7 @@ export class DealPostActions {
             payload: ids
         };
     }
-    /*
-     static SAVE_POST_AS_PENDING = '[DealPost] Save Post As Pending';
-     static savePostAsPending(post: Post): Action {
-     return {
-     type: DealPostActions.SAVE_POST_AS_PENDING,
-     payload: post
-     };
-     }
 
-     static SAVE_POST_AS_DRAFT = '[DealPost] Save Post As Draft';
-     static savePostAsDraft(post: Post): Action {
-     return {
-     type: DealPostActions.SAVE_POST_AS_DRAFT,
-     payload: post
-     };
-     }
-
-     static SAVE_POST_AS_PUBLISH = '[DealPost] Save Post As Publish';
-     static savePostAsPublish(post: Post): Action {
-     return {
-     type: DealPostActions.SAVE_POST_AS_PUBLISH,
-     payload: post
-     };
-     }
-     */
     static SAVE_POST_SUCCESS = '[DealPost] Save Post Success';
     static savePostSuccess(post: Post): Action {
         return {
@@ -260,3 +242,4 @@ export class DealPostActions {
         };
     }
 }
+*/

@@ -6,6 +6,14 @@ import { Tag }        from "../models";
 import { Topic }      from "../models";
 import { Activity }   from '../models';
 
+
+import { BaseActions } from './base';
+
+export class PageActions extends BaseActions {
+
+}
+
+/*
 export class PageActions {
     static SEARCH = '[Page] Search';
     static search(params: PageParams): Action {
@@ -152,31 +160,7 @@ export class PageActions {
             payload: ids
         };
     }
-    /*
-     static SAVE_PAGE_AS_PENDING = '[Page] Save Page As Pending';
-     static savePageAsPending(post: Page): Action {
-     return {
-     type: PageActions.SAVE_PAGE_AS_PENDING,
-     payload: post
-     };
-     }
 
-     static SAVE_PAGE_AS_DRAFT = '[Page] Save Page As Draft';
-     static savePageAsDraft(post: Page): Action {
-     return {
-     type: PageActions.SAVE_PAGE_AS_DRAFT,
-     payload: post
-     };
-     }
-
-     static SAVE_PAGE_AS_PUBLISH = '[Page] Save Page As Publish';
-     static savePageAsPublish(post: Page): Action {
-     return {
-     type: PageActions.SAVE_PAGE_AS_PUBLISH,
-     payload: post
-     };
-     }
-     */
     static SAVE_PAGE_SUCCESS = '[Page] Save Page Success';
     static savePageSuccess(post: Page): Action {
         return {
@@ -199,22 +183,7 @@ export class PageActions {
             payload: posts
         };
     }
-
-    static ADD_CATEGORY = '[Page] Add Category';
-    static addCategory(cat: Category): Action {
-        return {
-            type: PageActions.ADD_CATEGORY,
-            payload: cat
-        };
-    }
-
-    static ADD_TAG = '[Page] Add Tag';
-    static addTag(tag: Tag): Action {
-        return {
-            type: PageActions.ADD_TAG,
-            payload: tag
-        };
-    }
+    
 
     static ADD_TOPIC = '[Page] Add Topic';
     static addTopic(topic: Topic): Action {
@@ -232,21 +201,6 @@ export class PageActions {
         };
     }
 
-    static REMOVE_TAG = '[Page] Remove Tag';
-    static removeTag(tag_id: number): Action {
-        return {
-            type: PageActions.REMOVE_TAG,
-            payload: tag_id
-        };
-    }
-
-    static REMOVE_TOPIC = '[Page] Remove Topic';
-    static removeTopic(topic_id: number): Action {
-        return {
-            type: PageActions.REMOVE_TOPIC,
-            payload: topic_id
-        }
-    }
 
     static REFRESH_ACTIVITY_STATUS = '[Page] Refresh Activity Status';
     static refreshActivityStatus(activities: Activity[]): Action {
@@ -256,3 +210,4 @@ export class PageActions {
         };
     }
 }
+*/

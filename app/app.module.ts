@@ -26,13 +26,7 @@ import { Topbar }        from './modules/directives/topbar';
 import reducer            from './reducers';
 import { AuthEffects }    from './effects';
 import { UserEffects }    from './effects';
-import { ProductEffects } from './effects';
-import { OrderEffects }   from './effects';
-import { VoucherEffects } from './effects';
-import { NewsletterEffects } from './effects';
-import { PostEffects }    from './effects';
-import { TopicEffects }   from './effects';
-import { PageEffects }    from './effects';
+import { EntityEffects }  from './effects';
 import { CmsAttrEffects } from './effects';
 import { ShopAttrEffects } from './effects';
 
@@ -80,13 +74,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         SharedModule.forRoot(),
         EffectsModule.run(AuthEffects),
         EffectsModule.run(UserEffects),
-        EffectsModule.run(ProductEffects),
-        EffectsModule.run(OrderEffects),
-        EffectsModule.run(VoucherEffects),
-        EffectsModule.run(NewsletterEffects),
-        EffectsModule.run(PostEffects),
-        EffectsModule.run(TopicEffects),
-        EffectsModule.run(PageEffects),
+        EffectsModule.run(EntityEffects),
         EffectsModule.run(CmsAttrEffects),
         EffectsModule.run(ShopAttrEffects),
         StoreDevtoolsModule.instrumentStore({
