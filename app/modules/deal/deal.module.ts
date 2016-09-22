@@ -6,6 +6,7 @@ import { SharedModule } from '../directives/shared.module';
 
 import { routing }      from './routing';
 
+import { DealList }         from './components/deal.list';
 import { DealPostsPage }    from './posts.page';
 import { DealPostPage }     from './post.page';
 import { DealTopicsPage }   from './topics.page';
@@ -14,6 +15,7 @@ import { DealTopicPage }    from './topic.page';
 @NgModule({
     imports: [ SharedModule, routing ],
     declarations: [
+        DealList,
         DealPostsPage,
         DealPostPage,
         DealTopicsPage,

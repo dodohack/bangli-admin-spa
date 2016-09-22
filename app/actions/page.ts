@@ -6,14 +6,6 @@ import { Tag }        from "../models";
 import { Topic }      from "../models";
 import { Activity }   from '../models';
 
-
-import { BaseActions } from './base';
-
-export class PageActions extends BaseActions {
-
-}
-
-/*
 export class PageActions {
     static SEARCH = '[Page] Search';
     static search(params: PageParams): Action {
@@ -183,15 +175,6 @@ export class PageActions {
             payload: posts
         };
     }
-    
-
-    static ADD_TOPIC = '[Page] Add Topic';
-    static addTopic(topic: Topic): Action {
-        return {
-            type: PageActions.ADD_TOPIC,
-            payload: topic
-        }
-    }
 
     static REMOVE_CATEGORY = '[Page] Remove Category';
     static removeCategory(cat_id: number): Action {
@@ -200,14 +183,4 @@ export class PageActions {
             payload: cat_id
         };
     }
-
-
-    static REFRESH_ACTIVITY_STATUS = '[Page] Refresh Activity Status';
-    static refreshActivityStatus(activities: Activity[]): Action {
-        return {
-            type: PageActions.REFRESH_ACTIVITY_STATUS,
-            payload: activities
-        };
-    }
 }
-*/

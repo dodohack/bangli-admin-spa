@@ -10,12 +10,6 @@ import { Tag }        from "../models";
 import { Topic }      from "../models";
 import { Activity }   from '../models';
 
-import { BaseActions } from './base';
-
-export class DealPostActions extends BaseActions {
-}
-
-/*
 export class DealPostActions {
     static SEARCH = '[DealPost] Search';
     static search(params: PostParams): Action {
@@ -242,4 +236,3 @@ export class DealPostActions {
         };
     }
 }
-*/

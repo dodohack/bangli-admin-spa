@@ -5,9 +5,9 @@ import '@ngrx/core/add/operator/select';
 import { Observable } from 'rxjs/Observable';
 import { Action }     from '@ngrx/store';
 
-import { Paginator }   from '../models';
-import { Post }        from '../models';
-import { PostActions } from '../actions';
+import { Paginator }       from '../models';
+import { Post }            from '../models';
+import { DealPostActions } from '../actions';
 
 export interface PostsState {
     ids: number[];
@@ -26,8 +26,8 @@ const initialState: PostsState = {
 export default function (state = initialState, action: Action): PostsState {
     switch (action.type)
     {
-        case PostActions.SEARCH_COMPLETE:
-        case PostActions.LOAD_POSTS_SUCCESS: {
+        case DealPostActions.SEARCH_COMPLETE:
+        case DealPostActions.LOAD_POSTS_SUCCESS: {
             const posts: Post[]       = action.payload.posts;
             const ids: number[]       = posts.map(p => p.id);
             const entities            = posts.reduce(
@@ -43,7 +43,7 @@ export default function (state = initialState, action: Action): PostsState {
             };
         }
 
-        case PostActions.BATCH_EDIT_POSTS: {
+        case DealPostActions.BATCH_EDIT_POSTS: {
             return {
                 ids: [...state.ids],
                 editing: [...action.payload],
@@ -52,7 +52,7 @@ export default function (state = initialState, action: Action): PostsState {
             };
         }
 
-        case PostActions.CANCEL_BATCH_EDIT_POSTS: {
+        case DealPostActions.CANCEL_BATCH_EDIT_POSTS: {
             return {
                 ids: [...state.ids],
                 editing: [],
@@ -61,7 +61,7 @@ export default function (state = initialState, action: Action): PostsState {
             };
         }
 
-        case PostActions.BATCH_EDIT_PREVIOUS_POST: {
+        case DealPostActions.BATCH_EDIT_PREVIOUS_POST: {
             // DO NOTHING IF WE ARE NOT FAST EDITING SINGLE POST
             if (state.editing.length !== 1) return state;
 
@@ -78,7 +78,7 @@ export default function (state = initialState, action: Action): PostsState {
             };
         }
 
-        case PostActions.BATCH_EDIT_NEXT_POST: {
+        case DealPostActions.BATCH_EDIT_NEXT_POST: {
             // DO NOTHING IF WE ARE NOT FAST EDITING SINGLE POST
             if (state.editing.length !== 1) return state;
 
@@ -95,8 +95,8 @@ export default function (state = initialState, action: Action): PostsState {
             };
         }
 
-        case PostActions.SAVE_POST_SUCCESS:
-        case PostActions.LOAD_POST_SUCCESS: {
+        case DealPostActions.SAVE_POST_SUCCESS:
+        case DealPostActions.LOAD_POST_SUCCESS: {
             // Post id
             const id: number = +action.payload['id'];
 
@@ -110,8 +110,8 @@ export default function (state = initialState, action: Action): PostsState {
                 paginator: Object.assign({}, state.paginator)
             };
         }
-            
-        case PostActions.NEW_POST: {
+
+        case DealPostActions.NEW_POST: {
             // Create a new post, we use '0' as a placeholder id
             const id = 0;
             let newPost: Post  = new Post;
@@ -129,12 +129,12 @@ export default function (state = initialState, action: Action): PostsState {
 
 
         // Add a tag/topic/category to single/multiple post[s]
-        case PostActions.ADD_TAG:
-        case PostActions.ADD_TOPIC:
-        case PostActions.ADD_CATEGORY: {
+        case DealPostActions.ADD_TAG:
+        case DealPostActions.ADD_TOPIC:
+        case DealPostActions.ADD_CATEGORY: {
             let key = 'categories';
-            if (action.type == PostActions.ADD_TAG) key = 'tags';
-            if (action.type == PostActions.ADD_TOPIC) key = 'topics';
+            if (action.type == DealPostActions.ADD_TAG) key = 'tags';
+            if (action.type == DealPostActions.ADD_TOPIC) key = 'topics';
 
             const newPostArray = state.editing.map(id => {
                 const oldPost  = state.entities[id];
@@ -162,12 +162,12 @@ export default function (state = initialState, action: Action): PostsState {
         }
 
         // Remove a tag/topic/category from single/multiple post[s]
-        case PostActions.REMOVE_TAG:
-        case PostActions.REMOVE_TOPIC:
-        case PostActions.REMOVE_CATEGORY: {
+        case DealPostActions.REMOVE_TAG:
+        case DealPostActions.REMOVE_TOPIC:
+        case DealPostActions.REMOVE_CATEGORY: {
             let key = 'categories';
-            if (action.type == PostActions.REMOVE_TAG) key = 'tags';
-            if (action.type == PostActions.REMOVE_TOPIC) key = 'topics';
+            if (action.type == DealPostActions.REMOVE_TAG) key = 'tags';
+            if (action.type == DealPostActions.REMOVE_TOPIC) key = 'topics';
 
             const newPostArray = state.editing.map(id => {
                 const oldPost = state.entities[id];
@@ -188,7 +188,7 @@ export default function (state = initialState, action: Action): PostsState {
             };
         }
 
-        case PostActions.APPLY_REVISION: {
+        case DealPostActions.APPLY_REVISION: {
             const postid = action.payload[0];
             const revid = action.payload[1];
             // Get revision.body
@@ -205,7 +205,7 @@ export default function (state = initialState, action: Action): PostsState {
             }
         }
 
-        case PostActions.REFRESH_ACTIVITY_STATUS: {
+        case DealPostActions.REFRESH_ACTIVITY_STATUS: {
             let newPosts: { [id: number]: Post } = {};
             if (action.payload === null) {
                 state.ids.forEach(id =>
@@ -228,17 +228,17 @@ export default function (state = initialState, action: Action): PostsState {
 
         /* This is a must, as we can get the updated post from its subscriber */
         /*
-        case PostActions.SAVE_POST: {
-            const id: number = +action.payload['id'];
+         case DealPostActions.SAVE_POST: {
+         const id: number = +action.payload['id'];
 
-            return {
-                ids: [...state.ids],
-                editing: [...state.editing],
-                entities: Object.assign({}, state.entities, {[id]: action.payload}),
-                paginator: Object.assign({}, state.paginator)
-            };
-        }
-        */
+         return {
+         ids: [...state.ids],
+         editing: [...state.editing],
+         entities: Object.assign({}, state.entities, {[id]: action.payload}),
+         paginator: Object.assign({}, state.paginator)
+         };
+         }
+         */
 
         default:
             return state;
