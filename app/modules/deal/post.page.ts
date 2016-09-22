@@ -1,14 +1,14 @@
 /**
- * Page list of deals
+ * Single deal post
  */
 
 import { Component } from '@angular/core';
 
-@Component({ template: require('./deals.page.html') })
-export class DealsPage
+@Component({ template: require('./post.page.html') })
+export class DealPostPage
 {
     constructor() {}
-
+    
     canDeactivate() {
         return true;
     }

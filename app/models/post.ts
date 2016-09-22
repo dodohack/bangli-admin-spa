@@ -3,6 +3,7 @@
  */
 
 import { Location } from './location';
+import { Channel }  from  './channel';
 import { Statistic }from './statistic';
 import { Activity } from './activity';
 import { Revision } from './revision';
@@ -81,8 +82,11 @@ export class Post {
     editor_id: number;
     author_id: number;
     image_id: number;
+    images: any; // image urls
     state: string;
     channel_id: number;
+    channels: Channel[];
+    location_id: number;
     locations: Location[];
     creative_type: string;
     title: string;

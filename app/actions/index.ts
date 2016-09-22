@@ -5,7 +5,7 @@ import { ProductActions }    from './product';
 import { OrderActions }      from './order';
 import { VoucherActions }    from './voucher';
 import { PostActions }       from './post';
-import { DealActions }       from './deal';
+import { EntityActions }     from './entity';
 import { NewsletterActions } from './newsletter';
 import { TopicActions }      from './topic';
 import { PageActions }       from './page';
@@ -21,7 +21,7 @@ export {
     OrderActions,
     VoucherActions,
     PostActions,
-    DealActions,
+    EntityActions,
     NewsletterActions,
     TopicActions,
     PageActions,
@@ -38,7 +38,7 @@ export default [
     OrderActions,
     VoucherActions,
     PostActions,
-    DealActions,
+    EntityActions,
     NewsletterActions,
     TopicActions,
     PageActions,

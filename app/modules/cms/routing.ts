@@ -1,3 +1,6 @@
+/**
+ * Routing for cms module
+ */
 import { Routes, RouterModule } from '@angular/router';
 
 import { AuthorGuard, EditorGuard, LockGuard } from '../../guard';
@@ -58,7 +61,7 @@ const routes: Routes = [
             { path: 'channel/:channel/page/:page', redirectTo: 'channel/:channel/page/:page/state/all' },
             { path: 'channel/:channel/page/:page/state/:state', component: TopicsPage },
 
-
+            
             /* Single topic */
             { path: 'new', component: TopicPage },
             { path: ':id', component: TopicPage }

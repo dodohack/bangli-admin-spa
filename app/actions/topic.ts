@@ -1,3 +1,10 @@
+/**
+ * This action is shared by cms->topic, deal->topic
+ * We use unified ngrx behavior for those kind of topic because they shares more
+ * than 90% of common code base, but with different views.
+ * The only thing we need to do is selecting different API for those topics, as
+ * we need to separate the storage of them for better management and speed.
+ */
 import { Action }      from '@ngrx/store';
 import { TopicParams } from '../models';
 import { Topic }       from '../models';

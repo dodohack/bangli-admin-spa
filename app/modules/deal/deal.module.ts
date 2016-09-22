@@ -6,12 +6,18 @@ import { SharedModule } from '../directives/shared.module';
 
 import { routing }      from './routing';
 
-import { DealsPage }    from './deals.page';
+import { DealPostsPage }    from './posts.page';
+import { DealPostPage }     from './post.page';
+import { DealTopicsPage }   from './topics.page';
+import { DealTopicPage }    from './topic.page';
 
 @NgModule({
     imports: [ SharedModule, routing ],
     declarations: [
-        DealsPage
+        DealPostsPage,
+        DealPostPage,
+        DealTopicsPage,
+        DealTopicPage
     ]
 })
 export class DealModule {}

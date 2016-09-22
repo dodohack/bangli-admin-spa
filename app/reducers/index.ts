@@ -51,7 +51,8 @@ import newslettersReducer, * as fromNewsletters from './newsletters';
 import postsReducer, * as fromPosts       from './posts';
 import topicsReducer, * as fromTopics     from './topics';
 import pagesReducer, * as fromPages       from './pages';
-import dealsReducer, * as fromDeals       from './deals';
+import dealPostsReducer, * as fromDealPosts   from './posts';
+import dealTopicsReducer, * as fromDealTopics from './topics';
 import cmsReducer, * as fromCms           from './cmsattrs';
 import shopReducer, * as fromShop         from './shopattrs';
 import {Observable} from "rxjs/Observable";
@@ -72,7 +73,8 @@ export interface AppState {
     posts:    fromPosts.PostsState;
     topics:   fromTopics.TopicsState;
     pages:    fromPages.PagesState;
-    deals:    fromDeals.DealsState;
+    dealPosts:  fromDealPosts.PostsState;
+    dealTopics: fromDealTopics.TopicsState;
     cms:      fromCms.CmsAttrsState;
     shop:     fromShop.ShopAttrsState;
 }
@@ -102,7 +104,8 @@ export default compose(
     posts:    postsReducer,
     topics:   topicsReducer,
     pages:    pagesReducer,
-    deals:    dealsReducer,
+    dealPosts:  dealPostsReducer,
+    dealTopics: dealTopicsReducer,
     cms:      cmsReducer,
     shop:     shopReducer
 });

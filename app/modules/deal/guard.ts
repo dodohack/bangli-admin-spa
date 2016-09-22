@@ -6,11 +6,21 @@ import { CanDeactivate }          from '@angular/router';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { RouterStateSnapshot }    from '@angular/router';
 
-import { DealsPage }    from './deals.page';
+import { DealPostPage }    from './post.page';
+import { DealTopicPage }   from './topic.page';
 
 @Injectable()
-export class DealsEditGuard implements CanDeactivate<DealsPage> {
-    canDeactivate (component: DealsPage,
+export class DealPostEditGuard implements CanDeactivate<DealPostPage> {
+    canDeactivate (component: DealPostPage,
+                   route: ActivatedRouteSnapshot,
+                   state: RouterStateSnapshot) {
+        return component.canDeactivate();
+    }
+}
+
+@Injectable()
+export class DealTopicEditGuard implements CanDeactivate<DealTopicPage> {
+    canDeactivate (component: DealTopicPage,
                    route: ActivatedRouteSnapshot,
                    state: RouterStateSnapshot) {
         return component.canDeactivate();
