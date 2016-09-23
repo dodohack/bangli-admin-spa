@@ -13,23 +13,30 @@ import { Observable } from 'rxjs/Observable';
 import { Action }     from '@ngrx/store';
 
 import { Paginator }     from '../models';
-import { ENTITY }        from '../models';
 import { Entity }        from '../models';
 import { EntityActions } from '../actions';
 
+/**
+ * Entities state for single entity type
+ */
 export interface EntitiesState {
+    ids: number[];
+    editing: number[];  // Entities in editing mode
+    entities: { [id:number]: Entity };
+    paginator: Paginator;
+}
+
+/**
+ * Grouped entities state for all entity types
+ */
+export interface EntitiesStateGroup {
     // Entity type, ref models/entity.ts ENTITY for all posissble types
     // The data for different entity type is indexed by etype which is a
     // dynamic key of EntitiesState object.
-    [etype: string] : {
-        ids: number[];
-        editing: number[]; // Entities in editing mode
-        entities: { [id:number]: Entity };
-        paginator: Paginator;
-    }
+    [etype: string] : EntitiesState
 };
 
-const initialState: EntitiesState = {
+const initialState: EntitiesStateGroup = {
     /*
     [ENTITY.INVALID]: {
         ids: [],
@@ -40,7 +47,7 @@ const initialState: EntitiesState = {
     */
 };
 
-export default function (state = initialState, action: Action): EntitiesState {
+export default function (state = initialState, action: Action): EntitiesStateGroup {
 
     // Every action must comes with a entity type, see model/entity.ts ENTITY
     // for all possible types
@@ -181,11 +188,11 @@ export default function (state = initialState, action: Action): EntitiesState {
 
         // Add a tag/topic/category to single/multiple entity[s]
         case EntityActions.ADD_TAG:
-        case EntityActions.ADD_TOPIC:
+        case EntityActions.ATTACH_ENTITY_TO_TOPIC:
         case EntityActions.ADD_CATEGORY: {
             let key = 'categories';
             if (action.type == EntityActions.ADD_TAG) key = 'tags';
-            if (action.type == EntityActions.ADD_TOPIC) key = 'topics';
+            if (action.type == EntityActions.ATTACH_ENTITY_TO_TOPIC) key = 'topics';
 
             const newEntityArray = state[etype].editing.map(id => {
                 const oldEntity  = state[etype].entities[id];
@@ -217,11 +224,11 @@ export default function (state = initialState, action: Action): EntitiesState {
 
         // Remove a tag/topic/category from single/multiple entity[s]
         case EntityActions.REMOVE_TAG:
-        case EntityActions.REMOVE_TOPIC:
+        case EntityActions.DETACH_ENTITY_FROM_TOPIC:
         case EntityActions.REMOVE_CATEGORY: {
             let key = 'categories';
             if (action.type == EntityActions.REMOVE_TAG) key = 'tags';
-            if (action.type == EntityActions.REMOVE_TOPIC) key = 'topics';
+            if (action.type == EntityActions.DETACH_ENTITY_FROM_TOPIC) key = 'topics';
 
             const newEntityArray = state[etype].editing.map(id => {
                 const oldEntity = state[etype].entities[id];
@@ -322,6 +329,6 @@ export default function (state = initialState, action: Action): EntitiesState {
  * Return a entity from current entity list by id
  */
 export function getEntity(etype: string, id: number) {
-    return (state$: Observable<EntitiesState>) =>
+    return (state$: Observable<EntitiesStateGroup>) =>
         state$.select(s => s[etype].entities[id]);
 }

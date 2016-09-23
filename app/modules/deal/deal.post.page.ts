@@ -1,5 +1,5 @@
 /**
- * This is the single post page
+ * This is the single deal post page
  */
 
 import { Component }         from '@angular/core';
@@ -14,19 +14,19 @@ import { AlertActions }      from '../../actions';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
 
-@Component({ template: require('./post.page.html') })
-export class PostPage extends EntityPage
+@Component({ template: require('./deal.post.page.html') })
+export class DealPostPage extends EntityPage
 {
-    @ViewChild('postForm') postForm;
+    @ViewChild('dealPostForm') dealPostForm;
 
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>) {
-        super(ENTITY.CMS_POST, route, store);
+        super(ENTITY.DEAL_POST, route, store);
     }
 
     canDeactivate() {
-        console.log("form status: ", this.postForm);
-        if (this.postForm.dirty) {
+        console.log("form status: ", this.dealPostForm);
+        if (this.dealPostForm.dirty) {
             this.store.dispatch(AlertActions.error('请先保存当前更改，或取消保存'));
             return false;
         } else {

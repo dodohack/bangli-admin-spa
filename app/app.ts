@@ -40,8 +40,8 @@ export class App implements OnInit, OnDestroy
 
     constructor(private viewContainerRef: ViewContainerRef,
                 private store: Store<AppState>,
-                private router: Router,
-                private ping: Ping) {
+                private router: Router/*,
+                private ping: Ping*/) {
     }
 
     ngOnInit() {

@@ -45,18 +45,11 @@ import authReducer, * as fromAuth         from './auth';
 import usersReducer, * as fromUsers       from './users';
 import prefReducer, * as fromPref         from './preference';
 import entitiesReducer, * as fromEntities from './entities';
-import productsReducer, * as fromProducts from './products';
-import ordersReducer, * as fromOrders     from './orders';
-import vouchersReducer, * as fromVouchers from './vouchers';
-import newslettersReducer, * as fromNewsletters from './newsletters';
-import postsReducer, * as fromPosts       from './posts';
-import topicsReducer, * as fromTopics     from './topics';
-import pagesReducer, * as fromPages       from './pages';
-import dealPostsReducer, * as fromDealPosts   from './deal.posts';
-import dealTopicsReducer, * as fromDealTopics from './deal.topics';
 import cmsReducer, * as fromCms           from './cmsattrs';
 import shopReducer, * as fromShop         from './shopattrs';
-import {Observable} from "rxjs/Observable";
+
+import { Observable } from 'rxjs/Observable';
+import { ENTITY }     from '../models/entity';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -68,15 +61,6 @@ export interface AppState {
     users:    fromUsers.UsersState;
     pref:     fromPref.PreferenceState;
     entities: fromEntities.EntitiesState;
-    products: fromProducts.ProductsState;
-    orders:   fromOrders.OrdersState;
-    vouchers: fromVouchers.VouchersState;
-    newsletters: fromNewsletters.NewsletterState;
-    posts:    fromPosts.PostsState;
-    topics:   fromTopics.TopicsState;
-    pages:    fromPages.PagesState;
-    dealPosts:  fromDealPosts.PostsState;
-    dealTopics: fromDealTopics.TopicsState;
     cms:      fromCms.CmsAttrsState;
     shop:     fromShop.ShopAttrsState;
 }
@@ -100,15 +84,6 @@ export default compose(
     users:    usersReducer,
     pref:     prefReducer,
     entities: entitiesReducer,
-    products: productsReducer,
-    orders:   ordersReducer,
-    vouchers: vouchersReducer,
-    newsletters: newslettersReducer,
-    posts:    postsReducer,
-    topics:   topicsReducer,
-    pages:    pagesReducer,
-    dealPosts:  dealPostsReducer,
-    dealTopics: dealTopicsReducer,
     cms:      cmsReducer,
     shop:     shopReducer
 });
@@ -172,11 +147,11 @@ export function getUser(uuid: string) {
  *****************************************************************************/
 export function getProductsState() {
     return (state$: Observable<AppState>) =>
-        state$.select(s => s.products);
+        state$.select(s => s.entities);
 }
 
 export function getProduct(id: number) {
-    return compose(fromProducts.getProduct(id), getProductsState());
+    return compose(fromEntities.getEntity(ENTITY.SHOP_PRODUCT, id), getProductsState());
 }
 
 
@@ -185,11 +160,11 @@ export function getProduct(id: number) {
  *****************************************************************************/
 export function getPostsState() {
     return (state$: Observable<AppState>) =>
-        state$.select(s => s.posts);
+        state$.select(s => s.entities);
 }
 
 export function getPost(id: number) {
-    return compose(fromPosts.getPost(id), getPostsState());
+    return compose(fromEntities.getEntity(ENTITY.CMS_POST, id), getPostsState());
 }
 
 export function isPostLocked() {
@@ -202,11 +177,11 @@ export function isPostLocked() {
  *****************************************************************************/
 export function getTopicsState() {
     return (state$: Observable<AppState>) =>
-        state$.select(s => s.topics);
+        state$.select(s => s.entities);
 }
 
 export function getTopic(id: number) {
-    return compose(fromTopics.getTopic(id), getTopicsState());
+    return compose(fromEntities.getEntity(ENTITY.CMS_TOPIC, id), getTopicsState());
 }
 
 

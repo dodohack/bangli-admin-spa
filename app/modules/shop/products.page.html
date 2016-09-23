@@ -3,15 +3,18 @@
                   [loading]="loading"></list-page-header>
 
 <!-- Product filter/tool bar -->
-<list-filter-bar [isProduct]="true"
+<list-filter-bar *ngIf="entitiesState"
+                 [isProduct]="true"
                  [editors]="cmsState.editors"
                  [categories]="shopState.categories"
                  [brands]="shopState.brands"
-                 [paginator]="productsState.paginator"
+                 [paginator]="entitiesState.paginator"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Product list table -->
-<product-list [authState]="authState" [listState]="productsState"
+<product-list *ngIf="entitiesState"
+              [authState]="authState"
+              [listState]="entitiesState"
               [cmsState]="cmsState"
               (batchEdit)="batchEdit($event)"
               (batchDelete)="batchDelete($event)"

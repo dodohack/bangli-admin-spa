@@ -3,12 +3,15 @@
                   [loading]="loading"></list-page-header>
 
 <!-- Order filter/tool bar -->
-<list-filter-bar [isOrder]="true"
-                 [paginator]="ordersState.paginator"
+<list-filter-bar *ngIf="entitiesState"
+                 [isOrder]="true"
+                 [paginator]="entitiessState.paginator"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Product list table -->
-<order-list [authState]="authState" [listState]="ordersState"
+<order-list *ngIf="entitiesState"
+            [authState]="authState"
+            [listState]="entitiesState"
             (batchEdit)="batchEdit($event)"
             (batchDelete)="batchDelete($event)"
             (batchOfflineEdit)="batchOfflineEdit($event)"

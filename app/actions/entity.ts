@@ -213,14 +213,24 @@ export class EntityActions {
         };
     }
 
-    static ADD_TOPIC = '[Entity] Add Topic';
-    static addTopic(etype: string, topic: Topic): Action {
+    // FIXME: Should we merge ATTACH_TOPIC_TO_ENTITY and
+    // ATTACH_ENTITY_TO_TOPIC into single ATTACH_ENTITY_TO_ENTITY??
+    static ATTACH_TOPIC_TO_ENTITY = '[Entity] Attach Topic To Entity';
+    static attachTopicToEntity(etype: string, topic: Topic): Action {
         return {
-            type: EntityActions.ADD_TOPIC,
+            type: EntityActions.ATTACH_TOPIC_TO_ENTITY,
             payload: {etype: etype, data: topic}
         }
     }
-    
+
+    static ATTACH_ENTITY_TO_TOPIC = '[Entity] Add Entity To Topic';
+    static attachEntityToTopic(etype: string, entity: Entity): Action {
+        return {
+            type: EntityActions.ATTACH_ENTITY_TO_TOPIC,
+            payload: {etype: etype, data: entity}
+        }
+    }
+
     static REMOVE_CATEGORY = '[Entity] Remove Category';
     static removeCategory(etype: string, cat_id: number): Action {
         return {
@@ -237,11 +247,19 @@ export class EntityActions {
         };
     }
 
-    static REMOVE_TOPIC = '[Entity] Remove Topic';
-    static removeTopic(etype: string, topic_id: number): Action {
+    static DETACH_TOPIC_FROM_ENTITY = '[Entity] Detach Topic From Entity';
+    static detachTopicFromEntity(etype: string, topic_id: number): Action {
         return {
-            type: EntityActions.REMOVE_TOPIC,
+            type: EntityActions.DETACH_TOPIC_FROM_ENTITY,
             payload: {etype: etype, data: topic_id}
+        }
+    }
+
+    static DETACH_ENTITY_FROM_TOPIC = '[Entity] Detach Entity From Topic';
+    static detachEntityFromTopic(etype: string, entity_id: number): Action {
+        return {
+            type: EntityActions.DETACH_ENTITY_FROM_TOPIC,
+            payload: {etype: etype, data: entity_id}
         }
     }
     

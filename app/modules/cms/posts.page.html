@@ -1,18 +1,23 @@
-<list-page-header [cmsChannels]="cmsState.channels"
+<list-page-header [isPost]="true"
+                  [cmsChannels]="cmsState.channels"
                   [activeChannel]="params['channel']"
-                  [isPost]="true" [states]="cmsState.post_states.actual"
+                  [states]="cmsState.post_states.actual"
                   [loading]="loading"></list-page-header>
 
 <!-- Post filter/tool bar at top -->
-<list-filter-bar [isPost]="true" [authors]="cmsState.authors"
+<list-filter-bar *ngIf="entitiesState"
+                 [isPost]="true"
+                 [authors]="cmsState.authors"
                  [editors]="cmsState.editors"
                  [categories]="cmsState.categories"
-                 [paginator]="postsState.paginator"
+                 [paginator]="entitiesState.paginator"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Post list table -->
-<cms-list [isPost]="true"
-          [authState]="authState" [listState]="postsState"
+<cms-list *ngIf="entitiesState"
+          [isPost]="true"
+          [authState]="authState"
+          [listState]="entitiesState"
           [cmsState]="cmsState"
           (batchEdit)="batchEdit($event)"
           (batchDelete)="batchDelete($event)"
@@ -22,10 +27,12 @@
 <hr>
 
 <!-- Post filter/tool bar at bottom -->
-<list-filter-bar [isPost]="true" [authors]="cmsState.authors"
+<list-filter-bar *ngIf="entitiesState"
+                 [isPost]="true"
+                 [authors]="cmsState.authors"
                  [editors]="cmsState.editors"
                  [categories]="cmsState.categories"
-                 [paginator]="postsState.paginator"></list-filter-bar>
+                 [paginator]="entitiesState.paginator"></list-filter-bar>
 
 <hr>
 
@@ -33,9 +40,11 @@
 
 <!-- Right panel, we can trigger a seperate saving individually -->
 <!-- Only show previous and next nav for fast editing single post -->
-<right-panel [width]="'600px'" [isOpen]="postsInEdit.length"
-             [hasNav]="postsInEdit.length === 1"
-             [entity]="postsInEdit[0]"
+<right-panel *ngIf="entitiesState"
+             [width]="'600px'"
+             [isOpen]="entitiesInEdit.length"
+             [hasNav]="entitiesInEdit.length === 1"
+             [entity]="entitiesInEdit[0]"
              (toggle)="cancelBatchEdit()"
              (previous)="editPreviousPost()"
              (next)="editNextPost()">

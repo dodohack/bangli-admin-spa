@@ -7,10 +7,6 @@ import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 import { EntityList }     from '../../base/entity.list';
-import { AuthState }      from '../../../reducers/auth';
-import { ProductsState }  from '../../../reducers/products';
-import { ShopAttrsState } from "../../../reducers/shopattrs";
-import { CmsAttrsState } from "../../../reducers/cmsattrs";
 
 import { zh_CN } from '../../../localization';
 

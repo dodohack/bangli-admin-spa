@@ -16,7 +16,7 @@ import { SuperUserGuard} from './guard';
 import { LockGuard }     from './guard';
 import { EditLockGuard } from './guard';
 
-import { Ping }          from './ping';
+//import { Ping }          from './ping';
 import { routing }       from './app.routes';
 import { App }           from './app';
 import { Sidebar }       from './modules/directives/sidebar';
@@ -93,7 +93,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
     ],
     providers: [
         Title,
-        Ping,
+        //Ping,
         UnauthGuard,
         BaseGuard,
         AuthorGuard,

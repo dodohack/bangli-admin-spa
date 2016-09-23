@@ -1,8 +1,8 @@
 <editor-page-header [authState]="authState" [isPost]="true"
-                    [entity]="post" [lists]="postsState">
+                    [entity]="entity" [lists]="entitiesState">
 </editor-page-header>
 
-<form *ngIf="post" (ngSubmit)="save()" #postForm="ngForm">
+<form *ngIf="entity" (ngSubmit)="save()" #postForm="ngForm">
 
     <!-- Post title and main buttons -->
     <div class="row post-meta-row">
@@ -10,7 +10,7 @@
             <div class="input-group">
                 <span class="input-group-addon">标题</span>
                 <input type="text" name="title" class="form-control post-title"
-                       [(ngModel)]="post.title" placeholder="文章标题" required>
+                       [(ngModel)]="entity.title" placeholder="文章标题" required>
             </div>
         </div>
 
@@ -47,9 +47,9 @@
                     <div class="form-group post-meta">
                         <label>作者</label>
                         <select class="form-control form-control-sm custom-select"
-                                name="author_id" [(ngModel)]="post.author_id">
+                                name="author_id" [(ngModel)]="entity.author_id">
                             <option *ngFor="let author of cmsState.authors"
-                                    [selected]="author.id === post.author_id"
+                                    [selected]="author.id === entity.author_id"
                                     [value]="author.id">{{ author.display_name }}</option>
                         </select>
                     </div>
@@ -57,9 +57,9 @@
                     <div class="form-group post-meta">
                         <label>编辑</label>
                         <select class="form-control form-control-sm custom-select"
-                                name="editor_id" [(ngModel)]="post.editor_id">
+                                name="editor_id" [(ngModel)]="entity.editor_id">
                             <option *ngFor="let editor of cmsState.editors"
-                                    [selected]="editor.id === post.editor_id"
+                                    [selected]="editor.id === entity.editor_id"
                                     [value]="editor.id">{{ editor.display_name }}</option>
                         </select>
                     </div>
@@ -67,9 +67,9 @@
                     <div class="form-group post-meta">
                         <label>稿件属性</label>
                         <select class="form-control form-control-sm custom-select"
-                                name="c_type" [(ngModel)]="post.creative_type">
+                                name="c_type" [(ngModel)]="entity.creative_type">
                             <option *ngFor="let c_type of cmsState.post_creative_types.available"
-                                    [selected]="post.creative_type === c_type.creative_type"
+                                    [selected]="entity.creative_type === c_type.creative_type"
                                     [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
                         </select>
                     </div>
@@ -77,9 +77,9 @@
                     <div class="form-group post-meta">
                         <label>频道</label>
                         <select class="form-control form-control-sm custom-select"
-                                name="cid" [(ngModel)]="post.channel_id">
+                                name="cid" [(ngModel)]="entity.channel_id">
                             <option *ngFor="let ch of cmsState.channels"
-                                    [selected]="post.channel_id === ch.id"
+                                    [selected]="entity.channel_id === ch.id"
                                     [value]="ch.id">{{ ch.name }}</option>
                         </select>
                     </div>
@@ -87,7 +87,7 @@
                     <div class="form-group post-meta">
                         <label>坐标</label>
                         <select class="form-control form-control-sm custom-select"
-                                name="lid" [(ngModel)]="post.location_id">
+                                name="lid" [(ngModel)]="entity.location_id">
                             <option value="0">typeahead select</option>
                             <option value="1">typeahead select</option>
                         </select>
@@ -99,7 +99,7 @@
 
 
             <!-- Post category, tag, topic etc -->
-            <cms-tag-cloud [post]="post"
+            <cms-tag-cloud [post]="entity"
                            (toggle)="openPanel = !openPanel"
                            (deleteCat)="removeCat($event)"
                            (deleteTag)="removeTag($event)"
@@ -114,9 +114,9 @@
                 </div>
 
                 <div class="col-xs-8">
-                    <textarea name="excerpt" [(ngModel)]="post.excerpt" placeholder="摘要"
+                    <textarea name="excerpt" [(ngModel)]="entity.excerpt" placeholder="摘要"
                               class="form-control" style="height: 75px;"></textarea>
-                    <textarea name="excerpt" [(ngModel)]="post.internal_note" placeholder="内部备注"
+                    <textarea name="excerpt" [(ngModel)]="entity.internal_note" placeholder="内部备注"
                               class="form-control" style="height: 75px;"></textarea>
                 </div>
             </div>
@@ -131,20 +131,20 @@
             <!-- Froala Editor -->
             <!-- TODO: Use official one when ngModule bug is fixed -->
             <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions" [(froalaModel)]="inputPost.content"></div>-->
-            <froala *ngIf="inputPost" [froalaOptions]="froalaOptions"
-                    [froalaData]="inputPost.content" (model)="postContentChanged($event)"></froala>
+            <froala *ngIf="inputEntity" [froalaOptions]="froalaOptions"
+                    [froalaData]="inputEntity.content" (model)="contentChanged($event)"></froala>
 
         </accordion-group>
 
     </accordion>
 </form>
 
-<revision-history [entity]="post" [cmsState]="cmsState"
+<revision-history [entity]="entity" [cmsState]="cmsState"
                   (restore2Revision)="restoreRevision($event)"></revision-history>
 
 <!-- Right panel, we can trigger a seperate saving individually -->
 <right-panel [width]="'540px'" [isOpen]="openPanel"
-             (toggle)="openPanel = !openPanel" *ngIf="post">
+             (toggle)="openPanel = !openPanel" *ngIf="entity">
     <accordion>
 
         <accordion-group isOpen="true">
@@ -154,7 +154,7 @@
 
             <category-tree [parentId]="0"
                            [categories]="cmsState.categories"
-                           [selectedCats]="post.categories"
+                           [selectedCats]="entity.categories"
                            (checkEvent)="selectCat($event)">
             </category-tree>
         </accordion-group>
@@ -165,7 +165,7 @@
             </div>
 
             <tag-cloud [tags]="cmsState.tags"
-                       [selectedTags]="post.tags"
+                       [selectedTags]="entity.tags"
                        (addTag)="addTag($event)"
                        (removeTag)="removeTag($event)"></tag-cloud>
         </accordion-group>
@@ -176,7 +176,7 @@
             </div>
 
             <topic-cloud [topics]="cmsState.post_topic_cats"
-                         [selectedTopics]="post.topics"
+                         [selectedTopics]="entity.topics"
                          (addTopic)="addTopic($event)"
                          (removeTopic)="removeTopic($event)"></topic-cloud>
         </accordion-group>

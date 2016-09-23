@@ -11,18 +11,15 @@ import { Subject }                       from 'rxjs/Subject';
 import { APIS, API_PATH }                from './api';
 import { AppState }                      from './reducers';
 import { AuthState }                     from './reducers/auth';
-import { PostsState }                    from './reducers/posts';
-import { TopicsState }                   from './reducers/topics';
-import { PagesState }                    from './reducers/pages';
+import { EntitiesState }                 from './reducers/entities';
+import { EntitiesStateGroup }            from './reducers/entities';
 
 @Injectable()
 export class Ping {
     timer: any;
 
     authState: AuthState;
-    postsState: PostsState;
-    topicsState: TopicsState;
-    pagesState: PagesState;
+    entitiesState: EntitiesState;
 
     // Other componenets should uses this
     activity$: Subject<any> = new Subject<any>(); 
@@ -31,9 +28,10 @@ export class Ping {
     constructor (private store: Store<AppState>,
                  private http: Http) {
         this.store.select<AuthState>('auth').subscribe(p => this.authState = p);
-        this.store.select<PostsState>('posts').subscribe(p => this.postsState = p);
-        this.store.select<TopicsState>('topics').subscribe(p => this.topicsState = p);
-        this.store.select<PagesState>('pages').subscribe(p => this.pagesState = p);
+        this.store.select<EntitiesState>('entities').subscribe(p => {
+            // FIXME: We need to determine which entities to listen on
+            this.postsState = p
+        });
         // Start the beacon.
         this.run();
     }

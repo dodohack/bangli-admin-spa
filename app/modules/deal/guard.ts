@@ -6,7 +6,7 @@ import { CanDeactivate }          from '@angular/router';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { RouterStateSnapshot }    from '@angular/router';
 
-import { DealPostPage }    from './post.page';
+import { DealPostPage }    from './deal.post.page';
 
 @Injectable()
 export class DealPostEditGuard implements CanDeactivate<DealPostPage> {

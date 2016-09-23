@@ -1,8 +1,7 @@
 /**
- * This is the component for managing vouchers
+ * This is the deal post list management page component
  */
 
-import '@ngrx/core/add/operator/select';
 import { Component }         from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
@@ -10,20 +9,19 @@ import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
 import { EntitiesPage }      from '../base/entities.page';
+import { ENTITY }            from '../../models';
 import { AppState }          from '../../reducers';
 //import { Ping }              from '../../ping';
-import { ENTITY }            from '../../models';
+import { zh_CN }             from '../../localization';
 
-import { zh_CN } from '../../localization';
-
-@Component({ template: require('./products.page.html') })
-export class VouchersPage extends EntitiesPage
+@Component({ template: require('./deal.posts.page.html') })
+export class DealPostsPage extends EntitiesPage
 {
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>/*,
                  protected ping: Ping*/) {
-        super(ENTITY.VOUCHER, route, store/*, ping*/);
+        super(ENTITY.DEAL_POST, route, store/*, ping*/);
     }
 
-    get zh() { return zh_CN.product; }
+    get zh() { return zh_CN.cms; }
 }

@@ -6,8 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { EditorGuard }    from '../../guard';
 import { DealPostEditGuard } from './guard';
 
-import { DealPostsPage }    from './posts.page';
-import { DealPostPage }     from './post.page';
+import { DealPostsPage }    from './deal.posts.page';
+import { DealPostPage }     from './deal.post.page';
 
 export const routes: Routes = [
     {

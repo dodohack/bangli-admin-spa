@@ -1,18 +1,21 @@
-<list-page-header [cmsChannels]="cmsState.channels"
-                  [isTopic]="true"
+<list-page-header [isTopic]="true"
+                  [cmsChannels]="cmsState.channels"
                   [states]="cmsState.topic_states.actual"
                   [loading]="loading"></list-page-header>
 
 <!-- Topic filter/tool bar at top -->
-<list-filter-bar [isTopic]="true"
+<list-filter-bar *ngIf="entitiesState"
+                 [isTopic]="true"
                  [editors]="cmsState.editors"
                  [categories]="cmsState.categories"
-                 [paginator]="topicsState.paginator"
+                 [paginator]="entitiesState.paginator"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Topic list table -->
-<cms-list [isTopic]="true"
-          [authState]="authState" [listState]="topicsState"
+<cms-list *ngIf="entitiesState"
+          [isTopic]="true"
+          [authState]="authState"
+          [listState]="entitiesState"
           [cmsState]="cmsState"
           (batchEdit)="batchEdit($event)"
           (batchDelete)="batchDelete($event)"
