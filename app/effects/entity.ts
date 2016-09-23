@@ -8,6 +8,7 @@ import { Http, Headers, RequestOptions }  from '@angular/http';
 import { Effect, Actions } from '@ngrx/effects';
 import { Observable }      from 'rxjs/Observable';
 
+import { API_PATH }        from '../api';
 import { EntityActions }   from '../actions';
 import { AlertActions }    from '../actions';
 import { AuthCache }       from '../auth.cache';
@@ -67,42 +68,42 @@ export class EntityEffects  {
         if (!isBatch) {
             switch (t) {
                 case ENTITY.CMS_POST:
-                    return AuthCache.API() + AuthCache.API_PATH().cms_posts;
+                    return AuthCache.API() + API_PATH.cms_posts;
                 case ENTITY.CMS_TOPIC:
-                    return AuthCache.API() + AuthCache.API_PATH().cms_topics;
-                case ENTITY.DEAL_POST:
-                    return AuthCache.API() + AuthCache.API_PATH().deal_posts;
+                    return AuthCache.API() + API_PATH.cms_topics;
+                case ENTITY.CMS_DEAL:
+                    return AuthCache.API() + API_PATH.cms_deals;
                 case ENTITY.CMS_PAGE:
-                    return AuthCache.API() + AuthCache.API_PATH().cms_pages;
+                    return AuthCache.API() + API_PATH.cms_pages;
                 case ENTITY.NEWSLETTER:
-                    return AuthCache.API() + AuthCache.API_PATH().newsletter_posts;
+                    return AuthCache.API() + API_PATH.newsletter_posts;
                 case ENTITY.SHOP_ORDER:
-                    return AuthCache.API() + AuthCache.API_PATH().shop_orders;
+                    return AuthCache.API() + API_PATH.shop_orders;
                 case ENTITY.SHOP_PRODUCT:
-                    return AuthCache.API() + AuthCache.API_PATH().shop_products;
-                case ENTITY.VOUCHER:
-                    return AuthCache.API() + AuthCache.API_PATH().shop_vouchers;
+                    return AuthCache.API() + API_PATH.shop_products;
+                case ENTITY.SHOP_VOUCHER:
+                    return AuthCache.API() + API_PATH.shop_vouchers;
                 default:
                     return null;
             }
         } else {
             switch (t) {
                 case ENTITY.CMS_POST:
-                    return AuthCache.API() + AuthCache.API_PATH().cms_posts_batch;
+                    return AuthCache.API() + API_PATH.cms_posts_batch;
                 case ENTITY.CMS_TOPIC:
-                    return AuthCache.API() + AuthCache.API_PATH().cms_topics_batch;
-                case ENTITY.DEAL_POST:
-                    return AuthCache.API() + AuthCache.API_PATH().deal_posts_batch;
+                    return AuthCache.API() + API_PATH.cms_topics_batch;
+                case ENTITY.CMS_DEAL:
+                    return AuthCache.API() + API_PATH.cms_deals_batch;
                 case ENTITY.CMS_PAGE:
-                    return AuthCache.API() + AuthCache.API_PATH().cms_pages_batch;
+                    return AuthCache.API() + API_PATH.cms_pages_batch;
                 case ENTITY.NEWSLETTER:
-                    return AuthCache.API() + AuthCache.API_PATH().newsletter_posts_batch;
+                    return AuthCache.API() + API_PATH.newsletter_posts_batch;
                 case ENTITY.SHOP_ORDER:
-                    return AuthCache.API() + AuthCache.API_PATH().shop_orders_batch;
+                    return AuthCache.API() + API_PATH.shop_orders_batch;
                 case ENTITY.SHOP_PRODUCT:
-                    return AuthCache.API() + AuthCache.API_PATH().shop_products_batch;
-                case ENTITY.VOUCHER:
-                    return AuthCache.API() + AuthCache.API_PATH().shop_vouchers_batch;
+                    return AuthCache.API() + API_PATH.shop_products_batch;
+                case ENTITY.SHOP_VOUCHER:
+                    return AuthCache.API() + API_PATH.shop_vouchers_batch;
                 default:
                     return null;
             }

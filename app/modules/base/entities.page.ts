@@ -17,7 +17,7 @@ import { EntitiesStateGroup } from "../../reducers/entities";
 import { AuthState }         from '../../reducers/auth';
 import { CmsAttrsState }     from '../../reducers/cmsattrs';
 import { EntityActions }     from '../../actions';
-//import { Ping }              from '../../ping';
+import { Ping }              from '../../ping';
 
 export class EntitiesPage implements OnInit, OnDestroy
 {
@@ -47,10 +47,10 @@ export class EntitiesPage implements OnInit, OnDestroy
     // as the list is re-rendered at each time loading
     loaded: boolean = false;
 
-    constructor(private etype: string,
+    constructor(protected etype: string,
                 protected route: ActivatedRoute,
-                protected store: Store<AppState>/*,
-                protected ping: Ping*/) {}
+                protected store: Store<AppState>,
+                protected ping: Ping) {}
 
     ngOnInit() {
         this.subAuth = this.store.select<AuthState>('auth')

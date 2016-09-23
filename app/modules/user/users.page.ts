@@ -9,6 +9,7 @@ import { Observable }        from 'rxjs/Observable';
 import { Subscription }      from "rxjs/Rx";
 import { Store }             from '@ngrx/store';
 
+import { ENTITY }             from '../../models';
 import { UserActions }        from '../../actions';
 import { AppState, getUsers } from '../../reducers';
 import { UsersState }         from '../../reducers/users';
@@ -71,6 +72,7 @@ export class UsersPage implements OnInit, OnDestroy
 
     get zh() { return zh_CN.user; }
     get userRoles() { return ''; /*this.userService.roles; */}
+    get etype() { return ENTITY.USER; }
 
     loadUsers() {
         let userParams: UserParams = new UserParams;

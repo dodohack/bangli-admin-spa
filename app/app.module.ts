@@ -16,7 +16,7 @@ import { SuperUserGuard} from './guard';
 import { LockGuard }     from './guard';
 import { EditLockGuard } from './guard';
 
-//import { Ping }          from './ping';
+import { Ping }          from './ping';
 import { routing }       from './app.routes';
 import { App }           from './app';
 import { Sidebar }       from './modules/directives/sidebar';
@@ -35,7 +35,6 @@ import { AuthModule }      from './modules/auth/auth.module';
 import { UserModule }      from './modules/user/user.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { CmsModule }       from './modules/cms/cms.module';
-import { DealModule }      from './modules/deal/deal.module';
 import { EmailModule }     from './modules/email/email.module';
 import { ShopModule }      from './modules/shop/shop.module';
 import { CsModule }        from './modules/cs/cs.module';
@@ -60,7 +59,6 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         AuthModule,
         DashboardModule,
         CmsModule,
-        DealModule,
         EmailModule,
         ShopModule,
         CsModule,
@@ -93,7 +91,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
     ],
     providers: [
         Title,
-        //Ping,
+        Ping,
         UnauthGuard,
         BaseGuard,
         AuthorGuard,

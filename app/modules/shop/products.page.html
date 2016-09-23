@@ -1,10 +1,10 @@
-<list-page-header [isProduct]="true"
+<list-page-header [etype]="etype"
                   [states]="shopState.product_states.actual"
                   [loading]="loading"></list-page-header>
 
 <!-- Product filter/tool bar -->
 <list-filter-bar *ngIf="loaded"
-                 [isProduct]="true"
+                 [etype]="etype"
                  [editors]="cmsState.editors"
                  [categories]="shopState.categories"
                  [brands]="shopState.brands"

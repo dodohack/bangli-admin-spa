@@ -5,7 +5,9 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router }  from '@angular/router';
 import { NavigationExtras }        from '@angular/router';
 
-import { zh_CN }    from '../../localization';
+import { ENTITY }      from '../../models';
+import { ENTITY_INFO } from '../../models';
+import { zh_CN }       from '../../localization';
 
 @Component({
     selector: 'list-filter-bar',
@@ -20,13 +22,8 @@ export class ListFilterBar implements OnInit, OnDestroy {
     @Input() brands: any;
     @Input() paginator: any;
 
-    // The type of lists passed in
-    @Input() isPost: boolean;
-    @Input() isTopic: boolean;
-    @Input() isProduct: boolean;
-    @Input() isOrder: boolean;
-    @Input() isPage: boolean;
-    @Input() isUser: boolean;
+    // The entity type of lists passed in
+    @Input() etype: string;
     
     // URL parameters and query parameters
     state: string;
@@ -67,26 +64,35 @@ export class ListFilterBar implements OnInit, OnDestroy {
     }
 
     get baseUrl() {
-        if (this.isPost)    return 'post';
-        if (this.isTopic)   return 'topic';
-        if (this.isProduct) return 'product';
-        if (this.isOrder)   return 'order';
-        if (this.isPage)    return 'page';
-        if (this.isUser)    return 'user';
+        if (this.etype) return ENTITY_INFO[this.etype].slug;
     }
 
     get zh() { return zh_CN[this.baseUrl]; }
 
     catCount(cat: any) {
-        if (this.isPost) return cat.posts_count;
-        if (this.isTopic) return cat.topics_count;
-        if (this.isProduct) return cat.products_count;
+        switch(this.etype) {
+            case ENTITY.CMS_POST:
+                return cat.posts_count;
+            case ENTITY.CMS_TOPIC:
+                return cat.topics_count;
+            case ENTITY.SHOP_PRODUCT:
+                return cat.products_count;
+            default:
+                console.error("Unhandled entity type: ", this.etype);
+        }
     }
 
     editorWorkCount(editor: any) {
-        if (this.isPost) return editor.posts_by_editor_count;
-        if (this.isTopic) return editor.topics_by_editor_count;
-        if (this.isProduct) return editor.products_by_editor_count;
+        switch(this.etype) {
+            case ENTITY.CMS_POST:
+                return editor.posts_by_editor_count;
+            case ENTITY.CMS_TOPIC:
+                return editor.topics_by_editor_count;
+            case ENTITY.SHOP_PRODUCT:
+                return editor.products_by_editor_count;
+            default:
+                console.error("Unhandled entity type: ", this.etype);
+        }
     }
 
     // Submit filter
@@ -128,10 +134,11 @@ export class ListFilterBar implements OnInit, OnDestroy {
      * Pagination url
      */
     pageUrl($page, $state) {
-        if (!this.isUser)
-            return '/' + this.baseUrl + '/page/' + $page + '/state/' + $state;
-        else
+        if (this.etype === ENTITY.USER)
             return '/' + this.baseUrl + '/page/' + $page + '/role/' + $state;
+        else
+            return '/' + this.baseUrl + '/page/' + $page + '/state/' + $state;
+
     } 
 
     dateFromOnClick($event)

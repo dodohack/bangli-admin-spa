@@ -1,4 +1,4 @@
-<list-page-header [isPost]="true"
+<list-page-header [etype]="etype"
                   [cmsChannels]="cmsState.channels"
                   [activeChannel]="params['channel']"
                   [states]="cmsState.post_states.actual"
@@ -6,7 +6,7 @@
 
 <!-- Post filter/tool bar at top -->
 <list-filter-bar *ngIf="loaded"
-                 [isPost]="true"
+                 [etype]="etype"
                  [authors]="cmsState.authors"
                  [editors]="cmsState.editors"
                  [categories]="cmsState.categories"
@@ -15,7 +15,7 @@
 
 <!-- Post list table -->
 <cms-list *ngIf="loaded"
-          [isPost]="true"
+          [etype]="etype"
           [authState]="authState"
           [listState]="entitiesState"
           [cmsState]="cmsState"
@@ -28,7 +28,7 @@
 
 <!-- Post filter/tool bar at bottom -->
 <list-filter-bar *ngIf="loaded"
-                 [isPost]="true"
+                 [etype]="etype"
                  [authors]="cmsState.authors"
                  [editors]="cmsState.editors"
                  [categories]="cmsState.categories"

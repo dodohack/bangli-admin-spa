@@ -11,18 +11,18 @@ import { Observable }        from 'rxjs/Observable';
 
 import { EntitiesPage }      from '../base/entities.page';
 import { AppState }          from '../../reducers';
-//import { Ping }              from '../../ping';
+import { Ping }              from '../../ping';
 import { ENTITY }            from '../../models';
 
 import { zh_CN } from '../../localization';
 
-@Component({ template: require('./products.page.html') })
+@Component({ template: require('./vouchers.page.html') })
 export class VouchersPage extends EntitiesPage
 {
     constructor(protected route: ActivatedRoute,
-                protected store: Store<AppState>/*,
-                 protected ping: Ping*/) {
-        super(ENTITY.VOUCHER, route, store/*, ping*/);
+                protected store: Store<AppState>,
+                protected ping: Ping) {
+        super(ENTITY.SHOP_VOUCHER, route, store, ping);
     }
 
     get zh() { return zh_CN.product; }

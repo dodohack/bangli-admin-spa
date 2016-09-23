@@ -16,6 +16,8 @@ import { TopicsPage }   from './topics.page';
 import { TopicPage }    from './topic.page';
 import { PagesPage }    from './pages.page';
 import { PagePage }     from './page.page';
+import { DealsPage }    from './deals.page';
+import { DealPage }     from './deal.page';
 
 
 @NgModule({
@@ -24,7 +26,8 @@ import { PagePage }     from './page.page';
         CmsList,
         PostsPage, PostPage,
         TopicsPage, TopicPage, 
-        PagesPage, PagePage 
+        PagesPage, PagePage,
+        DealsPage, DealPage
     ],
     providers: [
         PostsEditGuard,

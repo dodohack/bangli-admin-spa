@@ -1,11 +1,11 @@
 <list-page-header [cmsChannels]="cmsState.channels"
                   [activeChannel]="params['channel']"
-                  [isPost]="true" [states]="cmsState.post_states.actual"
+                  [etype]="etype" [states]="cmsState.post_states.actual"
                   [loading]="loading"></list-page-header>
 
 <!-- Deal post filter/tool bar at top -->
 <list-filter-bar *ngIf="loaded"
-                 [isPost]="true"
+                 [etype]="etype"
                  [authors]="cmsState.authors"
                  [editors]="cmsState.editors"
                  [categories]="cmsState.categories"
@@ -13,14 +13,14 @@
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Deal post list table -->
-<deal-list *ngIf="loaded"
-           [isPost]="true"
+<cms-list *ngIf="loaded"
+           [etype]="etype"
            [authState]="authState"
            [listState]="entitiesState"
            [cmsState]="cmsState"
            (batchEdit)="batchEdit($event)"
            (batchDelete)="batchDelete($event)"
            (batchOfflineEdit)="batchOfflineEdit($event)"
-           (batchLock)="batchLock($event)"></deal-list>
+           (batchLock)="batchLock($event)"></cms-list>
 
 <hr>

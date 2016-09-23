@@ -14,19 +14,19 @@ import { AlertActions }      from '../../actions';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
 
-@Component({ template: require('./deal.post.page.html') })
-export class DealPostPage extends EntityPage
+@Component({ template: require('./deal.page.html') })
+export class DealPage extends EntityPage
 {
-    @ViewChild('dealPostForm') dealPostForm;
+    @ViewChild('dealForm') dealForm;
 
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>) {
-        super(ENTITY.DEAL_POST, route, store);
+        super(ENTITY.CMS_DEAL, route, store);
     }
 
     canDeactivate() {
-        console.log("form status: ", this.dealPostForm);
-        if (this.dealPostForm.dirty) {
+        console.log("form status: ", this.dealForm);
+        if (this.dealForm.dirty) {
             this.store.dispatch(AlertActions.error('请先保存当前更改，或取消保存'));
             return false;
         } else {

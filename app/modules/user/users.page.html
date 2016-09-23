@@ -1,11 +1,11 @@
-<list-page-header [isUser]="true" [loading]="loading"></list-page-header>
+<list-page-header [etype]="etype" [loading]="loading"></list-page-header>
 
 
 <!-- Post filter/tool bar at top -->
-<list-filter-bar [isUser]="true"
+<list-filter-bar [etype]="etype"
                  [paginator]="usersState.paginator"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- List of users -->
-<user-list [isUser]="true" [listState]="usersState"></user-list>
+<user-list [etype]="etype" [listState]="usersState"></user-list>
 

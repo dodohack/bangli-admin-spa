@@ -48,7 +48,7 @@ export class EntityPage implements OnInit, OnDestroy
 
     froalaEditor: any;
 
-    constructor(private etype: string,
+    constructor(protected etype: string,
                 protected route: ActivatedRoute,
                 protected store: Store<AppState>) { }
 

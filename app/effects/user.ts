@@ -8,7 +8,7 @@ import { PrefCache }   from '../pref.cache';
 import { UserActions } from '../actions';
 import { User }        from '../models';
 import { Domain }      from '../models';
-import { AUTH }        from '../api';
+import { API_PATH, AUTH } from '../api';
 
 @Injectable()
 export class UserEffects {
@@ -68,7 +68,7 @@ export class UserEffects {
      * Get single user
      */
     private getUser(uuid: string): Observable<User> {
-        let api = AuthCache.API() + AuthCache.API_PATH().users + '/' + uuid + '?token=' + AuthCache.token();
+        let api = AuthCache.API() + API_PATH.users + '/' + uuid + '?token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }
 
@@ -80,7 +80,7 @@ export class UserEffects {
         let body = JSON.stringify(user);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API() + AuthCache.API_PATH().users + '/' + user.uuid;
+        let api = AuthCache.API() + API_PATH.users + '/' + user.uuid;
         return this.http.put(api, body, options).map(res => res.json());
     }
 
@@ -91,7 +91,7 @@ export class UserEffects {
         let body = JSON.stringify(user);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API() + AuthCache.API_PATH().users;
+        let api = AuthCache.API() + API_PATH.users;
         return this.http.post(api, body, options).map(res => res.json());
     }
 
@@ -101,7 +101,7 @@ export class UserEffects {
     private deleteUser(user: User): Observable<User> {
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API() + AuthCache.API_PATH().users + '/' + user.uuid;
+        let api = AuthCache.API() + API_PATH.users + '/' + user.uuid;
         return this.http.delete(api, options).map(res => res.json());
     }
 
@@ -111,7 +111,7 @@ export class UserEffects {
     private getUsers(filters: any): Observable<any> {
         let cur_page = filters.cur_page;
         let role_id  = filters.role_id;
-        let api = AuthCache.API() + AuthCache.API_PATH().users +
+        let api = AuthCache.API() + API_PATH.users +
             '?page=' + cur_page +
             '&role_id=' + role_id +
             '&per_page=' + PrefCache.getPerPage() +
@@ -126,7 +126,7 @@ export class UserEffects {
         let body = JSON.stringify(users);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API() + AuthCache.API_PATH().users_batch;
+        let api = AuthCache.API() + API_PATH.users_batch;
         return this.http.put(api, body, options).map(res => res.json());
     }
 
@@ -137,7 +137,7 @@ export class UserEffects {
         let body = JSON.stringify(users);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = AuthCache.API() + AuthCache.API_PATH().users_batch;
+        let api = AuthCache.API() + API_PATH.users_batch;
         // TODO: http.delete can't have a body
         console.error("Unimplemented: deleteUsers");
         return this.http.delete(api, options).map(res => res.json());

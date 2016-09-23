@@ -65,7 +65,7 @@ export class CmsAttrEffects {
     
     private getAll(auth: AuthState): Observable<CmsAttrsState> {
 
-        let api = APIS[auth.key] + API_PATH[auth.key].cms_attrs +
+        let api = APIS[auth.key] + API_PATH.cms_attrs +
             '?token=' + auth.token;
         //console.log("***CMS_ATTRS API: ", api);
         return this.http.get(api).map(res => res.json());
@@ -75,14 +75,14 @@ export class CmsAttrEffects {
      * Update a tag
      */
     private putTag(tag: Tag) {
-        return this.putTax(tag, AuthCache.API_PATH().cms_tags);
+        return this.putTax(tag, API_PATH.cms_tags);
     }
 
     /**
      * Update a category
      */
     private putCat(cat: Category) {
-        return this.putTax(cat, AuthCache.API_PATH().cms_cats);
+        return this.putTax(cat, API_PATH.cms_cats);
     }
 
     /**
@@ -100,14 +100,14 @@ export class CmsAttrEffects {
      * Create a tag
      */
     private postTag(tag: Tag) {
-        return this.postTax(tag, AuthCache.API_PATH().cms_tags);
+        return this.postTax(tag, API_PATH.cms_tags);
     }
 
     /**
      * Create category
      */
     private postCat(cat: Category) {
-        return this.postTax(cat, AuthCache.API_PATH().cms_cats);
+        return this.postTax(cat, API_PATH.cms_cats);
     }
 
     /**
@@ -125,14 +125,14 @@ export class CmsAttrEffects {
      * Delete a cms tag
      */
     private deleteTag(tag: Tag) {
-        return this.deleteTax(tag, AuthCache.API_PATH().cms_tags);
+        return this.deleteTax(tag, API_PATH.cms_tags);
     }
 
     /**
      * Delete a cms category
      */
     private deleteCat(cat: Category) {
-        return this.deleteTax(cat, AuthCache.API_PATH().cms_cats);
+        return this.deleteTax(cat, API_PATH.cms_cats);
     }
 
     /**

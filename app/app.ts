@@ -20,7 +20,7 @@ import { ShopAttrActions }   from './actions';
 import { PreferenceActions } from './actions';
 import { Alert }             from './models';
 import { Preference }        from "./models";
-//import { Ping }              from './ping';
+import { Ping }              from './ping';
 
 @Component({
     selector: 'admin-spa',
@@ -40,8 +40,8 @@ export class App implements OnInit, OnDestroy
 
     constructor(private viewContainerRef: ViewContainerRef,
                 private store: Store<AppState>,
-                private router: Router/*,
-                private ping: Ping*/) {
+                private router: Router,
+                private ping: Ping) {
     }
 
     ngOnInit() {

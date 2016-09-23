@@ -4,18 +4,37 @@
  *  for it.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component }         from '@angular/core';
+import { OnInit, OnDestroy } from "@angular/core";
+import { ViewChild }         from '@angular/core';
+import { ActivatedRoute }    from '@angular/router';
+import { Store }             from '@ngrx/store';
 
-@Component({
-    template: require('./topic.page.html')
-})
+import { EntityPage }        from '../base/entity.page';
+import { ENTITY }            from '../../models';
+import { AlertActions }      from '../../actions';
+import { AppState }          from '../../reducers';
+import { zh_CN }             from '../../localization';
 
-export class TopicPage implements OnInit
+@Component({ template: require('./deal.page.html') })
+export class TopicPage extends EntityPage
 {
-    constructor() {}
+    @ViewChild('topicForm') topicForm;
 
-    ngOnInit()
-    {
-
+    constructor(protected route: ActivatedRoute,
+                protected store: Store<AppState>) {
+        super(ENTITY.CMS_TOPIC, route, store);
     }
+
+    canDeactivate() {
+        console.log("form status: ", this.topicForm);
+        if (this.topicForm.dirty) {
+            this.store.dispatch(AlertActions.error('请先保存当前更改，或取消保存'));
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    get zh() { return zh_CN.cms; } // Localization
 }

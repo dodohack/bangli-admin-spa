@@ -1,18 +1,19 @@
-<list-page-header [isPage]="true"
+<list-page-header [etype]="etype"
                   [states]="cmsState.page_states.actual"
                   [loading]="loading"></list-page-header>
 
 <!-- Page filter/tool bar at top -->
-<list-filter-bar *ngIf="entitiesState"
-                 [isPage]="true"
+<list-filter-bar *ngIf="loaded"
+                 [etype]="etype"
                  [editors]="cmsState.editors"
                  [paginator]="entitiesState.paginator"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Page list table -->
-<cms-list *ngIf="entitiesState"
-          [isPage]="true"
-          [authState]="authState" [listState]="entitiesState"
+<cms-list *ngIf="loaded"
+          [etype]="etype"
+          [authState]="authState"
+          [listState]="entitiesState"
           [cmsState]="cmsState"
           (batchEdit)="batchEdit($event)"
           (batchDelete)="batchDelete($event)"

@@ -1,8 +1,8 @@
-<editor-page-header [authState]="authState" [isProduct]="true"
-                    [entity]="product" [lists]="productsState">
+<editor-page-header [authState]="authState" [etype]="etype"
+                    [entity]="entity" [lists]="entitiesState">
 </editor-page-header>
 
-<form *ngIf="product" (ngSubmit)="save" #productForm="ngForm">
+<form *ngIf="entity" (ngSubmit)="save" #productForm="ngForm">
 
     <!-- Product title and main buttons -->
     <div class="row post-meta-row">
@@ -10,7 +10,7 @@
             <div class="input-group">
                 <span class="input-group-addon">标题</span>
                 <input type="text" name="title" class="form-control post-title"
-                       [(ngModel)]="product.title" placeholder="产品标题" required>
+                       [(ngModel)]="entity.title" placeholder="产品标题" required>
             </div>
         </div>
 
@@ -47,9 +47,9 @@
                     <div class="form-group post-meta">
                         <label>编辑</label>
                         <select class="form-control form-control-sm custom-select"
-                                name="editor_id" [(ngModel)]="product.editor_id">
+                                name="editor_id" [(ngModel)]="entity.editor_id">
                             <option *ngFor="let editor of cmsState.editors"
-                                    [selected]="editor.id === product.editor_id"
+                                    [selected]="editor.id === entity.editor_id"
                                     [value]="editor.id">{{ editor.display_name }}</option>
                         </select>
                     </div>
@@ -58,10 +58,10 @@
                     <div class="form-group post-meta">
                         <label>产品类型</label>
                         <select class="form-control form-control-sm custom-select"
-                                name="p_type" [(ngModel)]="product.product_type">
-                            <option [selected]="product.product_type === 'physical'"
+                                name="p_type" [(ngModel)]="entity.product_type">
+                            <option [selected]="entity.product_type === 'physical'"
                                     value="physical">实物商品</option>
-                            <option [selected]="product.product_type === 'virtual'"
+                            <option [selected]="entity.product_type === 'virtual'"
                                     value="virtual">虚拟商品</option>
                         </select>
                     </div>
@@ -70,7 +70,7 @@
                     <div class="form-group post-meta">
                         <label>产品品牌</label>
                         <select class="form-control form-control-sm custom-select"
-                                name="p_brand" [(ngModel)]="product.brand_id">
+                                name="p_brand" [(ngModel)]="entity.brand_id">
                             <option value="0">typeahead select</option>
                             <option value="1">typeahead select</option>
                         </select>
@@ -79,16 +79,16 @@
                     <div class="form-group post-meta">
                         <label>sku</label>
                         <input type="text" class="form-control form-control-sm"
-                               name="p_sku" [(ngModel)]="product.sku">
+                               name="p_sku" [(ngModel)]="entity.sku">
                     </div>
 
                     <div class="form-group post-meta">
                         <label>允许预定</label>
                         <select class="form-control form-control-sm custom-select"
-                                name="p_backorder" [(ngModel)]="product.backorder">
-                            <option [selected]="+product.backorder === 1"
+                                name="p_backorder" [(ngModel)]="entity.backorder">
+                            <option [selected]="+entity.backorder === 1"
                                     value="1">是</option>
-                            <option [selected]="+product.backorder === 0"
+                            <option [selected]="+entity.backorder === 0"
                                     value="0">否</option>
                         </select>
                     </div>
@@ -96,12 +96,12 @@
                     <div class="form-group post-meta">
                         <label>产地</label>
                         <select class="form-control form-control-sm custom-select"
-                                name="p_madein" [(ngModel)]="product.made_in">
-                            <option [selected]="+product.made_in === 'UK'"
+                                name="p_madein" [(ngModel)]="entity.made_in">
+                            <option [selected]="+entity.made_in === 'UK'"
                                     value="UK">英国</option>
-                            <option [selected]="+product.made_in === 'DE'"
+                            <option [selected]="+entity.made_in === 'DE'"
                                     value="DE">德国</option>
-                            <option [selected]="+product.made_in === 'IE'"
+                            <option [selected]="+entity.made_in === 'IE'"
                                     value="IE">爱尔兰</option>
                         </select>
                     </div>
@@ -109,16 +109,16 @@
                     <div class="form-group post-meta">
                         <label>最小保质期</label>
                         <input type="text" class="form-control form-control-sm"
-                               name="p_bbd" [(ngModel)]="product.bbd">
+                               name="p_bbd" [(ngModel)]="entity.bbd">
                     </div>
 
                     <div class="form-group post-meta">
                         <label>适用年龄(单位:月)</label>
                         <input type="text" class="form-control form-control-sm"
-                               name="p_minage" [(ngModel)]="product.min_age"
+                               name="p_minage" [(ngModel)]="entity.min_age"
                                placeholder="最小年龄">
                         <input type="text" class="form-control form-control-sm"
-                               name="p_maxage" [(ngModel)]="product.max_age"
+                               name="p_maxage" [(ngModel)]="entity.max_age"
                                placeholder="最大年龄">
                     </div>
 
@@ -143,14 +143,14 @@
                 </div>
 
                 <div class="col-xs-8">
-                    <textarea name="excerpt" [(ngModel)]="product.excerpt" placeholder="产品简介"
+                    <textarea name="excerpt" [(ngModel)]="entity.excerpt" placeholder="产品简介"
                               class="form-control" style="height: 75px;"></textarea>
                 </div>
             </div>
         </accordion-group>
 
         <!-- Product variations, each product has at least 1 variation -->
-        <accordion-group *ngFor="let variation of product.variations">
+        <accordion-group *ngFor="let variation of entity.variations">
 
             <div class="row">
                 <!-- Variation image -->
@@ -306,7 +306,7 @@
 
             <category-tree [parentId]="0"
                            [categories]="shopState.categories"
-                           [selectedCats]="product.categories"
+                           [selectedCats]="entity.categories"
                            (checkEvent)="selectCat($event)">
             </category-tree>
         </accordion-group>
@@ -317,7 +317,7 @@
             </div>
 
             <tag-cloud [tags]="shopState.tags"
-                       [selectedTags]="product.tags"
+                       [selectedTags]="entity.tags"
                        (addTag)="addTag($event)"
                        (removeTag)="removeTag($event)"></tag-cloud>
         </accordion-group>

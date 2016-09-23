@@ -12,7 +12,8 @@ import { TopicsPage }   from './topics.page';
 import { TopicPage }    from './topic.page';
 import { PagesPage }    from './pages.page';
 import { PagePage }     from './page.page';
-
+import { DealsPage }    from './deals.page';
+import { DealPage }     from './deal.page';
 
 const routes: Routes = [
 
@@ -86,6 +87,29 @@ const routes: Routes = [
             { path: ':id', component: PagePage }
         ]
     },
+
+    {
+        // Deal post
+        path: 'deal',
+        children: [
+            // List of deal posts wo/ channels
+            {path: '', pathMatch: 'full', redirectTo: 'page/1/state/all'},
+            {path: 'page/:page',  redirectTo: 'page/:page/state/all'},
+            {path: 'page/:page/state/:state', component: DealsPage},
+
+            // List of deal posts w/ channels
+            { path: 'channel/:channel',
+                redirectTo: 'channel/:channel/page/1/state/all' },
+            { path: 'channel/:channel/page/:page',
+                redirectTo: 'channel/:channel/page/:page/state/all' },
+            { path: 'channel/:channel/page/:page/state/:state',
+                component: DealsPage},
+
+            // Single deal post
+            { path: 'new', component: DealPage },
+            { path: ':id', component: DealPage}
+        ]
+    }
 ];
 
 export const routing = RouterModule.forChild(routes);

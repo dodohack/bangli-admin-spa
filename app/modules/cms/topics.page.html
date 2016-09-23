@@ -1,11 +1,11 @@
-<list-page-header [isTopic]="true"
+<list-page-header [etype]="etype"
                   [cmsChannels]="cmsState.channels"
                   [states]="cmsState.topic_states.actual"
                   [loading]="loading"></list-page-header>
 
 <!-- Topic filter/tool bar at top -->
 <list-filter-bar *ngIf="loaded"
-                 [isTopic]="true"
+                 [etype]="etype"
                  [editors]="cmsState.editors"
                  [categories]="cmsState.categories"
                  [paginator]="entitiesState.paginator"
@@ -13,7 +13,7 @@
 
 <!-- Topic list table -->
 <cms-list *ngIf="loaded"
-          [isTopic]="true"
+          [etype]="etype"
           [authState]="authState"
           [listState]="entitiesState"
           [cmsState]="cmsState"

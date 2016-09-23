@@ -3,9 +3,10 @@ import { EventEmitter }             from '@angular/core';
 import { ChangeDetectionStrategy }  from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
-import { Channel }                  from '../../models';
-
-import { zh_CN } from '../../localization';
+import { Channel }     from '../../models';
+import { ENTITY }      from '../../models';
+import { ENTITY_INFO } from '../../models';
+import { zh_CN }       from '../../localization';
 
 @Component({
     selector: 'list-page-header',
@@ -23,48 +24,48 @@ export class ListPageHeader {
     // Activiate cms channel
     @Input() activeChannel: Channel;
 
-    // The type of lists passed in
-    @Input() isPost: boolean;
-    @Input() isTopic: boolean;
-    @Input() isProduct: boolean;
-    @Input() isOrder: boolean;
-    @Input() isPage: boolean;
-    @Input() isUser: boolean;
+    // The entity type of lists passed in
+    @Input() etype: string;
 
     // Input to childview search-box
     @Input() loading: boolean;
 
     get title() {
-        if (this.isPost)    return '文章';
-        if (this.isTopic)   return '专题';
-        if (this.isProduct) return '产品';
-        if (this.isOrder)   return '订单';
-        if (this.isPage)    return '页面';
-        if (this.isUser)    return '用户';
+        if (this.etype) return ENTITY_INFO[this.etype].name;
     }
     
     get baseUrl() {
-        if (this.isPost)    return 'post';
-        if (this.isTopic)   return 'topic';
-        if (this.isProduct) return 'product';
-        if (this.isOrder)   return 'order';
-        if (this.isPage)    return 'page';
-        if (this.isUser)    return 'user';
+        if (this.etype) return ENTITY_INFO[this.etype].slug;
     }
     
     navUrl($state) {
-        if (this.isUser)
+        if (this.etype === ENTITY.USER)
             return '/' + this.baseUrl + '/page/1/role/' + $state;
         else
             return '/' + this.baseUrl + '/page/1/state/' + $state;
     }
 
     get isCms() {
-        return (this.isPost || this.isTopic || this.isPage) ? true : false;
+        switch(this.etype) {
+            case ENTITY.CMS_POST:
+            case ENTITY.CMS_TOPIC:
+            case ENTITY.CMS_PAGE:
+            case ENTITY.CMS_DEAL:
+                return true;
+            default:
+                return false;
+        }
     }
 
     get isShop() {
-        return (this.isOrder || this.isProduct) ? true : false;
+        switch(this.etype) {
+            case ENTITY.SHOP_ORDER:
+            case ENTITY.SHOP_PRODUCT:
+            case ENTITY.SHOP_VOUCHER:
+                return true;
+            default:
+                return false;
+        }
     }
 
     get total() {

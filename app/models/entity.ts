@@ -13,19 +13,39 @@ import { Topic }    from './topic';
 import { Brand }    from "./brand";
 
 /**
- * Entity type constants, used by action, reducer, effect and others
+ * Entity type constants
  */
 export const ENTITY = {
+    // These entities are managed by single entity reducer/effects.
     INVALID: 'invalid',
     CMS_POST: 'cms-post',
     CMS_TOPIC: 'cms-topic',
     CMS_PAGE: 'cms-page',
-    DEAL_POST: 'deal-post',
+    CMS_DEAL: 'cms-deal',
     SHOP_ORDER: 'shop-order',
     SHOP_PRODUCT: 'shop-product',
-    VOUCHER: 'voucher',
-    NEWSLETTER: 'newsletter'
+    SHOP_VOUCHER: 'shop-voucher',
+    NEWSLETTER: 'newsletter',
+
+    // Following entities are not managed by unified entity reducer/effects.
+    USER: 'user'
 };
+
+/**
+ * Name and url for ENTITY
+ */
+export const ENTITY_INFO = {
+    'cms-post':      {name: '文章',     slug: 'post'},
+    'cms-topic':     {name: '专题',     slug: 'topic'},
+    'cms-page':      {name: '页面',     slug: 'page'},
+    'cms-deal':      {name: '优惠',     slug: 'deal'},
+    'shop-order':    {name: '订单',     slug: 'order'},
+    'shop-product':  {name: '商品',     slug: 'product'},
+    'newsletter':    {name: '订阅邮件',  slug: 'newsletter'},
+    'user':          {name: '用户',     slug: 'user'},
+};
+
+//export
 
 /**
  * CMS post:

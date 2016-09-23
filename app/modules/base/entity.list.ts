@@ -5,6 +5,7 @@
 import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 
+import { ENTITY, ENTITY_INFO } from '../../models';
 import { AuthState }      from '../../reducers/auth';
 import { CmsAttrsState }  from "../../reducers/cmsattrs";
 import { ShopAttrsState } from "../../reducers/shopattrs";
@@ -14,12 +15,8 @@ export class EntityList
     @Input() authState: AuthState;
     @Input() cmsState: CmsAttrsState;
 
-    // The entity type of the list: post, topic, page, product etc 
-    @Input() isPost:    boolean;
-    @Input() isTopic:   boolean;
-    @Input() isPage:    boolean;
-    @Input() isProduct: boolean;
-    @Input() isUser:    boolean;
+    // The entity type of the list: post, topic, page, product etc
+    @Input() etype: string;
 
     // listState is one of entity type content state
     _listState: any;
@@ -125,38 +122,30 @@ export class EntityList
 
     // Entity editing link
     editLink(id: number) {
-        if (this.isPost)
-            return '/post/' + id;
-        
-        if (this.isTopic)
-            return '/topic/' + this.entities[id].guid;
-        
-        if (this.isPage)
-            return '/page/' + id;
-        
-        if (this.isProduct)
-            return '/product/' + id;
-
-        if (this.isUser)
-            return '/user/' + id;
+        switch (this.etype) {
+            case ENTITY.CMS_TOPIC:
+                return ENTITY_INFO[this.etype].slug + this.entities[id].guid;
+            default:
+                return ENTITY_INFO[this.etype].slug + id;
+        }
     }
 
     // Frontend preview link
     previewLink(id: number) {
-        let base = this.authState.domains[this.authState.key].url;
+        let base = this.authState.domains[this.authState.key].url + '/';
 
-        if (this.isPost)
-            return base + '/' + id + '.html';
+        switch (this.etype) {
+            case ENTITY.CMS_TOPIC:
+                return base + ENTITY_INFO[this.etype] + '/'
+                    + this.channels[this.entities[id].channel_id]
+                    + this.entities[id].guid;
 
-        if (this.isTopic)
-            return base + '/topic/'
-                + this.channels[this.entities[id].channel_id]
-                + this.entities[id].guid;
+            case ENTITY.SHOP_PRODUCT:
+                return base + ENTITY_INFO[this.etype] + '/' + this.entities[id].guid;
 
-        if (this.isPage)
-            return base + '/page/' + this.entities[id].id + './html';
-        
-        if (this.isProduct)
-            return base + '/product/' + this.entities[id].guid;
+            // Default to cms type
+            default:
+                return base + 'cms/' + ENTITY_INFO[this.etype] + '/' + id;
+        }
     }
 }

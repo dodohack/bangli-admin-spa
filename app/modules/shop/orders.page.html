@@ -1,10 +1,10 @@
-<list-page-header [isOrder]="true"
+<list-page-header [etype]="etype"
                   [states]="shopState.order_states.actual"
                   [loading]="loading"></list-page-header>
 
 <!-- Order filter/tool bar -->
 <list-filter-bar *ngIf="loaded"
-                 [isOrder]="true"
+                 [etype]="etype"
                  [paginator]="entitiessState.paginator"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 

@@ -3,6 +3,7 @@
  */
 
 import { Injectable }                    from '@angular/core';
+import { OnInit, OnDestroy }             from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Store }                         from '@ngrx/store';
 import { Observable }                    from 'rxjs/Observable';
@@ -15,8 +16,11 @@ import { EntitiesState }                 from './reducers/entities';
 import { EntitiesStateGroup }            from './reducers/entities';
 
 @Injectable()
-export class Ping {
+export class Ping implements OnInit, OnDestroy {
     timer: any;
+
+    subAuth: any;
+    subState: any;
 
     authState: AuthState;
     entitiesState: EntitiesState;
@@ -27,13 +31,26 @@ export class Ping {
 
     constructor (private store: Store<AppState>,
                  private http: Http) {
-        this.store.select<AuthState>('auth').subscribe(p => this.authState = p);
-        this.store.select<EntitiesState>('entities').subscribe(p => {
-            // FIXME: We need to determine which entities to listen on
-            //this.postsState = p
-        });
+
+    }
+
+    ngOnInit() {
+        this.subAuth = this.store.select<AuthState>('auth')
+            .subscribe(p => this.authState = p);
+        /*
+         this.subState = this.store.select<EntitiesState>('entities').subscribe(p => {
+         // FIXME: We need to determine which entities to listen on
+         this.postsState = p
+         });
+         */
         // Start the beacon.
-        //this.run();
+        this.run();
+    }
+
+    ngOnDestroy() {
+        this.subAuth.unsubscribe();
+        // this.subState.unsubscribe();
+        this.stop();
     }
 
     /**
@@ -48,7 +65,8 @@ export class Ping {
                 if (key === this.authState.key) {
                     // Active API server, test connectivity with data
                     // latency -1 means error or disconnected
-                    this.ping(key, true).subscribe(
+                    // FIXME: We temporarily set this to false
+                    this.ping(key, false /*true*/).subscribe(
                         activities => {
                             let timeEnd: number = performance.now();
                             this.activity$.next(activities);

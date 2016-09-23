@@ -5,6 +5,7 @@ import { Component }      from '@angular/core';
 import { OnInit, NgZone } from '@angular/core';
 import { EventEmitter }   from '@angular/core';
 
+import { API_PATH }  from '../../api';
 import { AuthCache } from '../../auth.cache';
 
 @Component({ template: require('./gallery.page.html') })
@@ -26,7 +27,7 @@ export class GalleryPage implements OnInit
             autoUpload: false,
             authToken: AuthCache.token(),
             authTokenPrefix: 'Bearer',
-            url: AuthCache.API() + AuthCache.API_PATH().file_upload
+            url: AuthCache.API() + API_PATH.file_upload
         };
     }
 

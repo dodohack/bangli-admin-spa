@@ -4,7 +4,7 @@
  * 'get', 'post', 'put', 'delete' as standard operations.
  * APIs with suffix 'batch' is used to 'put' and 'delete' list of entities.
  */
-export const API_BANGLI = {
+export const API_PATH = {
     /* Base migration url of API server */
     migrate_base: '/migrate',
     /* Initial migration with empty user table */
@@ -54,6 +54,10 @@ export const API_BANGLI = {
     cms_topics:       '/cms/topics',
     cms_topics_batch: '/cms/topics/batch',
 
+    /* Deal */
+    cms_deals:        '/cms/deals',
+    cms_deals_batch:  '/cms/deals/batch',
+
     /* Pages/Page */
     cms_pages:       '/cms/pages',
     cms_pages_batch: '/cms/pages/batch',
@@ -64,13 +68,7 @@ export const API_BANGLI = {
     /* List of topic statuses */
     cms_topic_states: '/cms/topics/states',
 
-    /*************************************************************************
-     * Deal
-     *************************************************************************/
-    deal_posts:        '/deal/posts',
-    deal_posts_batch:  '/deal/posts/batch',
-    deal_topics:       '/deal/topics',
-    deal_topics_batch: '/deal/topics/batch',
+
 
     /*************************************************************************
      * Emails
@@ -81,6 +79,39 @@ export const API_BANGLI = {
     /*************************************************************************
      * Affiliate
      *************************************************************************/
+
+    /*************************************************************************
+     * Shop
+     *************************************************************************/
+    /* Shop attributes includes product categories, brands etc */
+    shop_attrs:       '/shop/attributes',
+
+    /* Orders/Order */
+    shop_orders:       '/shop/orders',
+    shop_orders_batch: '/shop/orders/batch',
+
+    /* Order states */
+    shop_order_states: '/shop/orders/states',
+
+    /* Products/Product */
+    shop_products:       '/shop/products',
+    shop_products_batch: '/shop/products/batch',
+
+    /* Products states */
+    shop_product_states: '/shop/products/states',
+
+    /* Voucher */
+    shop_vouchers:       '/shop/vouchers',
+    shop_vouchers_batch: '/shop/vouchers/batch',
+
+    /* Categories/Category */
+    shop_cats:       '/shop/categories',
+    shop_cats_batch: '/shop/categories/batch',
+
+    /* Tags/Tag */
+    shop_tags:        '/shop/tags',
+    shop_tags_batch:  '/shop/tags/batch',
+
 
     /*************************************************************************
      * More

@@ -6,7 +6,7 @@ import { ChangeDetectorRef }       from '@angular/core';
 
 import { AuthState }      from '../../reducers/auth';
 import { Preference }     from '../../models';
-//import { Ping }           from '../../ping';
+import { Ping }           from '../../ping';
 
 @Component({
     selector: 'topbar',
@@ -22,14 +22,12 @@ export class Topbar {
 
     _latency: {[key: string]: number} = {};
 
-    constructor(private cd: ChangeDetectorRef/*,
-                private ping: Ping*/) {
-        /*
+    constructor(private cd: ChangeDetectorRef,
+                private ping: Ping) {
         this.ping.latency$.subscribe(l => {
            this._latency = l;
             cd.markForCheck();
         });
-        */
     }
 
     latency(key) {

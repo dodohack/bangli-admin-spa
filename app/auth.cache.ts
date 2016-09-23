@@ -27,5 +27,4 @@ export class AuthCache {
     }
     
     static API() { return APIS[AuthCache.domainKey()]; }
-    static API_PATH() { return API_PATH[AuthCache.domainKey()] };
 }
