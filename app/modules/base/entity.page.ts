@@ -154,7 +154,7 @@ export class EntityPage implements OnInit, OnDestroy
     // back with the id, type of current post, we can say enable 
     // canDeactivate
     save() {
-        this.store.dispatch(EntityActions.saveEntity(this.entity));
+        this.store.dispatch(EntityActions.saveEntity(this.etype, this.entity));
     }
     save2Pending() { this.entity.state = 'pending'; this.save(); }
     save2Draft()   { this.entity.state = 'draft';   this.save(); }

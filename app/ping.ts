@@ -30,10 +30,10 @@ export class Ping {
         this.store.select<AuthState>('auth').subscribe(p => this.authState = p);
         this.store.select<EntitiesState>('entities').subscribe(p => {
             // FIXME: We need to determine which entities to listen on
-            this.postsState = p
+            //this.postsState = p
         });
         // Start the beacon.
-        this.run();
+        //this.run();
     }
 
     /**
@@ -103,12 +103,10 @@ export class Ping {
      */
     private getPingParams()
     {
+        /*
         if (this.postsState.editing.length)
-            return '&type=post&ids=' + this.postsState.editing.toString();
-        if (this.topicsState.editing.length)
-            return '&type=topic&ids=' + this.topicsState.editing.toString();
-        if (this.pagesState.editing.length)
-            return '&type=page&ids=' + this.pagesState.editing.toString();
+            return '&type=post&ids=' + this.entitiesState.editing.toString();
+         */
 
         return null;
     }

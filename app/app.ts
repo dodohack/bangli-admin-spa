@@ -20,7 +20,7 @@ import { ShopAttrActions }   from './actions';
 import { PreferenceActions } from './actions';
 import { Alert }             from './models';
 import { Preference }        from "./models";
-import { Ping }              from './ping';
+//import { Ping }              from './ping';
 
 @Component({
     selector: 'admin-spa',
