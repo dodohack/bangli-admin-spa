@@ -41,8 +41,11 @@ export class EntitiesPage implements OnInit, OnDestroy
     params: any;
     queryParams: any;
 
-    // Is search is running
-    loading: boolean;
+    // Is list entities are loading
+    loading: boolean = true;
+    // Is list entities loaded, we can't use !loading to check the loaded state
+    // as the list is re-rendered at each time loading
+    loaded: boolean = false;
 
     constructor(private etype: string,
                 protected route: ActivatedRoute,
@@ -58,11 +61,12 @@ export class EntitiesPage implements OnInit, OnDestroy
             .subscribe(stateGroup => {
                 if (stateGroup && stateGroup[this.etype]) {
                     // Set search loading to false if posts is loaded
-                    this.loading  = false;
                     this.entitiesState = stateGroup[this.etype];
                     // Create new copies of entities
                     this.entitiesInEdit = this.entitiesState.editing
                         .map(id => Object.assign({}, this.entitiesState.entities[id]));
+                    this.loading  = false;
+                    this.loaded   = true;
                 }
             });
 

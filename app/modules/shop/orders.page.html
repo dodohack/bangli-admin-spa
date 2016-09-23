@@ -3,13 +3,13 @@
                   [loading]="loading"></list-page-header>
 
 <!-- Order filter/tool bar -->
-<list-filter-bar *ngIf="entitiesState"
+<list-filter-bar *ngIf="loaded"
                  [isOrder]="true"
                  [paginator]="entitiessState.paginator"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Product list table -->
-<order-list *ngIf="entitiesState"
+<order-list *ngIf="loaded"
             [authState]="authState"
             [listState]="entitiesState"
             (batchEdit)="batchEdit($event)"

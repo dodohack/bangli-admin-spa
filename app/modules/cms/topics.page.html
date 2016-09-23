@@ -4,7 +4,7 @@
                   [loading]="loading"></list-page-header>
 
 <!-- Topic filter/tool bar at top -->
-<list-filter-bar *ngIf="entitiesState"
+<list-filter-bar *ngIf="loaded"
                  [isTopic]="true"
                  [editors]="cmsState.editors"
                  [categories]="cmsState.categories"
@@ -12,7 +12,7 @@
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Topic list table -->
-<cms-list *ngIf="entitiesState"
+<cms-list *ngIf="loaded"
           [isTopic]="true"
           [authState]="authState"
           [listState]="entitiesState"

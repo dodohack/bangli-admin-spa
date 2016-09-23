@@ -4,7 +4,7 @@
                   [loading]="loading"></list-page-header>
 
 <!-- Deal post filter/tool bar at top -->
-<list-filter-bar *ngIf="entitiesState"
+<list-filter-bar *ngIf="loaded"
                  [isPost]="true"
                  [authors]="cmsState.authors"
                  [editors]="cmsState.editors"
@@ -13,7 +13,7 @@
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Deal post list table -->
-<deal-list *ngIf="entitiesState"
+<deal-list *ngIf="loaded"
            [isPost]="true"
            [authState]="authState"
            [listState]="entitiesState"

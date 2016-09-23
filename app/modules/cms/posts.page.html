@@ -5,7 +5,7 @@
                   [loading]="loading"></list-page-header>
 
 <!-- Post filter/tool bar at top -->
-<list-filter-bar *ngIf="entitiesState"
+<list-filter-bar *ngIf="loaded"
                  [isPost]="true"
                  [authors]="cmsState.authors"
                  [editors]="cmsState.editors"
@@ -14,7 +14,7 @@
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Post list table -->
-<cms-list *ngIf="entitiesState"
+<cms-list *ngIf="loaded"
           [isPost]="true"
           [authState]="authState"
           [listState]="entitiesState"
@@ -27,7 +27,7 @@
 <hr>
 
 <!-- Post filter/tool bar at bottom -->
-<list-filter-bar *ngIf="entitiesState"
+<list-filter-bar *ngIf="loaded"
                  [isPost]="true"
                  [authors]="cmsState.authors"
                  [editors]="cmsState.editors"
@@ -40,7 +40,7 @@
 
 <!-- Right panel, we can trigger a seperate saving individually -->
 <!-- Only show previous and next nav for fast editing single post -->
-<right-panel *ngIf="entitiesState"
+<right-panel *ngIf="loaded"
              [width]="'600px'"
              [isOpen]="entitiesInEdit.length"
              [hasNav]="entitiesInEdit.length === 1"
