@@ -1,4 +1,6 @@
-<editor-page-header [authState]="authState" [isPost]="true"
+<editor-page-header *ngIf="entitiesState"
+                    [isPost]="true"
+                    [authState]="authState"
                     [entity]="entity" [lists]="entitiesState">
 </editor-page-header>
 
@@ -130,9 +132,12 @@
 
             <!-- Froala Editor -->
             <!-- TODO: Use official one when ngModule bug is fixed -->
-            <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions" [(froalaModel)]="inputPost.content"></div>-->
-            <froala *ngIf="inputEntity" [froalaOptions]="froalaOptions"
-                    [froalaData]="inputEntity.content" (model)="contentChanged($event)"></froala>
+            <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
+                 [(froalaModel)]="inputPost.content"></div>-->
+            <froala *ngIf="inputEntity"
+                    [froalaOptions]="froalaOptions"
+                    [froalaData]="inputEntity.content"
+                    (model)="contentChanged($event)"></froala>
 
         </accordion-group>
 

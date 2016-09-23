@@ -52,7 +52,19 @@ export default function (state = initialState, action: Action): EntitiesStateGro
     // Every action must comes with a entity type, see model/entity.ts ENTITY
     // for all possible types
     const etype: string = action.payload ? action.payload.etype : null;
-    console.log("entity type: ", etype, ", action type: ", action.type);
+
+    let oldIds: number[], oldEditing: number[], oldEntities, oldPager;
+    if (etype && state[etype]) {
+        oldIds       = state[etype].ids;
+        oldEditing   = state[etype].editing;
+        oldEntities  = state[etype].entities;
+        oldPager     = state[etype].paginator;
+    } else {
+        oldIds       = [];
+        oldEditing   = [];
+        oldEntities  = null;
+        oldPager     = null;
+    }
 
     switch (action.type)
     {
@@ -85,10 +97,10 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             return Object.assign({}, state,
                 {
                     [etype]: {
-                        ids: state[etype].ids,
+                        ids: oldIds,
                         editing: action.payload.data,
-                        entities: state[etype].entities,
-                        paginator: state[etype].paginator
+                        entities: oldEntities,
+                        paginator: oldPager
                     }
                 });
         }
@@ -97,50 +109,50 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             return Object.assign({}, state,
                 {
                     [etype]: {
-                        ids: state[etype].ids,
+                        ids: oldIds,
                         editing: [],
-                        entities: state[etype].entities,
-                        paginator: state[etype].paginator
+                        entities: oldEntities,
+                        paginator: oldPager
                     }
                 });
         }
 
         case EntityActions.BATCH_EDIT_PREVIOUS_ENTITY: {
             // DO NOTHING IF WE ARE NOT FAST EDITING SINGLE ENTITY
-            if (state[etype].editing.length !== 1) return state;
+            if (oldEditing.length !== 1) return state;
 
             // Get previous entity id
-            let idx = state[etype].ids.indexOf(state[etype].editing[0]) - 1;
+            let idx = oldIds.indexOf(oldEditing[0]) - 1;
             if (idx < 0) idx = 0;
-            const previousId = state[etype].ids[idx];
+            const previousId = oldIds[idx];
 
             return Object.assign({}, state,
                 {
                     [etype]: {
-                        ids: state[etype].ids,
+                        ids: oldIds,
                         editing: [previousId],
-                        entities: state[etype].entities,
-                        paginator: state[etype].paginator
+                        entities: oldEntities,
+                        paginator: oldPager
                     }
                 });
         }
 
         case EntityActions.BATCH_EDIT_NEXT_ENTITY: {
             // DO NOTHING IF WE ARE NOT FAST EDITING SINGLE ENTITY
-            if (state[etype].editing.length !== 1) return state;
+            if (oldEditing.length !== 1) return state;
 
             // Get next entity id
-            let idx = state[etype].ids.indexOf(state[etype].editing[0]) + 1;
-            if (idx > state[etype].ids.length - 1) idx = state[etype].ids.length - 1;
-            const nextId = state[etype].ids[idx];
+            let idx = oldIds.indexOf(oldEditing[0]) + 1;
+            if (idx > oldIds.length - 1) idx = oldIds.length - 1;
+            const nextId = oldIds[idx];
 
             return Object.assign({}, state,
                 {
                     [etype]: {
-                        ids: state[etype].ids,
+                        ids: oldIds,
                         editing: [nextId],
-                        entities: state[etype].entities,
-                        paginator: state[etype].paginator
+                        entities: oldEntities,
+                        paginator: oldPager
                     }
                 });
         }
@@ -156,12 +168,11 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             return Object.assign({}, state,
                 {
                     [etype]: {
-                        ids: (state[etype].ids.indexOf(id) === -1) ?
-                            [...state[etype].ids, id] : state[etype].ids,
+                        ids: (oldIds.indexOf(id) === -1) ? [...oldIds, id] : oldIds,
                         editing: [id],
-                        entities: Object.assign({},
-                            state[etype].entities, {[id]: action.payload.entities}),
-                        paginator: state[etype].paginator
+                        entities: Object.assign({}, oldEntities,
+                            {[id]: action.payload.data}),
+                        paginator: oldPager
                     }
                 });
         }
@@ -170,6 +181,7 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             // Create a new entity, we use '0' as a placeholder id
             const id = 0;
             let newEntity: Entity  = new Entity;
+
             newEntity.state      = 'unsaved';
             newEntity.categories = [];
             newEntity.tags       = [];
@@ -177,10 +189,10 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             return Object.assign({}, state,
                 {
                     [etype]: {
-                        ids: [...state[etype].ids, id],
+                        ids: [...oldIds, id],
                         editing: [id],
-                        entities: Object.assign({}, state[etype].entities, {[id]: newEntity}),
-                        paginator: state[etype].paginator
+                        entities: Object.assign({}, oldEntities, {[id]: newEntity}),
+                        paginator: oldPager
                     }
                 });
         }
@@ -194,8 +206,8 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             if (action.type == EntityActions.ADD_TAG) key = 'tags';
             if (action.type == EntityActions.ATTACH_ENTITY_TO_TOPIC) key = 'topics';
 
-            const newEntityArray = state[etype].editing.map(id => {
-                const oldEntity  = state[etype].entities[id];
+            const newEntityArray = oldEditing.map(id => {
+                const oldEntity  = oldEntities[id];
                 const isDup = oldEntity[key]
                     .filter(item => item.id === action.payload.data);
                 if (isDup && isDup.length) {
@@ -214,10 +226,10 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             return Object.assign({}, state,
                 {
                     [etype]: {
-                        ids: state[etype].ids,
-                        editing: state[etype].editing,
-                        entities: Object.assign({}, state[etype].entities, newEntities),
-                        paginator: state[etype].paginator
+                        ids: oldIds,
+                        editing: oldEditing,
+                        entities: Object.assign({}, oldEntities, newEntities),
+                        paginator: oldPager
                     }
                 });
         }
@@ -230,8 +242,8 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             if (action.type == EntityActions.REMOVE_TAG) key = 'tags';
             if (action.type == EntityActions.DETACH_ENTITY_FROM_TOPIC) key = 'topics';
 
-            const newEntityArray = state[etype].editing.map(id => {
-                const oldEntity = state[etype].entities[id];
+            const newEntityArray = oldEditing.map(id => {
+                const oldEntity = oldEntities[id];
                 const leftItems = oldEntity[key]
                     .filter(item => item.id !== action.payload.data);
                 // Always return a new object
@@ -244,32 +256,34 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             return Object.assign({}, state,
                 {
                     [etype]: {
-                        ids: state[etype].ids,
-                        editing: state[etype].editing,
-                        entities: Object.assign({}, state[etype].entities, newEntities),
-                        paginator: state[etype].paginator
+                        ids: oldIds,
+                        editing: oldEditing,
+                        entities: Object.assign({}, oldEntities, newEntities),
+                        paginator: oldPager
                     }
                 });
         }
 
         case EntityActions.APPLY_REVISION: {
-            const entityid = action.payload.data[0];
+            const id    = action.payload.data[0];
             const revid = action.payload.data[1];
+
             // Get revision.body
-            const newBody = state[etype].entities[entityid].revisions
+            const newBody = oldEntities[id].revisions
                 .filter(r => r.id === revid).map(r => r.body);
+
             // Apply revision.body to entity.content
-            const newEntity = Object.assign({}, state[etype].entities[entityid],
-                { content: newBody });
+            const newEntity = Object.assign({}, oldEntities[id],
+                                            { content: newBody });
 
             return Object.assign({}, state,
                 {
                     [etype]: {
-                        ids: state[etype].ids,
-                        editing: state[etype].editing,
+                        ids: oldIds,
+                        editing: oldEditing,
                         entities: Object.assign({},
-                            state[etype].entities, {[entityid]: newEntity}),
-                        paginator: state[etype].paginator
+                            oldEntities, {[id]: newEntity}),
+                        paginator: oldPager
                     }
                 });
         }
@@ -279,25 +293,25 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             let activities = action.payload.data;
 
             if (activities === null) {
-                state[etype].ids.forEach(id =>
+                oldIds.forEach(id =>
                     newEntities[id] = Object.assign({},
-                        state[etype].entities[id], {activities: []}));
+                        oldEntities[id], {activities: []}));
             } else {
-                state[etype].ids.forEach(id => {
+                oldIds.forEach(id => {
                     const newActivities = activities.filter(a => a.content_id === id);
 
                     newEntities[id] = Object.assign({},
-                        state[etype].entities[id], {activities: newActivities})
+                        oldEntities[id], {activities: newActivities})
                 });
             }
 
             return Object.assign({}, state,
                 {
                     [etype]: {
-                        ids: state[etype].ids,
-                        editing: state[etype].editing,
-                        entities: Object.assign({}, state[etype].entities, newEntities),
-                        paginator: state[etype].paginator
+                        ids: oldIds,
+                        editing: oldEditing,
+                        entities: Object.assign({}, oldEntities, newEntities),
+                        paginator: oldPager
                     }
                 });
         }
@@ -310,11 +324,11 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             return Object.assign({}, state,
                 {
                     [etype]: {
-                        ids: state[etype].ids,
-                        editing: state[etype].editing,
+                        ids: oldIds,
+                        editing: oldEditing,
                         entities: Object.assign({},
-                           state[etype].entities, {[id]: action.payload.entity}),
-                        paginator: state[etype].paginator
+                           oldEntities, {[id]: action.payload.data}),
+                        paginator: oldPager
                     }
                 });
         }

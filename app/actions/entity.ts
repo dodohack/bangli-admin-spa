@@ -38,7 +38,6 @@ export class EntityActions {
 
     static LOAD_ENTITIES = '[Entity] Load Entities';
     static loadEntities(etype: string, params: EntityParams): Action {
-        console.log("loadEntities action: ", etype);
         return {
             type: EntityActions.LOAD_ENTITIES,
             payload: {etype: etype, data: params}
