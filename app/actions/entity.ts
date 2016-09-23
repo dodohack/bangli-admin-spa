@@ -9,10 +9,11 @@
  */
 import { Action }       from '@ngrx/store';
 import { EntityParams } from '../models';
-import { Category }   from "../models";
-import { Tag }        from "../models";
-import { Topic }      from "../models";
-import { Activity }   from '../models';
+import { Entity }       from '../models';
+import { Category }     from "../models";
+import { Tag }          from "../models";
+import { Topic }        from "../models";
+import { Activity }     from '../models';
 
 /**
  * Template type 'T' can be Topic, Post, Product, Order etc.
@@ -20,227 +21,235 @@ import { Activity }   from '../models';
  */
 export class EntityActions {
     static SEARCH = '[Entity] Search';
-    static search(params: EntityParams): Action {
+    static search(etype: string, params: EntityParams): Action {
         return {
             type: EntityActions.SEARCH,
-            payload: params
+            payload: {etype: etype, data: params}
         };
     }
 
     static SEARCH_COMPLETE = '[Entity] Search Complete';
-    static searchComplete<T>(results: T[]): Action {
+    static searchComplete(etype: string, results: Entity[]): Action {
         return {
             type: EntityActions.SEARCH_COMPLETE,
-            payload: results
+            payload: {etype: etype, data: results}
         };
     }
 
     static LOAD_ENTITIES = '[Entity] Load Entities';
-    static loadEntities(params: EntityParams): Action {
+    static loadEntities(etype: string, params: EntityParams): Action {
+        console.log("loadEntities action: ", etype);
         return {
             type: EntityActions.LOAD_ENTITIES,
-            payload: params
+            payload: {etype: etype, data: params}
         };
     }
 
     static LOAD_ENTITIES_SUCCESS = '[Entity] Load Entities Success';
-    static loadEntitiesSuccess<T>(entities: T[]): Action {
+    static loadEntitiesSuccess(etype: string, results: any): Action {
         return {
             type: EntityActions.LOAD_ENTITIES_SUCCESS,
-            payload: entities
+            payload: {etype: etype, data: results}
         };
     }
 
     static LOAD_ENTITIES_FAIL = '[Entity] Load Entities Fail';
-    static loadEntitiesFail(): Action {
+    static loadEntitiesFail(/*etype: string*/): Action {
         return {
-            type: EntityActions.LOAD_ENTITIES_FAIL,
+            type: EntityActions.LOAD_ENTITIES_FAIL/*,
+            payload: {etype: etype}*/
         };
     }
 
     static BATCH_EDIT_ENTITIES = '[Entity] Batch Edit Entities';
-    static batchEditEntities(ids: number[]): Action {
+    static batchEditEntities(etype: string, ids: number[]): Action {
         return {
             type: EntityActions.BATCH_EDIT_ENTITIES,
-            payload: ids
+            payload: {etype: etype, data: ids}
         };
     }
 
     static CANCEL_BATCH_EDIT_ENTITIES = '[Entity] Cancel Batch Edit Entities';
-    static cancelBatchEditEntities(): Action {
+    static cancelBatchEditEntities(etype: string): Action {
         return {
-            type: EntityActions.CANCEL_BATCH_EDIT_ENTITIES
+            type: EntityActions.CANCEL_BATCH_EDIT_ENTITIES,
+            payload: {etype: etype}
         };
     }
     
     static BATCH_DELETE_ENTITIES = '[Entity] Batch Delete Entities';
-    static batchDeleteEntities(ids: number[]): Action {
+    static batchDeleteEntities(etype: string, ids: number[]): Action {
         return {
             type: EntityActions.BATCH_DELETE_ENTITIES,
-            payload: ids
+            payload: {etype: etype, data: ids}
         };
     }
     
     static BATCH_OFFLINE_EDIT_ENTITIES = '[Entity] Batch Offline Edit Entities';
-    static batchOfflineEditEntities(ids: number[]): Action {
+    static batchOfflineEditEntities(etype: string, ids: number[]): Action {
         return {
             type: EntityActions.BATCH_OFFLINE_EDIT_ENTITIES,
-            payload: ids
+            payload: {etype: etype, data: ids}
         };
     }
 
     static BATCH_LOCK_ENTITIES = '[Entity] Batch Lock Entities';
-    static batchLockEntities(ids: number[]): Action {
+    static batchLockEntities(etype: string, ids: number[]): Action {
         return {
             type: EntityActions.BATCH_LOCK_ENTITIES,
-            payload: ids
+            payload: {etype: etype, data: ids}
         };
     }
 
     static BATCH_EDIT_PREVIOUS_ENTITY = '[Entity] Batch Edit Previous Entity';
-    static batchEditPreviousEntity(): Action {
+    static batchEditPreviousEntity(etype: string): Action {
         return {
-            type: EntityActions.BATCH_EDIT_PREVIOUS_ENTITY
+            type: EntityActions.BATCH_EDIT_PREVIOUS_ENTITY,
+            payload: {etype: etype}
         };
     }
 
     static BATCH_EDIT_NEXT_ENTITY = '[Entity] Batch Edit Next Entity';
-    static batchEditNextEntity(): Action {
+    static batchEditNextEntity(etype: string): Action {
         return {
-            type: EntityActions.BATCH_EDIT_NEXT_ENTITY
+            type: EntityActions.BATCH_EDIT_NEXT_ENTITY,
+            payload: {etype: etype}
         };
     }
 
     static NEW_ENTITY = '[Entity] New Entity';
-    static newEntity(): Action {
+    static newEntity(etype: string): Action {
         return {
-            type: EntityActions.NEW_ENTITY
+            type: EntityActions.NEW_ENTITY,
+            payload: {etype: etype}
         };
     }
 
     static LOAD_ENTITY = '[Entity] Load Entity';
-    static loadEntity(id: number): Action {
+    static loadEntity(etype: string, id: number): Action {
         return {
             type: EntityActions.LOAD_ENTITY,
-            payload: id
+            payload: {etype: etype, data: id}
         };
     }
 
     static LOAD_ENTITY_SUCCESS = '[Entity] Load Entity Success';
-    static loadEntitiesuccess<T>(entity: T): Action {
+    static loadEntitySuccess(etype: string, entity: Entity): Action {
         return {
             type: EntityActions.LOAD_ENTITY_SUCCESS,
-            payload: entity
+            payload: {etype: etype, data: entity}
         };
     }
 
     static LOAD_ENTITY_FAIL = '[Entity] Load Entity Fail';
-    static loadEntityFail(): Action {
+    static loadEntityFail(/*etype: string*/): Action {
         return {
-            type: EntityActions.LOAD_ENTITY_FAIL,
+            type: EntityActions.LOAD_ENTITY_FAIL/*,
+            payload: {etype: etype}*/
         };
     }
 
     static AUTO_SAVE = '[Entity] Auto Save';
-    static autoSave<T>(entity: T): Action {
+    static autoSave(etype: string, entity: Entity): Action {
         return {
             type: EntityActions.AUTO_SAVE,
-            payload: entity
+            payload: {etype: etype, data: entity}
         };
     }
 
     static SAVE_ENTITY = '[Entity] Save Entity';
-    static saveEntity<T>(entity: T): Action {
+    static saveEntity(etype: string, entity: Entity): Action {
         return {
             type: EntityActions.SAVE_ENTITY,
-            payload: entity
+            payload: {etype: etype, data: entity}
         };
     }
 
     static APPLY_REVISION = '[Entity] Apply Revision';
-    static applyRevision(ids: number[]): Action {
+    static applyRevision(etype: string, ids: number[]): Action {
         return {
             type: EntityActions.APPLY_REVISION,
-            payload: ids
+            payload: {etype: etype, data: ids}
         };
     }
     
     static SAVE_ENTITY_SUCCESS = '[Entity] Save Entity Success';
-    static saveEntitySuccess<T>(entity: T): Action {
+    static saveEntitySuccess(etype: string, entity: Entity): Action {
         return {
             type: EntityActions.SAVE_ENTITY_SUCCESS,
-            payload: entity
+            payload: {etype: etype, data: entity}
         };
     }
 
     static SAVE_ENTITY_FAIL = '[Entity] Save Entity Fail';
-    static saveEntityFail(): Action {
+    static saveEntityFail(/*etype: string*/): Action {
         return {
-            type: EntityActions.SAVE_ENTITY_FAIL
+            type: EntityActions.SAVE_ENTITY_FAIL/*,
+            payload: {etype: etype}*/
         };
     }
 
     static SAVE_ENTITIES = '[Entity] Save Entities';
-    static saveEntities<T>(entities: T[]): Action {
+    static saveEntities(etype: string, entities: Entity[]): Action {
         return {
             type: EntityActions.SAVE_ENTITIES,
-            payload: entities
+            payload: {etype: etype, data: entities}
         };
     }
 
     static ADD_CATEGORY = '[Entity] Add Category';
-    static addCategory(cat: Category): Action {
+    static addCategory(etype: string, cat: Category): Action {
         return {
             type: EntityActions.ADD_CATEGORY,
-            payload: cat
+            payload: {etype: etype, data: cat}
         };
     }
 
     static ADD_TAG = '[Entity] Add Tag';
-    static addTag(tag: Tag): Action {
+    static addTag(etype: string, tag: Tag): Action {
         return {
             type: EntityActions.ADD_TAG,
-            payload: tag
+            payload: {etype: etype, data: tag}
         };
     }
 
     static ADD_TOPIC = '[Entity] Add Topic';
-    static addTopic(topic: Topic): Action {
+    static addTopic(etype: string, topic: Topic): Action {
         return {
             type: EntityActions.ADD_TOPIC,
-            payload: topic
+            payload: {etype: etype, data: topic}
         }
     }
     
     static REMOVE_CATEGORY = '[Entity] Remove Category';
-    static removeCategory(cat_id: number): Action {
+    static removeCategory(etype: string, cat_id: number): Action {
         return {
             type: EntityActions.REMOVE_CATEGORY,
-            payload: cat_id
+            payload: {etype: etype, data: cat_id}
         };
     }
 
     static REMOVE_TAG = '[Entity] Remove Tag';
-    static removeTag(tag_id: number): Action {
+    static removeTag(etype: string, tag_id: number): Action {
         return {
             type: EntityActions.REMOVE_TAG,
-            payload: tag_id
+            payload: {etype: etype, data: tag_id}
         };
     }
 
     static REMOVE_TOPIC = '[Entity] Remove Topic';
-    static removeTopic(topic_id: number): Action {
+    static removeTopic(etype: string, topic_id: number): Action {
         return {
             type: EntityActions.REMOVE_TOPIC,
-            payload: topic_id
+            payload: {etype: etype, data: topic_id}
         }
     }
     
     static REFRESH_ACTIVITY_STATUS = '[Entity] Refresh Activity Status';
-    static refreshActivityStatus(activities: Activity[]): Action {
+    static refreshActivityStatus(etype: string, activities: Activity[]): Action {
         return {
             type: EntityActions.REFRESH_ACTIVITY_STATUS,
-            payload: activities
+            payload: {etype: etype, data: activities}
         };
     }
 }

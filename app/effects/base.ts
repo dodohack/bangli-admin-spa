@@ -6,8 +6,8 @@ import { Observable }                     from 'rxjs/Observable';
 
 import { AuthCache }       from '../auth.cache';
 import { PrefCache }       from '../pref.cache';
-
-import { PostParams }      from "../models";
+import { ENTITY }          from '../models';
+import { PostParams }      from '../models';
 
 export class BaseEffects {
 
@@ -25,46 +25,42 @@ export class BaseEffects {
     private getApi(t: string, isBatch: boolean) {
         if (!isBatch) {
             switch (t) {
-                case 'cms-post':
+                case ENTITY.CMS_POST:
                     return AuthCache.API() + AuthCache.API_PATH().cms_posts;
-                case 'cms-topic':
+                case ENTITY.CMS_TOPIC:
                     return AuthCache.API() + AuthCache.API_PATH().cms_topics;
-                case 'deal-post':
+                case ENTITY.DEAL_POST:
                     return AuthCache.API() + AuthCache.API_PATH().deal_posts;
-                case 'deal-topic':
-                    return AuthCache.API() + AuthCache.API_PATH().deal_topics;
-                case 'page-post':
+                case ENTITY.CMS_PAGE:
                     return AuthCache.API() + AuthCache.API_PATH().cms_pages;
-                case 'newsletter-post':
+                case ENTITY.NEWSLETTER:
                     return AuthCache.API() + AuthCache.API_PATH().newsletter_posts;
-                case 'shop-order':
+                case ENTITY.SHOP_ORDER:
                     return AuthCache.API() + AuthCache.API_PATH().shop_orders;
-                case 'shop-product':
+                case ENTITY.SHOP_PRODUCT:
                     return AuthCache.API() + AuthCache.API_PATH().shop_products;
-                case 'shop-voucher':
+                case ENTITY.VOUCHER:
                     return AuthCache.API() + AuthCache.API_PATH().shop_vouchers;
                 default:
                     return null;
             }
         } else {
             switch (t) {
-                case 'cms-post':
+                case ENTITY.CMS_POST:
                     return AuthCache.API() + AuthCache.API_PATH().cms_posts_batch;
-                case 'cms-topic':
+                case ENTITY.CMS_TOPIC:
                     return AuthCache.API() + AuthCache.API_PATH().cms_topics_batch;
-                case 'deal-post':
+                case ENTITY.DEAL_POST:
                     return AuthCache.API() + AuthCache.API_PATH().deal_posts_batch;
-                case 'deal-topic':
-                    return AuthCache.API() + AuthCache.API_PATH().deal_topics_batch;
-                case 'page-post':
+                case ENTITY.CMS_PAGE:
                     return AuthCache.API() + AuthCache.API_PATH().cms_pages_batch;
-                case 'newsletter-post':
+                case ENTITY.NEWSLETTER:
                     return AuthCache.API() + AuthCache.API_PATH().newsletter_posts_batch;
-                case 'shop-order':
+                case ENTITY.SHOP_ORDER:
                     return AuthCache.API() + AuthCache.API_PATH().shop_orders_batch;
-                case 'shop-product':
+                case ENTITY.SHOP_PRODUCT:
                     return AuthCache.API() + AuthCache.API_PATH().shop_products_batch;
-                case 'shop-voucher':
+                case ENTITY.VOUCHER:
                     return AuthCache.API() + AuthCache.API_PATH().shop_vouchers_batch;
                 default:
                     return null;
@@ -80,7 +76,7 @@ export class BaseEffects {
      */
     protected getEntity(t: string, id: string): Observable<any> {
         let api = this.getApi(t, false) +
-            '/' + id + '?token=' + AuthCache.token();
+            '/' + id + '?etype=' + t + '&token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }
     
@@ -96,10 +92,11 @@ export class BaseEffects {
 
         if (entity.id && entity.id !== 0) {
             // Update an existing entity
-            api += '/' + entity.id;
+            api += '/' + entity.id + '?etype=' + t;
             return this.http.put(api, body, options).map(res => res.json());
         } else {
             // Create a new entity
+            api += '?etype=' + t;
             return this.http.post(api, body, options).map(res => res.json());
         }
     }
@@ -110,7 +107,7 @@ export class BaseEffects {
     protected deleteEntity(t: string, entity: any): Observable<any> {
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.getApi(t, false) + '/' + entity.id;
+        let api = this.getApi(t, false) + '/' + entity.id + '?etype=' + t;
         return this.http.delete(api, options).map(res => res.json());
     }
 
@@ -119,9 +116,10 @@ export class BaseEffects {
      */
     protected getEntities(t: string, params: PostParams): Observable<any> {
         let api = this.getApi(t, false)
-              + params.toQueryString()
-              + '&per_page=' + PrefCache.getPerPage() 
-              + '&token=' + AuthCache.token();
+            + params.toQueryString()
+            + '&etype=' + t
+            + '&per_page=' + PrefCache.getPerPage()
+            + '&token=' + AuthCache.token();
 
         console.log("LOAD ENTITIES FROM URL: ", api);
 
@@ -134,7 +132,7 @@ export class BaseEffects {
     protected putEntities(t: string, entities: any): Observable<any> {
         let body = JSON.stringify(entities);
         let options = new RequestOptions({ headers: this.headers });
-        let api = this.getApi(t, true);
+        let api = this.getApi(t, true) + '?etype=' + t;
 
         return this.http.put(api, body, options).map(res => res.json());
     }
@@ -145,7 +143,7 @@ export class BaseEffects {
     protected deleteEntities(t: string, entities: any): Observable<any> {
         let body = JSON.stringify(entities);
         let options = new RequestOptions({ headers: this.headers });
-        let api = this.getApi(t, true);
+        let api = this.getApi(t, true) + '?etype=' + t;
 
         // TODO: http.delete can't have a body
         console.error("Unimplemented: deletePosts");

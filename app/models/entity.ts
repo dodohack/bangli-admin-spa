@@ -13,11 +13,19 @@ import { Topic }    from './topic';
 import { Brand }    from "./brand";
 
 /**
- * Entity type constants, used by effects and others
+ * Entity type constants, used by action, reducer, effect and others
  */
-export const ENTITY_TYPE = [
-    
-];
+export const ENTITY = {
+    INVALID: 'invalid',
+    CMS_POST: 'cms-post',
+    CMS_TOPIC: 'cms-topic',
+    CMS_PAGE: 'cms-page',
+    DEAL_POST: 'deal-post',
+    SHOP_ORDER: 'shop-order',
+    SHOP_PRODUCT: 'shop-product',
+    VOUCHER: 'voucher',
+    NEWSLETTER: 'newsletter'
+};
 
 /**
  * CMS post:

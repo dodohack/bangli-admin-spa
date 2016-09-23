@@ -8,13 +8,14 @@ import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
-
-
+import { ENTITY }            from '../../models';
 import { AppState }          from '../../reducers';
 import { Ping }              from '../../ping';
 import { AuthState }         from '../../reducers/auth';
 import { CmsAttrsState }     from '../../reducers/cmsattrs';
 import { PagesState }        from '../../reducers/pages';
+import { EntitiesState }     from '../../reducers/entities';
+import { EntityActions }     from '../../actions';
 import { PageActions }       from '../../actions';
 import { Page, PageParams }  from '../../models';
 
@@ -35,7 +36,8 @@ export class PagesPage implements OnInit, OnDestroy
 
     authState:   AuthState;
     cmsState:    CmsAttrsState;
-    pagesState:  PagesState;
+    pagesState:  any; //PagesState;
+    entitiesState: EntitiesState;
 
     // Batch editing pages
     pagesInEdit: Page[];
@@ -57,13 +59,16 @@ export class PagesPage implements OnInit, OnDestroy
          * posts/topics pages */
         this.subCms = this.store.select<CmsAttrsState>('cms')
             .subscribe(cmsState => this.cmsState = cmsState);
-        this.subPages = this.store.select<PagesState>('pages')
-            .subscribe(pagesState => {
-                this.loading = false;
-                this.pagesState = pagesState;
-                // Create new copies of pages
-                this.pagesInEdit = this.pagesState.editing
-                    .map(id => Object.assign({}, this.pagesState.entities[id]));
+        this.subPages = this.store.select<EntitiesState>('entities')
+            .subscribe(state => {
+                console.log("entitiesState: ", state);
+                if (state[ENTITY.CMS_PAGE]) {
+                    this.loading = false;
+                    this.pagesState = state[ENTITY.CMS_PAGE];
+                    // Create new copies of pages
+                    this.pagesInEdit = this.pagesState.editing
+                        .map(id => Object.assign({}, this.pagesState.entities[id]));
+                }
             });
 
         // FIXME: See fixme in posts.page.ts
@@ -105,42 +110,42 @@ export class PagesPage implements OnInit, OnDestroy
         }
 
         // Load list of posts from API server
-        this.store.dispatch(PageActions.loadPages(pageParams));
+        this.store.dispatch(EntityActions.loadEntities(ENTITY.CMS_PAGE, pageParams));
     }
 
     // In page edit single or multiple topics
     batchEdit(ids: number[]) {
-        this.store.dispatch(PageActions.batchEditPages(ids));
+        this.store.dispatch(EntityActions.batchEditEntities(ENTITY.CMS_PAGE, ids));
     }
 
     // FIXME: Should be Cancel batch options
     cancelBatchEdit() {
-        this.store.dispatch(PageActions.cancelBatchEditPages());
+        this.store.dispatch(EntityActions.cancelBatchEditEntities(ENTITY.CMS_PAGE));
     }
 
     // Edit previous post in current pages list
     editPreviousPage() {
-        this.store.dispatch(PageActions.batchEditPreviousPage());
+        this.store.dispatch(EntityActions.batchEditPreviousEntity(ENTITY.CMS_PAGE));
     }
 
     // Edit next post in current pages list
     editNextPage() {
-        this.store.dispatch(PageActions.batchEditNextPage());
+        this.store.dispatch(EntityActions.batchEditNextEntity(ENTITY.CMS_PAGE));
     }
 
     // Delete multiple pages
     batchDelete(ids: number[]) {
-        this.store.dispatch(PageActions.batchDeletePages(ids));
+        this.store.dispatch(EntityActions.batchDeleteEntities(ENTITY.CMS_PAGE, ids));
     }
 
     // Lock pages to offline edit
     batchOfflineEdit(ids: number[]) {
-        this.store.dispatch(PageActions.batchOfflineEditPages(ids));
+        this.store.dispatch(EntityActions.batchOfflineEditEntities(ENTITY.CMS_PAGE, ids));
     }
 
     // Add lock to pages, so no one can edit the page
     batchLock(ids: number[]) {
-        this.store.dispatch(PageActions.batchLockPages(ids));
+        this.store.dispatch(EntityActions.batchLockEntities(ENTITY.CMS_PAGE, ids));
     }
 
     // TODO:

@@ -9,6 +9,7 @@ import { Effect, Actions } from '@ngrx/effects';
 import { Observable }      from 'rxjs/Observable';
 
 import { BaseEffects }       from './base';
+import { EntityActions }     from '../actions';
 import { PostActions }       from '../actions';
 import { TopicActions }      from '../actions';
 import { DealPostActions }   from '../actions';
@@ -29,6 +30,35 @@ export class EntityEffects extends BaseEffects {
                  protected http: Http) {
         super(http);
     }
+
+
+    /**************************************************************************
+     * Entity
+     *************************************************************************/
+    @Effect() loadEntities$ = this.actions$.ofType(EntityActions.LOAD_ENTITIES)
+        .switchMap(action => this.getEntities(action.payload.etype, action.payload.data)
+            .map(ret => EntityActions.loadEntitiesSuccess(ret.etype, ret))
+            .catch(() => Observable.of(EntityActions.loadEntitiesFail()))
+        );
+
+    @Effect() loadEntity$ = this.actions$.ofType(EntityActions.LOAD_ENTITY)
+        .switchMap(action => this.getEntity(action.payload.etype, action.payload.data)
+            .map(ret => EntityActions.loadEntitySuccess(ret.etype, ret.entity))
+            .catch(() => Observable.of(EntityActions.loadEntityFail()))
+        );
+
+    @Effect() putEntity$ = this.actions$.ofType(EntityActions.SAVE_ENTITY)
+        .switchMap(action => this.saveEntity(action.payload.etype, action.payload.data)
+            .map(ret => EntityActions.saveEntitySuccess(ret.etype, ret.entity))
+            .catch(() => Observable.of(EntityActions.saveEntityFail()))
+        );
+
+    @Effect() saveEntitySuccess$ = this.actions$.ofType(EntityActions.SAVE_ENTITY_SUCCESS)
+        .map(action => AlertActions.success('保存成功!'));
+
+    @Effect() saveEntityFail$ = this.actions$.ofType(EntityActions.SAVE_ENTITY_FAIL)
+        .map(action => AlertActions.error('保存失败!'));
+
 
     /**************************************************************************
      * CMS Post

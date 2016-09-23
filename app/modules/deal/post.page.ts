@@ -1,5 +1,6 @@
 /**
  * Single deal post
+ * For each deal post, it belows to a cms topic, has cms categories and tags.
  */
 
 import { Component } from '@angular/core';

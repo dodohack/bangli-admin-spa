@@ -44,6 +44,7 @@ import alertsReducer, * as fromAlerts     from './alerts';
 import authReducer, * as fromAuth         from './auth';
 import usersReducer, * as fromUsers       from './users';
 import prefReducer, * as fromPref         from './preference';
+import entitiesReducer, * as fromEntities from './entities';
 import productsReducer, * as fromProducts from './products';
 import ordersReducer, * as fromOrders     from './orders';
 import vouchersReducer, * as fromVouchers from './vouchers';
@@ -66,6 +67,7 @@ export interface AppState {
     auth:     fromAuth.AuthState;
     users:    fromUsers.UsersState;
     pref:     fromPref.PreferenceState;
+    entities: fromEntities.EntitiesState;
     products: fromProducts.ProductsState;
     orders:   fromOrders.OrdersState;
     vouchers: fromVouchers.VouchersState;
@@ -97,6 +99,7 @@ export default compose(
     auth:     authReducer,
     users:    usersReducer,
     pref:     prefReducer,
+    entities: entitiesReducer,
     products: productsReducer,
     orders:   ordersReducer,
     vouchers: vouchersReducer,

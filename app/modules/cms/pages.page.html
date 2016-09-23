@@ -3,13 +3,15 @@
                   [loading]="loading"></list-page-header>
 
 <!-- Page filter/tool bar at top -->
-<list-filter-bar [isPage]="true"
+<list-filter-bar *ngIf="pagesState"
+                 [isPage]="true"
                  [editors]="cmsState.editors"
                  [paginator]="pagesState.paginator"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Page list table -->
-<cms-list [isPage]="true"
+<cms-list *ngIf="pagesState"
+          [isPage]="true"
           [authState]="authState" [listState]="pagesState"
           [cmsState]="cmsState"
           (batchEdit)="batchEdit($event)"
