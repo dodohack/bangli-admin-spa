@@ -32,7 +32,7 @@ export class FroalaOptions {
             imageUploadMethod: 'POST',
             imageUploadParams: {token: AuthCache.token()},
             imageUploadURL: APIS[AuthCache.domainKey()] + 
-            API_PATH[AuthCache.domainKey()].file_upload,
+            API_PATH.file_upload,
         };
     }
 }

@@ -60,6 +60,7 @@ export class EntitiesPage implements OnInit, OnDestroy
         this.subEntities = this.store.select<EntitiesStateGroup>('entities')
             .subscribe(stateGroup => {
                 if (stateGroup && stateGroup[this.etype]) {
+                    console.log("ENTITIES ARE LOADED: ", stateGroup[this.etype]);
                     // Set search loading to false if posts is loaded
                     this.entitiesState = stateGroup[this.etype];
                     // Create new copies of entities

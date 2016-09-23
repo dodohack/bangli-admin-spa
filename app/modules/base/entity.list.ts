@@ -124,9 +124,9 @@ export class EntityList
     editLink(id: number) {
         switch (this.etype) {
             case ENTITY.CMS_TOPIC:
-                return ENTITY_INFO[this.etype].slug + this.entities[id].guid;
+                return '/' + ENTITY_INFO[this.etype].slug + '/' + this.entities[id].guid;
             default:
-                return ENTITY_INFO[this.etype].slug + id;
+                return '/' + ENTITY_INFO[this.etype].slug + '/' + id;
         }
     }
 
@@ -137,7 +137,7 @@ export class EntityList
         switch (this.etype) {
             case ENTITY.CMS_TOPIC:
                 return base + ENTITY_INFO[this.etype] + '/'
-                    + this.channels[this.entities[id].channel_id]
+                    + this.channels[this.entities[id].channel_id] + '/'
                     + this.entities[id].guid;
 
             case ENTITY.SHOP_PRODUCT:
