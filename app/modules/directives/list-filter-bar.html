@@ -4,7 +4,7 @@
 
         <form (ngSubmit)="onSubmitFilter()" #filterForm="ngForm" style="display: inline-block">
 
-            <div class="form-group" *ngIf="authors">
+            <div class="form-group" *ngIf="authors && hasAuthorFilter">
                 <select [(ngModel)]="filterAuthor" name="a"
                         class="form-control form-control-sm custom-select">
                     <option value="">所有作者</option>
@@ -14,7 +14,7 @@
                 </select>
             </div>
 
-            <div class="form-group" *ngIf="editors">
+            <div class="form-group" *ngIf="editors && hasEditorFilter">
                 <select [(ngModel)]="filterEditor" name="e"
                         class="form-control form-control-sm custom-select">
                     <option value="">所有编辑</option>

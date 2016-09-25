@@ -5,6 +5,7 @@
 import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 
+import { User }                from "../../models";
 import { ENTITY, ENTITY_INFO } from '../../models';
 import { AuthState }      from '../../reducers/auth';
 import { CmsAttrsState }  from "../../reducers/cmsattrs";
@@ -37,8 +38,20 @@ export class EntityList
     get ids() { return this._listState.ids; }
     get entities() { return this._listState.entities; }
     get paginator() { return this._listState.paginator; }
-    get authors() { return this.cmsState.authors; }
-    get editors() { return this.cmsState.editors; }
+    get authors() {
+        // Convert authors array to authors object indexed by author id
+        return this.cmsState.authors
+            .reduce((users: {[id: number]: User}, entity: User) => {
+                return Object.assign(users, { [entity.id]: entity });
+            }, {});
+    }
+    get editors() {
+        // Convert editors array to editors object indexed by editor id
+        return this.cmsState.editors
+            .reduce((users: {[id: number]: User}, entity: User) => {
+                return Object.assign(users, { [entity.id]: entity });
+            }, {});
+    }
     get channels() { return this.cmsState.channels; }
 
     // If batch options can be enabled
@@ -52,34 +65,32 @@ export class EntityList
         return this._listState.ids.length <= this._listState.editing.length;
     }
 
-    // Is given entity has a author
+    // If the entity has an author
     hasAuthor(id) {
-        return this.authors[this.entities[id].author_id];
+        if (this.etype === ENTITY.CMS_POST && id && this.authors[id])
+            return true;
+        return false;
     }
     // Get author name of given entity
-    authorName(id) {
-        return this.authors[this.entities[id].author_id].name;
-    }
-    // Is given entity has a editor
-    hasEditor(id) {
-        return this.editors[this.entities[id].editor_id];
-    }
+    authorName(id) { return this.authors[id].name; }
+
+    // If the entity has an editor
+    hasEditor(id) { return this.editors[id]; }
     // Get editor name of given entity
-    editorName(id) {
-        return this.editors[this.entities[id].editor_id].name;
-    }
+    editorName(id) { return this.editors[id].name; }
+
     // If the the entity is in editing
     isEditing(id) {
         return this._listState.editing.filter(eid => eid === id).length;
     }
 
     hasActivity(id): boolean {
-        return this.entities[id].activities &&
-            this.entities[id].activities.length > 0;
+        return this._listState.entities[id].activities &&
+            this._listState.entities[id].activities.length > 0;
     }
 
     getActivity(id) {
-        return this.entities[id].activities[0];
+        return this._listState.entities[id].activities[0];
     }
 
     // Add id to editing list if it is not added, or
@@ -121,14 +132,7 @@ export class EntityList
     }
 
     // Entity editing link
-    editLink(id: number) {
-        switch (this.etype) {
-            case ENTITY.CMS_TOPIC:
-                return '/' + ENTITY_INFO[this.etype].slug + '/' + this.entities[id].guid;
-            default:
-                return '/' + ENTITY_INFO[this.etype].slug + '/' + id;
-        }
-    }
+    editLink(id: number) { return '/' + ENTITY_INFO[this.etype].slug + '/' + id; }
 
     // Frontend preview link
     previewLink(id: number) {
@@ -137,11 +141,11 @@ export class EntityList
         switch (this.etype) {
             case ENTITY.CMS_TOPIC:
                 return base + ENTITY_INFO[this.etype] + '/'
-                    + this.channels[this.entities[id].channel_id] + '/'
-                    + this.entities[id].guid;
+                    + this.cmsState.channels[this._listState.entities[id].channel_id] + '/'
+                    + this._listState.entities[id].guid;
 
             case ENTITY.SHOP_PRODUCT:
-                return base + ENTITY_INFO[this.etype] + '/' + this.entities[id].guid;
+                return base + ENTITY_INFO[this.etype] + '/' + this._listState.entities[id].guid;
 
             // Default to cms type
             default:

@@ -77,6 +77,8 @@ export class EntityEffects  {
                     return AuthCache.API() + API_PATH.cms_pages;
                 case ENTITY.NEWSLETTER:
                     return AuthCache.API() + API_PATH.newsletter_posts;
+                case ENTITY.COMMENT:
+                    return AuthCache.API() + API_PATH.comments;
                 case ENTITY.SHOP_ORDER:
                     return AuthCache.API() + API_PATH.shop_orders;
                 case ENTITY.SHOP_PRODUCT:
@@ -98,6 +100,8 @@ export class EntityEffects  {
                     return AuthCache.API() + API_PATH.cms_pages_batch;
                 case ENTITY.NEWSLETTER:
                     return AuthCache.API() + API_PATH.newsletter_posts_batch;
+                case ENTITY.COMMENT:
+                    return AuthCache.API() + API_PATH.comments_batch;
                 case ENTITY.SHOP_ORDER:
                     return AuthCache.API() + API_PATH.shop_orders_batch;
                 case ENTITY.SHOP_PRODUCT:

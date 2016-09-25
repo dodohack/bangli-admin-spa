@@ -7,17 +7,14 @@ import { SharedModule } from '../directives/shared.module';
 
 import { routing }         from './routing';
 
-import { SocialMenu }      from './components/menu';
-import { SocialPage }      from './social.page';
-import { SettingPage }     from './setting.page';
+import { CommentList }     from './components/comment.list';
+import { CommentsPage }    from './comments.page';
 
 @NgModule({
     imports: [ SharedModule, routing ],
     declarations: [
-        SocialMenu,
-
-        SocialPage,
-        SettingPage,
+        CommentList,
+        CommentsPage,
     ]
 })
-export class SocialModule {}
+export class CommentModule {}

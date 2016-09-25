@@ -2,6 +2,127 @@
                     [entity]="entity" [lists]="entitiesState">
 </editor-page-header>
 
+
+<form *ngIf="entity" (ngSubmit)="save()" #dealForm="ngForm">
+
+    <!-- Post title and main buttons -->
+    <div class="row post-meta-row">
+        <div class="col-xs-7 col-sm-7 col-md-8">
+            <div class="input-group">
+                <span class="input-group-addon">标题</span>
+                <input type="text" name="title" class="form-control post-title"
+                       [(ngModel)]="entity.title" placeholder="优惠标题" required>
+            </div>
+        </div>
+
+        <div class="col-xs-5 col-sm-5 col-md-4">
+            <!-- Save buttons -->
+            <div class="float-right">
+                <button type="submit" class="btn btn-sm btn-outline-success"
+                        [disabled]="!dealForm.form.dirty && dealForm.form.valid">保存</button>
+
+                <button class="btn btn-sm btn-outline-danger"
+                        (click)="save2Draft()" *ngIf="isPending || isPublish">撤销发布</button>
+
+                <button class="btn btn-sm btn-outline-danger"
+                        (click)="save2Publish()" [disabled]="isPublish">发布</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User can hide some info if the do not want to see it -->
+    <accordion>
+
+        <accordion-group isOpen="true">
+            <div accordion-heading>
+                优惠属性<i class="pull-right fa fa-chevron-circle-down"></i>
+            </div>
+
+            <!-- author/editor/post_type/creative_type selectors -->
+            <div class="row post-meta-row">
+                <div class="col-xs-12 form-inline">
+
+                    <div class="form-group post-meta">
+                        <label>编辑</label>
+                        <select class="form-control form-control-sm custom-select"
+                                name="editor_id" [(ngModel)]="entity.editor_id">
+                            <option *ngFor="let editor of cmsState.editors"
+                                    [selected]="editor.id === entity.editor_id"
+                                    [value]="editor.id">{{ editor.display_name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group post-meta">
+                        <label>稿件属性</label>
+                        <select class="form-control form-control-sm custom-select"
+                                name="c_type" [(ngModel)]="entity.creative_type">
+                            <option *ngFor="let c_type of cmsState.post_creative_types.available"
+                                    [selected]="entity.creative_type === c_type.creative_type"
+                                    [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group post-meta">
+                        <label>频道</label>
+                        <select class="form-control form-control-sm custom-select"
+                                name="cid" [(ngModel)]="entity.channel_id">
+                            <option *ngFor="let ch of cmsState.channels"
+                                    [selected]="entity.channel_id === ch.id"
+                                    [value]="ch.id">{{ ch.name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group post-meta">
+                        <label>坐标</label>
+                        <select class="form-control form-control-sm custom-select"
+                                name="lid" [(ngModel)]="entity.location_id">
+                            <option value="0">typeahead select</option>
+                            <option value="1">typeahead select</option>
+                        </select>
+                    </div>
+
+                    <a class="float-right btn btn-sm btn-outline-warning" (click)="openPanel = true">展开侧栏</a>
+                </div>
+            </div>
+
+
+            <!-- Post category, tag, topic etc -->
+            <cms-tag-cloud [post]="entity"
+                           (toggle)="openPanel = !openPanel"
+                           (deleteCat)="removeCat($event)"
+                           (deleteTag)="removeTag($event)"
+                           (deleteTopic)="removeTopic($event)"></cms-tag-cloud>
+
+            <!-- Thumbnail and excerpt -->
+            <div class="row">
+                <div class="col-xs-4">
+                    <div style="width: 200px; height: 150px; border: 3px solid green;">
+                        缩略图
+                    </div>
+                </div>
+            </div>
+
+        </accordion-group>
+
+        <accordion-group isOpen="true">
+            <div accordion-heading>
+                优惠内容<i class="pull-right fa fa-chevron-circle-down"></i>
+            </div>
+
+            <!-- Froala Editor -->
+            <!-- TODO: Use official one when ngModule bug is fixed -->
+            <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
+                 [(froalaModel)]="inputPost.content"></div>-->
+            <froala *ngIf="inputEntity"
+                    [froalaOptions]="froalaOptions"
+                    [froalaData]="inputEntity.content"
+                    (model)="contentChanged($event)"></froala>
+
+        </accordion-group>
+
+    </accordion>
+</form>
+
 <pre>
     In single deal post page, we can manage:
     1. Choose cms topic for this deal, once the cms topic is chosen, and

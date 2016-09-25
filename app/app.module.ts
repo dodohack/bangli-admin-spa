@@ -37,6 +37,7 @@ import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { CmsModule }       from './modules/cms/cms.module';
 import { EmailModule }     from './modules/email/email.module';
 import { ShopModule }      from './modules/shop/shop.module';
+import { CommentModule }   from './modules/comment/comment.module';
 import { CsModule }        from './modules/cs/cs.module';
 import { SocialModule }    from './modules/social/social.module';
 import { AffiliateModule } from './modules/affiliate/affiliate.module';
@@ -63,6 +64,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         ShopModule,
         CsModule,
         UserModule,
+        CommentModule,
         SocialModule,
         AffiliateModule,
         AnalysisModule,

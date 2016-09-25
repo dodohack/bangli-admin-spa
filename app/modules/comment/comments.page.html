@@ -1,0 +1,15 @@
+<list-page-header [etype]="etype" [loading]="loading"></list-page-header>
+
+<!-- Deal post filter/tool bar at top -->
+<list-filter-bar *ngIf="loaded"
+                 [etype]="etype"
+                 [paginator]="entitiesState.paginator"
+                 (batchActionEvent)="batchEdit($event)"></list-filter-bar>
+
+<!-- Topic list table -->
+<comment-list *ngIf="loaded"
+          [etype]="etype"
+          [authState]="authState"
+          [listState]="entitiesState"
+          (batchEdit)="batchEdit($event)"
+          (batchDelete)="batchDelete($event)"></comment-list>

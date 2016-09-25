@@ -63,12 +63,22 @@ export class ListFilterBar implements OnInit, OnDestroy {
         this.subQParams.unsubscribe();
     }
 
-    get baseUrl() {
-        if (this.etype) return ENTITY_INFO[this.etype].slug;
-    }
-
+    get baseUrl() { if (this.etype) return ENTITY_INFO[this.etype].slug; }
     get zh() { return zh_CN[this.baseUrl]; }
 
+    get hasAuthorFilter() { return this.etype === ENTITY.CMS_POST; }
+    get hasEditorFilter() {
+        switch (this.etype) {
+            case ENTITY.CMS_POST:
+            case ENTITY.CMS_PAGE:
+            case ENTITY.CMS_TOPIC:
+            case ENTITY.SHOP_PRODUCT:
+                return true;
+            default:
+                return false;
+        }
+    }
+    
     catCount(cat: any) {
         switch(this.etype) {
             case ENTITY.CMS_POST:
@@ -91,7 +101,7 @@ export class ListFilterBar implements OnInit, OnDestroy {
             case ENTITY.SHOP_PRODUCT:
                 return editor.products_by_editor_count;
             default:
-                console.error("Unhandled entity type: ", this.etype);
+                return null;
         }
     }
 

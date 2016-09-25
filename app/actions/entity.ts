@@ -125,7 +125,7 @@ export class EntityActions {
     }
 
     static LOAD_ENTITY = '[Entity] Load Entity';
-    static loadEntity(etype: string, id: number): Action {
+    static loadEntity(etype: string, id: string): Action {
         return {
             type: EntityActions.LOAD_ENTITY,
             payload: {etype: etype, data: id}

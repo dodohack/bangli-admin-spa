@@ -75,9 +75,11 @@
             </td>
 
             <td>
-                <span *ngIf="hasEditor(id)">编辑: {{ editorName(id) }}</span>
-                <div *ngIf="isPost">
-                    <span *ngIf="hasAuthor(id)">作者: {{ authorName(id) }}</span>
+                <span *ngIf="hasEditor(entities[id].editor_id)">
+                    编辑: {{ editorName(entities[id].editor_id) }}
+                </span>
+                <div *ngIf="hasAuthor(entities[id].author_id)">
+                    作者: {{ authorName(entities[id].author_id) }}
                 </div>
             </td>
 

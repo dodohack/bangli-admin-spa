@@ -26,6 +26,7 @@ export interface CmsAttrsState {
     post_creative_types: {available: CreativeType[], actual: CreativeType[]};
     topic_states:        {available: PostState[],    actual: PostState[]};
     page_states:         {available: PostState[],    actual: PostState[]};
+    deal_states:         {available: PostState[],    actual: PostState[]};
 };
 
 const initialState: CmsAttrsState = {
@@ -38,7 +39,8 @@ const initialState: CmsAttrsState = {
     post_states: {available: POST_STATES, actual: []},
     post_creative_types: {available: CREATIVE_TYPES, actual: []},
     topic_states: {available: POST_STATES, actual: []},
-    page_states:  {available: POST_STATES, actual: []}
+    page_states:  {available: POST_STATES, actual: []},
+    deal_states:  {available: POST_STATES, actual: []},
 };
 
 export default function (state = initialState, action: Action): CmsAttrsState {
@@ -85,6 +87,10 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             if (action.payload.page_states)
                 page_states = action.payload.page_states;
 
+            let deal_states: PostState[];
+            if (action.payload.deal_states)
+                deal_states = action.payload.deal_states;
+
             return {
                 authors: [...authors],
                 editors: [...editors],
@@ -95,7 +101,8 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                 post_states: Object.assign({}, state.post_states, {actual: post_states}),
                   post_creative_types: Object.assign({}, state.post_creative_types, {actual: post_creative_types}),
                 topic_states: Object.assign({}, state.topic_states, {actual: topic_states}),
-                page_states: Object.assign({}, state.page_states, {actual: page_states})
+                page_states: Object.assign({}, state.page_states, {actual: page_states}),
+                deal_states: Object.assign({}, state.deal_states, {actual: deal_states})
             };
         }
 

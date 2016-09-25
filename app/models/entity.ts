@@ -26,6 +26,7 @@ export const ENTITY = {
     SHOP_PRODUCT: 'shop-product',
     SHOP_VOUCHER: 'shop-voucher',
     NEWSLETTER: 'newsletter',
+    COMMENT: 'comment',
 
     // Following entities are not managed by unified entity reducer/effects.
     USER: 'user'
@@ -42,6 +43,7 @@ export const ENTITY_INFO = {
     'shop-order':    {name: '订单',     slug: 'order'},
     'shop-product':  {name: '商品',     slug: 'product'},
     'newsletter':    {name: '订阅邮件',  slug: 'newsletter'},
+    'comment':       {name: '用户评论',  slug: 'comment'},
     'user':          {name: '用户',     slug: 'user'},
 };
 

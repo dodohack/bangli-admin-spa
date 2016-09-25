@@ -30,13 +30,8 @@ export class ListPageHeader {
     // Input to childview search-box
     @Input() loading: boolean;
 
-    get title() {
-        if (this.etype) return ENTITY_INFO[this.etype].name;
-    }
-    
-    get baseUrl() {
-        if (this.etype) return ENTITY_INFO[this.etype].slug;
-    }
+    get title() { if (this.etype) return ENTITY_INFO[this.etype].name; }
+    get baseUrl() { if (this.etype) return ENTITY_INFO[this.etype].slug; }
     
     navUrl($state) {
         if (this.etype === ENTITY.USER)

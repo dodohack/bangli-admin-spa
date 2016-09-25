@@ -30,6 +30,7 @@ const BANGLI_UK_SIDEBAR_MENUS = [
     {slug: 'deal',      name: '优惠',      icon_style: 'fa fa-lg fa-circle-o'},
     {slug: 'bbs',       name: '社区',      icon_style: 'fa fa-lg fa-circle-o'},    
     {slug: 'page',      name: '页面',      icon_style: 'fa fa-lg fa-circle-o'},
+    {slug: 'comment',   name: '评论',      icon_style: 'fa fa-lg fa-comment'},
     {slug: 'social',    name: '社交',      icon_style: 'fa fa-lg fa-wechat'},
     {slug: 'email',     name: '邮件',      icon_style: 'fa fa-lg fa-envelope'},
     {slug: 'attachment',name: '媒体库',    icon_style: 'fa fa-lg fa-image'},

@@ -53,7 +53,7 @@ export class MigrationPage
     }
 
     public migrateComment(domainKey: string) {
-        this.message = "正在移植" + domainKey + "文章和专题,可能需要等几分钟或更长时间,请不要刷新页面";
+        this.message = "正在移植" + domainKey + "评论,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('comment', domainKey);
     }
 
@@ -81,7 +81,7 @@ export class MigrationPage
         this.isRunning = true;
 
         /* Get correct API endpoint */
-        let API = APIS[domainKey] + API_PATH[domainKey].migrate_base;
+        let API = APIS[domainKey] + API_PATH.migrate_base;
         
         let options = new RequestOptions({ headers: this.headers });
 

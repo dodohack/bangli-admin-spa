@@ -19,6 +19,7 @@ import { AlertActions }      from "../../actions";
 
 import { FroalaOptions }     from '../../models/froala.option';
 import { Entity }            from '../../models';
+import { ENTITY }            from "../../models";
 import { Category }          from '../../models';
 import { Tag }               from '../../models';
 import { Topic }             from '../../models';
@@ -26,7 +27,7 @@ import { zh_CN }             from '../../localization';
 
 export class EntityPage implements OnInit, OnDestroy
 {
-    @ViewChild('postForm') postForm;
+    //@ViewChild('postForm') postForm;
 
     // subscriptions
     subAuth: any;
@@ -79,10 +80,14 @@ export class EntityPage implements OnInit, OnDestroy
      */
     dispatchLoadEntity() {
         this.subParams = this.route.params.subscribe(params => {
-            if (Object.keys(params).length === 0) // New a post
+            if (Object.keys(params).length === 0) {
+                // New a entity
                 this.store.dispatch(EntityActions.newEntity(this.etype/* FIXME: current user id */));
-            else                                  // Edit a post
-                this.store.dispatch(EntityActions.loadEntity(this.etype, +params['id']));
+            } else {
+                // Edit a entity, we should make sure all entity is identified
+                // with :id parameters.
+                this.store.dispatch(EntityActions.loadEntity(this.etype, params['id']));
+            }
         });
     }
 
