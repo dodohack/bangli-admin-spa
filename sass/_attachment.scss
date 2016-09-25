@@ -19,18 +19,97 @@
   background: #dddddd;
 }
 
-.gallaries {
-  figure {
-    margin: 0;
-    padding: 4px;
-  }
 
-  img {
-    border: none;
-    max-width: 100%;
-    height: auto;
-    display: block;
-    background: grey;
-    transition: transform .2s ease-in-out, -webkit-transform .2s ease-in-out;
+// Attachments list
+.attachments {
+  // ul style
+  padding: 0.1rem;
+  position: static;
+  overflow: auto;
+  background: #f1feff;
+
+  // li style
+  .attachment {
+    position: relative;
+    float: left;
+    padding: 0.5rem;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    box-sizing: border-box;
+
+    @media (min-width: 1024px) {
+      width: 12.5%;
+    }
+    @media (min-width: 840px) and (max-width: 1023px) {
+      width: 14.28%;
+    }
+    @media (min-width: 768px) and (max-width: 840px) {
+      width: 16.66%;
+    }
+    @media (max-width: 767px) {
+      width: 20%;
+    }
+
+    .attachment-preview {
+
+      position: relative;
+      background: #eee;
+      cursor: pointer;
+
+      &:before {
+        content: "";
+        display: block;
+        padding-top: 100%;
+      }
+
+      .thumbnail {
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        opacity: 1;
+        transition: opacity .1s;
+
+        &:after {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          box-shadow: inset 0 0 0 1px rgba(0,0,0,.2);
+          overflow: hidden;
+        }
+
+        .centered {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          -webkit-transform: translate(50%, 50%);
+          -ms-transform: translate(50%, 50%);
+          transform: translate(50%, 50%);
+
+          img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            max-height: 100%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+          }
+        }
+      }
+    }
   }
 }

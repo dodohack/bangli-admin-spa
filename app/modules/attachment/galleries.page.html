@@ -126,7 +126,7 @@
         </li>
     </ul>
 
-    <search-box [baseUrl]="baseUrl" [loading]="loading"></search-box>
+    <search-box [baseUrl]="'attachment'" [loading]="loading"></search-box>
 </nav>
 
 
@@ -137,11 +137,10 @@
 <!-- FIXME: dynamically based on screen resolution(as width is changing) -->
 <!-- REF: http://stackoverflow.com/questions/14562457/center-oversized-image-in-div -->
 <!-- REF: https://www.sitepoint.com/using-modern-css-to-build-a-responsive-image-grid/ -->
-<div class="row gallaries">
-    <image-list [etype]="etype"
-                [cmsState]="cmsState"
-                [listState]="entitiesState"
-                (batchEdit)="batchEdit($event)"
-                (batchDelete)="batchDelete($event)"></image-list>
-</div>
+<image-list [etype]="etype"
+            [baseResUrl]="imgBaseUrl"
+            [cmsState]="cmsState"
+            [listState]="entitiesState"
+            (batchEdit)="batchEdit($event)"
+            (batchDelete)="batchDelete($event)"></image-list>
 

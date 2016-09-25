@@ -8,6 +8,7 @@ import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 
 import { EntitiesPage }      from '../base/entities.page';
+import { AuthCache }         from '../../auth.cache';
 import { ENTITY }            from '../../models';
 import { AppState }          from '../../reducers';
 import { Ping }              from '../../ping';
@@ -41,6 +42,8 @@ export class GalleriesPage extends EntitiesPage
         };
         */
     }
+    
+    get imgBaseUrl() { return AuthCache.IMG_SERVER(); }
 
     handleUpload(data: any): void {
         console.log("handleUpload, data: ", data);

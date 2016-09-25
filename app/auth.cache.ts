@@ -2,7 +2,7 @@
  * This is a temporary solution get retrieve authenticated token and domain_key
  * globally, all the information is manually cached in session storage
  */
-import { APIS, API_PATH } from './api';
+import { APIS, IMG_SERVER } from './api';
 import { JwtPayload }     from "./models";
 
 /**
@@ -25,6 +25,8 @@ export class AuthCache {
         sessionStorage.removeItem('jwt');
         sessionStorage.removeItem('key');
     }
-    
+
     static API() { return APIS[AuthCache.domainKey()]; }
+
+    static IMG_SERVER() { return IMG_SERVER[AuthCache.domainKey()]; }
 }

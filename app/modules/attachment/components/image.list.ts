@@ -17,4 +17,8 @@ import { zh_CN } from '../../../localization';
 })
 export class ImageList extends EntityList
 {
+    imgUrl(entity) {
+        return this.baseResUrl + '/' + entity.path + '/' + entity.filename;
+    }
 }
+

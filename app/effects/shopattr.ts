@@ -26,8 +26,7 @@ export class ShopAttrEffects {
     // Private helper functions
 
     private getAll(auth: AuthState): Observable<ShopAttrsState> {
-
-        let api = APIS[auth.key] + API_PATH[auth.key].shop_attrs +
+        let api = APIS[auth.key] + API_PATH.shop_attrs +
             '?token=' + auth.token;
         return this.http.get(api).map(res => res.json());
     }

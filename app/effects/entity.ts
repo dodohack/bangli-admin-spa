@@ -41,7 +41,7 @@ export class EntityEffects  {
     @Effect() loadEntitiesOnScroll$ = this.actions$.ofType(EntityActions.LOAD_ENTITIES_ON_SCROLL)
         .switchMap(action => this.getEntities(action.payload.etype, action.payload.data)
             .map(ret => EntityActions.loadEntitiesOnScrollSuccess(ret.etype, ret))
-            .catch(() => Observable.of(EntityActions.loadEntitiesFail()))
+            .catch(() => Observable.of(EntityActions.loadEntitiesOnScrollFail()))
         );    
 
     @Effect() loadEntity$ = this.actions$.ofType(EntityActions.LOAD_ENTITY)
@@ -171,10 +171,14 @@ export class EntityEffects  {
      * Get entities, return any
      */
     protected getEntities(t: string, params: EntityParams): Observable<any> {
+        let perPage = PrefCache.getPerPage();
+        // Attachment list uses infinite scroll
+        if (t === ENTITY.ATTACHMENT) perPage = '60';
+
         let api = this.getApi(t, false)
             + params.toQueryString()
             + '&etype=' + t
-            + '&per_page=' + PrefCache.getPerPage()
+            + '&per_page=' + perPage
             + '&token=' + AuthCache.token();
 
         console.log("LOAD ENTITIES FROM URL: ", api);
