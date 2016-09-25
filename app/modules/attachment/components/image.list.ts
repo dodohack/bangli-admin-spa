@@ -17,8 +17,33 @@ import { zh_CN } from '../../../localization';
 })
 export class ImageList extends EntityList
 {
+    // Current selected image
+    image: any;
+    // Current selected image index
+    index: number = 0;
+    
+    setImage(i, entity) {
+        this.index = i;
+        this.image = entity;
+    }
+    
+    get curImageUrl() {
+        if (this.image) return this.imgUrl(this.image);
+    }
+    
+    preImage() {
+        if (this.index > 0) this.index--;
+        this.image = this.getEntityByIndex(this.index);
+    }
+    
+    nextImage() {
+        if (this.index < this.ids.length - 1) this.index++;
+        this.image = this.getEntityByIndex(this.index);
+    }
+
+    getEntityByIndex(i) { return this.entities[this.ids[i]]; }
+    
     imgUrl(entity) {
         return this.baseResUrl + '/' + entity.path + '/' + entity.filename;
     }
 }
-

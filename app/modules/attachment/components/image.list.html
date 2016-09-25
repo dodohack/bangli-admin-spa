@@ -2,7 +2,7 @@
     <li *ngFor="let id of ids; let i=index"
         class="attachment">
         <div class="attachment-preview">
-            <div class="thumbnail">
+            <div class="thumbnail" (click)="setImage(i, entities[id]); modal.show()">
                 <div class="centered">
                     <img [src]="imgUrl(entities[id])">
                 </div>
@@ -10,3 +10,46 @@
         </div>
     </li>
 </ul>
+
+<!-- In page editing modal -->
+<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="modal.hide()">
+                    <i class="fa fa-times"></i>
+                </button>
+                <button type="button" class="close" (click)="nextImage()">
+                    <i class="fa fa-chevron-right"></i>
+                </button>
+                <button type="button" class="close" (click)="preImage()">
+                    <i class="fa fa-chevron-left"></i>
+                </button>
+                <h5 class="modal-title">编辑图片
+                    <span class="tag tag-default-outline" *ngIf="ids">{{index}} / {{ids.length}}</span>
+                </h5>
+            </div>
+
+            <div class="modal-body">
+                <div class="attachment-details row">
+                    <div class="attachment-media-view col-xs-8">
+                        <div class="attachment-media">
+                            <img class="detailed-image" [src]="curImageUrl">
+                        </div>
+                    </div>
+
+                    <div class="attachment-info col-xs-4" *ngIf="image">
+                        <div>文件名: {{ image.filename }}</div>
+                        <div>文件类型: {{ image.mime_type }}</div>
+                        <div>文件大小: {{ image.size }}</div>
+                        <div>分辨率: {{ image.width }} x {{ image.height }}</div>
+                        <div>上传时间: {{ image.created_at }}</div>
+                        <hr>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

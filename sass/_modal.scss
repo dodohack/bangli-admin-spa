@@ -1,0 +1,20 @@
+.modal-header .close {
+  margin-top: 0.25rem;
+  margin-left: 0.75rem;
+}
+
+// extended modal size, almost full screen, for image in page editing etc
+.modal-xl {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+
+  max-width: 100% !important;
+  margin: 0 !important;
+
+  .modal-content {
+    height: 100%;
+  }
+}
