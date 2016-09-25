@@ -38,6 +38,12 @@ export class EntityEffects  {
             .catch(() => Observable.of(EntityActions.loadEntitiesFail()))
         );
 
+    @Effect() loadEntitiesOnScroll$ = this.actions$.ofType(EntityActions.LOAD_ENTITIES_ON_SCROLL)
+        .switchMap(action => this.getEntities(action.payload.etype, action.payload.data)
+            .map(ret => EntityActions.loadEntitiesOnScrollSuccess(ret.etype, ret))
+            .catch(() => Observable.of(EntityActions.loadEntitiesFail()))
+        );    
+
     @Effect() loadEntity$ = this.actions$.ofType(EntityActions.LOAD_ENTITY)
         .switchMap(action => this.getEntity(action.payload.etype, action.payload.data)
             .map(ret => EntityActions.loadEntitySuccess(ret.etype, ret.entity))
@@ -77,6 +83,8 @@ export class EntityEffects  {
                     return AuthCache.API() + API_PATH.cms_pages;
                 case ENTITY.NEWSLETTER:
                     return AuthCache.API() + API_PATH.newsletter_posts;
+                case ENTITY.ATTACHMENT:
+                    return AuthCache.API() + API_PATH.attachments;
                 case ENTITY.COMMENT:
                     return AuthCache.API() + API_PATH.comments;
                 case ENTITY.SHOP_ORDER:
@@ -100,6 +108,8 @@ export class EntityEffects  {
                     return AuthCache.API() + API_PATH.cms_pages_batch;
                 case ENTITY.NEWSLETTER:
                     return AuthCache.API() + API_PATH.newsletter_posts_batch;
+                case ENTITY.ATTACHMENT:
+                    return AuthCache.API() + API_PATH.attachments_batch;
                 case ENTITY.COMMENT:
                     return AuthCache.API() + API_PATH.comments_batch;
                 case ENTITY.SHOP_ORDER:

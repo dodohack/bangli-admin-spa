@@ -3,6 +3,7 @@
  */
 
 import { Component }         from '@angular/core';
+import { HostListener }      from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
@@ -41,16 +42,30 @@ export class EntitiesPage implements OnInit, OnDestroy
     params: any;
     queryParams: any;
 
+    // entity query parameter for api request
+    entityParams: EntityParams = new EntityParams;
+
     // Is list entities are loading
     loading: boolean = true;
     // Is list entities loaded, we can't use !loading to check the loaded state
     // as the list is re-rendered at each time loading
     loaded: boolean = false;
 
+    /**
+     * Constructor
+     * @param etype     - entity type, it can be almost any entity except user
+     * @param route
+     * @param store
+     * @param ping      - This is optional to post, topic and product.
+     * @param pageless  - if the entity list page is a pageless list, such as
+     *                    images, pageless list will auto load next page when
+     *                    page reaches its bottom)
+     */
     constructor(protected etype: string,
                 protected route: ActivatedRoute,
                 protected store: Store<AppState>,
-                protected ping: Ping) {}
+                protected ping: Ping,
+                protected pageless: boolean = false) {}
 
     ngOnInit() {
         this.subAuth = this.store.select<AuthState>('auth')
@@ -119,28 +134,42 @@ export class EntitiesPage implements OnInit, OnDestroy
     }
 
     loadEntities() {
-        let entityParams: EntityParams = new EntityParams;
+        //entityParams: EntityParams = new EntityParams;
 
         // Must have parameters come from route.params observable
         if (this.params) {
-            entityParams.channel  = this.params['channel'];
-            entityParams.cur_page = this.params['page'];
-            entityParams.state    = this.params['state'];
+            this.entityParams.channel  = this.params['channel'];
+            this.entityParams.cur_page = +this.params['page'] || 1;
+            this.entityParams.state    = this.params['state'];
         }
 
         // Optional parameters come from route.queryParams observable
         if (this.queryParams) {
-            entityParams.author   = this.queryParams['author'];
-            entityParams.editor   = this.queryParams['editor'];
-            entityParams.category = this.queryParams['category'];
-            entityParams.datetype = this.queryParams['datetype'];
-            entityParams.datefrom = this.queryParams['datefrom'];
-            entityParams.dateto   = this.queryParams['dateto'];
-            entityParams.query    = this.queryParams['query'];
+            this.entityParams.author   = this.queryParams['author'];
+            this.entityParams.editor   = this.queryParams['editor'];
+            this.entityParams.category = this.queryParams['category'];
+            this.entityParams.datetype = this.queryParams['datetype'];
+            this.entityParams.datefrom = this.queryParams['datefrom'];
+            this.entityParams.dateto   = this.queryParams['dateto'];
+            this.entityParams.query    = this.queryParams['query'];
         }
 
         // Load list of entities from API server
-        this.store.dispatch(EntityActions.loadEntities(this.etype, entityParams));
+        this.store.dispatch(EntityActions.loadEntities(this.etype, this.entityParams));
+    }
+
+    // Pageless loading
+    // Load next page of entities when scroll to page bottom
+    @HostListener('window:scroll')
+    loadEntitiesOnScroll() {
+        if (this.pageless && !this.loading &&
+            (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            setTimeout(() => {
+                this.loading = true;
+                this.entityParams.cur_page++;
+                this.store.dispatch(EntityActions.loadEntitiesOnScroll(this.etype, this.entityParams));
+            }, 300);
+        }
     }
 
     // In page edit single or multiple entities

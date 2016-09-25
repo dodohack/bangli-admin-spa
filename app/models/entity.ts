@@ -26,6 +26,7 @@ export const ENTITY = {
     SHOP_PRODUCT: 'shop-product',
     SHOP_VOUCHER: 'shop-voucher',
     NEWSLETTER: 'newsletter',
+    ATTACHMENT: 'attachment',
     COMMENT: 'comment',
 
     // Following entities are not managed by unified entity reducer/effects.
@@ -43,6 +44,7 @@ export const ENTITY_INFO = {
     'shop-order':    {name: '订单',     slug: 'order'},
     'shop-product':  {name: '商品',     slug: 'product'},
     'newsletter':    {name: '订阅邮件',  slug: 'newsletter'},
+    'attachment':    {name: '附件',     slug: 'attachment'},
     'comment':       {name: '用户评论',  slug: 'comment'},
     'user':          {name: '用户',     slug: 'user'},
 };
@@ -90,7 +92,7 @@ export class EntityState {
  * API request parameters
  */
 export class EntityParams {
-    cur_page: string = '1';
+    cur_page: number = 1;
     channel: string  = 'all'; // CMS and DEAL only
     state: string;
     author: string;     // CMS post only

@@ -59,6 +59,30 @@ export class EntityActions {
             payload: {etype: etype}*/
         };
     }
+    
+    static LOAD_ENTITIES_ON_SCROLL = '[Entity] Load Entities On Scroll';
+    static loadEntitiesOnScroll(etype: string, params: EntityParams): Action {
+        return {
+            type: EntityActions.LOAD_ENTITIES_ON_SCROLL,
+            payload: {etype: etype, data: params}
+        };
+    }
+
+    static LOAD_ENTITIES_ON_SCROLL_SUCCESS = '[Entity] Load Entities On Scroll Success';
+    static loadEntitiesOnScrollSuccess(etype: string, results: any): Action {
+        return {
+            type: EntityActions.LOAD_ENTITIES_ON_SCROLL_SUCCESS,
+            payload: {etype: etype, data: results}
+        };
+    }
+
+    static LOAD_ENTITIES_ON_SCROLL_FAIL = '[Entity] Load Entities On Scroll Fail';
+    static loadEntitiesOnScrollFail(/*etype: string*/): Action {
+        return {
+            type: EntityActions.LOAD_ENTITIES_ON_SCROLL_FAIL/*,
+             payload: {etype: etype}*/
+        };
+    }    
 
     static BATCH_EDIT_ENTITIES = '[Entity] Batch Edit Entities';
     static batchEditEntities(etype: string, ids: number[]): Action {

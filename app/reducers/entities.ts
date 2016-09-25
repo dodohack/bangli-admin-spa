@@ -93,6 +93,31 @@ export default function (state = initialState, action: Action): EntitiesStateGro
                 });
         }
 
+        // Append loaded entities to current entities instead of replace it
+        case EntityActions.LOAD_ENTITIES_ON_SCROLL_SUCCESS: {
+            // FIXME: paginator and entities in payload.data
+            // Entities of current entity type
+            const es: Entity[]    = action.payload.data.entities;
+            // Extract entity ids
+            const ids: number[]   = es.map(p => p.id);
+            const newEntities     = es
+                .reduce((entities: {[id: number]: Entity}, entity: Entity) => {
+                    return Object.assign(entities, { [entity.id]: entity });
+                }, {});
+
+            // In each reduce action, we only process the action for a single
+            // entity type, and we want to keep entities in other type untouched.
+            return Object.assign({}, state,
+                {
+                    [etype]: {
+                        ids: [...oldIds, ...ids],
+                        editing: oldEditing,
+                        entities: Object.assign({}, oldEntities, newEntities),
+                        paginator: action.payload.data.paginator
+                    }
+                });
+        }
+
         case EntityActions.BATCH_EDIT_ENTITIES: {
             return Object.assign({}, state,
                 {

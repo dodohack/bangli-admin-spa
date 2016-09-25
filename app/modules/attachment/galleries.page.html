@@ -9,12 +9,13 @@
 <!-- Upload dropoff area -->
 <accordion>
 
-    <accordion-group isOpen="true">
+    <accordion-group>
         <div accordion-heading>
             上传图片<i class="pull-right fa fa-chevron-circle-down"></i>
         </div>
 
         <!-- Drop zone -->
+        <!--
         <div ngFileDrop class="well drop-zone"
              [options]="options" (onUpload)="handleUpload($event)">
             <h2>把图片拖到此处上传</h2>
@@ -34,7 +35,7 @@
         </div>
         <div>Response: {{ response | json }}</div>
         <div>Progress: {{ progress }}% </div>
-
+        -->
 
 
         <!-- Image uploader area -->
@@ -123,15 +124,9 @@
                 <a class="dropdown-item">分类2</a>
             </div>
         </li>
-
-        <!-- Datepicker using ng2-bootstrap-->
-        <li class="nav-item">ng2-bootstrap data picker</li>
     </ul>
 
-    <form class="form-inline pull-xs-right">
-        <input class="form-control input-sm" type="text" placeholder="搜索图片">
-        <button class="btn btn-sm btn-outline-success" type="submit">搜索</button>
-    </form>
+    <search-box [baseUrl]="baseUrl" [loading]="loading"></search-box>
 </nav>
 
 
@@ -142,56 +137,11 @@
 <!-- FIXME: dynamically based on screen resolution(as width is changing) -->
 <!-- REF: http://stackoverflow.com/questions/14562457/center-oversized-image-in-div -->
 <!-- REF: https://www.sitepoint.com/using-modern-css-to-build-a-responsive-image-grid/ -->
-<div class="attachments">
-    <!-- Single item -->
-    <div class="attachment" role="checkbox">
-        <figure>
-            <img src="http://www.huluwa.uk/wp-content/uploads/2016/07/Comvita-Childrens-Lemon-Honey-Lollipops-450x338.jpg">
-        </figure>
-    </div>
-
-    <div class="attachment" role="checkbox">
-        <figure>
-            <img src="http://www.huluwa.uk/wp-content/uploads/2016/07/Comvita-Childrens-Lemon-Honey-Lollipops-450x338.jpg">
-        </figure>
-    </div>
-
-    <div class="attachment" role="checkbox">
-        <figure>
-            <img src="http://www.huluwa.uk/wp-content/uploads/2016/07/Comvita-Childrens-Lemon-Honey-Lollipops-450x338.jpg">
-        </figure>
-    </div>
-
-    <div class="attachment" role="checkbox">
-        <figure>
-            <img src="http://www.huluwa.uk/wp-content/uploads/2016/07/Comvita-Childrens-Lemon-Honey-Lollipops-450x338.jpg">
-        </figure>
-    </div>
-
-    <div class="attachment" role="checkbox">
-        <figure>
-            <img src="http://www.huluwa.uk/wp-content/uploads/2016/07/Comvita-Childrens-Lemon-Honey-Lollipops-450x338.jpg">
-        </figure>
-    </div>
-
-    <div class="attachment" role="checkbox">
-        <figure>
-            <img src="http://www.huluwa.uk/wp-content/uploads/2016/07/Comvita-Childrens-Lemon-Honey-Lollipops-450x338.jpg">
-        </figure>
-    </div>
-    <div class="attachment" role="checkbox">
-        <figure>
-            <img src="http://www.huluwa.uk/wp-content/uploads/2016/07/Comvita-Childrens-Lemon-Honey-Lollipops-450x338.jpg">
-        </figure>
-    </div>
-    <div class="attachment" role="checkbox">
-        <figure>
-            <img src="http://www.huluwa.uk/wp-content/uploads/2016/07/Comvita-Childrens-Lemon-Honey-Lollipops-450x338.jpg">
-        </figure>
-    </div>
-    <div class="attachment" role="checkbox">
-        <figure>
-            <img src="http://www.huluwa.uk/wp-content/uploads/2016/07/Comvita-Childrens-Lemon-Honey-Lollipops-450x338.jpg">
-        </figure>
-    </div>
+<div class="row gallaries">
+    <image-list [etype]="etype"
+                [cmsState]="cmsState"
+                [listState]="entitiesState"
+                (batchEdit)="batchEdit($event)"
+                (batchDelete)="batchDelete($event)"></image-list>
 </div>
+

@@ -76,6 +76,11 @@ export const API_PATH = {
     newsletter_posts:        '/newsletter/posts',
     newsletter_posts_batch:  '/newsletter/posts/batch',
 
+    /*************************************************************************
+     * Attachments
+     *************************************************************************/
+    attachments:        '/attachments',
+    attachments_batch:  '/attachments/batch',
 
     /*************************************************************************
      * Comments
