@@ -17,6 +17,7 @@ import { EntitiesState }      from "../../reducers/entities";
 import { EntitiesStateGroup } from "../../reducers/entities";
 import { AuthState }         from '../../reducers/auth';
 import { CmsAttrsState }     from '../../reducers/cmsattrs';
+import { ShopAttrsState }     from '../../reducers/shopattrs';
 import { EntityActions }     from '../../actions';
 import { Ping }              from '../../ping';
 
@@ -25,6 +26,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     // All subscribers, needs to unsubscribe on destory
     subAuth: any;
     subCms: any;
+    subShop: any;
     subEntities: any;
     subActivityOn: any;
     subActivityOff: any;
@@ -33,6 +35,7 @@ export class EntitiesPage implements OnInit, OnDestroy
 
     authState:  AuthState;
     cmsState:   CmsAttrsState;
+    shopState:   ShopAttrsState;
     entitiesState: EntitiesState;
     entitiesStateGroup: EntitiesStateGroup;
 
@@ -72,6 +75,8 @@ export class EntitiesPage implements OnInit, OnDestroy
             .subscribe(authState => this.authState = authState);
         this.subCms = this.store.select<CmsAttrsState>('cms')
             .subscribe(cmsState => this.cmsState = cmsState);
+        this.subShop = this.store.select<ShopAttrsState>('shop')
+            .subscribe(shopState => this.shopState = shopState);
         this.subEntities = this.store.select<EntitiesStateGroup>('entities')
             .subscribe(stateGroup => {
                 if (stateGroup && stateGroup[this.etype]) {
@@ -126,6 +131,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     ngOnDestroy() {
         this.subAuth.unsubscribe();
         this.subCms.unsubscribe();
+        this.subShop.unsubscribe();
         this.subEntities.unsubscribe();
         //this.subActivityOn.unsubscribe();
         //this.subActivityOff.unsubscribe();
