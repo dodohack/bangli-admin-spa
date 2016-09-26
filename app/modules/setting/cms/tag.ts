@@ -18,6 +18,7 @@ import { Channel }           from "../../../models";
 })
 export class CmsTag implements OnChanges
 {
+    // FIXME: OnPush change detection only triggers when the input object is changed, not it's element
     @Input() tags: Tag[];
     @Input() channel: Channel;
 
@@ -36,6 +37,7 @@ export class CmsTag implements OnChanges
     }
 
     ngOnChanges(changes: any):void {
+        console.error("FIXME: OnPush change detection only triggers when the input object is changed, not it's element");
         console.error("WE can mark this as dirty to refresh the page", changes);
         this.cd.markForCheck();
     }

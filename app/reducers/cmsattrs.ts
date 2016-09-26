@@ -1,5 +1,6 @@
 import { Action }         from '@ngrx/store';
 
+import { Location }       from '../models';
 import { User }           from '../models';
 import { Category }       from "../models";
 import { Tag }            from "../models";
@@ -17,6 +18,9 @@ export interface CmsAttrsState {
     authors: User[];
     editors: User[];
     channels:  Channel[];
+    // We only preload country type location with cms state, all area/city
+    // level locations are loaded on demand.
+    locations: { [country: string]: Location[] };
     categories: Category[];
     post_topic_cats: Topic[]; // Topic cats for post
     tags: Tag[];
@@ -33,6 +37,7 @@ const initialState: CmsAttrsState = {
     authors: [],
     editors: [],
     channels:  [],
+    locations: {},
     categories: [],
     post_topic_cats: [],
     tags: [],
@@ -67,6 +72,18 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             if (action.payload.channels)
                 channels = action.payload.channels;
 
+            let countries: Location[];
+            let locations: { [country: string]: Location[] };
+            if (action.payload.countries) {
+                countries = action.payload.countries;
+                // Create an locations object with country index and empty
+                // area/city array
+                locations = countries.reduce(
+                    (locations: {[c: string]: Location[]}, c: Location) => {
+                        return Object.assign(locations, {[c.slug]: []});
+                    }, {});
+            }
+
             let post_topic_cats: Topic[];
             if (action.payload.post_topic_cats)
                 post_topic_cats = action.payload.post_topic_cats;
@@ -95,11 +112,13 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                 authors: [...authors],
                 editors: [...editors],
                 channels: [...channels],
+                locations: locations,
                 categories: [...categories],
                 post_topic_cats: [...post_topic_cats],
                 tags: [...tags],
                 post_states: Object.assign({}, state.post_states, {actual: post_states}),
-                  post_creative_types: Object.assign({}, state.post_creative_types, {actual: post_creative_types}),
+                post_creative_types: Object.assign({}, state.post_creative_types,
+                    {actual: post_creative_types}),
                 topic_states: Object.assign({}, state.topic_states, {actual: topic_states}),
                 page_states: Object.assign({}, state.page_states, {actual: page_states}),
                 deal_states: Object.assign({}, state.deal_states, {actual: deal_states})
