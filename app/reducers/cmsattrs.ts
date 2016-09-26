@@ -20,6 +20,7 @@ export interface CmsAttrsState {
     channels:  Channel[];
     // We only preload country type location with cms state, all area/city
     // level locations are loaded on demand.
+    // NOTE: object key must be a string or number.
     locations: { [country: string]: Location[] };
     categories: Category[];
     post_topic_cats: Topic[]; // Topic cats for post

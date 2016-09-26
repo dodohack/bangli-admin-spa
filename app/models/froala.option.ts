@@ -26,6 +26,10 @@ export class FroalaOptions {
 
             toolbarSticky: false,
 
+            // Image managers
+            imageManagerLoadURL: APIS[AuthCache.domainKey()] + API_PATH.froala_images,
+            imageManagerLoadParams: {token: AuthCache.token()},
+
             // Image upload
             imageAllowTypes: ['jpeg', 'jpg', 'png', 'gif'],
             imageUploadParam: 'file',

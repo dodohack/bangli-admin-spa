@@ -25,9 +25,6 @@ export const API_PATH = {
     /* Beacon, test if API server online, can carry optional data */
     ping: '/ping',
 
-    /* File upload */
-    file_upload: '/file/upload',
-
     /*************************************************************************
      * CMS
      *************************************************************************/
@@ -81,6 +78,10 @@ export const API_PATH = {
      *************************************************************************/
     attachments:        '/attachments',
     attachments_batch:  '/attachments/batch',
+    // Return images that supported by froala image manager
+    froala_images:      '/froala-images',
+    /* File upload */
+    file_upload:        '/file/upload',
 
     /*************************************************************************
      * Comments
