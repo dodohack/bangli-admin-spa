@@ -27,7 +27,7 @@ import { zh_CN }             from '../../localization';
 
 export class EntityPage implements OnInit, OnDestroy
 {
-    //@ViewChild('postForm') postForm;
+    @ViewChild('entityForm') entityForm;
 
     // subscriptions
     subAuth: any;
@@ -48,6 +48,9 @@ export class EntityPage implements OnInit, OnDestroy
     entity: Entity;
 
     froalaEditor: any;
+    
+    // Hide datepicker default by default 
+    dpHidden = true;
 
     constructor(protected etype: string,
                 protected route: ActivatedRoute,
@@ -73,6 +76,16 @@ export class EntityPage implements OnInit, OnDestroy
         this.subShop.unsubscribe();
         this.subEntities.unsubscribe();
         this.subParams.unsubscribe();
+    }
+
+    canDeactivate() {
+        console.log("form status: ", this.entityForm);
+        if (this.entityForm.dirty) {
+            this.store.dispatch(AlertActions.error('请先保存当前更改，或取消保存'));
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -118,7 +131,8 @@ export class EntityPage implements OnInit, OnDestroy
     contentChanged($event) {
         // If no timeout set, the editor will throw an exception
         setTimeout(() => {
-            console.log("Entity content changed!");
+            console.log("Entity content changed, mark dirty status: ", this.entityForm);
+            //this.entityForm.dirty = true;
             this.entity.content = $event;
         });
     }
@@ -147,6 +161,17 @@ export class EntityPage implements OnInit, OnDestroy
     removeTopic(id: number) {
         this.store.dispatch(EntityActions.detachTopicFromEntity(this.etype, id));
     }
+    
+    set fakePublishAt(value) {
+        let d = new Date(value);
+        let offset = d.getTimezoneOffset() / 60;
+        // Patch user timezone offset, so we can get the GMT
+        d.setHours(d.getHours() - offset);
+
+        let newDate = d.toISOString().slice(0,19).split('T');
+        this.entity.fake_published_at = newDate[0] + ' ' + newDate[1];
+    }
+    get fakePublishAt() { return this.entity.fake_published_at; }
 
     // Restore current content to given revision
     restoreRevision(rid: number) {

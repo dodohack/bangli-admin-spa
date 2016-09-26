@@ -59,11 +59,11 @@ export class EditorPageHeader {
              + this.entities[this.id].guid;
              */
             case ENTITY.SHOP_PRODUCT:
-                return base + ENTITY_INFO[this.etype] + '/' + this.entity.guid;
+                return base + ENTITY_INFO[this.etype].slug + '/' + this.entity.guid;
 
             // Default to cms type
             default:
-                return base + 'cms/' + ENTITY_INFO[this.etype] + '/' + this.id;
+                return base + 'cms/' + ENTITY_INFO[this.etype].slug + '/' + this.id;
         }
     }
 

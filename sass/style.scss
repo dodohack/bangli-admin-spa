@@ -7,6 +7,7 @@
 // Import font-awesome
 @import "node_modules/font-awesome/scss/font-awesome";
 
+@import "date-picker";
 @import "modal";
 @import "panel";
 @import "form";
@@ -25,7 +26,6 @@
 @import "alert";
 @import "tag-cloud";
 @import "tree-view";
-@import "datepicker";
 @import "revision";
 @import "channel-menu";
 @import "setting-page";

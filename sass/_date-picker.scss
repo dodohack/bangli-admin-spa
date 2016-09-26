@@ -1,0 +1,63 @@
+.glyphicon {
+  @extend .fa;
+}
+
+.glyphicon-chevron-up {
+  @extend .fa-chevron-up;
+}
+
+.glyphicon-chevron-down {
+  @extend .fa-chevron-down;
+}
+
+.glyphicon-chevron-left {
+  @extend .fa-chevron-left;
+}
+
+.glyphicon-chevron-right {
+  @extend .fa-chevron-right;
+}
+
+.btn-default {
+  @extend .btn-secondary;
+}
+
+
+// Date time picker
+datepicker {
+  display: inline-block;
+}
+
+.date-area {
+  display: inline;
+  padding-top: 1rem;
+
+  .date-time {
+  }
+
+  .date-picker {
+    margin-top: 0.25rem;
+    position: absolute;
+    z-index: 999;
+    background: #e4e4e4;
+    padding: 1rem;
+    border: 1px solid #b1b1b1;
+    right: $grid-gutter-width / 2;
+
+    // This is a temporary solution
+    timepicker {
+      display: block;
+      margin-left: 30%;
+    }
+
+    .card {
+      padding: 1rem;
+    }
+
+    em {
+      font-size: 0.8rem;
+      color: grey;
+    }
+  }
+}
+

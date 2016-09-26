@@ -4,7 +4,7 @@
                     [entity]="entity" [lists]="entitiesState">
 </editor-page-header>
 
-<form *ngIf="entity" (ngSubmit)="save()" #postForm="ngForm">
+<form *ngIf="entity" (ngSubmit)="save()" #entityForm="ngForm">
 
     <!-- Post title and main buttons -->
     <div class="row post-meta-row">
@@ -17,19 +17,39 @@
         </div>
 
         <div class="col-xs-5 col-sm-5 col-md-4">
-            <!-- Save buttons -->
-            <div class="float-right">
-                <button type="submit" class="btn btn-sm btn-outline-success"
-                        [disabled]="!postForm.form.dirty && postForm.form.valid">保存</button>
+            <div class="row">
+                <div class="col-xs-12">
+                    <!-- Save buttons -->
+                    <div class="float-right">
+                        <button type="submit" class="btn btn-sm btn-outline-success"
+                                [disabled]="!entityForm.form.dirty && entityForm.form.valid">保存</button>
 
-                <button class="btn btn-sm btn-outline-primary"
-                        (click)="save2Pending()" [disabled]="!isDraft">提交审稿</button>
+                        <button class="btn btn-sm btn-outline-primary"
+                                (click)="save2Pending()" [disabled]="!isDraft">提交审稿</button>
 
-                <button class="btn btn-sm btn-outline-danger"
-                        (click)="save2Draft()" *ngIf="isPending || isPublish">撤销发布</button>
+                        <button class="btn btn-sm btn-outline-danger"
+                                (click)="save2Draft()" *ngIf="isPending || isPublish">撤销发布</button>
 
-                <button class="btn btn-sm btn-outline-danger"
-                        (click)="save2Publish()" [disabled]="isPublish">发布</button>
+                        <button class="btn btn-sm btn-outline-danger"
+                                (click)="save2Publish()" [disabled]="isPublish">发布</button>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="date-area float-right">
+                        <span class="date-time btn btn-sm btn-secondary"
+                              (click)="dpHidden = !dpHidden">
+                            显示时间: {{ entity.fake_published_at | date: 'y-MM-dd HH:mm' }} GMT
+                            <i class="fa fa-chevron-down" [class.fa-chevron-down]="dpHidden"
+                               [class.fa-chevron-up]="!dpHidden"></i>
+                        </span>
+                        <div class="date-picker" [class.hidden]="dpHidden">
+                            <datepicker name="date" [(ngModel)]="fakePublishAt"
+                                        [showWeeks]="false"></datepicker>
+                            <timepicker name="time" [(ngModel)]="fakePublishAt"
+                                        [showMeridian]="false"></timepicker>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -39,7 +59,7 @@
 
         <accordion-group isOpen="true">
             <div accordion-heading>
-                文章属性<i class="pull-right fa fa-chevron-circle-down"></i>
+                文章属性<i class="pull-right fa customize-chevron"></i>
             </div>
 
             <!-- author/editor/post_type/creative_type selectors -->
@@ -95,7 +115,8 @@
                         </select>
                     </div>
 
-                    <a class="float-right btn btn-sm btn-outline-warning" (click)="openPanel = true">展开侧栏</a>
+                    <a class="float-right btn btn-sm btn-outline-warning"
+                       (click)="openPanel = true">展开侧栏</a>
                 </div>
             </div>
 
@@ -127,7 +148,7 @@
 
         <accordion-group isOpen="true">
             <div accordion-heading>
-                文章内容<i class="pull-right fa fa-chevron-circle-down"></i>
+                文章内容<i class="pull-right fa customize-chevron"></i>
             </div>
 
             <!-- Froala Editor -->
@@ -154,7 +175,7 @@
 
         <accordion-group isOpen="true">
             <div accordion-heading>
-                文章分类<i class="pull-right fa fa-chevron-circle-down"></i>
+                文章分类<i class="pull-right fa customize-chevron"></i>
             </div>
 
             <category-tree [parentId]="0"
@@ -166,7 +187,7 @@
 
         <accordion-group isOpen="true">
             <div accordion-heading>
-                文章标签<i class="pull-right fa fa-chevron-circle-down"></i>
+                文章标签<i class="pull-right fa customize-chevron"></i>
             </div>
 
             <tag-cloud [tags]="cmsState.tags"
@@ -177,7 +198,7 @@
 
         <accordion-group isOpen="true">
             <div accordion-heading>
-                文章专题分类<i class="pull-right fa fa-chevron-circle-down"></i>
+                文章专题分类<i class="pull-right fa customize-chevron"></i>
             </div>
 
             <topic-cloud [topics]="cmsState.post_topic_cats"

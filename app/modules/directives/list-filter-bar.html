@@ -55,21 +55,30 @@
                     <option value="created_at">创建日期</option>
                 </select>
 
-                <select [(ngModel)]="filterDateFrom" name="from"
-                        class="form-control form-control-sm custom-select">
-                    <option value="" disabled>开始日期</option>
-                    <option value="2016-05-01">2016年5月01</option>
-                    <option value="20160401">2016年4月</option>
-                    <option value="20160301">2016年3月</option>
-                </select>
+                <div class="date-area">
+                    <span class="date-time btn btn-sm btn-secondary"
+                          (click)="dpHidden = !dpHidden">
+                        {{ filterDateFrom | date: 'y-MM-dd' }}
+                        <i class="fa" [class.fa-caret-down]="dpHidden"
+                           [class.fa-caret-up]="!dpHidden"></i>
+                    </span>
+                </div>
 
-                <select [(ngModel)]="filterDateTo" name="to"
-                        class="form-control form-control-sm custom-select">
-                    <option value="" disabled>结束日期</option>
-                    <option value="2016-08-31">2016年08月31</option>
-                    <option value="20160401">2016年4月</option>
-                    <option value="20160301">2016年3月</option>
-                </select>
+                <div class="date-area">
+                    <span class="date-time btn btn-sm btn-secondary"
+                          (click)="dpHidden = !dpHidden">
+                        {{ filterDateTo | date: 'y-MM-dd' }}
+                        <i class="fa" [class.fa-caret-down]="dpHidden"
+                           [class.fa-caret-up]="!dpHidden"></i>
+                    </span>
+
+                    <div class="date-picker" [class.hidden]="dpHidden">
+                        <datepicker name="dateFrom" [(ngModel)]="filterDateFrom"
+                                    [showWeeks]="false"></datepicker>
+                        <datepicker name="dateTo" [(ngModel)]="filterDateTo"
+                                    [showWeeks]="false"></datepicker>
+                    </div>
+                </div>
             </div>
 
             <button type="submit" class="btn btn-secondary btn-sm"

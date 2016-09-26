@@ -17,13 +17,14 @@ import { zh_CN }             from '../../localization';
 @Component({ template: require('./post.page.html') })
 export class PostPage extends EntityPage
 {
-    @ViewChild('postForm') postForm;
+    //@ViewChild('postForm') postForm;
 
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>) {
         super(ENTITY.CMS_POST, route, store);
     }
 
+    /*
     canDeactivate() {
         console.log("form status: ", this.postForm);
         if (this.postForm.dirty) {
@@ -33,6 +34,9 @@ export class PostPage extends EntityPage
             return true;
         }
     }
-
+    publishDate: Date = new Date();
+    */
+    
     get zh() { return zh_CN.cms; } // Localization
+
 }

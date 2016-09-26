@@ -32,8 +32,10 @@ export class ListFilterBar implements OnInit, OnDestroy {
     filterCat: string;
     filterBrand: string;
     filterDateType: string;
-    filterDateFrom: string;
-    filterDateTo: string;
+    _filterDateFrom: string;
+    _filterDateTo: string;
+    // Datapicker hidden by default
+    dpHidden = true;
 
     // Subscribers
     subParams;
@@ -53,10 +55,31 @@ export class ListFilterBar implements OnInit, OnDestroy {
             this.filterCat    = queryParams['category'] || '';
             this.filterBrand    = queryParams['brand'] || '';
             this.filterDateType = queryParams['datetype'] || '';
-            this.filterDateFrom = queryParams['datefrom'] || '';
-            this.filterDateTo = queryParams['dateto'] || '';
+            this._filterDateFrom = queryParams['datefrom'] || Date.now();
+            this._filterDateFrom = this.GMT(this.filterDateFrom);
+            this._filterDateTo = queryParams['dateto'] || Date.now();
+            this._filterDateTo =  this.GMT(this.filterDateTo);
+
+            console.log("dateFrom: ", this._filterDateFrom);
+            console.log("dateTo: ", this._filterDateTo);
         });
     }
+
+    /**
+     * Return MySQL compatible date in GMT
+     */
+    GMT(value) {
+        let d = new Date(value);
+        let offset = d.getTimezoneOffset() / 60;
+        // Patch user timezone offset, so we can get the GMT
+        d.setHours(d.getHours() - offset);
+        return d.toISOString().slice(0,10);
+    }
+
+    get filterDateFrom() { return this._filterDateFrom; }
+    set filterDateFrom(value) { this._filterDateFrom = this.GMT(value); }
+    get filterDateTo() { return this._filterDateTo; }
+    set filterDateTo(value) { this._filterDateTo = this.GMT(value); }
 
     ngOnDestroy() {
         this.subParams.unsubscribe();

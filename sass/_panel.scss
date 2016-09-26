@@ -11,43 +11,59 @@
   background: #e5ffd4; //#c5c5c5;
 }
 
-.panel-open {
-  .panel-heading {
-    background: #f3f3f3;
-    border-bottom: 1px solid #e5e5e5;
-  }
-}
-
 .panel-title,
 .panel-body {
   padding: 0.5rem;
 }
 
-h4.panel-title {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+.panel-heading {
+  h4.panel-title {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 
-  margin: 0;
-  font-size: 1rem;
-  cursor: pointer;
+    margin: 0;
+    font-size: 1rem;
+    cursor: pointer;
 
-  a {
-    color: black !important;
-    text-decoration: none;
+    .customize-chevron {
+      @extend .fa-chevron-circle-down;
+    }
 
-    i { color: grey; }
+    a {
+      color: black !important;
+      text-decoration: none;
 
-    /* Disable ng2-bootstrap a:focus style in accordion */
-    &:focus { outline: 0; }
-  }
+      i {
+        color: grey;
 
-  &:hover {
-    background: #e5ffd4;
+      }
+
+      /* Disable ng2-bootstrap a:focus style in accordion */
+      &:focus {
+        outline: 0;
+      }
+    }
+
+    &:hover {
+      background: #e5ffd4;
+    }
   }
 }
 
-.panel-body {
 
+// Open state of the accordion
+.panel-open {
+  .panel-heading {
+    background: #f3f3f3;
+    border-bottom: 1px solid #e5e5e5;
+
+    h4.panel-title {
+      .customize-chevron {
+        @extend .fa-chevron-circle-up;
+      }
+    }
+  }
 }
+

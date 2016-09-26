@@ -127,7 +127,15 @@ a.disabled {
     cursor: not-allowed;
 }
 
+.fake-anchor {
+    cursor: pointer;
+}
+
 input[type=color] {
     height: 3rem;
     padding: 0.25rem;
+}
+
+.text-center {
+    text-align: center;
 }

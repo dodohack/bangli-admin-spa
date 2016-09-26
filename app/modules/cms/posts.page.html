@@ -26,14 +26,6 @@
 
 <hr>
 
-<!-- Post filter/tool bar at bottom -->
-<list-filter-bar *ngIf="loaded"
-                 [etype]="etype"
-                 [authors]="cmsState.authors"
-                 [editors]="cmsState.editors"
-                 [categories]="cmsState.categories"
-                 [paginator]="entitiesState.paginator"></list-filter-bar>
-
 <hr>
 
 <!-- Right side bar -->
@@ -56,7 +48,7 @@
 
             <accordion-group isOpen="true">
                 <div accordion-heading>
-                    文章分类<i class="pull-right fa fa-chevron-circle-down"></i>
+                    文章分类<i class="pull-right fa customize-chevron"></i>
                 </div>
 
                 <category-tree [parentId]="0"
@@ -68,7 +60,7 @@
 
             <accordion-group isOpen="true">
                 <div accordion-heading>
-                    文章标签<i class="pull-right fa fa-chevron-circle-down"></i>
+                    文章标签<i class="pull-right fa customize-chevron"></i>
                 </div>
 
                 <tag-cloud [tags]="cmsState.tags"
@@ -79,7 +71,7 @@
 
             <accordion-group isOpen="true">
                 <div accordion-heading>
-                    文章专题分类<i class="pull-right fa fa-chevron-circle-down"></i>
+                    文章专题分类<i class="pull-right fa customize-chevron"></i>
                 </div>
 
                 <topic-cloud [topics]="cmsState.post_topic_cats"
