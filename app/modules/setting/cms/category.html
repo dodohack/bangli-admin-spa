@@ -12,11 +12,13 @@
 <hr>
 
 <!-- List of categories -->
-<category-tree [parentId]="0"
-               [categories]="cats"
-               [selectedCats]="[]"
-               (checkEvent)="selectCat($event)">
-</category-tree>
+<div class="treeview">
+    <category-tree [parentId]="0"
+                   [categories]="cats"
+                   [selectedCats]="[]"
+                   (checkEvent)="selectCat($event)">
+    </category-tree>
+</div>
 
 <ul class="tag-cloud tag-setting" *ngIf="channel">
     <li *ngFor="let cat of cats" class="tag-setting-item tag tag-default-outline">

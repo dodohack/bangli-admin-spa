@@ -183,11 +183,13 @@
                 文章分类<i class="pull-right fa customize-chevron"></i>
             </div>
 
-            <category-tree [parentId]="0"
-                           [categories]="cmsState.categories"
-                           [selectedCats]="entity.categories"
-                           (checkEvent)="selectCat($event)">
-            </category-tree>
+            <div class="treeview">
+                <category-tree [parentId]="0"
+                               [categories]="cmsState.categories"
+                               [selectedCats]="entity.categories"
+                               (checkEvent)="selectCat($event)">
+                </category-tree>
+            </div>
         </accordion-group>
 
         <accordion-group isOpen="true">

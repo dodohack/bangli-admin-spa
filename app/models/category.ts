@@ -10,6 +10,6 @@ export class Category {
     name: string;
     description: string;
 
-    hidden: boolean;
+    //level: number; // tree nested levels started from 0, used in display
     checked: boolean;
 }

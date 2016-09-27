@@ -153,6 +153,8 @@ export class EntityPage implements OnInit, OnDestroy
 
     // Category, tag, topic add/remove events
     selectCat(cat: Category) {
+        console.log("selectCat: ", cat);
+        console.log("cmsState.categories: ", this.cmsState.categories);
         // Unselect a category if is is previously selected, vice versa
         if (cat.checked) this.removeCat(cat.id);
         else this.addCat(cat);

@@ -1,25 +1,26 @@
-<div *ngIf="parentId === 0" class="filter-wrapper">
-    <input placeholder="过滤" type="text" class="form-control"
-           [value]="filterText" [formControl]="filterControl" disabled>
-</div>
+<ul *ngIf="categories">
+    <template ngFor let-cat [ngForOf]="updatedCats">
+        <li *ngIf="cat.parent_id === parentId">
 
-<ul *ngIf="categories" class="tree-view clearfix">
-    <li *ngFor="let cat of availableCats"
-        class="tree-item" [class.tree-root-item]="parentId === 0">
+            <!-- This checkbox is used to manage the display of tree children -->
+            <input type="checkbox" [attr.id]="cat.id"
+                   [attr.checked]="hasChild(cat) ? 'checked' : null"/>
 
-        <span class="checkbox" *ngIf="!hasChild(cat) && cat.parent_id === parentId">
             <label>
+                <!-- This checkbox is used for real data -->
                 <input type="checkbox" [checked]="cat.checked"
-                       (change)="checkEvent.emit(cat)" />
-                {{ cat.name }}
+                          (change)="checkEvent.emit(cat)"/><span></span>
             </label>
-        </span>
 
-        <span *ngIf="hasChild(cat)">+ {{cat.name}}</span>
-        <category-tree [parentId]="cat.id"
-                       [categories]="getChild(cat)"
-                       [selectedCats]="selectedCats"
-                       (checkEvent)="checkEvent.emit($event)"></category-tree>
+            <label [attr.for]="cat.id">
+                {{cat.name}} <template [ngIf]="hasChild(cat)">({{hasChild(cat)}})</template>
+            </label>
 
-    </li>
+            <category-tree *ngIf="hasChild(cat)"
+                           [parentId]="cat.id"
+                           [categories]="getChild(cat)"
+                           [selectedCats]="selectedCats"
+                           (checkEvent)="checkEvent.emit($event)"></category-tree>
+        </li>
+    </template>
 </ul>

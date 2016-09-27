@@ -225,11 +225,11 @@ export default function (state = initialState, action: Action): EntitiesStateGro
 
         // Add a tag/topic/category to single/multiple entity[s]
         case EntityActions.ADD_TAG:
-        case EntityActions.ATTACH_ENTITY_TO_TOPIC:
+        case EntityActions.ATTACH_TOPIC_TO_ENTITY:
         case EntityActions.ADD_CATEGORY: {
             let key = 'categories';
             if (action.type == EntityActions.ADD_TAG) key = 'tags';
-            if (action.type == EntityActions.ATTACH_ENTITY_TO_TOPIC) key = 'topics';
+            if (action.type == EntityActions.ATTACH_TOPIC_TO_ENTITY) key = 'topics';
 
             const newEntityArray = oldEditing.map(id => {
                 const oldEntity  = oldEntities[id];
@@ -261,11 +261,11 @@ export default function (state = initialState, action: Action): EntitiesStateGro
 
         // Remove a tag/topic/category from single/multiple entity[s]
         case EntityActions.REMOVE_TAG:
-        case EntityActions.DETACH_ENTITY_FROM_TOPIC:
+        case EntityActions.DETACH_TOPIC_FROM_ENTITY:
         case EntityActions.REMOVE_CATEGORY: {
             let key = 'categories';
             if (action.type == EntityActions.REMOVE_TAG) key = 'tags';
-            if (action.type == EntityActions.DETACH_ENTITY_FROM_TOPIC) key = 'topics';
+            if (action.type == EntityActions.DETACH_TOPIC_FROM_ENTITY) key = 'topics';
 
             const newEntityArray = oldEditing.map(id => {
                 const oldEntity = oldEntities[id];
