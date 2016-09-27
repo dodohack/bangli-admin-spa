@@ -61,10 +61,12 @@ export class ListFilterBar implements OnInit, OnDestroy {
             this._filterDateFrom = this.GMT(this.filterDateFrom, true);
             this._filterDateTo = queryParams['dateto'] || Date.now();
             this._filterDateTo =  this.GMT(this.filterDateTo, false);
-
-            console.log("dateFrom: ", this._filterDateFrom);
-            console.log("dateTo: ", this._filterDateTo);
         });
+    }
+
+    ngOnDestroy() {
+        this.subParams.unsubscribe();
+        this.subQParams.unsubscribe();
     }
 
     /**
@@ -87,11 +89,6 @@ export class ListFilterBar implements OnInit, OnDestroy {
     set filterDateFrom(value) { this._filterDateFrom = this.GMT(value, true); }
     get filterDateTo() { return this._filterDateTo; }
     set filterDateTo(value) { this._filterDateTo = this.GMT(value, false); }
-
-    ngOnDestroy() {
-        this.subParams.unsubscribe();
-        this.subQParams.unsubscribe();
-    }
 
     get baseUrl() { if (this.etype) return ENTITY_INFO[this.etype].slug; }
     get zh() { return zh_CN[this.baseUrl]; }
@@ -179,9 +176,4 @@ export class ListFilterBar implements OnInit, OnDestroy {
             return '/' + this.baseUrl + '/page/' + $page + '/state/' + $state;
 
     } 
-
-    dateFromOnClick($event)
-    {
-        console.log("select date_from clicked");
-    }
 }

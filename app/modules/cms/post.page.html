@@ -22,7 +22,7 @@
                     <!-- Save buttons -->
                     <div class="float-right">
                         <button type="submit" class="btn btn-sm btn-outline-success"
-                                [disabled]="!entityForm.form.dirty && entityForm.form.valid">保存</button>
+                                [disabled]="!entityForm.form.dirty && !entityDirty && entityForm.form.valid">保存</button>
 
                         <button class="btn btn-sm btn-outline-primary"
                                 (click)="save2Pending()" [disabled]="!isDraft">提交审稿</button>
@@ -188,17 +188,6 @@
                            [selectedCats]="entity.categories"
                            (checkEvent)="selectCat($event)">
             </category-tree>
-        </accordion-group>
-
-        <accordion-group isOpen="true">
-            <div accordion-heading>
-                文章标签<i class="pull-right fa customize-chevron"></i>
-            </div>
-
-            <tag-cloud [tags]="cmsState.tags"
-                       [selectedTags]="entity.tags"
-                       (addTag)="addTag($event)"
-                       (removeTag)="removeTag($event)"></tag-cloud>
         </accordion-group>
 
         <accordion-group isOpen="true">

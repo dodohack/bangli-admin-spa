@@ -28,6 +28,18 @@ import { zh_CN }             from '../../localization';
 export class EntityPage implements OnInit, OnDestroy
 {
     @ViewChild('entityForm') entityForm;
+    // FIXME: We can't set entityForm.dirty property, we use a seperate flag
+    // to track entity modification that can't be tracked by entityForm, such
+    // as entity content and fake_published_at etc.
+    entityDirty: boolean = false;
+    // FIXME: froala editor triggers content change at first time it initialize
+    // the content, but actually the entity content is not modified yet.
+    initialized: boolean = false;
+
+    // Current entity, inputEntity is only used to initialize forala editor,
+    // cause it is bugged when both input/output model are the same
+    inputEntity: Entity;
+    entity: Entity;
 
     // subscriptions
     subAuth: any;
@@ -41,11 +53,6 @@ export class EntityPage implements OnInit, OnDestroy
     cmsState:   CmsAttrsState;
     shopState:  ShopAttrsState;
     entitiesState: EntitiesState;
-
-    // Current entity, inputEntity is only used to initialize forala editor, 
-    // cause it is bugged when both input/output model are the same
-    inputEntity: Entity;
-    entity: Entity;
 
     froalaEditor: any;
     
@@ -79,8 +86,7 @@ export class EntityPage implements OnInit, OnDestroy
     }
 
     canDeactivate() {
-        console.log("form status: ", this.entityForm);
-        if (this.entityForm.dirty) {
+        if (this.entityForm.dirty || this.entityDirty) {
             this.store.dispatch(AlertActions.error('请先保存当前更改，或取消保存'));
             return false;
         } else {
@@ -111,6 +117,9 @@ export class EntityPage implements OnInit, OnDestroy
         this.subEntities = this.store.select<EntitiesStateGroup>('entities')
             .subscribe(stateGroup => {
                 if (stateGroup && stateGroup[this.etype]) {
+                    // Reset the form status so we can get a clean state
+                    //if (this.entityForm) this.entityForm.reset(); // bugged
+                    this.entityDirty = false;
                     this.entitiesState = stateGroup[this.etype];
                     // When opening a single entity, 'editing' always contains 1 id
                     // FIXME: Remove inputEntity after updating to new angular2-froala binding
@@ -120,6 +129,19 @@ export class EntityPage implements OnInit, OnDestroy
         });
     }
 
+    /**
+     * Entity content changed event triggered by froala editor
+     * @param $event
+     */
+    contentChanged($event) {
+        // If no timeout set, the editor will throw an exception
+        setTimeout(() => {
+            // Set initialized state or set entity content dirty
+            this.initialized ? this.entityDirty = true : this.initialized = true;
+            this.entity.content = $event;
+        });
+    }
+    
     get isDraft()   { return this.entity.state === 'draft'; }
     get isPending() { return this.entity.state === 'pending'; }
     get isPublish() { return this.entity.state === 'publish'; }
@@ -128,14 +150,6 @@ export class EntityPage implements OnInit, OnDestroy
 
     get froalaOptions() { return FroalaOptions.getDefault(); }
 
-    contentChanged($event) {
-        // If no timeout set, the editor will throw an exception
-        setTimeout(() => {
-            console.log("Entity content changed, mark dirty status: ", this.entityForm);
-            //this.entityForm.dirty = true;
-            this.entity.content = $event;
-        });
-    }
 
     // Category, tag, topic add/remove events
     selectCat(cat: Category) {
@@ -161,15 +175,25 @@ export class EntityPage implements OnInit, OnDestroy
     removeTopic(id: number) {
         this.store.dispatch(EntityActions.detachTopicFromEntity(this.etype, id));
     }
-    
-    set fakePublishAt(value) {
+
+    /**
+     * Return MySQL compatible date in GMT
+     */
+    GMT(value) {
         let d = new Date(value);
         let offset = d.getTimezoneOffset() / 60;
         // Patch user timezone offset, so we can get the GMT
         d.setHours(d.getHours() - offset);
-
         let newDate = d.toISOString().slice(0,19).split('T');
-        this.entity.fake_published_at = newDate[0] + ' ' + newDate[1];
+        return newDate[0] + ' ' + newDate[1];
+    }
+    
+    set fakePublishAt(value) {
+        let newDate = this.GMT(value);
+        if (newDate != this.entity.fake_published_at) {
+            this.entityDirty = true;
+            this.entity.fake_published_at = newDate;
+        }
     }
     get fakePublishAt() { return this.entity.fake_published_at; }
 
@@ -188,5 +212,9 @@ export class EntityPage implements OnInit, OnDestroy
     }
     save2Pending() { this.entity.state = 'pending'; this.save(); }
     save2Draft()   { this.entity.state = 'draft';   this.save(); }
-    save2Publish() { this.entity.state = 'publish'; this.save(); }
+    save2Publish() {
+        // FIXME: Published_at can only be updated once 
+        this.entity.published_at = this.GMT(new Date());
+        this.entity.state = 'publish'; this.save();
+    }
 }
