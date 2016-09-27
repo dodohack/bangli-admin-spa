@@ -43,11 +43,16 @@
                                [class.fa-chevron-up]="!dpHidden"></i>
                         </span>
                         <div class="date-picker" [class.hidden]="dpHidden">
-                            <datepicker name="date" [(ngModel)]="fakePublishAt"
-                                        [showWeeks]="false"></datepicker>
-                            <timepicker name="time" [(ngModel)]="fakePublishAt"
-                                        [showMeridian]="false"></timepicker>
+                            <div>
+                                <datepicker name="date" [(ngModel)]="fakePublishAt"
+                                            [showWeeks]="false"></datepicker>
+                                <timepicker name="time" [(ngModel)]="fakePublishAt"
+                                            [showMeridian]="false"></timepicker>
+                                <span class="btn btn-info btn-sm float-right" (click)="dpHidden = true">确定</span>
+                            </div>
+
                         </div>
+
                     </div>
                 </div>
             </div>

@@ -50,15 +50,17 @@ export class ListFilterBar implements OnInit, OnDestroy {
         });
 
         this.subQParams = this.route.queryParams.subscribe(queryParams => {
+            // NOTE: We initialize these to empty string instead of null
+            // because select->option value can't be null.
             this.filterAuthor = queryParams['author'] || '';
             this.filterEditor = queryParams['editor'] || '';
             this.filterCat    = queryParams['category'] || '';
             this.filterBrand    = queryParams['brand'] || '';
             this.filterDateType = queryParams['datetype'] || '';
             this._filterDateFrom = queryParams['datefrom'] || Date.now();
-            this._filterDateFrom = this.GMT(this.filterDateFrom);
+            this._filterDateFrom = this.GMT(this.filterDateFrom, true);
             this._filterDateTo = queryParams['dateto'] || Date.now();
-            this._filterDateTo =  this.GMT(this.filterDateTo);
+            this._filterDateTo =  this.GMT(this.filterDateTo, false);
 
             console.log("dateFrom: ", this._filterDateFrom);
             console.log("dateTo: ", this._filterDateTo);
@@ -67,19 +69,24 @@ export class ListFilterBar implements OnInit, OnDestroy {
 
     /**
      * Return MySQL compatible date in GMT
+     * We set from date start from 00:00:00 of the day and to date end with
+     * 23:59:59 of the day.
      */
-    GMT(value) {
+    GMT(value, isDateFrom: boolean) {
         let d = new Date(value);
         let offset = d.getTimezoneOffset() / 60;
         // Patch user timezone offset, so we can get the GMT
         d.setHours(d.getHours() - offset);
-        return d.toISOString().slice(0,10);
+        if (isDateFrom)
+            return d.toISOString().slice(0,10) + ' 00:00:00';
+        else
+            return d.toISOString().slice(0,10) + ' 23:59:59';
     }
 
     get filterDateFrom() { return this._filterDateFrom; }
-    set filterDateFrom(value) { this._filterDateFrom = this.GMT(value); }
+    set filterDateFrom(value) { this._filterDateFrom = this.GMT(value, true); }
     get filterDateTo() { return this._filterDateTo; }
-    set filterDateTo(value) { this._filterDateTo = this.GMT(value); }
+    set filterDateTo(value) { this._filterDateTo = this.GMT(value, false); }
 
     ngOnDestroy() {
         this.subParams.unsubscribe();
@@ -129,7 +136,6 @@ export class ListFilterBar implements OnInit, OnDestroy {
     }
 
     // Submit filter
-    // TODO: filterDate from start/to
     onSubmitFilter() {
         let navigationExtras: NavigationExtras = {
             queryParams: {

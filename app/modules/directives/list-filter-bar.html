@@ -58,25 +58,24 @@
                 <div class="date-area">
                     <span class="date-time btn btn-sm btn-secondary"
                           (click)="dpHidden = !dpHidden">
-                        {{ filterDateFrom | date: 'y-MM-dd' }}
-                        <i class="fa" [class.fa-caret-down]="dpHidden"
-                           [class.fa-caret-up]="!dpHidden"></i>
-                    </span>
-                </div>
-
-                <div class="date-area">
-                    <span class="date-time btn btn-sm btn-secondary"
-                          (click)="dpHidden = !dpHidden">
+                        {{ filterDateFrom | date: 'y-MM-dd' }} -
                         {{ filterDateTo | date: 'y-MM-dd' }}
                         <i class="fa" [class.fa-caret-down]="dpHidden"
                            [class.fa-caret-up]="!dpHidden"></i>
                     </span>
 
                     <div class="date-picker" [class.hidden]="dpHidden">
-                        <datepicker name="dateFrom" [(ngModel)]="filterDateFrom"
-                                    [showWeeks]="false"></datepicker>
-                        <datepicker name="dateTo" [(ngModel)]="filterDateTo"
-                                    [showWeeks]="false"></datepicker>
+                        <div>
+                            <datepicker name="dateFrom" [(ngModel)]="filterDateFrom"
+                                        [showWeeks]="false"></datepicker>
+                            <datepicker name="dateTo" [(ngModel)]="filterDateTo"
+                                        [showWeeks]="false"></datepicker>
+                        </div>
+                        <span class="btn btn-info btn-sm float-right" (click)="dpHidden = true">确定</span>
+                        <span style="color: red">
+                            FROM {{ filterDateFrom | date: 'y-MM-dd HH:mm:ss' }} -
+                            TO {{ filterDateTo | date: 'y-MM-dd HH:mm:ss' }}
+                        </span>
                     </div>
                 </div>
             </div>
