@@ -8,6 +8,7 @@ import { Component }         from '@angular/core';
 import { OnInit, OnDestroy } from "@angular/core";
 import { ViewChild }         from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
+import { Location }          from '@angular/common';
 import { Store }             from '@ngrx/store';
 
 import { EntityPage }        from '../base/entity.page';
@@ -16,24 +17,13 @@ import { AlertActions }      from '../../actions';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
 
-@Component({ template: require('./deal.page.html') })
+@Component({ template: require('./topic.page.html') })
 export class TopicPage extends EntityPage
 {
-    @ViewChild('topicForm') topicForm;
-
     constructor(protected route: ActivatedRoute,
+                protected location: Location,
                 protected store: Store<AppState>) {
-        super(ENTITY.CMS_TOPIC, route, store);
-    }
-
-    canDeactivate() {
-        console.log("form status: ", this.topicForm);
-        if (this.topicForm.dirty) {
-            this.store.dispatch(AlertActions.error('请先保存当前更改，或取消保存'));
-            return false;
-        } else {
-            return true;
-        }
+        super(ENTITY.CMS_TOPIC, route, location, store);
     }
 
     get zh() { return zh_CN.cms; } // Localization

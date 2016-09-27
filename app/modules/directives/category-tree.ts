@@ -1,7 +1,9 @@
 import { Component, EventEmitter } from '@angular/core';
 import { Input, Output }           from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
+
 import { Category }                from '../../models';
+import { Channel }                 from '../../models';
 
 @Component({
     selector: 'category-tree',
@@ -9,7 +11,10 @@ import { Category }                from '../../models';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryTree {
+    // Parent category id of current level of tree
     @Input() parentId: number;
+    // Channel of current group of category
+    @Input() channel: Channel;
     @Input() selectedCats: Category[];
     @Input() categories: Category[];
 
@@ -18,7 +23,14 @@ export class CategoryTree {
     get updatedCats(): Category[] {
         let selectedIds: number[] = [];
         if (this.selectedCats) selectedIds = this.selectedCats.map(c => c.id);
-        return this.categories.map(c => {
+
+        let tmpCats: Category[];
+        if (this.channel)
+            tmpCats = this.categories.filter(c => c.channel_id === this.channel.id);
+        else
+            tmpCats = this.categories;
+
+        return tmpCats.map(c => {
             let checked = selectedIds.indexOf(c.id) !== -1;
             return Object.assign({}, c, {checked: checked});
         });

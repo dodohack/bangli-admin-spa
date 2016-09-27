@@ -2,7 +2,8 @@ import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { Topic } from '../../models';
+import { Channel } from '../../models';
+import { Topic }   from '../../models';
 
 @Component({
     selector: 'topic-cloud',
@@ -15,6 +16,7 @@ export class TopicCloud implements OnInit {
     filterText: string = '';
     filteredTopics: Topic[] = [];
 
+    @Input() channel: Channel;
     @Input() selectedTopics: Topic[];
     @Input() topics: Topic[];
 
@@ -32,12 +34,13 @@ export class TopicCloud implements OnInit {
             this.cd.markForCheck();
         });
     }
-    
+
     get unselectedTopics() {
         let selectedIds: number[] = [];
         if (this.selectedTopics) selectedIds = this.selectedTopics.map(t => t.id);
         return this.topics.filter(t =>
-            (selectedIds.indexOf(t.id) === -1) ? true : false);
+            (this.channel && t.channel_id === this.channel.id) ?
+                ((selectedIds.indexOf(t.id) === -1) ? true : false) : false);
     }
 
     /**

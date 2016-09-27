@@ -21,17 +21,24 @@
                 <div class="col-xs-12">
                     <!-- Save buttons -->
                     <div class="float-right">
-                        <button type="submit" class="btn btn-sm btn-outline-success"
+                        <button class="btn btn-sm btn-outline-success"
+                                (click)="save()"
                                 [disabled]="!entityForm.form.dirty && !entityDirty && entityForm.form.valid">保存</button>
 
                         <button class="btn btn-sm btn-outline-primary"
-                                (click)="save2Pending()" [disabled]="!isDraft">提交审稿</button>
+                                (click)="save2Pending($event)" [disabled]="!isDraft">提交审稿</button>
 
                         <button class="btn btn-sm btn-outline-danger"
-                                (click)="save2Draft()" *ngIf="isPending || isPublish">撤销发布</button>
+                                (click)="save2Draft($event)" *ngIf="isPending || isPublish">
+                            <template [ngIf]="isPending">改为草稿</template>
+                            <template [ngIf]="isPublish">撤销发布</template>
+                        </button>
 
                         <button class="btn btn-sm btn-outline-danger"
-                                (click)="save2Publish()" [disabled]="isPublish">发布</button>
+                                (click)="save2Publish($event)" [hidden]="isPublish">发布</button>
+
+                        <button class="btn btn-sm btn-outline-danger"
+                                (click)="cancelSave($event)" [hidden]="!entityForm.form.dirty && !entityDirty">退出</button>
                     </div>
                 </div>
                 <div class="col-xs-12">
@@ -180,11 +187,12 @@
 
         <accordion-group isOpen="true">
             <div accordion-heading>
-                文章分类<i class="pull-right fa customize-chevron"></i>
+                <template [ngIf]="curChannel">{{curChannel.name}}</template>分类<i class="pull-right fa customize-chevron"></i>
             </div>
 
             <div class="treeview">
                 <category-tree [parentId]="0"
+                               [channel]="curChannel"
                                [categories]="cmsState.categories"
                                [selectedCats]="entity.categories"
                                (checkEvent)="selectCat($event)">
@@ -194,10 +202,11 @@
 
         <accordion-group isOpen="true">
             <div accordion-heading>
-                文章专题分类<i class="pull-right fa customize-chevron"></i>
+                <template [ngIf]="curChannel">{{curChannel.name}}</template>专题分类<i class="pull-right fa customize-chevron"></i>
             </div>
 
-            <topic-cloud [topics]="cmsState.post_topic_cats"
+            <topic-cloud [channel]="curChannel"
+                         [topics]="cmsState.post_topic_cats"
                          [selectedTopics]="entity.topics"
                          (addTopic)="addTopic($event)"
                          (removeTopic)="removeTopic($event)"></topic-cloud>

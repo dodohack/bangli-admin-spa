@@ -3,7 +3,7 @@
 </editor-page-header>
 
 
-<form *ngIf="entity" (ngSubmit)="save()" #dealForm="ngForm">
+<form *ngIf="entity" (ngSubmit)="save()" #entityForm="ngForm">
 
     <!-- Post title and main buttons -->
     <div class="row post-meta-row">
@@ -19,7 +19,7 @@
             <!-- Save buttons -->
             <div class="float-right">
                 <button type="submit" class="btn btn-sm btn-outline-success"
-                        [disabled]="!dealForm.form.dirty && dealForm.form.valid">保存</button>
+                        [disabled]="!entityForm.form.dirty && entityForm.form.valid">保存</button>
 
                 <button class="btn btn-sm btn-outline-danger"
                         (click)="save2Draft()" *ngIf="isPending || isPublish">撤销发布</button>

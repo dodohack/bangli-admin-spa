@@ -1,3 +1,7 @@
+<div class="alert alert-danger" *ngIf="parentId == 0 && !updatedCats.length">
+    此频道暂无分类, 请添加!
+</div>
+
 <ul *ngIf="categories">
     <template ngFor let-cat [ngForOf]="updatedCats">
         <li *ngIf="cat.parent_id === parentId">
@@ -9,7 +13,7 @@
             <label>
                 <!-- This checkbox is used for real data -->
                 <input type="checkbox" [checked]="cat.checked"
-                          (change)="checkEvent.emit(cat)"/><span></span>
+                       (change)="checkEvent.emit(cat)"/><span></span>
             </label>
 
             <label [attr.for]="cat.id">
@@ -18,6 +22,7 @@
 
             <category-tree *ngIf="hasChild(cat)"
                            [parentId]="cat.id"
+                           [channel]="channel"
                            [categories]="getChild(cat)"
                            [selectedCats]="selectedCats"
                            (checkEvent)="checkEvent.emit($event)"></category-tree>

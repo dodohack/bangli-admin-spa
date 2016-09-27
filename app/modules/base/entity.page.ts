@@ -5,6 +5,7 @@
 import { OnInit, OnDestroy } from "@angular/core";
 import { ViewChild }         from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
+import { Location }          from '@angular/common';
 import { Store }             from '@ngrx/store';
 
 import { AppState }          from '../../reducers';
@@ -32,6 +33,8 @@ export class EntityPage implements OnInit, OnDestroy
     // to track entity modification that can't be tracked by entityForm, such
     // as entity content and fake_published_at etc.
     entityDirty: boolean = false;
+    // Force quit no matter if the entity is dirty or not.
+    forceQuit: boolean = false;
     // FIXME: froala editor triggers content change at first time it initialize
     // the content, but actually the entity content is not modified yet.
     initialized: boolean = false;
@@ -61,6 +64,7 @@ export class EntityPage implements OnInit, OnDestroy
 
     constructor(protected etype: string,
                 protected route: ActivatedRoute,
+                protected location: Location,
                 protected store: Store<AppState>) { }
 
     ngOnInit() {
@@ -86,6 +90,12 @@ export class EntityPage implements OnInit, OnDestroy
     }
 
     canDeactivate() {
+        if (this.forceQuit) {
+            this.store.dispatch(AlertActions
+                .error('你的修改尚未保存, 你可以立即返回上个页面保存!'));
+            return true;
+        }
+
         if (this.entityForm.dirty || this.entityDirty) {
             this.store.dispatch(AlertActions.error('请先保存当前更改，或取消保存'));
             return false;
@@ -147,14 +157,19 @@ export class EntityPage implements OnInit, OnDestroy
     get isPublish() { return this.entity.state === 'publish'; }
     get myId() { return this.authState.users[this.authState.key].id; }
     get hasEditorRole() { return this.store.let(hasEditorRole()); }
+    // Return current selected channel name for the entity
+    get curChannel() {
+        // Must convert channel_id from string to number
+        let channels = this.cmsState.channels
+            .filter(c => c.id === +this.entity.channel_id);
+        return channels ? channels[0] : null;
+    }
 
     get froalaOptions() { return FroalaOptions.getDefault(); }
 
 
     // Category, tag, topic add/remove events
     selectCat(cat: Category) {
-        console.log("selectCat: ", cat);
-        console.log("cmsState.categories: ", this.cmsState.categories);
         // Unselect a category if is is previously selected, vice versa
         if (cat.checked) this.removeCat(cat.id);
         else this.addCat(cat);
@@ -212,11 +227,27 @@ export class EntityPage implements OnInit, OnDestroy
     save() {
         this.store.dispatch(EntityActions.saveEntity(this.etype, this.entity));
     }
-    save2Pending() { this.entity.state = 'pending'; this.save(); }
-    save2Draft()   { this.entity.state = 'draft';   this.save(); }
-    save2Publish() {
-        // FIXME: Published_at can only be updated once 
+    save2Pending($event) {
+        $event.preventDefault();
+        this.entity.state = 'pending'; 
+        this.save();
+    }
+    save2Draft($event)   {
+        $event.preventDefault();
+        this.entity.state = 'draft';  
+        this.save();
+    }
+    save2Publish($event) {
+        $event.preventDefault();
+        // FIXME: Published_at can only be updated once
         this.entity.published_at = this.GMT(new Date());
-        this.entity.state = 'publish'; this.save();
+        this.entity.state = 'publish'; 
+        this.save();
+    }
+
+    cancelSave($event) {
+        $event.preventDefault();
+        this.forceQuit = true;
+        this.location.back();
     }
 }

@@ -2,7 +2,7 @@
                     [entity]="entity" [lists]="entitiesState">
 </editor-page-header>
 
-<form *ngIf="entity" (ngSubmit)="save" #productForm="ngForm">
+<form *ngIf="entity" (ngSubmit)="save" #entityForm="ngForm">
 
     <!-- Product title and main buttons -->
     <div class="row post-meta-row">
@@ -18,7 +18,7 @@
             <!-- Save buttons -->
             <div class="float-right">
                 <button type="submit" class="btn btn-sm btn-outline-success"
-                        [disabled]="!productForm.form.dirty && productForm.form.valid">保存</button>
+                        [disabled]="!entityForm.form.dirty && entityForm.form.valid">保存</button>
 
                 <button class="btn btn-sm btn-outline-primary"
                         (click)="save2Pending()" [disabled]="!isDraft">提交审稿</button>
@@ -305,6 +305,7 @@
             </div>
 
             <category-tree [parentId]="0"
+                           [channel]="curChannel"
                            [categories]="shopState.categories"
                            [selectedCats]="entity.categories"
                            (checkEvent)="selectCat($event)">
