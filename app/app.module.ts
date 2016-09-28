@@ -4,7 +4,7 @@ import { HttpModule }    from '@angular/http';
 import { Title }         from '@angular/platform-browser';
 
 import { provideStore }  from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects/module';
+import { EffectsModule } from '@ngrx/effects';
 
 import { UnauthGuard }   from './guard';
 import { BaseGuard }     from './guard';
