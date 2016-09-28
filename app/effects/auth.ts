@@ -87,7 +87,7 @@ export class AuthEffects {
             uuid = jwtDecode(auth.token).sub;
 
         // We can't use AuthCache here, cause it is not ready at user login
-        let api = APIS[key] + API_PATH[key].users
+        let api = APIS[key] + API_PATH.users
             + '/' + uuid + '?token=' + auth.token;
 
         console.log("KEY IS: ", key);
