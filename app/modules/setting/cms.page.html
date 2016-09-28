@@ -4,42 +4,25 @@
                   [taxonomy]="taxType"></cms-setting-menu>
 
 <div class="setting-body">
-    <!--
-    <cms-tag-setting *ngIf="filteredTags && taxType == 'tag'"
-                     [tags]="filteredTags" [channel]="channel"
-                     (edit)="tax = $event; modalEdit.show()"
-                     (add)="modalAdd.show()"
-                     (remove)="removeTax($event)"></cms-tag-setting>
-
--->
     <cms-category-setting *ngIf="filteredCats && taxType == 'category'"
                           [cats]="filteredCats" [channel]="channel"
-                          (edit)="tax = $event; modalEdit.show()"
-                          (add)="modalAdd.show()"
-                          (remove)="removeTax($event)"></cms-category-setting>
-
+                          (edit)="onEdit($event)"
+                          (add)="onAdd()"></cms-category-setting>
 
     <!-- Shared popup modal to edit taxonomies -->
-    <div *ngIf="taxType === 'tag' || taxType === 'category'">
-        <div class="modal fade" bsModal #modalAdd="bs-modal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-sm">
-                <modal-add-tax [taxType]="taxType"
-                               [channels]="channels"
-                               [categories]="filteredCats"
-                               (save)="newTax($event)"
-                               (cancel)="modalAdd.hide()"></modal-add-tax>
-            </div>
-        </div>
-
+    <div *ngIf="taxType === 'category'">
         <div class="modal fade" bsModal #modalEdit="bs-modal" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-sm">
-                <modal-edit-tax [taxType]="taxType"
-                                [tax]="tax" [channels]="channels"
+                <modal-edit-tax [actionType]="actionType"
+                                [taxType]="taxType"
+                                [categories]="filteredCats"
+                                [channels]="channels"
+                                [tax]="tax"
+                                (add)="newTax($event)"
                                 (save)="saveTax($event)"
+                                (remove)="removeTax($event)"
                                 (cancel)="modalEdit.hide()"></modal-edit-tax>
             </div>
         </div>
     </div>
-
-    <div class="alert alert-danger">BUG: Page is not updated when items change</div>
 </div>

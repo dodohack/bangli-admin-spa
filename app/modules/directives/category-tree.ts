@@ -36,8 +36,24 @@ export class CategoryTree {
         });
     }
 
+    /**
+     * This function return direct children and all lower level childrens
+     */
     getChild(cat: Category) {
-        return this.categories.filter(v => v.parent_id === cat.id);
+        // Get direct children
+        let children = this.categories.filter(v => v.parent_id === cat.id);
+
+        // Get children of direct children recursively
+        let childrenOfChild = [];
+        if (children) {
+            for (let i = 0; i < children.length; i++) {
+                let cc = this.getChild(children[i]);
+                childrenOfChild = [...childrenOfChild, ...cc];
+            }
+            children = [...children, ...childrenOfChild];
+        }
+
+        return children;
     }
 
     hasChild(cat: Category) {

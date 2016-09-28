@@ -142,9 +142,9 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             });
 
             if (action.type === CmsAttrActions.SAVE_TAG_SUCCESS)
-                return Object.assign({}, state, {tags: newTaxes});
+                return Object.assign({}, state, {tags: [...newTaxes]});
             else
-                return Object.assign({}, state, {categories: newTaxes});
+                return Object.assign({}, state, {categories: [...newTaxes]});
         }
 
         case CmsAttrActions.ADD_CATEGORY_SUCCESS:
@@ -163,10 +163,8 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             // Delete local copy of deleted category/tag
             let taxes: any;
             if (action.type === CmsAttrActions.DELETE_TAG_SUCCESS) {
-                console.log("Tag ", action.payload, " is deleted");
                 taxes = state.tags;
             } else {
-                console.log("Cat ", action.payload, " is deleted");
                 taxes = state.categories;
             }
 
@@ -174,9 +172,9 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             let newTaxes  = taxes.filter(t => t.id !== deletedId); 
 
             if (action.type === CmsAttrActions.DELETE_TAG_SUCCESS)
-                return Object.assign({}, state, {tags: newTaxes});
+                return Object.assign({}, state, {tags: [...newTaxes]});
             else
-                return Object.assign({}, state, {categories: newTaxes});
+                return Object.assign({}, state, {categories: [...newTaxes]});
         }
 
         default:

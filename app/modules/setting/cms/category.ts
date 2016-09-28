@@ -18,18 +18,7 @@ export class CmsCategory
 {
     @Input() cats: Category[];
     @Input() channel: Channel;
-    
-    // Cat selected
-    cat: Category;
 
     @Output() edit = new EventEmitter();
     @Output() add  = new EventEmitter();
-    @Output() remove = new EventEmitter();
-
-    // Edit category
-    /*
-    editCat(cat) {
-        this.cat = cat;
-    }
-    */
 }

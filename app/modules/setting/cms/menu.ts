@@ -18,7 +18,8 @@ export class CmsSettingMenu
     @Input() taxonomy: string;
  
     // We manage these settings here
-    settings = ['category', 'tag', 'channel'];
+    //settings = ['category', 'tag', 'channel'];
+    settings = ['category'];
     
     get zh() { return zh_CN; }
 }

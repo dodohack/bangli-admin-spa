@@ -26,7 +26,7 @@ export interface AuthState {
     keys: string[];
     // Available domains to current user
     domains: { [key: string]: Domain };
-    // Domain specific info, index by domain key
+    // Domain specific user info, index by domain key
     users: { [key: string]: User };
 }
 

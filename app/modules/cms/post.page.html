@@ -23,7 +23,7 @@
                     <div class="float-right">
                         <button class="btn btn-sm btn-outline-success"
                                 (click)="save()"
-                                [disabled]="!entityForm.form.dirty && !entityDirty && entityForm.form.valid">保存</button>
+                                [disabled]="!entityForm.form.dirty && !entityDirty && !entityForm.form.valid">保存</button>
 
                         <button class="btn btn-sm btn-outline-primary"
                                 (click)="save2Pending($event)" [disabled]="!isDraft">提交审稿</button>
