@@ -51,8 +51,11 @@
                     文章分类<i class="pull-right fa customize-chevron"></i>
                 </div>
 
+                <!-- FIXME: Add change input -->
+
                 <div class="treeview">
                     <category-tree [parentId]="0"
+                                   [channel]=""
                                    [categories]="cmsState.categories"
                                    [selectedCats]="sharedCats"
                                    (checkEvent)="selectCat($event)">

@@ -4,17 +4,20 @@
                   [taxonomy]="taxType"></cms-setting-menu>
 
 <div class="setting-body">
+    <!--
     <cms-tag-setting *ngIf="filteredTags && taxType == 'tag'"
                      [tags]="filteredTags" [channel]="channel"
                      (edit)="tax = $event; modalEdit.show()"
                      (add)="modalAdd.show()"
                      (remove)="removeTax($event)"></cms-tag-setting>
 
+-->
     <cms-category-setting *ngIf="filteredCats && taxType == 'category'"
                           [cats]="filteredCats" [channel]="channel"
                           (edit)="tax = $event; modalEdit.show()"
                           (add)="modalAdd.show()"
                           (remove)="removeTax($event)"></cms-category-setting>
+
 
     <!-- Shared popup modal to edit taxonomies -->
     <div *ngIf="taxType === 'tag' || taxType === 'category'">

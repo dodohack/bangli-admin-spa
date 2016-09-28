@@ -25,8 +25,11 @@ export class CmsCategory
     @Output() edit = new EventEmitter();
     @Output() add  = new EventEmitter();
     @Output() remove = new EventEmitter();
-    
-    setCat(cat) {
+
+    // Edit category
+    /*
+    editCat(cat) {
         this.cat = cat;
     }
+    */
 }

@@ -15,11 +15,11 @@
 <div class="treeview">
     <category-tree [parentId]="0"
                    [categories]="cats"
-                   [selectedCats]="[]"
-                   (checkEvent)="selectCat($event)">
+                   (checkEvent)="edit.emit($event)">
     </category-tree>
 </div>
 
+<!-- deprecated
 <ul class="tag-cloud tag-setting" *ngIf="channel">
     <li *ngFor="let cat of cats" class="tag-setting-item tag tag-default-outline">
         <div (click)="edit.emit(cat)" class="tag-left">
@@ -29,8 +29,6 @@
     </li>
 </ul>
 
-
-<!-- A simple confirm modal -->
 <div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -50,3 +48,4 @@
         </div>
     </div>
 </div>
+-->
