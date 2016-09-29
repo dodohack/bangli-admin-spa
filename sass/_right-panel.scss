@@ -42,27 +42,23 @@
 
   .panel-content,
   .tab-content {
-    background: #e5e5e5;
+    background: white;
     padding: 0.5rem;
     height: 100%;
+  }
+
+  .panel-content {
+    overflow-y: hidden;
+    padding-bottom: 5rem;
+  }
+
+  .tab-content {
     overflow-y: scroll;
   }
 
   .filter-wrapper {
     margin-bottom: 0.5rem;
   }
-}
-
-/* Large right panel */
-.right-panel-lg {
-  right: -600px;
-  width: 600px;
-}
-
-/* Small right panel */
-.right-panel-sm {
-  right: -280px;
-  width: 280px
 }
 
 .show-right-panel {

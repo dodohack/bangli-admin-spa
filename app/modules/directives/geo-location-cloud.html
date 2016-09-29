@@ -11,12 +11,32 @@
             {{ country.name }} <i class="pull-right fa customize-chevron"></i>
         </div>
 
+        <!-- country selector -->
         <span class="tag tag-warning-outline tag-item"
               (click)="clickEvent.emit(country)">{{country.name}}:</span>
 
+        <!-- capital and big cities selector -->
+        <div *ngFor="let city of citiesOfCountry(country)">
+            <!-- region selector -->
+            <span class="tag tag-info-outline tag-item"
+                  (click)="clickEvent.emit(city)">{{city.name}}</span>
+
+            <!-- area selector -->
+            <ul class="tag-cloud">
+                <li *ngFor="let area of areaOfCity(city)"
+                    class="tag-item tag tag-pill tag-default-outline"
+                    (click)="clickEvent.emit(area)">
+                    {{area.name}}
+                </li>
+            </ul>
+        </div>
+
         <div *ngFor="let region of regionsOfCountry(country)">
-            <span class="tag tag-warning-outline tag-item"
+            <!-- region selector -->
+            <span class="tag tag-info-outline tag-item"
                   (click)="clickEvent.emit(region)">{{region.name}}:</span>
+
+            <!-- city selector -->
             <ul class="tag-cloud">
                 <li *ngFor="let city of citiesOfRegion(region)"
                     class="tag-item tag tag-pill tag-default-outline"
@@ -24,7 +44,7 @@
                     {{city.name}}
                 </li>
             </ul>
-            <br>
+
         </div>
 
     </accordion-group>

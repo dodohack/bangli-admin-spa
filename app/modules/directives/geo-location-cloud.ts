@@ -41,28 +41,7 @@ export class GeoLocationCloud implements OnInit {
 
     citiesOfRegion(region: GeoLocation) { return this.cities.filter(c => c.parent_id === region.id); }
     regionsOfCountry(country: GeoLocation) { return this.regions.filter(r => r.parent_id === country.id); }
+    citiesOfCountry(country: GeoLocation) { return this.cities.filter(c => c.parent_id === country.id); }
+    areaOfCity(city: GeoLocation) { return this.cities.filter(c => c.parent_id === city.id); }
 
-    /**
-     * This function return direct children and all lower level childrens
-     */
-    getChild(loc: GeoLocation) {
-        // Get direct children
-        let children = this.locations.filter(v => v.parent_id === loc.id);
-
-        // Get children of direct children recursively
-        let childrenOfChild = [];
-        if (children) {
-            for (let i = 0; i < children.length; i++) {
-                let cc = this.getChild(children[i]);
-                childrenOfChild = [...childrenOfChild, ...cc];
-            }
-            children = [...children, ...childrenOfChild];
-        }
-
-        return children;
-    }
-
-    hasChild(loc: GeoLocation) {
-        return this.getChild(loc).length;
-    }
 }
