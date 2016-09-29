@@ -4,7 +4,7 @@
 
 import { Category }  from "./category";
 import { Tag }       from './tag';
-import { Location }  from './location';
+import { GeoLocation }  from './location';
 import { Statistic } from './statistic';
 import { Revision }  from './revision';
 import { Activity }  from './activity';
@@ -50,7 +50,7 @@ export class Topic {
     hide: boolean; // Only used by filtering
     editor_id: number;
     channel_id: number;
-    locations: Location[];
+    locations: GeoLocation[];
     state: string;
     guid: string;
     title: string;

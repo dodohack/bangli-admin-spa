@@ -1,5 +1,5 @@
 /**
- * Location: area and city
+ * GeoLocation: area and city
  */
 import { Component }               from '@angular/core';
 import { Input, Output }           from '@angular/core';
@@ -14,7 +14,7 @@ import { ChangeDetectorRef }       from '@angular/core';
     template: require('./area.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LocationArea
+export class GeoLocationArea
 {
     @Output() edit = new EventEmitter();
     @Output() add  = new EventEmitter();

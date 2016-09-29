@@ -21,6 +21,7 @@ import { AlertActions }      from "../../actions";
 import { FroalaOptions }     from '../../models/froala.option';
 import { Entity }            from '../../models';
 import { ENTITY }            from "../../models";
+import { GeoLocation }       from '../../models';
 import { Category }          from '../../models';
 import { Tag }               from '../../models';
 import { Topic }             from '../../models';
@@ -167,6 +168,10 @@ export class EntityPage implements OnInit, OnDestroy
 
     get froalaOptions() { return FroalaOptions.getDefault(); }
 
+    // Entity location, set or unset the location attr of an entity
+    toggleGeoLocation(loc: GeoLocation) {
+        this.store.dispatch(EntityActions.toggleGeoLocation(this.etype, loc));
+    }
 
     // Category, tag, topic add/remove events
     selectCat(cat: Category) {

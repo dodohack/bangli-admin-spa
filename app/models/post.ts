@@ -2,7 +2,7 @@
  * CMS Post related model
  */
 
-import { Location } from './location';
+import { GeoLocation } from './location';
 import { Channel }  from  './channel';
 import { Statistic }from './statistic';
 import { Activity } from './activity';
@@ -87,7 +87,7 @@ export class Post {
     channel_id: number;
     channels: Channel[];
     location_id: number;
-    locations: Location[];
+    locations: GeoLocation[];
     creative_type: string;
     title: string;
     categories: Category[];

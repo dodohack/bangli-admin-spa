@@ -27,4 +27,7 @@ export class CmsTagCloud {
 
     @Output()
     deleteTopic = new EventEmitter();
+
+    @Output()
+    toggleGeoLocation = new EventEmitter();
 }

@@ -1,0 +1,31 @@
+<!-- Show list of cities grouped by regions and countries -->
+<div class="filter-wrapper">
+    <input placeholder="过滤" type="text" class="form-control"
+           [value]="filterText" [formControl]="filterControl">
+</div>
+
+<accordion>
+    <accordion-group isOpen="true" *ngFor="let country of countries">
+
+        <div accordion-heading>
+            {{ country.name }} <i class="pull-right fa customize-chevron"></i>
+        </div>
+
+        <span class="tag tag-warning-outline tag-item"
+              (click)="clickEvent.emit(country)">{{country.name}}:</span>
+
+        <div *ngFor="let region of regionsOfCountry(country)">
+            <span class="tag tag-warning-outline tag-item"
+                  (click)="clickEvent.emit(region)">{{region.name}}:</span>
+            <ul class="tag-cloud">
+                <li *ngFor="let city of citiesOfRegion(region)"
+                    class="tag-item tag tag-pill tag-default-outline"
+                    (click)="clickEvent.emit(city)">
+                    {{city.name}}
+                </li>
+            </ul>
+            <br>
+        </div>
+
+    </accordion-group>
+</accordion>

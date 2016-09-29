@@ -6,15 +6,18 @@
  * 3. country
  */
 
-export class Location {
+// name 'Location' conflicts with angular builtin type
+export class GeoLocation {
     id: number;
-    loc_type: number; // enum type: 1 - city, 2 - region, 3 - country
+    loc_type: string; // enum type: CITY, REGION and COUNTRY
+    administrative_id: number;
     parent_id: number;
     rate: number; // editorial rate, 0-10 points
     slug: string; // url friendly name
     name: string; // English name
     name_cn: string; // Chinese name
-    description: string; // !!Location topic content!!
+    population: number;
+    content: string; // !!GeoLocation topic content!!
     latitude: number;  // Only usable for city
     longitude: number; // Only usable for city
 }

@@ -28,6 +28,22 @@
                     </ul>
                 </div>
 
+                <div class="cms-tag-group">
+                    <span class="tag tag-warning-outline tag-item"
+                          (click)="toggle.emit()">Location:</span>
+                    <ul class="tag-cloud">
+                        <li *ngFor="let loc of post.locations"
+                            class="tag tag-pill tag-primary-outline tag-item"
+                            (click)="toggleGeoLocation.emit(loc)">
+                            {{ loc.name }} x
+                        </li>
+                        <li *ngIf="post.location_id == 0"
+                            class="tag tag-pill tag-primary-outline tag-item">
+                            everywhere
+                        </li>
+                    </ul>
+                </div>
+
                 <!--
                 <div class="cms-tag-group">
                     <span class="tag tag-warning-outline tag-item"

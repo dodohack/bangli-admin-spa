@@ -10,6 +10,7 @@
 import { Action }       from '@ngrx/store';
 import { EntityParams } from '../models';
 import { Entity }       from '../models';
+import { GeoLocation }  from "../models";
 import { Category }     from "../models";
 import { Tag }          from "../models";
 import { Topic }        from "../models";
@@ -217,6 +218,14 @@ export class EntityActions {
         return {
             type: EntityActions.SAVE_ENTITIES,
             payload: {etype: etype, data: entities}
+        };
+    }
+
+    static TOGGLE_LOCATION = '[Entity] Toggle GeoLocation';
+    static toggleGeoLocation(etype: string, loc: GeoLocation): Action {
+        return {
+            type: EntityActions.TOGGLE_LOCATION,
+            payload: {etype: etype, data: loc}
         };
     }
 

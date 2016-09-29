@@ -222,6 +222,34 @@ export default function (state = initialState, action: Action): EntitiesStateGro
                 });
         }
 
+        // Set/unset location of single/multiple entity[s]
+        case EntityActions.TOGGLE_LOCATION: {
+            let loc = action.payload.data;
+            const newEntityArray = oldEditing.map(id => {
+                const oldEntity  = oldEntities[id];
+                const wasSet = oldEntity.location_id == loc.id ? true : false;
+                if (wasSet) {
+                    // Unset the location from the entity
+                    return Object.assign({}, oldEntity, {['location_id']: 0, ['locations']: []});
+                } else {
+                    // Set the location to the entity
+                    return Object.assign({}, oldEntity, {['location_id']: loc.id, ['locations']: [loc]});
+                }
+            });
+
+            let newEntities: { [id: number]: Entity } = {};
+            newEntityArray.forEach(entity => newEntities[entity.id] = entity);
+
+            return Object.assign({}, state,
+                {
+                    [etype]: {
+                        ids: oldIds,
+                        editing: oldEditing,
+                        entities: Object.assign({}, oldEntities, newEntities),
+                        paginator: oldPager
+                    }
+                });
+        }
 
         // Add a tag/topic/category to single/multiple entity[s]
         case EntityActions.ADD_TAG:

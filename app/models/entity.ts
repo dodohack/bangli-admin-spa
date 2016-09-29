@@ -2,7 +2,7 @@
  * A post/product/page/order etc entity model
  */
 
-import { Location } from './location';
+import { GeoLocation } from './location';
 import { Channel }  from  './channel';
 import { Statistic }from './statistic';
 import { Activity } from './activity';
@@ -161,7 +161,7 @@ export class Entity {
     channel_id: number;    // CMS and DEAL only
     channels: Channel[];   // ...
     location_id: number;   // ...
-    locations: Location[]; // ...
+    locations: GeoLocation[]; // ... This array only contains 0 or 1 element
     creative_type: string; // ...
     title: string;
     categories: Category[];

@@ -15,6 +15,7 @@ import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
 
 import { RevisionHistory }           from './revision-history';
 import { RightPanel }                from './right-panel';
+import { GeoLocationCloud }          from './geo-location-cloud';
 import { CategoryTree }              from './category-tree';
 import { TopicCloud }                from './topic-cloud';
 import { TagCloud }                  from './tag-cloud';
@@ -45,6 +46,7 @@ import { DateFilterComponent }       from './date-filter.component';
         RightPanel,
         ListPageHeader,
         ListFilterBar,
+        GeoLocationCloud,
         CategoryTree,
         TopicCloud,
         TagCloud,
@@ -67,6 +69,7 @@ import { DateFilterComponent }       from './date-filter.component';
         RightPanel,
         ListPageHeader,
         ListFilterBar,
+        GeoLocationCloud,
         CategoryTree,
         TopicCloud,
         TagCloud,

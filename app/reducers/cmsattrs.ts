@@ -1,6 +1,6 @@
 import { Action }         from '@ngrx/store';
 
-import { Location }       from '../models';
+import { GeoLocation }       from '../models';
 import { User }           from '../models';
 import { Category }       from "../models";
 import { Tag }            from "../models";
@@ -18,10 +18,7 @@ export interface CmsAttrsState {
     authors: User[];
     editors: User[];
     channels:  Channel[];
-    // We only preload country type location with cms state, all area/city
-    // level locations are loaded on demand.
-    // NOTE: object key must be a string or number.
-    locations: { [country: string]: Location[] };
+    locations: GeoLocation[];
     categories: Category[];
     post_topic_cats: Topic[]; // Topic cats for post
     tags: Tag[];
@@ -38,7 +35,7 @@ const initialState: CmsAttrsState = {
     authors: [],
     editors: [],
     channels:  [],
-    locations: {},
+    locations: [],
     categories: [],
     post_topic_cats: [],
     tags: [],
@@ -73,17 +70,9 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             if (action.payload.channels)
                 channels = action.payload.channels;
 
-            let countries: Location[];
-            let locations: { [country: string]: Location[] };
-            if (action.payload.countries) {
-                countries = action.payload.countries;
-                // Create an locations object with country index and empty
-                // area/city array
-                locations = countries.reduce(
-                    (locations: {[c: string]: Location[]}, c: Location) => {
-                        return Object.assign(locations, {[c.slug]: []});
-                    }, {});
-            }
+            let locations: GeoLocation[];
+            if (action.payload.locations)
+                locations = action.payload.locations;
 
             let post_topic_cats: Topic[];
             if (action.payload.post_topic_cats)
@@ -113,7 +102,7 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                 authors: [...authors],
                 editors: [...editors],
                 channels: [...channels],
-                locations: locations,
+                locations: [...locations],
                 categories: [...categories],
                 post_topic_cats: [...post_topic_cats],
                 tags: [...tags],

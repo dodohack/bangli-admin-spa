@@ -118,27 +118,19 @@
                         </select>
                     </div>
 
-                    <div class="form-group post-meta">
-                        <label>坐标</label>
-                        <select class="form-control form-control-sm custom-select"
-                                name="lid" [(ngModel)]="entity.location_id">
-                            <option value="0">typeahead select</option>
-                            <option value="1">typeahead select</option>
-                        </select>
-                    </div>
-
                     <a class="float-right btn btn-sm btn-outline-warning"
                        (click)="openPanel = true">展开侧栏</a>
                 </div>
             </div>
 
 
-            <!-- Post category, tag, topic etc -->
+            <!-- Post location, category, tag, topic etc -->
             <cms-tag-cloud [post]="entity"
                            (toggle)="openPanel = !openPanel"
                            (deleteCat)="removeCat($event)"
                            (deleteTag)="removeTag($event)"
-                           (deleteTopic)="removeTopic($event)"></cms-tag-cloud>
+                           (deleteTopic)="removeTopic($event)"
+                           (toggleGeoLocation)="toggleGeoLocation($event)"></cms-tag-cloud>
 
             <!-- Thumbnail and excerpt -->
             <div class="row">
@@ -183,6 +175,35 @@
 <!-- Right panel, we can trigger a seperate saving individually -->
 <right-panel [width]="'400px'" [isOpen]="openPanel"
              (toggle)="openPanel = !openPanel" *ngIf="entity">
+
+    <tabset>
+        <tab heading="分类"> <!-- display {{ curChannel.name }} -->
+            <div class="treeview">
+                <category-tree [parentId]="0"
+                               [channel]="curChannel"
+                               [categories]="cmsState.categories"
+                               [selectedCats]="entity.categories"
+                               (checkEvent)="selectCat($event)">
+                </category-tree>
+            </div>
+        </tab>
+
+        <tab heading="专题">
+            <topic-cloud [channel]="curChannel"
+                         [topics]="cmsState.post_topic_cats"
+                         [selectedTopics]="entity.topics"
+                         (addTopic)="addTopic($event)"
+                         (removeTopic)="removeTopic($event)"></topic-cloud>
+        </tab>
+
+        <tab heading="Location">
+            <geo-location-cloud [locations]="cmsState.locations"
+                                (clickEvent)="toggleGeoLocation($event)"></geo-location-cloud>
+        </tab>
+
+    </tabset>
+
+    <!--
     <accordion>
 
         <accordion-group isOpen="true">
@@ -213,4 +234,5 @@
         </accordion-group>
 
     </accordion>
+    -->
 </right-panel>
