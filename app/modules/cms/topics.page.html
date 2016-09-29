@@ -7,6 +7,7 @@
 <list-filter-bar *ngIf="loaded"
                  [etype]="etype"
                  [editors]="cmsState.editors"
+                 [channels]="cmsState.channels"
                  [categories]="cmsState.categories"
                  [paginator]="entitiesState.paginator"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>

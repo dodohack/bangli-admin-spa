@@ -16,8 +16,10 @@
                        (change)="checkEvent.emit(cat)"/><span></span>
             </label>
 
+            <!-- category name with post/topic/deal count belongs to it -->
             <label [attr.for]="cat.id">
                 {{cat.name}} <template [ngIf]="hasChild(cat)">({{hasChild(cat)}})</template>
+                <em style="font-size:0.7rem"> P:{{cat.posts_count}} T:{{cat.topics_count}} D:{{cat.deals_count}} </em>
             </label>
 
             <category-tree *ngIf="hasChild(cat)"

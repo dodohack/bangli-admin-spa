@@ -27,9 +27,10 @@
             <div class="form-group" *ngIf="categories">
                 <select [(ngModel)]="filterCat" name="c"
                         class="form-control form-control-sm custom-select">
-                    <option value="">所有分类</option>
-                    <option *ngFor="let cat of categories" [value]="cat.id">
-                        {{ cat.name }} ({{ catCount(cat) }})
+                    <option value="" *ngIf="!channel">所有分类</option>
+                    <option value="" *ngIf="channel">频道分类</option>
+                    <option *ngFor="let cat of catsOfChannel" [value]="cat.id">
+                        {{ cat.name }} | {{ catCount(cat) }}
                     </option>
                 </select>
             </div>

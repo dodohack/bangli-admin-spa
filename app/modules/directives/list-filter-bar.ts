@@ -5,6 +5,10 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router }  from '@angular/router';
 import { NavigationExtras }        from '@angular/router';
 
+import { User }        from '../../models';
+import { Channel }     from '../../models';
+import { Category }    from '../../models';
+import { Brand }       from '../../models';
 import { ENTITY }      from '../../models';
 import { ENTITY_INFO } from '../../models';
 import { zh_CN }       from '../../localization';
@@ -16,15 +20,19 @@ import { zh_CN }       from '../../localization';
 })
 export class ListFilterBar implements OnInit, OnDestroy {
 
-    @Input() authors: any;
-    @Input() editors: any;
-    @Input() categories: any;
-    @Input() brands: any;
+    @Input() authors: User[];
+    @Input() editors: User[];
+    @Input() channels: Channel[];
+    @Input() categories: Category[];
+    @Input() brands: Brand[];
     @Input() paginator: any;
 
     // The entity type of lists passed in
     @Input() etype: string;
-    
+
+    // Current channel
+    channel: Channel;
+
     // URL parameters and query parameters
     state: string;
     filterAuthor: string;
@@ -34,7 +42,7 @@ export class ListFilterBar implements OnInit, OnDestroy {
     filterDateType: string;
     _filterDateFrom: string;
     _filterDateTo: string;
-    // Datapicker hidden by default
+    // Datapicker of entity filtering is hidden by default
     dpHidden = true;
 
     // Subscribers
@@ -46,6 +54,12 @@ export class ListFilterBar implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.subParams = this.route.params.subscribe(params => {
+            // Get current channel of entities
+            if (this.channels) {
+                let tmp = this.channels.filter(c => c.slug == params['channel']);
+                if (tmp) this.channel = tmp[0];
+            }
+            // Get current state of entities
             this.state = params['state'] || 'all';
         });
 
@@ -93,6 +107,14 @@ export class ListFilterBar implements OnInit, OnDestroy {
     get baseUrl() { if (this.etype) return ENTITY_INFO[this.etype].slug; }
     get zh() { return zh_CN[this.baseUrl]; }
 
+    get catsOfChannel() {
+        // No channel is selected, return all categories
+        if (!this.channel) return this.categories;
+
+        // Return categories belongs to current channel
+        return this.categories.filter(c => c.channel_id === this.channel.id);
+    }
+
     get hasAuthorFilter() { return this.etype === ENTITY.CMS_POST; }
     get hasEditorFilter() {
         switch (this.etype) {
@@ -112,6 +134,8 @@ export class ListFilterBar implements OnInit, OnDestroy {
                 return cat.posts_count;
             case ENTITY.CMS_TOPIC:
                 return cat.topics_count;
+            case ENTITY.CMS_DEAL:
+                return cat.deals_count;
             case ENTITY.SHOP_PRODUCT:
                 return cat.products_count;
             default:
