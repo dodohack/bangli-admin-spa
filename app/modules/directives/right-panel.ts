@@ -19,6 +19,7 @@ export class RightPanel {
 
     @Input() width: string; // Panel width with pixel, say, '600px'
     get right() { return '-' + this.width; } // Panel position offset the screen
+    @Input() scrollY: boolean; // overflow-y: scroll on panel-content
 
     @Input() isOpen: boolean;
     @Input() hasNav: boolean; // Show navigation bar or not

@@ -1,6 +1,7 @@
 <!-- FIXME: states of ads -->
 <list-page-header [etype]="etype"
-                  [loading]="loading"></list-page-header>
+                  [loading]="loading"
+                  (editEvent)="newEntity()"></list-page-header>
 
 <!-- Ads filter/tool bar at top -->
 <list-filter-bar *ngIf="loaded"
@@ -16,9 +17,10 @@
           (batchDelete)="batchDelete($event)"
           (batchLock)="batchLock($event)"></ads-list>
 
-<!-- Right panel, editing a advertise -->
+<!-- Right panel, editing a advertise, scroll with y direction when overflows -->
 <right-panel *ngIf="loaded"
              [width]="'600px'"
+             [scrollY]="true"
              [isOpen]="entitiesInEdit.length"
              [hasNav]="entitiesInEdit.length === 1"
              [entity]="entity"
@@ -26,7 +28,8 @@
              (previous)="editPreviousEntity()"
              (next)="editNextEntity()">
 
-    <form (ngSubmit)="batchSave()" *ngIf="entity">
+    <!-- FIXME: Support batch save -->
+    <form (ngSubmit)="saveEntity()" *ngIf="entity">
 
         <div class="row form-group">
             <div class="col-xs-12">
@@ -81,13 +84,13 @@
         <div class="row form-group">
             <div class="col-xs-6">
                 <label>开始日期 {{ entity.started_at | date: 'y-MM-dd HH:mm:ss' }}</label>
-                <datepicker name="dateFrom" [(ngModel)]="entity.started_at"
+                <datepicker name="dateFrom" [(ngModel)]="startedAt"
                             [showWeeks]="false"></datepicker>
             </div>
 
             <div class="col-xs-6">
                 <label>截止日期 {{ entity.ended_at | date: 'y-MM-dd HH:mm:ss'}}</label>
-                <datepicker name="dateTo" [(ngModel)]="entity.ended_at"
+                <datepicker name="dateTo" [(ngModel)]="endedAt"
                             [showWeeks]="false"></datepicker>
             </div>
         </div>
@@ -100,6 +103,12 @@
             </div>
         </div>
 
+        <button (click)="save2Draft()"
+                class="btn btn-block btn-outline-success">保存草稿</button>
+        <button (click)="save2Publish()"
+                class="btn btn-block btn-outline-success">发布</button>
+        <button (click)="cancelBatchEdit()"
+                class="btn btn-block btn-outline-danger">取消</button>
     </form>
 
 </right-panel>

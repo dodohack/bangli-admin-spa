@@ -6,7 +6,7 @@
             <input type="checkbox" name="sa"
                    [ngModel]="isAllSelected" (change)="updateAll()">
         </th>
-        <th width="26%">
+        <th width="20%">
             <div class="form-inline">
                 <div class="form-group" style="margin-right: 2rem">
                     <select class="form-control form-control-sm custom-select"
@@ -22,7 +22,10 @@
                 <span>广告标题</span>
             </div>
         </th>
-        <th width="40%">广告图片</th>
+        <th width="20%">广告图片</th>
+        <th width="8%">显示设备</th>
+        <th width="8%">显示位置</th>
+        <th width="10%">显示国家</th>
         <th width="15%">开始日期</th>
         <th width="15%">过期日期</th>
     </tr>
@@ -38,9 +41,18 @@
             <td><input type="checkbox" name="p[]" [ngModel]="isEditing(id)"
                        (change)="updateEditList(id)"></td>
 
-            <td>{{ entities[id].title }}</td>
+            <td>
+                <span class="tag tag-default-outline">{{entities[id].state}}</span>
+                {{ entities[id].title }}
+            </td>
 
             <td>{{ entities[id].image_id }}</td>
+
+            <td>{{ entities[id].device }}</td>
+
+            <td>{{ entities[id].position }}</td>
+
+            <td>{{ entities[id].location }}</td>
 
             <td>{{ entities[id].started_at }}</td>
 

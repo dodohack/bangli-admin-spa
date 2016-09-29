@@ -174,6 +174,8 @@ export class Entity {
     note: string;          // CMS post and shop product only
     fake_published_at: string;
     published_at: string;
+    started_at: string;    // Advertise only
+    ended_at: string;      // Advertise only
     created_at: string;
     updated_at: string;
     revisions: Revision[];

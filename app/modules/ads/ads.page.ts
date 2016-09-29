@@ -28,4 +28,25 @@ export class AdsPage extends EntitiesPage
                 protected ping: Ping) {
         super(ENTITY.ADVERTISE, route, store, ping);
     }
+
+    /**
+     * We have getter/setter here in order to convert the datetime to MySQL
+     * compatiable one 
+     */
+    set startedAt(value) {
+        let newDate = this.GMT(value);
+        if (newDate != this.entity.started_at) {
+            this.entity.started_at = newDate;
+        }
+    }
+    get startedAt() { return this.entity.started_at; }
+
+    set endedAt(value) {
+        let newDate = this.GMT(value);
+        if (newDate != this.entity.ended_at) {
+            this.entity.ended_at = newDate;
+        }
+    }
+    get endedAt() { return this.entity.ended_at; }
+    
 }

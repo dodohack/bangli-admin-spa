@@ -29,6 +29,8 @@ export class ListPageHeader {
 
     // Input to childview search-box
     @Input() loading: boolean;
+    
+    @Output() editEvent = new EventEmitter();
 
     get title() { if (this.etype) return ENTITY_INFO[this.etype].name; }
     get baseUrl() { if (this.etype) return ENTITY_INFO[this.etype].slug; }
@@ -62,7 +64,19 @@ export class ListPageHeader {
                 return false;
         }
     }
-
+    
+    // Advertise, order, voucher entity does not have single edit page
+    get onFlyEdit() {
+        switch (this.etype) {
+            case ENTITY.ADVERTISE:
+            case ENTITY.SHOP_ORDER:
+            case ENTITY.SHOP_VOUCHER:
+                return true;
+            default:
+                return false;
+        }
+    }
+    
     get total() {
         if (!this.states || !this.states.length) return 0;
 

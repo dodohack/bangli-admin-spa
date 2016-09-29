@@ -18,8 +18,14 @@
     <h1 class="title">
         <span *ngIf="activeChannel">{{ zh[activeChannel] }}频道{{ title }}</span>
         <span *ngIf="!activeChannel">所有{{ title }}</span>
-        <a class="page-title-action btn btn-sm btn-outline-info"
+
+        <a *ngIf="!onFlyEdit"
+           class="page-title-action btn btn-sm btn-outline-info"
            [routerLink]="['/', baseUrl, 'new']">新建{{ title }}</a>
+
+        <button *ngIf="onFlyEdit"
+                class="page-title-action btn btn-sm btn-outline-info"
+                (click)="editEvent.emit()">新建{{ title }}</button>
 
         <a class="page-title-action btn btn-sm btn-outline-info float-right"
            *ngIf="isCms" [routerLink]="['/setting/cms']">内容系统设置</a>

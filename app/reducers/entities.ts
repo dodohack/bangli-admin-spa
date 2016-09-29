@@ -208,9 +208,13 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             let newEntity: Entity  = new Entity;
 
             newEntity.state      = 'unsaved';
+            // FIXME: We shouldn't create empty array for some entity, say
+            // advertise, this casue api server error.
+            /*
             newEntity.categories = [];
-            newEntity.tags       = [];
+            //newEntity.tags       = [];
             newEntity.topics     = [];
+            */
             return Object.assign({}, state,
                 {
                     [etype]: {

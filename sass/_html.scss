@@ -139,3 +139,8 @@ input[type=color] {
 .text-center {
     text-align: center;
 }
+
+// Always scroll y direction when overflows
+.scroll-y {
+    overflow-y: scroll !important;
+}

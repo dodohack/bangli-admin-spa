@@ -14,7 +14,7 @@
         <span class="title" *ngIf="entity"> {{ entity.title || '#' + entity.id }} </span>
 
     </div>
-    <div class="panel-content">
+    <div class="panel-content" [class.scroll-y]="scrollY">
         <!-- Parent content is injected here -->
         <ng-content></ng-content>
     </div>

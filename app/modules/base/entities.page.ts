@@ -177,9 +177,45 @@ export class EntitiesPage implements OnInit, OnDestroy
             }, 300);
         }
     }
-    
-    // Get first entity from the editing list
+
+    /**
+     * Return MySQL compatible date in GMT
+     */
+    GMT(value) {
+        let d = new Date(value);
+        let offset = d.getTimezoneOffset() / 60;
+        // Patch user timezone offset, so we can get the GMT
+        d.setHours(d.getHours() - offset);
+        let newDate = d.toISOString().slice(0,19).split('T');
+        return newDate[0] + ' ' + newDate[1];
+    }
+
+    /**
+     * Get first entity from the editing list
+     */
     get entity() { return this.entitiesInEdit[0]; }
+
+    /**
+     * Create a entity on entity list page
+     */
+    newEntity() { this.store.dispatch(EntityActions.newEntity(this.etype)); }
+
+    /**
+     * FIXME: Merge it with batchSave()
+     * Save single entity on entity list page
+     */
+    saveEntity() {
+        console.log("saveEntity is called");
+        this.store.dispatch(EntityActions.saveEntity(this.etype, this.entity));
+    }
+    save2Draft()   {
+        this.entity.state = 'draft';
+        this.saveEntity();
+    }
+    save2Publish() {
+        this.entity.state = 'publish';
+        this.saveEntity();
+    }
 
     // In page edit single or multiple entities
     batchEdit(ids: number[]) {
