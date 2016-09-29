@@ -3,6 +3,7 @@
  * authors, editors, categories, tags, topic_cats, state, channels etc
  */
 import { Action }          from '@ngrx/store';
+import { GeoLocation }     from '../models';
 import { Category }        from '../models';
 import { Tag }             from '../models';
 import { Topic }           from '../models';
@@ -86,6 +87,54 @@ export class CmsAttrActions {
         return {
             type: CmsAttrActions.LOAD_ATTR_FAIL
         };
+    }
+
+    static ADD_GEO_LOCATION = '[CmsAttr] Add Geo Location';
+    static addGeoLocation(loc: GeoLocation): Action {
+        return {
+            type: CmsAttrActions.ADD_GEO_LOCATION,
+            payload: loc
+        }
+    }
+
+    static ADD_GEO_LOCATION_SUCCESS = '[CmsAttr] Add Geo Location Success';
+    static addGeoLocationSuccess(loc: GeoLocation): Action {
+        return {
+            type: CmsAttrActions.ADD_GEO_LOCATION_SUCCESS,
+            payload: loc
+        }
+    }
+
+    static SAVE_GEO_LOCATION = '[CmsAttr] Edit Geo Location';
+    static saveGeoLocation(loc: GeoLocation): Action {
+        return {
+            type: CmsAttrActions.SAVE_GEO_LOCATION,
+            payload: loc
+        }
+    }
+
+    static SAVE_GEO_LOCATION_SUCCESS = '[CmsAttr] Save Geo Location Success';
+    static saveGeoLocationSuccess(loc: GeoLocation): Action {
+        return {
+            type: CmsAttrActions.SAVE_GEO_LOCATION_SUCCESS,
+            payload: loc
+        }
+    }
+
+    static DELETE_GEO_LOCATION = '[CmsAttr] Delete Geo Location';
+    static deleteGeoLocation(loc: GeoLocation): Action {
+        return {
+            type: CmsAttrActions.DELETE_GEO_LOCATION,
+            payload: loc
+        }
+    }
+
+    static DELETE_GEO_LOCATION_SUCCESS = '[CmsAttr] Delete Geo Location Success';
+    static deleteGeoLocationSuccess(locId: number): Action {
+        return {
+            type: CmsAttrActions.DELETE_GEO_LOCATION_SUCCESS,
+            payload: locId
+        }
     }
 
     static ADD_TAG = '[CmsAttr] Add Tag';

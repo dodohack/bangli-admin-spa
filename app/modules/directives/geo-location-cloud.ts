@@ -20,8 +20,12 @@ export class GeoLocationCloud implements OnInit {
 
     // All geo-locations
     @Input() locations: GeoLocation[];
+    // If the geo-location cloud is editable in fly, we set this to true in
+    // location setting page
+    @Input() editable: boolean;
 
     @Output() clickEvent = new EventEmitter();
+    @Output() addEvent   = new EventEmitter();
 
     constructor(private cd: ChangeDetectorRef) {}
 
@@ -43,5 +47,4 @@ export class GeoLocationCloud implements OnInit {
     regionsOfCountry(country: GeoLocation) { return this.regions.filter(r => r.parent_id === country.id); }
     citiesOfCountry(country: GeoLocation) { return this.cities.filter(c => c.parent_id === country.id); }
     areaOfCity(city: GeoLocation) { return this.cities.filter(c => c.parent_id === city.id); }
-
 }

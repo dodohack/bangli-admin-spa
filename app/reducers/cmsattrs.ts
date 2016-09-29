@@ -115,14 +115,23 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             };
         }
 
+        case CmsAttrActions.SAVE_GEO_LOCATION_SUCCESS:
         case CmsAttrActions.SAVE_CATEGORY_SUCCESS:
         case CmsAttrActions.SAVE_TAG_SUCCESS: {
             // Update local copy of saved category/tag
             let taxes: any;
-            if (action.type === CmsAttrActions.SAVE_TAG_SUCCESS)
+            // Object index key to specific attributes
+            let key: string;
+            if (action.type === CmsAttrActions.SAVE_TAG_SUCCESS) {
+                key = 'tags';
                 taxes = state.tags;
-            else
+            } else if (action.type === CmsAttrActions.SAVE_CATEGORY_SUCCESS) {
+                key = 'categories';
                 taxes = state.categories;
+            } else {
+                key = 'locations';
+                taxes = state.locations;
+            }
 
             let newTax   = action.payload;
             let newTaxes = taxes.map(t => {
@@ -130,40 +139,45 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                 return t; // Return old one
             });
 
-            if (action.type === CmsAttrActions.SAVE_TAG_SUCCESS)
-                return Object.assign({}, state, {tags: [...newTaxes]});
-            else
-                return Object.assign({}, state, {categories: [...newTaxes]});
+            return Object.assign({}, state, {key: [...newTaxes]});
         }
 
+        case CmsAttrActions.ADD_GEO_LOCATION_SUCCESS:
         case CmsAttrActions.ADD_CATEGORY_SUCCESS:
         case CmsAttrActions.ADD_TAG_SUCCESS: {
-            // Add newly added category/tag to local copy
+            // Add newly added location/category/tag to local copy
             if (action.type === CmsAttrActions.ADD_TAG_SUCCESS)
                 return Object.assign({}, state,
                     {tags: [...state.tags, action.payload]});
-            else
+            else if (action.type === CmsAttrActions.ADD_CATEGORY_SUCCESS)
                 return Object.assign({}, state,
                     {categories: [...state.categories, action.payload]});
+            else
+                return Object.assign({}, state,
+                    {locations: [...state.locations, action.payload]});
         }
 
+        case CmsAttrActions.DELETE_GEO_LOCATION_SUCCESS:
         case CmsAttrActions.DELETE_CATEGORY_SUCCESS:
         case CmsAttrActions.DELETE_TAG_SUCCESS: {
-            // Delete local copy of deleted category/tag
+            // Delete local copy of deleted location/category/tag
             let taxes: any;
+            let key: string;
             if (action.type === CmsAttrActions.DELETE_TAG_SUCCESS) {
+                key = 'tags';
                 taxes = state.tags;
-            } else {
+            } else if (action.type === CmsAttrActions.DELETE_CATEGORY_SUCCESS) {
+                key = 'categories';
                 taxes = state.categories;
+            } else {
+                key = 'locations';
+                taxes = state.locations;
             }
 
             let deletedId = action.payload;
             let newTaxes  = taxes.filter(t => t.id !== deletedId); 
 
-            if (action.type === CmsAttrActions.DELETE_TAG_SUCCESS)
-                return Object.assign({}, state, {tags: [...newTaxes]});
-            else
-                return Object.assign({}, state, {categories: [...newTaxes]});
+            return Object.assign({}, state, {key: [...newTaxes]});
         }
 
         default:

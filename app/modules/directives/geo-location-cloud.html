@@ -47,5 +47,14 @@
 
         </div>
 
+        <span *ngIf="editable"
+              class="tag tag-default-outline tag-item"
+              (click)="addEvent.emit($country)">+Region/City</span>
+
     </accordion-group>
 </accordion>
+
+<button *ngIf="editable"
+        class="btn btn-sm btn-outline-success"
+        (click)="addEvent.emit()">New Country</button>
+

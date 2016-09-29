@@ -1,0 +1,119 @@
+<div class="modal-content" *ngIf="location">
+    <div class="modal-header">
+        <button type="button" class="close" (click)="cancel.emit()">
+            <span>&times;</span>
+        </button>
+        <h5 class="modal-title" *ngIf="actionType == 'edit'">修改Location: {{ location.name }}</h5>
+        <h5 class="modal-title" *ngIf="actionType == 'add'">新建Location</h5>
+    </div>
+    <br>
+    <div class="modal-body">
+        <form (ngSubmit)="save()" #locForm="ngForm">
+            <div class="form-group">
+                <label>Location type</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="loc_type" [(ngModel)]="location.loc_type" required>
+                    <option *ngFor="let t of locType"
+                            [selected]="location.loc_type === t"
+                            [value]="t">{{ t }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>English 名字</label>
+                <input type="text" name="ename" class="form-control"
+                       [(ngModel)]="location.name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Chinese 名字</label>
+                <input type="text" name="cname" class="form-control"
+                       [(ngModel)]="location.name_cn" required>
+            </div>
+
+            <div class="form-group">
+                <label>URL slug</label>
+                <input type="text" name="slug" class="form-control"
+                       [(ngModel)]="location.slug" required>
+            </div>
+
+            <div class="form-group">
+                <label>Parent Location</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="lpi" [(ngModel)]="location.parent_id">
+                    <option [selected]="location.parent_id == 0"
+                            value="0">无父类</option>
+                    <option *ngFor="let loc of locations"
+                            [selected]="location.parent_id === loc.id"
+                            [value]="loc.id">{{ loc.name }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Administrative Location</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="lai" [(ngModel)]="location.administrative_id">
+                    <option [selected]="location.administrative_id == 0"
+                            value="0">None</option>
+                    <option *ngFor="let city of cities"
+                            [selected]="location.administrative_id === city.id"
+                            [value]="city.id">{{ city.name }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Rate</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="lr" [(ngModel)]="location.rate">
+                    <option [selected]="!location.rate" value=""></option>
+                    <option *ngFor="let rate of rates"
+                            [selected]="location.rate == rate"
+                            [value]="rate">{{ rate }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Population</label>
+                <input type="text" name="lp" class="form-control"
+                       [(ngModel)]="location.population">
+            </div>
+
+            <div class="form-group">
+                <label>Lat/long</label>
+                <input type="text" name="lat" class="form-control"
+                       [(ngModel)]="location.latitude">
+                <input type="text" name="long" class="form-control"
+                       [(ngModel)]="location.longitude">
+            </div>
+
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="content" class="form-control" rows="5"
+                          [(ngModel)]="location.content"></textarea>
+            </div>
+        </form>
+
+        <button type="button" class="btn btn-block btn-outline-success"
+                *ngIf="actionType == 'add'"
+                [disabled]="!locForm.form.valid"
+                (click)="add.emit(location)">添加</button>
+
+        <button type="button" class="btn btn-block btn-outline-success"
+                *ngIf="actionType == 'add'"
+                [disabled]="!locForm.form.valid"
+                (click)="addAndContinue.emit(location)">添加/Continue</button>
+
+        <button type="button" class="btn btn-block btn-outline-danger"
+                *ngIf="actionType == 'edit'"
+                (click)="remove.emit(location)">删除</button>
+
+        <button type="button" class="btn btn-block btn-outline-success"
+                *ngIf="actionType == 'edit'"
+                [disabled]="!locForm.form.valid"
+                (click)="save.emit(location)">保存</button>
+
+        <button type="button" class="btn btn-block btn-outline-danger"
+                (click)="cancel.emit()">取消</button>
+    </div>
+</div>

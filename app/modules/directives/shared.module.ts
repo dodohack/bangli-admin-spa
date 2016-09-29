@@ -21,10 +21,10 @@ import { TopicCloud }                from './topic-cloud';
 import { TagCloud }                  from './tag-cloud';
 import { CmsTagCloud }               from './cms-tag-cloud';
 import { ModalEditTax }              from './modal-edit-tax';
+import { ModalEditGeoLoc }          from './modal-edit-geo-loc';
 import { EditorPageHeader }          from './editor-page-header';
 import { ListPageHeader }            from './list-page-header';
 import { ListFilterBar }             from './list-filter-bar';
-//import { FastEditPostFormComponent } from './fast-edit-post-form.component';
 import { SearchBox }                 from './search-box';
 import { DateFilterComponent }       from './date-filter.component';
 
@@ -53,6 +53,7 @@ import { DateFilterComponent }       from './date-filter.component';
         EditorPageHeader,
         CmsTagCloud,
         ModalEditTax,
+        ModalEditGeoLoc,
         //FastEditPostFormComponent,
         SearchBox,
         RevisionHistory,
@@ -76,6 +77,7 @@ import { DateFilterComponent }       from './date-filter.component';
         EditorPageHeader,
         CmsTagCloud,
         ModalEditTax,
+        ModalEditGeoLoc,
         //FastEditPostFormComponent,
         SearchBox,
         RevisionHistory,

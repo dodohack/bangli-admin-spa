@@ -12,6 +12,7 @@ import { AuthState }        from '../reducers/auth';
 import { CmsAttrsState }    from '../reducers/cmsattrs';
 import { CmsAttrActions }   from '../actions';
 import { Tag, Category }    from '../models';
+import { GeoLocation }      from "../models";
 
 @Injectable()
 export class CmsAttrEffects {
@@ -39,6 +40,11 @@ export class CmsAttrEffects {
             .map(cat => CmsAttrActions.saveCategorySuccess(cat))
             .catch(() => Observable.of(CmsAttrActions.saveFail())));
 
+    @Effect() saveGeoLoc$ = this.actions$.ofType(CmsAttrActions.SAVE_GEO_LOCATION)
+        .switchMap(action => this.putGeoLoc(action.payload)
+            .map(loc => CmsAttrActions.saveGeoLocationSuccess(loc))
+            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+
     @Effect() addTag$ = this.actions$.ofType(CmsAttrActions.ADD_TAG)
         .switchMap(action => this.postTag(action.payload)
             .map(tag => CmsAttrActions.addTagSuccess(tag))
@@ -47,6 +53,11 @@ export class CmsAttrEffects {
     @Effect() addCat$ = this.actions$.ofType(CmsAttrActions.ADD_CATEGORY)
         .switchMap(action => this.postCat(action.payload)
             .map(cat => CmsAttrActions.addCategorySuccess(cat))
+            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+
+    @Effect() addGeoLoc$ = this.actions$.ofType(CmsAttrActions.ADD_GEO_LOCATION)
+        .switchMap(action => this.postGeoLoc(action.payload)
+            .map(loc => CmsAttrActions.addGeoLocationSuccess(loc))
             .catch(() => Observable.of(CmsAttrActions.saveFail())));
 
     @Effect() deleteTag$ = this.actions$.ofType(CmsAttrActions.DELETE_TAG)
@@ -59,6 +70,10 @@ export class CmsAttrEffects {
             .map(catId => CmsAttrActions.deleteCategorySuccess(catId))
             .catch(() => Observable.of(CmsAttrActions.saveFail())));
 
+    @Effect() deleteGeoLoc$ = this.actions$.ofType(CmsAttrActions.DELETE_GEO_LOCATION)
+        .switchMap(action => this.deleteGeoLoc(action.payload)
+            .map(locId => CmsAttrActions.deleteGeoLocationSuccess(locId))
+            .catch(() => Observable.of(CmsAttrActions.saveFail())));
 
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
@@ -83,6 +98,13 @@ export class CmsAttrEffects {
      */
     private putCat(cat: Category) {
         return this.putTax(cat, API_PATH.cms_cats);
+    }
+
+    /**
+     * Update a geo-location
+     */
+    private putGeoLoc(loc: GeoLocation) {
+        return this.putTax(loc, API_PATH.geo_locations);
     }
 
     /**
@@ -111,6 +133,13 @@ export class CmsAttrEffects {
     }
 
     /**
+     * Create geo-location
+     */
+    private postGeoLoc(loc: GeoLocation) {
+        return this.postTax(loc, API_PATH.geo_locations);
+    }
+
+    /**
      * Create a tax
      */
     private postTax(tax: any, apiPath: string) {
@@ -133,6 +162,13 @@ export class CmsAttrEffects {
      */
     private deleteCat(cat: Category) {
         return this.deleteTax(cat, API_PATH.cms_cats);
+    }
+
+    /**
+     * Delete a geo-location
+     */
+    private deleteGeoLoc(loc: GeoLocation) {
+        return this.deleteTax(loc, API_PATH.geo_locations);
     }
 
     /**

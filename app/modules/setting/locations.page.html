@@ -1,15 +1,46 @@
 <setting-menu></setting-menu>
 
-<p *ngIf="!country">
-    For bangli.us, we should add 2 top level countries: US and CA.<br>
-    For bangli.uk, we should add 5 top level countries: England, Scotland, Welsh
-    North Ireland and Ireland.<br>
-</p>
+<div class="setting-body">
 
-<p>
-    TODO: <br>
-    1. This is the page manages all the city/town/village, region/province/county<br>
-       and country of a domain. <br>
-    2. bbs, cms and other modules uses location to display and locate geo-location<br>
-       based content to user.<br>
-</p>
+    <pre>NOTE: Frontend topic of places are auto generated from these locations </pre>
+
+    <!-- Title -->
+    <div class="page-title">
+        <h5 class="title">
+            Geo location management
+        </h5>
+    </div>
+
+    <geo-location-cloud [editable]="true"
+                        [locations]="locations"
+                        (clickEvent)="onEdit($event)"
+                        (addEvent)="onAdd($event)"></geo-location-cloud>
+
+    <p *ngIf="!country">
+        For bangli.us, we should add 2 top level countries: US and CA.<br>
+        For bangli.uk, we should add 5 top level countries: England, Scotland, Welsh
+        North Ireland and Ireland.<br>
+    </p>
+
+    <p>
+        TODO: <br>
+        1. This is the page manages all the city/town/village, region/province/county<br>
+           and country of a domain. <br>
+        2. bbs, cms and other modules uses location to display and locate geo-location<br>
+           based content to user.<br>
+    </p>
+
+
+    <div class="modal fade" bsModal #modalEdit="bs-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <modal-edit-geo-loc [actionType]="actionType"
+                                [location]="location"
+                                [locations]="locations"
+                                (add)="newGeoLocation($event)"
+                                (addAndContinue)="newGeoLocationAndContinue($event)"
+                                (save)="saveGeoLocation($event)"
+                                (remove)="removeGeoLocation($event)"
+                                (cancel)="modalEdit.hide()"></modal-edit-geo-loc>
+        </div>
+    </div>
+</div>

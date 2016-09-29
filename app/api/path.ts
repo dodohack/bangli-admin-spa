@@ -66,6 +66,11 @@ export const API_PATH = {
     cms_topic_states: '/cms/topics/states',
 
 
+    /*************************************************************************
+     * Geo locations
+     *************************************************************************/
+    geo_locations:       '/locations',
+    geo_locations_batch: '/locations/batch',
 
     /*************************************************************************
      * Emails
