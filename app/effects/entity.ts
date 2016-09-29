@@ -81,6 +81,8 @@ export class EntityEffects  {
                     return AuthCache.API() + API_PATH.cms_deals;
                 case ENTITY.CMS_PAGE:
                     return AuthCache.API() + API_PATH.cms_pages;
+                case ENTITY.ADVERTISE:
+                    return AuthCache.API() + API_PATH.advertises;
                 case ENTITY.NEWSLETTER:
                     return AuthCache.API() + API_PATH.newsletter_posts;
                 case ENTITY.ATTACHMENT:
@@ -106,6 +108,8 @@ export class EntityEffects  {
                     return AuthCache.API() + API_PATH.cms_deals_batch;
                 case ENTITY.CMS_PAGE:
                     return AuthCache.API() + API_PATH.cms_pages_batch;
+                case ENTITY.ADVERTISE:
+                    return AuthCache.API() + API_PATH.advertises_batch;
                 case ENTITY.NEWSLETTER:
                     return AuthCache.API() + API_PATH.newsletter_posts_batch;
                 case ENTITY.ATTACHMENT:

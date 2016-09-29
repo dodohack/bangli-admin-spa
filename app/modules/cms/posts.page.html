@@ -1,7 +1,7 @@
 <list-page-header [etype]="etype"
                   [cmsChannels]="cmsState.channels"
                   [activeChannel]="params['channel']"
-                  [states]="cmsState.post_states.actual"
+                  [states]="cmsState.page_states.actual"
                   [loading]="loading"></list-page-header>
 
 <!-- Post filter/tool bar at top -->
@@ -39,8 +39,8 @@
              [hasNav]="entitiesInEdit.length === 1"
              [entity]="entitiesInEdit[0]"
              (toggle)="cancelBatchEdit()"
-             (previous)="editPreviousPost()"
-             (next)="editNextPost()">
+             (previous)="editPreviousEntity()"
+             (next)="editNextEntity()">
 
     <form (ngSubmit)="onSubmitPosts()">
 

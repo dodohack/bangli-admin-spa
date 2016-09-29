@@ -1,0 +1,105 @@
+<!-- FIXME: states of ads -->
+<list-page-header [etype]="etype"
+                  [loading]="loading"></list-page-header>
+
+<!-- Ads filter/tool bar at top -->
+<list-filter-bar *ngIf="loaded"
+                 [etype]="etype"
+                 [paginator]="entitiesState.paginator"
+                 (batchActionEvent)="batchEdit($event)"></list-filter-bar>
+
+<!-- Ads list table -->
+<ads-list *ngIf="loaded"
+          [etype]="etype"
+          [listState]="entitiesState"
+          (batchEdit)="batchEdit($event)"
+          (batchDelete)="batchDelete($event)"
+          (batchLock)="batchLock($event)"></ads-list>
+
+<!-- Right panel, editing a advertise -->
+<right-panel *ngIf="loaded"
+             [width]="'600px'"
+             [isOpen]="entitiesInEdit.length"
+             [hasNav]="entitiesInEdit.length === 1"
+             [entity]="entity"
+             (toggle)="cancelBatchEdit()"
+             (previous)="editPreviousEntity()"
+             (next)="editNextEntity()">
+
+    <form (ngSubmit)="batchSave()" *ngIf="entity">
+
+        <div class="row form-group">
+            <div class="col-xs-12">
+                <label>广告标题</label>
+                <input name="title" class="form-control form-control-sm"
+                       [(ngModel)]="entity.title" required>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-xs-4">
+                <label>显示设备</label>
+                <select name="device" class="form-control form-control-sm"
+                        [(ngModel)]="entity.device">
+                    <option *ngFor="let device of devices" [value]="device">{{ device }}</option>
+                </select>
+            </div>
+
+            <div class="col-xs-4">
+                <label>显示位置</label>
+                <select name="device" class="form-control form-control-sm"
+                        [(ngModel)]="entity.position">
+                    <option *ngFor="let pos of positions" [value]="pos">{{ pos }}</option>
+                </select>
+            </div>
+
+            <div class="col-xs-4">
+                <label>显示国家</label>
+                <select name="cty" class="form-control form-control-sm"
+                        [(ngModel)]="entity.location">
+                    <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-xs-12">
+                <label>广告图片</label>
+                <input name="image" class="form-control form-control-sm"
+                       [(ngModel)]="entity.image_id" required>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-xs-12">
+                <label>目标地址</label>
+                <input name="url" class="form-control form-control-sm"
+                       [(ngModel)]="entity.target_url">
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-xs-6">
+                <label>开始日期 {{ entity.started_at | date: 'y-MM-dd HH:mm:ss' }}</label>
+                <datepicker name="dateFrom" [(ngModel)]="entity.started_at"
+                            [showWeeks]="false"></datepicker>
+            </div>
+
+            <div class="col-xs-6">
+                <label>截止日期 {{ entity.ended_at | date: 'y-MM-dd HH:mm:ss'}}</label>
+                <datepicker name="dateTo" [(ngModel)]="entity.ended_at"
+                            [showWeeks]="false"></datepicker>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-xs-12">
+                <label>广告描述</label>
+                <textarea rows="3" name="desc" class="form-control form-control-sm"
+                       [(ngModel)]="entity.description"></textarea>
+            </div>
+        </div>
+
+    </form>
+
+</right-panel>

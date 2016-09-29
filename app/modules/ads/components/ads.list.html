@@ -1,0 +1,52 @@
+<table class="table table-hover entity-list">
+    <thead class="thead-default">
+    <tr>
+        <th width="2%"></th>
+        <th width="2%">
+            <input type="checkbox" name="sa"
+                   [ngModel]="isAllSelected" (change)="updateAll()">
+        </th>
+        <th width="26%">
+            <div class="form-inline">
+                <div class="form-group" style="margin-right: 2rem">
+                    <select class="form-control form-control-sm custom-select"
+                            [(ngModel)]="batchAction" [disabled]="!canEdit">
+                        <option value="" selected disabled>批量操作</option>
+                        <option value="edit">批量修改</option>
+                        <option value="delete">移到回收站</option>
+                    </select>
+
+                    <button class="btn btn-sm btn-default" [disabled]="!canEdit"
+                            (click)="submitBatchAction()">应用</button>
+                </div>
+                <span>广告标题</span>
+            </div>
+        </th>
+        <th width="40%">广告图片</th>
+        <th width="15%">开始日期</th>
+        <th width="15%">过期日期</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <!-- table row of entities -->
+    <template ngFor let-id [ngForOf]="ids" let-i="index">
+        <!-- Enable fast editing if double click on the row -->
+        <tr (dblclick)="batchEdit.emit([id])">
+            <th>{{i+1}}</th>
+            <td><input type="checkbox" name="p[]" [ngModel]="isEditing(id)"
+                       (change)="updateEditList(id)"></td>
+
+            <td>{{ entities[id].title }}</td>
+
+            <td>{{ entities[id].image_id }}</td>
+
+            <td>{{ entities[id].started_at }}</td>
+
+            <td>{{ entities[id].ended_at }}</td>
+        </tr>
+    </template>
+
+    </tbody>
+</table>

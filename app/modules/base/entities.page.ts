@@ -177,10 +177,18 @@ export class EntitiesPage implements OnInit, OnDestroy
             }, 300);
         }
     }
+    
+    // Get first entity from the editing list
+    get entity() { return this.entitiesInEdit[0]; }
 
     // In page edit single or multiple entities
     batchEdit(ids: number[]) {
         this.store.dispatch(EntityActions.batchEditEntities(this.etype, ids));
+    }
+    
+    // Save single or multiple entities on entity list page
+    batchSave() {
+        console.log("TODO: implement batchSave entity");
     }
 
     // FIXME: Should be Cancel batch options
@@ -188,13 +196,13 @@ export class EntitiesPage implements OnInit, OnDestroy
         this.store.dispatch(EntityActions.cancelBatchEditEntities(this.etype));
     }
 
-    // Edit previous post in current posts list
-    editPreviousPost() {
+    // Edit previous entity in current posts list
+    editPreviousEntity() {
         this.store.dispatch(EntityActions.batchEditPreviousEntity(this.etype));
     }
 
-    // Edit next post in current posts list
-    editNextPost() {
+    // Edit next entity in current posts list
+    editNextEntity() {
         this.store.dispatch(EntityActions.batchEditNextEntity(this.etype));
     }
 

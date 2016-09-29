@@ -1,14 +1,14 @@
 import { Routes, RouterModule } from '@angular/router';
 
-import { CommentsPage } from './comments.page';
+import { AdsPage } from './ads.page';
 
 const routes: Routes = [
     {
-        path: 'comment',
+        path: 'ads',
         children: [
             { path: '', pathMatch: 'full', redirectTo: 'page/1/state/all'},
             { path: 'page/:page',          redirectTo: 'page/:page/state/all' },
-            { path: 'page/:page/state/:state', component: CommentsPage },
+            { path: 'page/:page/state/:state', component: AdsPage },
         ]
     }
 ];

@@ -1,6 +1,7 @@
-<list-page-header [cmsChannels]="cmsState.channels"
+<list-page-header [etype]="etype"
+                  [cmsChannels]="cmsState.channels"
                   [activeChannel]="params['channel']"
-                  [etype]="etype" [states]="cmsState.deal_states.actual"
+                  [states]="cmsState.deal_states.actual"
                   [loading]="loading"></list-page-header>
 
 <!-- Deal post filter/tool bar at top -->

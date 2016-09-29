@@ -28,6 +28,7 @@ const BANGLI_UK_SIDEBAR_MENUS = [
     {slug: 'post',      name: '文章',      icon_style: 'fa fa-lg fa-book'},
     {slug: 'topic',     name: '专题',      icon_style: 'fa fa-lg fa-circle-o'},
     {slug: 'deal',      name: '优惠',      icon_style: 'fa fa-lg fa-circle-o'},
+    {slug: 'ads',       name: '广告',      icon_style: 'fa fa-lg fa-circle-o'},
     {slug: 'bbs',       name: '社区',      icon_style: 'fa fa-lg fa-circle-o'},    
     {slug: 'page',      name: '页面',      icon_style: 'fa fa-lg fa-circle-o'},
     {slug: 'comment',   name: '评论',      icon_style: 'fa fa-lg fa-comment'},

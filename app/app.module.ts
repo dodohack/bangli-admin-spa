@@ -35,6 +35,7 @@ import { AuthModule }      from './modules/auth/auth.module';
 import { UserModule }      from './modules/user/user.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
 import { CmsModule }       from './modules/cms/cms.module';
+import { AdsModule }       from './modules/ads/ads.module';
 import { EmailModule }     from './modules/email/email.module';
 import { ShopModule }      from './modules/shop/shop.module';
 import { CommentModule }   from './modules/comment/comment.module';
@@ -60,6 +61,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         AuthModule,
         DashboardModule,
         CmsModule,
+        AdsModule,
         EmailModule,
         ShopModule,
         CsModule,
