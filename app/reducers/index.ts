@@ -60,7 +60,7 @@ export interface AppState {
     auth:     fromAuth.AuthState;
     users:    fromUsers.UsersState;
     pref:     fromPref.PreferenceState;
-    entities: fromEntities.EntitiesState;
+    entities: fromEntities.EntitiesStateGroup;
     cms:      fromCms.CmsAttrsState;
     shop:     fromShop.ShopAttrsState;
 }

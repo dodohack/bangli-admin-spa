@@ -1,7 +1,7 @@
 /**
  * Side effects for entities listed below:
- * cms-post, cms-topic, cms-page, deal-post, deal-topic, shop-order,
- * shop-product, voucher, newsletter
+ * cms-post, cms-topic, cms-page, deal, shop-order,
+ * shop-product, voucher, newsletter, etc
  */
 import { Injectable }      from '@angular/core';
 import { Http, Headers, RequestOptions }  from '@angular/http';
