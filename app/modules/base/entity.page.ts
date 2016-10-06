@@ -39,6 +39,9 @@ export class EntityPage implements OnInit, OnDestroy
     // the content, but actually the entity content is not modified yet.
     initialized: boolean = false;
 
+    // Current url params
+    params: any;
+
     // Current entity, inputEntity is only used to initialize forala editor,
     // cause it is bugged when both input/output model are the same
     inputEntity: Entity;
@@ -129,19 +132,25 @@ export class EntityPage implements OnInit, OnDestroy
      */
     dispatchLoadEntity() {
         this.subParams = this.route.params.subscribe(params => {
-            if (Object.keys(params).length === 0) {
-                // New a entity
-                this.store.dispatch(EntityActions.newEntity(this.etype/* FIXME: current user id */));
-            } else {
-                // Edit a entity, we should make sure all entity is identified
-                // with :id parameters.
-                this.store.dispatch(EntityActions.loadEntity(this.etype, params['id']));
+            if (JSON.stringify(this.params) !== JSON.stringify(params)) {
+
+                this.params = params;
+
+                if (Object.keys(params).length === 0) {
+                    // Create a new entity
+                    this.store.dispatch(EntityActions
+                        .newEntity(this.etype/* FIXME: current user id */));
+                } else {
+                    // Edit an entity by given id
+                    this.store.dispatch(EntityActions
+                        .loadEntity(this.etype, params['id']));
+                }
             }
         });
     }
 
     /**
-     * Listen on ngrx/store, create a post from 'store' if state is changed
+     * Listen on ngrx/store, create a entity from 'store' if state is changed
      */
     loadEntity() {
         this.subEntities = this.store.select<EntitiesState>(this.selector)

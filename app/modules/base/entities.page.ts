@@ -31,7 +31,6 @@ export class EntitiesPage implements OnInit, OnDestroy
     subActivityOn: any;
     subActivityOff: any;
     subParams: any;
-    subQueryParams: any;
 
     authState:  AuthState;
     cmsState:   CmsAttrsState;
@@ -39,7 +38,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     entitiesState: EntitiesState;
 
     // Batch editing entities
-    entitiesInEdit: Entity[];
+    entitiesInEdit: Entity[] = [];
 
     params: any;
     queryParams: any;
@@ -96,19 +95,10 @@ export class EntitiesPage implements OnInit, OnDestroy
             .subscribe(cmsState => this.cmsState = cmsState);
         this.subShop = this.store.select<ShopAttrsState>('shop')
             .subscribe(shopState => this.shopState = shopState);
-        this.subEntities = this.store.select<EntitiesState>(this.selector)
-            .subscribe(entitiesState => {
-                console.log("ENTITIES ARE LOADED: ", entitiesState);
-                this.entitiesState = entitiesState;
-                // Create new copies of entities in editing mode
-                this.entitiesInEdit = this.entitiesState.idsEditing
-                    .map(id => Object.assign({}, this.entitiesState.entities[id]));
-
-                // Set search loading to false if entity is loaded
-                this.loading  = false;
-                this.loaded   = true;
-            });
-
+        
+        this.dispatchLoadEntities();
+        this.loadEntities();
+        
         // Dispatch activity update action when we have the activities
         // changed(empty => sth, sth => sth; sth => empty)
         // FIXME: Need to check if ids in 'cms_post' activity is changed
@@ -129,21 +119,6 @@ export class EntitiesPage implements OnInit, OnDestroy
             .subscribe(a =>
                 this.store.dispatch(EntityActions.refreshActivityStatus(null)));
          */
-
-        // THIS IS A TEMPORARY FIX
-        // FIXME: Previous request is cancel by the second one if exists
-        // FIXME: and potential other kind of issues
-        // Load posts when any url parameter changes
-        this.subParams = this.route.params.subscribe(params => {
-            this.params = params;
-            this.loading = true;
-            this.loadEntities();
-        });
-        this.subQueryParams = this.route.queryParams.subscribe(params => {
-            this.queryParams = params;
-            this.loading = true;
-            this.loadEntities();
-        });
     }
 
     ngOnDestroy() {
@@ -154,36 +129,63 @@ export class EntitiesPage implements OnInit, OnDestroy
         //this.subActivityOn.unsubscribe();
         //this.subActivityOff.unsubscribe();
         this.subParams.unsubscribe();
-        this.subQueryParams.unsubscribe();
     }
 
+    /**
+     * Kick an action to load entities when URL changes
+     */
+    dispatchLoadEntities() {
+        this.subParams = Observable
+            .merge(this.route.params, this.route.queryParams)
+            .filter((p,i) => Object.keys(p).length !== 0)
+            .subscribe(params => {
+                
+                // Compare if elements of url params change
+                if (JSON.stringify(this.params) !== JSON.stringify(params)) {
+                    this.params = params;
+                    this.loading = true;
+
+                    // Params
+                    this.entityParams.channel  = this.params['channel'];
+                    this.entityParams.cur_page = +this.params['page'] || 1;
+                    this.entityParams.state    = this.params['state'];
+
+                    // Query params
+                    this.entityParams.author   = this.params['author'];
+                    this.entityParams.editor   = this.params['editor'];
+                    this.entityParams.category = this.params['category'];
+                    this.entityParams.datetype = this.params['datetype'];
+                    this.entityParams.datefrom = this.params['datefrom'];
+                    this.entityParams.dateto   = this.params['dateto'];
+                    this.entityParams.query    = this.params['query'];
+                    
+                    this.store.dispatch(EntityActions
+                        .loadEntities(this.etype, this.entityParams));
+                }
+                
+            });
+    }
+
+    /**
+     * Read entities back from ngrx store
+     */
     loadEntities() {
-        //entityParams: EntityParams = new EntityParams;
-
-        // Must have parameters come from route.params observable
-        if (this.params) {
-            this.entityParams.channel  = this.params['channel'];
-            this.entityParams.cur_page = +this.params['page'] || 1;
-            this.entityParams.state    = this.params['state'];
-        }
-
-        // Optional parameters come from route.queryParams observable
-        if (this.queryParams) {
-            this.entityParams.author   = this.queryParams['author'];
-            this.entityParams.editor   = this.queryParams['editor'];
-            this.entityParams.category = this.queryParams['category'];
-            this.entityParams.datetype = this.queryParams['datetype'];
-            this.entityParams.datefrom = this.queryParams['datefrom'];
-            this.entityParams.dateto   = this.queryParams['dateto'];
-            this.entityParams.query    = this.queryParams['query'];
-        }
-
-        // Load list of entities from API server
-        this.store.dispatch(EntityActions.loadEntities(this.etype, this.entityParams));
+        this.subEntities = this.store.select<EntitiesState>(this.selector)
+            .subscribe(entitiesState => {
+                this.entitiesState = entitiesState;
+                // Create new copies of entities in editing mode
+                this.entitiesInEdit = entitiesState.idsEditing
+                    .map(id => Object.assign({}, entitiesState.entities[id]));
+                // Set search loading to false if entity is loaded
+                this.loading = false;
+                this.loaded = true;
+            });
     }
 
-    // Pageless loading
-    // Load next page of entities when scroll to page bottom
+    /**
+     * Pageless loading
+     * Load next page of entities when scroll to page bottom
+     */
     @HostListener('window:scroll')
     loadEntitiesOnScroll() {
         if (this.pageless && !this.loading &&
@@ -191,7 +193,8 @@ export class EntitiesPage implements OnInit, OnDestroy
             setTimeout(() => {
                 this.loading = true;
                 this.entityParams.cur_page++;
-                this.store.dispatch(EntityActions.loadEntitiesOnScroll(this.etype, this.entityParams));
+                this.store.dispatch(EntityActions
+                    .loadEntitiesOnScroll(this.etype, this.entityParams));
             }, 300);
         }
     }

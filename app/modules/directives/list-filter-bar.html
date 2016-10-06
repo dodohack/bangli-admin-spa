@@ -89,7 +89,7 @@
         </form>
 
         <!-- Paginator -->
-        <div class="float-right paginator">
+        <div class="float-right paginator" *ngIf="paginator">
             <span>共{{ paginator.total }}条 |
                 {{ paginator.cur_page }}/{{ paginator.last_page }}页</span>
             <a *ngFor="let p of pagers" class="btn btn-sm btn-secondary"

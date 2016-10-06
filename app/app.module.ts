@@ -34,6 +34,7 @@ import { SharedModule }    from './modules/directives/shared.module';
 import { AuthModule }      from './modules/auth/auth.module';
 import { UserModule }      from './modules/user/user.module';
 import { DashboardModule } from './modules/dashboard/dashboard.module';
+import { BbsModule }       from './modules/bbs/bbs.module';
 import { CmsModule }       from './modules/cms/cms.module';
 import { AdsModule }       from './modules/ads/ads.module';
 import { EmailModule }     from './modules/email/email.module';
@@ -60,6 +61,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         //Ng2BootstrapModule,
         AuthModule,
         DashboardModule,
+        BbsModule,
         CmsModule,
         AdsModule,
         EmailModule,

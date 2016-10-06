@@ -1,7 +1,6 @@
-<editor-page-header *ngIf="entitiesState"
-                    [etype]="etype"
+<editor-page-header [etype]="etype"
                     [authState]="authState"
-                    [entity]="entity" [lists]="entitiesState">
+                    [entitiesState]="entitiesState">
 </editor-page-header>
 
 <form *ngIf="entity" (ngSubmit)="save()" #entityForm="ngForm">

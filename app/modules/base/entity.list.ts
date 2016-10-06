@@ -10,6 +10,7 @@ import { ENTITY, ENTITY_INFO } from '../../models';
 import { AuthState }      from '../../reducers/auth';
 import { CmsAttrsState }  from "../../reducers/cmsattrs";
 import { ShopAttrsState } from "../../reducers/shopattrs";
+import { EntitiesState }  from "../../reducers/entities";
 
 export class EntityList
 {
@@ -23,7 +24,7 @@ export class EntityList
     @Input() baseResUrl: string;
 
     // listState is one of entity type content state
-    _listState: any;
+    _listState: EntitiesState;
     @Input() set listState(value) { this._listState = Object.assign({}, value); }
     get listState() { return this._listState; }
 
@@ -38,7 +39,7 @@ export class EntityList
 
     batchAction: string = '';
 
-    get ids() { return this._listState.ids; }
+    get ids() { return this._listState.idsCurPage; }
     get entities() { return this._listState.entities; }
     get paginator() { return this._listState.paginator; }
     get authors() {
@@ -59,13 +60,13 @@ export class EntityList
 
     // If batch options can be enabled
     get canEdit() {
-        return this._listState.editing && this._listState.editing.length;
+        return this._listState.idsEditing && this._listState.idsEditing.length;
     }
 
     // If all post is selected, we use '<=' in case we have extra editing
     // post which is not in the list(newly created one?).
     get isAllSelected() {
-        return this._listState.ids.length <= this._listState.editing.length;
+        return this._listState.idsCurPage.length <= this._listState.idsEditing.length;
     }
 
     // If the entity has an author
@@ -84,7 +85,7 @@ export class EntityList
 
     // If the the entity is in editing
     isEditing(id) {
-        return this._listState.editing.filter(eid => eid === id).length;
+        return this._listState.idsEditing.filter(eid => eid === id).length;
     }
 
     hasActivity(id): boolean {
@@ -99,35 +100,35 @@ export class EntityList
     // Add id to editing list if it is not added, or
     // Remove id from editing list if it is already exists
     updateEditList(id) {
-        let idx = this._listState.editing.indexOf(id);
+        let idx = this._listState.idsEditing.indexOf(id);
         if (idx === -1)
-            this._listState.editing.push(id);
+            this._listState.idsEditing.push(id);
         else
-            this._listState.editing.splice(idx, 1);
+            this._listState.idsEditing.splice(idx, 1);
     }
 
     // Select all or deselect all
     updateAll() {
         if (this.isAllSelected)
-            this._listState.editing = [];
+            this._listState.idsEditing = [];
         else
-            this._listState.editing = [...this._listState.ids];
+            this._listState.idsEditing = [...this._listState.idsCurPage];
     }
 
     // Select batch actions
     submitBatchAction() {
         switch(this.batchAction) {
             case 'edit':
-                this.batchEdit.emit(this._listState.editing);
+                this.batchEdit.emit(this._listState.idsEditing);
                 break;
             case 'delete':
-                this.batchDelete.emit(this._listState.editing);
+                this.batchDelete.emit(this._listState.idsEditing);
                 break;
             case 'offline_edit':
-                this.batchOfflineEdit.emit(this._listState.editing);
+                this.batchOfflineEdit.emit(this._listState.idsEditing);
                 break;
             case 'lock':
-                this.batchLock.emit(this._listState.editing);
+                this.batchLock.emit(this._listState.idsEditing);
                 break;
             default:
                 break;

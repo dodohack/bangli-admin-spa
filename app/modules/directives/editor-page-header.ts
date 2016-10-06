@@ -16,9 +16,8 @@ export class EditorPageHeader {
     /* The entity type of lists passed in */
     @Input() etype: string;
 
-    /* Single or list of content, can be postsState, productsState etc */
-    @Input() entity: any;
-    @Input() lists: any;
+    // Current entities state which may contains multiple entities and paginator
+    @Input() entitiesState: any;
 
     get zh(): any {
         if (this.etype === ENTITY.SHOP_PRODUCT)
@@ -27,22 +26,24 @@ export class EditorPageHeader {
             return zh_CN.cms;
     }
 
+    get isLoaded() { return this.entitiesState.idsEditing.length !== 0; }
+
+    // FIXME: We should have user entity uses the same reducer??
+    get id() { return this.entitiesState.idsEditing[0]; }
+
+    get entity() {
+        return this.entitiesState.entities[this.id];
+    }
+
     get title() { if(this.etype) return ENTITY_INFO[this.etype].name; }
     
     get baseUrl() { if (this.etype) return ENTITY_INFO[this.etype].slug; }
 
-    get id() {
-        if (this.etype === ENTITY.USER)
-            return this.entity.uuid;
-        else
-            return this.entity.id;
-    }
-
     get ids() {
         if (this.etype === ENTITY.USER)
-            return this.lists.uuids;
+            return this.entitiesState.uuids;
         else
-            return this.lists.ids;
+            return this.entitiesState.idsCurPage;
     }
     
     get previewLink() {

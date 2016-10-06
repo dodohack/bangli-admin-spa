@@ -158,6 +158,7 @@ export class ProductVariation {
 
 export class Entity {
     id: number;
+    guid: string;
     editor_id: number;
     author_id: number;     // CMS post only
     image_id: number;
