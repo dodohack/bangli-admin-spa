@@ -11,7 +11,6 @@ import { Store }             from '@ngrx/store';
 import { AppState }          from '../../reducers';
 import { hasEditorRole }     from '../../reducers';
 import { EntitiesState }     from '../../reducers/entities';
-import { EntitiesStateGroup }from '../../reducers/entities';
 import { AuthState }         from '../../reducers/auth';
 import { CmsAttrsState }     from '../../reducers/cmsattrs';
 import { ShopAttrsState }    from "../../reducers/shopattrs";
@@ -66,7 +65,27 @@ export class EntityPage implements OnInit, OnDestroy
     constructor(protected etype: string,
                 protected route: ActivatedRoute,
                 protected location: Location,
-                protected store: Store<AppState>) { }
+                protected store: Store<AppState>) {}
+
+    /**
+     * Return entity reducer selector based on entity type
+     */
+    get selector() {
+        switch (this.etype) {
+            case ENTITY.CMS_POST:     return 'posts';
+            case ENTITY.CMS_TOPIC:    return 'topics';
+            case ENTITY.CMS_PAGE:     return 'pages';
+            case ENTITY.CMS_DEAL:     return 'deals';
+            case ENTITY.ADVERTISE:    return 'advertises';
+            case ENTITY.NEWSLETTER:   return 'newletters';
+            case ENTITY.PLACE:        return 'places';
+            case ENTITY.ATTACHMENT:   return 'attachments';
+            case ENTITY.COMMENT:      return 'comments';
+            case ENTITY.SHOP_ORDER:   return 'orders';
+            case ENTITY.SHOP_PRODUCT: return 'products';
+            case ENTITY.SHOP_VOUCHER: return 'vouchers';
+        }
+    }
 
     ngOnInit() {
         this.subAuth = this.store.select<AuthState>('auth')
@@ -125,18 +144,16 @@ export class EntityPage implements OnInit, OnDestroy
      * Listen on ngrx/store, create a post from 'store' if state is changed
      */
     loadEntity() {
-        this.subEntities = this.store.select<EntitiesStateGroup>('entities')
-            .subscribe(stateGroup => {
-                if (stateGroup && stateGroup[this.etype]) {
-                    // Reset the form status so we can get a clean state
-                    //if (this.entityForm) this.entityForm.reset(); // bugged
-                    this.entityDirty = false;
-                    this.entitiesState = stateGroup[this.etype];
-                    // When opening a single entity, 'editing' always contains 1 id
-                    // FIXME: Remove inputEntity after updating to new angular2-froala binding
-                    this.inputEntity = this.entitiesState.entities[this.entitiesState.editing[0]];
-                    this.entity = Object.assign({}, this.inputEntity);
-                }
+        this.subEntities = this.store.select<EntitiesState>(this.selector)
+            .subscribe(entitiesState => {
+                // Reset the form status so we can get a clean state
+                //if (this.entityForm) this.entityForm.reset(); // bugged
+                this.entityDirty = false;
+                this.entitiesState = entitiesState;
+                // When opening a single entity, 'editing' always contains 1 id
+                // FIXME: Remove inputEntity after updating to new angular2-froala binding
+                this.inputEntity = entitiesState.entities[entitiesState.idsEditing[0]];
+                this.entity = Object.assign({}, this.inputEntity);
         });
     }
 

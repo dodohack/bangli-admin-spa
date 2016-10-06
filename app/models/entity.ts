@@ -17,18 +17,21 @@ import { Brand }    from "./brand";
  */
 export const ENTITY = {
     // These entities are managed by single entity reducer/effects.
-    INVALID: 'invalid',
-    CMS_POST: 'cms-post',
+    INVALID:   'invalid',
+    CMS_POST:  'cms-post',
     CMS_TOPIC: 'cms-topic',
-    CMS_PAGE: 'cms-page',
-    CMS_DEAL: 'cms-deal',
+    CMS_PAGE:  'cms-page',
+    CMS_DEAL:  'cms-deal',
     ADVERTISE: 'advertise',
-    SHOP_ORDER: 'shop-order',
+    NEWSLETTER: 'newsletter',
+    PLACE:      'place',     // Geolocation topic
+    ATTACHMENT: 'attachment',
+    COMMENT:    'comment',
+
+    // Shop related entities
+    SHOP_ORDER:   'shop-order',
     SHOP_PRODUCT: 'shop-product',
     SHOP_VOUCHER: 'shop-voucher',
-    NEWSLETTER: 'newsletter',
-    ATTACHMENT: 'attachment',
-    COMMENT: 'comment',
 
     // Following entities are not managed by unified entity reducer/effects.
     USER: 'user'
@@ -45,9 +48,10 @@ export const ENTITY_INFO = {
     'advertise':     {name: '广告',     slug: 'ads'},
     'shop-order':    {name: '订单',     slug: 'order'},
     'shop-product':  {name: '商品',     slug: 'product'},
-    'newsletter':    {name: '订阅邮件',  slug: 'newsletter'},
+    'shop-voucher':  {name: '优惠券',   slug: 'voucher'},
+    'newsletter':    {name: '订阅邮件', slug: 'newsletter'},
     'attachment':    {name: '附件',     slug: 'attachment'},
-    'comment':       {name: '用户评论',  slug: 'comment'},
+    'comment':       {name: '用户评论', slug: 'comment'},
     'user':          {name: '用户',     slug: 'user'},
 };
 

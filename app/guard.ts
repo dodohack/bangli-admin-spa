@@ -15,7 +15,7 @@ import { hasEditorRole }          from './reducers';
 import { hasShopManagerRole }     from './reducers';
 import { hasAdminRole }           from './reducers';
 import { hasSuperUserRole }       from './reducers';
-import { isPostLocked }           from './reducers';
+//import { isPostLocked }           from './reducers';
 
 /**
  * Only un-logged user can visit, such as login, register pages etc

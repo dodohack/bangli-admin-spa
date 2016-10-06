@@ -9,17 +9,17 @@ import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
-import { Entity, EntityParams }  from '../../models';
-import { Category, Tag, Topic} from '../../models';
-import { Activity }          from '../../models';
-import { AppState }          from '../../reducers';
-import { EntitiesState }      from "../../reducers/entities";
-import { EntitiesStateGroup } from "../../reducers/entities";
-import { AuthState }         from '../../reducers/auth';
-import { CmsAttrsState }     from '../../reducers/cmsattrs';
-import { ShopAttrsState }     from '../../reducers/shopattrs';
-import { EntityActions }     from '../../actions';
-import { Ping }              from '../../ping';
+import { Entity, EntityParams } from '../../models';
+import { Category, Tag, Topic}  from '../../models';
+import { ENTITY }               from '../../models';
+import { Activity }             from '../../models';
+import { AppState }             from '../../reducers';
+import { EntitiesState }        from "../../reducers/entities";
+import { AuthState }            from '../../reducers/auth';
+import { CmsAttrsState }        from '../../reducers/cmsattrs';
+import { ShopAttrsState }       from '../../reducers/shopattrs';
+import { EntityActions }        from '../../actions';
+import { Ping }                 from '../../ping';
 
 export class EntitiesPage implements OnInit, OnDestroy
 {
@@ -37,7 +37,6 @@ export class EntitiesPage implements OnInit, OnDestroy
     cmsState:   CmsAttrsState;
     shopState:   ShopAttrsState;
     entitiesState: EntitiesState;
-    entitiesStateGroup: EntitiesStateGroup;
 
     // Batch editing entities
     entitiesInEdit: Entity[];
@@ -64,11 +63,31 @@ export class EntitiesPage implements OnInit, OnDestroy
      *                    images, pageless list will auto load next page when
      *                    page reaches its bottom)
      */
-    constructor(protected etype: string,
+    constructor(protected etype: string,    // Entity type
                 protected route: ActivatedRoute,
                 protected store: Store<AppState>,
                 protected ping: Ping,
                 protected pageless: boolean = false) {}
+
+    /**
+     * Return entity reducer selector based on entity type
+     */
+    get selector() {
+        switch (this.etype) {
+            case ENTITY.CMS_POST:     return 'posts';
+            case ENTITY.CMS_TOPIC:    return 'topics';
+            case ENTITY.CMS_PAGE:     return 'pages';
+            case ENTITY.CMS_DEAL:     return 'deals';
+            case ENTITY.ADVERTISE:    return 'advertises';
+            case ENTITY.NEWSLETTER:   return 'newletters';
+            case ENTITY.PLACE:        return 'places';
+            case ENTITY.ATTACHMENT:   return 'attachments';
+            case ENTITY.COMMENT:      return 'comments';
+            case ENTITY.SHOP_ORDER:   return 'orders';
+            case ENTITY.SHOP_PRODUCT: return 'products';
+            case ENTITY.SHOP_VOUCHER: return 'vouchers';
+        }
+    }
 
     ngOnInit() {
         this.subAuth = this.store.select<AuthState>('auth')
@@ -77,18 +96,17 @@ export class EntitiesPage implements OnInit, OnDestroy
             .subscribe(cmsState => this.cmsState = cmsState);
         this.subShop = this.store.select<ShopAttrsState>('shop')
             .subscribe(shopState => this.shopState = shopState);
-        this.subEntities = this.store.select<EntitiesStateGroup>('entities')
-            .subscribe(stateGroup => {
-                if (stateGroup && stateGroup[this.etype]) {
-                    console.log("ENTITIES ARE LOADED: ", stateGroup[this.etype]);
-                    // Set search loading to false if posts is loaded
-                    this.entitiesState = stateGroup[this.etype];
-                    // Create new copies of entities
-                    this.entitiesInEdit = this.entitiesState.editing
-                        .map(id => Object.assign({}, this.entitiesState.entities[id]));
-                    this.loading  = false;
-                    this.loaded   = true;
-                }
+        this.subEntities = this.store.select<EntitiesState>(this.selector)
+            .subscribe(entitiesState => {
+                console.log("ENTITIES ARE LOADED: ", entitiesState);
+                this.entitiesState = entitiesState;
+                // Create new copies of entities in editing mode
+                this.entitiesInEdit = this.entitiesState.idsEditing
+                    .map(id => Object.assign({}, this.entitiesState.entities[id]));
+
+                // Set search loading to false if entity is loaded
+                this.loading  = false;
+                this.loaded   = true;
             });
 
         // Dispatch activity update action when we have the activities

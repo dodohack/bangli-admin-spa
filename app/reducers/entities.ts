@@ -14,245 +14,415 @@ import { Action }     from '@ngrx/store';
 
 import { Paginator }     from '../models';
 import { Entity }        from '../models';
+import { ENTITY }        from '../models';
 import { EntityActions } from '../actions';
 
 /**
- * Entities state for single entity type
+ * Entities state for each entity type
  */
 export interface EntitiesState {
-    ids: number[];
-    editing: number[];  // Entities in editing mode
-    entities: { [id:number]: Entity };
+    idsTotal:   number[];  // IDs for all entities loaded to the client
+    idsCurPage: number[];  // IDs for current page of entities
+    idsEditing: number[];  // IDs for entities in editing mode
+    idsContent: number[];  // IDs for entities have content loaded
+    entities: { [id:number]: Entity }; // All entities loaded to client
     paginator: Paginator;
 }
 
 /**
- * Grouped entities state for all entity types
+ * Initial state
  */
-export interface EntitiesStateGroup {
-    // Entity type, ref models/entity.ts ENTITY for all posissble types
-    // The data for different entity type is indexed by etype which is a
-    // dynamic key of EntitiesState object.
-    [etype: string] : EntitiesState
+const initState: EntitiesState = {
+    idsTotal: [], idsCurPage: [], idsEditing: [], idsContent: [],
+    entities: {}, paginator: null
 };
 
-const initialState: EntitiesStateGroup = {
-    /*
-    [ENTITY.INVALID]: {
-        ids: [],
-        editing: [],
-        entities: {},
-        paginator: new Paginator
-    }
-    */
-};
 
-export default function (state = initialState, action: Action): EntitiesStateGroup {
+/**
+ * Post reducer
+ */
+export function postsReducer(state = initState, action: Action): EntitiesState {
+    if (!action.payload) return state;
 
-    // Every action must comes with a entity type, see model/entity.ts ENTITY
-    // for all possible types
-    const etype: string = action.payload ? action.payload.etype : null;
+    if (action.payload.etype === ENTITY.CMS_POST)
+        return entitiesReducer(action.payload.etype, state, action);
 
-    let oldIds: number[], oldEditing: number[], oldEntities, oldPager;
-    if (etype && state[etype]) {
-        oldIds       = state[etype].ids;
-        oldEditing   = state[etype].editing;
-        oldEntities  = state[etype].entities;
-        oldPager     = state[etype].paginator;
-    } else {
-        oldIds       = [];
-        oldEditing   = [];
-        oldEntities  = null;
-        oldPager     = null;
-    }
+    return state;
+}
+
+
+/**
+ * Page reducer
+ */
+export function pagesReducer(state = initState, action: Action): EntitiesState {
+    if (!action.payload) return state;
+
+    if (action.payload.etype === ENTITY.CMS_PAGE)
+        return entitiesReducer(action.payload.etype, state, action);
+
+    return state;
+}
+
+/**
+ * Topic/Deal topic reducer
+ */
+export function topicsReducer(state = initState, action: Action): EntitiesState {
+    if (!action.payload) return state;
+
+    if (action.payload.etype === ENTITY.CMS_TOPIC)
+        return entitiesReducer(action.payload.etype, state, action);
+
+    return state;
+}
+
+/**
+ * Places reducer
+ */
+export function placesReducer(state = initState, action: Action): EntitiesState {
+    if (!action.payload) return state;
+
+    if (action.payload.etype === ENTITY.PLACE)
+        return entitiesReducer(action.payload.etype, state, action);
+
+    return state;
+}
+
+/**
+ * Deal reducer
+ */
+export function dealsReducer(state = initState, action: Action): EntitiesState {
+    if (!action.payload) return state;
+
+    if (action.payload.etype === ENTITY.CMS_DEAL)
+        return entitiesReducer(action.payload.etype, state, action);
+
+    return state;
+}
+
+/**
+ * Email reducer
+ */
+export function emailsReducer(state = initState, action: Action): EntitiesState {
+    if (!action.payload) return state;
+
+    if (action.payload.etype === ENTITY.NEWSLETTER)
+        return entitiesReducer(action.payload.etype, state, action);
+
+    return state;
+}
+
+/**
+ * Attachment reducer
+ */
+export function attachsReducer(state = initState, action: Action): EntitiesState {
+    if (!action.payload) return state;
+
+    if (action.payload.etype === ENTITY.ATTACHMENT)
+        return entitiesReducer(action.payload.etype, state, action);
+
+    return state;
+}
+
+/**
+ * Comment reducer
+ */
+export function commentsReducer(state = initState, action: Action): EntitiesState {
+    if (!action.payload) return state;
+
+    if (action.payload.etype === ENTITY.COMMENT)
+        return entitiesReducer(action.payload.etype, state, action);
+
+    return state;
+}
+
+/**
+ * Advertise reducer
+ */
+export function adsReducer(state = initState, action: Action): EntitiesState {
+    if (!action.payload) return state;
+
+    if (action.payload.etype === ENTITY.ADVERTISE)
+        return entitiesReducer(action.payload.etype, state, action);
+
+    return state;
+}
+
+/**
+ * Shop product reducer
+ */
+export function productsReducer(state = initState, action: Action): EntitiesState {
+    if (!action.payload) return state;
+
+    if (action.payload.etype === ENTITY.SHOP_PRODUCT)
+        return entitiesReducer(action.payload.etype, state, action);
+
+    return state;
+}
+
+/**
+ * Shop order reducer
+ */
+export function ordersReducer(state = initState, action: Action): EntitiesState {
+    if (!action.payload) return state;
+
+    if (action.payload.etype === ENTITY.SHOP_ORDER)
+        return entitiesReducer(action.payload.etype, state, action);
+
+    return state;
+}
+
+/**
+ * Shop voucher reducer
+ */
+export function vouchersReducer(state = initState, action: Action): EntitiesState {
+    if (!action.payload) return state;
+
+    if (action.payload.etype === ENTITY.SHOP_VOUCHER)
+        return entitiesReducer(action.payload.etype, state, action);
+
+    return state;
+}
+
+
+/**
+ * FIXME: We are using lots of object references instead of copy of them
+ * in returns, I'm not sure if this is safe to do so or not.
+ *
+ * This is the generic function for all entity type
+ */
+function entitiesReducer (etype: string,
+                          state = initState,
+                          action: Action): EntitiesState {
 
     switch (action.type)
     {
         case EntityActions.SEARCH_COMPLETE:
         case EntityActions.LOAD_ENTITIES_SUCCESS: {
-            // FIXME: paginator and entities in payload.data
-            // Entities of current entity type
-            const es: Entity[]    = action.payload.data.entities;
-            // Extract entity ids
-            const ids: number[]   = es.map(p => p.id);
-            const newEntities     = es
-                .reduce((entities: {[id: number]: Entity}, entity: Entity) => {
-                    return Object.assign(entities, { [entity.id]: entity });
-                }, {});
+            const entities = action.payload.data.entities;
 
-            // In each reduce action, we only process the action for a single
-            // entity type, and we want to keep entities in other type untouched.
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: ids,
-                        editing: [],
-                        entities: newEntities,
-                        paginator: action.payload.data.paginator
-                    }
-                });
+            // Extract entity ids of current page
+            const idsCurPage   = entities.map(p => p.id);
+
+            // Early return if nothing is loaded
+            if (!idsCurPage.length) return state;
+
+            // Merge new idsCurPage with idsTotal
+            const idsTotal = [...state.idsTotal, ...idsCurPage].filter(
+                (elem, idx, self) => idx == self.indexOf(elem));
+
+            // Get new entities and avoid local entities content isn't
+            // overwritten by new entities with no content.
+            const newEntities = entities.reduce((entities, entity) => {
+                if (entity.id in state.idsContent) {
+                    // This entity has the same id as local entities with
+                    // content loaded
+                    const e = Object.assign({}, entity,
+                        {content: state.entities[entity.id].content});
+                    return Object.assign(entities, {[entity.id]: e});
+                } else {
+                    // Completely new entity
+                    return Object.assign(entities, {[entity.id]: entity});
+                }
+            }, {});
+
+            // Return merged entities and updated ID indexes
+            return Object.assign({}, state, {
+                idsTotal:   idsTotal,
+                idsCurPage: idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({}, state.entities, newEntities),
+                paginator:  action.payload.data.paginator
+            });
         }
 
-        // Append loaded entities to current entities instead of replace it
+        // Almost identical to previous case, but idsCurPage is merged with
+        // newly loaded ones
         case EntityActions.LOAD_ENTITIES_ON_SCROLL_SUCCESS: {
-            // FIXME: paginator and entities in payload.data
-            // Entities of current entity type
-            const es: Entity[]    = action.payload.data.entities;
-            // Extract entity ids
-            const ids: number[]   = es.map(p => p.id);
-            const newEntities     = es
-                .reduce((entities: {[id: number]: Entity}, entity: Entity) => {
-                    return Object.assign(entities, { [entity.id]: entity });
-                }, {});
+            const entities = action.payload.data.entities;
 
-            // In each reduce action, we only process the action for a single
-            // entity type, and we want to keep entities in other type untouched.
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: [...oldIds, ...ids],
-                        editing: oldEditing,
-                        entities: Object.assign({}, oldEntities, newEntities),
-                        paginator: action.payload.data.paginator
-                    }
-                });
+            // Extract entity ids of current page
+            const idsNew  = entities.map(p => p.id);
+
+            // Early return if nothing is loaded
+            if (!idsNew.length) return state;
+
+            // Merge idsNew with idsCurPage
+            const idsCurPage = [...state.idsCurPage, ...idsNew].filter(
+                (elem, idx, self) => idx == self.indexOf(elem));
+
+            // Merge idsNew with idsTotal
+            const idsTotal = [...state.idsTotal, ...idsNew].filter(
+                (elem, idx, self) => idx == self.indexOf(elem));
+
+            // Get new entities and avoid local entities content isn't
+            // overwritten by new entities with no content.
+            const newEntities = entities.reduce((entities, entity) => {
+                if (entity.id in state.idsContent) {
+                    // This entity has the same id as local entities with
+                    // content loaded
+                    const e = Object.assign({}, entity,
+                        {content: state.entities[entity.id].content});
+                    return Object.assign(entities, {[entity.id]: e});
+                } else {
+                    // Completely new entity
+                    return Object.assign(entities, {[entity.id]: entity});
+                }
+            }, {});
+
+            // Return merged entities and updated ID indexes
+            return Object.assign({}, state, {
+                idsTotal:   idsTotal,
+                idsCurPage: idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({}, state.entities, newEntities),
+                paginator:  action.payload.data.paginator,
+            });
         }
 
         case EntityActions.BATCH_EDIT_ENTITIES: {
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: oldIds,
-                        editing: action.payload.data,
-                        entities: oldEntities,
-                        paginator: oldPager
-                    }
-                });
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: action.payload.data,
+                idsContent: state.idsContent,
+                entities:   state.entities,
+                paginator:  state.paginator
+            });
         }
 
         case EntityActions.CANCEL_BATCH_EDIT_ENTITIES: {
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: oldIds,
-                        editing: [],
-                        entities: oldEntities,
-                        paginator: oldPager
-                    }
-                });
+            return Object.assign({}, state, {
+                idsTotal: state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: [],
+                idsContent: state.idsContent,
+                entities: state.entities,
+                paginator: state.paginator
+            });
         }
 
         case EntityActions.BATCH_EDIT_PREVIOUS_ENTITY: {
-            // DO NOTHING IF WE ARE NOT FAST EDITING SINGLE ENTITY
-            if (oldEditing.length !== 1) return state;
+            // DO NOTHING IF WE ARE NOT FAST EDITING A SINGLE ENTITY
+            if (state.idsEditing.length !== 1) return state;
 
             // Get previous entity id
-            let idx = oldIds.indexOf(oldEditing[0]) - 1;
+            let idx = state.idsCurPage.indexOf(state.idsEditing[0]) - 1;
             if (idx < 0) idx = 0;
-            const previousId = oldIds[idx];
+            const previousId = state.idsCurPage[idx];
 
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: oldIds,
-                        editing: [previousId],
-                        entities: oldEntities,
-                        paginator: oldPager
-                    }
-                });
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: [previousId],
+                idsContent: state.idsContent,
+                entities:   state.entities,
+                paginator:  state.paginator
+            });
         }
 
         case EntityActions.BATCH_EDIT_NEXT_ENTITY: {
-            // DO NOTHING IF WE ARE NOT FAST EDITING SINGLE ENTITY
-            if (oldEditing.length !== 1) return state;
+            // DO NOTHING IF WE ARE NOT FAST EDITING A SINGLE ENTITY
+            if (state.idsEditing.length !== 1) return state;
 
             // Get next entity id
-            let idx = oldIds.indexOf(oldEditing[0]) + 1;
-            if (idx > oldIds.length - 1) idx = oldIds.length - 1;
-            const nextId = oldIds[idx];
+            let idx = state.idsCurPage.indexOf(state.idsEditing[0]) + 1;
+            if (idx > state.idsCurPage.length - 1)
+                idx = state.idsCurPage.length - 1;
+            const nextId = state.idsCurPage[idx];
 
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: oldIds,
-                        editing: [nextId],
-                        entities: oldEntities,
-                        paginator: oldPager
-                    }
-                });
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: [nextId],
+                idsContent: state.idsContent,
+                entities:   state.entities,
+                paginator:  state.paginator
+            });
         }
 
         case EntityActions.SAVE_ENTITY_SUCCESS:
         case EntityActions.LOAD_ENTITY_SUCCESS: {
-            // Entity id
-            const id: number = +action.payload.data['id'];
+            // Newly loaded entity id or saved new entity with newly created id
+            const id = +action.payload.data['id'];
 
-            // Update corresponding entity from current entities list or create a
-            // new list with 1 element.
-            // TODO: Remove id 0 entity
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: (oldIds.indexOf(id) === -1) ? [...oldIds, id] : oldIds,
-                        editing: [id],
-                        entities: Object.assign({}, oldEntities,
-                            {[id]: action.payload.data}),
-                        paginator: oldPager
-                    }
-                });
+            // Merge with idsTotal
+            const idsTotal = (state.idsTotal.indexOf(id) === -1) ?
+                [...state.idsTotal, id] : state.idsTotal;
+
+            // Merge with idsCurPage
+            const idsCurPage = (state.idsCurPage.indexOf(id) === -1) ?
+                [...state.idsCurPage, id] : state.idsCurPage;
+
+            // Merge with idsContent
+            const idsContent = (state.idsContent.indexOf(id) === -1) ?
+                [...state.idsContent, id] : state.idsContent;
+
+            // Return state merged with newly loaded entity
+            return Object.assign({}, state, {
+                idsTotal:   idsTotal,
+                idsCurPage: idsCurPage,
+                idsEditing: [id],
+                idsContent: idsContent,
+                entities:   Object.assign({}, state.entities, {[id]: action.payload.data}),
+                paginator:  state.paginator
+            });
         }
-            
-        case EntityActions.NEW_ENTITY: {
-            // Create a new entity, we use '0' as a placeholder id
-            const id = 0;
-            let newEntity: Entity  = new Entity;
 
-            newEntity.state      = 'unsaved';
+        // FIXME: Should we create empty '0' indexed entity here?
+        case EntityActions.NEW_ENTITY: {
+            // Create a new entity, we use id '0' as a placeholder id
+            let newEntity = new Entity;
+
+            newEntity.state = 'unsaved';
             // FIXME: We shouldn't create empty array for some entity, say
             // advertise, this casue api server error.
             /*
             newEntity.categories = [];
-            //newEntity.tags       = [];
+            newEntity.tags       = [];
             newEntity.topics     = [];
             */
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: [...oldIds, id],
-                        editing: [id],
-                        entities: Object.assign({}, oldEntities, {[id]: newEntity}),
-                        paginator: oldPager
-                    }
-                });
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: [0],
+                idsContent: state.idsContent,
+                entities:   Object.assign({}, state.entities, {[0]: newEntity}),
+                paginator:  state.paginator
+            });
         }
 
-        // Set/unset location of single/multiple entity[s]
+        // Set/unset geo location of single/multiple entity[s]
         case EntityActions.TOGGLE_LOCATION: {
             let loc = action.payload.data;
-            const newEntityArray = oldEditing.map(id => {
-                const oldEntity  = oldEntities[id];
-                const wasSet = oldEntity.location_id == loc.id ? true : false;
+
+            const newEntityArray = state.idsEditing.map(id => {
+
+                const oldEntity = state.entities[id];
+                const wasSet    = oldEntity.location_id == loc.id ? true : false;
                 if (wasSet) {
                     // Unset the location from the entity
-                    return Object.assign({}, oldEntity, {['location_id']: 0, ['locations']: []});
+                    return Object.assign({}, oldEntity, {
+                        ['location_id']: 0, ['locations']: []});
                 } else {
                     // Set the location to the entity
-                    return Object.assign({}, oldEntity, {['location_id']: loc.id, ['locations']: [loc]});
+                    return Object.assign({}, oldEntity, {
+                        ['location_id']: loc.id, ['locations']: [loc]});
                 }
             });
 
             let newEntities: { [id: number]: Entity } = {};
             newEntityArray.forEach(entity => newEntities[entity.id] = entity);
 
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: oldIds,
-                        editing: oldEditing,
-                        entities: Object.assign({}, oldEntities, newEntities),
-                        paginator: oldPager
-                    }
-                });
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({}, state.entities, newEntities),
+                paginator:  state.paginator
+            });
         }
 
         // Add a tag/topic/category to single/multiple entity[s]
@@ -263,10 +433,12 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             if (action.type == EntityActions.ADD_TAG) key = 'tags';
             if (action.type == EntityActions.ATTACH_TOPIC_TO_ENTITY) key = 'topics';
 
-            const newEntityArray = oldEditing.map(id => {
-                const oldEntity  = oldEntities[id];
-                const isDup = oldEntity[key]
+            const newEntityArray = state.idsEditing.map(id => {
+
+                const oldEntity = state.entities[id];
+                const isDup     = oldEntity[key]
                     .filter(item => item.id === action.payload.data);
+
                 if (isDup && isDup.length) {
                     // Use old entity in next state as nothing changes
                     return oldEntity;
@@ -280,15 +452,14 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             let newEntities: { [id: number]: Entity } = {};
             newEntityArray.forEach(entity => newEntities[entity.id] = entity);
 
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: oldIds,
-                        editing: oldEditing,
-                        entities: Object.assign({}, oldEntities, newEntities),
-                        paginator: oldPager
-                    }
-                });
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({}, state.entities, newEntities),
+                paginator:  state.paginator
+            });
         }
 
         // Remove a tag/topic/category from single/multiple entity[s]
@@ -299,26 +470,27 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             if (action.type == EntityActions.REMOVE_TAG) key = 'tags';
             if (action.type == EntityActions.DETACH_TOPIC_FROM_ENTITY) key = 'topics';
 
-            const newEntityArray = oldEditing.map(id => {
-                const oldEntity = oldEntities[id];
+            const newEntityArray = state.idsEditing.map(id => {
+
+                const oldEntity = state.entities[id];
                 const leftItems = oldEntity[key]
                     .filter(item => item.id !== action.payload.data);
                 // Always return a new object
                 return Object.assign({}, oldEntity, {[key]: leftItems});
+
             });
 
             let newEntities: { [id: number]: Entity } = {};
             newEntityArray.forEach(entity => newEntities[entity.id] = entity);
 
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: oldIds,
-                        editing: oldEditing,
-                        entities: Object.assign({}, oldEntities, newEntities),
-                        paginator: oldPager
-                    }
-                });
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({}, state.entities, newEntities),
+                paginator:  state.paginator
+            });
         }
 
         case EntityActions.APPLY_REVISION: {
@@ -326,23 +498,21 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             const revid = action.payload.data[1];
 
             // Get revision.body
-            const newBody = oldEntities[id].revisions
+            const newBody = state.entities[id].revisions
                 .filter(r => r.id === revid).map(r => r.body);
 
             // Apply revision.body to entity.content
-            const newEntity = Object.assign({}, oldEntities[id],
+            const newEntity = Object.assign({}, state.entities[id],
                                             { content: newBody });
 
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: oldIds,
-                        editing: oldEditing,
-                        entities: Object.assign({},
-                            oldEntities, {[id]: newEntity}),
-                        paginator: oldPager
-                    }
-                });
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({}, state.entities, {[id]: newEntity}),
+                paginator:  state.paginator
+            });
         }
 
         case EntityActions.REFRESH_ACTIVITY_STATUS: {
@@ -350,27 +520,25 @@ export default function (state = initialState, action: Action): EntitiesStateGro
             let activities = action.payload.data;
 
             if (activities === null) {
-                oldIds.forEach(id =>
-                    newEntities[id] = Object.assign({},
-                        oldEntities[id], {activities: []}));
+                state.idsCurPage.forEach(id => newEntities[id] =
+                    Object.assign({}, state.entities[id], {activities: []}));
             } else {
-                oldIds.forEach(id => {
+                state.idsCurPage.forEach(id => {
                     const newActivities = activities.filter(a => a.content_id === id);
 
                     newEntities[id] = Object.assign({},
-                        oldEntities[id], {activities: newActivities})
+                        state.entities[id], {activities: newActivities})
                 });
             }
 
-            return Object.assign({}, state,
-                {
-                    [etype]: {
-                        ids: oldIds,
-                        editing: oldEditing,
-                        entities: Object.assign({}, oldEntities, newEntities),
-                        paginator: oldPager
-                    }
-                });
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({}, state.entities, newEntities),
+                paginator:  state.paginator
+            });
         }
 
         /* This is a must, as we can get the updated entity from its subscriber */
@@ -380,13 +548,11 @@ export default function (state = initialState, action: Action): EntitiesStateGro
 
             return Object.assign({}, state,
                 {
-                    [etype]: {
                         ids: oldIds,
                         editing: oldEditing,
                         entities: Object.assign({},
                            oldEntities, {[id]: action.payload.data}),
                         paginator: oldPager
-                    }
                 });
         }
         */
@@ -400,6 +566,6 @@ export default function (state = initialState, action: Action): EntitiesStateGro
  * Return a entity from current entity list by id
  */
 export function getEntity(etype: string, id: number) {
-    return (state$: Observable<EntitiesStateGroup>) =>
+    return (state$: Observable<EntitiesState>) =>
         state$.select(s => s[etype].entities[id]);
 }

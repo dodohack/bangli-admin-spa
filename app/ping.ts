@@ -13,7 +13,6 @@ import { APIS, API_PATH }                from './api';
 import { AppState }                      from './reducers';
 import { AuthState }                     from './reducers/auth';
 import { EntitiesState }                 from './reducers/entities';
-import { EntitiesStateGroup }            from './reducers/entities';
 
 @Injectable()
 export class Ping implements OnInit, OnDestroy {
