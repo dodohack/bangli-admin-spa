@@ -11,7 +11,7 @@ import { Observable }        from 'rxjs/Observable';
 
 import { Entity, EntityParams } from '../../models';
 import { Category, Tag, Topic}  from '../../models';
-import { ENTITY }               from '../../models';
+import { ENTITY, ENTITY_INFO }  from '../../models';
 import { Activity }             from '../../models';
 import { AppState }             from '../../reducers';
 import { EntitiesState }        from "../../reducers/entities";
@@ -67,26 +67,6 @@ export class EntitiesPage implements OnInit, OnDestroy
                 protected store: Store<AppState>,
                 protected ping: Ping,
                 protected pageless: boolean = false) {}
-
-    /**
-     * Return entity reducer selector based on entity type
-     */
-    get selector() {
-        switch (this.etype) {
-            case ENTITY.CMS_POST:     return 'posts';
-            case ENTITY.CMS_TOPIC:    return 'topics';
-            case ENTITY.CMS_PAGE:     return 'pages';
-            case ENTITY.CMS_DEAL:     return 'deals';
-            case ENTITY.ADVERTISE:    return 'advertises';
-            case ENTITY.NEWSLETTER:   return 'newletters';
-            case ENTITY.PLACE:        return 'places';
-            case ENTITY.ATTACHMENT:   return 'attachments';
-            case ENTITY.COMMENT:      return 'comments';
-            case ENTITY.SHOP_ORDER:   return 'orders';
-            case ENTITY.SHOP_PRODUCT: return 'products';
-            case ENTITY.SHOP_VOUCHER: return 'vouchers';
-        }
-    }
 
     ngOnInit() {
         this.subAuth = this.store.select<AuthState>('auth')
@@ -170,7 +150,8 @@ export class EntitiesPage implements OnInit, OnDestroy
      * Read entities back from ngrx store
      */
     loadEntities() {
-        this.subEntities = this.store.select<EntitiesState>(this.selector)
+        this.subEntities = this.store
+            .select<EntitiesState>(ENTITY_INFO[this.etype].selector)
             .subscribe(entitiesState => {
                 this.entitiesState = entitiesState;
                 // Create new copies of entities in editing mode
@@ -216,10 +197,14 @@ export class EntitiesPage implements OnInit, OnDestroy
      */
     get entity() { return this.entitiesInEdit[0]; }
 
+    get myId() { return this.authState.users[this.authState.key].id; }
+
     /**
      * Create a entity on entity list page
      */
-    newEntity() { this.store.dispatch(EntityActions.newEntity(this.etype)); }
+    newEntity() {
+        this.store.dispatch(EntityActions.newEntity(this.etype, this.myId));
+    }
 
     /**
      * FIXME: Merge it with batchSave()

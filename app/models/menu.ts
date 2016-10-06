@@ -16,7 +16,6 @@ const HULUWA_UK_SIDEBAR_MENUS = [
     {slug: 'cs',        name: '客服',     role: 'shop_manager', icon_style: 'fa fa-lg fa-circle-o'},
     {slug: 'user',      name: '用户',     role: 'administrator',icon_style: 'fa fa-lg fa-users'},
     {slug: 'affiliate', name: '联盟',     role: 'shop_manager', icon_style: 'fa fa-lg fa-signal'},
-    {slug: 'seo',       name: 'SEO',     role: 'shop_manager', icon_style: 'fa fa-lg fa-circle-o'},
     {slug: 'analysis',  name: '数据分析',  role: 'shop_manager', icon_style: 'fa fa-lg fa-bar-chart'},
     {slug: 'setting',   name: '设置',     role: 'super_user',    icon_style: 'fa fa-lg fa-wrench'},
     {slug: 'migration', name: '数据移植',  role: 'super_user',    icon_style: 'fa fa-lg fa-database'}
@@ -36,7 +35,6 @@ const BANGLI_UK_SIDEBAR_MENUS = [
     {slug: 'email',     name: '邮件',      icon_style: 'fa fa-lg fa-envelope'},
     {slug: 'attachment',name: '媒体库',    icon_style: 'fa fa-lg fa-image'},
     {slug: 'user',      name: '用户',      icon_style: 'fa fa-lg fa-users'},
-    {slug: 'seo',       name: 'SEO',      icon_style: 'fa fa-lg fa-circle-o'},
     {slug: 'analysis',  name: '数据分析',  icon_style: 'fa fa-lg fa-bar-chart'},
     {slug: 'setting',   name: '设置',      icon_style: 'fa fa-lg fa-wrench'},
     {slug: 'migration', name: '数据移植',  icon_style: 'fa fa-lg fa-database'}

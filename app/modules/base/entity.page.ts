@@ -6,6 +6,7 @@ import { OnInit, OnDestroy } from "@angular/core";
 import { ViewChild }         from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Location }          from '@angular/common';
+import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 
 import { AppState }          from '../../reducers';
@@ -20,6 +21,7 @@ import { AlertActions }      from "../../actions";
 import { FroalaOptions }     from '../../models/froala.option';
 import { Entity }            from '../../models';
 import { ENTITY }            from "../../models";
+import { ENTITY_INFO }       from "../../models";
 import { GeoLocation }       from '../../models';
 import { Category }          from '../../models';
 import { Tag }               from '../../models';
@@ -61,6 +63,11 @@ export class EntityPage implements OnInit, OnDestroy
     entitiesState: EntitiesState;
 
     froalaEditor: any;
+
+    // If current entity is a new one without a proper id
+    isNewEntity: boolean;
+    // A flag to turn deactivate guard off
+    _canDeactivate: boolean;
     
     // Hide datepicker default by default 
     dpHidden = true;
@@ -68,27 +75,8 @@ export class EntityPage implements OnInit, OnDestroy
     constructor(protected etype: string,
                 protected route: ActivatedRoute,
                 protected location: Location,
-                protected store: Store<AppState>) {}
-
-    /**
-     * Return entity reducer selector based on entity type
-     */
-    get selector() {
-        switch (this.etype) {
-            case ENTITY.CMS_POST:     return 'posts';
-            case ENTITY.CMS_TOPIC:    return 'topics';
-            case ENTITY.CMS_PAGE:     return 'pages';
-            case ENTITY.CMS_DEAL:     return 'deals';
-            case ENTITY.ADVERTISE:    return 'advertises';
-            case ENTITY.NEWSLETTER:   return 'newletters';
-            case ENTITY.PLACE:        return 'places';
-            case ENTITY.ATTACHMENT:   return 'attachments';
-            case ENTITY.COMMENT:      return 'comments';
-            case ENTITY.SHOP_ORDER:   return 'orders';
-            case ENTITY.SHOP_PRODUCT: return 'products';
-            case ENTITY.SHOP_VOUCHER: return 'vouchers';
-        }
-    }
+                protected store: Store<AppState>,
+                protected router: Router) {}
 
     ngOnInit() {
         this.subAuth = this.store.select<AuthState>('auth')
@@ -113,6 +101,11 @@ export class EntityPage implements OnInit, OnDestroy
     }
 
     canDeactivate() {
+        // When this is set, we allow current page to be deactivate
+        if (this._canDeactivate) {
+            return true;
+        }
+
         if (this.forceQuit) {
             this.store.dispatch(AlertActions
                 .error('你的修改尚未保存, 你可以立即返回上个页面保存!'));
@@ -133,13 +126,13 @@ export class EntityPage implements OnInit, OnDestroy
     dispatchLoadEntity() {
         this.subParams = this.route.params.subscribe(params => {
             if (JSON.stringify(this.params) !== JSON.stringify(params)) {
-
                 this.params = params;
 
                 if (Object.keys(params).length === 0) {
                     // Create a new entity
+                    this.isNewEntity = true;
                     this.store.dispatch(EntityActions
-                        .newEntity(this.etype/* FIXME: current user id */));
+                        .newEntity(this.etype, this.myId));
                 } else {
                     // Edit an entity by given id
                     this.store.dispatch(EntityActions
@@ -153,17 +146,23 @@ export class EntityPage implements OnInit, OnDestroy
      * Listen on ngrx/store, create a entity from 'store' if state is changed
      */
     loadEntity() {
-        this.subEntities = this.store.select<EntitiesState>(this.selector)
+        this.subEntities = this.store
+            .select<EntitiesState>(ENTITY_INFO[this.etype].selector)
             .subscribe(entitiesState => {
+                this.entityDirty = false;
+                let id = entitiesState.idsEditing[0];
+
+                this.redirect2NewEntity(id);
+
                 // Reset the form status so we can get a clean state
                 //if (this.entityForm) this.entityForm.reset(); // bugged
-                this.entityDirty = false;
                 this.entitiesState = entitiesState;
+
                 // When opening a single entity, 'editing' always contains 1 id
                 // FIXME: Remove inputEntity after updating to new angular2-froala binding
-                this.inputEntity = entitiesState.entities[entitiesState.idsEditing[0]];
+                this.inputEntity = entitiesState.entities[id];
                 this.entity = Object.assign({}, this.inputEntity);
-        });
+            });
     }
 
     /**
@@ -178,7 +177,8 @@ export class EntityPage implements OnInit, OnDestroy
             this.entity.content = $event;
         });
     }
-    
+
+    get isDirty()   { return this.entityDirty || this.entityForm.dirty; }
     get isDraft()   { return this.entity.state === 'draft'; }
     get isPending() { return this.entity.state === 'pending'; }
     get isPublish() { return this.entity.state === 'publish'; }
@@ -194,8 +194,25 @@ export class EntityPage implements OnInit, OnDestroy
 
     get froalaOptions() { return FroalaOptions.getDefault(); }
 
-    // Entity location, set or unset the location attr of an entity
+    /**
+     * Redirect /entity/new to /entity/:id once new entity is saved
+     */
+    redirect2NewEntity(id) {
+        // Changing from a newly created entity to a saved entity
+        if (this.isNewEntity && id !== 0) {
+            this._canDeactivate = true;
+            this.isNewEntity = false;
+            this.router.navigate(['/', ENTITY_INFO[this.etype].slug, id]);
+        }
+    }
+
+    /**
+     * Entity location, set or unset the location attr of an entity
+     * Auto save entity if it is dirty before doing the location update
+     */
     toggleGeoLocation(loc: GeoLocation) {
+        if (this.isDirty)
+            this.store.dispatch(EntityActions.autoSave(this.etype, this.entity));
         this.store.dispatch(EntityActions.toggleGeoLocation(this.etype, loc));
     }
 
@@ -206,21 +223,33 @@ export class EntityPage implements OnInit, OnDestroy
         else this.addCat(cat);
     }
     addCat(cat: Category) {
+        if (this.isDirty)
+            this.store.dispatch(EntityActions.autoSave(this.etype, this.entity));
         this.store.dispatch(EntityActions.addCategory(this.etype, cat));
     }
     addTag(tag: Tag) {
+        if (this.isDirty)
+            this.store.dispatch(EntityActions.autoSave(this.etype, this.entity));
         this.store.dispatch(EntityActions.addTag(this.etype, tag));
     }
     addTopic(topic: Topic) {
+        if (this.isDirty)
+            this.store.dispatch(EntityActions.autoSave(this.etype, this.entity));
         this.store.dispatch(EntityActions.attachTopicToEntity(this.etype, topic));
     }
     removeCat(id: number) {
+        if (this.isDirty)
+            this.store.dispatch(EntityActions.autoSave(this.etype, this.entity));
         this.store.dispatch(EntityActions.removeCategory(this.etype, id));
     }
     removeTag(id: number) {
+        if (this.isDirty)
+            this.store.dispatch(EntityActions.autoSave(this.etype, this.entity));
         this.store.dispatch(EntityActions.removeTag(this.etype, id));
     }
     removeTopic(id: number) {
+        if (this.isDirty)
+            this.store.dispatch(EntityActions.autoSave(this.etype, this.entity));
         this.store.dispatch(EntityActions.detachTopicFromEntity(this.etype, id));
     }
 
@@ -256,6 +285,8 @@ export class EntityPage implements OnInit, OnDestroy
     // back with the id, type of current post, we can say enable 
     // canDeactivate
     save() {
+        if (!this.entity.state || this.entity.state === 'unsaved')
+            this.entity.state = 'draft';
         this.store.dispatch(EntityActions.saveEntity(this.etype, this.entity));
     }
     save2Pending($event) {
@@ -265,7 +296,7 @@ export class EntityPage implements OnInit, OnDestroy
     }
     save2Draft($event)   {
         $event.preventDefault();
-        this.entity.state = 'draft';  
+        this.entity.state = 'draft';
         this.save();
     }
     save2Publish($event) {

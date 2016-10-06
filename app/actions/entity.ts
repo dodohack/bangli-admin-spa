@@ -142,10 +142,10 @@ export class EntityActions {
     }
 
     static NEW_ENTITY = '[Entity] New Entity';
-    static newEntity(etype: string): Action {
+    static newEntity(etype: string, userId: number): Action {
         return {
             type: EntityActions.NEW_ENTITY,
-            payload: {etype: etype}
+            payload: {etype: etype, data: userId}
         };
     }
 

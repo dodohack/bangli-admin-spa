@@ -344,20 +344,33 @@ function entitiesReducer (etype: string,
 
         case EntityActions.SAVE_ENTITY_SUCCESS:
         case EntityActions.LOAD_ENTITY_SUCCESS: {
+            // If we have newly created entity in editing, remove the
+            // placeholder id as we got a real id for it
+            let idsTotal, idsCurPage, idsContent;
+            if (state.idsEditing.indexOf(0)) {
+                idsTotal   = state.idsTotal.filter(id => id != 0);
+                idsCurPage = state.idsCurPage.filter(id => id != 0);
+                idsContent = state.idsContent.filter(id => id != 0);
+            } else {
+                idsTotal   = state.idsTotal;
+                idsCurPage = state.idsCurPage;
+                idsContent = state.idsContent;
+            }
+
             // Newly loaded entity id or saved new entity with newly created id
             const id = +action.payload.data['id'];
 
             // Merge with idsTotal
-            const idsTotal = (state.idsTotal.indexOf(id) === -1) ?
-                [...state.idsTotal, id] : state.idsTotal;
+            idsTotal = (idsTotal.indexOf(id) === -1) ?
+                [...idsTotal, id] : idsTotal;
 
             // Merge with idsCurPage
-            const idsCurPage = (state.idsCurPage.indexOf(id) === -1) ?
-                [...state.idsCurPage, id] : state.idsCurPage;
+            idsCurPage = (idsCurPage.indexOf(id) === -1) ?
+                [...idsCurPage, id] : idsCurPage;
 
             // Merge with idsContent
-            const idsContent = (state.idsContent.indexOf(id) === -1) ?
-                [...state.idsContent, id] : state.idsContent;
+            idsContent = (idsContent.indexOf(id) === -1) ?
+                [...idsContent, id] : idsContent;
 
             // Return state merged with newly loaded entity
             return Object.assign({}, state, {
@@ -365,29 +378,27 @@ function entitiesReducer (etype: string,
                 idsCurPage: idsCurPage,
                 idsEditing: [id],
                 idsContent: idsContent,
-                entities:   Object.assign({}, state.entities, {[id]: action.payload.data}),
+                entities:   Object.assign({},
+                    state.entities, {[id]: action.payload.data}),
                 paginator:  state.paginator
             });
         }
 
-        // FIXME: Should we create empty '0' indexed entity here?
+        // Create a new entity, use id '0' as placeholder id
         case EntityActions.NEW_ENTITY: {
-            // Create a new entity, we use id '0' as a placeholder id
+            const userId  = action.payload.data;
+
             let newEntity = new Entity;
 
-            newEntity.state = 'unsaved';
-            // FIXME: We shouldn't create empty array for some entity, say
-            // advertise, this casue api server error.
-            /*
-            newEntity.categories = [];
-            newEntity.tags       = [];
-            newEntity.topics     = [];
-            */
+            newEntity.id        = 0;
+            newEntity.state     = 'unsaved';
+            newEntity.author_id = userId;
+
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
+                idsTotal:   [...state.idsTotal, 0],
+                idsCurPage: [...state.idsCurPage, 0],
                 idsEditing: [0],
-                idsContent: state.idsContent,
+                idsContent: [...state.idsContent, 0],
                 entities:   Object.assign({}, state.entities, {[0]: newEntity}),
                 paginator:  state.paginator
             });
@@ -434,17 +445,22 @@ function entitiesReducer (etype: string,
             if (action.type == EntityActions.ATTACH_TOPIC_TO_ENTITY) key = 'topics';
 
             const newEntityArray = state.idsEditing.map(id => {
-
                 const oldEntity = state.entities[id];
-                const isDup     = oldEntity[key]
-                    .filter(item => item.id === action.payload.data);
 
-                if (isDup && isDup.length) {
-                    // Use old entity in next state as nothing changes
-                    return oldEntity;
-                } else {
-                    // Create a new entity
-                    const newItems = [...oldEntity[key], action.payload.data];
+                if (key in oldEntity) { // entity has an attribute 'key'
+                    const isDup     = oldEntity[key]
+                        .filter(item => item.id === action.payload.data);
+
+                    if (isDup && isDup.length) {
+                        // Use old entity in next state as nothing changes
+                        return oldEntity;
+                    } else {
+                        // Create a new entity
+                        const newItems = [...oldEntity[key], action.payload.data];
+                        return Object.assign({}, oldEntity, {[key]: newItems});
+                    }
+                } else {  // entity doesn't have an attribute 'key'
+                    const newItems = [action.payload.data];
                     return Object.assign({}, oldEntity, {[key]: newItems});
                 }
             });
@@ -537,6 +553,20 @@ function entitiesReducer (etype: string,
                 idsEditing: state.idsEditing,
                 idsContent: state.idsContent,
                 entities:   Object.assign({}, state.entities, newEntities),
+                paginator:  state.paginator
+            });
+        }
+
+        // Save given entity to the state only
+        case EntityActions.AUTO_SAVE: {
+            let entity = action.payload.data;
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
                 paginator:  state.paginator
             });
         }

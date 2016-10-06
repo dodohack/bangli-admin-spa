@@ -38,21 +38,21 @@ export const ENTITY = {
 };
 
 /**
- * Name and url for ENTITY
+ * Name, reducer selector and url for ENTITY
  */
 export const ENTITY_INFO = {
-    'cms-post':      {name: '文章',     slug: 'post'},
-    'cms-topic':     {name: '专题',     slug: 'topic'},
-    'cms-page':      {name: '页面',     slug: 'page'},
-    'cms-deal':      {name: '优惠',     slug: 'deal'},
-    'advertise':     {name: '广告',     slug: 'ads'},
-    'shop-order':    {name: '订单',     slug: 'order'},
-    'shop-product':  {name: '商品',     slug: 'product'},
-    'shop-voucher':  {name: '优惠券',   slug: 'voucher'},
-    'newsletter':    {name: '订阅邮件', slug: 'newsletter'},
-    'attachment':    {name: '附件',     slug: 'attachment'},
-    'comment':       {name: '用户评论', slug: 'comment'},
-    'user':          {name: '用户',     slug: 'user'},
+    'cms-post':      {selector: 'posts',      name: '文章',     slug: 'post'},
+    'cms-topic':     {selector: 'topics',     name: '专题',     slug: 'topic'},
+    'cms-page':      {selector: 'pages',      name: '页面',     slug: 'page'},
+    'cms-deal':      {selector: 'deals',      name: '优惠',     slug: 'deal'},
+    'advertise':     {selector: 'advertises', name: '广告',     slug: 'ads'},
+    'shop-order':    {selector: 'orders',     name: '订单',     slug: 'order'},
+    'shop-product':  {selector: 'products',    name: '商品',     slug: 'product'},
+    'shop-voucher':  {selector: 'vouchers',    name: '优惠券',   slug: 'voucher'},
+    'newsletter':    {selector: 'newsletters', name: '订阅邮件',  slug: 'newsletter'},
+    'attachment':    {selector: 'attachments', name: '附件',     slug: 'attachment'},
+    'comment':       {selector: 'comments',    name: '用户评论',  slug: 'comment'},
+    'user':          {selector: 'user',        name: '用户',     slug: 'user'},
 };
 
 //export
