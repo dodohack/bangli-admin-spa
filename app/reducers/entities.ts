@@ -592,10 +592,62 @@ function entitiesReducer (etype: string,
     }
 }
 
+/*****************************************************************************
+ * Helper functions
+ *****************************************************************************/
+
+/**
+ * Return the entities object which contains all entities
+ */
+export function getEntitiesObject() {
+    return (state$: Observable<EntitiesState>) => state$.select(s => s.entities);
+}
+
 /**
  * Return a entity from current entity list by id
  */
-export function getEntity(etype: string, id: number) {
-    return (state$: Observable<EntitiesState>) =>
-        state$.select(s => s[etype].entities[id]);
+export function getEntity(id: number) {
+    return (state$: Observable<EntitiesState>) => state$.select(s => s.entities[id]);
+}
+
+/**
+ * Return an array of entites of given ids
+ */
+export function getEntities(ids: number[]) {
+    return (state$: Observable<EntitiesState>) => state$
+        .select(s => s.entities)
+        .map(entities => ids.map(id => entities[id]));
+}
+
+/**
+ * Return an array of entity ids of current page
+ */
+export function getIdsCurPage() {
+    return (state$: Observable<EntitiesState>) => state$
+        .select(s => s.idsCurPage)
+}
+
+/**
+ * If the entity exists in the entity list of current page
+ */
+export function hasEntityInCurPage(id: number) {
+    return (state$: Observable<EntitiesState>) => state$
+        .select(s => s.idsCurPage.includes(id));
+}
+
+
+/**
+ * If the entity exists in the all entities loaded to client
+ */
+export function hasEntity(id: number) {
+    return (state$: Observable<EntitiesState>) => state$
+        .select(s => s.idsTotal.includes(id));
+}
+
+/**
+ * Return current paginator
+ */
+export function getPaginator() {
+    return (state$: Observable<EntitiesState>) => state$
+        .select(s => s.paginator);
 }

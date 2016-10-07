@@ -47,6 +47,7 @@ import prefReducer, * as fromPref         from './preference';
 import cmsReducer, * as fromCms           from './cmsattrs';
 import shopReducer, * as fromShop         from './shopattrs';
 
+import * as fromEntities from './entities';
 import { EntitiesState } from './entities';
 import { postsReducer }  from './entities';
 import { pagesReducer }  from './entities';
@@ -63,7 +64,8 @@ import { vouchersReducer } from './entities';
 
 
 import { Observable } from 'rxjs/Observable';
-import { ENTITY }     from '../models/entity';
+
+import { ENTITY_INFO } from '../models';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -161,6 +163,36 @@ export function hasSuperUserRole() {
     return compose(fromAuth.hasSuperUserRole(), getAuthState());
 }
 
+
+/*****************************************************************************
+ * CMS attributes
+ *****************************************************************************/
+
+/* Get CmsAttrsState from current AppState */
+export function getCmsAttrsState() {
+    return (state$: Observable<AppState>) => state$.select(s => s.cms);
+}
+
+export function getAuthors() {
+    return compose(fromCms.getAuthors(), getCmsAttrsState());
+}
+
+export function getEditors() {
+    return compose(fromCms.getEditors(), getCmsAttrsState());
+}
+
+export function getCmsChannels() {
+    return compose(fromCms.getChannels(), getCmsAttrsState());
+}
+
+export function getCmsCategories() {
+    return compose(fromCms.getCategories(), getCmsAttrsState());
+}
+
+export function getLocations() {
+    return compose(fromCms.getLocations(), getCmsAttrsState());
+}
+
 /*****************************************************************************
  * User
  *****************************************************************************/
@@ -176,6 +208,32 @@ export function getUsers(filter: any) {
 
 export function getUser(uuid: string) {
     return compose(fromUsers.getUser(uuid), getUsersState());
+}
+
+/*****************************************************************************
+ * Entities - an entity type is always given
+ *****************************************************************************/
+export function getEntitiesState(etype: string) {
+    return (state$: Observable<AppState>) =>state$
+        .select(ENTITY_INFO[etype].selector);
+}
+
+export function getPaginator(etype: string) {
+    return compose(fromEntities.getPaginator(), getEntitiesState(etype));
+}
+
+export function getEntities(etype: string, ids: number[]) {
+    return compose(fromEntities.getEntities(ids), getEntitiesState(etype));
+}
+
+export function getIdsCurPage(etype: string) {
+    return compose(fromEntities.getIdsCurPage(), getEntitiesState(etype));
+}
+
+export function getEntitiesCurPage(etype: string) {
+    return (state$: Observable<AppState>) => state$
+        .let(getIdsCurPage(etype))
+        .switchMap(idsCurPage => state$.let(getEntities(etype, idsCurPage)));
 }
 
 /*****************************************************************************

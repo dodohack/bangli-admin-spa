@@ -24,14 +24,13 @@ export class UsersPage implements OnInit, OnDestroy
     // Observable subscribers
     subUsers: any;
     subParams: any;
-    subQParams: any;
 
     usersState: UsersState;
     
     routeRoleId: string;
 
+    // URL parameters for list of users
     params: any;
-    queryParams: any;
 
     // Is search is running
     loading: boolean;
@@ -40,58 +39,52 @@ export class UsersPage implements OnInit, OnDestroy
                 private store: Store<AppState>) {}
 
     ngOnInit() {
+        this.dispatchLoadUsers();
+        this.loadUsers();
+    }
+
+    ngOnDestroy() {
+        this.subUsers.unsubscribe();
+        this.subParams.unsubscribe();
+    }
+
+    /**
+     * Dispatch an action to load list of users when URL changes
+     */
+    dispatchLoadUsers() {
+        this.subParams = Observable
+            .merge(this.route.params, this.route.queryParams)
+            .filter((p, i) => Object.keys(p).length !== 0)
+            .subscribe(params => {
+                // Compare if elements of url params change
+                if (JSON.stringify(this.params) !== JSON.stringify(params)) {
+                    this.loading = true;
+
+                    this.params.cur_page = params['page'];
+                    this.params.datetype = params['datetype'];
+                    this.params.datefrom = params['datefrom'];
+                    this.params.dateto   = params['dateto'];
+                    this.params.query    = params['query'];
+
+                    this.store.dispatch(UserActions.loadUsers(this.params));
+                }
+            });
+    }
+
+    /**
+     * Read users back from ngrx store
+     */
+    loadUsers() {
         this.subUsers = this.store.select<UsersState>('users')
             .subscribe(usersState => {
                 // Set search loading to false if users is loaded
                 this.loading = false;
                 this.usersState = usersState;
             });
-
-        // THIS IS A TEMPORARY FIX
-        // FIXME: Previous request is cancel by the second one if exists
-        // FIXME: and potential other kind of issues
-        // Load users when any url parameter changes
-        this.subParams = this.route.params.subscribe(params => {
-            this.params = params;
-            this.loading = true;
-            this.loadUsers();
-        });
-        this.subQParams = this.route.queryParams.subscribe(params => {
-            this.queryParams = params;
-            this.loading = true;
-            this.loadUsers();
-        });
-    }
-
-    /* TODO: Check if memory leaks if we don't do this */
-    ngOnDestroy() {
-        this.subUsers.unsubscribe();
-        this.subParams.unsubscribe();
-        this.subQParams.unsubscribe();
     }
 
     get zh() { return zh_CN.user; }
     get userRoles() { return ''; /*this.userService.roles; */}
     get etype() { return ENTITY.USER; }
 
-    loadUsers() {
-        let userParams: UserParams = new UserParams;
-        
-        // Must have parameters come from route.params observable
-        if (this.params) {
-            userParams.cur_page = this.params['page'];
-        }
-
-        // Optional parameters come from route.queryParams observable
-        if (this.queryParams) {
-            userParams.datetype = this.queryParams['datetype'];
-            userParams.datefrom = this.queryParams['datefrom'];
-            userParams.dateto   = this.queryParams['dateto'];
-            userParams.query    = this.queryParams['query'];
-        }
-
-        // Load list of users from API server
-        this.store.dispatch(UserActions.loadUsers(userParams));
-    }
-    
 }

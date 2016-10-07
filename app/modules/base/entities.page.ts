@@ -9,6 +9,8 @@ import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
+import { User }                 from '../../models';
+import { Channel }              from '../../models/';
 import { Entity, EntityParams } from '../../models';
 import { Category, Tag, Topic}  from '../../models';
 import { ENTITY, ENTITY_INFO }  from '../../models';
@@ -20,6 +22,16 @@ import { CmsAttrsState }        from '../../reducers/cmsattrs';
 import { ShopAttrsState }       from '../../reducers/shopattrs';
 import { EntityActions }        from '../../actions';
 import { Ping }                 from '../../ping';
+
+/**
+ * TODO: Reference how ngrx-example-app (the books) does, especially for the
+ * TODO: getter functions in each reducers and reducers/index and
+ * TODO: loading/loaded status used in reducers(collection.ts).
+ */
+import { getAuthors, getEditors, getCmsChannels,
+    getCmsCategories, getLocations, getPaginator,
+    getEntitiesCurPage } from '../../reducers';
+
 
 export class EntitiesPage implements OnInit, OnDestroy
 {
@@ -33,7 +45,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     subParams: any;
 
     authState:  AuthState;
-    cmsState:   CmsAttrsState;
+    //cmsState:   CmsAttrsState;
     shopState:   ShopAttrsState;
     entitiesState: EntitiesState;
 
@@ -52,6 +64,13 @@ export class EntitiesPage implements OnInit, OnDestroy
     // as the list is re-rendered at each time loading
     loaded: boolean = false;
 
+    authors$:     Observable<User[]>;
+    editors$:     Observable<User[]>;
+    cmsChannels$: Observable<Channel[]>;
+    cmsCategories$: Observable<Category[]>;
+    paginator$:   Observable<any>;
+    entities$:    Observable<Entity[]>;
+
     /**
      * Constructor
      * @param etype     - entity type, it can be almost any entity except user
@@ -66,13 +85,24 @@ export class EntitiesPage implements OnInit, OnDestroy
                 protected route: ActivatedRoute,
                 protected store: Store<AppState>,
                 protected ping: Ping,
-                protected pageless: boolean = false) {}
+                protected pageless: boolean = false) {
+        this.authors$  = this.store.let(getAuthors());
+        this.editors$  = this.store.let(getEditors());
+        this.cmsChannels$ = this.store.let(getCmsChannels());
+        this.cmsCategories$ = this.store.let(getCmsCategories());
+        this.paginator$ = this.store.let(getPaginator(this.etype));
+        this.entities$  = this.store.let(getCurPageEntities(this.etype));
+         //     .select<EntitiesState>(ENTITY_INFO[this.etype].selector)
+
+    }
 
     ngOnInit() {
         this.subAuth = this.store.select<AuthState>('auth')
             .subscribe(authState => this.authState = authState);
+        /*
         this.subCms = this.store.select<CmsAttrsState>('cms')
             .subscribe(cmsState => this.cmsState = cmsState);
+        */
         this.subShop = this.store.select<ShopAttrsState>('shop')
             .subscribe(shopState => this.shopState = shopState);
         

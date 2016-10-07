@@ -1,5 +1,5 @@
 <list-page-header [etype]="etype"
-                  [cmsChannels]="cmsState.channels"
+                  [cmsChannels]="cmsChannels | async"
                   [activeChannel]="params['channel']"
                   [states]="cmsState.page_states.actual"
                   [loading]="loading"></list-page-header>
@@ -7,10 +7,10 @@
 <!-- Post filter/tool bar at top -->
 <list-filter-bar *ngIf="loaded"
                  [etype]="etype"
-                 [authors]="cmsState.authors"
-                 [editors]="cmsState.editors"
-                 [channels]="cmsState.channels"
-                 [categories]="cmsState.categories"
+                 [authors]="authors$ | async"
+                 [editors]="editors$ | async"
+                 [channels]="cmsChannels$ | async"
+                 [categories]="cmsCategories$ | async"
                  [paginator]="entitiesState.paginator"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 

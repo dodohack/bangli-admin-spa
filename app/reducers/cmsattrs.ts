@@ -1,6 +1,7 @@
 import { Action }         from '@ngrx/store';
+import { Observable }     from 'rxjs/Observable';
 
-import { GeoLocation }       from '../models';
+import { GeoLocation }    from '../models';
 import { User }           from '../models';
 import { Category }       from "../models";
 import { Tag }            from "../models";
@@ -183,4 +184,43 @@ export default function (state = initialState, action: Action): CmsAttrsState {
         default:
             return state;
     }
+}
+
+/******************************************************************************
+ * Helper functions
+ *****************************************************************************/
+
+/**
+ * Return an array of authors
+ */
+export function getAuthors() {
+    return (state$: Observable<CmsAttrsState>) => state$.select('authors');
+}
+
+/**
+ * Return an array of editors
+ */
+export function getEditors() {
+    return (state$: Observable<CmsAttrsState>) => state$.select('editors');
+}
+
+/**
+ * Return an array of cms channels
+ */
+export function getChannels() {
+    return (state$: Observable<CmsAttrsState>) => state$.select('channels');
+}
+
+/**
+ * Return an array of cms categories
+ */
+export function getCategories() {
+    return (state$: Observable<CmsAttrsState>) => state$.select('categories');
+}
+
+/**
+ * Return an array of geo locations
+ */
+export function getLocations() {
+    return (state$: Observable<CmsAttrsState>) => state$.select('locations');
 }

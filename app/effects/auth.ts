@@ -41,6 +41,13 @@ export class AuthEffects {
             .catch(() => Observable.of(AuthActions.loginDomainFail()))
         );
 
+    /**
+     * TODO:
+     * 1. Redirect user to page that will send out an register request
+     *    to application server.
+     * 2. Display an instruction to let user to tell admin assign application
+     *    server dashboard user permission to him.
+     */
     @Effect() loginDomainFail$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN_FAIL)
         .map(action => AlertActions.error('登录应用服务器失败!'));
 

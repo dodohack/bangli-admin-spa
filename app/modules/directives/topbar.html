@@ -24,8 +24,11 @@
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="pref.menuColor">切换站点</a>
             <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
                 <li role="menuitem" *ngFor="let key of auth.keys">
+                    <!--<a class="dropdown-item" role="button"
+                       (click)="loginDomain.emit(key)">-->
                     <a class="dropdown-item" role="button"
-                       (click)="loginDomain.emit(key)">
+                       [routerLink]="['/user', auth.jwt.sub]"
+                       [queryParams]="{domain: key}">
                         {{ auth.domains[key].name }}
                         <span class="tag" [class.tag-danger-outline]="isOffline(key)"
                               [class.tag-success-outline]="!isOffline(key)">{{ latency(key) }}</span>
