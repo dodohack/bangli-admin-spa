@@ -129,11 +129,11 @@
 
 
             <!-- Product brand, category, tag etc -->
-            <cms-tag-cloud [post]="product"
+            <entity-attr-cloud [entity]="product"
                            (toggle)="openPanel = !openPanel"
                            (deleteCat)="removeCat($event)"
                            (deleteTag)="removeTag($event)"
-                           (deleteTopic)="removeTopic($event)"></cms-tag-cloud>
+                           (deleteTopic)="removeTopic($event)"></entity-attr-cloud>
 
             <!-- Thumbnail for base product and excerpt -->
             <div class="row">

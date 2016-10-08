@@ -14,13 +14,19 @@ import { AppState }          from '../../reducers';
 import { Ping }              from '../../ping';
 import { zh_CN }             from '../../localization';
 
+import { getPostStates } from '../../reducers';
+
 @Component({ template: require('./posts.page.html') })
 export class PostsPage extends EntitiesPage
 {
+    postStates$:  Observable<any>;
+    
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
                 protected ping: Ping) {
         super(ENTITY.CMS_POST, route, store, ping);
+        
+        this.postStates$    = this.store.let(getPostStates());        
     }
 
     get zh() { return zh_CN.cms; }

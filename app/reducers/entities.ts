@@ -16,6 +16,7 @@ import { Paginator }     from '../models';
 import { Entity }        from '../models';
 import { ENTITY }        from '../models';
 import { EntityActions } from '../actions';
+import { GMT }           from '../helper';
 
 /**
  * Entities state for each entity type
@@ -571,21 +572,70 @@ function entitiesReducer (etype: string,
             });
         }
 
-        /* This is a must, as we can get the updated entity from its subscriber */
-        /*
-        case EntityActions.SAVE_ENTITY: {
-            const id: number = +action.payload['id'];
-
-            return Object.assign({}, state,
-                {
-                        ids: oldIds,
-                        editing: oldEditing,
-                        entities: Object.assign({},
-                           oldEntities, {[id]: action.payload.data}),
-                        paginator: oldPager
-                });
+        case EntityActions.SAVE_ENTITY_AS_PENDING: {
+            let entity = action.payload.data;
+            entity.state = 'pending';
+            
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
+                paginator:  state.paginator
+            });
         }
-        */
+            
+        case EntityActions.SAVE_ENTITY_AS_DRAFT: {
+            let entity = action.payload.data;
+            entity.state = 'draft';
+            
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
+                paginator:  state.paginator
+            });
+        }
+            
+        case EntityActions.SAVE_ENTITY_AS_PUBLISH: {
+            let entity = action.payload.data;
+            // published_at can only be updated once 
+            if (!entity.published_at)
+                entity.published_at = GMT(new Date());
+            entity.state = 'publish';
+            
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
+                paginator:  state.paginator
+            });   
+        }
+
+        case EntityActions.SAVE_ENTITY: {
+            let entity = action.payload.data;
+            // Assign default state to entity
+            if (!entity.state || entity.state === 'unsaved')
+                entity.state = 'draft';
+
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
+                paginator:  state.paginator
+            });
+        }
 
         default:
             return state;
@@ -611,6 +661,22 @@ export function getEntity(id: number) {
 }
 
 /**
+ * Return current editing entity content
+ */
+export function getCurEntityContent() {
+    return (state$: Observable<EntitiesState>) => state$
+        .select(s => s.entities[s.idsEditing[0]].content);
+}
+
+/**
+ * Return current editing entity
+ */
+export function getCurEntity() {
+    return (state$: Observable<EntitiesState>) => state$
+        .select(s => s.entities[s.idsEditing[0]]);
+}
+
+/**
  * Return an array of entites of given ids
  */
 export function getEntities(ids: number[]) {
@@ -625,6 +691,14 @@ export function getEntities(ids: number[]) {
 export function getIdsCurPage() {
     return (state$: Observable<EntitiesState>) => state$
         .select(s => s.idsCurPage)
+}
+
+/**
+ * Return an array of entity ids of this is in editing mode
+ */
+export function getIdsEditing() {
+    return (state$: Observable<EntitiesState>) => state$
+        .select(s => s.idsEditing)
 }
 
 /**

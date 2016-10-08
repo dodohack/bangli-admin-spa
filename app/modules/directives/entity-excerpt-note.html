@@ -1,0 +1,17 @@
+<!-- Thumbnail and excerpt -->
+<div class="row">
+    <div class="col-xs-6">
+        <textarea name="excerpt"
+                  [ngModel]="excerpt" (ngModelChanged)="excerptChanged.emit($event)"
+                  placeholder="摘要"
+                  class="form-control" style="height: 75px;"></textarea>
+
+    </div>
+
+    <div class="col-xs-6">
+        <textarea name="excerpt" [ngModel]="note"
+                  (ngModelChanged)="noteChanged.emit($event)"
+                  placeholder="文章内部备注/其他类型备注"
+                  class="form-control" style="height: 75px;"></textarea>
+    </div>
+</div>

@@ -55,20 +55,16 @@ export const ENTITY_INFO = {
     'user':          {selector: 'user',        name: '用户',     slug: 'user'},
 };
 
-//export
-
 /**
  * CMS post:
  * CREATIVE_TYPES definition
  */
-/*
 export const CREATIVE_TYPES = [
     {creative_type: 'creative',      count: 0}, // 原创
     {creative_type: 'semi_creative', count: 0}, // 伪原创
     {creative_type: 'integration',   count: 0}, // 资料整理
     {creative_type: 'review',        count: 0}  // 审稿
 ];
-*/
 
 /** ALL:
  *  entity states, corresponding to each entity table column: state */

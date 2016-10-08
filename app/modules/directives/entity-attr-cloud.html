@@ -8,7 +8,7 @@
                     <span class="tag tag-warning-outline tag-item"
                           (click)="toggle.emit()">文章分类:</span>
                     <ul class="tag-cloud">
-                        <li *ngFor="let cat of post.categories"
+                        <li *ngFor="let cat of categories"
                             class="tag tag-pill tag-primary-outline tag-item"
                             (click)="deleteCat.emit(cat.id)">
                             {{ cat.name }} x
@@ -20,7 +20,7 @@
                     <span class="tag tag-warning-outline tag-item"
                           (click)="toggle.emit()">专题:</span>
                     <ul class="tag-cloud">
-                        <li *ngFor="let topic of post.topics"
+                        <li *ngFor="let topic of topics"
                             class="tag tag-pill tag-primary-outline tag-item"
                             (click)="deleteTopic.emit(topic.id)">
                             {{ topic.title }} x
@@ -32,12 +32,12 @@
                     <span class="tag tag-warning-outline tag-item"
                           (click)="toggle.emit()">Location:</span>
                     <ul class="tag-cloud">
-                        <li *ngFor="let loc of post.locations"
+                        <li *ngFor="let loc of locations"
                             class="tag tag-pill tag-primary-outline tag-item"
                             (click)="toggleGeoLocation.emit(loc)">
                             {{ loc.name }} x
                         </li>
-                        <li *ngIf="post.location_id == 0"
+                        <li *ngIf="!hasLocation"
                             class="tag tag-pill tag-primary-outline tag-item">
                             everywhere
                         </li>
@@ -49,7 +49,7 @@
                     <span class="tag tag-warning-outline tag-item"
                           (click)="toggle.emit()">标签:</span>
                     <ul class="tag-cloud">
-                        <li *ngFor="let tag of post.tags"
+                        <li *ngFor="let tag of tags"
                             class="tag tag-pill tag-primary-outline tag-item"
                             (click)="deleteTag.emit(tag.id)">
                             {{ tag.name }} x

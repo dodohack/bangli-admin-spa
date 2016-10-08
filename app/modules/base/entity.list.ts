@@ -5,8 +5,9 @@
 import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 
-import { User }                from "../../models";
-import { ENTITY, ENTITY_INFO } from '../../models';
+import { User }          from "../../models";
+import { Entity, ENTITY, ENTITY_INFO } from '../../models';
+import { Channel }        from '../../models';
 import { AuthState }      from '../../reducers/auth';
 import { CmsAttrsState }  from "../../reducers/cmsattrs";
 import { ShopAttrsState } from "../../reducers/shopattrs";
@@ -14,9 +15,17 @@ import { EntitiesState }  from "../../reducers/entities";
 
 export class EntityList
 {
+    @Input() paginator: any;
+    @Input() entities: Entity[];
+    @Input() idsCurPage: number[];
+    @Input() idsEditing: number[];
+    @Input() authors: User[];
+    @Input() editors: User[];
+    @Input() channels: Channel[];
+    
     @Input() authState: AuthState;
     @Input() cmsState: CmsAttrsState;
-
+    
     // The entity type of the list: post, topic, page, product etc
     @Input() etype: string;
     
@@ -39,6 +48,7 @@ export class EntityList
 
     batchAction: string = '';
 
+    /*
     get ids() { return this._listState.idsCurPage; }
     get entities() { return this._listState.entities; }
     get paginator() { return this._listState.paginator; }
@@ -57,16 +67,32 @@ export class EntityList
             }, {});
     }
     get channels() { return this.cmsState.channels; }
+    */
 
+    get authorsObj() {
+        // Convert authors array to authors object indexed by author id
+        return this.authors
+            .reduce((users: {[id: number]: User}, entity: User) => {
+                return Object.assign(users, { [entity.id]: entity });
+            }, {});
+    }
+    get editorsObj() {
+        // Convert editors array to editors object indexed by editor id
+        return this.editors
+            .reduce((users: {[id: number]: User}, entity: User) => {
+                return Object.assign(users, { [entity.id]: entity });
+            }, {});
+    }    
+    
     // If batch options can be enabled
     get canEdit() {
-        return this._listState.idsEditing && this._listState.idsEditing.length;
+        return this.idsEditing.length !== 0;
     }
 
     // If all post is selected, we use '<=' in case we have extra editing
     // post which is not in the list(newly created one?).
     get isAllSelected() {
-        return this._listState.idsCurPage.length <= this._listState.idsEditing.length;
+        return this.idsCurPage.length <= this.idsEditing.length;
     }
 
     // If the entity has an author
@@ -85,50 +111,50 @@ export class EntityList
 
     // If the the entity is in editing
     isEditing(id) {
-        return this._listState.idsEditing.filter(eid => eid === id).length;
+        return this.idsEditing.filter(eid => eid === id).length;
     }
 
     hasActivity(id): boolean {
-        return this._listState.entities[id].activities &&
-            this._listState.entities[id].activities.length > 0;
+        return this.entities[id].activities &&
+            this.entities[id].activities.length > 0;
     }
 
     getActivity(id) {
-        return this._listState.entities[id].activities[0];
+        return this.entities[id].activities[0];
     }
 
     // Add id to editing list if it is not added, or
     // Remove id from editing list if it is already exists
     updateEditList(id) {
-        let idx = this._listState.idsEditing.indexOf(id);
+        let idx = this.idsEditing.indexOf(id);
         if (idx === -1)
-            this._listState.idsEditing.push(id);
+            this.idsEditing.push(id);
         else
-            this._listState.idsEditing.splice(idx, 1);
+            this.idsEditing.splice(idx, 1);
     }
 
     // Select all or deselect all
     updateAll() {
         if (this.isAllSelected)
-            this._listState.idsEditing = [];
+            this.idsEditing = [];
         else
-            this._listState.idsEditing = [...this._listState.idsCurPage];
+            this.idsEditing = [...this.idsCurPage];
     }
 
     // Select batch actions
     submitBatchAction() {
         switch(this.batchAction) {
             case 'edit':
-                this.batchEdit.emit(this._listState.idsEditing);
+                this.batchEdit.emit(this.idsEditing);
                 break;
             case 'delete':
-                this.batchDelete.emit(this._listState.idsEditing);
+                this.batchDelete.emit(this.idsEditing);
                 break;
             case 'offline_edit':
-                this.batchOfflineEdit.emit(this._listState.idsEditing);
+                this.batchOfflineEdit.emit(this.idsEditing);
                 break;
             case 'lock':
-                this.batchLock.emit(this._listState.idsEditing);
+                this.batchLock.emit(this.idsEditing);
                 break;
             default:
                 break;
@@ -145,11 +171,11 @@ export class EntityList
         switch (this.etype) {
             case ENTITY.CMS_TOPIC:
                 return base + ENTITY_INFO[this.etype] + '/'
-                    + this.cmsState.channels[this._listState.entities[id].channel_id] + '/'
-                    + this._listState.entities[id].guid;
+                    + this.channels[this.entities[id].channel_id] + '/'
+                    + this.entities[id].guid;
 
             case ENTITY.SHOP_PRODUCT:
-                return base + ENTITY_INFO[this.etype] + '/' + this._listState.entities[id].guid;
+                return base + ENTITY_INFO[this.etype] + '/' + this.entities[id].guid;
 
             // Default to cms type
             default:

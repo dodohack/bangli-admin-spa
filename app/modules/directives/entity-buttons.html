@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-xs-12">
+        <!-- Save buttons -->
+        <div class="float-right">
+            <button class="btn btn-sm btn-outline-success"
+                    (click)="save.emit()"
+                    *ngIf="canSave">保存</button>
+
+            <button class="btn btn-sm btn-outline-primary"
+                    (click)="save2Pending.emit()"
+                    *ngIf="!canDraft">提交审稿</button>
+
+            <button class="btn btn-sm btn-outline-danger"
+                    (click)="save2Draft.emit()"
+                    *ngIf="canDraft">改为草稿</button>
+
+            <button class="btn btn-sm btn-outline-danger"
+                    (click)="save2Publish.emit()"
+                    *ngIf="canPublish">发布</button>
+
+            <button class="btn btn-sm btn-outline-danger"
+                    (click)="cancelSave.emit()"
+                    [hidden]="false">退出</button>
+        </div>
+    </div>
+</div>

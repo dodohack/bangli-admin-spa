@@ -48,7 +48,8 @@
         </li>
 
         <!-- Various status tabs -->
-        <li *ngFor="let state of states" class="nav-item">
+
+        <li *ngFor="let state of states.actual" class="nav-item">
             <a class="nav-link" [routerLink]="[navUrl(state.state)]"
                routerLinkActive="active">
                 {{ zh[state.state] }}<span> ({{ state.count }})</span>

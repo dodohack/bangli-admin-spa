@@ -1,7 +1,7 @@
 <list-page-header [etype]="etype"
                   [cmsChannels]="cmsChannels | async"
                   [activeChannel]="params['channel']"
-                  [states]="cmsState.page_states.actual"
+                  [states]="postStates$ | async"
                   [loading]="loading"></list-page-header>
 
 <!-- Post filter/tool bar at top -->
@@ -11,15 +11,19 @@
                  [editors]="editors$ | async"
                  [channels]="cmsChannels$ | async"
                  [categories]="cmsCategories$ | async"
-                 [paginator]="entitiesState.paginator"
+                 [paginator]="paginator$ | async"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Post list table -->
 <cms-list *ngIf="loaded"
           [etype]="etype"
+          [authors]="authors$ | async"
+          [editors]="editors$ | async"
+          [paginator]="paginator$ | async"
+          [entities]="entities$ | async"
+          [idsCurPage]="idsCurPage$ | async"
+          [idsEditing]="idsEditing$ | async"
           [authState]="authState"
-          [listState]="entitiesState"
-          [cmsState]="cmsState"
           (batchEdit)="batchEdit($event)"
           (batchDelete)="batchDelete($event)"
           (batchOfflineEdit)="batchOfflineEdit($event)"
@@ -44,7 +48,7 @@
 
     <form (ngSubmit)="onSubmitPosts()">
 
-
+<!--
         <accordion>
 
             <accordion-group isOpen="true">
@@ -52,12 +56,10 @@
                     文章分类<i class="pull-right fa customize-chevron"></i>
                 </div>
 
-                <!-- FIXME: Add change input -->
-
                 <div class="treeview">
                     <category-tree [parentId]="0"
-                                   [channel]=""
-                                   [categories]="cmsState.categories"
+                                   [channel]="params['channel']"
+                                   [categories]="categories$ | async"
                                    [selectedCats]="sharedCats"
                                    (checkEvent)="selectCat($event)">
                     </category-tree>
@@ -69,14 +71,14 @@
                     文章专题分类<i class="pull-right fa customize-chevron"></i>
                 </div>
 
-                <topic-cloud [topics]="cmsState.post_topic_cats"
+                <topic-cloud [topics]=""
                              [selectedTopics]="sharedTopics"
                              (addTopic)="addTopic($event)"
                              (removeTopic)="removeTopic($event)"></topic-cloud>
             </accordion-group>
 
         </accordion>
-
+-->
         <!-- Use form-group to wrap buttons so to pad bottom for right-panel 100% height issue -->
         <div class="row form-group">
             <div class="col-xs-12">

@@ -1,0 +1,18 @@
+<accordion>
+    <accordion-group isOpen="true">
+        <div accordion-heading>
+            文章内容<i class="pull-right fa customize-chevron"></i>
+        </div>
+
+        <!-- Froala Editor -->
+        <!-- TODO: Use official one when ngModule bug is fixed -->
+        <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
+             [(froalaModel)]="inputPost.content"></div>-->
+
+        <froala *ngIf="content"
+                [froalaOptions]="froalaOptions"
+                [froalaData]="content"
+                (model)="contentChanged.emit($event)"></froala>
+
+    </accordion-group>
+</accordion>

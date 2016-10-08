@@ -29,7 +29,10 @@ import { Ping }                 from '../../ping';
  * TODO: loading/loaded status used in reducers(collection.ts).
  */
 import { getAuthors, getEditors, getCmsChannels,
-    getCmsCategories, getLocations, getPaginator,
+    getCmsCategories, getLocations,
+    getPostStates, getPageStates, getTopicStates,
+    getIdsCurPage, getIdsEditing,
+    getPaginator,
     getEntitiesCurPage } from '../../reducers';
 
 
@@ -70,6 +73,8 @@ export class EntitiesPage implements OnInit, OnDestroy
     cmsCategories$: Observable<Category[]>;
     paginator$:   Observable<any>;
     entities$:    Observable<Entity[]>;
+    idsCurPage$:  Observable<number[]>;
+    idsEditing$:  Observable<number[]>;
 
     /**
      * Constructor
@@ -86,14 +91,14 @@ export class EntitiesPage implements OnInit, OnDestroy
                 protected store: Store<AppState>,
                 protected ping: Ping,
                 protected pageless: boolean = false) {
-        this.authors$  = this.store.let(getAuthors());
-        this.editors$  = this.store.let(getEditors());
-        this.cmsChannels$ = this.store.let(getCmsChannels());
+        this.authors$       = this.store.let(getAuthors());
+        this.editors$       = this.store.let(getEditors());
+        this.cmsChannels$   = this.store.let(getCmsChannels());
         this.cmsCategories$ = this.store.let(getCmsCategories());
-        this.paginator$ = this.store.let(getPaginator(this.etype));
-        this.entities$  = this.store.let(getCurPageEntities(this.etype));
-         //     .select<EntitiesState>(ENTITY_INFO[this.etype].selector)
-
+        this.paginator$     = this.store.let(getPaginator(this.etype));
+        this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
+        this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
+        this.idsEditing$    = this.store.let(getIdsEditing(this.etype));
     }
 
     ngOnInit() {
@@ -133,7 +138,7 @@ export class EntitiesPage implements OnInit, OnDestroy
 
     ngOnDestroy() {
         this.subAuth.unsubscribe();
-        this.subCms.unsubscribe();
+        //this.subCms.unsubscribe();
         this.subShop.unsubscribe();
         this.subEntities.unsubscribe();
         //this.subActivityOn.unsubscribe();
@@ -241,16 +246,13 @@ export class EntitiesPage implements OnInit, OnDestroy
      * Save single entity on entity list page
      */
     saveEntity() {
-        console.log("saveEntity is called");
         this.store.dispatch(EntityActions.saveEntity(this.etype, this.entity));
     }
     save2Draft()   {
-        this.entity.state = 'draft';
-        this.saveEntity();
+        this.store.dispatch(EntityActions.saveEntityAsDraft(this.etype, this.entity));
     }
     save2Publish() {
-        this.entity.state = 'publish';
-        this.saveEntity();
+        this.store.dispatch(EntityActions.saveEntityAsPublish(this.etype, this.entity));
     }
 
     // In page edit single or multiple entities

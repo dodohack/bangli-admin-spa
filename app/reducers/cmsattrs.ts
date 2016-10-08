@@ -224,3 +224,15 @@ export function getCategories() {
 export function getLocations() {
     return (state$: Observable<CmsAttrsState>) => state$.select('locations');
 }
+
+export function getPostStates() {
+    return (state$: Observable<CmsAttrsState>) => state$.select('post_states');
+}
+
+export function getPageStates() {
+    return (state$: Observable<CmsAttrsState>) => state$.select('page_states');
+}
+
+export function getTopicStates() {
+    return (state$: Observable<CmsAttrsState>) => state$.select('topic_states');
+}

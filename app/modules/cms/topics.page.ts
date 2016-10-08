@@ -13,14 +13,19 @@ import { ENTITY }            from '../../models';
 import { AppState }          from '../../reducers';
 import { Ping }              from '../../ping';
 import { zh_CN }             from '../../localization';
+import { getTopicStates }    from '../../reducers';
 
 @Component({ template: require('./topics.page.html') })
 export class TopicsPage extends EntitiesPage
 {
+    topicStates$: Observable<any>;
+    
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
                 protected ping: Ping) {
         super(ENTITY.CMS_TOPIC, route, store, ping);
+        
+        this.topicStates$ = this.store.let(getTopicStates());
     }
 
     get zh() { return zh_CN.cms; }

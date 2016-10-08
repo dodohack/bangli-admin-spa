@@ -1,0 +1,57 @@
+<!-- User can hide some info if the do not want to see it -->
+<accordion>
+
+    <accordion-group isOpen="true">
+        <div accordion-heading>
+            文章属性<i class="pull-right fa customize-chevron"></i>
+        </div>
+
+        <!-- author/editor/post_type/creative_type selectors -->
+        <div class="row post-meta-row">
+            <div class="col-xs-12 form-inline">
+
+                <div class="form-group post-meta" *ngIf="authors">
+                    <label>作者</label>
+                    <select class="form-control form-control-sm custom-select"
+                            name="author_id" [ngModel]="authorId"
+                            (ngModelChanged)="authorChanged.emit($event)">
+                        <option *ngFor="let author of authors"
+                                [selected]="author.id === authorId"
+                                [value]="author.id">{{ author.display_name }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group post-meta" *ngIf="editors">
+                    <label>编辑</label>
+                    <select class="form-control form-control-sm custom-select"
+                            name="editor_id" [ngModel]="editorId"
+                            (ngModelChanged)="editorChanged.emit($event)">
+                        <option *ngFor="let editor of editors"
+                                [selected]="editor.id === editorId"
+                                [value]="editor.id">{{ editor.display_name }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group post-meta" *ngIf="creativeTypes">
+                    <label>稿件属性</label>
+                    <select class="form-control form-control-sm custom-select"
+                            name="c_type" [(ngModel)]="creativeType">
+                        <option *ngFor="let c_type of creativeTypes.available"
+                                [selected]="creativeType === c_type.creative_type"
+                                [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group post-meta" *ngIf="channels">
+                    <label>频道</label>
+                    <select class="form-control form-control-sm custom-select"
+                            name="cid" [(ngModel)]="channelId">
+                        <option *ngFor="let ch of channels"
+                                [selected]="channelId === ch.id"
+                                [value]="ch.id">{{ ch.name }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </accordion-group>
+</accordion>

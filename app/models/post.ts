@@ -11,14 +11,6 @@ import { Category } from './category';
 import { Tag }      from './tag';
 import { Topic }    from './topic';
 
-/* CREATIVE_TYPES definition, all possible entries of table column cms_post.post_type */
-export const CREATIVE_TYPES = [
-    {creative_type: 'creative',      count: 0},
-    {creative_type: 'semi_creative', count: 0},
-    {creative_type: 'integration',   count: 0},
-    {creative_type: 'review',        count: 0}
-];
-
 /* POST_STATES definition, all possible entries of table column cms_post.status */
 export const POST_STATES = [
     {state: 'unsaved',  count: 0}, // Initial state for offline display

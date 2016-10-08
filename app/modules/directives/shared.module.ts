@@ -19,10 +19,19 @@ import { GeoLocationCloud }          from './geo-location-cloud';
 import { CategoryTree }              from './category-tree';
 import { TopicCloud }                from './topic-cloud';
 import { TagCloud }                  from './tag-cloud';
-import { CmsTagCloud }               from './cms-tag-cloud';
 import { ModalEditTax }              from './modal-edit-tax';
-import { ModalEditGeoLoc }          from './modal-edit-geo-loc';
+import { ModalEditGeoLoc }           from './modal-edit-geo-loc';
 import { EditorPageHeader }          from './editor-page-header';
+//import { EditorPageBody }          from './editor-page-body';
+import { EntityTitleDate }           from './entity-title-date';
+import { EntityButtons }             from './entity-buttons';
+import { EntityAttrCloud }           from './entity-attr-cloud';
+import { EntityAttributes }          from './entity-attributes';
+import { EntityThumbnails }          from './entity-thumbnails';
+import { EntityExcerptNote }         from './entity-excerpt-note';
+import { EntityContent }             from './entity-content';
+import { EntityRightPanel }          from './entity-right-panel';
+
 import { ListPageHeader }            from './list-page-header';
 import { ListFilterBar }             from './list-filter-bar';
 import { SearchBox }                 from './search-box';
@@ -51,7 +60,16 @@ import { DateFilterComponent }       from './date-filter.component';
         TopicCloud,
         TagCloud,
         EditorPageHeader,
-        CmsTagCloud,
+
+        EntityTitleDate,
+        EntityButtons,
+        EntityAttrCloud,
+        EntityAttributes,
+        EntityThumbnails,
+        EntityExcerptNote,
+        EntityContent,
+        EntityRightPanel,
+
         ModalEditTax,
         ModalEditGeoLoc,
         //FastEditPostFormComponent,
@@ -74,8 +92,17 @@ import { DateFilterComponent }       from './date-filter.component';
         CategoryTree,
         TopicCloud,
         TagCloud,
+
         EditorPageHeader,
-        CmsTagCloud,
+        EntityTitleDate,
+        EntityButtons,
+        EntityAttrCloud,
+        EntityAttributes,
+        EntityThumbnails,
+        EntityExcerptNote,
+        EntityContent,
+        EntityRightPanel,
+
         ModalEditTax,
         ModalEditGeoLoc,
         //FastEditPostFormComponent,

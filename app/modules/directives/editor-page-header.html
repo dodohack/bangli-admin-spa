@@ -1,26 +1,26 @@
-<div class="page-header" *ngIf="isLoaded">
+<div class="page-header" *ngIf="etype">
     <div class="row">
 
         <div class="col-xs-6">
             <h1 class="title">
                 编辑{{ title }}
-                <a class="page-title-action btn btn-outline-info btn-sm"
-                   [routerLink]="['/', baseUrl]">
-                    <i class="fa fa-backward"></i> 返回列表
-                </a>
+                <button class="page-title-action btn btn-outline-info btn-sm"
+                   (click)="cancelEdit.emit()">
+                    <i class="fa fa-backward"></i> 取消并返回
+                </button>
 
                 <a class="page-title-action btn btn-outline-info btn-sm"
-                   [routerLink]="['/', baseUrl, previous]" *ngIf="previous">
-                    <i class="fa fa-angle-double-left"></i> Previous {{ previous }}
+                   [routerLink]="[prevEntityUrl]" *ngIf="prevEntityUrl">
+                    <i class="fa fa-angle-double-left"></i> {{ prevEntityTitle }}
                 </a>
                 <a class="page-title-action btn btn-outline-info btn-sm"
-                   [routerLink]="['/', baseUrl, next]" *ngIf="next">
-                    Next {{ next }} <i class="fa fa-angle-double-right"></i>
+                   [routerLink]="[nextEntityUrl]" *ngIf="nextEntityUrl">
+                    {{ nextEntityTitle }} <i class="fa fa-angle-double-right"></i>
                 </a>
             </h1>
         </div>
 
-        <div class="col-xs-6" *ngIf="!isUser">
+        <div class="col-xs-6" *ngIf="!isUser && entity">
             <div class="float-right">
                 <span class="tag tag-default-outline">
                     状态: {{ zh[entity.state] }}
@@ -32,7 +32,7 @@
         </div>
 
 
-        <div class="col-xs-12">
+        <div class="col-xs-12" *ngIf="entity">
             <div class="float-right">
                 <span *ngIf="entity.created_at" class="tag tag-default-outline">
                     创建时间：{{ entity.created_at | date: 'y-MM-dd HH:mm' }}

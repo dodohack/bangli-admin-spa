@@ -65,6 +65,7 @@ import { vouchersReducer } from './entities';
 
 import { Observable } from 'rxjs/Observable';
 
+import { User }        from '../models';
 import { ENTITY_INFO } from '../models';
 
 /**
@@ -193,6 +194,18 @@ export function getLocations() {
     return compose(fromCms.getLocations(), getCmsAttrsState());
 }
 
+export function getPostStates() {
+    return compose(fromCms.getPostStates(), getCmsAttrsState());
+}
+
+export function getPageStates() {
+    return compose(fromCms.getPageStates(), getCmsAttrsState());
+}
+
+export function getTopicStates() {
+    return compose(fromCms.getTopicStates(), getCmsAttrsState());
+}
+
 /*****************************************************************************
  * User
  *****************************************************************************/
@@ -230,10 +243,26 @@ export function getIdsCurPage(etype: string) {
     return compose(fromEntities.getIdsCurPage(), getEntitiesState(etype));
 }
 
+export function getIdsEditing(etype: string) {
+    return compose(fromEntities.getIdsEditing(), getEntitiesState(etype));
+}
+
 export function getEntitiesCurPage(etype: string) {
     return (state$: Observable<AppState>) => state$
         .let(getIdsCurPage(etype))
         .switchMap(idsCurPage => state$.let(getEntities(etype, idsCurPage)));
+}
+
+export function getEntity(etype: string, id: number) {
+    return compose(fromEntities.getEntity(id), getEntitiesState(etype));
+}
+
+export function getCurEntity(etype: string) {
+    return compose(fromEntities.getCurEntity(), getEntitiesState(etype));
+}
+
+export function getCurEntityContent(etype: string) {
+    return compose(fromEntities.getCurEntityContent(), getEntitiesState(etype));
 }
 
 /*****************************************************************************

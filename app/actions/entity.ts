@@ -189,6 +189,30 @@ export class EntityActions {
         };
     }
 
+    static SAVE_ENTITY_AS_PENDING = '[Entity] Save Entity As Pending';
+    static saveEntityAsPending(etype: string, entity: Entity): Action {
+        return {
+            type: EntityActions.SAVE_ENTITY_AS_PENDING,
+            payload: {etype: etype, data: entity}
+        };
+    }
+
+    static SAVE_ENTITY_AS_PUBLISH = '[Entity] Save Entity As Publish';
+    static saveEntityAsPublish(etype: string, entity: Entity): Action {
+        return {
+            type: EntityActions.SAVE_ENTITY_AS_PUBLISH,
+            payload: {etype: etype, data: entity}
+        };
+    }
+
+    static SAVE_ENTITY_AS_DRAFT = '[Entity] Save Entity As Draft';
+    static saveEntityAsDraft(etype: string, entity: Entity): Action {
+        return {
+            type: EntityActions.SAVE_ENTITY_AS_DRAFT,
+            payload: {etype: etype, data: entity}
+        };
+    }
+
     static APPLY_REVISION = '[Entity] Apply Revision';
     static applyRevision(etype: string, ids: number[]): Action {
         return {

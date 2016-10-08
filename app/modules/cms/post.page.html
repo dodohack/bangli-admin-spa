@@ -1,238 +1,82 @@
 <editor-page-header [etype]="etype"
                     [authState]="authState"
-                    [entitiesState]="entitiesState">
+                    [ids]="ids"
+                    [entities]="entities"
+                    [entity]="entity"
+                    (cancelEdit)="cancelSave()">
 </editor-page-header>
 
-<form *ngIf="entity" (ngSubmit)="save()" #entityForm="ngForm">
+<!--
+<entity-buttons [entityState]="entity?.state"
+                (save)="save()"
+                (save2Pending)="save2Pending()"
+                (save2Draft)="save2Draft()"
+                (save2Publish)="save2Publish()"
+                (cancelSave)="cancelSave()">
+</entity-buttons>
 
-    <!-- Post title and main buttons -->
-    <div class="row post-meta-row">
-        <div class="col-xs-7 col-sm-7 col-md-8">
-            <div class="input-group">
-                <span class="input-group-addon">标题</span>
-                <input type="text" name="title" class="form-control post-title"
-                       [(ngModel)]="entity.title"
-                       placeholder="文章标题" required>
-            </div>
-        </div>
+<entity-title-date [title]="entity?.title"
+                   [date]="entity?.fake_published_at"
+                   (titleChanged)="updateTitle($event)"
+                   (dateChanged)="updateFakePublishedAt($event)">
+</entity-title-date>
+-->
+<!-- Post location, category, tag, topic etc -->
+<!--
+<entity-attr-cloud [categories]="entity?.categories"
+                   [topics]="entity?.topics"
+                   [locations]="entity?.locations"
+                   (toggle)="openPanel = !openPanel"
+                   (deleteCat)="removeCat($event)"
+                   (deleteTag)="removeTag($event)"
+                   (deleteTopic)="removeTopic($event)"
+                   (toggleGeoLocation)="updateGeoLocation($event)">
+</entity-attr-cloud>
 
-        <div class="col-xs-5 col-sm-5 col-md-4">
-            <div class="row">
-                <div class="col-xs-12">
-                    <!-- Save buttons -->
-                    <div class="float-right">
-                        <button class="btn btn-sm btn-outline-success"
-                                (click)="save()"
-                                [disabled]="!entityForm.form.dirty && !entityDirty && !entityForm.form.valid">保存</button>
+<entity-attributes [authorId]="entity?.author_id"
+                   [editorId]="entity?.editor_id"
+                   [creativeType]="entity?.creative_type"
+                   [channelId]="entity?.channel_id"
+                   [authors]="cms?.authors"
+                   [editors]="cms?.editors"
+                   [creativeTypes]="creativeTypes"
+                   [channels]="cms?.channels"
+                   (authorChanged)="updateAuthor($event)"
+                   (editorChanged)="updateEditor($event)"
+                   (creativeTypeChanged)="updateCreativeType($event)"
+                   (channelChanged)="updateChannel($event)">
+</entity-attributes>
 
-                        <button class="btn btn-sm btn-outline-primary"
-                                (click)="save2Pending($event)" [disabled]="!isDraft">提交审稿</button>
+<entity-thumbnails>
+</entity-thumbnails>
 
-                        <button class="btn btn-sm btn-outline-danger"
-                                (click)="save2Draft($event)" *ngIf="isPending || isPublish">
-                            <template [ngIf]="isPending">改为草稿</template>
-                            <template [ngIf]="isPublish">撤销发布</template>
-                        </button>
+<entity-excerpt-note [excerpt]="entity?.excerpt"
+                     [note]="entity?.internal_note"
+                     (excerptChanged)="updateExcerpt($event)"
+                     (noteChanged)="updateNote($event)">
+</entity-excerpt-note>
+-->
+<!-- Froala Editor -->
+<!-- TODO: Use official one when ngModule bug is fixed -->
+<!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
+     [(froalaModel)]="inputPost.content"></div>-->
+<!--
+<froala [froalaOptions]="froalaOptions"
+        [froalaData]="entity?.content"
+        (model)="contentChanged($event)"></froala>
 
-                        <button class="btn btn-sm btn-outline-danger"
-                                (click)="save2Publish($event)" [hidden]="isPublish">发布</button>
+<revision-history [entity]="entity" [cmsState]="cms"
+                  (restore2Revision)="restoreRevision($event)">
+</revision-history>
 
-                        <button class="btn btn-sm btn-outline-danger"
-                                (click)="cancelSave($event)" [hidden]="!entityForm.form.dirty && !entityDirty">退出</button>
-                    </div>
-                </div>
-                <div class="col-xs-12">
-                    <div class="date-area float-right">
-                        <span class="date-time btn btn-sm btn-secondary"
-                              (click)="dpHidden = !dpHidden">
-                            显示时间: {{ entity.fake_published_at | date: 'y-MM-dd HH:mm' }} GMT
-                            <i class="fa fa-chevron-down" [class.fa-chevron-down]="dpHidden"
-                               [class.fa-chevron-up]="!dpHidden"></i>
-                        </span>
-                        <div class="date-picker" [class.hidden]="dpHidden">
-                            <div>
-                                <datepicker name="date" [(ngModel)]="fakePublishAt"
-                                            [showWeeks]="false"></datepicker>
-                                <timepicker name="time" [(ngModel)]="fakePublishAt"
-                                            [showMeridian]="false"></timepicker>
-                                <span class="btn btn-info btn-sm float-right" (click)="dpHidden = true">确定</span>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- User can hide some info if the do not want to see it -->
-    <accordion>
-
-        <accordion-group isOpen="true">
-            <div accordion-heading>
-                文章属性<i class="pull-right fa customize-chevron"></i>
-            </div>
-
-            <!-- author/editor/post_type/creative_type selectors -->
-            <div class="row post-meta-row">
-                <div class="col-xs-12 form-inline">
-
-                    <div class="form-group post-meta">
-                        <label>作者</label>
-                        <select class="form-control form-control-sm custom-select"
-                                name="author_id" [(ngModel)]="entity.author_id">
-                            <option *ngFor="let author of cmsState.authors"
-                                    [selected]="author.id === entity.author_id"
-                                    [value]="author.id">{{ author.display_name }}</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group post-meta">
-                        <label>编辑</label>
-                        <select class="form-control form-control-sm custom-select"
-                                name="editor_id" [(ngModel)]="entity.editor_id">
-                            <option *ngFor="let editor of cmsState.editors"
-                                    [selected]="editor.id === entity.editor_id"
-                                    [value]="editor.id">{{ editor.display_name }}</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group post-meta">
-                        <label>稿件属性</label>
-                        <select class="form-control form-control-sm custom-select"
-                                name="c_type" [(ngModel)]="entity.creative_type">
-                            <option *ngFor="let c_type of cmsState.post_creative_types.available"
-                                    [selected]="entity.creative_type === c_type.creative_type"
-                                    [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group post-meta">
-                        <label>频道</label>
-                        <select class="form-control form-control-sm custom-select"
-                                name="cid" [(ngModel)]="entity.channel_id">
-                            <option *ngFor="let ch of cmsState.channels"
-                                    [selected]="entity.channel_id === ch.id"
-                                    [value]="ch.id">{{ ch.name }}</option>
-                        </select>
-                    </div>
-
-                    <a class="float-right btn btn-sm btn-outline-warning"
-                       (click)="openPanel = true">展开侧栏</a>
-                </div>
-            </div>
-
-
-            <!-- Post location, category, tag, topic etc -->
-            <cms-tag-cloud [post]="entity"
-                           (toggle)="openPanel = !openPanel"
-                           (deleteCat)="removeCat($event)"
-                           (deleteTag)="removeTag($event)"
-                           (deleteTopic)="removeTopic($event)"
-                           (toggleGeoLocation)="toggleGeoLocation($event)"></cms-tag-cloud>
-
-            <!-- Thumbnail and excerpt -->
-            <div class="row">
-                <div class="col-xs-4">
-                    <div style="width: 200px; height: 150px; border: 3px solid green;">
-                        缩略图
-                    </div>
-                </div>
-
-                <div class="col-xs-8">
-                    <textarea name="excerpt" [(ngModel)]="entity.excerpt" placeholder="摘要"
-                              class="form-control" style="height: 75px;"></textarea>
-                    <textarea name="excerpt" [(ngModel)]="entity.internal_note" placeholder="内部备注"
-                              class="form-control" style="height: 75px;"></textarea>
-                </div>
-            </div>
-
-        </accordion-group>
-
-        <accordion-group isOpen="true">
-            <div accordion-heading>
-                文章内容<i class="pull-right fa customize-chevron"></i>
-            </div>
-
-            <!-- Froala Editor -->
-            <!-- TODO: Use official one when ngModule bug is fixed -->
-            <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
-                 [(froalaModel)]="inputPost.content"></div>-->
-            <froala *ngIf="inputEntity"
-                    [froalaOptions]="froalaOptions"
-                    [froalaData]="inputEntity.content"
-                    (model)="contentChanged($event)"></froala>
-
-        </accordion-group>
-
-    </accordion>
-</form>
-
-<revision-history [entity]="entity" [cmsState]="cmsState"
-                  (restore2Revision)="restoreRevision($event)"></revision-history>
-
-<!-- Right panel, we can trigger a seperate saving individually -->
-<right-panel [width]="'400px'" [isOpen]="openPanel"
-             (toggle)="openPanel = !openPanel" *ngIf="entity">
-
-    <tabset>
-        <tab heading="分类"> <!-- display {{ curChannel.name }} -->
-            <div class="treeview">
-                <category-tree [parentId]="0"
-                               [channel]="curChannel"
-                               [categories]="cmsState.categories"
-                               [selectedCats]="entity.categories"
-                               (checkEvent)="selectCat($event)">
-                </category-tree>
-            </div>
-        </tab>
-
-        <tab heading="专题">
-            <topic-cloud [channel]="curChannel"
-                         [topics]="cmsState.post_topic_cats"
-                         [selectedTopics]="entity.topics"
-                         (addTopic)="addTopic($event)"
-                         (removeTopic)="removeTopic($event)"></topic-cloud>
-        </tab>
-
-        <tab heading="Location">
-            <geo-location-cloud [locations]="cmsState.locations"
-                                (clickEvent)="toggleGeoLocation($event)"></geo-location-cloud>
-        </tab>
-
-    </tabset>
-
-    <!--
-    <accordion>
-
-        <accordion-group isOpen="true">
-            <div accordion-heading>
-                <template [ngIf]="curChannel">{{curChannel.name}}</template>分类<i class="pull-right fa customize-chevron"></i>
-            </div>
-
-            <div class="treeview">
-                <category-tree [parentId]="0"
-                               [channel]="curChannel"
-                               [categories]="cmsState.categories"
-                               [selectedCats]="entity.categories"
-                               (checkEvent)="selectCat($event)">
-                </category-tree>
-            </div>
-        </accordion-group>
-
-        <accordion-group isOpen="true">
-            <div accordion-heading>
-                <template [ngIf]="curChannel">{{curChannel.name}}</template>专题分类<i class="pull-right fa customize-chevron"></i>
-            </div>
-
-            <topic-cloud [channel]="curChannel"
-                         [topics]="cmsState.post_topic_cats"
-                         [selectedTopics]="entity.topics"
-                         (addTopic)="addTopic($event)"
-                         (removeTopic)="removeTopic($event)"></topic-cloud>
-        </accordion-group>
-
-    </accordion>
-    -->
-</right-panel>
+<entity-right-panel [channel]="entity?.channel"
+                    [locations]="cms?.locations"
+                    [categories]="cms?.categories"
+                    [selectedCats]="entity?.categories"
+                    [selectedTopics]="entity?.topics"
+                    (categoryChanged)="updateCat($event)"
+                    (addTopic)="addTopic($event)"
+                    (removeTopic)="removeTopic($event)"
+                    (locationChanged)="updateGeoLocation($event)">
+</entity-right-panel>
+-->
