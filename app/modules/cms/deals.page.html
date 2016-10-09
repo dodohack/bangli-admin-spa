@@ -8,13 +8,15 @@
 
 <!-- Deal post filter/tool bar at top -->
 <list-filter-bar *ngIf="loaded"
+                 [slug]="'deal'"
+                 [zh]="zh"
                  [etype]="etype"
-                 [authors]="cmsState.authors"
-                 [editors]="cmsState.editors"
-                 [channels]="cmsState.channels"
-                 [categories]="cmsState.categories"
-                 [paginator]="entitiesState.paginator"
-                 (batchActionEvent)="batchEdit($event)"></list-filter-bar>
+                 [editors]="editors$ | async"
+                 [cmsChannels]="cmsChannels$ | async"
+                 [entityParams]="entityParams"
+                 [categories]="cmsCategories$ | async"
+                 [paginator]="paginator$ | async"
+                 (filterEvent)="filterEvent($event)"></list-filter-bar>
 
 <!-- Deal post list table -->
 <cms-list *ngIf="loaded"

@@ -6,6 +6,7 @@ import { Component }         from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
+import { Router }            from '@angular/router';
 import { Observable }        from 'rxjs/Observable';
 
 import { EntitiesPage }      from '../base/entities.page';
@@ -23,8 +24,9 @@ export class PostsPage extends EntitiesPage
     
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
+                protected router: Router,
                 protected ping: Ping) {
-        super(ENTITY.CMS_POST, route, store, ping);
+        super(ENTITY.CMS_POST, route, router, store, ping);
         
         this.postStates$    = this.store.let(getPostStates());        
     }

@@ -1,28 +1,27 @@
 import { Component, Input, Output }from '@angular/core';
 import { EventEmitter }            from '@angular/core';
-import { OnInit, OnDestroy }       from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { ActivatedRoute, Router }  from '@angular/router';
-import { NavigationExtras }        from '@angular/router';
 
 import { User }        from '../../models';
 import { Channel }     from '../../models';
 import { Category }    from '../../models';
 import { Brand }       from '../../models';
 import { ENTITY }      from '../../models';
-import { ENTITY_INFO } from '../../models';
-import { zh_CN }       from '../../localization';
+import { EntityParams }from '../../models';
 
 @Component({
     selector: 'list-filter-bar',
     template: require('./list-filter-bar.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListFilterBar implements OnInit, OnDestroy {
+export class ListFilterBar {
 
+    @Input() slug: string;
+    @Input() zh: any;
+    @Input() entityParams: EntityParams;
     @Input() authors: User[];
     @Input() editors: User[];
-    @Input() channels: Channel[];
+    @Input() cmsChannels: Channel[];
     @Input() categories: Category[];
     @Input() brands: Brand[];
     @Input() paginator: any;
@@ -30,104 +29,56 @@ export class ListFilterBar implements OnInit, OnDestroy {
     // The entity type of lists passed in
     @Input() etype: string;
 
-    // Current channel
-    channel: Channel;
+    // Filter event
+    @Output() filterEvent = new EventEmitter();
 
-    // URL parameters and query parameters
+    // FIXME: Fix the relationship of default value for entityParams
+    // FIXME: and local version of filterParams
+    // Local copy of filter params
+    //filterParams = new EntityParams;
     state: string;
     filterAuthor: string;
     filterEditor: string;
     filterCat: string;
     filterBrand: string;
     filterDateType: string;
-    _filterDateFrom: string;
-    _filterDateTo: string;
+    filterDateFrom: string;
+    filterDateTo: string;
+
     // Datapicker of entity filtering is hidden by default
     dpHidden = true;
 
-    // Subscribers
-    subParams;
-    subQParams;
-
-    constructor(private route: ActivatedRoute,
-                private router: Router) {}
-
-    ngOnInit() {
-        this.subParams = this.route.params.subscribe(params => {
-            // Get current channel of entities
-            if (this.channels) {
-                let tmp = this.channels.filter(c => c.slug == params['channel']);
-                if (tmp) this.channel = tmp[0];
-            }
-            // Get current state of entities
-            this.state = params['state'] || 'all';
-        });
-
-        this.subQParams = this.route.queryParams.subscribe(queryParams => {
-            // NOTE: We initialize these to empty string instead of null
-            // because select->option value can't be null.
-            this.filterAuthor = queryParams['author'] || '';
-            this.filterEditor = queryParams['editor'] || '';
-            this.filterCat    = queryParams['category'] || '';
-            this.filterBrand    = queryParams['brand'] || '';
-            this.filterDateType = queryParams['datetype'] || '';
-            this._filterDateFrom = queryParams['datefrom'] || Date.now();
-            this._filterDateFrom = this.GMT(this.filterDateFrom, true);
-            this._filterDateTo = queryParams['dateto'] || Date.now();
-            this._filterDateTo =  this.GMT(this.filterDateTo, false);
-        });
+    // FIXME: Fix the relationship of these, so we do not need to do copy here
+    submitFilter() {
+        this.entityParams.author   = this.filterAuthor;
+        this.entityParams.editor   = this.filterEditor;
+        this.entityParams.category = this.filterCat;
+        this.entityParams.brand    = this.filterBrand;
+        this.entityParams.datetype = this.filterDateType;
+        this.entityParams.datefrom = this.filterDateFrom;
+        this.entityParams.dateto   = this.filterDateTo;
+        this.filterEvent.emit(this.entityParams);
     }
 
-    ngOnDestroy() {
-        this.subParams.unsubscribe();
-        this.subQParams.unsubscribe();
+
+    /**
+     * Categories of current channel.
+     */
+    get catsOfChannel() {
+        // No channel is selected, return all categories
+        if (!this.entityParams || this.entityParams.channel || !this.cmsChannels)
+            return this.categories;
+
+        let curChannel =
+            this.cmsChannels.filter(c => c.slug = this.entityParams.channel)[0];
+
+        // Return categories belongs to current channel
+        return this.categories.filter(c => c.channel_id === curChannel.id);
     }
 
     /**
-     * Return MySQL compatible date in GMT
-     * We set from date start from 00:00:00 of the day and to date end with
-     * 23:59:59 of the day.
+     * Count of entities per category 
      */
-    GMT(value, isDateFrom: boolean) {
-        let d = new Date(value);
-        let offset = d.getTimezoneOffset() / 60;
-        // Patch user timezone offset, so we can get the GMT
-        d.setHours(d.getHours() - offset);
-        if (isDateFrom)
-            return d.toISOString().slice(0,10) + ' 00:00:00';
-        else
-            return d.toISOString().slice(0,10) + ' 23:59:59';
-    }
-
-    get filterDateFrom() { return this._filterDateFrom; }
-    set filterDateFrom(value) { this._filterDateFrom = this.GMT(value, true); }
-    get filterDateTo() { return this._filterDateTo; }
-    set filterDateTo(value) { this._filterDateTo = this.GMT(value, false); }
-
-    get baseUrl() { if (this.etype) return ENTITY_INFO[this.etype].slug; }
-    get zh() { return zh_CN[this.baseUrl]; }
-
-    get catsOfChannel() {
-        // No channel is selected, return all categories
-        if (!this.channel) return this.categories;
-
-        // Return categories belongs to current channel
-        return this.categories.filter(c => c.channel_id === this.channel.id);
-    }
-
-    get hasAuthorFilter() { return this.etype === ENTITY.CMS_POST; }
-    get hasEditorFilter() {
-        switch (this.etype) {
-            case ENTITY.CMS_POST:
-            case ENTITY.CMS_PAGE:
-            case ENTITY.CMS_TOPIC:
-            case ENTITY.SHOP_PRODUCT:
-                return true;
-            default:
-                return false;
-        }
-    }
-    
     catCount(cat: any) {
         switch(this.etype) {
             case ENTITY.CMS_POST:
@@ -143,6 +94,9 @@ export class ListFilterBar implements OnInit, OnDestroy {
         }
     }
 
+    /**
+     * Count of entities per editor 
+     */
     editorWorkCount(editor: any) {
         switch(this.etype) {
             case ENTITY.CMS_POST:
@@ -156,22 +110,6 @@ export class ListFilterBar implements OnInit, OnDestroy {
         }
     }
 
-    // Submit filter
-    onSubmitFilter() {
-        let navigationExtras: NavigationExtras = {
-            queryParams: {
-                'author':   this.filterAuthor,
-                'editor':   this.filterEditor,
-                'category': this.filterCat,
-                'brand':    this.filterBrand,
-                'datetype': this.filterDateType,
-                'datefrom': this.filterDateFrom,
-                'dateto':   this.filterDateTo }
-        };
-
-        this.router.navigate(['/', this.baseUrl], navigationExtras);
-    }
-
     /**
      * We can loop over the array returned by this function to greatly simplify
      * the html template, this 4 elements represent the state and style of
@@ -179,14 +117,26 @@ export class ListFilterBar implements OnInit, OnDestroy {
      */
     get pagers() {
         return [
-            { index: 1, icon: 'fa-angle-double-left',
-              disabled: this.paginator.cur_page === 1 },
-            { index: this.paginator.pre_page, icon: 'fa-angle-left',
-              disabled: this.paginator.cur_page === this.paginator.pre_page },
-            { index: this.paginator.next_page, icon: 'fa-angle-right',
-              disabled: this.paginator.cur_page === this.paginator.next_page},
-            { index: this.paginator.last_page, icon: 'fa-angle-double-right',
-              disabled: this.paginator.cur_page === this.paginator.last_page},
+            {
+                index: 1,
+                icon: 'fa-angle-double-left',
+                disabled: this.paginator.cur_page === 1
+            },
+            {
+                index: this.paginator.pre_page,
+                icon: 'fa-angle-left',
+                disabled: this.paginator.cur_page === this.paginator.pre_page
+            },
+            {
+                index: this.paginator.next_page,
+                icon: 'fa-angle-right',
+                disabled: this.paginator.cur_page === this.paginator.next_page
+            },
+            {
+                index: this.paginator.last_page,
+                icon: 'fa-angle-double-right',
+                disabled: this.paginator.cur_page === this.paginator.last_page
+            },
         ];
     }
 
@@ -194,10 +144,10 @@ export class ListFilterBar implements OnInit, OnDestroy {
      * Pagination url
      */
     pageUrl($page, $state) {
-        if (this.etype === ENTITY.USER)
-            return '/' + this.baseUrl + '/page/' + $page + '/role/' + $state;
+        if (!this.entityParams || this.entityParams.channel)
+            return '/' + this.slug + '/channel/' + this.entityParams.channel +
+                '/page/' + $page + '/state/' + $state;
         else
-            return '/' + this.baseUrl + '/page/' + $page + '/state/' + $state;
-
-    } 
+            return '/' + this.slug + '/page/' + $page + '/state/' + $state;
+    }
 }

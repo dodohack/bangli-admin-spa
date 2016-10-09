@@ -7,9 +7,12 @@
 
 <!-- Order filter/tool bar -->
 <list-filter-bar *ngIf="loaded"
+                 [slug]="'order'"
+                 [zh]="zh"
                  [etype]="etype"
-                 [paginator]="entitiesState.paginator"
-                 (batchActionEvent)="batchEdit($event)"></list-filter-bar>
+                 [entityParams]="entityParams"
+                 [paginator]="paginator$ | async"
+                 (filterEvent)="filterEvent($event)"></list-filter-bar>
 
 <!-- Product list table -->
 <order-list *ngIf="loaded"

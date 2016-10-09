@@ -6,10 +6,13 @@
 
 <!-- Page filter/tool bar at top -->
 <list-filter-bar *ngIf="loaded"
+                 [slug]="'page'"
+                 [zh]="zh"
                  [etype]="etype"
-                 [editors]="cmsState.editors"
-                 [paginator]="entitiesState.paginator"
-                 (batchActionEvent)="batchEdit($event)"></list-filter-bar>
+                 [editors]="editors$ | async"
+                 [entityParams]="entityParams"
+                 [paginator]="paginator$ | async"
+                 (filterEvent)="filterEvent($event)"></list-filter-bar>
 
 <!-- Page list table -->
 <cms-list *ngIf="loaded"

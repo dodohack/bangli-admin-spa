@@ -6,6 +6,7 @@ import '@ngrx/core/add/operator/select';
 import { Component }         from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
+import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
@@ -21,8 +22,9 @@ export class VouchersPage extends EntitiesPage
 {
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
+                protected router: Router,
                 protected ping: Ping) {
-        super(ENTITY.SHOP_VOUCHER, route, store, ping);
+        super(ENTITY.SHOP_VOUCHER, route, router, store, ping);
     }
 
     get zh() { return zh_CN.product; }

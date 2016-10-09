@@ -8,13 +8,16 @@
 
 <!-- Post filter/tool bar at top -->
 <list-filter-bar *ngIf="loaded"
+                 [slug]="'post'"
+                 [zh]="zh"
                  [etype]="etype"
                  [authors]="authors$ | async"
                  [editors]="editors$ | async"
-                 [channels]="cmsChannels$ | async"
+                 [cmsChannels]="cmsChannels$ | async"
+                 [entityParams]="entityParams"
                  [categories]="cmsCategories$ | async"
                  [paginator]="paginator$ | async"
-                 (batchActionEvent)="batchEdit($event)"></list-filter-bar>
+                 (filterEvent)="filterEvent($event)"></list-filter-bar>
 
 <!-- Post list table -->
 <cms-list [etype]="etype"

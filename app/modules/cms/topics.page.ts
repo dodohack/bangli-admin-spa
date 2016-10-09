@@ -5,6 +5,7 @@
 import { Component }         from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
+import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
@@ -22,8 +23,9 @@ export class TopicsPage extends EntitiesPage
     
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
+                protected router: Router,
                 protected ping: Ping) {
-        super(ENTITY.CMS_TOPIC, route, store, ping);
+        super(ENTITY.CMS_TOPIC, route, router, store, ping);
         
         this.topicStates$ = this.store.let(getTopicStates());
     }

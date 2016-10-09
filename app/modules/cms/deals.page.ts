@@ -5,6 +5,7 @@
 import { Component }         from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
+import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
@@ -19,8 +20,9 @@ export class DealsPage extends EntitiesPage
 {
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
-                 protected ping: Ping) {
-        super(ENTITY.CMS_DEAL, route, store, ping);
+                protected router: Router,
+                protected ping: Ping) {
+        super(ENTITY.CMS_DEAL, route, router, store, ping);
     }
 
     get zh() { return zh_CN.cms; }

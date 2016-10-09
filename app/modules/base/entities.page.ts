@@ -6,6 +6,8 @@ import { Component }         from '@angular/core';
 import { HostListener }      from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
+import { Router }            from '@angular/router';
+import { NavigationExtras }  from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
@@ -90,6 +92,7 @@ export class EntitiesPage implements OnInit, OnDestroy
      */
     constructor(protected etype: string,    // Entity type
                 protected route: ActivatedRoute,
+                protected router: Router,
                 protected store: Store<AppState>,
                 protected ping: Ping,
                 protected pageless: boolean = false) {
@@ -173,16 +176,41 @@ export class EntitiesPage implements OnInit, OnDestroy
                     this.entityParams.author   = this.params['author'];
                     this.entityParams.editor   = this.params['editor'];
                     this.entityParams.category = this.params['category'];
+                    this.entityParams.brand    = this.params['brand'];
                     this.entityParams.datetype = this.params['datetype'];
-                    this.entityParams.datefrom = this.params['datefrom'];
-                    this.entityParams.dateto   = this.params['dateto'];
+                    this.entityParams.datefrom = this.params['datefrom'] || Date.now();
+                    this.entityParams.dateto   = this.params['dateto'] || Date.now();
                     this.entityParams.query    = this.params['query'];
-                    
+
+                    this.entityParams.datefrom =
+                        this.filterDateInGMT(this.entityParams.datefrom, true);
+                    this.entityParams.dateto   =
+                        this.filterDateInGMT(this.entityParams.dateto, false);
+
                     this.store.dispatch(EntityActions
                         .loadEntities(this.etype, this.entityParams));
                 }
                 
             });
+    }
+
+    /**
+     * Redirect current page to a page with filter url set 
+     */
+    filterEvent($event) {
+        let navigationExtras: NavigationExtras = {
+            queryParams: {
+                'author':   $event.author,
+                'editor':   $event.editor,
+                'category': $event.category,
+                'brand':    $event.brand,
+                'datetype': $event.datetype,
+                'datefrom': $event.datefrom,
+                'dateto':   $event.dateto }
+        };
+        
+        let slug = ENTITY_INFO[this.etype].slug; 
+        this.router.navigate(['/', slug], navigationExtras);
     }
 
     /**
@@ -221,14 +249,18 @@ export class EntitiesPage implements OnInit, OnDestroy
 
     /**
      * Return MySQL compatible date in GMT
+     * We set from date start from 00:00:00 of the day and to date end with
+     * 23:59:59 of the day.
      */
-    GMT(value) {
+    filterDateInGMT(value, isDateFrom: boolean) {
         let d = new Date(value);
         let offset = d.getTimezoneOffset() / 60;
         // Patch user timezone offset, so we can get the GMT
         d.setHours(d.getHours() - offset);
-        let newDate = d.toISOString().slice(0,19).split('T');
-        return newDate[0] + ' ' + newDate[1];
+        if (isDateFrom)
+            return d.toISOString().slice(0,10) + ' 00:00:00';
+        else
+            return d.toISOString().slice(0,10) + ' 23:59:59';
     }
 
     /**
@@ -237,7 +269,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     get entity() { return this.entitiesInEdit[0]; }
 
     get myId() { return this.authState.users[this.authState.key].id; }
-
+    
     /**
      * Create a entity on entity list page
      */
