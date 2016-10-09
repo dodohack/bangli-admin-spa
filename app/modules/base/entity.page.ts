@@ -297,25 +297,27 @@ export abstract class EntityPage implements OnInit, OnDestroy
     }
 
     /**
-     * Various save button and cancel
+     * Automatically save entity in an interval
      */
     autoSave() {
-        // Do the check for every 10s.
+        // Do the saving in every 10s.
         this.subTimer = Observable.interval(10000).subscribe(x => {
             // Save entity with content to server
             if (this.isContentDirty) {
-                this.store.dispatch(EntityActions
-                    .updateContent(this.etype, this.content));
-                
-                this.store.dispatch(EntityActions.saveEntity(this.etype, this.entity));
+                this.store.dispatch(EntityActions.updateContent(this.etype, this.content));
+                this.store.dispatch(EntityActions.autoSave(this.etype, this.entity));
             } else if (this.isDirty) {
                 // Save entity except content to server
-                this.store.dispatch(EntityActions.saveAttributes(this.etype, this.entity));
+                this.store.dispatch(EntityActions.autoSaveAttributes(this.etype, this.entity));
             }
 
             // Also ping server to set editing lock state
         });
     }
+
+    /**
+     * Various save button and cancel
+     */
     save(entity) {
         this.store.dispatch(EntityActions.saveEntity(this.etype, entity));
     }

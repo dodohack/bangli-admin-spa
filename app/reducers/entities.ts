@@ -28,8 +28,8 @@ export interface EntitiesState {
     idsContent: number[];  // IDs for entities have content loaded
     entities: { [id:number]: Entity }; // All entities loaded to client
     isDirty: boolean;      // If the entities in idsEditing is dirty
-    // TODO: We can add these 2 more indicator here
-    // isSaving: boolean;
+    // TODO: We can add this 1 more indicator here 
+    // set this to true when saving or loading
     // isLoading: boolean;
     paginator: Paginator;
 }
@@ -396,6 +396,18 @@ function entitiesReducer (etype: string,
             });
         }
 
+        case EntityActions.AUTO_SAVE_SUCCESS: {
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   state.entities,
+                isDirty:    false,
+                paginator:  state.paginator
+            });
+        }
+
         // Create a new entity, use id '0' as placeholder id
         case EntityActions.NEW_ENTITY: {
             const userId  = action.payload.data;
@@ -627,7 +639,7 @@ function entitiesReducer (etype: string,
         }            
             
 
-        // Save given entity to the state only
+        // Save entity to server, but do not save reversions
         case EntityActions.AUTO_SAVE: {
             let entity = action.payload.data;
             return Object.assign({}, state, {
@@ -641,6 +653,21 @@ function entitiesReducer (etype: string,
                 paginator:  state.paginator
             });
         }
+
+        // Save entity to server except its content
+        case EntityActions.AUTO_SAVE_ATTRIBUTES: {
+            let entity = action.payload.data;
+            return Object.assign({}, state, {
+                idsTotal:   state.idsTotal,
+                idsCurPage: state.idsCurPage,
+                idsEditing: state.idsEditing,
+                idsContent: state.idsContent,
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
+                isDirty:    true,
+                paginator:  state.paginator
+            });
+        }            
 
         case EntityActions.SAVE_ENTITY_AS_PENDING: {
             let entity = action.payload.data;

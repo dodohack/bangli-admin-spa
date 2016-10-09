@@ -189,14 +189,6 @@ export class EntityActions {
         };
     }
 
-    static AUTO_SAVE_CONTENT = '[Entity] Auto Save Content';
-    static autoSaveContent(etype: string, content: string): Action {
-        return {
-            type: EntityActions.AUTO_SAVE_CONTENT,
-            payload: {etype: etype, data: content}
-        };
-    }
-
     static SAVE_ENTITY = '[Entity] Save Entity';
     static saveEntity(etype: string, entity: Entity): Action {
         return {
@@ -244,6 +236,14 @@ export class EntityActions {
             payload: {etype: etype, data: entity}
         };
     }
+
+    static AUTO_SAVE_SUCCESS = '[Entity] Auto Save Success';
+    static autoSaveSuccess(etype: string, entity: Entity): Action {
+        return {
+            type: EntityActions.AUTO_SAVE_SUCCESS,
+            payload: {etype: etype, data: entity}
+        };
+    }    
 
     static SAVE_ENTITY_FAIL = '[Entity] Save Entity Fail';
     static saveEntityFail(/*etype: string*/): Action {

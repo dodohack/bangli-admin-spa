@@ -56,11 +56,20 @@ export class EntityEffects  {
             .catch(() => Observable.of(EntityActions.saveEntityFail()))
         );
 
-    @Effect() saveEntityAttrs$ = this.actions$.ofType(EntityActions.AUTO_SAVE_ATTRIBUTES)
-        .switchMap(action => this.saveEntityAttrs(action.payload.etype, action.payload.data)
-            .map(ret => EntityActions.saveEntitySuccess(ret.etype, ret.entity))
+    @Effect() autoSave$ = this.actions$.ofType(EntityActions.AUTO_SAVE)
+        .switchMap(action => this.autoSaveEntity(action.payload.etype, action.payload.data)
+            .map(ret => EntityActions.autoSaveSuccess(ret.etype, ret.entity))
             .catch(() => Observable.of(EntityActions.saveEntityFail()))
         );
+
+    @Effect() autoSaveAttrs$ = this.actions$.ofType(EntityActions.AUTO_SAVE_ATTRIBUTES)
+        .switchMap(action => this.autoSaveEntityAttrs(action.payload.etype, action.payload.data)
+            .map(ret => EntityActions.autoSaveSuccess(ret.etype, ret.entity))
+            .catch(() => Observable.of(EntityActions.saveEntityFail()))
+        );
+
+    @Effect() autoSaveSuccess$ = this.actions$.ofType(EntityActions.AUTO_SAVE_SUCCESS)
+        .map(action => AlertActions.success('自动保存成功, 此消息应该不用这么明显'));    
     
     @Effect() saveEntitySuccess$ = this.actions$.ofType(EntityActions.SAVE_ENTITY_SUCCESS)
         .map(action => AlertActions.success('保存成功!'));
@@ -147,9 +156,26 @@ export class EntityEffects  {
     }
 
     /**
+     * Create/update an entity automatically 
+     */
+    protected autoSaveEntity(t: string, entity: any): Observable<any> {
+        return this.saveEntity(t, entity, true);
+    }
+
+    /**
+     * Create/update an entity without content automatically 
+     */
+    protected autoSaveEntityAttrs(t: string, entity: any): Observable<any> {
+        // Remove content from the entity
+        //delete entity['content'];
+        console.error("Delete content from autoSaveEntityAttrs");
+        return this.saveEntity(t, entity, true);
+    }
+
+    /**
      * Create/Update a entity, return a entity
      */
-    protected saveEntity(t: string, entity: any): Observable<any> {
+    protected saveEntity(t: string, entity: any, isAuto = false): Observable<any> {
         console.log("SAVING ENTITY: ", entity);
 
         let body = JSON.stringify(entity);
@@ -159,10 +185,12 @@ export class EntityEffects  {
         if (entity.id && entity.id !== 0) {
             // Update an existing entity
             api += '/' + entity.id + '?etype=' + t;
+            if (isAuto) api = api + '&auto=true';
             return this.http.put(api, body, options).map(res => res.json());
         } else {
             // Create a new entity
             api += '?etype=' + t;
+            if (isAuto) api = api + '&auto=true';
             return this.http.post(api, body, options).map(res => res.json());
         }
     }
