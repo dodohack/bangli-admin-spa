@@ -23,7 +23,7 @@
 </entity-title-date>
 
 <!-- Post location, category, tag, topic etc -->
-<!--
+
 <entity-attr-cloud [categories]="entity?.categories"
                    [topics]="entity?.topics"
                    [locations]="entity?.locations"
@@ -56,12 +56,12 @@
                      (excerptChanged)="updateExcerpt($event)"
                      (noteChanged)="updateNote($event)">
 </entity-excerpt-note>
--->
+
 <!-- Froala Editor -->
 <!-- TODO: Use official one when ngModule bug is fixed -->
 <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
      [(froalaModel)]="inputPost.content"></div>-->
-<!--
+
 <froala [froalaOptions]="froalaOptions"
         [froalaData]="entity?.content"
         (model)="contentChanged($event)"></froala>
@@ -70,14 +70,34 @@
                   (restore2Revision)="restoreRevision($event)">
 </revision-history>
 
-<entity-right-panel [channel]="entity?.channel"
-                    [locations]="cms?.locations"
-                    [categories]="cms?.categories"
-                    [selectedCats]="entity?.categories"
-                    [selectedTopics]="entity?.topics"
-                    (categoryChanged)="updateCat($event)"
-                    (addTopic)="addTopic($event)"
-                    (removeTopic)="removeTopic($event)"
-                    (locationChanged)="updateGeoLocation($event)">
-</entity-right-panel>
--->
+<!-- Right panel, we can trigger a seperate saving individually -->
+<right-panel [width]="'400px'" [isOpen]="openPanel"
+             (toggle)="openPanel = !openPanel">
+    <tabset>
+        <tab heading="分类">
+            <div class="treeview">
+                <category-tree [parentId]="0"
+                               [channel]="entity?.channel"
+                               [categories]="cms?.categories"
+                               [selectedCats]="entity?.categories"
+                               (checkEvent)="updateCat($event)">
+                </category-tree>
+            </div>
+        </tab>
+
+        <tab heading="专题">
+            <topic-cloud [channel]="entity?.channel"
+                         [topics]="null"
+                         [selectedTopics]="entity?.topics"
+                         (addTopic)="addTopic($event)"
+                         (removeTopic)="removeTopic($event)">
+            </topic-cloud>
+        </tab>
+
+        <tab heading="Location">
+            <geo-location-cloud [locations]="cms?.locations"
+                                (clickEvent)="updateGeoLocation($event)">
+            </geo-location-cloud>
+        </tab>
+    </tabset>
+</right-panel>

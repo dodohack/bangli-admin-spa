@@ -51,18 +51,23 @@ export class EditorPageHeader {
         return null;
     }
 
+    /**
+     * FIXME: Can we remove extra check if this.entities defined?
+     */
     excerptTitle(idx) {
         return idx + '. ' + this.entities[this.ids[idx]].title.substr(0, 15) + '...';
     }
     get prevEntityTitle() {
         let newIdx = this.index - 1;
-        if (newIdx >= 0) return this.excerptTitle(newIdx);
+        if (newIdx >= 0 && this.ids && this.entities)
+            return this.excerptTitle(newIdx);
         return null;
     }
 
     get nextEntityTitle() {
         let newIdx = this.index + 1;
-        if (newIdx < this.ids.length) return this.excerptTitle(newIdx);
+        if (newIdx < this.ids.length && this.ids && this.entities)
+            return this.excerptTitle(newIdx);
         return null;
     }
 }

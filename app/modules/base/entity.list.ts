@@ -68,6 +68,8 @@ export class EntityList
     }
     get channels() { return this.cmsState.channels; }
     */
+    
+    get hasEntity() { return this.idsCurPage && this.idsCurPage.length > 0; }
 
     get authorsObj() {
         // Convert authors array to authors object indexed by author id
@@ -86,13 +88,15 @@ export class EntityList
     
     // If batch options can be enabled
     get canEdit() {
-        return this.idsEditing.length !== 0;
+        return this.idsEditing && this.idsEditing.length !== 0;
     }
 
     // If all post is selected, we use '<=' in case we have extra editing
     // post which is not in the list(newly created one?).
     get isAllSelected() {
-        return this.idsCurPage.length <= this.idsEditing.length;
+        if (this.idsEditing)
+            return this.idsCurPage.length === this.idsEditing.length;
+        return false;
     }
 
     // If the entity has an author
@@ -111,7 +115,7 @@ export class EntityList
 
     // If the the entity is in editing
     isEditing(id) {
-        return this.idsEditing.filter(eid => eid === id).length;
+        return this.idsEditing && this.idsEditing.indexOf(id) !== -1;
     }
 
     hasActivity(id): boolean {

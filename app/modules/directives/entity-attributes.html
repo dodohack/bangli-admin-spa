@@ -36,7 +36,7 @@
                     <label>稿件属性</label>
                     <select class="form-control form-control-sm custom-select"
                             name="c_type" [(ngModel)]="creativeType">
-                        <option *ngFor="let c_type of creativeTypes.available"
+                        <option *ngFor="let c_type of creativeTypes"
                                 [selected]="creativeType === c_type.creative_type"
                                 [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
                     </select>

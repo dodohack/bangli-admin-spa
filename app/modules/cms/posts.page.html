@@ -15,8 +15,7 @@
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Post list table -->
-<cms-list *ngIf="loaded"
-          [etype]="etype"
+<cms-list [etype]="etype"
           [authors]="authors$ | async"
           [editors]="editors$ | async"
           [paginator]="paginator$ | async"

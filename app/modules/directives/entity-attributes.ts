@@ -8,6 +8,7 @@ import { ChangeDetectionStrategy }                from "@angular/core";
 import { Entity }  from '../../models';
 import { Channel } from '../../models';
 import { User }    from '../../models';
+import { zh_CN }   from '../../localization';
 
 @Component({
     selector: 'entity-attributes',
@@ -28,4 +29,6 @@ export class EntityAttributes {
     @Output() editorChanged = new EventEmitter();
     @Output() creativeTypeChanged = new EventEmitter();
     @Output() channelChanged = new EventEmitter();
+
+    get zh() { return zh_CN.cms; }
 }

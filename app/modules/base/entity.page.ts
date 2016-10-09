@@ -107,7 +107,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subEntity = this.store.let(getCurEntity(this.etype))
             .subscribe(e => this.entity = e);
         this.subContent = this.store.let(getCurEntityContent(this.etype))
-            .subscribe(c => this.content = c);
+            .subscribe(c => {this.initialized = false;
+                this.isContentDirty = false; this.content = c;});
 
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
@@ -211,8 +212,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
         // If no timeout set, the editor will throw an exception
         setTimeout(() => {
             // Set initialized state or set entity content dirty
+            console.log("content changed!");
             this.initialized ? this.isContentDirty = true : this.initialized = true;
-            //this.entity.content = $event;
             this.content = $event;
         });
     }

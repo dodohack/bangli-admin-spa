@@ -22,7 +22,6 @@ import { TagCloud }                  from './tag-cloud';
 import { ModalEditTax }              from './modal-edit-tax';
 import { ModalEditGeoLoc }           from './modal-edit-geo-loc';
 import { EditorPageHeader }          from './editor-page-header';
-//import { EditorPageBody }          from './editor-page-body';
 import { EntityTitleDate }           from './entity-title-date';
 import { EntityButtons }             from './entity-buttons';
 import { EntityAttrCloud }           from './entity-attr-cloud';
@@ -30,7 +29,6 @@ import { EntityAttributes }          from './entity-attributes';
 import { EntityThumbnails }          from './entity-thumbnails';
 import { EntityExcerptNote }         from './entity-excerpt-note';
 import { EntityContent }             from './entity-content';
-import { EntityRightPanel }          from './entity-right-panel';
 
 import { ListPageHeader }            from './list-page-header';
 import { ListFilterBar }             from './list-filter-bar';
@@ -68,7 +66,6 @@ import { DateFilterComponent }       from './date-filter.component';
         EntityThumbnails,
         EntityExcerptNote,
         EntityContent,
-        EntityRightPanel,
 
         ModalEditTax,
         ModalEditGeoLoc,
@@ -101,7 +98,6 @@ import { DateFilterComponent }       from './date-filter.component';
         EntityThumbnails,
         EntityExcerptNote,
         EntityContent,
-        EntityRightPanel,
 
         ModalEditTax,
         ModalEditGeoLoc,
