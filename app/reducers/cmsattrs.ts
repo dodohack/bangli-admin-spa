@@ -21,8 +21,8 @@ export interface CmsAttrsState {
     channels:  Channel[];
     locations: GeoLocation[];
     categories: Category[];
-    post_topic_cats: Topic[]; // Topic cats for post
-    tags: Tag[];
+    //post_topic_cats: Topic[]; // Topic cats for post
+    //tags: Tag[];
     // available - all available options for given attributes defined locally
     // actual    - attributes with number of posts retrieved from server
     post_states:         {available: PostState[],    actual: PostState[]};
@@ -38,8 +38,8 @@ const initialState: CmsAttrsState = {
     channels:  [],
     locations: [],
     categories: [],
-    post_topic_cats: [],
-    tags: [],
+    //post_topic_cats: [],
+    //tags: [],
     post_states: {available: POST_STATES, actual: []},
     post_creative_types: {available: CREATIVE_TYPES, actual: []},
     topic_states: {available: POST_STATES, actual: []},
@@ -63,9 +63,11 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             if (action.payload.categories)
                 categories = action.payload.categories;
 
+            /*
             let tags: Tag[];
             if (action.payload.tags)
                 tags = action.payload.tags;
+                */
 
             let channels: Channel[];
             if (action.payload.channels)
@@ -75,13 +77,20 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             if (action.payload.locations)
                 locations = action.payload.locations;
 
+            /*
             let post_topic_cats: Topic[];
             if (action.payload.post_topic_cats)
                 post_topic_cats = action.payload.post_topic_cats;
+                */
 
             let post_states: PostState[];
-            if (action.payload.post_states)
-                post_states = action.payload.post_states;
+            if (action.payload.post_states) {
+                let total = action.payload.post_states
+                    .map(state => state.count)
+                    .reduce((total, count) => total + count);
+                post_states = [...action.payload.post_states,
+                    {state: 'all', count: total}];
+            }
 
             let post_creative_types: CreativeType[];
             if (action.payload.post_creative_types)
@@ -105,8 +114,8 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                 channels: [...channels],
                 locations: [...locations],
                 categories: [...categories],
-                post_topic_cats: [...post_topic_cats],
-                tags: [...tags],
+                //post_topic_cats: [...post_topic_cats],
+                //tags: [...tags],
                 post_states: Object.assign({}, state.post_states, {actual: post_states}),
                 post_creative_types: Object.assign({}, state.post_creative_types,
                     {actual: post_creative_types}),
@@ -123,10 +132,10 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             let taxes: any;
             // Object index key to specific attributes
             let key: string;
-            if (action.type === CmsAttrActions.SAVE_TAG_SUCCESS) {
+            /*if (action.type === CmsAttrActions.SAVE_TAG_SUCCESS) {
                 key = 'tags';
                 taxes = state.tags;
-            } else if (action.type === CmsAttrActions.SAVE_CATEGORY_SUCCESS) {
+            } else */if (action.type === CmsAttrActions.SAVE_CATEGORY_SUCCESS) {
                 key = 'categories';
                 taxes = state.categories;
             } else {
@@ -147,10 +156,10 @@ export default function (state = initialState, action: Action): CmsAttrsState {
         case CmsAttrActions.ADD_CATEGORY_SUCCESS:
         case CmsAttrActions.ADD_TAG_SUCCESS: {
             // Add newly added location/category/tag to local copy
-            if (action.type === CmsAttrActions.ADD_TAG_SUCCESS)
+            /*if (action.type === CmsAttrActions.ADD_TAG_SUCCESS)
                 return Object.assign({}, state,
                     {tags: [...state.tags, action.payload]});
-            else if (action.type === CmsAttrActions.ADD_CATEGORY_SUCCESS)
+            else */if (action.type === CmsAttrActions.ADD_CATEGORY_SUCCESS)
                 return Object.assign({}, state,
                     {categories: [...state.categories, action.payload]});
             else
@@ -164,10 +173,10 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             // Delete local copy of deleted location/category/tag
             let taxes: any;
             let key: string;
-            if (action.type === CmsAttrActions.DELETE_TAG_SUCCESS) {
+            /*if (action.type === CmsAttrActions.DELETE_TAG_SUCCESS) {
                 key = 'tags';
                 taxes = state.tags;
-            } else if (action.type === CmsAttrActions.DELETE_CATEGORY_SUCCESS) {
+            } else */if (action.type === CmsAttrActions.DELETE_CATEGORY_SUCCESS) {
                 key = 'categories';
                 taxes = state.categories;
             } else {
@@ -198,10 +207,32 @@ export function getAuthors() {
 }
 
 /**
+ * Return an object of authors indexed by author id
+ * FIXME: We cant get anything out from this
+ */
+export function getAuthorsObject() {
+    return (state$: Observable<CmsAttrsState>) => state$
+        .select('authors').reduce((users: {[id: number]: User}, user: User) => {
+            return Object.assign(users, { [user.id]: user });
+        }, {});
+}
+
+/**
  * Return an array of editors
  */
 export function getEditors() {
     return (state$: Observable<CmsAttrsState>) => state$.select('editors');
+}
+
+/**
+ * Return an object of editors indexed by editor id
+ * FIXME: We cant get anything out from this
+ */
+export function getEditorsObject() {
+    return (state$: Observable<CmsAttrsState>) => state$
+        .select('editors').reduce((users: {[id: number]: User}, user: User) => {
+            return Object.assign(users, { [user.id]: user });
+        }, {});
 }
 
 /**

@@ -1,14 +1,17 @@
-<list-page-header [etype]="etype"
-                  [states]="shopState.product_states.actual"
+<list-page-header [slug]="'product'"
+                  [name]="'产品'"
+                  [zh]="zh"
+                  [states]="productState$ | async"
                   [loading]="loading"></list-page-header>
+
 
 <!-- Product filter/tool bar -->
 <list-filter-bar *ngIf="loaded"
                  [etype]="etype"
-                 [editors]="cmsState.editors"
-                 [categories]="shopState.categories"
-                 [brands]="shopState.brands"
-                 [paginator]="entitiesState.paginator"
+                 [editors]="editors$ | async"
+                 [categories]="productCategories$ | async"
+                 [brands]="productBrands$ | async"
+                 [paginator]="paginator$ | async"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Product list table -->

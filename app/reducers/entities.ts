@@ -209,7 +209,8 @@ function entitiesReducer (etype: string,
             const idsCurPage   = entities.map(p => p.id);
 
             // Early return if nothing is loaded
-            if (!idsCurPage.length) return state;
+            if (!idsCurPage.length)
+                return Object.assign({}, state, {idsCurPage: []});
 
             // Merge new idsCurPage with idsTotal
             const idsTotal = [...state.idsTotal, ...idsCurPage].filter(
@@ -779,8 +780,10 @@ export function getContent() {
  */
 export function getCurEntity() {
     return (state$: Observable<EntitiesState>) => state$
-        .filter(s => s.idsEditing.length > 0)
-        .select(s => s.entities[s.idsEditing[0]]);
+        .select(s => {
+            if (!s.idsEditing.length) return null;
+            return s.entities[s.idsEditing[0]];
+        });
 }
 
 /**
@@ -797,7 +800,7 @@ export function getEntities(ids: number[]) {
  */
 export function getIdsCurPage() {
     return (state$: Observable<EntitiesState>) => state$
-        .filter(s => s.idsCurPage.length > 0).select(s => s.idsCurPage);
+        .select(s => s.idsCurPage);
 }
 
 /**
@@ -805,7 +808,7 @@ export function getIdsCurPage() {
  */
 export function getIdsEditing() {
     return (state$: Observable<EntitiesState>) => state$
-        .filter(s => s.idsEditing.length > 0).select(s => s.idsEditing);
+        .select(s => s.idsEditing);
 }
 
 /**

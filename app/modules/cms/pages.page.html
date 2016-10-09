@@ -1,5 +1,7 @@
-<list-page-header [etype]="etype"
-                  [states]="cmsState.page_states.actual"
+<list-page-header [slug]="'page'"
+                  [name]="'页面'"
+                  [zh]="zh"
+                  [states]="pageStates$ | async"
                   [loading]="loading"></list-page-header>
 
 <!-- Page filter/tool bar at top -->

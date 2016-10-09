@@ -28,8 +28,8 @@ import { Ping }                 from '../../ping';
  * TODO: getter functions in each reducers and reducers/index and
  * TODO: loading/loaded status used in reducers(collection.ts).
  */
-import { getAuthors, getEditors, getCmsChannels,
-    getCmsCategories, getLocations,
+import { getAuthors, getAuthorsObject, getEditors, getEditorsObject, 
+    getCmsChannels, getCmsCategories, getLocations,
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing,
     getPaginator,
@@ -69,6 +69,8 @@ export class EntitiesPage implements OnInit, OnDestroy
 
     authors$:     Observable<User[]>;
     editors$:     Observable<User[]>;
+    authorsObject$: Observable<any>;
+    editorsObject$: Observable<any>;
     cmsChannels$: Observable<Channel[]>;
     cmsCategories$: Observable<Category[]>;
     paginator$:   Observable<any>;
@@ -93,6 +95,8 @@ export class EntitiesPage implements OnInit, OnDestroy
                 protected pageless: boolean = false) {
         this.authors$       = this.store.let(getAuthors());
         this.editors$       = this.store.let(getEditors());
+        this.authorsObject$ = this.store.let(getAuthorsObject());
+        this.editorsObject$ = this.store.let(getEditorsObject());
         this.cmsChannels$   = this.store.let(getCmsChannels());
         this.cmsCategories$ = this.store.let(getCmsCategories());
         this.paginator$     = this.store.let(getPaginator(this.etype));

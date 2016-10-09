@@ -1,6 +1,8 @@
-<list-page-header [etype]="etype"
-                  [states]="shopState.product_states.actual"
-                  [loading]="loading"></list-page-header>
+<list-page-header [slug]="'voucher'"
+                  [name]="'优惠码'"
+                  [zh]="zh"
+                  [loading]="loading"
+                  (newEntityEvent)="newVoucher()"></list-page-header>
 
 <h2>Vouchers management page</h2>
 <a [routerLink]="['/voucher/new']">New Voucher</a>

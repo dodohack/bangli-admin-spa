@@ -1,6 +1,8 @@
-<list-page-header [etype]="etype"
-                  [cmsChannels]="cmsChannels | async"
-                  [activeChannel]="params['channel']"
+<list-page-header [slug]="'post'"
+                  [name]="'文章'"
+                  [zh]="zh"
+                  [cmsChannels]="cmsChannels$ | async"
+                  [curChannelSlug]="params['channel']"
                   [states]="postStates$ | async"
                   [loading]="loading"></list-page-header>
 
@@ -16,8 +18,8 @@
 
 <!-- Post list table -->
 <cms-list [etype]="etype"
-          [authors]="authors$ | async"
-          [editors]="editors$ | async"
+          [authorsObj]="authorsObject$ | async"
+          [editorsObj]="editorsObject$ | async"
           [paginator]="paginator$ | async"
           [entities]="entities$ | async"
           [idsCurPage]="idsCurPage$ | async"

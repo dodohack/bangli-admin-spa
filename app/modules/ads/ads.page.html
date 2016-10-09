@@ -1,7 +1,8 @@
-<!-- FIXME: states of ads -->
-<list-page-header [etype]="etype"
+<list-page-header [slug]="'ads'"
+                  [name]="'广告'"
+                  [zh]="zh"
                   [loading]="loading"
-                  (editEvent)="newEntity()"></list-page-header>
+                  (newEntityEvent)="newAdvertise()"></list-page-header>
 
 <!-- Ads filter/tool bar at top -->
 <list-filter-bar *ngIf="loaded"

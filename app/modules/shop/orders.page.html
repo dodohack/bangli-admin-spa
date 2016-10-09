@@ -1,6 +1,9 @@
-<list-page-header [etype]="etype"
-                  [states]="shopState.order_states.actual"
-                  [loading]="loading"></list-page-header>
+<list-page-header [slug]="'order'"
+                  [name]="'订单'"
+                  [zh]="zh"
+                  [states]="orderStates$ | async"
+                  [loading]="loading"
+                  (newEntityEvent)="newShopOrder()"></list-page-header>
 
 <!-- Order filter/tool bar -->
 <list-filter-bar *ngIf="loaded"

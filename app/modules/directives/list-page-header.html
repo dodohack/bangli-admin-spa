@@ -1,12 +1,11 @@
 <!-- Cms channels menu -->
 <div class="channel-menu" *ngIf="cmsChannels">
     <div class="channel-heading">
-        <a [routerLink]="['/', baseUrl, 'channel', 'all']"
-           class="channel-title" routerLinkActive="active">
+        <a [routerLink]="['/', slug]" class="channel-title">
             <h4>所有频道</h4>
         </a>
         <a *ngFor="let ch of cmsChannels"
-           [routerLink]="['/', baseUrl, 'channel', ch.slug]"
+           [routerLink]="['/', slug, 'channel', ch.slug]"
            class="channel-title" routerLinkActive="active">
             <h4>{{ ch.name }}</h4>
         </a>
@@ -16,22 +15,19 @@
 <!-- header -->
 <div class="page-header">
     <h1 class="title">
-        <span *ngIf="activeChannel">{{ zh[activeChannel] }}频道{{ title }}</span>
-        <span *ngIf="!activeChannel">所有{{ title }}</span>
+        <span *ngIf="curChannelSlug">{{ zh[curChannelSlug] }}频道{{ name }}</span>
+        <span *ngIf="!curChannelSlug">所有{{ name }}</span>
 
-        <a *ngIf="!onFlyEdit"
+        <a *ngIf="!inPageEdit"
            class="page-title-action btn btn-sm btn-outline-info"
-           [routerLink]="['/', baseUrl, 'new']">新建{{ title }}</a>
+           [routerLink]="['/', slug, 'new']">新建{{ name }}</a>
 
-        <button *ngIf="onFlyEdit"
-                class="page-title-action btn btn-sm btn-outline-info"
-                (click)="editEvent.emit()">新建{{ title }}</button>
-
-        <a class="page-title-action btn btn-sm btn-outline-info float-right"
-           *ngIf="isCms" [routerLink]="['/setting/cms']">内容系统设置</a>
+        <a *ngIf="inPageEdit"
+           class="page-title-action btn btn-sm btn-outline-info"
+           (click)="newEntityEvent.emit()">新建{{ name }}</a>
 
         <a class="page-title-action btn btn-sm btn-outline-info float-right"
-           *ngIf="isShop" [routerLink]="['/setting/shop']">商店设置</a>
+           [routerLink]="['/setting']">系统设置</a>
 
         <button class="page-title-action btn btn-sm btn-outline-info float-right">详简切换</button>
     </h1>
@@ -39,23 +35,15 @@
 
 <!-- navbar and search box -->
 <nav class="navbar page-sub-menu">
-    <ul class="nav navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" [routerLink]="[navUrl('all')]"
-               routerLinkActive="active">
-                全部<span> ({{ total }})</span>
-            </a>
-        </li>
-
-        <!-- Various status tabs -->
-
+    <ul class="nav navbar-nav" *ngIf="!curChannelSlug">
+        <!-- Entity status navbar -->
         <li *ngFor="let state of states.actual" class="nav-item">
-            <a class="nav-link" [routerLink]="[navUrl(state.state)]"
+            <a class="nav-link" [routerLink]="['/', slug, 'page', 1, 'state', state.state]"
                routerLinkActive="active">
                 {{ zh[state.state] }}<span> ({{ state.count }})</span>
             </a>
         </li>
     </ul>
 
-    <search-box [baseUrl]="baseUrl" [loading]="loading"></search-box>
+    <search-box [slug]="slug" [loading]="loading"></search-box>
 </nav>

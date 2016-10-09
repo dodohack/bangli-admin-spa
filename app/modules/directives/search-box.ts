@@ -16,7 +16,7 @@ export class SearchBox implements OnInit {
     searchCtrl = new FormControl();
     searchText: string = '';
 
-    @Input() baseUrl: string;
+    @Input() slug: string;
     @Input() loading: boolean;
 
     constructor(private route: ActivatedRoute,
@@ -32,7 +32,7 @@ export class SearchBox implements OnInit {
         this.searchCtrl.valueChanges
             .debounceTime(500).subscribe(text => {
             let param: NavigationExtras = { queryParams: { 'query': text }};
-            this.router.navigate(['/', this.baseUrl], param);
+            this.router.navigate(['/', this.slug], param);
         });
     }
 }

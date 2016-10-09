@@ -19,8 +19,10 @@ export class EntityList
     @Input() entities: Entity[];
     @Input() idsCurPage: number[];
     @Input() idsEditing: number[];
-    @Input() authors: User[];
-    @Input() editors: User[];
+    @Input() authorsObj: any;  // authors object
+    @Input() editorsObj: any;  // editors object
+    @Input() authors: any; // DEPRECATED
+    @Input() editors: any; // DEPRECATED
     @Input() channels: Channel[];
     
     @Input() authState: AuthState;
@@ -47,44 +49,11 @@ export class EntityList
     @Output() batchLock = new EventEmitter();
 
     batchAction: string = '';
-
-    /*
-    get ids() { return this._listState.idsCurPage; }
-    get entities() { return this._listState.entities; }
-    get paginator() { return this._listState.paginator; }
-    get authors() {
-        // Convert authors array to authors object indexed by author id
-        return this.cmsState.authors
-            .reduce((users: {[id: number]: User}, entity: User) => {
-                return Object.assign(users, { [entity.id]: entity });
-            }, {});
-    }
-    get editors() {
-        // Convert editors array to editors object indexed by editor id
-        return this.cmsState.editors
-            .reduce((users: {[id: number]: User}, entity: User) => {
-                return Object.assign(users, { [entity.id]: entity });
-            }, {});
-    }
-    get channels() { return this.cmsState.channels; }
-    */
     
-    get hasEntity() { return this.idsCurPage && this.idsCurPage.length > 0; }
-
-    get authorsObj() {
-        // Convert authors array to authors object indexed by author id
-        return this.authors
-            .reduce((users: {[id: number]: User}, entity: User) => {
-                return Object.assign(users, { [entity.id]: entity });
-            }, {});
+    get hasEntity() {
+        console.log("Has entity: ", this.idsCurPage);
+        return this.idsCurPage && this.idsCurPage.length > 0;
     }
-    get editorsObj() {
-        // Convert editors array to editors object indexed by editor id
-        return this.editors
-            .reduce((users: {[id: number]: User}, entity: User) => {
-                return Object.assign(users, { [entity.id]: entity });
-            }, {});
-    }    
     
     // If batch options can be enabled
     get canEdit() {
@@ -98,20 +67,6 @@ export class EntityList
             return this.idsCurPage.length === this.idsEditing.length;
         return false;
     }
-
-    // If the entity has an author
-    hasAuthor(id) {
-        if (this.etype === ENTITY.CMS_POST && id && this.authors[id])
-            return true;
-        return false;
-    }
-    // Get author name of given entity
-    authorName(id) { return this.authors[id].name; }
-
-    // If the entity has an editor
-    hasEditor(id) { return this.editors[id]; }
-    // Get editor name of given entity
-    editorName(id) { return this.editors[id].name; }
 
     // If the the entity is in editing
     isEditing(id) {

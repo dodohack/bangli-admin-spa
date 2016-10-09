@@ -1,7 +1,9 @@
-<list-page-header [etype]="etype"
-                  [cmsChannels]="cmsState.channels"
-                  [activeChannel]="params['channel']"
-                  [states]="cmsState.deal_states.actual"
+<list-page-header [slug]="'deal'"
+                  [name]="'优惠'"
+                  [zh]="zh"
+                  [cmsChannels]="cmsChannels$ | async"
+                  [curChannelSlug]="params['channel']"
+                  [states]="dealStates$ | async"
                   [loading]="loading"></list-page-header>
 
 <!-- Deal post filter/tool bar at top -->

@@ -4,9 +4,6 @@ import { ChangeDetectionStrategy }  from '@angular/core';
 import { Title } from '@angular/platform-browser';
 
 import { Channel }     from '../../models';
-import { ENTITY }      from '../../models';
-import { ENTITY_INFO } from '../../models';
-import { zh_CN }       from '../../localization';
 
 @Component({
     selector: 'list-page-header',
@@ -14,80 +11,30 @@ import { zh_CN }       from '../../localization';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListPageHeader {
-
-    // States of given list
+    // Entity statuses
     @Input() states: any[];
 
     // Cms channels
     @Input() cmsChannels: Channel[];
 
-    // Activiate cms channel
-    @Input() activeChannel: Channel;
+    // Activiate cms channel slug
+    @Input() curChannelSlug: string;
 
-    // The entity type of lists passed in
-    @Input() etype: string;
+    // Entity name of the list, say '文章'
+    @Input() name: string;
 
-    // Input to childview search-box
+    // Entity slug of the list, say 'post'
+    @Input() slug: string;
+    
+    // Localization
+    @Input() zh: any;
+    
+
+    // If current list is in loading, input to childview search-box
     @Input() loading: boolean;
-    
-    @Output() editEvent = new EventEmitter();
 
-    get title() { if (this.etype) return ENTITY_INFO[this.etype].name; }
-    get baseUrl() { if (this.etype) return ENTITY_INFO[this.etype].slug; }
-    
-    navUrl($state) {
-        if (this.etype === ENTITY.USER)
-            return '/' + this.baseUrl + '/page/1/role/' + $state;
-        else
-            return '/' + this.baseUrl + '/page/1/state/' + $state;
-    }
-
-    get isCms() {
-        switch(this.etype) {
-            case ENTITY.CMS_POST:
-            case ENTITY.CMS_TOPIC:
-            case ENTITY.CMS_PAGE:
-            case ENTITY.CMS_DEAL:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    get isShop() {
-        switch(this.etype) {
-            case ENTITY.SHOP_ORDER:
-            case ENTITY.SHOP_PRODUCT:
-            case ENTITY.SHOP_VOUCHER:
-                return true;
-            default:
-                return false;
-        }
-    }
-    
-    // Advertise, order, voucher entity does not have single edit page
-    get onFlyEdit() {
-        switch (this.etype) {
-            case ENTITY.ADVERTISE:
-            case ENTITY.SHOP_ORDER:
-            case ENTITY.SHOP_VOUCHER:
-                return true;
-            default:
-                return false;
-        }
-    }
-    
-    get total() {
-        if (!this.states || !this.states.length) return 0;
-
-        return this.states.map(state => state.count)
-            .reduce((total, count) => total + count);
-    }
-    
-    get zh() {
-        if (this.isCms)
-            return zh_CN.cms;
-        else
-            return zh_CN[this.baseUrl];
-    }
+    // Advertise, shop order and voucher using inPageEdit(a popup modal), this
+    // is used with newEntityEvent event.
+    @Input() inPageEdit: boolean = false;
+    @Output() newEntityEvent = new EventEmitter();
 }

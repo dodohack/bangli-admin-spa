@@ -178,8 +178,16 @@ export function getAuthors() {
     return compose(fromCms.getAuthors(), getCmsAttrsState());
 }
 
+export function getAuthorsObject() {
+    return compose(fromCms.getAuthorsObject(), getCmsAttrsState());
+}
+
 export function getEditors() {
     return compose(fromCms.getEditors(), getCmsAttrsState());
+}
+
+export function getEditorsObject() {
+    return compose(fromCms.getEditorsObject(), getCmsAttrsState());
 }
 
 export function getCmsChannels() {

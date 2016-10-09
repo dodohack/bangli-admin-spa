@@ -48,15 +48,15 @@
                 <i class="fa fa-lock" style="color: red" *ngIf="entity.lock"></i>
                 <!-- Badge: Online edit lock -->
                 <span class="tag tag-default-outline"
-                      *ngIf="entity.activities[0] && entity.activities[0].edit_lock == 1">
+                      *ngIf="authorsObj && entity.activities[0] && entity.activities[0].edit_lock == 1">
                     <i class="fa fa-pencil" style="color: red"></i>
-                    {{ authors[entity.activities[0].user_id].name }} 正在编辑
+                    {{ authorsObj[entity.activities[0].user_id].name }} 正在编辑
                 </span>
                 <!-- Badge: Offline edit lock -->
                 <span class="tag tag-default-outline"
-                      *ngIf="entity.activities[0] && entity.activities[0].edit_lock == 2">
+                      *ngIf="authorsObj && entity.activities[0] && entity.activities[0].edit_lock == 2">
                     <i class="fa fa-pencil" style="color: blue"></i>
-                    {{ authors[entity.activities[0].user_id].name }} 正在离线编辑
+                    {{ authorsObj[entity.activities[0].user_id].name }} 正在离线编辑
                 </span>
 
                 <span *ngIf="entity.state != 'publish'" class="tag tag-danger-outline">
@@ -75,14 +75,12 @@
             </td>
 
             <td>
-                <!--
-                <span *ngIf="authors && entity.editor_id">
-                    编辑: {{ editorsObj[entity.id].name }}
+                <span *ngIf="authorsObj && entity.editor_id">
+                    编辑: {{ editorsObj[entity.editor_id].name }}
                 </span>
-                <div *ngIf="editors && entity.author_id">
-                    作者: {{ authorsObj[entity.id].name }}
+                <div *ngIf="editorsObj && entity.author_id">
+                    作者: {{ authorsObj[entity.author_id].name }}
                 </div>
-                -->
             </td>
 
             <td>
