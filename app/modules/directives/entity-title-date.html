@@ -1,10 +1,11 @@
+<form ngForm>
 <div class="row post-meta-row">
     <div class="col-xs-7 col-sm-7 col-md-8">
         <div class="input-group">
             <span class="input-group-addon">标题</span>
             <input type="text" name="title" class="form-control post-title"
                    [ngModel]="title"
-                   (ngModelChanged)="titleChanged.emit($event)"
+                   (ngModelChange)="titleChange.emit($event)"
                    placeholder="文章标题" required>
         </div>
     </div>
@@ -24,11 +25,11 @@
                         <div>
                             <datepicker name="date"
                                         [ngModel]="date"
-                                        (ngModelChanged)="dateChanged.emit($event)"
+                                        (ngModelChange)="dateChange.emit($event)"
                                         [showWeeks]="false"></datepicker>
                             <timepicker name="time"
                                         [ngModel]="date"
-                                        (ngModelChanged)="dateChanged.emit($event)"
+                                        (ngModelChange)="dateChange.emit($event)"
                                         [showMeridian]="false"></timepicker>
 
                             <button class="btn btn-info btn-sm float-right"
@@ -42,3 +43,4 @@
         </div>
     </div>
 </div>
+</form>

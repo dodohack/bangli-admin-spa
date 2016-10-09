@@ -28,4 +28,10 @@ export class ProductPage extends EntityPage
     }
 
     get zh() { return zh_CN.product };
+
+
+    get previewUrl(): string {
+        return this.frontendUrl + 
+            ENTITY_INFO[this.etype].slug + '/' + this.entity.guid;
+    }
 }

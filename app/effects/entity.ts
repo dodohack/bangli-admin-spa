@@ -50,12 +50,18 @@ export class EntityEffects  {
             .catch(() => Observable.of(EntityActions.loadEntityFail()))
         );
 
-    @Effect() putEntity$ = this.actions$.ofType(EntityActions.SAVE_ENTITY)
+    @Effect() saveEntity$ = this.actions$.ofType(EntityActions.SAVE_ENTITY)
         .switchMap(action => this.saveEntity(action.payload.etype, action.payload.data)
             .map(ret => EntityActions.saveEntitySuccess(ret.etype, ret.entity))
             .catch(() => Observable.of(EntityActions.saveEntityFail()))
         );
 
+    @Effect() saveEntityAttrs$ = this.actions$.ofType(EntityActions.AUTO_SAVE_ATTRIBUTES)
+        .switchMap(action => this.saveEntityAttrs(action.payload.etype, action.payload.data)
+            .map(ret => EntityActions.saveEntitySuccess(ret.etype, ret.entity))
+            .catch(() => Observable.of(EntityActions.saveEntityFail()))
+        );
+    
     @Effect() saveEntitySuccess$ = this.actions$.ofType(EntityActions.SAVE_ENTITY_SUCCESS)
         .map(action => AlertActions.success('保存成功!'));
 

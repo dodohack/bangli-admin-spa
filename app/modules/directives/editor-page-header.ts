@@ -11,11 +11,10 @@ import { zh_CN }       from '../../localization';
     template: require('./editor-page-header.html')
 })
 export class EditorPageHeader {
-
-    @Input() authState: AuthState;
-
     /* The entity type of lists passed in */
     @Input() etype: string;
+
+    @Input() previewUrl: string;
     
     // Entity ids or user uuid of current loaded page
     @Input() ids: number[] | string[];
@@ -24,24 +23,20 @@ export class EditorPageHeader {
     // Current entity
     @Input() entity: Entity;
 
-    // deprecated
-    @Input() entitiesState: any;
-    
     @Output() cancelEdit = new EventEmitter();
 
-    get zh(): any {
-        if (this.etype === ENTITY.SHOP_PRODUCT)
-            return zh_CN.product;
-        else
-            return zh_CN.cms;
-    }
+    // DEPRECATED
+    @Input() entitiesState: any;
+    @Input() authState: AuthState;
 
+    get zh(): any { return zh_CN.cms; }
     get id() { return this.entity.id; }
+    get total() { return this.ids.length; }
     get index() { return this.ids.indexOf(this.id); }
     get title() { return ENTITY_INFO[this.etype].name; }
     
     get baseUrl() { return '/' + ENTITY_INFO[this.etype].slug; }
-    
+
     get prevEntityUrl() {
         let newIdx = this.index - 1;
         if (newIdx >= 0)
@@ -56,41 +51,18 @@ export class EditorPageHeader {
         return null;
     }
 
+    excerptTitle(idx) {
+        return idx + '. ' + this.entities[this.ids[idx]].title.substr(0, 15) + '...';
+    }
     get prevEntityTitle() {
         let newIdx = this.index - 1;
-        if (newIdx >= 0)
-            return this.entities[this.ids[newIdx]].title.substr(0, 10) + '...';
+        if (newIdx >= 0) return this.excerptTitle(newIdx);
         return null;
     }
 
     get nextEntityTitle() {
         let newIdx = this.index + 1;
-        if (newIdx < this.ids.length)
-            return this.entities[this.ids[newIdx]].title.substr(0, 10) + '...';
+        if (newIdx < this.ids.length) return this.excerptTitle(newIdx);
         return null;
     }
-    
-    
-    get previewLink() {
-         if (!(this.entity.id || this.entity.guid))
-            return '';
-
-        let base = this.authState.domains[this.authState.key].url + '/';
-
-        switch (this.etype) {
-            case ENTITY.CMS_TOPIC:
-            //FIXME:
-            // return base + ENTITY_INFO[this.etype] + '/'
-            // + this.channels[this.entity.channel_id]
-            // + this.entities[this.id].guid;
-            //
-            case ENTITY.SHOP_PRODUCT:
-                return base + ENTITY_INFO[this.etype].slug + '/' + this.entity.guid;
-
-            // Default to cms type
-            default:
-                return base + 'cms/' + ENTITY_INFO[this.etype].slug + '/' + this.id;
-        }
-    }
-
 }

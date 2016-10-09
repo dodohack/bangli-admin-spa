@@ -172,12 +172,28 @@ export class EntityActions {
             payload: {etype: etype}*/
         };
     }
-
+    
     static AUTO_SAVE = '[Entity] Auto Save';
     static autoSave(etype: string, entity: Entity): Action {
         return {
             type: EntityActions.AUTO_SAVE,
             payload: {etype: etype, data: entity}
+        };
+    }
+
+    static AUTO_SAVE_ATTRIBUTES = '[Entity] Auto Save Attributes';
+    static autoSaveAttributes(etype: string, entity: Entity): Action {
+        return {
+            type: EntityActions.AUTO_SAVE_ATTRIBUTES,
+            payload: {etype: etype, data: entity}
+        };
+    }
+
+    static AUTO_SAVE_CONTENT = '[Entity] Auto Save Content';
+    static autoSaveContent(etype: string, content: string): Action {
+        return {
+            type: EntityActions.AUTO_SAVE_CONTENT,
+            payload: {etype: etype, data: content}
         };
     }
 
@@ -302,7 +318,31 @@ export class EntityActions {
             payload: {etype: etype, data: tag_id}
         };
     }
+    
+    static UPDATE_TITLE = '[Entity] Update Title';
+    static updateTitle(etype: string, title: string): Action {
+        return {
+            type: EntityActions.UPDATE_TITLE,
+            payload: {etype: etype, data: title}
+        };
+    }
 
+    static UPDATE_CONTENT = '[Entity] Update Content';
+    static updateContent(etype: string, content: string): Action {
+        return {
+            type: EntityActions.UPDATE_CONTENT,
+            payload: {etype: etype, data: content}
+        };
+    }    
+
+    static UPDATE_FAKE_PUBLISHED_AT = '[Entity] Update Fake Published At';
+    static updateFakePublishedAt(etype: string, date: string): Action {
+        return {
+            type: EntityActions.UPDATE_FAKE_PUBLISHED_AT,
+            payload: {etype: etype, data: date}
+        };
+    }
+    
     static DETACH_TOPIC_FROM_ENTITY = '[Entity] Detach Topic From Entity';
     static detachTopicFromEntity(etype: string, topic_id: number): Action {
         return {

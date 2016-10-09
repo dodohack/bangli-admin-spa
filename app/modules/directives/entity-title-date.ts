@@ -13,8 +13,8 @@ export class EntityTitleDate {
     @Input() title: string;
     @Input() date: string;
 
-    @Output() titleChanged = new EventEmitter();
-    @Output() dateChanged  = new EventEmitter();
+    @Output() titleChange = new EventEmitter();
+    @Output() dateChange  = new EventEmitter();
     
     // Datepicker hidden by default
     dpHidden = true;

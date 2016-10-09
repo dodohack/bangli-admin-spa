@@ -1,12 +1,13 @@
-<editor-page-header [etype]="etype"
-                    [authState]="authState"
+<editor-page-header *ngIf="entity"
+                    [etype]="etype"
+                    [previewUrl]="previewUrl"
                     [ids]="ids"
                     [entities]="entities"
                     [entity]="entity"
                     (cancelEdit)="cancelSave()">
 </editor-page-header>
 
-<!--
+
 <entity-buttons [entityState]="entity?.state"
                 (save)="save()"
                 (save2Pending)="save2Pending()"
@@ -17,10 +18,10 @@
 
 <entity-title-date [title]="entity?.title"
                    [date]="entity?.fake_published_at"
-                   (titleChanged)="updateTitle($event)"
-                   (dateChanged)="updateFakePublishedAt($event)">
+                   (titleChange)="updateTitle($event)"
+                   (dateChange)="updateFakePublishedAt($event)">
 </entity-title-date>
--->
+
 <!-- Post location, category, tag, topic etc -->
 <!--
 <entity-attr-cloud [categories]="entity?.categories"

@@ -34,10 +34,19 @@ import { zh_CN }             from '../../localization';
 
 import { GMT }               from '../../helper';
 
-export class EntityPage implements OnInit, OnDestroy
-{
-    entityDirty: boolean = false;
+/**
+ * NOTE: We use these functions to get a fine grain elements from
+ * EntitiesState, so that when some elements get updated, we do not
+ * need to refresh all the elements. E.g. when add/remove a category
+ * to the entity, will well get everything reset from the single
+ * subscription to entitiesState; but we don't get everything reset
+ * if we subscribe to a smaller elements.
+ */
+import { getIsDirty, getIdsCurPage, getEntitiesCurPage, 
+    getCurEntity, getCurEntityContent } from '../../reducers';
 
+export abstract class EntityPage implements OnInit, OnDestroy
+{
     // Force quit no matter if the entity is dirty or not.
     forceQuit: boolean = false;
     
@@ -48,20 +57,25 @@ export class EntityPage implements OnInit, OnDestroy
     // Current url params
     params: any;
 
-    content: string; // local content
-
-    entitiesState: EntitiesState;
-    entities: Entity[];
-    entity: Entity;
-    inputEntity: Entity;
+    ids: number[];
+    content: string;              // Entity content
+    isDirty: boolean;             // Entity dirty bit
+    isContentDirty: boolean;      // A separate content dirty bit
+    entities: Entity[];           // Entites of current page
+    entity: Entity;               // Current entity
 
     // subscriptions
     subAuth: any;
     subCms: any;
     subShop: any;
+    subIds: any;
+    subDirty: any;
     subEntities: any;
+    subEntity: any;
+    subContent: any;
     subParams: any;
-
+    subTimer: any;
+    
     auth: AuthState;
     shop: ShopAttrsState;
     cms:  CmsAttrsState;
@@ -83,17 +97,37 @@ export class EntityPage implements OnInit, OnDestroy
             .subscribe(cms => this.cms = cms);
         this.subShop = this.store.select<ShopAttrsState>('shop')
             .subscribe(shop => this.shop = shop);
-        
+
+        this.subIds  = this.store.let(getIdsCurPage(this.etype))
+            .subscribe(i => this.ids = i);
+        this.subDirty = this.store.let(getIsDirty(this.etype))
+            .subscribe(i => this.isDirty = i);
+        this.subEntities  = this.store.let(getEntitiesCurPage(this.etype))
+            .subscribe(e => this.entities = e);
+        this.subEntity = this.store.let(getCurEntity(this.etype))
+            .subscribe(e => this.entity = e);
+        this.subContent = this.store.let(getCurEntityContent(this.etype))
+            .subscribe(c => this.content = c);
+
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
-        this.loadEntity();
+        //this.loadEntity();
+        
+        // Init auto save timer
+        this.autoSave();
     }
 
     ngOnDestroy() {
         this.subCms.unsubscribe();
         this.subAuth.unsubscribe();
         this.subShop.unsubscribe();
+        this.subIds.unsubscribe();
+        this.subDirty.unsubscribe();
+        this.subEntities.unsubscribe();
+        this.subEntity.unsubscribe();
+        this.subContent.unsubscribe();
         this.subParams.unsubscribe();
+        this.subTimer.unsubscribe();
     }
 
     canDeactivate() {
@@ -108,7 +142,7 @@ export class EntityPage implements OnInit, OnDestroy
             return true;
         }
 
-        if (this.entityDirty) {
+        if (this.isDirty) {
             this.store.dispatch(AlertActions.error('请先保存当前更改，或取消保存'));
             return false;
         } else {
@@ -139,6 +173,15 @@ export class EntityPage implements OnInit, OnDestroy
         });
     }
 
+    /**********************************************************************
+     * FIXME: We need a unique solution of saving every attributes and
+     * content.
+     * 1. Do not always call autoSave() before saving cat/tag/topic...
+     * 2. Support auto save to server
+     * 3. Support timed auto saving to server
+     * 4. Do not clobber previous modification if cat/tag/topic is updated
+     *********************************************************************/
+/*
     loadEntity() {
         this.subEntities = this.store
             .select<EntitiesState>(ENTITY_INFO[this.etype].selector)
@@ -158,7 +201,7 @@ export class EntityPage implements OnInit, OnDestroy
                 this.entity = Object.assign({}, this.inputEntity);
             });
     }
-
+*/
 
     /**
      * Entity content changed event triggered by froala editor
@@ -168,16 +211,18 @@ export class EntityPage implements OnInit, OnDestroy
         // If no timeout set, the editor will throw an exception
         setTimeout(() => {
             // Set initialized state or set entity content dirty
-            this.initialized ? this.entityDirty = true : this.initialized = true;
+            this.initialized ? this.isContentDirty = true : this.initialized = true;
             //this.entity.content = $event;
             this.content = $event;
         });
     }
 
+    abstract get previewUrl(): string;
+
+    get frontendUrl() { return this.auth.domains[this.auth.key].url + '/'; }
     get index() { return this.ids.indexOf(this.entity.id); }
-    get ids() { return this.entitiesState.idsCurPage; }
+    //get ids() { return this.entitiesState.idsCurPage; }
     get creativeTypes() { return CREATIVE_TYPES; }
-    get isDirty()   { return this.entityDirty; }
     get myId() { return this.auth.users[this.auth.key].id; }
     get hasEditorRole() { return this.store.let(hasEditorRole()); }
     get froalaOptions() { return FroalaOptions.getDefault(); }
@@ -189,6 +234,8 @@ export class EntityPage implements OnInit, OnDestroy
             .filter(c => c.id === +this.entity.channel_id);
         return channels ? channels[0] : null;
     }
+    
+    gmt(value: string) { return GMT(value); }
 
     /**
      * Redirect /entity/new to /entity/:id once new entity is saved
@@ -212,42 +259,35 @@ export class EntityPage implements OnInit, OnDestroy
         else this.addCat(cat);
     }
     addCat(cat: Category) {
-        this.autoSave();
         this.store.dispatch(EntityActions.addCategory(this.etype, cat));
     }
     addTag(tag: Tag) {
-        this.autoSave();
         this.store.dispatch(EntityActions.addTag(this.etype, tag));
     }
     addTopic(topic: Topic) {
-        this.autoSave();
         this.store.dispatch(EntityActions.attachTopicToEntity(this.etype, topic));
     }
     removeCat(id: number) {
-        this.autoSave();
         this.store.dispatch(EntityActions.removeCategory(this.etype, id));
     }
     removeTag(id: number) {
-        this.autoSave();        
         this.store.dispatch(EntityActions.removeTag(this.etype, id));
     }
     removeTopic(id: number) {
-        this.autoSave();
         this.store.dispatch(EntityActions.detachTopicFromEntity(this.etype, id));
     }
     updateGeoLocation(loc: GeoLocation) {
-        this.autoSave();
         this.store.dispatch(EntityActions.toggleGeoLocation(this.etype, loc));
     }
-    
+
     updateTitle(title: string) {
-        console.log("title changed to: ", title);
+        this.store.dispatch(EntityActions.updateTitle(this.etype, title));
     }
 
     updateFakePublishedAt(date: string) {
-        console.log("fake published at changed to: ", date);
+        this.store.dispatch(EntityActions.updateFakePublishedAt(this.etype, date));
     }
-
+    
     /**
      *  Restore current content to given revision
      */
@@ -259,9 +299,22 @@ export class EntityPage implements OnInit, OnDestroy
     /**
      * Various save button and cancel
      */
-    autoSave(entity) {
-        if (entity.isDirty)
-            this.store.dispatch(EntityActions.autoSave(this.etype, entity));
+    autoSave() {
+        // Do the check for every 10s.
+        this.subTimer = Observable.interval(10000).subscribe(x => {
+            // Save entity with content to server
+            if (this.isContentDirty) {
+                this.store.dispatch(EntityActions
+                    .updateContent(this.etype, this.content));
+                
+                this.store.dispatch(EntityActions.saveEntity(this.etype, this.entity));
+            } else if (this.isDirty) {
+                // Save entity except content to server
+                this.store.dispatch(EntityActions.saveAttributes(this.etype, this.entity));
+            }
+
+            // Also ping server to set editing lock state
+        });
     }
     save(entity) {
         this.store.dispatch(EntityActions.saveEntity(this.etype, entity));

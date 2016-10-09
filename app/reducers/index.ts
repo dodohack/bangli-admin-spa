@@ -235,6 +235,10 @@ export function getPaginator(etype: string) {
     return compose(fromEntities.getPaginator(), getEntitiesState(etype));
 }
 
+export function getIsDirty(etype: string) {
+    return compose(fromEntities.getIsDirty(), getEntitiesState(etype));
+}
+
 export function getEntities(etype: string, ids: number[]) {
     return compose(fromEntities.getEntities(ids), getEntitiesState(etype));
 }
@@ -262,7 +266,8 @@ export function getCurEntity(etype: string) {
 }
 
 export function getCurEntityContent(etype: string) {
-    return compose(fromEntities.getCurEntityContent(), getEntitiesState(etype));
+    return compose(fromEntities.getContent(),
+        fromEntities.getCurEntity(), getEntitiesState(etype));
 }
 
 /*****************************************************************************

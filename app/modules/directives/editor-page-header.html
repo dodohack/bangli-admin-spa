@@ -1,7 +1,6 @@
-<div class="page-header" *ngIf="etype">
+<div class="page-header" *ngIf="entity">
     <div class="row">
-
-        <div class="col-xs-6">
+        <div class="col-xs-12">
             <h1 class="title">
                 编辑{{ title }}
                 <button class="page-title-action btn btn-outline-info btn-sm"
@@ -13,35 +12,30 @@
                    [routerLink]="[prevEntityUrl]" *ngIf="prevEntityUrl">
                     <i class="fa fa-angle-double-left"></i> {{ prevEntityTitle }}
                 </a>
-                <a class="page-title-action btn btn-outline-info btn-sm"
+                <a class="page-title-action btn btn-outline-info btn-sm float-right"
                    [routerLink]="[nextEntityUrl]" *ngIf="nextEntityUrl">
                     {{ nextEntityTitle }} <i class="fa fa-angle-double-right"></i>
                 </a>
             </h1>
-        </div>
 
-        <div class="col-xs-6" *ngIf="!isUser && entity">
-            <div class="float-right">
-                <span class="tag tag-default-outline">
-                    状态: {{ zh[entity.state] }}
-                </span>
-                <span class="tag tag-default-outline" *ngIf="previewLink">
-                    预览: <a href="{{ previewLink }}" target="_blank">{{ previewLink }}</a>
-                </span>
-            </div>
+            <span class="tag tag-warning-outline float-right" *ngIf="previewUrl">
+                <a href="{{ previewUrl }}" target="_blank">预览: {{ id }}</a>
+            </span>
         </div>
-
 
         <div class="col-xs-12" *ngIf="entity">
             <div class="float-right">
-                <span *ngIf="entity.created_at" class="tag tag-default-outline">
+                <span *ngIf="entity.created_at" class="tag tag-default-outline opacity-6">
                     创建时间：{{ entity.created_at | date: 'y-MM-dd HH:mm' }}
                 </span>
-                <span *ngIf="entity.published_at" class="tag tag-default-outline">
+                <span *ngIf="entity.published_at" class="tag tag-default-outline opacity-6">
                     发布时间：{{ entity.published_at | date: 'y-MM-dd HH:mm' }}
                 </span>
-                <span *ngIf="entity.updated_at" class="tag tag-default-outline">
+                <span *ngIf="entity.updated_at" class="tag tag-default-outline opacity-6">
                     最后更新：{{ entity.updated_at | date: 'y-MM-dd HH:mm' }}
+                </span>
+                <span class="tag tag-default-outline opacity-6">
+                    状态: {{ zh[entity.state] }}
                 </span>
             </div>
         </div>
