@@ -2,7 +2,7 @@
 <div class="row list-toolbar">
     <div class="col-xs-12 form-inline">
 
-        <form (ngSubmit)="submitFilter()" #filterForm="ngForm"
+        <form #filterForm="ngForm"
               style="display: inline-block">
 
             <div class="form-group" *ngIf="authors">
@@ -10,7 +10,7 @@
                         class="form-control form-control-sm custom-select">
                     <option value="">所有作者</option>
                     <option *ngFor="let author of authors" [value]="author.id">
-                        {{ author.display_name }} ({{ author.posts_by_author_count }})
+                        {{ author.display_name }} | {{ author.posts_by_author_count }}
                     </option>
                 </select>
             </div>
@@ -20,7 +20,7 @@
                         class="form-control form-control-sm custom-select">
                     <option value="">所有编辑</option>
                     <option *ngFor="let editor of editors" [value]="editor.id">
-                        {{ editor.display_name }} ({{ editorWorkCount(editor) }})
+                        {{ editor.display_name }} | {{ editorWorkCount(editor) }}
                     </option>
                 </select>
             </div>
@@ -30,7 +30,7 @@
                         class="form-control form-control-sm custom-select">
                     <option value="" *ngIf="!curChannelSlug">所有分类</option>
                     <option value="" *ngIf="curChannelSlug">频道分类</option>
-                    <option *ngFor="let cat of categories" [value]="cat.id">
+                    <option *ngFor="let cat of catsOfChannel" [value]="cat.id">
                         {{ cat.name }} | {{ catCount(cat) }}
                     </option>
                 </select>
@@ -83,24 +83,20 @@
             </div>
 
             <button type="submit" class="btn btn-secondary btn-sm"
+                    (click)="submitFilter()"
                     [disabled]="!filterForm.form.dirty">筛选</button>
 
-            <!-- FIXME: This may trigger submit event -->
-            <button class="btn btn-secondary btn-sm">重置</button>
+            <a [routerLink]="['/', slug]" class="btn btn-secondary btn-sm">重置</a>
         </form>
 
-        <!--
-         FIXME: Should we revert previous version that have all queryParams and params
-         FIXME: get from this 'smart component'?
-        -->
         <!-- Paginator -->
         <div class="float-right paginator" *ngIf="paginator">
             <span>共{{ paginator.total }}条 |
                 {{ paginator.cur_page }}/{{ paginator.last_page }}页</span>
             <a *ngFor="let p of pagers" class="btn btn-sm btn-secondary"
                [class.disabled]="p.disabled"
-               [routerLink]="[pageUrl(p.index, state)]"
-               [queryParams]="route.queryParams | async">
+               [routerLink]="[pageUrl(p.index)]"
+               [queryParams]="queryParams">
                 <i class="fa {{ p.icon }}"></i>
             </a>
         </div>

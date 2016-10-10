@@ -14,10 +14,8 @@
                  [authors]="authors$ | async"
                  [editors]="editors$ | async"
                  [cmsChannels]="cmsChannels$ | async"
-                 [entityParams]="entityParams"
                  [categories]="cmsCategories$ | async"
-                 [paginator]="paginator$ | async"
-                 (filterEvent)="filterEvent($event)"></list-filter-bar>
+                 [paginator]="paginator$ | async"></list-filter-bar>
 
 <!-- Post list table -->
 <cms-list [etype]="etype"

@@ -210,7 +210,8 @@ function entitiesReducer (etype: string,
 
             // Early return if nothing is loaded
             if (!idsCurPage.length)
-                return Object.assign({}, state, {idsCurPage: []});
+                return Object.assign({}, state,
+                    {idsCurPage: idsCurPage, paginator: action.payload.data.paginator});
 
             // Merge new idsCurPage with idsTotal
             const idsTotal = [...state.idsTotal, ...idsCurPage].filter(
