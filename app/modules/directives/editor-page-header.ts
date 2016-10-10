@@ -25,10 +25,6 @@ export class EditorPageHeader {
 
     @Output() cancelEdit = new EventEmitter();
 
-    // DEPRECATED
-    @Input() entitiesState: any;
-    @Input() authState: AuthState;
-
     get zh(): any { return zh_CN.cms; }
     get id() { return this.entity.id; }
     get total() { return this.ids.length; }
@@ -55,7 +51,7 @@ export class EditorPageHeader {
      * FIXME: Can we remove extra check if this.entities defined?
      */
     excerptTitle(idx) {
-        return idx + '. ' + this.entities[this.ids[idx]].title.substr(0, 15) + '...';
+        return idx + '. ' + this.entities[idx].title.substr(0, 15) + '...';
     }
     get prevEntityTitle() {
         let newIdx = this.index - 1;

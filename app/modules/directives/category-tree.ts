@@ -3,8 +3,6 @@ import { Input, Output }           from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 import { Category }                from '../../models';
-import { Channel }                 from '../../models';
-import { getCatChild }             from '../../helper';
 
 @Component({
     selector: 'category-tree',
@@ -16,7 +14,7 @@ export class CategoryTree {
     @Input() parentId: number;
     // Current channel id
     @Input() channelId: number;
-    @Input() selectedCats: Category[] = [];
+    @Input() selectedCats: Category[];
     @Input() categories: Category[];
 
     @Output() checkEvent = new EventEmitter();
@@ -32,16 +30,34 @@ export class CategoryTree {
         if (this.channelId)
             tmpCats = tmpCats.filter(c => c.channel_id === this.channelId);
 
-        // Apply selected categories
-        return tmpCats.map(cat => {
-            return Object.assign({}, cat,
-                {checked: this.selectedCats.map(c => c.id)
-                    .indexOf(cat.id) !== -1});
-        });
+        if (this.selectedCats)  // Apply selected categories
+            return tmpCats.map(cat => Object.assign({}, cat,
+                {checked: this.selectedCats.map(c => c.id).indexOf(cat.id) !== -1}));
+        else   // Return categories with 'checked' state unset
+            return tmpCats.map(cat => Object.assign({}, cat, {checked: false}));
     }
-    
+
+    /**
+     * This function return direct children and all lower level childrens
+     */
+    getChild(cat: Category) {
+        // Get direct children
+        let children = this.categories.filter(v => v.parent_id === cat.id);
+
+        // Get children of direct children recursively
+        let childrenOfChild = [];
+        if (children) {
+            for (let i = 0; i < children.length; i++) {
+                let cc = this.getChild(children[i]);
+                childrenOfChild = [...childrenOfChild, ...cc];
+            }
+            children = [...children, ...childrenOfChild];
+        }
+
+        return children;
+}
 
     hasChild(cat: Category) {
-        return getCatChild(cat).length > 0;
+        return this.getChild(cat).length > 0;
     }
 }

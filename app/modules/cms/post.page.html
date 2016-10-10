@@ -63,7 +63,7 @@
      [(froalaModel)]="inputPost.content"></div>-->
 
 <froala [froalaOptions]="froalaOptions"
-        [froalaData]="entity?.content"
+        [froalaData]="content"
         (model)="contentChanged($event)"></froala>
 
 <revision-history [entity]="entity" [cmsState]="cms"
@@ -77,7 +77,7 @@
         <tab heading="分类">
             <div class="treeview">
                 <category-tree [parentId]="0"
-                               [channelId]="entity?.channel.id"
+                               [channelId]="entity?.channel?.id"
                                [categories]="cms?.categories"
                                [selectedCats]="entity?.categories"
                                (checkEvent)="updateCat($event)">

@@ -1,6 +1,10 @@
-<editor-page-header [etype]="etype"
-                    [authState]="authState"
-                    [entitiesState]="entitiesState">
+<editor-page-header *ngIf="entity"
+                    [etype]="etype"
+                    [previewUrl]="previewUrl"
+                    [ids]="ids"
+                    [entities]="entities"
+                    [entity]="entity"
+                    (cancelEdit)="cancelSave()">
 </editor-page-header>
 
 

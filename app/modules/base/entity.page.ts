@@ -11,8 +11,6 @@ import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
 import { AppState }          from '../../reducers';
-import { hasEditorRole }     from '../../reducers';
-import { EntitiesState }     from '../../reducers/entities';
 import { AuthState }         from '../../reducers/auth';
 import { CmsAttrsState }     from '../../reducers/cmsattrs';
 import { ShopAttrsState }    from "../../reducers/shopattrs";
@@ -30,7 +28,6 @@ import { Category }          from '../../models';
 import { Tag }               from '../../models';
 import { Topic }             from '../../models';
 import { User }              from '../../models';
-import { zh_CN }             from '../../localization';
 
 import { GMT }               from '../../helper';
 
@@ -75,7 +72,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
     subContent: any;
     subParams: any;
     subTimer: any;
-    
+
+    // TODO: DEPRECATE THESE 3
     auth: AuthState;
     shop: ShopAttrsState;
     cms:  CmsAttrsState;
@@ -101,7 +99,10 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subIds  = this.store.let(getIdsCurPage(this.etype))
             .subscribe(i => this.ids = i);
         this.subDirty = this.store.let(getIsDirty(this.etype))
-            .subscribe(i => this.isDirty = i);
+            .subscribe(i => {
+                console.log("is dirty: ", i);
+                this.isDirty = i;
+            });
         this.subEntities  = this.store.let(getEntitiesCurPage(this.etype))
             .subscribe(e => this.entities = e);
         this.subEntity = this.store.let(getCurEntity(this.etype))
@@ -174,36 +175,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
         });
     }
 
-    /**********************************************************************
-     * FIXME: We need a unique solution of saving every attributes and
-     * content.
-     * 1. Do not always call autoSave() before saving cat/tag/topic...
-     * 2. Support auto save to server
-     * 3. Support timed auto saving to server
-     * 4. Do not clobber previous modification if cat/tag/topic is updated
-     *********************************************************************/
-/*
-    loadEntity() {
-        this.subEntities = this.store
-            .select<EntitiesState>(ENTITY_INFO[this.etype].selector)
-            .subscribe(entitiesState => {
-                this.entityDirty = false;
-                let id = entitiesState.idsEditing[0];
-
-                this.redirect2NewEntity(id);
-                // Reset the form status so we can get a clean state
-                //if (this.entityForm) this.entityForm.reset(); // bugged
-                this.entitiesState = entitiesState;
-                this.entities = entitiesState.entities;
-
-                // When opening a single entity, 'editing' always contains 1 id
-                // FIXME: Remove inputEntity after updating to new angular2-froala binding
-                this.inputEntity = entitiesState.entities[id];
-                this.entity = Object.assign({}, this.inputEntity);
-            });
-    }
-*/
-
     /**
      * Entity content changed event triggered by froala editor
      * @param $event
@@ -221,11 +192,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
     abstract get previewUrl(): string;
 
     get frontendUrl() { return this.auth.domains[this.auth.key].url + '/'; }
-    get index() { return this.ids.indexOf(this.entity.id); }
-    //get ids() { return this.entitiesState.idsCurPage; }
-    get creativeTypes() { return CREATIVE_TYPES; }
     get myId() { return this.auth.users[this.auth.key].id; }
-    get hasEditorRole() { return this.store.let(hasEditorRole()); }
+
+    get creativeTypes() { return CREATIVE_TYPES; }
     get froalaOptions() { return FroalaOptions.getDefault(); }
 
     // Return current selected channel name for the entity
@@ -286,6 +255,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     }
 
     updateFakePublishedAt(date: string) {
+        if (Date(date) === Date(this.entity.fake_published_at)) return;
         this.store.dispatch(EntityActions.updateFakePublishedAt(this.etype, date));
     }
     

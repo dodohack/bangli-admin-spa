@@ -215,7 +215,7 @@ function entitiesReducer (etype: string,
             // Early return if nothing is loaded
             if (!idsCurPage.length)
                 return Object.assign({}, state, {
-                    idsCurPage: idsCurPage,
+                    idsCurPage: [],
                     isLoading: false,
                     paginator: action.payload.data.paginator});
 
@@ -688,17 +688,15 @@ export function getEntity(id: number) {
  * Return current editing entity content
  */
 export function getContent() {
-    return (entity$: Observable<Entity>)=> entity$.select(e => e.content);
+    return (entity$: Observable<Entity>)=> entity$
+        .filter(e => typeof e != 'undefined').select(e => e.content);
 }
 /**
  * Return current editing entity
  */
 export function getCurEntity() {
     return (state$: Observable<EntitiesState>) => state$
-        .select(s => {
-            if (!s.idsEditing.length) return null;
-            return s.entities[s.idsEditing[0]];
-        });
+        .map(s => s.entities[s.idsEditing[0]]);
 }
 
 /**
