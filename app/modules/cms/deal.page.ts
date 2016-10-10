@@ -27,4 +27,6 @@ export class DealPage extends EntityPage
     }
 
     get zh() { return zh_CN.cms; } // Localization
+
+    get previewUrl() { return this.frontendUrl + 'cms/deal/' + this.entity.id; }
 }

@@ -3,6 +3,69 @@
                     [entitiesState]="entitiesState">
 </editor-page-header>
 
+
+<entity-buttons [entityState]="entity?.state"
+                (save)="save()"
+                (save2Pending)="save2Pending()"
+                (save2Draft)="save2Draft()"
+                (save2Publish)="save2Publish()"
+                (cancelSave)="cancelSave()">
+</entity-buttons>
+
+<entity-title-date [title]="entity?.title"
+                   (titleChange)="updateTitle($event)">
+</entity-title-date>
+
+<!-- Topic location, category, tag, topic etc -->
+
+<entity-attr-cloud [categories]="entity?.categories"
+                   [locations]="entity?.locations"
+                   (toggle)="openPanel = !openPanel"
+                   (deleteCat)="removeCat($event)"
+                   (deleteTag)="removeTag($event)"
+                   (toggleGeoLocation)="updateGeoLocation($event)">
+</entity-attr-cloud>
+
+<entity-attributes [editorId]="entity?.editor_id"
+                   [channelId]="entity?.channel_id"
+                   [editors]="cms?.editors"
+                   [channels]="cms?.channels"
+                   (editorChanged)="updateEditor($event)"
+                   (channelChanged)="updateChannel($event)">
+</entity-attributes>
+
+<!-- Froala Editor -->
+<!-- TODO: Use official one when ngModule bug is fixed -->
+<!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
+     [(froalaModel)]="inputPost.content"></div>-->
+
+<froala [froalaOptions]="froalaOptions"
+        [froalaData]="entity?.content"
+        (model)="contentChanged($event)"></froala>
+
+<!-- Right panel, we can trigger a seperate saving individually -->
+<right-panel [width]="'400px'" [isOpen]="openPanel"
+             (toggle)="openPanel = !openPanel">
+    <tabset>
+        <tab heading="分类">
+            <div class="treeview">
+                <category-tree [parentId]="0"
+                               [channel]="entity?.channel"
+                               [categories]="cms?.categories"
+                               [selectedCats]="entity?.categories"
+                               (checkEvent)="updateCat($event)">
+                </category-tree>
+            </div>
+        </tab>
+
+        <tab heading="Location">
+            <geo-location-cloud [locations]="cms?.locations"
+                                (clickEvent)="updateGeoLocation($event)">
+            </geo-location-cloud>
+        </tab>
+    </tabset>
+</right-panel>
+
 <pre>
     This page should have following entries:
     1. cms topic related stuff

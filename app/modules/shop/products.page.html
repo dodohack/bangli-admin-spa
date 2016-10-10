@@ -6,16 +6,13 @@
 
 
 <!-- Product filter/tool bar -->
-<list-filter-bar *ngIf="loaded"
-                 [slug]="'product'"
+<list-filter-bar [slug]="'product'"
                  [zh]="zh"
                  [etype]="etype"
                  [editors]="editors$ | async"
-                 [entityParams]="entityParams"
                  [categories]="productCategories$ | async"
                  [brands]="productBrands$ | async"
-                 [paginator]="paginator$ | async"
-                 (filterEvent)="filterEvent($event)"></list-filter-bar>
+                 [paginator]="paginator$ | async"></list-filter-bar>
 
 <!-- Product list table -->
 <product-list *ngIf="loaded"

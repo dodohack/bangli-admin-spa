@@ -1,13 +1,9 @@
 /**
  * This base class for all entities page
  */
-
-import { Component }         from '@angular/core';
 import { HostListener }      from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
-import { Params, Router }    from '@angular/router';
-import { NavigationExtras }  from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
@@ -33,7 +29,7 @@ import { Ping }                 from '../../ping';
 import { getAuthors, getAuthorsObject, getEditors, getEditorsObject, 
     getCmsChannels, getCmsCategories, getLocations,
     getPostStates, getPageStates, getTopicStates,
-    getIdsCurPage, getIdsEditing,
+    getIdsCurPage, getIdsEditing, getCurEntity,
     getPaginator,
     getEntitiesCurPage } from '../../reducers';
 
@@ -45,6 +41,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     subCms: any;
     subShop: any;
     subEntities: any;
+    subEntity: any;
     subActivityOn: any;
     subActivityOff: any;
     subParams: any;
@@ -53,9 +50,6 @@ export class EntitiesPage implements OnInit, OnDestroy
     //cmsState:   CmsAttrsState;
     shopState:   ShopAttrsState;
     entitiesState: EntitiesState;
-
-    // Batch editing entities
-    entitiesInEdit: Entity[] = [];
 
     params: any;
     queryParams: any;
@@ -68,6 +62,8 @@ export class EntitiesPage implements OnInit, OnDestroy
     // Is list entities loaded, we can't use !loading to check the loaded state
     // as the list is re-rendered at each time loading
     loaded: boolean = false;
+
+    entity:      Entity; // First entity in idsEditing
 
     authors$:     Observable<User[]>;
     editors$:     Observable<User[]>;
@@ -92,20 +88,10 @@ export class EntitiesPage implements OnInit, OnDestroy
      */
     constructor(protected etype: string,    // Entity type
                 protected route: ActivatedRoute,
-                protected router: Router,
                 protected store: Store<AppState>,
                 protected ping: Ping,
                 protected pageless: boolean = false) {
-        this.authors$       = this.store.let(getAuthors());
-        this.editors$       = this.store.let(getEditors());
-        this.authorsObject$ = this.store.let(getAuthorsObject());
-        this.editorsObject$ = this.store.let(getEditorsObject());
-        this.cmsChannels$   = this.store.let(getCmsChannels());
-        this.cmsCategories$ = this.store.let(getCmsCategories());
-        this.paginator$     = this.store.let(getPaginator(this.etype));
-        this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
-        this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
-        this.idsEditing$    = this.store.let(getIdsEditing(this.etype));
+
     }
 
     ngOnInit() {
@@ -117,10 +103,23 @@ export class EntitiesPage implements OnInit, OnDestroy
         */
         this.subShop = this.store.select<ShopAttrsState>('shop')
             .subscribe(shopState => this.shopState = shopState);
-        
+        this.authors$       = this.store.let(getAuthors());
+        this.editors$       = this.store.let(getEditors());
+        this.authorsObject$ = this.store.let(getAuthorsObject());
+        this.editorsObject$ = this.store.let(getEditorsObject());
+        this.cmsChannels$   = this.store.let(getCmsChannels());
+        this.cmsCategories$ = this.store.let(getCmsCategories());
+        this.paginator$     = this.store.let(getPaginator(this.etype));
+        this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
+        this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
+        this.idsEditing$    = this.store.let(getIdsEditing(this.etype));
+
+        this.subEntity = this.store.let(getCurEntity(this.etype))
+            .subscribe(e => this.entity = e);
+
         this.dispatchLoadEntities();
         this.loadEntities();
-        
+
         // Dispatch activity update action when we have the activities
         // changed(empty => sth, sth => sth; sth => empty)
         // FIXME: Need to check if ids in 'cms_post' activity is changed
@@ -148,6 +147,7 @@ export class EntitiesPage implements OnInit, OnDestroy
         //this.subCms.unsubscribe();
         this.subShop.unsubscribe();
         this.subEntities.unsubscribe();
+        this.subEntity.unsubscribe();
         //this.subActivityOn.unsubscribe();
         //this.subActivityOff.unsubscribe();
         this.subParams.unsubscribe();
@@ -199,8 +199,6 @@ export class EntitiesPage implements OnInit, OnDestroy
             .subscribe(entitiesState => {
                 this.entitiesState = entitiesState;
                 // Create new copies of entities in editing mode
-                this.entitiesInEdit = entitiesState.idsEditing
-                    .map(id => Object.assign({}, entitiesState.entities[id]));
                 // Set search loading to false if entity is loaded
                 this.loading = false;
                 this.loaded = true;
@@ -223,11 +221,6 @@ export class EntitiesPage implements OnInit, OnDestroy
             }, 300);
         }
     }
-
-    /**
-     * Get first entity from the editing list
-     */
-    get entity() { return this.entitiesInEdit[0]; }
 
     get myId() { return this.authState.users[this.authState.key].id; }
     
@@ -290,37 +283,6 @@ export class EntitiesPage implements OnInit, OnDestroy
     // Add lock to posts, so no one can edit the post
     batchLock(ids: number[]) {
         this.store.dispatch(EntityActions.batchLockEntities(this.etype, ids));
-    }
-
-    // Get shared tags for posts in editing mode
-    get sharedTags() {
-        if (!this.entitiesInEdit.length) return;
-
-        if (this.entitiesInEdit.length === 1) {
-            return this.entitiesInEdit[0].tags;
-        } else {
-            console.error("TODO, sharedTags");
-        }
-    }
-
-    get sharedCats() {
-        if (!this.entitiesInEdit.length) return;
-
-        if (this.entitiesInEdit.length === 1) {
-            return this.entitiesInEdit[0].categories;
-        } else {
-            console.error("TODO, sharedCats");
-        }
-    }
-
-    get sharedTopics() {
-        if (!this.entitiesInEdit.length) return;
-
-        if (this.entitiesInEdit.length === 1) {
-            return this.entitiesInEdit[0].topics;
-        } else {
-            console.error("TODO, sharedTopics");
-        }
     }
 
     /////////////////////////////////////////////////////////////////////////

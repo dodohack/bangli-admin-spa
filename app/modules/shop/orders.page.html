@@ -6,13 +6,10 @@
                   (newEntityEvent)="newShopOrder()"></list-page-header>
 
 <!-- Order filter/tool bar -->
-<list-filter-bar *ngIf="loaded"
-                 [slug]="'order'"
+<list-filter-bar [slug]="'order'"
                  [zh]="zh"
                  [etype]="etype"
-                 [entityParams]="entityParams"
-                 [paginator]="paginator$ | async"
-                 (filterEvent)="filterEvent($event)"></list-filter-bar>
+                 [paginator]="paginator$ | async"></list-filter-bar>
 
 <!-- Product list table -->
 <order-list *ngIf="loaded"

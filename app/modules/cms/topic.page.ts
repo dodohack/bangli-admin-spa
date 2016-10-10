@@ -29,4 +29,6 @@ export class TopicPage extends EntityPage
     }
 
     get zh() { return zh_CN.cms; } // Localization
+
+    get previewUrl() { return this.frontendUrl + 'cms/topic/' + this.entity.guid; }
 }

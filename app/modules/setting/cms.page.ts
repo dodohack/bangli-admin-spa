@@ -41,7 +41,7 @@ export class CmsPage implements OnInit, OnDestroy
     ngOnInit() {
         this.subCms = this.store.select<CmsAttrsState>('cms')
             .subscribe(cmsState => {
-                this.tags = cmsState.tags;
+                //this.tags = cmsState.tags;
                 this.cats = cmsState.categories;
                 this.channels = cmsState.channels;
                 this.doFilterCats();

@@ -319,17 +319,17 @@ export abstract class EntityPage implements OnInit, OnDestroy
     /**
      * Various save button and cancel
      */
-    save(entity) {
-        this.store.dispatch(EntityActions.saveEntity(this.etype, entity));
+    save() {
+        this.store.dispatch(EntityActions.saveEntity(this.etype, this.entity));
     }
-    save2Pending(entity) {
-        this.store.dispatch(EntityActions.saveEntityAsPending(this.etype, entity));        
+    save2Pending() {
+        this.store.dispatch(EntityActions.saveEntityAsPending(this.etype, this.entity));
     }
-    save2Draft(entity) {
-        this.store.dispatch(EntityActions.saveEntityAsDraft(this.etype, entity));        
+    save2Draft() {
+        this.store.dispatch(EntityActions.saveEntityAsDraft(this.etype, this.entity));
     }
-    save2Publish(entity) {
-        this.store.dispatch(EntityActions.saveEntityAsPublish(this.etype, entity));
+    save2Publish() {
+        this.store.dispatch(EntityActions.saveEntityAsPublish(this.etype, this.entity));
     }
     cancelSave() {
         this.forceQuit = true;

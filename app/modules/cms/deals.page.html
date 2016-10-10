@@ -7,13 +7,11 @@
                   [loading]="loading"></list-page-header>
 
 <!-- Deal post filter/tool bar at top -->
-<list-filter-bar *ngIf="loaded"
-                 [slug]="'deal'"
+<list-filter-bar [slug]="'deal'"
                  [zh]="zh"
                  [etype]="etype"
                  [editors]="editors$ | async"
                  [cmsChannels]="cmsChannels$ | async"
-                 [entityParams]="entityParams"
                  [categories]="cmsCategories$ | async"
                  [paginator]="paginator$ | async"
                  (filterEvent)="filterEvent($event)"></list-filter-bar>

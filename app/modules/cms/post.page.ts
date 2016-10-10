@@ -29,8 +29,5 @@ export class PostPage extends EntityPage
     
     get zh() { return zh_CN.cms; } // Localization
 
-    get previewUrl(): string {
-        return this.frontendUrl + 'cms/' +
-            ENTITY_INFO[this.etype].slug + '/' + this.entity.id;
-    }
+    get previewUrl() { return this.frontendUrl + 'cms/post/' + this.entity.id; }
 }

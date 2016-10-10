@@ -23,9 +23,8 @@ export class OrdersPage extends EntitiesPage
 {
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
-                protected router: Router,
                 protected ping: Ping) {
-        super(ENTITY.SHOP_ORDER, route, router, store, ping);
+        super(ENTITY.SHOP_ORDER, route, store, ping);
     }
 
     get zh() { return zh_CN.order; }

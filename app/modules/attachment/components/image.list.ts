@@ -37,11 +37,11 @@ export class ImageList extends EntityList
     }
     
     nextImage() {
-        if (this.index < this.ids.length - 1) this.index++;
+        if (this.index < this.idsCurPage.length - 1) this.index++;
         this.image = this.getEntityByIndex(this.index);
     }
 
-    getEntityByIndex(i) { return this.entities[this.ids[i]]; }
+    getEntityByIndex(i) { return this.entities[this.idsCurPage[i]]; }
     
     imgUrl(entity) {
         return this.baseResUrl + '/' + entity.path + '/' + entity.filename;

@@ -7,8 +7,7 @@
                   [loading]="loading"></list-page-header>
 
 <!-- Post filter/tool bar at top -->
-<list-filter-bar *ngIf="loaded"
-                 [slug]="'post'"
+<list-filter-bar [slug]="'post'"
                  [zh]="zh"
                  [etype]="etype"
                  [authors]="authors$ | async"
@@ -50,7 +49,6 @@
 
     <form (ngSubmit)="onSubmitPosts()">
 
-<!--
         <accordion>
 
             <accordion-group isOpen="true">
@@ -59,10 +57,18 @@
                 </div>
 
                 <div class="treeview">
-                    <category-tree [parentId]="0"
+                    <category-tree *ngIf="(idsEditing$ | async) > 1"
+                                   [parentId]="0"
                                    [channel]="params['channel']"
                                    [categories]="categories$ | async"
-                                   [selectedCats]="sharedCats"
+                                   (checkEvent)="selectCat($event)">
+                    </category-tree>
+
+                    <category-tree *ngIf="(idsEditing$ | async) == 1"
+                                   [parentId]="0"
+                                   [channel]="params['channel']"
+                                   [categories]="categories$ | async"
+                                   [selectedCats]="(entity$ | async)?.categories"
                                    (checkEvent)="selectCat($event)">
                     </category-tree>
                 </div>
@@ -73,14 +79,23 @@
                     文章专题分类<i class="pull-right fa customize-chevron"></i>
                 </div>
 
-                <topic-cloud [topics]=""
-                             [selectedTopics]="sharedTopics"
+                <topic-cloud *ngIf="(idsEditing$ | async) > 1"
+                             [topics]=""
                              (addTopic)="addTopic($event)"
-                             (removeTopic)="removeTopic($event)"></topic-cloud>
+                             (removeTopic)="removeTopic($event)">
+                </topic-cloud>
+
+                <topic-cloud *ngIf="(idsEditing$ | async) == 1"
+                             [topics]=""
+                             [selectedTopics]="(entity$ | async)?.topics"
+                             (addTopic)="addTopic($event)"
+                             (removeTopic)="removeTopic($event)">
+                </topic-cloud>
+
             </accordion-group>
 
         </accordion>
--->
+
         <!-- Use form-group to wrap buttons so to pad bottom for right-panel 100% height issue -->
         <div class="row form-group">
             <div class="col-xs-12">

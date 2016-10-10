@@ -22,9 +22,8 @@ export class VouchersPage extends EntitiesPage
 {
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
-                protected router: Router,
                 protected ping: Ping) {
-        super(ENTITY.SHOP_VOUCHER, route, router, store, ping);
+        super(ENTITY.SHOP_VOUCHER, route, store, ping);
     }
 
     get zh() { return zh_CN.product; }

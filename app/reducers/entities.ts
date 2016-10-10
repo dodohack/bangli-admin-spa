@@ -28,9 +28,7 @@ export interface EntitiesState {
     idsContent: number[];  // IDs for entities have content loaded
     entities: { [id:number]: Entity }; // All entities loaded to client
     isDirty: boolean;      // If the entities in idsEditing is dirty
-    // TODO: We can add this 1 more indicator here 
-    // set this to true when saving or loading
-    // isLoading: boolean;
+    isLoading: boolean;    // If the entities list is in loading
     paginator: Paginator;
 }
 
@@ -39,7 +37,7 @@ export interface EntitiesState {
  */
 const initState: EntitiesState = {
     idsTotal: [], idsCurPage: [], idsEditing: [], idsContent: [],
-    entities: {}, isDirty: false, paginator: null
+    entities: {}, isDirty: false, isLoading: true, paginator: null
 };
 
 
@@ -236,10 +234,8 @@ function entitiesReducer (etype: string,
             return Object.assign({}, state, {
                 idsTotal:   idsTotal,
                 idsCurPage: idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({}, state.entities, newEntities),
-                isDirty:    state.isDirty,
+                isLoading:  false,
                 paginator:  action.payload.data.paginator
             });
         }
@@ -282,36 +278,18 @@ function entitiesReducer (etype: string,
             return Object.assign({}, state, {
                 idsTotal:   idsTotal,
                 idsCurPage: idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({}, state.entities, newEntities),
-                isDirty:    state.isDirty,
+                isLoading:  false,
                 paginator:  action.payload.data.paginator,
             });
         }
 
         case EntityActions.BATCH_EDIT_ENTITIES: {
-            return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: action.payload.data,
-                idsContent: state.idsContent,
-                entities:   state.entities,
-                isDirty:    state.isDirty,
-                paginator:  state.paginator
-            });
+            return Object.assign({}, state, {idsEditing: action.payload.data});
         }
 
         case EntityActions.CANCEL_BATCH_EDIT_ENTITIES: {
-            return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: [],
-                idsContent: state.idsContent,
-                entities:   state.entities,
-                isDirty:    state.isDirty,
-                paginator:  state.paginator
-            });
+            return Object.assign({}, state, {idsEditing: []});
         }
 
         case EntityActions.BATCH_EDIT_PREVIOUS_ENTITY: {
@@ -323,15 +301,7 @@ function entitiesReducer (etype: string,
             if (idx < 0) idx = 0;
             const previousId = state.idsCurPage[idx];
 
-            return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: [previousId],
-                idsContent: state.idsContent,
-                entities:   state.entities,
-                isDirty:    state.isDirty,
-                paginator:  state.paginator
-            });
+            return Object.assign({}, state, {idsEditing: [previousId]});
         }
 
         case EntityActions.BATCH_EDIT_NEXT_ENTITY: {
@@ -344,15 +314,7 @@ function entitiesReducer (etype: string,
                 idx = state.idsCurPage.length - 1;
             const nextId = state.idsCurPage[idx];
 
-            return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: [nextId],
-                idsContent: state.idsContent,
-                entities:   state.entities,
-                isDirty:    state.isDirty,
-                paginator:  state.paginator
-            });
+            return Object.assign({}, state, {idsEditing: [nextId]});
         }
 
         case EntityActions.SAVE_ENTITY_SUCCESS:
@@ -394,19 +356,15 @@ function entitiesReducer (etype: string,
                 entities:   Object.assign({},
                     state.entities, {[id]: action.payload.data}),
                 isDirty:    false,
+                isLoading:  false,
                 paginator:  state.paginator
             });
         }
 
         case EntityActions.AUTO_SAVE_SUCCESS: {
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
-                entities:   state.entities,
                 isDirty:    false,
-                paginator:  state.paginator
+                isLoading:  false,
             });
         }
 
@@ -427,6 +385,7 @@ function entitiesReducer (etype: string,
                 idsContent: [...state.idsContent, 0],
                 entities:   Object.assign({}, state.entities, {[0]: newEntity}),
                 isDirty:    false,
+                isLoading:  false,
                 paginator:  state.paginator
             });
         }
@@ -454,13 +413,9 @@ function entitiesReducer (etype: string,
             newEntityArray.forEach(entity => newEntities[entity.id] = entity);
 
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({}, state.entities, newEntities),
                 isDirty:    true,
-                paginator:  state.paginator
+                isLoading:  false
             });
         }
 
@@ -497,13 +452,9 @@ function entitiesReducer (etype: string,
             newEntityArray.forEach(entity => newEntities[entity.id] = entity);
 
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({}, state.entities, newEntities),
                 isDirty:    true,
-                paginator:  state.paginator
+                isLoading:  false
             });
         }
 
@@ -529,13 +480,9 @@ function entitiesReducer (etype: string,
             newEntityArray.forEach(entity => newEntities[entity.id] = entity);
 
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({}, state.entities, newEntities),
                 isDirty:    true,
-                paginator:  state.paginator
+                isLoading:  false
             });
         }
 
@@ -552,13 +499,9 @@ function entitiesReducer (etype: string,
                                             { content: newBody });
 
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({}, state.entities, {[id]: newEntity}),
                 isDirty:    true,
-                paginator:  state.paginator
+                isLoading:  false
             });
         }
 
@@ -579,13 +522,7 @@ function entitiesReducer (etype: string,
             }
 
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({}, state.entities, newEntities),
-                isDirty:    state.isDirty,
-                paginator:  state.paginator
             });
         }
 
@@ -595,14 +532,9 @@ function entitiesReducer (etype: string,
             entity = Object.assign({}, entity, {title: title});
 
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({},
                     state.entities, {[entity.id]: entity}),
-                isDirty:    true,
-                paginator:  state.paginator
+                isDirty:    true
             });
         }
 
@@ -612,14 +544,9 @@ function entitiesReducer (etype: string,
             entity = Object.assign({}, entity, {content: content});
 
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({},
                     state.entities, {[entity.id]: entity}),
-                isDirty:    true,
-                paginator:  state.paginator
+                isDirty:    true
             });
         }
 
@@ -629,14 +556,9 @@ function entitiesReducer (etype: string,
             entity = Object.assign({}, entity, {fake_published_at: date});
             
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({},
                     state.entities, {[entity.id]: entity}),
-                isDirty:    true,
-                paginator:  state.paginator
+                isDirty:    true
             });
         }            
             
@@ -645,14 +567,10 @@ function entitiesReducer (etype: string,
         case EntityActions.AUTO_SAVE: {
             let entity = action.payload.data;
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({},
                     state.entities, {[entity.id]: entity}),
                 isDirty:    true,
-                paginator:  state.paginator
+                isLoading:  true
             });
         }
 
@@ -660,14 +578,10 @@ function entitiesReducer (etype: string,
         case EntityActions.AUTO_SAVE_ATTRIBUTES: {
             let entity = action.payload.data;
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({},
                     state.entities, {[entity.id]: entity}),
                 isDirty:    true,
-                paginator:  state.paginator
+                isLoading:  true
             });
         }            
 
@@ -676,14 +590,10 @@ function entitiesReducer (etype: string,
             entity.state = 'pending';
             
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({},
                     state.entities, {[entity.id]: entity}),
                 isDirty:    true,
-                paginator:  state.paginator
+                isLoading:  true
             });
         }
             
@@ -692,14 +602,10 @@ function entitiesReducer (etype: string,
             entity.state = 'draft';
             
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({},
                     state.entities, {[entity.id]: entity}),
                 isDirty:    true,
-                paginator:  state.paginator
+                isLoading:  true
             });
         }
             
@@ -711,15 +617,11 @@ function entitiesReducer (etype: string,
             entity.state = 'publish';
             
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({},
                     state.entities, {[entity.id]: entity}),
                 isDirty:    true,
-                paginator:  state.paginator
-            });   
+                isLoading:  true
+            });
         }
 
         case EntityActions.SAVE_ENTITY: {
@@ -729,14 +631,10 @@ function entitiesReducer (etype: string,
                 entity.state = 'draft';
 
             return Object.assign({}, state, {
-                idsTotal:   state.idsTotal,
-                idsCurPage: state.idsCurPage,
-                idsEditing: state.idsEditing,
-                idsContent: state.idsContent,
                 entities:   Object.assign({},
                     state.entities, {[entity.id]: entity}),
                 isDirty:    true,
-                paginator:  state.paginator
+                isLoading:  true
             });
         }
 
