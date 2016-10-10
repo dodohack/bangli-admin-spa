@@ -136,8 +136,29 @@ export function getAuthState() {
     return (state$: Observable<AppState>) =>
         state$.select(s => s.auth);
 }
+
 export function getAuthToken() {
-    return fromAuth.getAuthToken();
+    return compose(fromAuth.getAuthToken(), getAuthState());
+}
+
+export function getDomains() {
+    return compose(fromAuth.getDomains(), getAuthState());
+}
+
+export function getProfiles() {
+    return compose(fromAuth.getProfiles(), getAuthState());
+}
+
+export function getCurDomainKey() {
+    return compose(fromAuth.getCurDomainKey(), getAuthState());
+}
+
+export function getCurDomain() {
+    return compose(fromAuth.getCurDomain(), getAuthState());
+}
+
+export function getCurProfile() {
+    return compose(fromAuth.getCurProfile(), getAuthState());
 }
 
 export function isDashboardUser() {
@@ -245,6 +266,10 @@ export function getPaginator(etype: string) {
 
 export function getIsDirty(etype: string) {
     return compose(fromEntities.getIsDirty(), getEntitiesState(etype));
+}
+
+export function getIsLoading(etype: string) {
+    return compose(fromEntities.getIsLoading(), getEntitiesState(etype));
 }
 
 export function getEntities(etype: string, ids: number[]) {

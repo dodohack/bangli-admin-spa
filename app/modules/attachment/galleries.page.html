@@ -139,8 +139,9 @@
 <!-- REF: https://www.sitepoint.com/using-modern-css-to-build-a-responsive-image-grid/ -->
 <image-list [etype]="etype"
             [baseResUrl]="imgBaseUrl"
-            [cmsState]="cmsState"
-            [listState]="entitiesState"
+            [entities]="entities$ | async"
+            [idsCurPage]="idsCurPage$ | async"
+            [idsEditing]="idsEditing$ | async"
             (batchEdit)="batchEdit($event)"
             (batchDelete)="batchDelete($event)"></image-list>
 

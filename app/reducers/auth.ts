@@ -110,8 +110,36 @@ export default function(state = initialState, action: Action): AuthState {
  *****************************************************************************/
 
 export function getAuthToken() {
-    return (state$: Observable<AuthState>) =>
-        state$.select(user => user.token);
+    return (state$: Observable<AuthState>) => state$
+        .select(auth => auth.token);
+}
+
+export function getDomains() {
+    return (state$: Observable<AuthState>) => state$
+        .select(auth => auth.domains);
+}
+
+export function getProfiles() {
+    return (state$: Observable<AuthState>) => state$
+        .select(auth => auth.users);
+}
+
+export function getCurDomainKey() {
+    return (state$: Observable<AuthState>) => state$
+        .select(auth => auth.key);
+}
+
+export function getCurDomain() {
+    return (state$: Observable<AuthState>) => state$
+        .map(auth => auth.domains[auth.key]);
+}
+
+/**
+ * Get user profile of current domain
+ */
+export function getCurProfile() {
+    return (state$: Observable<AuthState>) => state$
+        .map(auth => auth.users[auth.key]);
 }
 
 export function isDashboardUser() {

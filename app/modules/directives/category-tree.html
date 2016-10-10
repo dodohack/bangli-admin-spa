@@ -1,9 +1,9 @@
-<div class="alert alert-danger" *ngIf="parentId == 0 && !updatedCats.length">
+<div class="alert alert-danger" *ngIf="parentId == 0 && !catsOfChannel.length">
     此频道暂无分类, 请添加!
 </div>
 
 <ul *ngIf="categories">
-    <template ngFor let-cat [ngForOf]="updatedCats">
+    <template ngFor let-cat [ngForOf]="catsOfChannel">
         <li *ngIf="cat.parent_id === parentId">
 
             <!-- This checkbox is used to manage the display of tree children -->
@@ -24,7 +24,7 @@
 
             <category-tree *ngIf="hasChild(cat)"
                            [parentId]="cat.id"
-                           [channel]="channel"
+                           [channelId]="channelId"
                            [categories]="getChild(cat)"
                            [selectedCats]="selectedCats"
                            (checkEvent)="checkEvent.emit($event)"></category-tree>

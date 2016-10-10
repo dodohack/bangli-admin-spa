@@ -1,18 +1,19 @@
 <list-page-header [slug]="'comment'"
                   [name]="'评论'"
                   [zh]="zh"
-                  [loading]="loading"></list-page-header>
+                  [loading]="isLoading$ | async"></list-page-header>
 
 <!-- Deal post filter/tool bar at top -->
-<list-filter-bar *ngIf="loaded"
+<list-filter-bar [slug]="'comment'"
+                 [zh]="zh"
                  [etype]="etype"
-                 [paginator]="entitiesState.paginator"
+                 [paginator]="paginator$ | async"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Topic list table -->
-<comment-list *ngIf="loaded"
-          [etype]="etype"
-          [authState]="authState"
-          [listState]="entitiesState"
-          (batchEdit)="batchEdit($event)"
-          (batchDelete)="batchDelete($event)"></comment-list>
+<comment-list [etype]="etype"
+              [entities]="entities$ | async"
+              [idsCurPage]="idsCurPage$ | async"
+              [idsEditing]="idsEditing$ | async"
+              (batchEdit)="batchEdit($event)"
+              (batchDelete)="batchDelete($event)"></comment-list>

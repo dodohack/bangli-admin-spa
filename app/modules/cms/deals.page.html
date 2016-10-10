@@ -4,7 +4,7 @@
                   [cmsChannels]="cmsChannels$ | async"
                   [curChannelSlug]="params['channel']"
                   [states]="dealStates$ | async"
-                  [loading]="loading"></list-page-header>
+                  [loading]="isLoading$ | async"></list-page-header>
 
 <!-- Deal post filter/tool bar at top -->
 <list-filter-bar [slug]="'deal'"
@@ -17,14 +17,16 @@
                  (filterEvent)="filterEvent($event)"></list-filter-bar>
 
 <!-- Deal post list table -->
-<cms-list *ngIf="loaded"
-           [etype]="etype"
-           [authState]="authState"
-           [listState]="entitiesState"
-           [cmsState]="cmsState"
-           (batchEdit)="batchEdit($event)"
-           (batchDelete)="batchDelete($event)"
-           (batchOfflineEdit)="batchOfflineEdit($event)"
-           (batchLock)="batchLock($event)"></cms-list>
+<cms-list [etype]="etype"
+          [editorsObj]="editorsObject$ | async"
+          [paginator]="paginator$ | async"
+          [entities]="entities$ | async"
+          [idsCurPage]="idsCurPage$ | async"
+          [idsEditing]="idsEditing$ | async"
+          [frontendUrl]="(domain$ | async)?.url"
+          (batchEdit)="batchEdit($event)"
+          (batchDelete)="batchDelete($event)"
+          (batchOfflineEdit)="batchOfflineEdit($event)"
+          (batchLock)="batchLock($event)"></cms-list>
 
 <hr>

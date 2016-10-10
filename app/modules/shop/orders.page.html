@@ -2,7 +2,7 @@
                   [name]="'订单'"
                   [zh]="zh"
                   [states]="orderStates$ | async"
-                  [loading]="loading"
+                  [loading]="isLoading$ | async"
                   (newEntityEvent)="newShopOrder()"></list-page-header>
 
 <!-- Order filter/tool bar -->
@@ -12,9 +12,10 @@
                  [paginator]="paginator$ | async"></list-filter-bar>
 
 <!-- Product list table -->
-<order-list *ngIf="loaded"
-            [authState]="authState"
-            [listState]="entitiesState"
+<order-list [etype]="etype"
+            [entities]="entities$ | async"
+            [idsCurPage]="idsCurPage$ | async"
+            [idsEditing]="idsEditing$ | async"
             (batchEdit)="batchEdit($event)"
             (batchDelete)="batchDelete($event)"
             (batchOfflineEdit)="batchOfflineEdit($event)"

@@ -2,7 +2,7 @@
                   [name]="'产品'"
                   [zh]="zh"
                   [states]="productState$ | async"
-                  [loading]="loading"></list-page-header>
+                  [loading]="isLoading$ | async"></list-page-header>
 
 
 <!-- Product filter/tool bar -->
@@ -15,10 +15,12 @@
                  [paginator]="paginator$ | async"></list-filter-bar>
 
 <!-- Product list table -->
-<product-list *ngIf="loaded"
-              [authState]="authState"
-              [listState]="entitiesState"
-              [cmsState]="cmsState"
+<product-list [etype]="etype"
+              [editorsObj]="editorsObject$ | async"
+              [entities]="entities$ | async"
+              [idsCurPage]="idsCurPage$ | async"
+              [idsEditing]="idsEditing$ | async"
+              [frontendUrl]="(domain$ | async)?.url"
               (batchEdit)="batchEdit($event)"
               (batchDelete)="batchDelete($event)"
               (batchOfflineEdit)="batchOfflineEdit($event)"

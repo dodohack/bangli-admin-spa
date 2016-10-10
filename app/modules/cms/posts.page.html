@@ -4,7 +4,7 @@
                   [cmsChannels]="cmsChannels$ | async"
                   [curChannelSlug]="params['channel']"
                   [states]="postStates$ | async"
-                  [loading]="loading"></list-page-header>
+                  [loading]="isLoading$ | async"></list-page-header>
 
 <!-- Post filter/tool bar at top -->
 <list-filter-bar [slug]="'post'"
@@ -20,11 +20,10 @@
 <cms-list [etype]="etype"
           [authorsObj]="authorsObject$ | async"
           [editorsObj]="editorsObject$ | async"
-          [paginator]="paginator$ | async"
           [entities]="entities$ | async"
           [idsCurPage]="idsCurPage$ | async"
           [idsEditing]="idsEditing$ | async"
-          [authState]="authState"
+          [frontendUrl]="(domain$ | async)?.url"
           (batchEdit)="batchEdit($event)"
           (batchDelete)="batchDelete($event)"
           (batchOfflineEdit)="batchOfflineEdit($event)"
@@ -32,17 +31,14 @@
 
 <hr>
 
-<hr>
-
 <!-- Right side bar -->
 
 <!-- Right panel, we can trigger a seperate saving individually -->
 <!-- Only show previous and next nav for fast editing single post -->
-<right-panel *ngIf="loaded"
-             [width]="'600px'"
-             [isOpen]="entitiesInEdit.length"
-             [hasNav]="entitiesInEdit.length === 1"
-             [entity]="entitiesInEdit[0]"
+<right-panel [width]="'600px'"
+             [isOpen]="(numEditing$ | async) >= 1"
+             [hasNav]="(numEditing$ | async) == 1"
+             [entity]="entity$ | async"
              (toggle)="cancelBatchEdit()"
              (previous)="editPreviousEntity()"
              (next)="editNextEntity()">
@@ -57,17 +53,17 @@
                 </div>
 
                 <div class="treeview">
-                    <category-tree *ngIf="(idsEditing$ | async) > 1"
+                    <category-tree *ngIf="(numEditing$ | async) > 1"
                                    [parentId]="0"
-                                   [channel]="params['channel']"
-                                   [categories]="categories$ | async"
+                                   [channelId]="channelId"
+                                   [categories]="cmsCategories$ | async"
                                    (checkEvent)="selectCat($event)">
                     </category-tree>
 
-                    <category-tree *ngIf="(idsEditing$ | async) == 1"
+                    <category-tree *ngIf="(numEditing$ | async) == 1"
                                    [parentId]="0"
-                                   [channel]="params['channel']"
-                                   [categories]="categories$ | async"
+                                   [channelId]="channelId"
+                                   [categories]="cmsCategories$ | async"
                                    [selectedCats]="(entity$ | async)?.categories"
                                    (checkEvent)="selectCat($event)">
                     </category-tree>
@@ -79,13 +75,13 @@
                     文章专题分类<i class="pull-right fa customize-chevron"></i>
                 </div>
 
-                <topic-cloud *ngIf="(idsEditing$ | async) > 1"
+                <topic-cloud *ngIf="(numEditing$ | async) > 1"
                              [topics]=""
                              (addTopic)="addTopic($event)"
                              (removeTopic)="removeTopic($event)">
                 </topic-cloud>
 
-                <topic-cloud *ngIf="(idsEditing$ | async) == 1"
+                <topic-cloud *ngIf="(numEditing$ | async) == 1"
                              [topics]=""
                              [selectedTopics]="(entity$ | async)?.topics"
                              (addTopic)="addTopic($event)"

@@ -199,6 +199,12 @@ function entitiesReducer (etype: string,
 
     switch (action.type)
     {
+        case EntityActions.LOAD_ENTITY:
+        case EntityActions.LOAD_ENTITIES:
+        case EntityActions.LOAD_ENTITIES_ON_SCROLL: {
+            return Object.assign({}, state, {isLoading: true});
+        }
+            
         case EntityActions.SEARCH_COMPLETE:
         case EntityActions.LOAD_ENTITIES_SUCCESS: {
             const entities = action.payload.data.entities;
@@ -208,8 +214,10 @@ function entitiesReducer (etype: string,
 
             // Early return if nothing is loaded
             if (!idsCurPage.length)
-                return Object.assign({}, state,
-                    {idsCurPage: idsCurPage, paginator: action.payload.data.paginator});
+                return Object.assign({}, state, {
+                    idsCurPage: idsCurPage,
+                    isLoading: false,
+                    paginator: action.payload.data.paginator});
 
             // Merge new idsCurPage with idsTotal
             const idsTotal = [...state.idsTotal, ...idsCurPage].filter(
@@ -659,6 +667,14 @@ export function getEntitiesObject() {
  */
 export function getIsDirty() {
     return (state$: Observable<EntitiesState>) => state$.select(s => s.isDirty);
+}
+
+
+/**
+ * Return the dirty bit of entities under editing
+ */
+export function getIsLoading() {
+    return (state$: Observable<EntitiesState>) => state$.select(s => s.isLoading);
 }
 
 /**

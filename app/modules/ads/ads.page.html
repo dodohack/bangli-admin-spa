@@ -1,22 +1,27 @@
 <list-page-header [slug]="'ads'"
                   [name]="'广告'"
                   [zh]="zh"
-                  [loading]="loading"
+                  [loading]="isLoading$ | async"
                   (newEntityEvent)="newAdvertise()"></list-page-header>
 
 <!-- Ads filter/tool bar at top -->
-<list-filter-bar *ngIf="loaded"
+<list-filter-bar [slug]="'ads'"
+                 [zh]="zh"
                  [etype]="etype"
-                 [paginator]="entitiesState.paginator"
+                 [paginator]="pagniator$ | async"
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- Ads list table -->
-<ads-list *ngIf="loaded"
-          [etype]="etype"
-          [listState]="entitiesState"
+<ads-list [etype]="etype"
+          [entities]="entities$ | async"
+          [idsCurPage]="idsCurPage$ | async"
+          [idsEditing]="idsEditing$ | async"
+          [frontendUrl]="(domain$ | async)?.url"
           (batchEdit)="batchEdit($event)"
           (batchDelete)="batchDelete($event)"
+          (batchOfflineEdit)="batchOfflineEdit($event)"
           (batchLock)="batchLock($event)"></ads-list>
+
 
 <!-- Right panel, editing a advertise, scroll with y direction when overflows -->
 <right-panel *ngIf="loaded"

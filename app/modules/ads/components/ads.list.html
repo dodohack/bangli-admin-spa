@@ -34,29 +34,29 @@
     <tbody>
 
     <!-- table row of entities -->
-    <template ngFor let-id [ngForOf]="ids" let-i="index">
+    <template ngFor let-entity [ngForOf]="entities" let-i="index">
         <!-- Enable fast editing if double click on the row -->
-        <tr (dblclick)="batchEdit.emit([id])">
+        <tr (dblclick)="batchEdit.emit([entity.id])">
             <th>{{i+1}}</th>
-            <td><input type="checkbox" name="p[]" [ngModel]="isEditing(id)"
-                       (change)="updateEditList(id)"></td>
+            <td><input type="checkbox" name="p[]" [ngModel]="isEditing(entity.id)"
+                       (change)="updateEditList(entity.id)"></td>
 
             <td>
-                <span class="tag tag-default-outline">{{entities[id].state}}</span>
-                {{ entities[id].title }}
+                <span class="tag tag-default-outline">{{entity.state}}</span>
+                {{ entity.title }}
             </td>
 
-            <td>{{ entities[id].image_id }}</td>
+            <td>{{ entity.image_id }}</td>
 
-            <td>{{ entities[id].device }}</td>
+            <td>{{ entity.device }}</td>
 
-            <td>{{ entities[id].position }}</td>
+            <td>{{ entity.position }}</td>
 
-            <td>{{ entities[id].location }}</td>
+            <td>{{ entity.location }}</td>
 
-            <td>{{ entities[id].started_at }}</td>
+            <td>{{ entity.started_at }}</td>
 
-            <td>{{ entities[id].ended_at }}</td>
+            <td>{{ entity.ended_at }}</td>
         </tr>
     </template>
 

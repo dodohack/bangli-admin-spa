@@ -37,16 +37,16 @@
     <tbody>
 
     <!-- table row of order -->
-    <template ngFor let-id [ngForOf]="ids" let-i="index">
+    <template ngFor let-entity [ngForOf]="entities" let-i="index">
         <tr>
-            <td><input type="checkbox" name="o[]" [ngModel]="isEditing(id)"></td>
-            <td><strong (dblclick)="batchEdit.emit([id])"> #{{ id }}</strong></td>
+            <td><input type="checkbox" name="o[]" [ngModel]="isEditing(entity.id)"></td>
+            <td><strong (dblclick)="batchEdit.emit([entity.id])"> #{{ entity.id }}</strong></td>
             <!-- Enable fast editing if double click on user column -->
-            <td (dblclick)="batchEdit.emit([id])">
+            <td (dblclick)="batchEdit.emit([entity.id])">
                 <!-- 下单用户, 点击弹出model显示此用户信息,不用切换到用户页面, 因为查看用户信息不是重点 -->
-                {{ entities[id].customer.name }}
+                {{ entity.customer.name }}
                 <div>
-                    <span>{{ entities[id].customer.email }}</span>
+                    <span>{{ entity.customer.email }}</span>
                 </div>
             </td>
 
@@ -54,9 +54,9 @@
             <td><i class="fa fa-comment"></i></td>
 
             <td>Item Count</td>
-            <td>{{ entities[id].created_at }}</td>
-            <td>{{ entities[id].currency}} {{ entities[id].total / 100 }}</td>
-            <td (dblclick)="batchEdit.emit([id])">{{ entities[id].postage }}</td>
+            <td>{{ entity.created_at }}</td>
+            <td>{{ entity.currency}} {{ entity.total / 100 }}</td>
+            <td (dblclick)="batchEdit.emit([entity.id])">{{ entity.postage }}</td>
             <td>
                 <div class="btn btn-group btn-group-sm">
                     <button class="btn btn-sm btn-outline-info"><i class="fa fa-ellipsis-h"></i></button>

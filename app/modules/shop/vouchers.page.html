@@ -1,7 +1,7 @@
 <list-page-header [slug]="'voucher'"
                   [name]="'优惠码'"
                   [zh]="zh"
-                  [loading]="loading"
+                  [loading]="isLoading$ | async"
                   (newEntityEvent)="newVoucher()"></list-page-header>
 
 <!-- Post filter/tool bar at top -->

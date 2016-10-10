@@ -69,16 +69,16 @@
 
                 <div class="row-actions">
                     <span class="trash"><a>删除</a> | </span>
-                    <span><a href="{{ previewLink(id) }}" target="_blank">查看</a> | </span>
+                    <span><a href="{{ previewLink(entity.id) }}" target="_blank">查看</a> | </span>
                     <span>双击快速编辑</span>
                 </div>
             </td>
 
             <td>
-                <span *ngIf="authorsObj && entity.editor_id">
+                <span *ngIf="editorsObj && entity.editor_id">
                     编辑: {{ editorsObj[entity.editor_id].name }}
                 </span>
-                <div *ngIf="editorsObj && entity.author_id">
+                <div *ngIf="authorsObj && entity.author_id">
                     作者: {{ authorsObj[entity.author_id].name }}
                 </div>
             </td>

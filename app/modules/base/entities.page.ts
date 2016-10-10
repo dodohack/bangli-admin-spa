@@ -11,13 +11,8 @@ import { User }                 from '../../models';
 import { Channel }              from '../../models/';
 import { Entity, EntityParams } from '../../models';
 import { Category, Tag, Topic}  from '../../models';
-import { ENTITY, ENTITY_INFO }  from '../../models';
 import { Activity }             from '../../models';
 import { AppState }             from '../../reducers';
-import { EntitiesState }        from "../../reducers/entities";
-import { AuthState }            from '../../reducers/auth';
-import { CmsAttrsState }        from '../../reducers/cmsattrs';
-import { ShopAttrsState }       from '../../reducers/shopattrs';
 import { EntityActions }        from '../../actions';
 import { Ping }                 from '../../ping';
 
@@ -26,45 +21,39 @@ import { Ping }                 from '../../ping';
  * TODO: getter functions in each reducers and reducers/index and
  * TODO: loading/loaded status used in reducers(collection.ts).
  */
-import { getAuthors, getAuthorsObject, getEditors, getEditorsObject, 
+import {
+    getCurDomain, getCurProfile,
+    getAuthors, getAuthorsObject, getEditors, getEditorsObject, 
     getCmsChannels, getCmsCategories, getLocations,
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity,
-    getPaginator,
+    getIsLoading, getPaginator,
     getEntitiesCurPage } from '../../reducers';
 
 
 export class EntitiesPage implements OnInit, OnDestroy
 {
     // All subscribers, needs to unsubscribe on destory
-    subAuth: any;
-    subCms: any;
-    subShop: any;
-    subEntities: any;
+    subPro: any;
+    subCmsCh: any;
     subEntity: any;
     subActivityOn: any;
     subActivityOff: any;
     subParams: any;
-
-    authState:  AuthState;
-    //cmsState:   CmsAttrsState;
-    shopState:   ShopAttrsState;
-    entitiesState: EntitiesState;
 
     params: any;
     queryParams: any;
 
     // entity query parameter for api request
     entityParams: EntityParams = new EntityParams;
-
-    // Is list entities are loading
-    loading: boolean = true;
-    // Is list entities loaded, we can't use !loading to check the loaded state
-    // as the list is re-rendered at each time loading
-    loaded: boolean = false;
-
+    
+    myId:        number; // My id of current domain.
     entity:      Entity; // First entity in idsEditing
+    cmsChannels: Channel[];
 
+    isLoading$:   Observable<boolean>;
+    domain$:      Observable<any>;  // Current managed domain
+    profile$:     Observable<User>; // User info of current domain 
     authors$:     Observable<User[]>;
     editors$:     Observable<User[]>;
     authorsObject$: Observable<any>;
@@ -72,10 +61,12 @@ export class EntitiesPage implements OnInit, OnDestroy
     cmsChannels$: Observable<Channel[]>;
     cmsCategories$: Observable<Category[]>;
     paginator$:   Observable<any>;
+    entity$:      Observable<Entity>;
     entities$:    Observable<Entity[]>;
     idsCurPage$:  Observable<number[]>;
     idsEditing$:  Observable<number[]>;
-
+    numEditing$:  Observable<number>; // Number of entity in editing
+    
     /**
      * Constructor
      * @param etype     - entity type, it can be almost any entity except user
@@ -90,19 +81,12 @@ export class EntitiesPage implements OnInit, OnDestroy
                 protected route: ActivatedRoute,
                 protected store: Store<AppState>,
                 protected ping: Ping,
-                protected pageless: boolean = false) {
-
-    }
+                protected pageless: boolean = false) {}
 
     ngOnInit() {
-        this.subAuth = this.store.select<AuthState>('auth')
-            .subscribe(authState => this.authState = authState);
-        /*
-        this.subCms = this.store.select<CmsAttrsState>('cms')
-            .subscribe(cmsState => this.cmsState = cmsState);
-        */
-        this.subShop = this.store.select<ShopAttrsState>('shop')
-            .subscribe(shopState => this.shopState = shopState);
+        this.isLoading$     = this.store.let(getIsLoading(this.etype));
+        this.domain$        = this.store.let(getCurDomain());
+        this.profile$       = this.store.let(getCurProfile());
         this.authors$       = this.store.let(getAuthors());
         this.editors$       = this.store.let(getEditors());
         this.authorsObject$ = this.store.let(getAuthorsObject());
@@ -110,15 +94,17 @@ export class EntitiesPage implements OnInit, OnDestroy
         this.cmsChannels$   = this.store.let(getCmsChannels());
         this.cmsCategories$ = this.store.let(getCmsCategories());
         this.paginator$     = this.store.let(getPaginator(this.etype));
+        this.entity$        = this.store.let(getCurEntity(this.etype));
         this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
         this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
         this.idsEditing$    = this.store.let(getIdsEditing(this.etype));
+        this.numEditing$    = this.idsEditing$.map(ids => ids.length);
 
-        this.subEntity = this.store.let(getCurEntity(this.etype))
-            .subscribe(e => this.entity = e);
+        this.subPro    = this.profile$.subscribe(p => this.myId = p.id);
+        this.subCmsCh  = this.cmsChannels$.subscribe(c => this.cmsChannels = c);
+        this.subEntity = this.entity$.subscribe(e => this.entity = e);
 
         this.dispatchLoadEntities();
-        this.loadEntities();
 
         // Dispatch activity update action when we have the activities
         // changed(empty => sth, sth => sth; sth => empty)
@@ -143,10 +129,8 @@ export class EntitiesPage implements OnInit, OnDestroy
     }
 
     ngOnDestroy() {
-        this.subAuth.unsubscribe();
-        //this.subCms.unsubscribe();
-        this.subShop.unsubscribe();
-        this.subEntities.unsubscribe();
+        this.subPro.unsubscribe();
+        this.subCmsCh.unsubscribe();
         this.subEntity.unsubscribe();
         //this.subActivityOn.unsubscribe();
         //this.subActivityOff.unsubscribe();
@@ -165,7 +149,6 @@ export class EntitiesPage implements OnInit, OnDestroy
                 // Compare if elements of url params change
                 if (JSON.stringify(this.params) !== JSON.stringify(params)) {
                     this.params = params;
-                    this.loading = true;
 
                     // Params
                     this.entityParams.channel  = this.params['channel'];
@@ -182,26 +165,10 @@ export class EntitiesPage implements OnInit, OnDestroy
                     this.entityParams.dateto   = this.params['dateto'];
                     this.entityParams.query    = this.params['query'];
 
-
                     this.store.dispatch(EntityActions
                         .loadEntities(this.etype, this.entityParams));
                 }
                 
-            });
-    }
-
-    /**
-     * Read entities back from ngrx store
-     */
-    loadEntities() {
-        this.subEntities = this.store
-            .select<EntitiesState>(ENTITY_INFO[this.etype].selector)
-            .subscribe(entitiesState => {
-                this.entitiesState = entitiesState;
-                // Create new copies of entities in editing mode
-                // Set search loading to false if entity is loaded
-                this.loading = false;
-                this.loaded = true;
             });
     }
 
@@ -211,10 +178,9 @@ export class EntitiesPage implements OnInit, OnDestroy
      */
     @HostListener('window:scroll')
     loadEntitiesOnScroll() {
-        if (this.pageless && !this.loading &&
+        if (this.pageless &&
             (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             setTimeout(() => {
-                this.loading = true;
                 this.entityParams.cur_page++;
                 this.store.dispatch(EntityActions
                     .loadEntitiesOnScroll(this.etype, this.entityParams));
@@ -222,7 +188,9 @@ export class EntitiesPage implements OnInit, OnDestroy
         }
     }
 
-    get myId() { return this.authState.users[this.authState.key].id; }
+    get channelId() { 
+        return this.cmsChannels.filter(c => c.slug == this.entityParams.channel);
+    }
     
     /**
      * Create a entity on entity list page

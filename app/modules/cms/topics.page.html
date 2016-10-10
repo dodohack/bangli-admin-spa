@@ -4,7 +4,7 @@
                   [cmsChannels]="cmsChannels$ | async"
                   [curChannelSlug]="params['channel']"
                   [states]="topicStates$ | async"
-                  [loading]="loading"></list-page-header>
+                  [loading]="isLoading$ | async"></list-page-header>
 
 <!-- Topic filter/tool bar at top -->
 
@@ -24,7 +24,6 @@
           [entities]="entities$ | async"
           [idsCurPage]="idsCurPage$ | async"
           [idsEditing]="idsEditing$ | async"
-          [authState]="authState"
           (batchEdit)="batchEdit($event)"
           (batchDelete)="batchDelete($event)"
           (batchOfflineEdit)="batchOfflineEdit($event)"

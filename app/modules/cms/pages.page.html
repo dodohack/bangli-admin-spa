@@ -2,7 +2,7 @@
                   [name]="'页面'"
                   [zh]="zh"
                   [states]="pageStates$ | async"
-                  [loading]="loading"></list-page-header>
+                  [loading]="isLoading$ | async"></list-page-header>
 
 <!-- Page filter/tool bar at top -->
 <list-filter-bar [slug]="'page'"
@@ -12,11 +12,13 @@
                  [paginator]="paginator$ | async"></list-filter-bar>
 
 <!-- Page list table -->
-<cms-list *ngIf="loaded"
-          [etype]="etype"
-          [authState]="authState"
-          [listState]="entitiesState"
-          [cmsState]="cmsState"
+<cms-list [etype]="etype"
+          [editorsObj]="editorsObject$ | async"
+          [paginator]="paginator$ | async"
+          [entities]="entities$ | async"
+          [idsCurPage]="idsCurPage$ | async"
+          [idsEditing]="idsEditing$ | async"
+          [frontendUrl]="(domain$ | async)?.url"
           (batchEdit)="batchEdit($event)"
           (batchDelete)="batchDelete($event)"
           (batchOfflineEdit)="batchOfflineEdit($event)"

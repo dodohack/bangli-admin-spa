@@ -15,29 +15,22 @@ import { EntitiesState }  from "../../reducers/entities";
 
 export class EntityList
 {
+    @Input() frontendUrl: string;
     @Input() paginator: any;
     @Input() entities: Entity[];
     @Input() idsCurPage: number[];
     @Input() idsEditing: number[];
     @Input() authorsObj: any;  // authors object
     @Input() editorsObj: any;  // editors object
+    @Input() channels: Channel[];
     @Input() authors: any; // DEPRECATED
     @Input() editors: any; // DEPRECATED
-    @Input() channels: Channel[];
-    
-    @Input() authState: AuthState;
-    @Input() cmsState: CmsAttrsState;
     
     // The entity type of the list: post, topic, page, product etc
     @Input() etype: string;
     
     // Base resource url(base url to image root)
     @Input() baseResUrl: string;
-
-    // listState is one of entity type content state
-    _listState: EntitiesState;
-    @Input() set listState(value) { this._listState = Object.assign({}, value); }
-    get listState() { return this._listState; }
 
     // Fast edit single or multiple entities
     @Output() batchEdit = new EventEmitter();
@@ -51,7 +44,6 @@ export class EntityList
     batchAction: string = '';
     
     get hasEntity() {
-        console.log("Has entity: ", this.idsCurPage);
         return this.idsCurPage && this.idsCurPage.length > 0;
     }
     
@@ -125,20 +117,21 @@ export class EntityList
 
     // Frontend preview link
     previewLink(id: number) {
-        let base = this.authState.domains[this.authState.key].url + '/';
+        let base = this.frontendUrl + '/';
 
         switch (this.etype) {
             case ENTITY.CMS_TOPIC:
-                return base + ENTITY_INFO[this.etype] + '/'
+                return base + ENTITY_INFO[this.etype].slug + '/'
                     + this.channels[this.entities[id].channel_id] + '/'
                     + this.entities[id].guid;
 
             case ENTITY.SHOP_PRODUCT:
-                return base + ENTITY_INFO[this.etype] + '/' + this.entities[id].guid;
+                return base + ENTITY_INFO[this.etype].slug
+                    + '/' + this.entities[id].guid;
 
             // Default to cms type
             default:
-                return base + 'cms/' + ENTITY_INFO[this.etype] + '/' + id;
+                return base + 'cms/' + ENTITY_INFO[this.etype].slug + '/' + id;
         }
     }
 }

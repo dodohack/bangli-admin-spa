@@ -50,7 +50,7 @@
         <tab heading="分类">
             <div class="treeview">
                 <category-tree [parentId]="0"
-                               [channel]="entity?.channel"
+                               [channelId]="entity?.channel.id"
                                [categories]="cms?.categories"
                                [selectedCats]="entity?.categories"
                                (checkEvent)="updateCat($event)">

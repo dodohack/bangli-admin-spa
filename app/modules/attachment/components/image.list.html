@@ -1,10 +1,10 @@
 <ul class="attachments">
-    <li *ngFor="let id of ids; let i=index"
+    <li *ngFor="let entity of entities; let i=index"
         class="attachment">
         <div class="attachment-preview">
-            <div class="thumbnail" (click)="setImage(i, entities[id]); modal.show()">
+            <div class="thumbnail" (click)="setImage(i, entity); modal.show()">
                 <div class="centered">
-                    <img [src]="imgUrl(entities[id])">
+                    <img [src]="imgUrl(entity)">
                 </div>
             </div>
         </div>

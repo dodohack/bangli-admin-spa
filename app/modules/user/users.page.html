@@ -1,7 +1,7 @@
 <list-page-header [slug]="'user'"
                   [name]="'用户'"
                   [zh]="zh"
-                  [loading]="loading"></list-page-header>
+                  [loading]="isLoading$ | async"></list-page-header>
 
 <!-- Post filter/tool bar at top -->
 <list-filter-bar [etype]="etype"
@@ -9,5 +9,5 @@
                  (batchActionEvent)="batchEdit($event)"></list-filter-bar>
 
 <!-- List of users -->
-<user-list [etype]="etype" [listState]="usersState"></user-list>
+<!--<user-list [etype]="etype" [entities]="entities$ | async"></user-list>-->
 
