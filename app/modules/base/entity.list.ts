@@ -21,11 +21,8 @@ export class EntityList
     @Input() idsCurPage: number[];
     @Input() idsEditing: number[];
     @Input() authorsObj: any;  // authors object
-    @Input() editorsObj: any;  // editors object
     @Input() channels: Channel[];
-    @Input() authors: any; // DEPRECATED
-    @Input() editors: any; // DEPRECATED
-    
+
     // The entity type of the list: post, topic, page, product etc
     @Input() etype: string;
     
@@ -50,6 +47,15 @@ export class EntityList
     // If batch options can be enabled
     get canEdit() {
         return this.idsEditing && this.idsEditing.length !== 0;
+    }
+
+    /**
+     * NOTE: For authors/editors that were left, we don't have their info
+     * in authorsObj.
+     */
+    authorName(id: number) {
+        if (this.authorsObj[id]) return this.authorsObj[id].name;
+        return 'ID ' + id;
     }
 
     // If all post is selected, we use '<=' in case we have extra editing

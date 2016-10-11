@@ -48,6 +48,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
 {
     // Force quit no matter if the entity is dirty or not.
     forceQuit = false;
+
+    // Use to keep track if url parameters is really changed.
+    params: any;
     
     // FIXME: froala editor triggers content change at first time it initialize
     // the content, but actually the entity content is not modified yet.
@@ -115,8 +118,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subPro     = this.profile$.subscribe(p => this.profile = p);
         this.subDirty   = this.isDirty$.subscribe(i => this.isDirty = i);
         this.subEntity  = this.entity$.subscribe(e => this.entity = e);
-
-        this.authorsObj$.subscribe(a => console.log("authors obj: ", a));
 
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();

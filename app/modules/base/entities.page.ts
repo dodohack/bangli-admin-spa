@@ -53,11 +53,10 @@ export class EntitiesPage implements OnInit, OnDestroy
 
     isLoading$:   Observable<boolean>;
     domain$:      Observable<any>;  // Current managed domain
-    profile$:     Observable<User>; // User info of current domain 
+    profile$:     Observable<User>; // User info of current domain
     authors$:     Observable<User[]>;
     editors$:     Observable<User[]>;
     authorsObject$: Observable<any>;
-    editorsObject$: Observable<any>;
     cmsChannels$: Observable<Channel[]>;
     cmsCategories$: Observable<Category[]>;
     paginator$:   Observable<any>;
@@ -90,7 +89,6 @@ export class EntitiesPage implements OnInit, OnDestroy
         this.authors$       = this.store.let(getAuthors());
         this.editors$       = this.store.let(getEditors());
         this.authorsObject$ = this.store.let(getAuthorsObject());
-        this.editorsObject$ = this.store.let(getEditorsObject());
         this.cmsChannels$   = this.store.let(getCmsChannels());
         this.cmsCategories$ = this.store.let(getCmsCategories());
         this.paginator$     = this.store.let(getPaginator(this.etype));

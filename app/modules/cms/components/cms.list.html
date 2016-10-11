@@ -75,17 +75,17 @@
             </td>
 
             <td>
-                <span *ngIf="editorsObj && entity.editor_id">
-                    编辑: {{ editorsObj[entity.editor_id].name }}
+                <!-- editor is always an author -->
+                <span *ngIf="entity.editor_id && entity.editor_id != entity.author_id">
+                    编辑: {{ authorName(entity.editor_id) }}
                 </span>
-                <div *ngIf="authorsObj && entity.author_id">
-                    作者: {{ authorsObj[entity.author_id].name }}
+                <div *ngIf="entity.author_id">
+                    作者: {{ authorName(entity.author_id) }}
                 </div>
             </td>
 
             <td>
-                <span *ngFor="let cat of entity.categories">
-                <a [routerLink]="['/cms/category', cat.id]">{{ cat.name }}</a>, </span>
+                <span *ngFor="let cat of entity.categories">{{ cat.name }}, </span>
             </td>
             <td>
                 <span *ngIf="isPost">{{ entity.published_at }}</span>
