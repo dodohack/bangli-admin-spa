@@ -48,13 +48,13 @@
                 <i class="fa fa-lock" style="color: red" *ngIf="entity.lock"></i>
                 <!-- Badge: Online edit lock -->
                 <span class="tag tag-default-outline"
-                      *ngIf="authorsObj && entity.activities[0] && entity.activities[0].edit_lock == 1">
+                      *ngIf="isOnlineLocked(entity)">
                     <i class="fa fa-pencil" style="color: red"></i>
                     {{ authorsObj[entity.activities[0].user_id].name }} 正在编辑
                 </span>
                 <!-- Badge: Offline edit lock -->
                 <span class="tag tag-default-outline"
-                      *ngIf="authorsObj && entity.activities[0] && entity.activities[0].edit_lock == 2">
+                      *ngIf="isOfflineLocked(entity)">
                     <i class="fa fa-pencil" style="color: blue"></i>
                     {{ authorsObj[entity.activities[0].user_id].name }} 正在离线编辑
                 </span>

@@ -71,13 +71,14 @@ export class EntityList
         return this.idsEditing && this.idsEditing.indexOf(id) !== -1;
     }
 
-    hasActivity(id): boolean {
-        return this.entities[id].activities &&
-            this.entities[id].activities.length > 0;
+    isOnlineLocked(entity) {
+        return entity.activities && entity.activities.length &&
+                entity.activities[0].edit_lock === 1;
     }
 
-    getActivity(id) {
-        return this.entities[id].activities[0];
+    isOfflineLocked(entity) {
+        return entity.activities && entity.activities.length &&
+            entity.activities[0].edit_lock === 2;
     }
 
     // Add id to editing list if it is not added, or
