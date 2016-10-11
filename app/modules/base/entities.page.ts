@@ -182,7 +182,7 @@ export class EntitiesPage implements OnInit, OnDestroy
                 else
                     this.router.navigate(['/', ENTITY_INFO[this.etype].slug,
                         'page', +this.params['page'] + 1]);
-            }, 100);
+            }, 10);
         }
     }
 

@@ -99,7 +99,7 @@ export class UsersPage implements OnInit, OnDestroy
                 else
                     this.router.navigate(['/user',
                         'page', +this.params['page'] + 1]);
-            }, 100);
+            }, 10);
         }
     }
 
