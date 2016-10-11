@@ -93,10 +93,27 @@ export default function (state = initialState, action: Action): UsersState {
     }
 }
 
+/******************************************************************************
+ * Helper functions
+ ******************************************************************************/
+
 /* FIXME: For current logged user, we can not get it from s.entities */
 export function getUser(id: number) {
     return (state$: Observable<UsersState>) => state$
         .select(s => s.entities[id]);
+}
+
+export function getCurUser() {
+    return (state$: Observable<UsersState>) => state$
+        .map(s => s.entities[s.idsEditing[0]]);
+}
+
+/**
+ * If the profile current in editing/viewing belongs to current loggedin user
+ */
+export function isMyProfileUUID(uuid: string) {
+    return (state$: Observable<UsersState>) => state$
+        .map(s => s.entities[s.idsEditing[0]].uuid === uuid);
 }
 
 /**

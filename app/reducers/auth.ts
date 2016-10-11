@@ -109,9 +109,15 @@ export default function(state = initialState, action: Action): AuthState {
  * from AppState in reducers/index.ts
  *****************************************************************************/
 
+
 export function getAuthToken() {
     return (state$: Observable<AuthState>) => state$
         .select(auth => auth.token);
+}
+
+export function getAuthJwt() {
+    return (state$: Observable<AuthState>) => state$
+        .select(auth => auth.jwt);
 }
 
 export function getDomains() {

@@ -11,8 +11,7 @@ import { ActivatedRoute }    from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
-import { AppState, getUser } from '../../reducers';
-import { hasSuperUserRole }  from '../../reducers';
+import { AppState }          from '../../reducers';
 import { AlertActions }      from '../../actions';
 import { UserActions }       from '../../actions';
 import { PreferenceActions } from '../../actions';
@@ -22,6 +21,7 @@ import { PreferenceState }   from '../../reducers/preference';
 import { User }              from '../../models';
 import { JwtPayload }        from '../../models/auth';
 
+import { isMyProfile, getCurUser, hasSuperUserRole }  from '../../reducers';
 
 @Component({ template: require('./user.page.html') })
 export class UserPage implements OnInit, OnDestroy
@@ -29,10 +29,7 @@ export class UserPage implements OnInit, OnDestroy
     // Current user uuid
     uuid: string;
 
-    // UsersState, AuthState and PreferenceState
-    usersState: UsersState;
-    authState: AuthState;
-    prefState: PreferenceState;
+    user: User;
 
     // The domain we are going to switch to if it is given
     domain: string;
@@ -43,19 +40,20 @@ export class UserPage implements OnInit, OnDestroy
     subParams: any;
     subQParams: any;
 
-    // If current user is a super user
-    isSuperUser: boolean;
+    user$:        Observable<User>;
+    isSuperUser$: Observable<boolean>;
+    isMyProfile$: Observable<boolean>;
+    pref$:        Observable<PreferenceState>;
 
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) {
     }
 
     ngOnInit() {
-        this.subAuth = this.store.select<AuthState>('auth').subscribe(state => {
-            this.authState = state;
-        }) ;
-        this.subPref = this.store.select<PreferenceState>('pref')
-            .subscribe(state => this.prefState = state);
+        this.user$        = this.store.let(getCurUser());
+        this.isSuperUser$ = this.store.let(hasSuperUserRole());
+        this.isMyProfile$ = this.store.let(isMyProfile());
+        this.pref$        = this.store.select<PreferenceState>(s => s.pref);
 
         // Domain switch parameter is passed in from this
         this.subQParams = this.route.queryParams.subscribe(params => {
@@ -63,49 +61,29 @@ export class UserPage implements OnInit, OnDestroy
         });
 
         this.dispatchLoadUser();
-        this.loadUser();
-
-        this.store.let(hasSuperUserRole()).subscribe(x => this.isSuperUser = x);
     }
 
     ngOnDestroy() {
         this.subQParams.unsubscribe();
         this.subParams.unsubscribe();
-        this.subUser.unsubscribe();
-        this.subAuth.unsubscribe();
-        this.subPref.unsubscribe();
     }
 
     /**
      * Dispatch an action to load user when URL changes
      */
     dispatchLoadUser() {
-        this.subParams = this.route.params.select<string>('uuid')
+        this.subParams = this.route.params
             .subscribe(params => {
-                this.uuid = params['uuid'];
-                this.store.dispatch(UserActions.loadUser(this.uuid));
-                this.store.dispatch(UserActions.loadUserDomains(this.uuid));
+                if (params['id']) {
+                    this.store.dispatch(UserActions.loadUser(params['id']));
+                    // TODO: Domain is loaded seperately after user is load
+                    // TODO: as we requires 'uuid' to load user domains. and
+                    // TODO: majority of users doesn't have domains.
+
+                    //this.store.dispatch(UserActions.loadUserDomains(params['id']));
+                }
             });
     }
-
-    /**
-     * Read user back from ngrx store
-     */
-    loadUser() {
-        this.subUser = this.store.select<UsersState>('users')
-            .subscribe(usersState => {
-                this.usersState = usersState;
-            });
-    }
-
-    get jwt() { return this.authState.jwt; }
-
-    /**
-     * If the user I'm viewing is my profile
-     */
-    get isMyProfile() { return this.jwt.sub === this.uuid; }
-
-    get user() { return this.usersState.entities[this.uuid]; }
 
     savePreference($event) {
         this.store.dispatch(PreferenceActions.save($event));

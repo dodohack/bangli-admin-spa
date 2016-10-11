@@ -141,6 +141,11 @@ export function getAuthToken() {
     return compose(fromAuth.getAuthToken(), getAuthState());
 }
 
+export function getAuthJwt() {
+    return compose(fromAuth.getAuthJwt(), getAuthState());
+}
+
+
 export function getDomains() {
     return compose(fromAuth.getDomains(), getAuthState());
 }
@@ -251,6 +256,22 @@ export function getUsersState() {
         state$.select(s => s.users);
 }
 
+/**
+ *
+ */
+export function isMyProfileUUID(uuid: string) {
+    return compose(fromUsers.isMyProfileUUID(uuid), getUsersState());
+}
+
+/**
+ * If the current editing user has the same uuid as current dashboard user
+ */
+export function isMyProfile() {
+    return (state$: Observable<AppState>) => state$
+        .let(getAuthJwt())
+        .switchMap(jwt => state$.let(isMyProfileUUID(jwt.sub)));
+}
+
 export function getUserIds() {
     return compose(fromUsers.getUserIds(), getUsersState());
 }
@@ -261,6 +282,13 @@ export function getUsers() {
 
 export function getUser(id: number) {
     return compose(fromUsers.getUser(id), getUsersState());
+}
+
+/**
+ * Get current user in UsersState.idsEditing
+ */
+export function getCurUser() {
+    return compose(fromUsers.getCurUser(), getUsersState());
 }
 
 export function getIsUserLoading() {

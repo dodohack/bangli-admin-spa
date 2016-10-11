@@ -3,49 +3,58 @@ This should be the shared template used by by setting 3rd users profile and
 my profile.
 -->
 <div class="page-header">
-    <h1 class="title">修改资料: </h1><!--{{ (user$ | async).display_name }}</h1>-->
+    <h1 class="title">修改资料: {{ (user$ | async)?.display_name }}</h1>
 </div>
 
 <tabset>
     <tab heading="用户资料">
-        <form  *ngIf="user$ | async" (ngSubmit)="saveProfile()">
+        <form (ngSubmit)="saveProfile()">
+
             <accordion>
                 <user-base-profile [user]="user$ | async"
-                                   [isMyProfile]="isMyProfile | async"
-                                   [isSuperUser]="isSuperUser | async"></user-base-profile>
+                                   [isMyProfile]="isMyProfile$ | async"
+                                   [isSuperUser]="isSuperUser$ | async">
+                </user-base-profile>
 
                 <user-shipping-profile [user]="user$ | async"
-                                       [isMyProfile]="isMyProfile | async"
-                                       [isSuperUser]="isSuperUser | async"></user-shipping-profile>
+                                       [isMyProfile]="isMyProfile$ | async"
+                                       [isSuperUser]="isSuperUser$ | async">
+                </user-shipping-profile>
 
                 <user-baby-profile [user]="user$ | async"
-                                   [isMyProfile]="isMyProfile | async"
-                                   [isSuperUser]="isSuperUser | async"></user-baby-profile>
+                                   [isMyProfile]="isMyProfile$ | async"
+                                   [isSuperUser]="isSuperUser$ | async">
+                </user-baby-profile>
             </accordion>
-            <div class="row form-group" *ngIf="(isSuperUser | async) || (isMyProfile | async)">
+
+            <div class="row form-group" *ngIf="(isSuperUser$ | async) || (isMyProfile$ | async)">
                 <div class="col-xs-12">
                     <button type="submit" class="btn btn-primary btn-block">保存</button>
                 </div>
             </div>
+
         </form>
     </tab>
 
-    <tab heading="密码授权" *ngIf="(isMyProfile | async) || (isSuperUser | async)">
+    <tab heading="密码授权" *ngIf="(isMyProfile$ | async) || (isSuperUser$ | async)">
         <user-auth-profile [user]="user$ | async"
-                           [isMyProfile]="isMyProfile | async"
-                           [isSuperUser]="isSuperUser | async"
-                           (alerts)="displayAlerts($event)"></user-auth-profile>
+                           [isMyProfile]="isMyProfile$ | async"
+                           [isSuperUser]="isSuperUser$ | async"
+                           (alerts)="displayAlerts($event)">
+        </user-auth-profile>
     </tab>
 
-    <tab heading="站点权限" [active]="domain"
-         *ngIf="(isMyProfile | async) || (isSuperUser | async)">
+    <tab heading="站点权限" [active]="domain" *ngIf="(isMyProfile$ | async) || (isSuperUser$ | async)">
         <user-domains-tab [user]="user$ | async"
-                          [isSuperUser]="isSuperUser | async"
-                          (save)="saveDomains($event)"></user-domains-tab>
+                          [isSuperUser]="isSuperUser$ | async"
+                          (save)="saveDomains($event)">
+        </user-domains-tab>
     </tab>
 
-    <tab heading="个人偏好" *ngIf="isMyProfile">
+    <tab heading="个人偏好" *ngIf="isMyProfile$ | async">
         <user-preference [pref]="pref$ | async"
-                         (save)="savePreference($event)"></user-preference>
+                         (save)="savePreference($event)">
+        </user-preference>
     </tab>
+
 </tabset>
