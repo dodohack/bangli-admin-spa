@@ -24,7 +24,7 @@ import { Ping }                 from '../../ping';
 import {
     getCurDomain, getCurProfile,
     getAuthors, getAuthorsObject, getEditors, getEditorsObject, 
-    getCmsChannels, getCmsCategories, getLocations,
+    getCmsChannels, getCmsChannelsObject, getCmsCategories, getLocations,
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity,
     getIsLoading, getPaginator,
@@ -58,6 +58,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     editors$:     Observable<User[]>;
     authorsObject$: Observable<any>;
     cmsChannels$: Observable<Channel[]>;
+    cmsChannelsObject$: Observable<any>;
     cmsCategories$: Observable<Category[]>;
     paginator$:   Observable<any>;
     entity$:      Observable<Entity>;
@@ -90,6 +91,7 @@ export class EntitiesPage implements OnInit, OnDestroy
         this.editors$       = this.store.let(getEditors());
         this.authorsObject$ = this.store.let(getAuthorsObject());
         this.cmsChannels$   = this.store.let(getCmsChannels());
+        this.cmsChannelsObject$ = this.store.let(getCmsChannelsObject());
         this.cmsCategories$ = this.store.let(getCmsCategories());
         this.paginator$     = this.store.let(getPaginator(this.etype));
         this.entity$        = this.store.let(getCurEntity(this.etype));

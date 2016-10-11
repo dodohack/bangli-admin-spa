@@ -15,13 +15,19 @@ import { AppState }          from '../../reducers';
 import { Ping }              from '../../ping';
 import { zh_CN }             from '../../localization';
 
+import { getDealStates }     from '../../reducers';
+
 @Component({ template: require('./deals.page.html') })
 export class DealsPage extends EntitiesPage
 {
+    dealStates$:  Observable<any>;
+
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
                 protected ping: Ping) {
         super(ENTITY.CMS_DEAL, route, store, ping);
+
+        this.dealStates$    = this.store.let(getDealStates());
     }
 
     get zh() { return zh_CN.cms; }

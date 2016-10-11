@@ -215,6 +215,10 @@ export function getCmsChannels() {
     return compose(fromCms.getChannels(), getCmsAttrsState());
 }
 
+export function getCmsChannelsObject() {
+    return compose(fromCms.getChannelsObject(), getCmsAttrsState());
+}
+
 export function getCmsCategories() {
     return compose(fromCms.getCategories(), getCmsAttrsState());
 }
@@ -225,6 +229,10 @@ export function getLocations() {
 
 export function getPostStates() {
     return compose(fromCms.getPostStates(), getCmsAttrsState());
+}
+
+export function getDealStates() {
+    return compose(fromCms.getDealStates(), getCmsAttrsState());
 }
 
 export function getPageStates() {

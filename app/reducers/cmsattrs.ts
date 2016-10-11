@@ -243,6 +243,17 @@ export function getChannels() {
 }
 
 /**
+ * Return an object of channels indexed by channel id
+ */
+export function getChannelsObject() {
+    return (state$: Observable<CmsAttrsState>) => state$
+        .select(s => s.channels).map(channels =>
+            channels.reduce((channels: {[id: number]: Channel}, channel: Channel) => {
+                return Object.assign(channels, { [channel.id]: channel });
+            }, {}));
+}
+
+/**
  * Return an array of cms categories
  */
 export function getCategories() {
@@ -258,6 +269,10 @@ export function getLocations() {
 
 export function getPostStates() {
     return (state$: Observable<CmsAttrsState>) => state$.select(s => s.post_states);
+}
+
+export function getDealStates() {
+    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.deal_states);
 }
 
 export function getPageStates() {

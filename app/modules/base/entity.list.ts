@@ -20,8 +20,8 @@ export class EntityList
     @Input() entities: Entity[];
     @Input() idsCurPage: number[]; // FIXME: entity id or user uuid
     @Input() idsEditing: number[];
-    @Input() authorsObj: any;  // authors object
-    @Input() channels: Channel[];
+    @Input() authorsObj: any;     // Authors object
+    @Input() channelsObj: any;    // Channels object
 
     // The entity type of the list: post, topic, page, product etc
     @Input() etype: string;
@@ -39,7 +39,7 @@ export class EntityList
     @Output() batchLock = new EventEmitter();
 
     batchAction: string = '';
-    
+
     get hasEntity() {
         return this.idsCurPage && this.idsCurPage.length > 0;
     }
@@ -123,22 +123,25 @@ export class EntityList
     editLink(id: number) { return '/' + ENTITY_INFO[this.etype].slug + '/' + id; }
 
     // Frontend preview link
-    previewLink(id: number) {
+    previewLink(entity: Entity) {
         let base = this.frontendUrl + '/';
 
         switch (this.etype) {
-            case ENTITY.CMS_TOPIC:
+            case ENTITY.CMS_TOPIC: {
+                if (!this.channelsObj) return;
+
                 return base + ENTITY_INFO[this.etype].slug + '/'
-                    + this.channels[this.entities[id].channel_id] + '/'
-                    + this.entities[id].guid;
+                    + this.channelsObj[entity.channel_id].slug + '/'
+                    + entity.guid;
+            }
 
             case ENTITY.SHOP_PRODUCT:
                 return base + ENTITY_INFO[this.etype].slug
-                    + '/' + this.entities[id].guid;
+                    + '/' + entity.guid;
 
             // Default to cms type
             default:
-                return base + 'cms/' + ENTITY_INFO[this.etype].slug + '/' + id;
+                return base + 'cms/' + ENTITY_INFO[this.etype].slug + '/' + entity.id;
         }
     }
 }

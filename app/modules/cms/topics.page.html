@@ -23,6 +23,8 @@
           [entities]="entities$ | async"
           [idsCurPage]="idsCurPage$ | async"
           [idsEditing]="idsEditing$ | async"
+          [channelsObj]="cmsChannelsObject$ | async"
+          [frontendUrl]="(domain$ | async)?.url"
           (batchEdit)="batchEdit($event)"
           (batchDelete)="batchDelete($event)"
           (batchOfflineEdit)="batchOfflineEdit($event)"

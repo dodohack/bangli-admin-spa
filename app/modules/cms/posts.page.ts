@@ -25,8 +25,8 @@ export class PostsPage extends EntitiesPage
                 protected store: Store<AppState>,
                 protected ping: Ping) {
         super(ENTITY.CMS_POST, route, store, ping);
-        
-        this.postStates$    = this.store.let(getPostStates());        
+
+        this.postStates$    = this.store.let(getPostStates());
     }
 
     get zh() { return zh_CN.cms; }
