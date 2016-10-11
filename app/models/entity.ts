@@ -95,7 +95,7 @@ export class EntityState {
  */
 export class EntityParams {
     cur_page: number = 1;
-    channel: string  = 'all'; // CMS and DEAL only
+    channel: string;     // CMS and DEAL only
     state: string;
     author: string;     // CMS post only
     editor: string;

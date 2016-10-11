@@ -42,7 +42,7 @@ export class ImageList extends EntityList
     }
 
     getEntityByIndex(i) { return this.entities[this.idsCurPage[i]]; }
-    
+
     imgUrl(entity) {
         return this.baseResUrl + '/' + entity.path + '/' + entity.filename;
     }

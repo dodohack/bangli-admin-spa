@@ -1,4 +1,4 @@
-<table class="table table-hover entity-list">
+<table class="table table-hover entity-list" *ngIf="hasEntity">
     <thead class="thead-default">
     <tr>
         <th width="2%"></th>
@@ -31,20 +31,20 @@
     <tbody>
 
     <!-- table row of entities -->
-    <template ngFor let-id [ngForOf]="ids" let-i="index">
+    <template ngFor let-entity [ngForOf]="entities" let-i="index">
         <!-- Enable fast editing if double click on the row -->
-        <tr (dblclick)="batchEdit.emit([id])">
+        <tr (dblclick)="batchEdit.emit([entity.id])">
             <th>{{i+1}}</th>
-            <td><input type="checkbox" name="p[]" [ngModel]="isEditing(id)"
-                       (change)="updateEditList(id)"></td>
+            <td><input type="checkbox" name="p[]" [ngModel]="isEditing(entity.id)"
+                       (change)="updateEditList(entity.id)"></td>
 
-            <td>{{ entities[id].username }}</td>
+            <td>{{ entity.username }}</td>
 
-            <td>{{ entities[id].content }}</td>
+            <td>{{ entity.content }}</td>
 
-            <td>{{ entities[id].commentable_id }}</td>
+            <td>{{ entity.commentable_id }}</td>
 
-            <td>{{ entities[id].created_at }}</td>
+            <td>{{ entity.created_at }}</td>
         </tr>
     </template>
 

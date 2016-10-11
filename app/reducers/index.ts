@@ -251,13 +251,24 @@ export function getUsersState() {
         state$.select(s => s.users);
 }
 
-/* FIXME: */
-export function getUsers(filter: any) {
-    return getUsersState();
+export function getUserIds() {
+    return compose(fromUsers.getUserIds(), getUsersState());
 }
 
-export function getUser(uuid: string) {
-    return compose(fromUsers.getUser(uuid), getUsersState());
+export function getUsers() {
+    return compose(fromUsers.getUsers(), getUsersState());
+}
+
+export function getUser(id: number) {
+    return compose(fromUsers.getUser(id), getUsersState());
+}
+
+export function getIsUserLoading() {
+    return compose(fromUsers.getIsUserLoading(), getUsersState());
+}
+
+export function getUserPaginator() {
+    return compose(fromUsers.getUserPaginator(), getUsersState());
 }
 
 /*****************************************************************************
@@ -310,63 +321,3 @@ export function getCurEntityContent(etype: string) {
     return compose(fromEntities.getContent(),
         fromEntities.getCurEntity(), getEntitiesState(etype));
 }
-
-/*****************************************************************************
- * Product
- *****************************************************************************/
-/*
-export function getProductsState() {
-    return (state$: Observable<AppState>) =>
-        state$.select(s => s.entities);
-}
-
-export function getProduct(id: number) {
-    return compose(fromEntities.getEntity(ENTITY.SHOP_PRODUCT, id), getProductsState());
-}
-*/
-
-/*****************************************************************************
- * Post
- *****************************************************************************/
-/*
-export function getPostsState() {
-    return (state$: Observable<AppState>) =>
-        state$.select(s => s.entities);
-}
-
-export function getPost(id: number) {
-    return compose(fromEntities.getEntity(ENTITY.CMS_POST, id), getPostsState());
-}
-
-export function isPostLocked() {
-    
-}
-*/
-
-/*****************************************************************************
- * Topic
- *****************************************************************************/
-/*
-export function getTopicsState() {
-    return (state$: Observable<AppState>) =>
-        state$.select(s => s.entities);
-}
-
-export function getTopic(id: number) {
-    return compose(fromEntities.getEntity(ENTITY.CMS_TOPIC, id), getTopicsState());
-}
-*/
-
-/*****************************************************************************
- * Page
- *****************************************************************************/
-/*
-export function getPagesState() {
-    return (state$: Observable<AppState>) =>
-        state$.select(s => s.pages);
-}
-
-export function getPage(id: number) {
-    return compose(fromPages.getPage(id), getPagesState());
-}
-*/

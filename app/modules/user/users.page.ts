@@ -6,17 +6,17 @@ import { Component }         from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Observable }        from 'rxjs/Observable';
-import { Subscription }      from "rxjs/Rx";
 import { Store }             from '@ngrx/store';
 
 import { ENTITY }             from '../../models';
 import { UserActions }        from '../../actions';
-import { AppState, getUsers } from '../../reducers';
+import { AppState }           from '../../reducers';
 import { UsersState }         from '../../reducers/users';
 import { User, UserParams }   from '../../models';
 
 import { zh_CN }    from '../../localization';
 
+import { getUsers, getIsUserLoading, getUserPaginator } from '../../reducers';
 
 @Component({ template: require('./users.page.html') })
 export class UsersPage implements OnInit, OnDestroy
@@ -25,22 +25,22 @@ export class UsersPage implements OnInit, OnDestroy
     subUsers: any;
     subParams: any;
 
-    usersState: UsersState;
-    
-    routeRoleId: string;
-
-    // URL parameters for list of users
+    // URL parameters
     params: any;
 
-    // Is search is running
-    loading: boolean;
-    
+    isLoading$:  Observable<boolean>;
+    users$:      Observable<User[]>;
+    paginator$:  Observable<any>;
+
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) {}
 
     ngOnInit() {
+        this.isLoading$  = this.store.let(getIsUserLoading());
+        this.users$      = this.store.let(getUsers());
+        this.paginator$  = this.store.let(getUserPaginator());
+
         this.dispatchLoadUsers();
-        this.loadUsers();
     }
 
     ngOnDestroy() {
@@ -58,7 +58,7 @@ export class UsersPage implements OnInit, OnDestroy
             .subscribe(params => {
                 // Compare if elements of url params change
                 if (JSON.stringify(this.params) !== JSON.stringify(params)) {
-                    this.loading = true;
+                    this.params = params;
 
                     this.params.cur_page = params['page'];
                     this.params.datetype = params['datetype'];
@@ -71,20 +71,9 @@ export class UsersPage implements OnInit, OnDestroy
             });
     }
 
-    /**
-     * Read users back from ngrx store
-     */
-    loadUsers() {
-        this.subUsers = this.store.select<UsersState>('users')
-            .subscribe(usersState => {
-                // Set search loading to false if users is loaded
-                this.loading = false;
-                this.usersState = usersState;
-            });
-    }
-
     get zh() { return zh_CN.user; }
-    get userRoles() { return ''; /*this.userService.roles; */}
     get etype() { return ENTITY.USER; }
 
+    // FIXME
+    get userRoles() { return ''; }
 }

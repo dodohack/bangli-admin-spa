@@ -671,7 +671,7 @@ export function getIsDirty() {
 
 
 /**
- * Return the dirty bit of entities under editing
+ * Return if the single entity or entities list is in loading
  */
 export function getIsLoading() {
     return (state$: Observable<EntitiesState>) => state$.select(s => s.isLoading);

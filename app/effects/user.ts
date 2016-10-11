@@ -47,17 +47,17 @@ export class UserEffects {
         );
 
     /* Load domains of user can manage */
-    @Effect() loadDomains$ = this.actions$.ofType(UserActions.LOAD_DOMAINS)
+    @Effect() loadDomains$ = this.actions$.ofType(UserActions.LOAD_USER_DOMAINS)
         .switchMap(action => this.getUserDomains(action.payload)
-            .map(domains => UserActions.loadDomainsSuccess(domains))
-            .catch(() => Observable.of(UserActions.loadDomainsFail()))
+            .map(domains => UserActions.loadUserDomainsSuccess(domains))
+            .catch(() => Observable.of(UserActions.loadUserDomainsFail()))
         );
 
     /* Update domains of user can manage */
-    @Effect() saveDomains$ = this.actions$.ofType(UserActions.SAVE_DOMAINS)
+    @Effect() saveDomains$ = this.actions$.ofType(UserActions.SAVE_USER_DOMAINS)
         .switchMap(action => this.postUserDomains(action.payload)
-            .map(res => UserActions.saveDomainsSuccess(res))
-            .catch(() => Observable.of(UserActions.saveDomainsFail()))
+            .map(res => UserActions.saveUserDomainsSuccess(res))
+            .catch(() => Observable.of(UserActions.saveUserDomainsFail()))
         );
 
     /////////////////////////////////////////////////////////////////////////

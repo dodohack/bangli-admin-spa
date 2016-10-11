@@ -3,11 +3,14 @@
                   [zh]="zh"
                   [loading]="isLoading$ | async"></list-page-header>
 
-<!-- Post filter/tool bar at top -->
-<list-filter-bar [etype]="etype"
-                 [paginator]="usersState.paginator"
-                 (batchActionEvent)="batchEdit($event)"></list-filter-bar>
+<!-- User filter/tool bar at top -->
+<list-filter-bar [slug]="'user'"
+                 [zh]="zh"
+                 [etype]="etype"
+                 [paginator]="paginator$ | async"></list-filter-bar>
 
 <!-- List of users -->
-<!--<user-list [etype]="etype" [entities]="entities$ | async"></user-list>-->
-
+<user-list [etype]="etype"
+           [entities]="entities$ | async"
+           (batchDelete)="batchDelete($event)">
+</user-list>

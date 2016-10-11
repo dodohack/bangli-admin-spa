@@ -84,7 +84,7 @@ export class UserPage implements OnInit, OnDestroy
             .subscribe(params => {
                 this.uuid = params['uuid'];
                 this.store.dispatch(UserActions.loadUser(this.uuid));
-                this.store.dispatch(UserActions.loadDomains(this.uuid));
+                this.store.dispatch(UserActions.loadUserDomains(this.uuid));
             });
     }
 
@@ -112,7 +112,7 @@ export class UserPage implements OnInit, OnDestroy
     }
 
     saveDomains($event) {
-        this.store.dispatch(UserActions.saveDomains($event));
+        this.store.dispatch(UserActions.saveUserDomains($event));
     }
 
     /* TODO: Change from child view template need to be propergated up */

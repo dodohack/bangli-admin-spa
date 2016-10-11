@@ -97,16 +97,31 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                 post_creative_types = action.payload.post_creative_types;
 
             let topic_states: PostState[];
-            if (action.payload.topic_states)
-                topic_states = action.payload.topic_states;
+            if (action.payload.topic_states) {
+                let total = action.payload.topic_states
+                    .map(state => state.count)
+                    .reduce((total, count) => total + count);
+                topic_states = [...action.payload.topic_states,
+                    {state: 'all', count: total}];
+            }
 
             let page_states: PostState[];
-            if (action.payload.page_states)
-                page_states = action.payload.page_states;
+            if (action.payload.page_states) {
+                let total = action.payload.page_states
+                    .map(state => state.count)
+                    .reduce((total, count) => total + count);
+                page_states = [...action.payload.page_states,
+                    {state: 'all', count: total}];
+            }
 
             let deal_states: PostState[];
-            if (action.payload.deal_states)
-                deal_states = action.payload.deal_states;
+            if (action.payload.deal_states) {
+                let total = action.payload.deal_states
+                    .map(state => state.count)
+                    .reduce((total, count) => total + count);
+                deal_states = [...action.payload.deal_states,
+                    {state: 'all', count: total}];
+            }
 
             return {
                 authors: [...authors],

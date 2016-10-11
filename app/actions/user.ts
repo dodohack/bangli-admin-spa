@@ -65,49 +65,49 @@ export class UserActions {
         };
     }
 
-    static LOAD_DOMAINS = '[User] Load Domains';
-    static loadDomains(uuid: string): Action {
+    static LOAD_USER_DOMAINS = '[User] Load Domains';
+    static loadUserDomains(uuid: string): Action {
         return {
-            type: UserActions.LOAD_DOMAINS,
+            type: UserActions.LOAD_USER_DOMAINS,
             payload: uuid
         };
     }
 
-    static LOAD_DOMAINS_SUCCESS = '[User] Load Domains Success';
-    static loadDomainsSuccess(domains: Domain[]): Action {
+    static LOAD_USER_DOMAINS_SUCCESS = '[User] Load Domains Success';
+    static loadUserDomainsSuccess(domains: Domain[]): Action {
         return {
-            type: UserActions.LOAD_DOMAINS_SUCCESS,
+            type: UserActions.LOAD_USER_DOMAINS_SUCCESS,
             payload: domains
         };
     }
 
-    static LOAD_DOMAINS_FAIL = '[User] Load Domains Fail';
-    static loadDomainsFail(): Action {
+    static LOAD_USER_DOMAINS_FAIL = '[User] Load Domains Fail';
+    static loadUserDomainsFail(): Action {
         return {
-            type: UserActions.LOAD_DOMAINS_FAIL
+            type: UserActions.LOAD_USER_DOMAINS_FAIL
         };
     }
 
-    static SAVE_DOMAINS = '[User] Save Domains';
-    static saveDomains(user: User) {
+    static SAVE_USER_DOMAINS = '[User] Save Domains';
+    static saveUserDomains(user: User) {
         return {
-            type: UserActions.SAVE_DOMAINS,
+            type: UserActions.SAVE_USER_DOMAINS,
             payload: user
         };
     }
 
-    static SAVE_DOMAINS_SUCCESS = '[User] Save Domains Success';
-    static saveDomainsSuccess(user: User) {
+    static SAVE_USER_DOMAINS_SUCCESS = '[User] Save Domains Success';
+    static saveUserDomainsSuccess(user: User) {
         return {
-            type: UserActions.SAVE_DOMAINS_SUCCESS,
+            type: UserActions.SAVE_USER_DOMAINS_SUCCESS,
             payload: user
         };
     }
 
-    static SAVE_DOMAINS_FAIL = '[User] Save Domains Fail';
-    static saveDomainsFail() {
+    static SAVE_USER_DOMAINS_FAIL = '[User] Save Domains Fail';
+    static saveUserDomainsFail() {
         return {
-            type: UserActions.SAVE_DOMAINS_FAIL
+            type: UserActions.SAVE_USER_DOMAINS_FAIL
         };
     }
 

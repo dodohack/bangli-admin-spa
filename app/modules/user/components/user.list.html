@@ -11,13 +11,13 @@
     </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let uuid of uuids; let i=index">
+        <tr *ngFor="let user of entities; let i=index">
             <th scope="row">{{ i+1 }}</th>
             <th scope="row"><input type="checkbox"></th>
-            <td><a [routerLink]="['/user', uuid]">{{ users[uuid].name }}</a></td>
-            <td>{{ users[uuid].display_name }}</td>
-            <td>{{ users[uuid].email }}</td>
-            <td>{{ users[uuid].created_at }}</td>
+            <td><a [routerLink]="['/user', user.id]">{{ user.name }}</a></td>
+            <td>{{ user.display_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.created_at }}</td>
             <td>xyz</td>
         </tr>
     </tbody>

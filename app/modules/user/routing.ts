@@ -16,7 +16,7 @@ const routes: Routes = [
 
             /* Single user */
             { path: 'new', component: UserPage },
-            { path: ':uuid', component: UserPage }
+            { path: ':id', component: UserPage }
         ]
     }
 ];

@@ -33,9 +33,9 @@
     </h1>
 </div>
 
-<!-- navbar and search box -->
+<!-- navbar and search box, only show navbar for those has statistics loaded -->
 <nav class="navbar page-sub-menu">
-    <ul class="nav navbar-nav" *ngIf="!curChannelSlug">
+    <ul class="nav navbar-nav" *ngIf="!curChannelSlug && states">
         <!-- Entity status navbar -->
         <li *ngFor="let state of states.actual" class="nav-item">
             <a class="nav-link" [routerLink]="['/', slug, 'page', 1, 'state', state.state]"
