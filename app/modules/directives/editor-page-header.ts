@@ -11,11 +11,14 @@ import { zh_CN }       from '../../localization';
     template: require('./editor-page-header.html')
 })
 export class EditorPageHeader {
-    /* The entity type of lists passed in */
-    @Input() etype: string;
-
+    // Entity url slug
+    @Input() slug: string;
+    // Entity Chinese name
+    @Input() name: string;
+    // Translation
+    @Input() zh: any;
+    // Frontend preview url
     @Input() previewUrl: string;
-    
     // Entity ids or user uuid of current loaded page
     @Input() ids: number[] | string[];
     // All entities
@@ -25,26 +28,20 @@ export class EditorPageHeader {
 
     @Output() cancelEdit = new EventEmitter();
 
-    get zh(): any { return zh_CN.cms; }
-    get id() { return this.entity.id; }
-    get total() { return this.ids.length; }
-    get index() { return this.ids.indexOf(this.id); }
-    get title() { return ENTITY_INFO[this.etype].name; }
-    
-    get baseUrl() { return '/' + ENTITY_INFO[this.etype].slug; }
+    get entityIdx() { return this.ids.indexOf(this.entity.id); }
 
     get prevEntityUrl() {
-        let newIdx = this.index - 1;
+        let newIdx = this.entityIdx - 1;
         if (newIdx >= 0)
-            return this.baseUrl + '/'+ this.ids[newIdx];
-        return null;
+            return '/' + this.slug + '/'+ this.ids[newIdx];
+        return false;
     }
 
     get nextEntityUrl() {
-        let newIdx = this.index + 1;
+        let newIdx = this.entityIdx + 1;
         if (newIdx < this.ids.length)
-            return this.baseUrl + '/' + this.ids[newIdx];
-        return null;
+            return '/' + this.slug + '/' + this.ids[newIdx];
+        return false;
     }
 
     /**
@@ -54,15 +51,15 @@ export class EditorPageHeader {
         return idx + '. ' + this.entities[idx].title.substr(0, 15) + '...';
     }
     get prevEntityTitle() {
-        let newIdx = this.index - 1;
-        if (newIdx >= 0 && this.ids && this.entities)
+        let newIdx = this.entityIdx - 1;
+        if (newIdx >= 0)
             return this.excerptTitle(newIdx);
         return null;
     }
 
     get nextEntityTitle() {
-        let newIdx = this.index + 1;
-        if (newIdx < this.ids.length && this.ids && this.entities)
+        let newIdx = this.entityIdx + 1;
+        if (newIdx < this.ids.length)
             return this.excerptTitle(newIdx);
         return null;
     }

@@ -1,8 +1,10 @@
-<editor-page-header [etype]="etype"
+<editor-page-header [slug]="'product'"
+                    [name]="'商品'"
+                    [zh]="zh"
                     [previewUrl]="previewUrl"
-                    [ids]="ids"
-                    [entities]="entities"
-                    [entity]="entity"
+                    [ids]="idsCurPage$ | async"
+                    [entities]="entities$ | async"
+                    [entity]="entity$ | async"
                     (cancelEdit)="cancelSave()">
 </editor-page-header>
 
@@ -295,7 +297,8 @@
 
 
 
-<revision-history [entity]="product" [cmsState]="cmsState"
+<revision-history [entity]="entity$ | async"
+                  [authorsObj]="authorsObj$ | async"
                   (restore2Revision)="restoreRevision($event)"></revision-history>
 
 <!-- Right panel, we can trigger a separate saving individually -->

@@ -30,5 +30,5 @@ export class ProductPage extends EntityPage
     get zh() { return zh_CN.product };
 
 
-    get previewUrl() { return this.frontendUrl + 'product/' + this.entity.guid; }
+    get previewUrl() { return this.domain.url + '/product/' + this.entity.guid; }
 }

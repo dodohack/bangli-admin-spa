@@ -1,14 +1,15 @@
-<editor-page-header *ngIf="entity"
-                    [etype]="etype"
+<editor-page-header [slug]="'post'"
+                    [name]="'文章'"
+                    [zh]="zh"
                     [previewUrl]="previewUrl"
-                    [ids]="ids"
-                    [entities]="entities"
-                    [entity]="entity"
+                    [ids]="idsCurPage$ | async"
+                    [entities]="entities$ | async"
+                    [entity]="entity$ | async"
                     (cancelEdit)="cancelSave()">
 </editor-page-header>
 
 
-<entity-buttons [entityState]="entity?.state"
+<entity-buttons [entityState]="(entity$ | async)?.state"
                 (save)="save()"
                 (save2Pending)="save2Pending()"
                 (save2Draft)="save2Draft()"
@@ -16,17 +17,17 @@
                 (cancelSave)="cancelSave()">
 </entity-buttons>
 
-<entity-title-date [title]="entity?.title"
-                   [date]="entity?.fake_published_at"
+<entity-title-date [title]="(entity$ | async)?.title"
+                   [date]="(entity$ | async)?.fake_published_at"
                    (titleChange)="updateTitle($event)"
                    (dateChange)="updateFakePublishedAt($event)">
 </entity-title-date>
 
 <!-- Post location, category, tag, topic etc -->
 
-<entity-attr-cloud [categories]="entity?.categories"
-                   [topics]="entity?.topics"
-                   [locations]="entity?.locations"
+<entity-attr-cloud [categories]="(entity$ | async)?.categories"
+                   [topics]="(entity$ | async)?.topics"
+                   [locations]="(entity$ | async)?.locations"
                    (toggle)="openPanel = !openPanel"
                    (deleteCat)="removeCat($event)"
                    (deleteTag)="removeTag($event)"
@@ -34,14 +35,14 @@
                    (toggleGeoLocation)="updateGeoLocation($event)">
 </entity-attr-cloud>
 
-<entity-attributes [authorId]="entity?.author_id"
-                   [editorId]="entity?.editor_id"
-                   [creativeType]="entity?.creative_type"
-                   [channelId]="entity?.channel_id"
-                   [authors]="cms?.authors"
-                   [editors]="cms?.editors"
+<entity-attributes [authorId]="(entity$ | async)?.author_id"
+                   [editorId]="(entity$ | async)?.editor_id"
+                   [creativeType]="(entity$ | async)?.creative_type"
+                   [channelId]="(entity$ | async)?.channel_id"
+                   [authors]="authors$ | async"
+                   [editors]="editors$ | async"
                    [creativeTypes]="creativeTypes"
-                   [channels]="cms?.channels"
+                   [channels]="cmsChannels$ | async"
                    (authorChanged)="updateAuthor($event)"
                    (editorChanged)="updateEditor($event)"
                    (creativeTypeChanged)="updateCreativeType($event)"
@@ -51,8 +52,8 @@
 <entity-thumbnails>
 </entity-thumbnails>
 
-<entity-excerpt-note [excerpt]="entity?.excerpt"
-                     [note]="entity?.internal_note"
+<entity-excerpt-note [excerpt]="(entity$ | async)?.excerpt"
+                     [note]="(entity$ | async)?.internal_note"
                      (excerptChanged)="updateExcerpt($event)"
                      (noteChanged)="updateNote($event)">
 </entity-excerpt-note>
@@ -62,11 +63,14 @@
 <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
      [(froalaModel)]="inputPost.content"></div>-->
 
+<!-- We must use entity?.content instead of content here, otherwise the
+     post content is overwritten -->
 <froala [froalaOptions]="froalaOptions"
-        [froalaData]="content"
-        (model)="contentChanged($event)"></froala>
+        [froalaData]="content$ | async"
+        (model)="froalaContentChanged($event)"></froala>
 
-<revision-history [entity]="entity" [cmsState]="cms"
+<revision-history [entity]="entity$ | async"
+                  [authorsObj]="authorsObj$ | async"
                   (restore2Revision)="restoreRevision($event)">
 </revision-history>
 
@@ -77,25 +81,25 @@
         <tab heading="分类">
             <div class="treeview">
                 <category-tree [parentId]="0"
-                               [channelId]="entity?.channel?.id"
-                               [categories]="cms?.categories"
-                               [selectedCats]="entity?.categories"
+                               [channelId]="(entity$ | async)?.channel?.id"
+                               [categories]="cmsCategories$ | async"
+                               [selectedCats]="(entity$ | async)?.categories"
                                (checkEvent)="updateCat($event)">
                 </category-tree>
             </div>
         </tab>
 
         <tab heading="专题">
-            <topic-cloud [channel]="entity?.channel"
+            <topic-cloud [channel]="(entity$ | async)?.channel"
                          [topics]="null"
-                         [selectedTopics]="entity?.topics"
+                         [selectedTopics]="(entity$ | async)?.topics"
                          (addTopic)="addTopic($event)"
                          (removeTopic)="removeTopic($event)">
             </topic-cloud>
         </tab>
 
         <tab heading="Location">
-            <geo-location-cloud [locations]="cms?.locations"
+            <geo-location-cloud [locations]="geoLocations$ | async"
                                 (clickEvent)="updateGeoLocation($event)">
             </geo-location-cloud>
         </tab>

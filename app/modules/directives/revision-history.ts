@@ -7,7 +7,7 @@ import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 
-import { Post }          from "../../models";
+import { User }          from "../../models";
 import { Revision }      from "../../models";
 import { CmsAttrsState } from "../../reducers/cmsattrs";
 import { zh_CN }         from '../../localization';
@@ -30,7 +30,7 @@ var htmlTag = {'&': '&amp;', '<': '&lt;', '>': '&gt;',
 export class RevisionHistory
 {
     @Input() entity: any; // The post/page/product currently editing
-    @Input() cmsState: CmsAttrsState;
+    @Input() authorsObj: any; // Object of authors
 
     selectedRevisions: Revision[] = [];
 
@@ -47,7 +47,6 @@ export class RevisionHistory
     constructor(private cd: ChangeDetectorRef) {}
 
     get zh() { return zh_CN.cms; }
-    get authors() { return this.cmsState.authors; }
     get revisions() { return this.entity.revisions.slice().reverse(); }
 
     isSelected(revision) {

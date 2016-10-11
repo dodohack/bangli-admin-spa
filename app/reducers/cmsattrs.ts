@@ -208,13 +208,13 @@ export function getAuthors() {
 
 /**
  * Return an object of authors indexed by author id
- * FIXME: We cant get anything out from this
  */
 export function getAuthorsObject() {
     return (state$: Observable<CmsAttrsState>) => state$
-        .select('authors').reduce((users: {[id: number]: User}, user: User) => {
-            return Object.assign(users, { [user.id]: user });
-        }, {});
+        .select('authors').map(authors =>
+            authors.reduce((users: {[id: number]: User}, user: User) => {
+                return Object.assign(users, { [user.id]: user });
+            }, {}));
 }
 
 /**
@@ -226,13 +226,13 @@ export function getEditors() {
 
 /**
  * Return an object of editors indexed by editor id
- * FIXME: We cant get anything out from this
  */
 export function getEditorsObject() {
     return (state$: Observable<CmsAttrsState>) => state$
-        .select('editors').reduce((users: {[id: number]: User}, user: User) => {
-            return Object.assign(users, { [user.id]: user });
-        }, {});
+        .select('editors').map(editors =>
+            editors.reduce((users: {[id: number]: User}, user: User) => {
+                return Object.assign(users, { [user.id]: user });
+            }, {}));
 }
 
 /**

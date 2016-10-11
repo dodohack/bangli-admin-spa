@@ -28,5 +28,5 @@ export class PagePage extends EntityPage
 
     get zh() { return zh_CN.cms; } // Localization
 
-    get previewUrl() { return this.frontendUrl + 'cms/page/' + this.entity.guid; }
+    get previewUrl() { return this.domain.url + 'cms/page/' + this.entity.guid; }
 }

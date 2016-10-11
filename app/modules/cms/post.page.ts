@@ -26,8 +26,11 @@ export class PostPage extends EntityPage
                 protected router: Router) {
         super(ENTITY.CMS_POST, route, location, store, router);
     }
-    
+
     get zh() { return zh_CN.cms; } // Localization
 
-    get previewUrl() { return this.frontendUrl + 'cms/post/' + this.entity.id; }
+    get previewUrl() {
+        if (this.entity && this.domain)
+            return this.domain.url + '/cms/post/' + this.entity.id;
+    }
 }

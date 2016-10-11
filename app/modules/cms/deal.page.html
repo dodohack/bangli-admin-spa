@@ -1,9 +1,10 @@
-<editor-page-header *ngIf="entity"
-                    [etype]="etype"
+<editor-page-header [slug]="'deal'"
+                    [name]="'优惠'"
+                    [zh]="zh"
                     [previewUrl]="previewUrl"
-                    [ids]="ids"
-                    [entities]="entities"
-                    [entity]="entity"
+                    [ids]="idsCurPage$ | async"
+                    [entities]="entities$ | async"
+                    [entity]="entity$ | async"
                     (cancelEdit)="cancelSave()">
 </editor-page-header>
 

@@ -3,7 +3,6 @@
  */
 
 import { OnInit, OnDestroy } from "@angular/core";
-import { ViewChild }         from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Location }          from '@angular/common';
 import { Router }            from '@angular/router';
@@ -11,16 +10,11 @@ import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
 import { AppState }          from '../../reducers';
-import { AuthState }         from '../../reducers/auth';
-import { CmsAttrsState }     from '../../reducers/cmsattrs';
-import { ShopAttrsState }    from "../../reducers/shopattrs";
 import { EntityActions }     from '../../actions';
 import { AlertActions }      from "../../actions";
 
 import { FroalaOptions }     from '../../models/froala.option';
 import { Entity }            from '../../models';
-import { ENTITY }            from "../../models";
-import { ENTITY_INFO }       from "../../models";
 import { CREATIVE_TYPES }    from '../../models';
 import { GeoLocation }       from '../../models';
 import { Channel }           from '../../models';
@@ -28,6 +22,7 @@ import { Category }          from '../../models';
 import { Tag }               from '../../models';
 import { Topic }             from '../../models';
 import { User }              from '../../models';
+import { Domain }            from '../../models';
 
 import { GMT }               from '../../helper';
 
@@ -39,44 +34,55 @@ import { GMT }               from '../../helper';
  * subscription to entitiesState; but we don't get everything reset
  * if we subscribe to a smaller elements.
  */
-import { getIsDirty, getIdsCurPage, getEntitiesCurPage, 
-    getCurEntity, getCurEntityContent } from '../../reducers';
+import {
+    getCurDomain, getCurProfile, getIsDirty,
+    getAuthors, getAuthorsObject, getEditors, getEditorsObject,
+    getCmsChannels, getCmsCategories, getLocations,
+    getPostStates, getPageStates, getTopicStates,
+    getIdsCurPage, getIdsEditing, getCurEntity,
+    getIsLoading, getPaginator,
+    getEntitiesCurPage, getCurEntityContent} from '../../reducers';
+
 
 export abstract class EntityPage implements OnInit, OnDestroy
 {
     // Force quit no matter if the entity is dirty or not.
-    forceQuit: boolean = false;
+    forceQuit = false;
     
     // FIXME: froala editor triggers content change at first time it initialize
     // the content, but actually the entity content is not modified yet.
-    initialized: boolean = false;
+    contentInitialized = false;
 
-    // Current url params
-    params: any;
+    content: string;          // Entity content
+    isDirty        = false;   // Entity dirty bit
+    isContentDirty = false;   // A separate content dirty bit
+    entity: Entity;           // Current entity
+    profile: User;            // Current user profile
+    domain: Domain;           // Current domain
 
-    ids: number[];
-    content: string;              // Entity content
-    isDirty: boolean;             // Entity dirty bit
-    isContentDirty: boolean;      // A separate content dirty bit
-    entities: Entity[];           // Entites of current page
-    entity: Entity;               // Current entity
+    isLoading$:   Observable<boolean>;
+    isDirty$:     Observable<boolean>;
+    domain$:      Observable<Domain>;
+    profile$:     Observable<User>; // User info of current domain
+    authors$:     Observable<User[]>;
+    authorsObj$:  Observable<any>;
+    editors$:     Observable<User[]>;
+    geoLocations$: Observable<GeoLocation[]>;
+    cmsChannels$: Observable<Channel[]>;
+    cmsCategories$: Observable<Category[]>;
+    paginator$:   Observable<any>;
+    entity$:      Observable<Entity>;
+    content$:     Observable<string>;
+    entities$:    Observable<Entity[]>;
+    idsCurPage$:  Observable<number[]>;
 
     // subscriptions
-    subAuth: any;
-    subCms: any;
-    subShop: any;
-    subIds: any;
+    subDomain: any;
+    subPro: any;
     subDirty: any;
-    subEntities: any;
     subEntity: any;
-    subContent: any;
     subParams: any;
     subTimer: any;
-
-    // TODO: DEPRECATE THESE 3
-    auth: AuthState;
-    shop: ShopAttrsState;
-    cms:  CmsAttrsState;
 
     isNewEntity: boolean;
     // A flag to turn deactivate guard off
@@ -89,67 +95,63 @@ export abstract class EntityPage implements OnInit, OnDestroy
                 protected router: Router) {}
 
     ngOnInit() {
-        this.subAuth = this.store.select<AuthState>('auth')
-            .subscribe(auth => this.auth = auth);
-        this.subCms = this.store.select<CmsAttrsState>('cms')
-            .subscribe(cms => this.cms = cms);
-        this.subShop = this.store.select<ShopAttrsState>('shop')
-            .subscribe(shop => this.shop = shop);
+        this.isLoading$     = this.store.let(getIsLoading(this.etype));
+        this.isDirty$       = this.store.let(getIsDirty(this.etype));
+        this.domain$        = this.store.let(getCurDomain());
+        this.profile$       = this.store.let(getCurProfile());
+        this.authors$       = this.store.let(getAuthors());
+        this.editors$       = this.store.let(getEditors());
+        this.authorsObj$    = this.store.let(getAuthorsObject());
+        this.geoLocations$  = this.store.let(getLocations());
+        this.cmsChannels$   = this.store.let(getCmsChannels());
+        this.cmsCategories$ = this.store.let(getCmsCategories());
+        this.paginator$     = this.store.let(getPaginator(this.etype));
+        this.entity$        = this.store.let(getCurEntity(this.etype));
+        this.content$       = this.store.let(getCurEntityContent(this.etype));
+        this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
+        this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
 
-        this.subIds  = this.store.let(getIdsCurPage(this.etype))
-            .subscribe(i => this.ids = i);
-        this.subDirty = this.store.let(getIsDirty(this.etype))
-            .subscribe(i => {
-                console.log("is dirty: ", i);
-                this.isDirty = i;
-            });
-        this.subEntities  = this.store.let(getEntitiesCurPage(this.etype))
-            .subscribe(e => this.entities = e);
-        this.subEntity = this.store.let(getCurEntity(this.etype))
-            .subscribe(e => this.entity = e);
-        this.subContent = this.store.let(getCurEntityContent(this.etype))
-            .subscribe(c => {this.initialized = false;
-                this.isContentDirty = false; this.content = c;});
+        this.subDomain  = this.domain$.subscribe(d => this.domain = d);
+        this.subPro     = this.profile$.subscribe(p => this.profile = p);
+        this.subDirty   = this.isDirty$.subscribe(i => this.isDirty = i);
+        this.subEntity  = this.entity$.subscribe(e => this.entity = e);
+
+        this.authorsObj$.subscribe(a => console.log("authors obj: ", a));
 
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
-        //this.loadEntity();
-        
         // Init auto save timer
         this.autoSave();
     }
 
     ngOnDestroy() {
-        this.subCms.unsubscribe();
-        this.subAuth.unsubscribe();
-        this.subShop.unsubscribe();
-        this.subIds.unsubscribe();
+        this.subDomain.unsubscribe();
+        this.subPro.unsubscribe();
         this.subDirty.unsubscribe();
-        this.subEntities.unsubscribe();
         this.subEntity.unsubscribe();
-        this.subContent.unsubscribe();
         this.subParams.unsubscribe();
         this.subTimer.unsubscribe();
     }
 
     canDeactivate() {
+        let status = true;
+        let msg;
         // When this is set, we allow current page to be deactivate
-        if (this._canDeactivate) {
-            return true;
-        }
+        if (this._canDeactivate) return true;
 
         if (this.forceQuit) {
-            this.store.dispatch(AlertActions
-                .error('你的修改尚未保存, 你可以立即返回上个页面保存!'));
-            return true;
+            msg = '你的修改尚未保存, 你可以立即返回上个页面保存!';
+            status = false;
         }
 
-        if (this.isDirty) {
-            this.store.dispatch(AlertActions.error('请先保存当前更改，或取消保存'));
-            return false;
-        } else {
-            return true;
+        if (!this.forceQuit && (this.isDirty || this.isContentDirty)) {
+            msg = '请先保存当前更改，或取消保存';
+            status = false;
         }
+
+        // Alert if can't deactive safely
+        if (!status) this.store.dispatch(AlertActions.error(msg));
+        return status;
     }
 
     /**
@@ -158,13 +160,11 @@ export abstract class EntityPage implements OnInit, OnDestroy
     dispatchLoadEntity() {
         this.subParams = this.route.params.subscribe(params => {
             if (JSON.stringify(this.params) !== JSON.stringify(params)) {
-                this.params = params;
-
                 if (Object.keys(params).length === 0) {
                     // Create a new entity
                     this.isNewEntity = true;
                     this.store.dispatch(EntityActions
-                        .newEntity(this.etype, this.myId));
+                        .newEntity(this.etype, this.profile.id));
                 } else {
                     // Edit an entity by given id
                     this.isNewEntity = false;
@@ -177,34 +177,23 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
     /**
      * Entity content changed event triggered by froala editor
-     * @param $event
      */
-    contentChanged($event) {
+    froalaContentChanged($event) {
         // If no timeout set, the editor will throw an exception
         setTimeout(() => {
             // Set initialized state or set entity content dirty
-            console.log("content changed!");
-            this.initialized ? this.isContentDirty = true : this.initialized = true;
+            console.log("content changed: ", $event);
+            this.contentInitialized ?
+                this.isContentDirty = true : this.contentInitialized = true;
             this.content = $event;
         });
     }
 
     abstract get previewUrl(): string;
 
-    get frontendUrl() { return this.auth.domains[this.auth.key].url + '/'; }
-    get myId() { return this.auth.users[this.auth.key].id; }
-
     get creativeTypes() { return CREATIVE_TYPES; }
     get froalaOptions() { return FroalaOptions.getDefault(); }
 
-    // Return current selected channel name for the entity
-    get curChannel() {
-        // Must convert channel_id from string to number
-        let channels = this.cms.channels
-            .filter(c => c.id === +this.entity.channel_id);
-        return channels ? channels[0] : null;
-    }
-    
     gmt(value: string) { return GMT(value); }
 
     /**
