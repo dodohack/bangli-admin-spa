@@ -19,9 +19,12 @@ export class EntityList
     @Input() paginator: any;
     @Input() entities: Entity[];
     @Input() idsCurPage: number[]; // FIXME: entity id or user uuid
-    @Input() idsEditing: number[];
     @Input() authorsObj: any;     // Authors object
     @Input() channelsObj: any;    // Channels object
+
+    _idsEditing: number[];
+    @Input() set idsEditing(value) { this._idsEditing = [...value]; }
+    get idsEditing() { return this._idsEditing; }
 
     // The entity type of the list: post, topic, page, product etc
     @Input() etype: string;

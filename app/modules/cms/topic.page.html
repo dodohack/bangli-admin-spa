@@ -46,7 +46,7 @@
 
 <froala [froalaOptions]="froalaOptions"
         [froalaData]="content$ | async"
-        (model)="contentChanged($event)"></froala>
+        (model)="froalaContentChanged($event)"></froala>
 
 <!-- Right panel, we can trigger a seperate saving individually -->
 <right-panel [width]="'400px'" [isOpen]="openPanel"

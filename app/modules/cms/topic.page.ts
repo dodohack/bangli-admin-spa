@@ -30,5 +30,8 @@ export class TopicPage extends EntityPage
 
     get zh() { return zh_CN.cms; } // Localization
 
-    get previewUrl() { return this.domain.url + '/cms/topic/' + this.entity.guid; }
+    get previewUrl() {
+        if (this.entity && this.domain)
+        return this.domain.url + '/cms/topic/' + this.entity.guid; 
+    }
 }

@@ -247,7 +247,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     updateFakePublishedAt(date: string) {
         let d1 = new Date(date);
         let d2 = new Date(this.entity.fake_published_at);
-        if (d1 === d2) return;
+        if (d1.toISOString() === d2.toISOString()) return;
         this.store.dispatch(EntityActions.updateFakePublishedAt(this.etype, date));
     }
     
