@@ -203,7 +203,7 @@ export default function (state = initialState, action: Action): CmsAttrsState {
  * Return an array of authors
  */
 export function getAuthors() {
-    return (state$: Observable<CmsAttrsState>) => state$.select('authors');
+    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.authors);
 }
 
 /**
@@ -211,7 +211,7 @@ export function getAuthors() {
  */
 export function getAuthorsObject() {
     return (state$: Observable<CmsAttrsState>) => state$
-        .select('authors').map(authors =>
+        .select(s => s.authors).map(authors =>
             authors.reduce((users: {[id: number]: User}, user: User) => {
                 return Object.assign(users, { [user.id]: user });
             }, {}));
@@ -221,7 +221,7 @@ export function getAuthorsObject() {
  * Return an array of editors
  */
 export function getEditors() {
-    return (state$: Observable<CmsAttrsState>) => state$.select('editors');
+    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.editors);
 }
 
 /**
@@ -229,7 +229,7 @@ export function getEditors() {
  */
 export function getEditorsObject() {
     return (state$: Observable<CmsAttrsState>) => state$
-        .select('editors').map(editors =>
+        .select(s => s.editors).map(editors =>
             editors.reduce((users: {[id: number]: User}, user: User) => {
                 return Object.assign(users, { [user.id]: user });
             }, {}));
@@ -239,31 +239,31 @@ export function getEditorsObject() {
  * Return an array of cms channels
  */
 export function getChannels() {
-    return (state$: Observable<CmsAttrsState>) => state$.select('channels');
+    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.channels);
 }
 
 /**
  * Return an array of cms categories
  */
 export function getCategories() {
-    return (state$: Observable<CmsAttrsState>) => state$.select('categories');
+    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.categories);
 }
 
 /**
  * Return an array of geo locations
  */
 export function getLocations() {
-    return (state$: Observable<CmsAttrsState>) => state$.select('locations');
+    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.locations);
 }
 
 export function getPostStates() {
-    return (state$: Observable<CmsAttrsState>) => state$.select('post_states');
+    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.post_states);
 }
 
 export function getPageStates() {
-    return (state$: Observable<CmsAttrsState>) => state$.select('page_states');
+    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.page_states);
 }
 
 export function getTopicStates() {
-    return (state$: Observable<CmsAttrsState>) => state$.select('topic_states');
+    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.topic_states);
 }

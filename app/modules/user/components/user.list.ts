@@ -13,6 +13,6 @@ import { EntityList } from '../../base/entity.list';
 })
 export class UserList extends EntityList
 {
-    get uuids() { return this._listState.uuids; }
-    get users() { return this._listState.entities; }
+    get uuids() { return this.idsCurPage; }
+    get users() { return this.entities; }
 }

@@ -5,7 +5,6 @@ import { Component }      from '@angular/core';
 import { OnInit, NgZone } from '@angular/core';
 import { EventEmitter }   from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Router }         from '@angular/router';
 import { Store }          from '@ngrx/store';
 
 import { EntitiesPage }      from '../base/entities.page';
@@ -27,9 +26,8 @@ export class GalleriesPage extends EntitiesPage
 
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
-                protected router: Router,
                 protected ping: Ping) {
-        super(ENTITY.ATTACHMENT, route, router, store, ping, true/* pageless */);
+        super(ENTITY.ATTACHMENT, route, store, ping, true/* pageless */);
 
         /*
         this.zone = new NgZone({ enableLongStackTrace: false });

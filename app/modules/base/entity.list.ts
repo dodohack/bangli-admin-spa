@@ -18,7 +18,7 @@ export class EntityList
     @Input() frontendUrl: string;
     @Input() paginator: any;
     @Input() entities: Entity[];
-    @Input() idsCurPage: number[];
+    @Input() idsCurPage: number[]; // FIXME: entity id or user uuid
     @Input() idsEditing: number[];
     @Input() authorsObj: any;  // authors object
     @Input() channels: Channel[];

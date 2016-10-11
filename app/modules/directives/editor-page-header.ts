@@ -19,8 +19,10 @@ export class EditorPageHeader {
     @Input() zh: any;
     // Frontend preview url
     @Input() previewUrl: string;
+    // FIXME: If we define ids: number[] | string[], we get build error of:
+    // Cannot invoke an expression whose type lacks a call signature.
     // Entity ids or user uuid of current loaded page
-    @Input() ids: number[] | string[];
+    @Input() ids: number[];
     // All entities
     @Input() entities: Entity[];
     // Current entity
@@ -34,14 +36,14 @@ export class EditorPageHeader {
         let newIdx = this.entityIdx - 1;
         if (newIdx >= 0)
             return '/' + this.slug + '/'+ this.ids[newIdx];
-        return false;
+        return null;
     }
 
     get nextEntityUrl() {
         let newIdx = this.entityIdx + 1;
         if (newIdx < this.ids.length)
             return '/' + this.slug + '/' + this.ids[newIdx];
-        return false;
+        return null;
     }
 
     /**
