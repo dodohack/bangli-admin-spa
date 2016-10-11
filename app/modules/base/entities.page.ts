@@ -99,7 +99,7 @@ export class EntitiesPage implements OnInit, OnDestroy
         this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
         this.idsEditing$    = this.store.let(getIdsEditing(this.etype));
         this.numEditing$    = this.idsEditing$.map(ids => ids.length);
-
+        
         this.subPro    = this.profile$.subscribe(p => this.myId = p.id);
         this.subCmsCh  = this.cmsChannels$.subscribe(c => this.cmsChannels = c);
         this.subEntity = this.entity$.subscribe(e => this.entity = e);

@@ -56,9 +56,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     // the content, but actually the entity content is not modified yet.
     contentInitialized = false;
 
-    content: string;          // Entity content
     isDirty        = false;   // Entity dirty bit
-    isContentDirty = false;   // A separate content dirty bit
     entity: Entity;           // Current entity
     profile: User;            // Current user profile
     domain: Domain;           // Current domain
@@ -110,9 +108,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.cmsCategories$ = this.store.let(getCmsCategories());
         this.paginator$     = this.store.let(getPaginator(this.etype));
         this.entity$        = this.store.let(getCurEntity(this.etype));
-        this.content$       = this.store.let(getCurEntityContent(this.etype));
         this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
         this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
+        this.content$       = this.store.let(getCurEntityContent(this.etype));
 
         this.subDomain  = this.domain$.subscribe(d => this.domain = d);
         this.subPro     = this.profile$.subscribe(p => this.profile = p);
@@ -145,7 +143,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
             status = false;
         }
 
-        if (!this.forceQuit && (this.isDirty || this.isContentDirty)) {
+        if (!this.forceQuit && this.isDirty) {
             msg = '请先保存当前更改，或取消保存';
             status = false;
         }
@@ -185,8 +183,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
             // Set initialized state or set entity content dirty
             console.log("content changed: ", $event);
             this.contentInitialized ?
-                this.isContentDirty = true : this.contentInitialized = true;
-            this.content = $event;
+                this.isDirty = true : this.contentInitialized = true;
+            this.entity.content = $event;
         });
     }
 
@@ -266,12 +264,10 @@ export abstract class EntityPage implements OnInit, OnDestroy
         // Do the saving in every 10s.
         this.subTimer = Observable.interval(10000).subscribe(x => {
             // Save entity with content to server
-            if (this.isContentDirty) {
-                this.store.dispatch(EntityActions.updateContent(this.etype, this.content));
+            if (this.isDirty) {
                 this.store.dispatch(EntityActions.autoSave(this.etype, this.entity));
-            } else if (this.isDirty) {
                 // Save entity except content to server
-                this.store.dispatch(EntityActions.autoSaveAttributes(this.etype, this.entity));
+                //this.store.dispatch(EntityActions.autoSaveAttributes(this.etype, this.entity));
             }
 
             // Also ping server to set editing lock state
