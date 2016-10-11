@@ -13,14 +13,14 @@ import { zh_CN } from '../../../localization';
 })
 export class UserShippingProfileTab
 {
-    @Input()
-    isMyProfile: boolean;
-
-    @Input()
-    isSuperUser: boolean;
-
-    @Input()
-    user: User;
-
+    @Input() isMyProfile: boolean;
+    @Input() isSuperUser: boolean;
+    @Input() user: User;
+    
     get zh() { return zh_CN.user; }
+
+    get hasShippingProfile() {
+        return this.user && this.user.addresses
+            && this.user.addresses.length > 0;
+    }
 }

@@ -65,10 +65,11 @@ export class UserEffects {
 
 
     /**
-     * Get single user
+     * Get single user by id or uuid
      */
-    private getUser(uuid: string): Observable<User> {
-        let api = AuthCache.API() + API_PATH.users + '/' + uuid + '?token=' + AuthCache.token();
+    private getUser(id: string | number): Observable<User> {
+        let api = AuthCache.API() + API_PATH.users
+            + '/' + id + '?token=' + AuthCache.token();
         return this.http.get(api).map(res => res.json());
     }
 

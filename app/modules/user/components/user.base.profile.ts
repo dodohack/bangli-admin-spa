@@ -11,14 +11,9 @@ import { USER_GENDERS, User } from '../../../models';
 })
 export class UserBaseProfileTab
 {
-    @Input()
-    isMyProfile: boolean;
-    
-    @Input()
-    isSuperUser: boolean;
-    
-    @Input()
-    user: User;
+    @Input() isMyProfile: boolean;
+    @Input() isSuperUser: boolean;
+    @Input() user: User;
     
     get userRoles() { return ['a', 'b', 'c']; /*return this.userService.roles;*/ }
     get genders() { return USER_GENDERS; }

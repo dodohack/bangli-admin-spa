@@ -11,12 +11,12 @@ import { User } from "../../../models";
 })
 export class UserBabyProfileTab
 {
-    @Input()
-    isMyProfile: boolean;
-
-    @Input()
-    isSuperUser: boolean;
-
-    @Input()
-    user: User;
+    @Input() isMyProfile: boolean;
+    @Input() isSuperUser: boolean;
+    @Input() user: User;
+    
+    get hasBabyProfile() { 
+        return this.user && this.user.baby_profiles 
+            && this.user.baby_profiles.length > 0;
+    }
 }

@@ -113,7 +113,9 @@ export function getCurUser() {
  */
 export function isMyProfileUUID(uuid: string) {
     return (state$: Observable<UsersState>) => state$
-        .map(s => s.entities[s.idsEditing[0]].uuid === uuid);
+        .map(s => s.entities[s.idsEditing[0]])
+        .filter(e => typeof e != 'undefined')
+        .map(user => user.uuid === uuid);
 }
 
 /**

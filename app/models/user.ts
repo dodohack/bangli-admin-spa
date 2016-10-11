@@ -19,11 +19,7 @@ interface UserRole {
     description: string;
 }
 
-interface UserProfile {
-    gender: string; /* ENUM, One of 'M', 'F' or 'U' */
-    first_name: string;
-    last_name: string;
-    birthday: string;
+export class UserShopProfile {
     point_available: number;
     point_used: number;
     currency: string;
@@ -31,9 +27,6 @@ interface UserProfile {
     money_spent: number;
     order_count: number;
     cart_items: Object;
-    profile_image: string;
-    subscription: boolean;
-    description: string;
 }
 
 // API request parameters to filter list of users
@@ -58,13 +51,20 @@ export class UserParams {
 export class User {
     id: number;
     role_id: number;
+    avatar_id: number;
     uuid: string;
     name: string;
     display_name: string;
     email: string;
+    gender: string; /* ENUM, One of 'M', 'F' or 'U' */
+    first_name: string;
+    last_name: string;
+    birthday: string;
+    subscription: boolean;
+    description: string;
     password: string;
     created_at: string;
 
     role: UserRole;
-    profile: UserProfile;
+    shop_profile: UserShopProfile;
 }

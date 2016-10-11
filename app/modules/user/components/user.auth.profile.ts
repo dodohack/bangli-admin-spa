@@ -4,7 +4,7 @@
  */
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { User }        from '../../../models';
+import { User }  from '../../../models';
 
 @Component({
     selector: 'user-auth-profile',
@@ -12,20 +12,11 @@ import { User }        from '../../../models';
 })
 export class UserAuthProfileTab
 {
-    @Input()
-    uuid: string;
+    @Input() isMyProfile: boolean;
+    @Input() isSuperUser: boolean;
+    @Input() user: User;
 
-    @Input()
-    isMyProfile: boolean;
-
-    @Input()
-    isSuperUser: boolean;
-
-    @Input()
-    user: User;
-
-    @Output()
-    save = new EventEmitter();
+    @Output() save = new EventEmitter();
 
     password: string = '';
     password_repeat: string = '';

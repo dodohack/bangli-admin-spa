@@ -16,6 +16,11 @@ my profile.
                                    [isSuperUser]="isSuperUser$ | async">
                 </user-base-profile>
 
+                <user-shop-profile [user]="user$ | async"
+                                   [isMyProfile]="isMyProfile$ | async"
+                                   [isSuperUser]="isSuperUser$ | async">
+                </user-shop-profile>
+
                 <user-shipping-profile [user]="user$ | async"
                                        [isMyProfile]="isMyProfile$ | async"
                                        [isSuperUser]="isSuperUser$ | async">
@@ -25,6 +30,7 @@ my profile.
                                    [isMyProfile]="isMyProfile$ | async"
                                    [isSuperUser]="isSuperUser$ | async">
                 </user-baby-profile>
+
             </accordion>
 
             <div class="row form-group" *ngIf="(isSuperUser$ | async) || (isMyProfile$ | async)">
@@ -55,6 +61,5 @@ my profile.
         <user-preference [pref]="pref$ | async"
                          (save)="savePreference($event)">
         </user-preference>
-    </tab>
-
+        </tab>
 </tabset>

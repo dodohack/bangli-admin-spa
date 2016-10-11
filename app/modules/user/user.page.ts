@@ -26,9 +26,6 @@ import { isMyProfile, getCurUser, hasSuperUserRole }  from '../../reducers';
 @Component({ template: require('./user.page.html') })
 export class UserPage implements OnInit, OnDestroy
 {
-    // Current user uuid
-    uuid: string;
-
     user: User;
 
     // The domain we are going to switch to if it is given

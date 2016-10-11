@@ -15,9 +15,6 @@ import { GeoLocation } from '../../models';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityAttrCloud {
-    // Deprecated
-    @Input() entity: Entity;
-    
     @Input() categories: Category[];
     @Input() topics:     Topic[];
     @Input() locations:  GeoLocation[];

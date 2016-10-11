@@ -134,11 +134,10 @@
 
 
             <!-- Product brand, category, tag etc -->
-            <entity-attr-cloud [entity]="product"
-                           (toggle)="openPanel = !openPanel"
-                           (deleteCat)="removeCat($event)"
-                           (deleteTag)="removeTag($event)"
-                           (deleteTopic)="removeTopic($event)"></entity-attr-cloud>
+            <entity-attr-cloud (toggle)="openPanel = !openPanel"
+                               (deleteCat)="removeCat($event)"
+                               (deleteTag)="removeTag($event)"
+                               (deleteTopic)="removeTopic($event)"></entity-attr-cloud>
 
             <!-- Thumbnail for base product and excerpt -->
             <div class="row">

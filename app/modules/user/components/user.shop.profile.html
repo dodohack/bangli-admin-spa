@@ -1,0 +1,46 @@
+<accordion-group isOpen="hasShopProfile" *ngIf="user">
+    <div accordion-heading>
+        消费信息<i class="pull-right fa customize-chevron"></i>
+    </div>
+
+    <div *ngIf="!hasShopProfile" class="alert alert-info">
+        此用户暂无任何消费记录!
+    </div>
+
+    <div *ngIf="user.shop_profile">
+        <div class="form-group row">
+            <div class="col-xs-3">
+                <label>可用积分</label>
+                <input class="form-control" type="text" name="point_available" [(ngModel)]="user.shop_profile.point_available" disabled>
+            </div>
+
+            <div class="col-xs-3">
+                <label>已消费积分</label>
+                <input class="form-control" type="text" name="point_used" [(ngModel)]="user.shop_profile.point_used" disabled>
+            </div>
+
+            <div class="col-xs-3">
+                <label>账户余额 ({{ user.shop_profile.currency }})</label>
+                <input class="form-control" type="text" name="money_available" [(ngModel)]="user.shop_profile.money_available" disabled>
+            </div>
+
+            <div class="col-xs-3">
+                <label>已消费金额 ({{ user.shop_profile.currency }})</label>
+                <input class="form-control" type="text" name="money_spent" [(ngModel)]="user.shop_profile.money_spent" disabled>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-xs-12">
+                <label>订单总数: {{ user.sho_profile.order_count }}</label>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-xs-12">
+                <label>当前购物车物品: {{ user.shop_profile.cart_items }}</label>
+            </div>
+        </div>
+    </div>
+
+</accordion-group>
