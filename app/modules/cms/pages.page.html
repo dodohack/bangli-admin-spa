@@ -2,7 +2,10 @@
                   [name]="'页面'"
                   [zh]="zh"
                   [states]="pageStates$ | async"
-                  [loading]="isLoading$ | async"></list-page-header>
+                  [loading]="isLoading$ | async"
+                  [isPageless]="pageless"
+                  (togglePagelessEvent)="pageless = !pageless">
+</list-page-header>
 
 <!-- Page filter/tool bar at top -->
 <list-filter-bar [slug]="'page'"

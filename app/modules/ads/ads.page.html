@@ -2,7 +2,10 @@
                   [name]="'广告'"
                   [zh]="zh"
                   [loading]="isLoading$ | async"
-                  (newEntityEvent)="newAdvertise()"></list-page-header>
+                  [isPageless]="pageless"
+                  (togglePagelessEvent)="pageless = !pageless"
+                  (newEntityEvent)="newAdvertise()">
+</list-page-header>
 
 <!-- Ads filter/tool bar at top -->
 <list-filter-bar [slug]="'ads'"

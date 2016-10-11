@@ -21,8 +21,9 @@ export class ProductsPage extends EntitiesPage
 {
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
+                protected router: Router,
                 protected ping: Ping) {
-        super(ENTITY.SHOP_PRODUCT, route, store, ping);
+        super(ENTITY.SHOP_PRODUCT, route, store, router, ping);
     }
 
     get zh() { return zh_CN.product; }

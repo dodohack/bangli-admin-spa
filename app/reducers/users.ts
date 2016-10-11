@@ -25,7 +25,8 @@ export default function (state = initialState, action: Action): UsersState {
     switch (action.type)
     {
         case UserActions.LOAD_USER:
-        case UserActions.LOAD_USERS: {
+        case UserActions.LOAD_USERS:
+        case UserActions.LOAD_USERS_ON_SCROLL: {
             return Object.assign({}, state, {isLoading: true});
         }
 
@@ -43,6 +44,25 @@ export default function (state = initialState, action: Action): UsersState {
                 ids:        ids,
                 idsEditing: [],
                 entities:   entities,
+                isLoading:  false,
+                paginator:  action.payload.paginator
+            });
+        }
+
+        // Almost identical to previous case, but ids and entities are merged
+        // instead of replaced
+        case UserActions.LOAD_USERS_ON_SCROLL_SUCCESS: {
+            const users     = action.payload.users;
+            const ids       = users.map(user => user.id);
+            const entities  = users.reduce(
+                (entities: { [id: number]: User }, user: User) => {
+                    return Object.assign(entities, { [user.id]: user });
+                }, {});
+
+            return Object.assign({}, state, {
+                ids:        [...state.ids, ...ids],
+                idsEditing: [],
+                entities:   Object.assign({}, state.entities, entities),
                 isLoading:  false,
                 paginator:  action.payload.paginator
             });
@@ -86,6 +106,7 @@ export default function (state = initialState, action: Action): UsersState {
                         state.entities, {[newUser.id]: newUser})
                 });
             }
+            break;
         }
 
         default:

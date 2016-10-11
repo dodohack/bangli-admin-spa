@@ -5,6 +5,7 @@
 import { Component }         from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
+import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
@@ -19,7 +20,8 @@ export class CommentsPage extends EntitiesPage
 {
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
+                protected router: Router,
                 protected ping: Ping) {
-        super(ENTITY.COMMENT, route, store, ping);
+        super(ENTITY.COMMENT, route, store, router, ping);
     }
 }

@@ -27,8 +27,9 @@ export class AdsPage extends EntitiesPage
     
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
+                protected router: Router,
                 protected ping: Ping) {
-        super(ENTITY.ADVERTISE, route, store, ping);
+        super(ENTITY.ADVERTISE, route, store, router, ping);
     }
 
     /**

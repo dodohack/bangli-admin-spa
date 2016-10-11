@@ -1,7 +1,10 @@
 <list-page-header [slug]="'user'"
                   [name]="'用户'"
                   [zh]="zh"
-                  [loading]="isLoading$ | async"></list-page-header>
+                  [loading]="isLoading$ | async"
+                  [isPageless]="pageless"
+                  (togglePagelessEvent)="pageless = !pageless">
+</list-page-header>
 
 <!-- User filter/tool bar at top -->
 <list-filter-bar [slug]="'user'"
@@ -11,6 +14,7 @@
 
 <!-- List of users -->
 <user-list [etype]="etype"
-           [entities]="entities$ | async"
+           [entities]="users$ | async"
+           [idsCurPage]="idsCurPage$ | async"
            (batchDelete)="batchDelete($event)">
 </user-list>

@@ -4,12 +4,14 @@
 import { HostListener }      from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
+import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
 import { User }                 from '../../models';
-import { Channel }              from '../../models/';
+import { Channel }              from '../../models';
 import { Entity, EntityParams } from '../../models';
+import { ENTITY_INFO }          from '../../models';
 import { Category, Tag, Topic}  from '../../models';
 import { Activity }             from '../../models';
 import { AppState }             from '../../reducers';
@@ -37,6 +39,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     subPro: any;
     subCmsCh: any;
     subEntity: any;
+    subLoad: any;
     subActivityOn: any;
     subActivityOff: any;
     subParams: any;
@@ -46,8 +49,9 @@ export class EntitiesPage implements OnInit, OnDestroy
 
     // entity query parameter for api request
     entityParams: EntityParams = new EntityParams;
-    
+
     myId:        number; // My id of current domain.
+    isLoading:   boolean; // If the list is currently loading
     entity:      Entity; // First entity in idsEditing
     cmsChannels: Channel[];
 
@@ -80,6 +84,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     constructor(protected etype: string,    // Entity type
                 protected route: ActivatedRoute,
                 protected store: Store<AppState>,
+                protected router: Router,
                 protected ping: Ping,
                 protected pageless: boolean = false) {}
 
@@ -103,6 +108,7 @@ export class EntitiesPage implements OnInit, OnDestroy
         this.subPro    = this.profile$.subscribe(p => this.myId = p.id);
         this.subCmsCh  = this.cmsChannels$.subscribe(c => this.cmsChannels = c);
         this.subEntity = this.entity$.subscribe(e => this.entity = e);
+        this.subLoad   = this.isLoading$.subscribe(i => this.isLoading = i);
 
         this.dispatchLoadEntities();
 
@@ -132,6 +138,7 @@ export class EntitiesPage implements OnInit, OnDestroy
         this.subPro.unsubscribe();
         this.subCmsCh.unsubscribe();
         this.subEntity.unsubscribe();
+        this.subLoad.unsubscribe();
         //this.subActivityOn.unsubscribe();
         //this.subActivityOff.unsubscribe();
         this.subParams.unsubscribe();
@@ -145,28 +152,15 @@ export class EntitiesPage implements OnInit, OnDestroy
             .merge(this.route.params, this.route.queryParams)
             .filter((p,i) => Object.keys(p).length !== 0)
             .subscribe(params => {
-                
                 // Compare if elements of url params change
                 if (JSON.stringify(this.params) !== JSON.stringify(params)) {
-                    this.params = params;
-
-                    // Params
-                    this.entityParams.channel  = this.params['channel'];
-                    this.entityParams.cur_page = +this.params['page'] || 1;
-                    this.entityParams.state    = this.params['state'];
-
-                    // Query params
-                    this.entityParams.author   = this.params['author'];
-                    this.entityParams.editor   = this.params['editor'];
-                    this.entityParams.category = this.params['category'];
-                    this.entityParams.brand    = this.params['brand'];
-                    this.entityParams.datetype = this.params['datetype'];
-                    this.entityParams.datefrom = this.params['datefrom'];
-                    this.entityParams.dateto   = this.params['dateto'];
-                    this.entityParams.query    = this.params['query'];
-
-                    this.store.dispatch(EntityActions
-                        .loadEntities(this.etype, this.entityParams));
+                    this.setupEntityParams(params);
+                    if (this.pageless)
+                        this.store.dispatch(EntityActions
+                            .loadEntitiesOnScroll(this.etype, this.entityParams));
+                    else
+                        this.store.dispatch(EntityActions
+                            .loadEntities(this.etype, this.entityParams));
                 }
                 
             });
@@ -178,14 +172,37 @@ export class EntitiesPage implements OnInit, OnDestroy
      */
     @HostListener('window:scroll')
     loadEntitiesOnScroll() {
-        if (this.pageless &&
+        if (this.pageless && !this.isLoading &&
             (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             setTimeout(() => {
-                this.entityParams.cur_page++;
-                this.store.dispatch(EntityActions
-                    .loadEntitiesOnScroll(this.etype, this.entityParams));
-            }, 300);
+                if (this.isLoading) return;
+                if (this.params['state'])
+                    this.router.navigate(['/', ENTITY_INFO[this.etype].slug,
+                        'page', +this.params['page'] + 1, 'state', this.params['state']]);
+                else
+                    this.router.navigate(['/', ENTITY_INFO[this.etype].slug,
+                        'page', +this.params['page'] + 1]);
+            }, 100);
         }
+    }
+
+    setupEntityParams(params) {
+        this.params = params;
+
+        // Params
+        this.entityParams.channel  = this.params['channel'];
+        this.entityParams.cur_page = +this.params['page'] || 1;
+        this.entityParams.state    = this.params['state'];
+
+        // Query params
+        this.entityParams.author   = this.params['author'];
+        this.entityParams.editor   = this.params['editor'];
+        this.entityParams.category = this.params['category'];
+        this.entityParams.brand    = this.params['brand'];
+        this.entityParams.datetype = this.params['datetype'];
+        this.entityParams.datefrom = this.params['datefrom'];
+        this.entityParams.dateto   = this.params['dateto'];
+        this.entityParams.query    = this.params['query'];
     }
 
     get channelId() { 

@@ -23,8 +23,9 @@ export class TopicsPage extends EntitiesPage
     
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
+                protected router: Router,
                 protected ping: Ping) {
-        super(ENTITY.CMS_TOPIC, route, store, ping);
+        super(ENTITY.CMS_TOPIC, route, store, router, ping);
         
         this.topicStates$ = this.store.let(getTopicStates());
     }

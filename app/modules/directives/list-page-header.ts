@@ -29,12 +29,17 @@ export class ListPageHeader {
     // Localization
     @Input() zh: any;
     
-
     // If current list is in loading, input to childview search-box
     @Input() loading: boolean;
+
+    // If current list is loaded as pageless mode
+    @Input() isPageless: boolean;
 
     // Advertise, shop order and voucher using inPageEdit(a popup modal), this
     // is used with newEntityEvent event.
     @Input() inPageEdit: boolean = false;
+    
     @Output() newEntityEvent = new EventEmitter();
+    
+    @Output() togglePagelessEvent = new EventEmitter();
 }

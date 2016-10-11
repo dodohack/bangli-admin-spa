@@ -41,7 +41,29 @@ export class UserActions {
             type: UserActions.LOAD_USERS_FAIL
         };
     }
+    
+    static LOAD_USERS_ON_SCROLL = '[User] Load Users On Scroll';
+    static loadUsersOnScroll(filters: any): Action {
+        return {
+            type: UserActions.LOAD_USERS_ON_SCROLL,
+            payload: filters
+        };
+    }
 
+    static LOAD_USERS_ON_SCROLL_SUCCESS = '[User] Load Users On Scroll Success';
+    static loadUsersOnScrollSuccess(users: User[]): Action {
+        return {
+            type: UserActions.LOAD_USERS_ON_SCROLL_SUCCESS,
+            payload: users
+        };
+    }
+
+    static LOAD_USERS_ON_SCROLL_FAIL = '[User] Load Users On Scroll Fail';
+    static loadUsersOnScrollFail(): Action {
+        return {
+            type: UserActions.LOAD_USERS_ON_SCROLL_FAIL
+        };
+    }
     static LOAD_USER = '[User] Load User';
     static loadUser(uuid: string): Action {
         return {
@@ -49,7 +71,7 @@ export class UserActions {
             payload: uuid
         };
     }
-
+    
     static LOAD_USER_SUCCESS = '[User] Load User Success';
     static loadUserSuccess(user: User): Action {
         return {

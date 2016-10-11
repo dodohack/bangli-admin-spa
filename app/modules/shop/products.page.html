@@ -2,7 +2,10 @@
                   [name]="'产品'"
                   [zh]="zh"
                   [states]="productState$ | async"
-                  [loading]="isLoading$ | async"></list-page-header>
+                  [loading]="isLoading$ | async"
+                  [isPageless]="pageless"
+                  (togglePagelessEvent)="pageless = !pageless">
+</list-page-header>
 
 
 <!-- Product filter/tool bar -->

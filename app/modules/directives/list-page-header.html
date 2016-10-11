@@ -26,6 +26,14 @@
            class="page-title-action btn btn-sm btn-outline-info"
            (click)="newEntityEvent.emit()">新建{{ name }}</a>
 
+        <a *ngIf="isPageless"
+           class="page-title-action btn btn-sm btn-outline-secondary"
+           (click)="togglePagelessEvent.emit()">模式:无限加载</a>
+
+        <a *ngIf="!isPageless"
+           class="page-title-action btn btn-sm btn-outline-secondary"
+           (click)="togglePagelessEvent.emit()">模式:分页加载</a>
+
         <a class="page-title-action btn btn-sm btn-outline-info float-right"
            [routerLink]="['/setting']">系统设置</a>
 

@@ -24,7 +24,14 @@ const routes: Routes = [
         path: 'post',
         children: [
 
+            /**
+             * NOTE: Redirecting url will trigger route.params/queryparams
+             * emit twice, so we have to handle it properly, otherwise it is
+             * easy to introduce bug!
+             */
             /* List of posts wo/ channels */
+            //{ path: '',                    component: PostsPage },
+            //{ path: 'page/:page',          component: PostsPage },
             { path: '', pathMatch: 'full', redirectTo: 'page/1/state/all' },
             { path: 'page/:page',          redirectTo: 'page/:page/state/all' },
             { path: 'page/:page/state/:state', component: PostsPage,

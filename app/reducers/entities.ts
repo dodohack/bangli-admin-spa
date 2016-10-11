@@ -37,7 +37,7 @@ export interface EntitiesState {
  */
 const initState: EntitiesState = {
     idsTotal: [], idsCurPage: [], idsEditing: [], idsContent: [],
-    entities: {}, isDirty: false, isLoading: true, paginator: null
+    entities: {}, isDirty: false, isLoading: false, paginator: null
 };
 
 

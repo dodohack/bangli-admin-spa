@@ -3,8 +3,10 @@
  */
 
 import { Component }         from '@angular/core';
+import { HostListener }      from '@angular/core';
 import { OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
+import { Router }            from '@angular/router';
 import { Observable }        from 'rxjs/Observable';
 import { Store }             from '@ngrx/store';
 
@@ -22,30 +24,37 @@ import { getUsers, getIsUserLoading, getUserPaginator } from '../../reducers';
 export class UsersPage implements OnInit, OnDestroy
 {
     // Observable subscribers
-    subUsers: any;
     subParams: any;
+    subLoad: any;
 
     // URL parameters
     params: any;
+    
+    // Is pageless loading
+    pageless: boolean = false;
+    isLoading: boolean;
 
     isLoading$:  Observable<boolean>;
     users$:      Observable<User[]>;
     paginator$:  Observable<any>;
 
     constructor(private route: ActivatedRoute,
-                private store: Store<AppState>) {}
+                private store: Store<AppState>,
+                private router: Router) {}
 
     ngOnInit() {
         this.isLoading$  = this.store.let(getIsUserLoading());
         this.users$      = this.store.let(getUsers());
         this.paginator$  = this.store.let(getUserPaginator());
 
+        this.subLoad = this.isLoading$.subscribe(x => this.isLoading = x);
+        
         this.dispatchLoadUsers();
     }
 
     ngOnDestroy() {
-        this.subUsers.unsubscribe();
         this.subParams.unsubscribe();
+        this.subLoad.unsubscribe();
     }
 
     /**
@@ -58,7 +67,7 @@ export class UsersPage implements OnInit, OnDestroy
             .subscribe(params => {
                 // Compare if elements of url params change
                 if (JSON.stringify(this.params) !== JSON.stringify(params)) {
-                    this.params = params;
+                    this.params = Object.assign({}, params);
 
                     this.params.cur_page = params['page'];
                     this.params.datetype = params['datetype'];
@@ -66,9 +75,32 @@ export class UsersPage implements OnInit, OnDestroy
                     this.params.dateto   = params['dateto'];
                     this.params.query    = params['query'];
 
-                    this.store.dispatch(UserActions.loadUsers(this.params));
+                    if (this.pageless)
+                        this.store.dispatch(UserActions.loadUsersOnScroll(this.params));
+                    else
+                        this.store.dispatch(UserActions.loadUsers(this.params));
                 }
             });
+    }
+
+    /**
+     * Pageless loading
+     * Load next page of users when scroll to page bottom
+     */
+    @HostListener('window:scroll')
+    loadUsersOnScroll() {
+        if (this.pageless && !this.isLoading &&
+            (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            setTimeout(() => {
+                if (this.isLoading) return;
+                if (this.params['role'])
+                    this.router.navigate(['/user', 
+                        'page', +this.params['page'] + 1, 'role', this.params['role']]);
+                else
+                    this.router.navigate(['/user',
+                        'page', +this.params['page'] + 1]);
+            }, 100);
+        }
     }
 
     get zh() { return zh_CN.user; }

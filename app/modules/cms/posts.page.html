@@ -4,7 +4,10 @@
                   [cmsChannels]="cmsChannels$ | async"
                   [curChannelSlug]="params['channel']"
                   [states]="postStates$ | async"
-                  [loading]="isLoading$ | async"></list-page-header>
+                  [loading]="isLoading$ | async"
+                  [isPageless]="pageless"
+                  (togglePagelessEvent)="pageless = !pageless">
+</list-page-header>
 
 <!-- Post filter/tool bar at top -->
 <list-filter-bar [slug]="'post'"

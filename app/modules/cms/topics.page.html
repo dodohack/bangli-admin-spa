@@ -4,7 +4,10 @@
                   [cmsChannels]="cmsChannels$ | async"
                   [curChannelSlug]="params['channel']"
                   [states]="topicStates$ | async"
-                  [loading]="isLoading$ | async"></list-page-header>
+                  [loading]="isLoading$ | async"
+                  [isPageless]="pageless"
+                  (togglePagelessEvent)="pageless = !pageless">
+</list-page-header>
 
 <!-- Topic filter/tool bar at top -->
 

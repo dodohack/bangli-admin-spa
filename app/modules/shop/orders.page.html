@@ -3,7 +3,10 @@
                   [zh]="zh"
                   [states]="orderStates$ | async"
                   [loading]="isLoading$ | async"
-                  (newEntityEvent)="newShopOrder()"></list-page-header>
+                  [isPageless]="pageless"
+                  (togglePagelessEvent)="pageless = !pageless"
+                  (newEntityEvent)="newShopOrder()">
+</list-page-header>
 
 <!-- Order filter/tool bar -->
 <list-filter-bar [slug]="'order'"

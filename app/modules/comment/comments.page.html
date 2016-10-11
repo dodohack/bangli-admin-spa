@@ -1,7 +1,10 @@
 <list-page-header [slug]="'comment'"
                   [name]="'评论'"
                   [zh]="zh"
-                  [loading]="isLoading$ | async"></list-page-header>
+                  [loading]="isLoading$ | async"
+                  [isPageless]="pageless"
+                  (togglePagelessEvent)="pageless = !pageless">
+</list-page-header>
 
 <!-- Deal post filter/tool bar at top -->
 <list-filter-bar [slug]="'comment'"

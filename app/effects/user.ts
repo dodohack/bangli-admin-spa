@@ -40,6 +40,12 @@ export class UserEffects {
             .catch(() => Observable.of(UserActions.loadUsersFail()))
         );
 
+    @Effect() loadUsersScroll$ = this.actions$.ofType(UserActions.LOAD_USERS_ON_SCROLL)
+        .switchMap(action => this.getUsers(action.payload)
+            .map(users => UserActions.loadUsersOnScrollSuccess(users))
+            .catch(() => Observable.of(UserActions.loadUsersOnScrollFail()))
+        );
+
     @Effect() loadUser$ = this.actions$.ofType(UserActions.LOAD_USER)
         .switchMap(action => this.getUser(action.payload)
             .map(user => UserActions.loadUserSuccess(user))

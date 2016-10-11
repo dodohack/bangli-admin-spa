@@ -24,10 +24,11 @@ export class DealsPage extends EntitiesPage
 
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
+                protected router: Router,
                 protected ping: Ping) {
-        super(ENTITY.CMS_DEAL, route, store, ping);
+        super(ENTITY.CMS_DEAL, route, store, router, ping);
 
-        this.dealStates$    = this.store.let(getDealStates());
+        this.dealStates$ = this.store.let(getDealStates());
     }
 
     get zh() { return zh_CN.cms; }
