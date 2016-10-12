@@ -9,6 +9,7 @@ import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
+import { BaseEffects }       from './effects/effect.base';
 import { AppState }          from './reducers';
 import { PreferenceState }   from './reducers/preference';
 import { AuthActions }       from './actions';
@@ -27,10 +28,7 @@ import { isDashboardUser, getCurDomainKey, getAuthToken,
 })
 export class App implements OnInit, OnDestroy
 {
-    subKey: any;
     subDU: any;
-
-    curDomainKey: string;
 
     /* TODO: This array will grow large, need to clean it periodically */
     alerts$: Observable<Alert[]>;
@@ -56,11 +54,11 @@ export class App implements OnInit, OnDestroy
         this.pref$         = this.store.select<PreferenceState>('pref');
         this.isDashboardUser$ = this.store.let(isDashboardUser());
 
-        //this.subKey = this.curDomainKey$.subscribe(x => this.curDomainKey = x);
+
         // Kick a first time login to application server
         this.subDU = this.isDashboardUser$.filter(x => x === true).take(1)
-            .subscribe(() =>
-                this.store.dispatch(AuthActions.loginDomain('bangli_uk')));
+            .subscribe(() => this.store
+                .dispatch(AuthActions.loginDomain(BaseEffects.getDefaultKey())));
     }
 
     ngOnDestroy() {
@@ -73,6 +71,7 @@ export class App implements OnInit, OnDestroy
 
     loginDomain($event) {
         this.store.dispatch(AuthActions.loginDomain($event));
+        this.router.navigate(['/']);
     }
 
     toggleSidebar($event) {

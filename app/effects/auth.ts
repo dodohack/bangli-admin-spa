@@ -59,7 +59,6 @@ export class AuthEffects extends BaseEffects {
      */
     @Effect() cacheAttr$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN_SUCCESS)
         .map(() => {
-            console.log("LoginDomainSuccessEffects, key: ", this.key);
             if (this.key === 'huluwa_uk') ShopAttrActions.loadAll();
             return CmsAttrActions.loadAll();
         });

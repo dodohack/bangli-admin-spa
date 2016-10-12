@@ -1,5 +1,5 @@
 <!-- Product list table -->
-<table class="table table-hover entity-list">
+<table class="table table-hover entity-list" *ngIf="hasEntity">
     <thead class="thead-default">
         <tr>
             <th width="2%"></th>
@@ -39,45 +39,45 @@
 
     <tbody>
 
-        <template ngFor let-id [ngForOf]="ids" let-i="index">
+        <template ngFor let-entity [ngForOf]="entities" let-i="index">
             <tr>
                 <th>{{i+1}}</th>
-                <td><input type="checkbox" name="p[]" [ngModel]="isEditing(id)"
-                           (change)="updateEditList(id)"></td>
+                <td><input type="checkbox" name="p[]" [ngModel]="isEditing(entity.id)"
+                           (change)="updateEditList(entity.id)"></td>
                 <!-- Fast edit by double clicking on title column -->
-                <td (dblclick)="batchEdit.emit([id])">
-                    <!-- Badge: Locked post -->
-                    <i class="fa fa-lock" style="color: red" *ngIf="entities[id].lock"></i>
+                <td (dblclick)="batchEdit.emit([entity.id])">
+                    <!-- Badge: Locked product -->
+                    <i class="fa fa-lock" style="color: red" *ngIf="entity.lock"></i>
                     <!-- Badge: Online edit lock -->
                     <span class="tag tag-default-outline"
-                          *ngIf="hasActivity(id) && getActivity(id).edit_lock == 1">
+                          *ngIf="isOnlineLocked(entity)">
                         <i class="fa fa-pencil" style="color: red"></i>
-                        {{ editors[getActivity(id).user_id].name }} 正在编辑
+                        {{ authorsObj[entity.activities[0].user_id].name }} 正在编辑
                     </span>
 
                     <!-- Badge: Offline edit lock -->
                     <span class="tag tag-default-outline"
-                          *ngIf="hasActivity(id) && getActivity(id).edit_lock == 2">
+                          *ngIf="isOfflineLocked(entity)">
                         <i class="fa fa-pencil" style="color: blue"></i>
-                        {{ editors[getActivity(id).user_id].name }} 正在离线编辑
+                        {{ authorsObj[entity.activities[0].user_id].name }} 正在离线编辑
                     </span>
 
-                    <span *ngIf="entities[id].state != 'publish'" class="tag tag-danger-outline">
-                        {{ zh[entities[id].state] }}
+                    <span *ngIf="entity.state != 'publish'" class="tag tag-danger-outline">
+                        {{ zh[entity.state] }}
                     </span>
 
                     <!-- Title -->
-                    <strong><a [routerLink]="['/product', id ]">{{ entities[id].title }}</a></strong>
+                    <strong><a [routerLink]="['/product', entity.id]">{{ entity.title }}</a></strong>
 
                     <div class="row-actions">
                         <span class="trash"><a>删除</a> | </span>
-                        <span><a href="{{ previewLink(id) }}" target="_blank">查看</a> | </span>
+                        <span><a href="{{ previewLink(entity) }}" target="_blank">查看</a> | </span>
                         <span>双击快速编辑</span>
                     </div>
                 </td>
 
-                <td>{{ entities[id].image_id }}</td>
-                <td>{{ entities[id].sku }}</td>
+                <td>{{ entity.image_id }}</td>
+                <td>{{ entity.sku }}</td>
                 <td>
                     <span>实际库存: xxx</span>
                     <div>
@@ -87,13 +87,13 @@
                 <td> xxx </td>
                 <td>£ xxx </td>
                 <td>
-                    <span *ngFor="let cat of entities[id].categories">
+                    <span *ngFor="let cat of entity.categories">
                         <a [routerLink]="['/category', cat.id]">{{ cat.name }}</a>,
                     </span>
                 </td>
 
-                <td>{{ entities[id].min_age }} - {{ entities[id].max_age }}</td>
-                <td>{{ entities[id].updated_at }}</td>
+                <td>{{ entity.min_age }} - {{ entity.max_age }}</td>
+                <td>{{ entity.updated_at }}</td>
             </tr>
         </template>
 

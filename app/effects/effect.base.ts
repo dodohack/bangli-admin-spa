@@ -37,4 +37,18 @@ export class BaseEffects {
     // Cached domain key
     get key() { return sessionStorage.getItem('key'); }
     set key(key: string) { sessionStorage.setItem('key', key); }
+
+    /**
+     * Get default domain key, this is only called when 
+     * bootstraping the app in app.ts
+     */
+    static getDefaultKey() {
+        let key = sessionStorage.getItem('key');
+        if (key) return key;
+
+        let rehydrate = rehydrateApplicationState(['auth'], localStorage);
+        if (rehydrate.auth && rehydrate.auth.key) return rehydrate.auth.key;
+        
+        return 'bangli_uk';
+    }
 }
