@@ -101,6 +101,10 @@ export interface AppState {
  * wrapping that in storeLogger. Remember that compose applies
  * the result from right to left.
  */
+/**
+ * We cache data that does not change frequently into localStorage by using
+ * localStorageSync, instead of our own cache solution.
+ */
 export default compose(
     storeFreeze, storeLogger(),
     localStorageSync(['auth', 'pref', 'cms'], true),
@@ -145,6 +149,9 @@ export function getAuthJwt() {
     return compose(fromAuth.getAuthJwt(), getAuthState());
 }
 
+export function getDomainKeys() {
+    return compose(fromAuth.getDomainKeys(), getAuthState());
+}
 
 export function getDomains() {
     return compose(fromAuth.getDomains(), getAuthState());

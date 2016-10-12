@@ -2,13 +2,16 @@
  * This file defines the options used to initialize froala editor
  */
 
-import { APIS, API_PATH } from '../api';
-import { AuthCache }      from '../auth.cache';
+import { APIS, API_PATH }            from '../api';
+import { rehydrateApplicationState } from 'ngrx-store-localstorage';
 
 export class FroalaOptions {
     
     // Static method returns froala options
     static getDefault() {
+        let auth = rehydrateApplicationState(['auth'], localStorage);
+        let key  = sessionStorage.getItem('key');
+
         return {
             // Past in WYSIWYG edit in plain text
             pastePlain: true,
@@ -27,16 +30,15 @@ export class FroalaOptions {
             toolbarSticky: false,
 
             // Image managers
-            imageManagerLoadURL: APIS[AuthCache.domainKey()] + API_PATH.froala_images,
-            imageManagerLoadParams: {token: AuthCache.token()},
+            imageManagerLoadURL: APIS[key] + API_PATH.froala_images,
+            imageManagerLoadParams: {token: auth.token},
 
             // Image upload
             imageAllowTypes: ['jpeg', 'jpg', 'png', 'gif'],
             imageUploadParam: 'file',
             imageUploadMethod: 'POST',
-            imageUploadParams: {token: AuthCache.token()},
-            imageUploadURL: APIS[AuthCache.domainKey()] + 
-            API_PATH.file_upload,
+            imageUploadParams: {token: auth.token},
+            imageUploadURL: APIS[key] + API_PATH.file_upload,
         };
     }
 }

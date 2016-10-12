@@ -1,23 +1,26 @@
 <!-- This is the template page for all pages -->
 <div class="container-fluid" style="min-width: 768px; max-width: 1400px;">
-    <div *ngIf="isLoggedIn | async"> <!-- (auth$ | async).payload.token -->
+    <div *ngIf="isDashboardUser$ | async">
 
-        <topbar [auth]="auth"
-                [pref]="pref"
+        <topbar [domainKeys]="domainKeys$ | async"
+                [domains]="domains$ | async"
+                [curDomainKey]="curDomainKey$ | async"
+                [jwt]="jwt$ | async"
+                [pref]="pref$ | async"
                 (logout)="logout()"
                 (loginDomain)="loginDomain($event)">
         </topbar>
 
-        <sidebar [auth]="auth"
-                 [pref]="pref"
+        <sidebar [curDomainKey]="curDomainKey$ | async"
+                 [pref]="pref$ | async"
                  (toggle)="toggleSidebar($event)">
         </sidebar>
 
     </div>
 
-    <div [class.content]="isLoggedIn | async"
-         [class.login-page]="!(isLoggedIn | async)"
-         [class.full-width]="pref.isIconSidebar">
+    <div [class.content]="isDashboardUser$ | async"
+         [class.login-page]="!(isDashboardUser$ | async)"
+         [class.full-width]="(pref$ | async)?.isIconSidebar">
         <router-outlet></router-outlet>
     </div>
 

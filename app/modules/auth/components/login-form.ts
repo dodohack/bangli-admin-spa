@@ -16,10 +16,11 @@ import { User }           from '../../../models';
 })
 export class LoginForm
 {
-    /* Just a form data */
-    user = new User;
+    @Input() isLoggedIn: boolean;
 
     /* NOTE: keyword 'submit' is reserved, if using it, 2 event is emitted */
-    @Output()
-    login = new EventEmitter();
+    @Output() login = new EventEmitter();
+
+    /* Just a form data */
+    user = new User;
 }

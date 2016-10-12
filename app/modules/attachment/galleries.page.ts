@@ -8,8 +8,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Router }         from '@angular/router';
 import { Store }          from '@ngrx/store';
 
+import { IMG_SERVER }        from '../../api';
 import { EntitiesPage }      from '../base/entities.page';
-import { AuthCache }         from '../../auth.cache';
 import { ENTITY }            from '../../models';
 import { AppState }          from '../../reducers';
 import { Ping }              from '../../ping';
@@ -44,8 +44,11 @@ export class GalleriesPage extends EntitiesPage
         };
         */
     }
-    
-    get imgBaseUrl() { return AuthCache.IMG_SERVER(); }
+
+    /**
+     * FIXME: Wrap sessionStorage here.
+     */
+    get imgBaseUrl() { return IMG_SERVER[sessionStorage.getItem('key')]; }
 
     handleUpload(data: any): void {
         console.log("handleUpload, data: ", data);

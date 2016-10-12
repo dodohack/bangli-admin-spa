@@ -69,21 +69,12 @@ export class AuthActions {
         };
     }
 
-    /* Only update auth.key to given domain key */
-    static SWITCH_DOMAIN = '[Auth] Switch Domain';
-    static switchDomain(domain_key: string): Action {
-        return {
-            type: AuthActions.SWITCH_DOMAIN,
-            payload: domain_key
-        };
-    }
-    
-    /* Login user into domain by auth.key */
+    /* Login user into domain by auth.key if domain_key is not specified */
     static LOGIN_DOMAIN = '[Auth] Login Domain';
-    static loginDomain(auth: any): Action {
+    static loginDomain(auth: any, domain_key: string = null): Action {
         return {
             type: AuthActions.LOGIN_DOMAIN,
-            payload: auth
+            payload: { auth: auth, domain_key: domain_key }
         };
     }
 

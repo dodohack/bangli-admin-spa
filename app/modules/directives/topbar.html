@@ -1,9 +1,10 @@
-<div class="topbar" [style.background-color]="pref.menuBackgroundColor">
+<div class="topbar" [style.background-color]="pref?.menuBackgroundColor"
+     *ngIf="pref && domains">
     <ul class="fixed-menu">
 
         <li>
-            <a href="{{ auth.domains[auth.key].url }}" target="_blank"
-               [style.color]="pref.menuColor"><i class="fa fa-home"></i>{{ auth.domains[auth.key].name }}</a>
+            <a href="{{ domains[curDomainKey].url }}" target="_blank"
+               [style.color]="pref.menuColor"><i class="fa fa-home"></i>{{ domains[curDomainKey].name }}</a>
         </li>
 
         <li>
@@ -23,13 +24,10 @@
         <li dropdown>
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="pref.menuColor">切换站点</a>
             <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
-                <li role="menuitem" *ngFor="let key of auth.keys">
-                    <!--<a class="dropdown-item" role="button"
-                       (click)="loginDomain.emit(key)">-->
+                <li role="menuitem" *ngFor="let key of domainKeys">
                     <a class="dropdown-item" role="button"
-                       [routerLink]="['/user', auth.jwt.sub]"
-                       [queryParams]="{domain: key}">
-                        {{ auth.domains[key].name }}
+                       (click)="loginDomain.emit(key)">
+                        {{ domains[key].name }}
                         <span class="tag" [class.tag-danger-outline]="isOffline(key)"
                               [class.tag-success-outline]="!isOffline(key)">{{ latency(key) }}</span>
                     </a>
@@ -56,11 +54,11 @@
         </li>
 
         <li class="float-right">
-            <span class="tag" [class.tag-danger-outline]="isOffline(auth.key)"
-                  [class.tag-success-outline]="!isOffline(auth.key)">{{ latency(auth.key) }}</span>
-            <a [routerLink]="['/user', auth.jwt.sub]" routerLinkActive="active"
+            <span class="tag" [class.tag-danger-outline]="isOffline(curDomainKey)"
+                  [class.tag-success-outline]="!isOffline(curDomainKey)">{{ latency(curDomainKey) }}</span>
+            <a [routerLink]="['/user', jwt?.sub]" routerLinkActive="active"
                [style.color]="pref.menuColor">
-                <i class="fa fa-user"></i>{{ auth.jwt.aud }}
+                <i class="fa fa-user"></i>{{ jwt?.aud }}
             </a>
         </li>
     </ul>

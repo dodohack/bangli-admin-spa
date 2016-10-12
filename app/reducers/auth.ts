@@ -20,8 +20,6 @@ export interface AuthState {
     jwt:   JwtPayload;
     // Current managing domain
     key: string;
-    // Only used to restore 'key' if loginDomain fails
-    last_key: string;
     // Domain keys array
     keys: string[];
     // Available domains to current user
@@ -34,7 +32,6 @@ const initialState: AuthState = {
     token: '',
     jwt: new JwtPayload,
     key: '',
-    last_key: '',
     keys: [],
     domains: {},
     users: {}
@@ -57,16 +54,15 @@ export default function(state = initialState, action: Action): AuthState {
                 token: token,
                 jwt: jwtDecode(token),
                 key: keys[0],
-                last_key: keys[0],
                 keys: [...keys],
                 domains: Object.assign({}, domainEntities),
                 users: state.users
             };
         }
-            
-        case AuthActions.SWITCH_DOMAIN: {
+
+        case AuthActions.LOGIN_DOMAIN: {
             return Object.assign({},
-                state, { key: action.payload, last_key: state.key });
+                state, { key: action.payload.domain_key, last_key: state.key });
         }
 
         case AuthActions.LOGIN_DOMAIN_SUCCESS: {
@@ -77,9 +73,8 @@ export default function(state = initialState, action: Action): AuthState {
         }
 
         case AuthActions.LOGIN_DOMAIN_FAIL: {
-            // Reset auth.key to previous state
-            return Object.assign({},
-                state, { key: state.last_key, last_key: state.key });
+            // Reset auth.key to default one
+            return Object.assign({}, state, { key: state.key[0] });
         }
 
         case AuthActions.LOGOUT: {
@@ -109,7 +104,6 @@ export default function(state = initialState, action: Action): AuthState {
  * from AppState in reducers/index.ts
  *****************************************************************************/
 
-
 export function getAuthToken() {
     return (state$: Observable<AuthState>) => state$
         .select(auth => auth.token);
@@ -118,6 +112,11 @@ export function getAuthToken() {
 export function getAuthJwt() {
     return (state$: Observable<AuthState>) => state$
         .select(auth => auth.jwt);
+}
+
+export function getDomainKeys() {
+    return (state$: Observable<AuthState>) => state$
+        .select(auth => auth.keys);
 }
 
 export function getDomains() {

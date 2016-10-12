@@ -5,8 +5,8 @@
 import { Component }                     from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Title }                         from '@angular/platform-browser';
+import { rehydrateApplicationState }     from 'ngrx-store-localstorage';
 
-import { AuthCache }           from '../../auth.cache';
 import { APIS, API_PATH }      from '../../api';
 
 @Component({
@@ -24,9 +24,11 @@ export class MigrationPage
     isRunning: boolean;
 
     constructor(private http: Http, private title: Title) {
+        let auth = rehydrateApplicationState(['auth'], localStorage);
+
         /* Set http authenticate header */
         this.headers =
-            new Headers({'Authorization': 'Bearer ' + AuthCache.token()});
+            new Headers({'Authorization': 'Bearer ' + auth.token});
 
         this.isRunning = false;
         this.title.setTitle('数据移植 - 全局管理平台');

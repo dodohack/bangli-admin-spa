@@ -4,34 +4,28 @@
  */
 import { Component }  from '@angular/core';
 import { OnInit }     from '@angular/core';
-import { Router }     from '@angular/router';
 import { Store }      from '@ngrx/store';
-import { Observable } from "rxjs";
+import { Observable } from "rxjs/Observable";
 
 import { AppState }     from '../../reducers';
 import { AuthState }    from '../../reducers/auth';
 import { AuthActions }  from '../../actions';
 import { AlertActions } from '../../actions';
 
+import { isDashboardUser } from '../../reducers';
+
 @Component({
-    template: `<login-form (login)="onSubmit($event)"></login-form>`
+    template: `<login-form [isLoggedIn]="isDashboardUser$ | async" 
+(login)="onSubmit($event)"></login-form>`
 })
 export class LoginPage implements OnInit
 {
-    constructor(private store: Store<AppState>,
-                private router: Router) {}
+    isDashboardUser$: Observable<boolean>;
+
+    constructor(private store: Store<AppState>) {}
 
     ngOnInit() {
-        // Do not need to do this manually
-        // Rehydrate user/auth from localStorage
-        //this.store.dispatch(AuthActions.init());
-
-        // FIXME: Is this a good way to get data from store?
-        this.store.select<AuthState>('auth').subscribe(auth => {
-            if (auth.token && auth.key) {
-                this.router.navigate(['/dashboard']);
-            }
-        });
+        this.isDashboardUser$ = this.store.let(isDashboardUser());
     }
 
     onSubmit($event) {

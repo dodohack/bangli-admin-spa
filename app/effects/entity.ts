@@ -3,32 +3,33 @@
  * cms-post, cms-topic, cms-page, deal, shop-order,
  * shop-product, voucher, newsletter, etc
  */
-import { Injectable }      from '@angular/core';
+import { Injectable }                from '@angular/core';
 import { Http, Headers, RequestOptions }  from '@angular/http';
-import { Effect, Actions } from '@ngrx/effects';
-import { Observable }      from 'rxjs/Observable';
+import { Effect, Actions }           from '@ngrx/effects';
+import { Observable }                from 'rxjs/Observable';
 
-import { API_PATH }        from '../api';
+import { BaseEffects }      from './effect.base';
+import { APIS, API_PATH }  from '../api';
 import { EntityActions }   from '../actions';
 import { AlertActions }    from '../actions';
-import { AuthCache }       from '../auth.cache';
-import { PrefCache }       from '../pref.cache';
 import { ENTITY }          from '../models';
 import { EntityParams }    from '../models';
 
 
 @Injectable()
-export class EntityEffects  {
-
+export class EntityEffects extends BaseEffects {
     constructor (private actions$: Actions,
-                 private http: Http) {}
+                 private http: Http) {
+        super();
+    }
 
     get headers() {
         return new Headers({
-            'Authorization': 'Bearer' + AuthCache.token(),
-            'Content-Type': 'application/json'});
+            'Authorization': 'Bearer' + this.token,
+            'Content-Type': 'application/json'
+        });
     }
-    
+
     /**************************************************************************
      * Entity
      *************************************************************************/
@@ -89,54 +90,54 @@ export class EntityEffects  {
         if (!isBatch) {
             switch (t) {
                 case ENTITY.CMS_POST:
-                    return AuthCache.API() + API_PATH.cms_posts;
+                    return APIS[this.key] + API_PATH.cms_posts;
                 case ENTITY.CMS_TOPIC:
-                    return AuthCache.API() + API_PATH.cms_topics;
+                    return APIS[this.key] + API_PATH.cms_topics;
                 case ENTITY.CMS_DEAL:
-                    return AuthCache.API() + API_PATH.cms_deals;
+                    return APIS[this.key] + API_PATH.cms_deals;
                 case ENTITY.CMS_PAGE:
-                    return AuthCache.API() + API_PATH.cms_pages;
+                    return APIS[this.key] + API_PATH.cms_pages;
                 case ENTITY.ADVERTISE:
-                    return AuthCache.API() + API_PATH.advertises;
+                    return APIS[this.key] + API_PATH.advertises;
                 case ENTITY.NEWSLETTER:
-                    return AuthCache.API() + API_PATH.newsletter_posts;
+                    return APIS[this.key] + API_PATH.newsletter_posts;
                 case ENTITY.ATTACHMENT:
-                    return AuthCache.API() + API_PATH.attachments;
+                    return APIS[this.key] + API_PATH.attachments;
                 case ENTITY.COMMENT:
-                    return AuthCache.API() + API_PATH.comments;
+                    return APIS[this.key] + API_PATH.comments;
                 case ENTITY.SHOP_ORDER:
-                    return AuthCache.API() + API_PATH.shop_orders;
+                    return APIS[this.key] + API_PATH.shop_orders;
                 case ENTITY.SHOP_PRODUCT:
-                    return AuthCache.API() + API_PATH.shop_products;
+                    return APIS[this.key] + API_PATH.shop_products;
                 case ENTITY.SHOP_VOUCHER:
-                    return AuthCache.API() + API_PATH.shop_vouchers;
+                    return APIS[this.key] + API_PATH.shop_vouchers;
                 default:
                     return null;
             }
         } else {
             switch (t) {
                 case ENTITY.CMS_POST:
-                    return AuthCache.API() + API_PATH.cms_posts_batch;
+                    return APIS[this.key] + API_PATH.cms_posts_batch;
                 case ENTITY.CMS_TOPIC:
-                    return AuthCache.API() + API_PATH.cms_topics_batch;
+                    return APIS[this.key] + API_PATH.cms_topics_batch;
                 case ENTITY.CMS_DEAL:
-                    return AuthCache.API() + API_PATH.cms_deals_batch;
+                    return APIS[this.key] + API_PATH.cms_deals_batch;
                 case ENTITY.CMS_PAGE:
-                    return AuthCache.API() + API_PATH.cms_pages_batch;
+                    return APIS[this.key] + API_PATH.cms_pages_batch;
                 case ENTITY.ADVERTISE:
-                    return AuthCache.API() + API_PATH.advertises_batch;
+                    return APIS[this.key] + API_PATH.advertises_batch;
                 case ENTITY.NEWSLETTER:
-                    return AuthCache.API() + API_PATH.newsletter_posts_batch;
+                    return APIS[this.key] + API_PATH.newsletter_posts_batch;
                 case ENTITY.ATTACHMENT:
-                    return AuthCache.API() + API_PATH.attachments_batch;
+                    return APIS[this.key] + API_PATH.attachments_batch;
                 case ENTITY.COMMENT:
-                    return AuthCache.API() + API_PATH.comments_batch;
+                    return APIS[this.key] + API_PATH.comments_batch;
                 case ENTITY.SHOP_ORDER:
-                    return AuthCache.API() + API_PATH.shop_orders_batch;
+                    return APIS[this.key] + API_PATH.shop_orders_batch;
                 case ENTITY.SHOP_PRODUCT:
-                    return AuthCache.API() + API_PATH.shop_products_batch;
+                    return APIS[this.key] + API_PATH.shop_products_batch;
                 case ENTITY.SHOP_VOUCHER:
-                    return AuthCache.API() + API_PATH.shop_vouchers_batch;
+                    return APIS[this.key] + API_PATH.shop_vouchers_batch;
                 default:
                     return null;
             }
@@ -151,7 +152,7 @@ export class EntityEffects  {
      */
     protected getEntity(t: string, id: string): Observable<any> {
         let api = this.getApi(t, false) +
-            '/' + id + '?etype=' + t + '&token=' + AuthCache.token();
+            '/' + id + '?etype=' + t + '&token=' + this.token;
         return this.http.get(api).map(res => res.json());
     }
 
@@ -209,7 +210,7 @@ export class EntityEffects  {
      * Get entities, return any
      */
     protected getEntities(t: string, params: EntityParams): Observable<any> {
-        let perPage = PrefCache.getPerPage();
+        let perPage = '20';
         // Attachment list uses infinite scroll
         if (t === ENTITY.ATTACHMENT) perPage = '60';
 
@@ -217,7 +218,7 @@ export class EntityEffects  {
             + params.toQueryString()
             + '&etype=' + t
             + '&per_page=' + perPage
-            + '&token=' + AuthCache.token();
+            + '&token=' + this.token;
 
         console.log("LOAD ENTITIES FROM URL: ", api);
 

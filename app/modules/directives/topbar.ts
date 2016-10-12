@@ -4,9 +4,10 @@ import { EventEmitter }            from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { ChangeDetectorRef }       from '@angular/core';
 
-import { AuthState }      from '../../reducers/auth';
-import { Preference }     from '../../models';
-import { Ping }           from '../../ping';
+import { Domain }           from '../../models';
+import { JwtPayload }       from '../../models';
+import { PreferenceState }  from '../../reducers/preference';
+import { Ping }             from '../../ping';
 
 @Component({
     selector: 'topbar',
@@ -14,8 +15,11 @@ import { Ping }           from '../../ping';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Topbar {
-    @Input() auth: AuthState;
-    @Input() pref: Preference;
+    @Input() domainKeys: string[];
+    @Input() domains: any;
+    @Input() curDomainKey: string;
+    @Input() jwt: JwtPayload;
+    @Input() pref: PreferenceState;
 
     @Output() logout = new EventEmitter();
     @Output() loginDomain = new EventEmitter();
