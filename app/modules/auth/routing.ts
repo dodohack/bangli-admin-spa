@@ -7,8 +7,8 @@ import { RegisterPage }      from './register.page';
 //import { ResetPasswordPage } from './resetpassword';
 
 const routes: Routes = [
-    {path: 'login',          component: LoginPage,    canActivate: [UnauthGuard]},
-    {path: 'register',       component: RegisterPage, canActivate: [UnauthGuard]},
+    {path: 'login',          component: LoginPage },
+    {path: 'register',       component: RegisterPage },
     //{path: 'lost-password',  component: LostPasswordPage, canActivate: [UnauthGuard]},
     //{path: 'reset-password', component: ResetPasswordPage, canActivate: [UnauthGuard]}
 ];

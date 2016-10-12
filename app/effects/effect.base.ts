@@ -1,16 +1,30 @@
 import { Headers }                   from '@angular/http';
 import { rehydrateApplicationState } from 'ngrx-store-localstorage';
 
+import { AuthState } from '../reducers/auth';
+
 export class BaseEffects {
-    // Auth token string
-    _token: string;
+    _auth: AuthState;
+
+    private initAuth() {
+        if (!this._auth) {
+            let rehydrate = rehydrateApplicationState(['auth'], localStorage);
+            this._auth = rehydrate.auth;
+        }
+    }
 
     // Get cached _token or rehydrate it from localStorage
     get token() {
-        if (this._token) return this._token;
-        let rehydrate = rehydrateApplicationState(['auth'], localStorage);
-        this._token = rehydrate.auth.token;
-        return this._token;
+        if (this._auth) return this._auth.token;
+        this.initAuth();
+        return this._auth.token;
+    }
+
+    // Get cached _token or rehydrate it from localStorage
+    get jwt() {
+        if (this._auth) return this._auth.jwt;
+        this.initAuth();
+        return this._auth.jwt;
     }
 
     get headers() {

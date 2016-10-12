@@ -18,7 +18,7 @@ import { Domain }            from './models';
 import { JwtPayload }        from './models';
 import { Ping }              from './ping';
 
-import { isDashboardUser, getCurDomainKey,
+import { isDashboardUser, getCurDomainKey, getAuthToken,
     getDomains, getDomainKeys, getAuthJwt }   from './reducers';
 
 @Component({
@@ -27,6 +27,11 @@ import { isDashboardUser, getCurDomainKey,
 })
 export class App implements OnInit, OnDestroy
 {
+    subKey: any;
+    subDU: any;
+
+    curDomainKey: string;
+
     /* TODO: This array will grow large, need to clean it periodically */
     alerts$: Observable<Alert[]>;
 
@@ -50,6 +55,12 @@ export class App implements OnInit, OnDestroy
         this.jwt$          = this.store.let(getAuthJwt());
         this.pref$         = this.store.select<PreferenceState>('pref');
         this.isDashboardUser$ = this.store.let(isDashboardUser());
+
+        //this.subKey = this.curDomainKey$.subscribe(x => this.curDomainKey = x);
+        // Kick a first time login to application server
+        this.subDU = this.isDashboardUser$.filter(x => x === true).take(1)
+            .subscribe(() =>
+                this.store.dispatch(AuthActions.loginDomain('bangli_uk')));
     }
 
     ngOnDestroy() {

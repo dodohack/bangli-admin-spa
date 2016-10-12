@@ -61,8 +61,9 @@ export default function(state = initialState, action: Action): AuthState {
         }
 
         case AuthActions.LOGIN_DOMAIN: {
-            return Object.assign({},
-                state, { key: action.payload.domain_key, last_key: state.key });
+            // Record latest domain key as the default key for next time app
+            // start
+            return Object.assign({}, state, { key: action.payload });
         }
 
         case AuthActions.LOGIN_DOMAIN_SUCCESS: {

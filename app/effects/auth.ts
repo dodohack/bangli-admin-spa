@@ -7,9 +7,11 @@ import { Http, Headers, RequestOptions }   from '@angular/http';
 import { Effect, Actions }                 from '@ngrx/effects';
 import { Observable }                      from 'rxjs/Observable';
 
+import { BaseEffects }                from './effect.base';
 import { AUTH, APIS, API_PATH }       from '../api';
 import { AuthActions }                from '../actions';
 import { CmsAttrActions }             from '../actions';
+import { ShopAttrActions }            from '../actions';
 import { User }                       from '../models';
 import { AlertActions }               from '../actions';
 import { AuthState }                  from '../reducers/auth';
@@ -17,11 +19,11 @@ import { AuthState }                  from '../reducers/auth';
 var jwtDecode = require('jwt-decode');
 
 @Injectable()
-export class AuthEffects {
-    auth: AuthState;
-
+export class AuthEffects extends BaseEffects {
     constructor (private actions$: Actions,
-                 private http: Http) {}
+                 private http: Http) {
+        super();
+    }
 
     /**
      * Step 1. Login authentication server
@@ -39,32 +41,27 @@ export class AuthEffects {
         );
 
 
-    /**
-     * Step 2. Kick action to login to application server
-     */
-    @Effect() loginSuccess$ = this.actions$.ofType(AuthActions.LOGIN_SUCCESS)
-        .map(action => AuthActions.loginDomain(action.payload));
-
     @Effect() loginFail$ = this.actions$.ofType(AuthActions.LOGIN_FAIL)
         .map(action => AlertActions.error('登录授权服务器失败或者无权限使用后台!'));
 
 
     /**
-     * Step 3. Switch or login to default application server
+     * Step 2. Switch or login to default application server
      */
     @Effect() loginDomain$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN)
-        .switchMap(action => this.loginDomain(action.payload.auth, action.payload.domain_key)
+        .switchMap(action => this.loginDomain(action.payload)
             .map(user => AuthActions.loginDomainSuccess(user))
             .catch(() => Observable.of(AuthActions.loginDomainFail()))
         );
 
     /**
-     * Step 4. Preload domain specific cms/shop attributes data
+     * Step 3. Preload domain specific cms/shop attributes data
      */
     @Effect() cacheAttr$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN_SUCCESS)
         .map(() => {
-            CmsAttrActions.loadAll();
-            console.error("TODO: Kick ShopAttrActions.loadAll() for huluwa!");
+            console.log("LoginDomainSuccessEffects, key: ", this.key);
+            if (this.key === 'huluwa_uk') ShopAttrActions.loadAll();
+            return CmsAttrActions.loadAll();
         });
 
     /**
@@ -101,25 +98,15 @@ export class AuthEffects {
     /**
      * Login user into specified application server by domain_key
      */
-    private loginDomain(auth: AuthState, domain_key: string): Observable<User> {
-        // Use default domain key if exist
-        let key = auth.key;
-        // Use specified domain key if exist
-        if (domain_key) key = domain_key;
-        // If no domain key is given, try the first domain available
-        if (!key) key = auth.domains[0].key;
+    private loginDomain(key: string): Observable<User> {
+        // Cache the key into sessionStorage 'key'.
+        this.key = key;
 
-        // Cache currently logged in domain so that each of the following
-        // network request knows which server to contact.
-        sessionStorage.setItem('key', key);
+        // Get current user uuid from decoded token
+        let uuid = this.jwt.sub;
 
-        let uuid = '';
-        if (auth.jwt)
-            uuid = auth.jwt.sub;
-        else
-            uuid = jwtDecode(auth.token).sub;
-
-        let api = APIS[key] + API_PATH.users + '/' + uuid + '?token=' + auth.token;
+        // Form an API
+        let api = APIS[key] + API_PATH.users + '/' + uuid + '?token=' + this.token;
 
         // Login user into specific application domain, user profile returned
         return this.http.get(api).map(res => res.json());

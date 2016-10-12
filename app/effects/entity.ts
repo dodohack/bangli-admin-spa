@@ -23,13 +23,6 @@ export class EntityEffects extends BaseEffects {
         super();
     }
 
-    get headers() {
-        return new Headers({
-            'Authorization': 'Bearer' + this.token,
-            'Content-Type': 'application/json'
-        });
-    }
-
     /**************************************************************************
      * Entity
      *************************************************************************/

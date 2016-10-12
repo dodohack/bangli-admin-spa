@@ -17,16 +17,9 @@ export class ShopAttrEffects extends BaseEffects {
                 private http: Http) {
         super();
     }
-
-    get headers() {
-        return new Headers({
-            'Authorization': 'Bearer' + this.token,
-            'Content-Type': 'application/json'
-        });
-    }
-
+    
     @Effect() loadAll$ = this.actions$.ofType(ShopAttrActions.LOAD_ALL)
-        .switchMap((action) => this.getAll()
+        .switchMap(() => this.getAll()
             .map(attrs => ShopAttrActions.loadAllSuccess(attrs))
             .catch(() => Observable.of(ShopAttrActions.loadAllFail()))
         );

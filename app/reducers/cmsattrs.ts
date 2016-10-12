@@ -51,17 +51,19 @@ export default function (state = initialState, action: Action): CmsAttrsState {
     switch (action.type)
     {
         case CmsAttrActions.LOAD_ALL_SUCCESS: {
+            let payload = action.payload;
+
             let authors: User[];
-            if (action.payload.authors)
-                authors = action.payload.authors;
+            if (payload.authors)
+                authors = payload.authors;
 
             let editors: User[]
-            if (action.payload.editors)
-                editors = action.payload.editors;
+            if (payload.editors)
+                editors = payload.editors;
 
             let categories: Category[];
-            if (action.payload.categories)
-                categories = action.payload.categories;
+            if (payload.categories)
+                categories = payload.categories;
 
             /*
             let tags: Tag[];
@@ -70,12 +72,12 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                 */
 
             let channels: Channel[];
-            if (action.payload.channels)
-                channels = action.payload.channels;
+            if (payload.channels && payload.channels.length > 0)
+                channels = payload.channels;
 
             let locations: GeoLocation[];
-            if (action.payload.locations)
-                locations = action.payload.locations;
+            if (payload.locations && payload.locations.length > 0)
+                locations = payload.locations;
 
             /*
             let post_topic_cats: Topic[];
@@ -84,42 +86,42 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                 */
 
             let post_states: PostState[];
-            if (action.payload.post_states) {
-                let total = action.payload.post_states
+            if (payload.post_states && payload.post_states.length > 0) {
+                let total = payload.post_states
                     .map(state => state.count)
                     .reduce((total, count) => total + count);
-                post_states = [...action.payload.post_states,
+                post_states = [...payload.post_states,
                     {state: 'all', count: total}];
             }
 
             let post_creative_types: CreativeType[];
-            if (action.payload.post_creative_types)
-                post_creative_types = action.payload.post_creative_types;
+            if (payload.post_creative_types && payload.post_creative_types.length > 0)
+                post_creative_types = payload.post_creative_types;
 
             let topic_states: PostState[];
-            if (action.payload.topic_states) {
-                let total = action.payload.topic_states
+            if (payload.topic_states && payload.topic_states.length > 0) {
+                let total = payload.topic_states
                     .map(state => state.count)
                     .reduce((total, count) => total + count);
-                topic_states = [...action.payload.topic_states,
+                topic_states = [...payload.topic_states,
                     {state: 'all', count: total}];
             }
 
             let page_states: PostState[];
-            if (action.payload.page_states) {
-                let total = action.payload.page_states
+            if (payload.page_states && payload.page_states.length > 0) {
+                let total = payload.page_states
                     .map(state => state.count)
                     .reduce((total, count) => total + count);
-                page_states = [...action.payload.page_states,
+                page_states = [...payload.page_states,
                     {state: 'all', count: total}];
             }
 
             let deal_states: PostState[];
-            if (action.payload.deal_states) {
-                let total = action.payload.deal_states
+            if (payload.deal_states && payload.deal_states.length > 0) {
+                let total = payload.deal_states
                     .map(state => state.count)
                     .reduce((total, count) => total + count);
-                deal_states = [...action.payload.deal_states,
+                deal_states = [...payload.deal_states,
                     {state: 'all', count: total}];
             }
 

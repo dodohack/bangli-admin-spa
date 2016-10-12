@@ -75,7 +75,6 @@ export class CmsAttrEffects extends BaseEffects {
     // Private helper functions
     
     private getAll(): Observable<CmsAttrsState> {
-
         let api = APIS[this.key] + API_PATH.cms_attrs + '?token=' + this.token;
         //console.log("***CMS_ATTRS API: ", api);
         return this.http.get(api).map(res => res.json());
