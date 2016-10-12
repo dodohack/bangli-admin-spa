@@ -161,6 +161,10 @@ export function getProfiles() {
     return compose(fromAuth.getProfiles(), getAuthState());
 }
 
+export function hasAuthFail() {
+    return compose(fromAuth.hasAuthFail(), getAuthState());
+}
+
 export function getCurDomainKey() {
     return compose(fromAuth.getCurDomainKey(), getAuthState());
 }

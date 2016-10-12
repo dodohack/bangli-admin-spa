@@ -26,12 +26,9 @@ export class LoginPage implements OnInit
 
     ngOnInit() {
         this.isDashboardUser$ = this.store.let(isDashboardUser());
-        this.isDashboardUser$.subscribe(x =>
-            console.log("is dashboard user: ", x));
     }
 
     onSubmit($event) {
-        console.log("login submit event: ", $event);
         this.store.dispatch(AuthActions.login($event));
     }
 }

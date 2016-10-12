@@ -14,6 +14,9 @@ import { User }        from '../models';
 var jwtDecode = require('jwt-decode');
 
 export interface AuthState {
+    // A generic failure status
+    failure: boolean;
+
     // Global authentication info
     token: string;
     // Decoded JWT
@@ -29,6 +32,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
+    failure: false,
     token: '',
     jwt: new JwtPayload,
     key: '',
@@ -51,6 +55,7 @@ export default function(state = initialState, action: Action): AuthState {
                 }, {});
 
             return {
+                failure: false,
                 token: token,
                 jwt: jwtDecode(token),
                 key: keys[0],
@@ -69,13 +74,13 @@ export default function(state = initialState, action: Action): AuthState {
         case AuthActions.LOGIN_DOMAIN_SUCCESS: {
             const user = { [state.key]: action.payload };
             // Append domain specific user profile to state.users
-            return Object.assign({},
-                state, { users: Object.assign({}, state.users, user) });
+            return Object.assign({}, state,
+                { failure: false, users: Object.assign({}, state.users, user) });
         }
 
         case AuthActions.LOGIN_DOMAIN_FAIL: {
             // Reset auth.key to default one
-            return Object.assign({}, state, { key: state.key[0] });
+            return Object.assign({}, state, { failure: true, key: state.keys[0] });
         }
 
         case AuthActions.LOGOUT: {
@@ -113,6 +118,11 @@ export function getAuthToken() {
 export function getAuthJwt() {
     return (state$: Observable<AuthState>) => state$
         .select(auth => auth.jwt);
+}
+
+export function hasAuthFail() {
+    return (state$: Observable<AuthState>) => state$
+        .map(auth => auth.failure).filter(f => f);
 }
 
 export function getDomainKeys() {

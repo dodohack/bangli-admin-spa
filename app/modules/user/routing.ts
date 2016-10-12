@@ -4,7 +4,12 @@ import { AdminGuard }   from '../../guard';
 import { UsersPage }    from './users.page';
 import { UserPage }     from './user.page';
 
+import { DomainsPage }  from './domains.page';
+
 const routes: Routes = [
+    
+    { path: 'domains',  component: DomainsPage },
+    
     {
         path: 'user',
         canActivate: [ AdminGuard ],

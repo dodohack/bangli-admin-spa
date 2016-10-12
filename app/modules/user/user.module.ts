@@ -17,6 +17,7 @@ import { UserList }               from './components/user.list';
 
 import { UserPage }  from './user.page';
 import { UsersPage } from './users.page';
+import { DomainsPage } from './domains.page';
 
 @NgModule({
     imports: [ SharedModule, routing ],
@@ -25,7 +26,7 @@ import { UsersPage } from './users.page';
         UserAuthProfileTab, UserPreferenceTab,
         UserBaseProfileTab, UserShippingProfileTab,
         UserBabyProfileTab, UserDomainsTab,
-        UserPage, UsersPage
+        UserPage, UsersPage, DomainsPage
     ]
 })
 export class UserModule {}
