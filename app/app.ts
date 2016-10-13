@@ -18,7 +18,9 @@ import { Alert }             from './models';
 import { Domain }            from './models';
 import { User }              from './models';
 import { JwtPayload }        from './models';
-import { Ping }              from './ping';
+
+import { Http }                  from '@angular/http';
+import { AUTH, APIS, API_PATH }  from './api';
 
 import { isDashboardUser, getCurDomainKey, getAuthToken,
     getDomains, getDomainKeys, getAuthJwt, hasAuthFail }   from './reducers';
@@ -29,6 +31,8 @@ import { isDashboardUser, getCurDomainKey, getAuthToken,
 })
 export class App implements OnInit, OnDestroy
 {
+    subPing: any;
+    subPing2: any;
     subFail: any;
     subDU: any;
     
@@ -49,7 +53,7 @@ export class App implements OnInit, OnDestroy
     constructor(private viewContainerRef: ViewContainerRef,
                 private store: Store<AppState>,
                 private router: Router,
-                private ping: Ping) { }
+                private http: Http) { }
 
     ngOnInit() {
         // Initialize current domain key
@@ -66,11 +70,15 @@ export class App implements OnInit, OnDestroy
         
         this.dispatchLoginDomain();
         this.redirectLoginDomain();
+        this.dispatchPing();
+
     }
 
     ngOnDestroy() {
         this.subDU.unsubscribe();
         this.subFail.unsubscribe();
+        this.subPing.unsubscribe();
+        this.subPing2.unsubscribe();
     }
 
     // Kick a first time login to application server
@@ -84,6 +92,14 @@ export class App implements OnInit, OnDestroy
     redirectLoginDomain() {
         this.subFail = this.fail$
             .subscribe(() => this.router.navigate(['/domains']));
+    }
+
+    // Ping app server in every 10 seconds
+    dispatchPing() {
+        this.subPing = Observable.interval(10000)
+            .subscribe(() => this.store.dispatch(AuthActions.pingDomains('huluwa_uk')));
+        //this.subPing2 = Observable.interval(11000)
+        //    .subscribe(() => this.store.dispatch(AuthActions.pingDomains('bangli_uk')));
     }
 
     logout() {

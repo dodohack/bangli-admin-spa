@@ -11,7 +11,6 @@ import { Observable }        from 'rxjs/Observable';
 
 import { EntitiesPage }      from '../base/entities.page';
 import { AppState }          from '../../reducers';
-import { Ping }              from '../../ping';
 import { ENTITY }            from '../../models';
 
 import { zh_CN } from '../../localization';
@@ -21,9 +20,8 @@ export class ProductsPage extends EntitiesPage
 {
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
-                protected router: Router,
-                protected ping: Ping) {
-        super(ENTITY.SHOP_PRODUCT, route, store, router, ping);
+                protected router: Router) {
+        super(ENTITY.SHOP_PRODUCT, route, store, router);
     }
 
     get zh() { return zh_CN.product; }

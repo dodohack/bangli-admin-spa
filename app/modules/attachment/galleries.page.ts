@@ -12,7 +12,6 @@ import { IMG_SERVER }        from '../../api';
 import { EntitiesPage }      from '../base/entities.page';
 import { ENTITY }            from '../../models';
 import { AppState }          from '../../reducers';
-import { Ping }              from '../../ping';
 import { zh_CN }             from '../../localization';
 
 @Component({ template: require('./galleries.page.html') })
@@ -27,9 +26,8 @@ export class GalleriesPage extends EntitiesPage
 
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
-                protected router: Router,
-                protected ping: Ping) {
-        super(ENTITY.ATTACHMENT, route, store, router, ping, true/* pageless */);
+                protected router: Router) {
+        super(ENTITY.ATTACHMENT, route, store, router, true/* pageless */);
 
         /*
         this.zone = new NgZone({ enableLongStackTrace: false });

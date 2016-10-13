@@ -26,7 +26,7 @@ export class UnauthGuard implements CanActivate {
 
     constructor(private store: Store<AppState>,
                 private router: Router) {
-        this.auth$ = this.store.select('auth');
+        this.auth$ = this.store.select(s => s.auth);
     }
 
     canActivate(route: ActivatedRouteSnapshot,
@@ -56,7 +56,7 @@ export class BaseGuard implements CanActivate {
     auth$: Observable<any>;
 
     constructor(private store: Store<AppState>, private router: Router) {
-        this.auth$ = this.store.select('auth');
+        this.auth$ = this.store.select(s => s.auth);
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {

@@ -64,6 +64,14 @@ export class AuthEffects extends BaseEffects {
         });
 
     /**
+     * Each app server returns the domainKey so we know which server is
+     * returned, we use the domainKey to update corresponding latency entry
+     */
+    @Effect() pingDomains$ = this.actions$.ofType(AuthActions.PING_DOMAINS)
+        .switchMap(action => this.pingDomains(action.payload)
+            .map(domainKey => AuthActions.pingDomainSuccess(domainKey)));
+
+    /**
      * TODO:
      * 1. Redirect user to page that will send out an register request
      *    to application server.
@@ -109,5 +117,35 @@ export class AuthEffects extends BaseEffects {
 
         // Login user into specific application domain, user profile returned
         return this.http.get(api).map(res => res.json());
+    }
+
+    /**
+     * Test connectivity of each available domain, the server returns key as well
+     */
+    private pingDomains(domainKey: string): Observable<any> {
+        //for (let k in this.keys) {
+        //    let api = APIS[k] + API_PATH.ping + '?key=' + k;
+        //    this.http.get(api).map(res => res.json());
+        //}
+        /*
+        if (domainKey)
+            return this.http.get(APIS[domainKey]+ API_PATH.ping + '?key=' + domainKey)
+                .map(res => res.json());
+        else
+            return this.http.get(APIS.bangli_uk + API_PATH.ping + '?key=bangli_uk')
+                .map(res => res.json());
+        */
+
+        // mergeDelayError postpone the errors to the end so it will not cancel
+        // the previous requests, but it is currently not defined yet
+        //return Observable.mergeDelayError(
+        return Observable.merge(
+            this.http.get(APIS.huluwa_uk + API_PATH.ping + '?key=huluwa_uk')
+                .map(res => res.json()),
+            this.http.get(APIS.bangli_uk + API_PATH.ping + '?key=bangli_uk')
+                .map(res => res.json()),
+            //this.http.get(APIS.bangli_us + API_PATH.ping + '?key=bangli_us')
+            //    .map(res => res.json()),
+        );
     }
 }

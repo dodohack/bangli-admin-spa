@@ -12,7 +12,6 @@ import { Observable }        from 'rxjs/Observable';
 import { EntitiesPage }      from '../base/entities.page';
 import { ENTITY }            from '../../models';
 import { AppState }          from '../../reducers';
-import { Ping }              from '../../ping';
 import { zh_CN }             from '../../localization';
 import { getTopicStates }    from '../../reducers';
 
@@ -23,9 +22,8 @@ export class TopicsPage extends EntitiesPage
     
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
-                protected router: Router,
-                protected ping: Ping) {
-        super(ENTITY.CMS_TOPIC, route, store, router, ping);
+                protected router: Router) {
+        super(ENTITY.CMS_TOPIC, route, store, router);
         
         this.topicStates$ = this.store.let(getTopicStates());
     }

@@ -14,7 +14,6 @@ import { EntitiesPage }      from '../base/entities.page';
 import { ENTITY }            from '../../models';
 import { AppState }          from '../../reducers';
 import { GMT }               from '../../helper';
-import { Ping }              from '../../ping';
 import { zh_CN }             from '../../localization';
 
 @Component({ template: require('./ads.page.html') })
@@ -27,9 +26,8 @@ export class AdsPage extends EntitiesPage
     
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
-                protected router: Router,
-                protected ping: Ping) {
-        super(ENTITY.ADVERTISE, route, store, router, ping);
+                protected router: Router) {
+        super(ENTITY.ADVERTISE, route, store, router);
     }
 
     /**

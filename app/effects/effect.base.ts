@@ -27,6 +27,13 @@ export class BaseEffects {
         return this._auth.jwt;
     }
 
+    // Get all available domain keys
+    get keys() {
+        if (this._auth) return this._auth.keys;
+        this.initAuth();
+        return this._auth.keys;
+    }
+
     get headers() {
         return new Headers({
             'Authorization': 'Bearer' + this.token,

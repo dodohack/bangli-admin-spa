@@ -16,7 +16,6 @@ import { Category, Tag, Topic}  from '../../models';
 import { Activity }             from '../../models';
 import { AppState }             from '../../reducers';
 import { EntityActions }        from '../../actions';
-import { Ping }                 from '../../ping';
 
 /**
  * TODO: Reference how ngrx-example-app (the books) does, especially for the
@@ -85,7 +84,6 @@ export class EntitiesPage implements OnInit, OnDestroy
                 protected route: ActivatedRoute,
                 protected store: Store<AppState>,
                 protected router: Router,
-                protected ping: Ping,
                 protected pageless: boolean = false) {}
 
     ngOnInit() {

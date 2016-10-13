@@ -27,6 +27,8 @@ export interface AuthState {
     keys: string[];
     // Available domains to current user
     domains: { [key: string]: Domain };
+    // Domain connectivities
+    latencies: { [key: string]: {start: number, end: number}};
     // Domain specific user info, index by domain key
     users: { [key: string]: User };
 }
@@ -38,6 +40,7 @@ const initialState: AuthState = {
     key: '',
     keys: [],
     domains: {},
+    latencies: {},
     users: {}
 };
 
@@ -54,6 +57,11 @@ export default function(state = initialState, action: Action): AuthState {
                     return Object.assign(domains, { [domain.key]: domain });
                 }, {});
 
+            const latencyEntities = domains.reduce(
+                (latencies: { [key: string]: {start: number, end: number}}, domain: Domain) => {
+                    return Object.assign(latencies, { [domain.key]: {start: 0, end: 0} });
+                }, {});
+
             return {
                 failure: false,
                 token: token,
@@ -61,8 +69,36 @@ export default function(state = initialState, action: Action): AuthState {
                 key: keys[0],
                 keys: [...keys],
                 domains: Object.assign({}, domainEntities),
+                latencies: latencyEntities,
                 users: state.users
             };
+        }
+
+        // Set the latencies start to current msecond for all domains
+        // and set end to the same as start, so we got the latency by doing
+        // end - start
+        case AuthActions.PING_DOMAINS: {
+            let timestamp = performance.now();
+
+            const latencyEntities = state.keys.reduce(
+                (latencies: {[key: string]: {start: number, end: number}}, key: string) => {
+                    return Object.assign(latencies, {[key]: { start: timestamp, end: timestamp }});
+            }, {});
+
+            return Object.assign({}, state, {latencies: latencyEntities});
+        }
+
+        // Update latencies.'end' for given domain
+        case AuthActions.PING_DOMAIN_SUCCESS: {
+            console.log("ping domain success, payload: ", action.payload);
+            let key = action.payload;
+            let oldLatency = state.latencies[key];
+
+            let timestamp = performance.now();
+            let latencies = Object.assign({}, state.latencies,
+                {[key]: {start: oldLatency.start, end: timestamp}});
+
+            return Object.assign({}, state, {latencies: latencies});
         }
 
         case AuthActions.LOGIN_DOMAIN: {

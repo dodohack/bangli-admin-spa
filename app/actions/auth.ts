@@ -69,6 +69,23 @@ export class AuthActions {
         };
     }
 
+    // Test domain connectivity
+    static PING_DOMAINS = '[Auth] Ping Domains';
+    static pingDomains(domainKey: string): Action {
+        return {
+            type: AuthActions.PING_DOMAINS,
+            payload: domainKey
+        };
+    }
+
+    static PING_DOMAIN_SUCCESS = '[Auth] Ping Domains Success';
+    static pingDomainSuccess(key: string): Action {
+        return {
+            type: AuthActions.PING_DOMAIN_SUCCESS,
+            payload: key
+        };
+    }
+
     /* Login user into domain by auth.key if domain_key is not specified */
     static LOGIN_DOMAIN = '[Auth] Login Domain';
     static loginDomain(key: string): Action {
