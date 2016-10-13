@@ -3,7 +3,7 @@
  */
 import { Component, Input } from '@angular/core';
 
-import { USER_GENDERS, User } from '../../../models';
+import { USER_GENDERS, User, UserRole } from '../../../models';
 
 @Component({
     selector: 'user-base-profile',
@@ -14,7 +14,7 @@ export class UserBaseProfileTab
     @Input() isMyProfile: boolean;
     @Input() isSuperUser: boolean;
     @Input() user: User;
-    
-    get userRoles() { return ['a', 'b', 'c']; /*return this.userService.roles;*/ }
+    @Input() roles: UserRole[];
+
     get genders() { return USER_GENDERS; }
 }

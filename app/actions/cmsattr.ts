@@ -15,7 +15,7 @@ export class CmsAttrActions {
     static loadAll(): Action {
         return { type: CmsAttrActions.LOAD_ALL };
     }
-
+    
     static LOAD_ALL_SUCCESS = '[CmsAttr] Load All Success';
     static loadAllSuccess(attr: CmsAttrsState): Action {
         return {

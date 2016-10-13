@@ -12,6 +12,9 @@ import { Observable }        from 'rxjs/Observable';
 import { BaseEffects }       from './effects/effect.base';
 import { AppState }          from './reducers';
 import { PreferenceState }   from './reducers/preference';
+import { CmsAttrActions }    from './actions';
+import { ShopAttrActions }   from './actions';
+import { SysAttrActions }    from './actions';
 import { AuthActions }       from './actions';
 import { PreferenceActions } from './actions';
 import { Alert }             from './models';
@@ -30,6 +33,7 @@ export class App implements OnInit, OnDestroy
 {
     subPing: any;
     subFail: any;
+    subKey: any;
     subDU: any;
     
     // Current active domain key.
@@ -67,8 +71,8 @@ export class App implements OnInit, OnDestroy
         
         this.dispatchLoginDomain();
         this.redirectLoginDomain();
+        this.dispatchLoadAttrs();
         this.dispatchPing();
-
     }
 
     ngOnDestroy() {
@@ -88,6 +92,16 @@ export class App implements OnInit, OnDestroy
     redirectLoginDomain() {
         this.subFail = this.fail$
             .subscribe(() => this.router.navigate(['/domains']));
+    }
+
+    // Load domain specific cms, shop, bbs and system attributes
+    dispatchLoadAttrs() {
+        this.subKey = this.curDomainKey$.subscribe(key => {
+            if (key === 'huluwa_uk')
+                this.store.dispatch(ShopAttrActions.loadAll());
+            this.store.dispatch(SysAttrActions.loadAll());
+            this.store.dispatch(CmsAttrActions.loadAll());
+        });
     }
 
     // Ping app server in every 5 seconds

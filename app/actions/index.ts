@@ -5,6 +5,7 @@ import { EntityActions }     from './entity';
 import { PreferenceActions } from './preference';
 import { CmsAttrActions }    from './cmsattr';
 import { ShopAttrActions }   from './shopattr';
+import { SysAttrActions }    from './sysattr';
 
 export {
     AlertActions,
@@ -13,7 +14,8 @@ export {
     EntityActions,
     PreferenceActions,
     CmsAttrActions,
-    ShopAttrActions
+    ShopAttrActions,
+    SysAttrActions,
 };
 
 export default [
@@ -23,5 +25,6 @@ export default [
     EntityActions,
     PreferenceActions,
     CmsAttrActions,
-    ShopAttrActions
+    ShopAttrActions,
+    SysAttrActions,
 ];

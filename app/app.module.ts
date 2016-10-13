@@ -22,12 +22,13 @@ import { Sidebar }       from './modules/directives/sidebar';
 import { Topbar }        from './modules/directives/topbar';
 
 /* Import the default export from these files */
-import reducer            from './reducers';
-import { AuthEffects }    from './effects';
-import { UserEffects }    from './effects';
-import { EntityEffects }  from './effects';
-import { CmsAttrEffects } from './effects';
+import reducer             from './reducers';
+import { AuthEffects }     from './effects';
+import { UserEffects }     from './effects';
+import { EntityEffects }   from './effects';
+import { CmsAttrEffects }  from './effects';
 import { ShopAttrEffects } from './effects';
+import { SysAttrEffects }  from './effects';
 
 import { SharedModule }    from './modules/directives/shared.module';
 import { AuthModule }      from './modules/auth/auth.module';
@@ -80,6 +81,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         EffectsModule.run(EntityEffects),
         EffectsModule.run(CmsAttrEffects),
         EffectsModule.run(ShopAttrEffects),
+        EffectsModule.run(SysAttrEffects),
         StoreDevtoolsModule.instrumentStore({
             monitor: useLogMonitor({
                 visible: true,

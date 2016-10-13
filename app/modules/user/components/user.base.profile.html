@@ -8,7 +8,7 @@
             <label>用户角色</label>
             <select name="role_id" class="form-control"
                     [(ngModel)]="user.role_id" [disabled]="!isSuperUser">
-                <option *ngFor="let role of userRoles" [value]="role.id">{{ role.display_name }}</option>
+                <option *ngFor="let role of roles" [value]="role.id">{{ role.display_name }}</option>
             </select>
         </div>
 

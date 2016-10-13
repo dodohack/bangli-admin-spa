@@ -18,10 +18,11 @@ import { PreferenceActions } from '../../actions';
 import { AuthState }         from '../../reducers/auth';
 import { UsersState }        from '../../reducers/users';
 import { PreferenceState }   from '../../reducers/preference';
-import { User }              from '../../models';
+import { User, UserRole }    from '../../models';
 import { JwtPayload }        from '../../models/auth';
 
-import { isMyProfile, getCurUser, hasSuperUserRole }  from '../../reducers';
+import { isMyProfile, getCurUser, hasSuperUserRole,
+    getUserRoles }  from '../../reducers';
 
 @Component({ template: require('./user.page.html') })
 export class UserPage implements OnInit, OnDestroy
@@ -38,6 +39,7 @@ export class UserPage implements OnInit, OnDestroy
     subQParams: any;
 
     user$:        Observable<User>;
+    roles$:       Observable<UserRole[]>;
     isSuperUser$: Observable<boolean>;
     isMyProfile$: Observable<boolean>;
     pref$:        Observable<PreferenceState>;
@@ -48,6 +50,7 @@ export class UserPage implements OnInit, OnDestroy
 
     ngOnInit() {
         this.user$        = this.store.let(getCurUser());
+        this.roles$       = this.store.let(getUserRoles());
         this.isSuperUser$ = this.store.let(hasSuperUserRole());
         this.isMyProfile$ = this.store.let(isMyProfile());
         this.pref$        = this.store.select<PreferenceState>(s => s.pref);

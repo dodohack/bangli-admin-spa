@@ -12,7 +12,7 @@ export const USER_GENDERS = [
     {key: 'U', display_name: '火星人'}
 ];
 
-interface UserRole {
+export interface UserRole {
     id: number;
     name: string;
     display_name: string;

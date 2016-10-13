@@ -1,9 +1,10 @@
-import { AuthEffects }    from './auth';
-import { UserEffects }    from './user';
+import { AuthEffects }     from './auth';
+import { UserEffects }     from './user';
 
-import { EntityEffects }  from './entity';
-import { CmsAttrEffects } from './cmsattr';
+import { EntityEffects }   from './entity';
+import { CmsAttrEffects }  from './cmsattr';
 import { ShopAttrEffects } from './shopattr';
+import { SysAttrEffects }  from './sysattr';
 
 export {
     AuthEffects,
@@ -11,6 +12,7 @@ export {
     EntityEffects,
     CmsAttrEffects,
     ShopAttrEffects,
+    SysAttrEffects,
 };
 
 export default [
@@ -18,5 +20,6 @@ export default [
     UserEffects,
     EntityEffects,
     CmsAttrEffects,
-    ShopAttrEffects
+    ShopAttrEffects,
+    SysAttrEffects,
 ];

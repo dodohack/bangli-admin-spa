@@ -46,6 +46,7 @@ import usersReducer, * as fromUsers       from './users';
 import prefReducer, * as fromPref         from './preference';
 import cmsReducer, * as fromCms           from './cmsattrs';
 import shopReducer, * as fromShop         from './shopattrs';
+import sysReducer, * as fromSys           from './sysattrs';
 
 import * as fromEntities from './entities';
 import { EntitiesState } from './entities';
@@ -79,6 +80,7 @@ export interface AppState {
     pref:     fromPref.PreferenceState;
     cms:      fromCms.CmsAttrsState;
     shop:     fromShop.ShopAttrsState;
+    sys:      fromSys.SysAttrsState;
     posts:    EntitiesState;
     pages:    EntitiesState;
     deals:    EntitiesState;
@@ -117,6 +119,7 @@ export default compose(
     pref:     prefReducer,
     cms:      cmsReducer,
     shop:     shopReducer,
+    sys:      sysReducer,
     posts:    postsReducer,
     pages:    pagesReducer,
     deals:    dealsReducer,
@@ -363,4 +366,16 @@ export function getCurEntity(etype: string) {
 export function getCurEntityContent(etype: string) {
     return compose(fromEntities.getContent(),
         fromEntities.getCurEntity(), getEntitiesState(etype));
+}
+
+
+/*****************************************************************************
+ * System
+ *****************************************************************************/
+export function getSysAttrsState() {
+    return (state$: Observable<AppState>) => state$.select(s => s.sys);
+}
+
+export function getUserRoles() {
+    return compose(fromSys.getUserRoles(), getSysAttrsState());
 }

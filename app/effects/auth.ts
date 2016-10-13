@@ -10,13 +10,8 @@ import { Observable }                      from 'rxjs/Observable';
 import { BaseEffects }                from './effect.base';
 import { AUTH, APIS, API_PATH }       from '../api';
 import { AuthActions }                from '../actions';
-import { CmsAttrActions }             from '../actions';
-import { ShopAttrActions }            from '../actions';
 import { User }                       from '../models';
 import { AlertActions }               from '../actions';
-import { AuthState }                  from '../reducers/auth';
-
-var jwtDecode = require('jwt-decode');
 
 @Injectable()
 export class AuthEffects extends BaseEffects {
@@ -58,15 +53,6 @@ export class AuthEffects extends BaseEffects {
             .map(user => AuthActions.loginDomainSuccess(user))
             .catch(() => Observable.of(AuthActions.loginDomainFail()))
         );
-
-    /**
-     * Step 3. Preload domain specific cms/shop attributes data
-     */
-    @Effect() cacheAttr$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN_SUCCESS)
-        .map(() => {
-            if (this.key === 'huluwa_uk') ShopAttrActions.loadAll();
-            return CmsAttrActions.loadAll();
-        });
 
     /**
      * Each app server returns the domainKey so we know which server is
@@ -133,8 +119,6 @@ export class AuthEffects extends BaseEffects {
         if (this.keyIndex >= this.keys.length) this.keyIndex = 0;
 
         let key = this.keys[this.keyIndex++];
-
-        console.log("Ping server: ", key, ", idx: ", this.keyIndex);
 
         return this.http.get(APIS[key]+ API_PATH.ping + '?key=' + key)
             .map(res => res.json());

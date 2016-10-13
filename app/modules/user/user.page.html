@@ -13,7 +13,8 @@ my profile.
             <accordion>
                 <user-base-profile [user]="user$ | async"
                                    [isMyProfile]="isMyProfile$ | async"
-                                   [isSuperUser]="isSuperUser$ | async">
+                                   [isSuperUser]="isSuperUser$ | async"
+                                   [roles]="roles$ | async">
                 </user-base-profile>
 
                 <user-shop-profile [user]="user$ | async"
