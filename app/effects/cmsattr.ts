@@ -6,7 +6,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import { Effect, Actions }               from '@ngrx/effects';
 import { Observable }                    from 'rxjs/Observable';
 
-import { BaseEffects }      from './effect.base';
+import { CacheSingleton }   from './cache.singleton';
 import { APIS, API_PATH }   from '../api';
 import { CmsAttrsState }    from '../reducers/cmsattrs';
 import { CmsAttrActions }   from '../actions';
@@ -14,15 +14,22 @@ import { Tag, Category }    from '../models';
 import { GeoLocation }      from "../models";
 
 @Injectable()
-export class CmsAttrEffects extends BaseEffects {
+export class CmsAttrEffects {
+    
+    cache = CacheSingleton.getInstance();
 
     constructor(private actions$: Actions,
-                private http: Http) {
-        super();
+                private http: Http) { }
+
+    get headers() {
+        return new Headers({
+            'Authorization': 'Bearer' + this.cache.token,
+            'Content-Type': 'application/json'
+        });
     }
 
     @Effect() loadAll$ = this.actions$.ofType(CmsAttrActions.LOAD_ALL)
-        .switchMap(() => this.getAll()
+        .switchMap(action => this.getAll(action.payload)
             .map(attrs => CmsAttrActions.loadAllSuccess(attrs))
             .catch(() => Observable.of(CmsAttrActions.loadAllFail())));
 
@@ -74,9 +81,12 @@ export class CmsAttrEffects extends BaseEffects {
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
     
-    private getAll(): Observable<CmsAttrsState> {
-        let api = APIS[this.key] + API_PATH.cms_attrs + '?token=' + this.token;
-        //console.log("***CMS_ATTRS API: ", api);
+    private getAll(key: string = undefined): Observable<CmsAttrsState> {
+        // Cache the key for current session scope
+        if (key) this.cache.key = key;
+        
+        let api = APIS[this.cache.key] + API_PATH.cms_attrs + 
+            '?token=' + this.cache.token;
         return this.http.get(api).map(res => res.json());
     }
 
@@ -108,7 +118,7 @@ export class CmsAttrEffects extends BaseEffects {
         let body = JSON.stringify(tax);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = APIS[this.key] + apiPath + '/' + tax.id;
+        let api = APIS[this.cache.key] + apiPath + '/' + tax.id;
         return this.http.put(api, body, options).map(res => res.json());
     }
 
@@ -140,7 +150,7 @@ export class CmsAttrEffects extends BaseEffects {
         let body = JSON.stringify(tax);
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = APIS[this.key] + apiPath;
+        let api = APIS[this.cache.key] + apiPath;
         return this.http.post(api, body, options).map(res => res.json());
     }
 
@@ -171,7 +181,7 @@ export class CmsAttrEffects extends BaseEffects {
     private deleteTax(tax: any, apiPath: string) {
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = APIS[this.key] + apiPath + '/' + tax.id;
+        let api = APIS[this.cache.key] + apiPath + '/' + tax.id;
         return this.http.delete(api, options).map(res => res.json());
     }
 }

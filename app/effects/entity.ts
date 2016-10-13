@@ -8,7 +8,7 @@ import { Http, Headers, RequestOptions }  from '@angular/http';
 import { Effect, Actions }           from '@ngrx/effects';
 import { Observable }                from 'rxjs/Observable';
 
-import { BaseEffects }      from './effect.base';
+import { CacheSingleton }  from './cache.singleton';
 import { APIS, API_PATH }  from '../api';
 import { EntityActions }   from '../actions';
 import { AlertActions }    from '../actions';
@@ -17,11 +17,20 @@ import { EntityParams }    from '../models';
 
 
 @Injectable()
-export class EntityEffects extends BaseEffects {
+export class EntityEffects {
+    cache = CacheSingleton.getInstance();
+    
     constructor (private actions$: Actions,
-                 private http: Http) {
-        super();
+                 private http: Http) { }
+
+
+    get headers() {
+        return new Headers({
+            'Authorization': 'Bearer' + this.cache.token,
+            'Content-Type': 'application/json'
+        });
     }
+
 
     /**************************************************************************
      * Entity
@@ -83,54 +92,54 @@ export class EntityEffects extends BaseEffects {
         if (!isBatch) {
             switch (t) {
                 case ENTITY.CMS_POST:
-                    return APIS[this.key] + API_PATH.cms_posts;
+                    return APIS[this.cache.key] + API_PATH.cms_posts;
                 case ENTITY.CMS_TOPIC:
-                    return APIS[this.key] + API_PATH.cms_topics;
+                    return APIS[this.cache.key] + API_PATH.cms_topics;
                 case ENTITY.CMS_DEAL:
-                    return APIS[this.key] + API_PATH.cms_deals;
+                    return APIS[this.cache.key] + API_PATH.cms_deals;
                 case ENTITY.CMS_PAGE:
-                    return APIS[this.key] + API_PATH.cms_pages;
+                    return APIS[this.cache.key] + API_PATH.cms_pages;
                 case ENTITY.ADVERTISE:
-                    return APIS[this.key] + API_PATH.advertises;
+                    return APIS[this.cache.key] + API_PATH.advertises;
                 case ENTITY.NEWSLETTER:
-                    return APIS[this.key] + API_PATH.newsletter_posts;
+                    return APIS[this.cache.key] + API_PATH.newsletter_posts;
                 case ENTITY.ATTACHMENT:
-                    return APIS[this.key] + API_PATH.attachments;
+                    return APIS[this.cache.key] + API_PATH.attachments;
                 case ENTITY.COMMENT:
-                    return APIS[this.key] + API_PATH.comments;
+                    return APIS[this.cache.key] + API_PATH.comments;
                 case ENTITY.SHOP_ORDER:
-                    return APIS[this.key] + API_PATH.shop_orders;
+                    return APIS[this.cache.key] + API_PATH.shop_orders;
                 case ENTITY.SHOP_PRODUCT:
-                    return APIS[this.key] + API_PATH.shop_products;
+                    return APIS[this.cache.key] + API_PATH.shop_products;
                 case ENTITY.SHOP_VOUCHER:
-                    return APIS[this.key] + API_PATH.shop_vouchers;
+                    return APIS[this.cache.key] + API_PATH.shop_vouchers;
                 default:
                     return null;
             }
         } else {
             switch (t) {
                 case ENTITY.CMS_POST:
-                    return APIS[this.key] + API_PATH.cms_posts_batch;
+                    return APIS[this.cache.key] + API_PATH.cms_posts_batch;
                 case ENTITY.CMS_TOPIC:
-                    return APIS[this.key] + API_PATH.cms_topics_batch;
+                    return APIS[this.cache.key] + API_PATH.cms_topics_batch;
                 case ENTITY.CMS_DEAL:
-                    return APIS[this.key] + API_PATH.cms_deals_batch;
+                    return APIS[this.cache.key] + API_PATH.cms_deals_batch;
                 case ENTITY.CMS_PAGE:
-                    return APIS[this.key] + API_PATH.cms_pages_batch;
+                    return APIS[this.cache.key] + API_PATH.cms_pages_batch;
                 case ENTITY.ADVERTISE:
-                    return APIS[this.key] + API_PATH.advertises_batch;
+                    return APIS[this.cache.key] + API_PATH.advertises_batch;
                 case ENTITY.NEWSLETTER:
-                    return APIS[this.key] + API_PATH.newsletter_posts_batch;
+                    return APIS[this.cache.key] + API_PATH.newsletter_posts_batch;
                 case ENTITY.ATTACHMENT:
-                    return APIS[this.key] + API_PATH.attachments_batch;
+                    return APIS[this.cache.key] + API_PATH.attachments_batch;
                 case ENTITY.COMMENT:
-                    return APIS[this.key] + API_PATH.comments_batch;
+                    return APIS[this.cache.key] + API_PATH.comments_batch;
                 case ENTITY.SHOP_ORDER:
-                    return APIS[this.key] + API_PATH.shop_orders_batch;
+                    return APIS[this.cache.key] + API_PATH.shop_orders_batch;
                 case ENTITY.SHOP_PRODUCT:
-                    return APIS[this.key] + API_PATH.shop_products_batch;
+                    return APIS[this.cache.key] + API_PATH.shop_products_batch;
                 case ENTITY.SHOP_VOUCHER:
-                    return APIS[this.key] + API_PATH.shop_vouchers_batch;
+                    return APIS[this.cache.key] + API_PATH.shop_vouchers_batch;
                 default:
                     return null;
             }
@@ -145,7 +154,7 @@ export class EntityEffects extends BaseEffects {
      */
     protected getEntity(t: string, id: string): Observable<any> {
         let api = this.getApi(t, false) +
-            '/' + id + '?etype=' + t + '&token=' + this.token;
+            '/' + id + '?etype=' + t + '&token=' + this.cache.token;
         return this.http.get(api).map(res => res.json());
     }
 
@@ -211,7 +220,7 @@ export class EntityEffects extends BaseEffects {
             + params.toQueryString()
             + '&etype=' + t
             + '&per_page=' + perPage
-            + '&token=' + this.token;
+            + '&token=' + this.cache.token;
 
         console.log("LOAD ENTITIES FROM URL: ", api);
 

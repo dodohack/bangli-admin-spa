@@ -53,6 +53,7 @@ my profile.
 
     <tab heading="站点权限" [active]="domain" *ngIf="(isMyProfile$ | async) || (isSuperUser$ | async)">
         <user-domains-tab [user]="user$ | async"
+                          [domains]="domains$ | async"
                           [isSuperUser]="isSuperUser$ | async"
                           (save)="saveDomains($event)">
         </user-domains-tab>

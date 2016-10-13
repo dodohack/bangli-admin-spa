@@ -15,9 +15,7 @@ import { Domain  }         from '../../../models'
 })
 export class UserDomainsTab
 {
-    @Input() _user: User;
-    @Input() set user(value) { this._user = Object.assign({}, value); }
-    get user() { return this._user; }
+    @Input() user: User;
 
     @Input() domains: Domain[];
 

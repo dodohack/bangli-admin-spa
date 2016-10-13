@@ -25,11 +25,7 @@ export class Topbar {
     @Output() loginDomain = new EventEmitter();
 
     getLatency(key) {
-        if (this.isOffline(key)) {
-            return '离线';
-        } else {
-            return this.latencies[key].delta + 'ms';
-        }
+        return this.latencies[key].delta + 'ms';
     }
     
     isOffline(key) {

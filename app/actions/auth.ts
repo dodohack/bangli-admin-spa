@@ -90,7 +90,7 @@ export class AuthActions {
 
     /* Login user into domain by auth.key if domain_key is not specified */
     static LOGIN_DOMAIN = '[Auth] Login Domain';
-    static loginDomain(key: string): Action {
+    static loginDomain(key: string = undefined): Action {
         return {
             type: AuthActions.LOGIN_DOMAIN,
             payload: key

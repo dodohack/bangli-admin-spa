@@ -9,7 +9,6 @@ import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
-import { BaseEffects }       from './effects/effect.base';
 import { AppState }          from './reducers';
 import { PreferenceState }   from './reducers/preference';
 import { CmsAttrActions }    from './actions';
@@ -35,9 +34,8 @@ export class App implements OnInit, OnDestroy
     subFail: any;
     subKey: any;
     subDU: any;
-    
-    // Current active domain key.
-    curDomainKey: string;
+
+    isLoggedIn: boolean;
 
     /* TODO: This array will grow large, need to clean it periodically */
     alerts$: Observable<Alert[]>;
@@ -56,9 +54,6 @@ export class App implements OnInit, OnDestroy
                 private router: Router) { }
 
     ngOnInit() {
-        // Initialize current domain key
-        this.curDomainKey = BaseEffects.getDefaultKey();
-
         this.alerts$       = this.store.select<Alert[]>('alerts');
         this.curDomainKey$ = this.store.let(getCurDomainKey());
         this.domainKeys$   = this.store.let(getDomainKeys());
@@ -69,9 +64,8 @@ export class App implements OnInit, OnDestroy
         this.latencies$    = this.store.let(getDomainLatencies());
         this.isDashboardUser$ = this.store.let(isDashboardUser());
         
-        this.dispatchLoginDomain();
+        this.listenOnDashboardUser();
         this.redirectLoginDomain();
-        this.dispatchLoadAttrs();
         this.dispatchPing();
     }
 
@@ -81,42 +75,43 @@ export class App implements OnInit, OnDestroy
         this.subPing.unsubscribe();
     }
 
-    // Kick a first time login to application server
-    dispatchLoginDomain() {
-        this.subDU = this.isDashboardUser$.filter(x => x === true).take(1)
-            .subscribe(() => this.store
-                .dispatch(AuthActions.loginDomain(this.curDomainKey)));
+    // Switch state between login and logout state
+    listenOnDashboardUser() {
+        this.subDU = this.isDashboardUser$.subscribe(isDU => {
+            if (isDU) {
+                console.log("Dashboard user is true!");
+                this.isLoggedIn = true;
+                this.loginDomain();
+            } else {
+                console.log("Dashboard user is false!");
+                this.isLoggedIn = false;
+                this.router.navigate(['/login']);
+            }
+        });
     }
 
+    // TODO: This should be removed later
     // Redirect user to a guide page if failed to login to app server.
     redirectLoginDomain() {
         this.subFail = this.fail$
             .subscribe(() => this.router.navigate(['/domains']));
     }
 
-    // Load domain specific cms, shop, bbs and system attributes
-    dispatchLoadAttrs() {
-        this.subKey = this.curDomainKey$.subscribe(key => {
-            if (key === 'huluwa_uk')
-                this.store.dispatch(ShopAttrActions.loadAll());
-            this.store.dispatch(SysAttrActions.loadAll());
-            this.store.dispatch(CmsAttrActions.loadAll());
-        });
-    }
-
     // Ping app server in every 5 seconds
     dispatchPing() {
         this.subPing = Observable.interval(5000)
-            .subscribe(() => this.store.dispatch(AuthActions.pingDomains()));
+            .subscribe(() => {
+                if (this.isLoggedIn)
+                    this.store.dispatch(AuthActions.pingDomains());
+            });
     }
 
-    logout() {
-        this.store.dispatch(AuthActions.logout());
-        this.router.navigate(['/login']);
-    }
+    logout() {  this.store.dispatch(AuthActions.logout());  }
 
-    loginDomain($event) {
-        this.curDomainKey = $event;
+    loginDomain($event: string = undefined) {
+        this.store.dispatch(ShopAttrActions.loadAll($event));
+        this.store.dispatch(SysAttrActions.loadAll($event));
+        this.store.dispatch(CmsAttrActions.loadAll($event));
         this.store.dispatch(AuthActions.loginDomain($event));
         this.router.navigate(['/']);
     }

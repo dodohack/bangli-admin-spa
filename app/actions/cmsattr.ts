@@ -12,8 +12,11 @@ import { CmsAttrsState }   from '../reducers/cmsattrs';
 
 export class CmsAttrActions {
     static LOAD_ALL = '[CmsAttr] Load All';
-    static loadAll(): Action {
-        return { type: CmsAttrActions.LOAD_ALL };
+    static loadAll(key: string = undefined): Action {
+        return { 
+            type: CmsAttrActions.LOAD_ALL,
+            payload: key,
+        };
     }
     
     static LOAD_ALL_SUCCESS = '[CmsAttr] Load All Success';

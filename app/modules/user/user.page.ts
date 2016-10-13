@@ -22,7 +22,7 @@ import { User, UserRole }    from '../../models';
 import { JwtPayload }        from '../../models/auth';
 
 import { isMyProfile, getCurUser, hasSuperUserRole,
-    getUserRoles }  from '../../reducers';
+    getUserRoles, getDomainKeys, getDomains }  from '../../reducers';
 
 @Component({ template: require('./user.page.html') })
 export class UserPage implements OnInit, OnDestroy
@@ -36,35 +36,33 @@ export class UserPage implements OnInit, OnDestroy
     subAuth: any;
     subPref: any;
     subParams: any;
-    subQParams: any;
 
     user$:        Observable<User>;
-    roles$:       Observable<UserRole[]>;
     isSuperUser$: Observable<boolean>;
     isMyProfile$: Observable<boolean>;
     pref$:        Observable<PreferenceState>;
-
+    roles$:       Observable<UserRole[]>;
+    domainKeys$:  Observable<string[]>;
+    domains$:     Observable<any>;
+    
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) {
     }
 
     ngOnInit() {
         this.user$        = this.store.let(getCurUser());
-        this.roles$       = this.store.let(getUserRoles());
         this.isSuperUser$ = this.store.let(hasSuperUserRole());
         this.isMyProfile$ = this.store.let(isMyProfile());
         this.pref$        = this.store.select<PreferenceState>(s => s.pref);
-
-        // Domain switch parameter is passed in from this
-        this.subQParams = this.route.queryParams.subscribe(params => {
-            if (params['domain']) this.domain = params['domain'];
-        });
+        this.roles$       = this.store.let(getUserRoles());
+        this.domainKeys$  = this.store.let(getDomainKeys());
+        this.domains      = this.store.let(getDomains());
+        
 
         this.dispatchLoadUser();
     }
 
     ngOnDestroy() {
-        this.subQParams.unsubscribe();
         this.subParams.unsubscribe();
     }
 

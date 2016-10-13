@@ -13,6 +13,10 @@ import { User }        from '../models';
 
 var jwtDecode = require('jwt-decode');
 
+class latencyType {
+    [key: string]: {start: number, end: number, delta: number}
+};
+
 export interface AuthState {
     // A generic failure status
     failure: boolean;
@@ -28,7 +32,7 @@ export interface AuthState {
     // Available domains to current user
     domains: { [key: string]: Domain };
     // Domain connectivities
-    latencies: { [key: string]: {start: number, end: number, delta: number}};
+    latencies: latencyType;
     // Domain specific user info, index by domain key
     users: { [key: string]: User };
 }
@@ -58,8 +62,9 @@ export default function(state = initialState, action: Action): AuthState {
                 }, {});
 
             const latencyEntities = domains.reduce(
-                (latencies: { [key: string]: {start: number, end: number, delta: number}}, domain: Domain) => {
-                    return Object.assign(latencies, { [domain.key]: {start: 0, end: 0, delta: 0} });
+                (latencies: latencyType, domain: Domain) => {
+                    return Object.assign(latencies, {
+                        [domain.key]: {start: 0, end: 0, delta: 0} });
                 }, {});
 
             return {
@@ -81,10 +86,11 @@ export default function(state = initialState, action: Action): AuthState {
             let timestamp = Math.round(performance.now());
 
             const latencyEntities = state.keys.reduce(
-                (latencies: {[key: string]: {start: number, end: number, delta: number}}, key: string) => {
+                (latencies: latencyType, key: string) => {
                     let oldLatency = state.latencies[key];
                     return Object.assign(latencies, 
-                        {[key]: { start: timestamp, end: timestamp, delta: oldLatency.delta}});
+                        {[key]: { start: timestamp, end: timestamp,
+                            delta: oldLatency.delta }});
             }, {});
 
             return Object.assign({}, state, {latencies: latencyEntities});
@@ -111,7 +117,10 @@ export default function(state = initialState, action: Action): AuthState {
         case AuthActions.LOGIN_DOMAIN: {
             // Record latest domain key as the default key for next time app
             // start
-            return Object.assign({}, state, { key: action.payload });
+            if (action.payload)
+                return Object.assign({}, state, { key: action.payload });
+            else
+                return Object.assign({}, state, { key: state.keys[0] });
         }
 
         case AuthActions.LOGIN_DOMAIN_SUCCESS: {

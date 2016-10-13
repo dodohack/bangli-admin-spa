@@ -8,8 +8,11 @@ import { ShopAttrsState }  from '../reducers/shopattrs';
 
 export class ShopAttrActions {
     static LOAD_ALL = '[ShopAttr] Load All';
-    static loadAll(): Action {
-        return { type: ShopAttrActions.LOAD_ALL };
+    static loadAll(key: string = undefined): Action {
+        return { 
+            type: ShopAttrActions.LOAD_ALL,
+            payload: key
+        };
     }
 
     static LOAD_ALL_SUCCESS = '[ShopAttr] Load All Success';

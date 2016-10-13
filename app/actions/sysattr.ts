@@ -7,8 +7,11 @@ import { SysAttrsState } from '../reducers/sysattrs';
 export class SysAttrActions {
     
     static LOAD_ALL = '[SysAttr] Load All';
-    static loadAll(): Action {
-        return { type: SysAttrActions.LOAD_ALL };
+    static loadAll(key: string = undefined): Action {
+        return { 
+            type: SysAttrActions.LOAD_ALL,
+            payload: key
+        };
     }
 
     static LOAD_ALL_SUCCESS = '[SysAttr] Load All Success';
