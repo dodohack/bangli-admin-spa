@@ -74,11 +74,14 @@ export class UserPage implements OnInit, OnDestroy
             .subscribe(params => {
                 if (params['id']) {
                     this.store.dispatch(UserActions.loadUser(params['id']));
+
+                    // FIMXE: Currently we only support getting user by 'uuid'
+                    // so that we can easily download user's domain info as well
                     // TODO: Domain is loaded seperately after user is load
                     // TODO: as we requires 'uuid' to load user domains. and
                     // TODO: majority of users doesn't have domains.
 
-                    //this.store.dispatch(UserActions.loadUserDomains(params['id']));
+                    this.store.dispatch(UserActions.loadUserDomains(params['id']));
                 }
             });
     }

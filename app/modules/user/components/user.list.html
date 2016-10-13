@@ -14,7 +14,7 @@
         <tr *ngFor="let user of entities; let i=index">
             <th scope="row">{{ i+1 }}</th>
             <th scope="row"><input type="checkbox"></th>
-            <td><a [routerLink]="['/user', user.id]">{{ user.name }}</a></td>
+            <td><a [routerLink]="['/user', user.uuid]">{{ user.name }}</a></td>
             <td>{{ user.display_name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.created_at }}</td>
