@@ -157,6 +157,10 @@ export function getDomains() {
     return compose(fromAuth.getDomains(), getAuthState());
 }
 
+export function getDomainLatencies() {
+    return compose(fromAuth.getDomainLatencies(), getAuthState());
+}
+
 export function getProfiles() {
     return compose(fromAuth.getProfiles(), getAuthState());
 }

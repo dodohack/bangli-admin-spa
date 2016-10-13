@@ -19,10 +19,7 @@ import { Domain }            from './models';
 import { User }              from './models';
 import { JwtPayload }        from './models';
 
-import { Http }                  from '@angular/http';
-import { AUTH, APIS, API_PATH }  from './api';
-
-import { isDashboardUser, getCurDomainKey, getAuthToken,
+import { isDashboardUser, getCurDomainKey, getAuthToken, getDomainLatencies,
     getDomains, getDomainKeys, getAuthJwt, hasAuthFail }   from './reducers';
 
 @Component({
@@ -32,7 +29,6 @@ import { isDashboardUser, getCurDomainKey, getAuthToken,
 export class App implements OnInit, OnDestroy
 {
     subPing: any;
-    subPing2: any;
     subFail: any;
     subDU: any;
     
@@ -48,12 +44,12 @@ export class App implements OnInit, OnDestroy
     jwt$:          Observable<JwtPayload>;
     pref$:         Observable<PreferenceState>;
     fail$:         Observable<boolean>;
+    latencies$:    Observable<any>;
     isDashboardUser$: Observable<boolean>;
     
     constructor(private viewContainerRef: ViewContainerRef,
                 private store: Store<AppState>,
-                private router: Router,
-                private http: Http) { }
+                private router: Router) { }
 
     ngOnInit() {
         // Initialize current domain key
@@ -66,6 +62,7 @@ export class App implements OnInit, OnDestroy
         this.jwt$          = this.store.let(getAuthJwt());
         this.pref$         = this.store.select<PreferenceState>('pref');
         this.fail$         = this.store.let(hasAuthFail());
+        this.latencies$    = this.store.let(getDomainLatencies());
         this.isDashboardUser$ = this.store.let(isDashboardUser());
         
         this.dispatchLoginDomain();
@@ -78,7 +75,6 @@ export class App implements OnInit, OnDestroy
         this.subDU.unsubscribe();
         this.subFail.unsubscribe();
         this.subPing.unsubscribe();
-        this.subPing2.unsubscribe();
     }
 
     // Kick a first time login to application server
@@ -94,12 +90,10 @@ export class App implements OnInit, OnDestroy
             .subscribe(() => this.router.navigate(['/domains']));
     }
 
-    // Ping app server in every 10 seconds
+    // Ping app server in every 5 seconds
     dispatchPing() {
-        this.subPing = Observable.interval(10000)
-            .subscribe(() => this.store.dispatch(AuthActions.pingDomains('huluwa_uk')));
-        //this.subPing2 = Observable.interval(11000)
-        //    .subscribe(() => this.store.dispatch(AuthActions.pingDomains('bangli_uk')));
+        this.subPing = Observable.interval(5000)
+            .subscribe(() => this.store.dispatch(AuthActions.pingDomains()));
     }
 
     logout() {

@@ -28,7 +28,7 @@ export interface AuthState {
     // Available domains to current user
     domains: { [key: string]: Domain };
     // Domain connectivities
-    latencies: { [key: string]: {start: number, end: number}};
+    latencies: { [key: string]: {start: number, end: number, delta: number}};
     // Domain specific user info, index by domain key
     users: { [key: string]: User };
 }
@@ -58,8 +58,8 @@ export default function(state = initialState, action: Action): AuthState {
                 }, {});
 
             const latencyEntities = domains.reduce(
-                (latencies: { [key: string]: {start: number, end: number}}, domain: Domain) => {
-                    return Object.assign(latencies, { [domain.key]: {start: 0, end: 0} });
+                (latencies: { [key: string]: {start: number, end: number, delta: number}}, domain: Domain) => {
+                    return Object.assign(latencies, { [domain.key]: {start: 0, end: 0, delta: 0} });
                 }, {});
 
             return {
@@ -78,11 +78,13 @@ export default function(state = initialState, action: Action): AuthState {
         // and set end to the same as start, so we got the latency by doing
         // end - start
         case AuthActions.PING_DOMAINS: {
-            let timestamp = performance.now();
+            let timestamp = Math.round(performance.now());
 
             const latencyEntities = state.keys.reduce(
-                (latencies: {[key: string]: {start: number, end: number}}, key: string) => {
-                    return Object.assign(latencies, {[key]: { start: timestamp, end: timestamp }});
+                (latencies: {[key: string]: {start: number, end: number, delta: number}}, key: string) => {
+                    let oldLatency = state.latencies[key];
+                    return Object.assign(latencies, 
+                        {[key]: { start: timestamp, end: timestamp, delta: oldLatency.delta}});
             }, {});
 
             return Object.assign({}, state, {latencies: latencyEntities});
@@ -90,13 +92,18 @@ export default function(state = initialState, action: Action): AuthState {
 
         // Update latencies.'end' for given domain
         case AuthActions.PING_DOMAIN_SUCCESS: {
-            console.log("ping domain success, payload: ", action.payload);
+
+            // Network problem will trigger empty payload
+            if (!action.payload) return state;
+
             let key = action.payload;
             let oldLatency = state.latencies[key];
 
-            let timestamp = performance.now();
+            let timestamp = Math.round(performance.now());
+
             let latencies = Object.assign({}, state.latencies,
-                {[key]: {start: oldLatency.start, end: timestamp}});
+                {[key]: {start: oldLatency.start, end: timestamp,
+                    delta: timestamp - oldLatency.start}});
 
             return Object.assign({}, state, {latencies: latencies});
         }
@@ -169,6 +176,11 @@ export function getDomainKeys() {
 export function getDomains() {
     return (state$: Observable<AuthState>) => state$
         .select(auth => auth.domains);
+}
+
+export function getDomainLatencies() {
+    return (state$: Observable<AuthState>) => state$
+        .select(auth => auth.latencies);
 }
 
 export function getProfiles() {

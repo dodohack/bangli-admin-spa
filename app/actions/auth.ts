@@ -71,11 +71,8 @@ export class AuthActions {
 
     // Test domain connectivity
     static PING_DOMAINS = '[Auth] Ping Domains';
-    static pingDomains(domainKey: string): Action {
-        return {
-            type: AuthActions.PING_DOMAINS,
-            payload: domainKey
-        };
+    static pingDomains(): Action {
+        return { type: AuthActions.PING_DOMAINS };
     }
 
     static PING_DOMAIN_SUCCESS = '[Auth] Ping Domains Success';
@@ -84,6 +81,11 @@ export class AuthActions {
             type: AuthActions.PING_DOMAIN_SUCCESS,
             payload: key
         };
+    }
+
+    static PING_DOMAIN_FAIL = '[Auth] Ping Domains Fail';
+    static pingDomainFail(): Action {
+        return { type: AuthActions.PING_DOMAIN_FAIL };
     }
 
     /* Login user into domain by auth.key if domain_key is not specified */

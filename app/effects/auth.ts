@@ -20,9 +20,14 @@ var jwtDecode = require('jwt-decode');
 
 @Injectable()
 export class AuthEffects extends BaseEffects {
+    // key index of ping service, we only ping 1 app server at a time before
+    // we can use Observable.mergeDelayError.
+    keyIndex: number;
+
     constructor (private actions$: Actions,
                  private http: Http) {
         super();
+        this.keyIndex = 0;
     }
 
     /**
@@ -68,8 +73,9 @@ export class AuthEffects extends BaseEffects {
      * returned, we use the domainKey to update corresponding latency entry
      */
     @Effect() pingDomains$ = this.actions$.ofType(AuthActions.PING_DOMAINS)
-        .switchMap(action => this.pingDomains(action.payload)
-            .map(domainKey => AuthActions.pingDomainSuccess(domainKey)));
+        .switchMap(() => this.pingDomains()
+            .map(domainKey => AuthActions.pingDomainSuccess(domainKey))
+            .catch(() => Observable.of(AuthActions.pingDomainFail())));
 
 
     /**
@@ -123,27 +129,24 @@ export class AuthEffects extends BaseEffects {
     /**
      * Test connectivity of each available domain, the server returns key as well
      */
-    private pingDomains(domainKey: string): Observable<any> {
-        //for (let k in this.keys) {
-        //    let api = APIS[k] + API_PATH.ping + '?key=' + k;
-        //    this.http.get(api).map(res => res.json());
-        //}
-        /*
-        if (domainKey)
-            return this.http.get(APIS[domainKey]+ API_PATH.ping + '?key=' + domainKey)
-                .map(res => res.json());
-        else
-            return this.http.get(APIS.bangli_uk + API_PATH.ping + '?key=bangli_uk')
-                .map(res => res.json());
-        */
+    private pingDomains(): Observable<string> {
+        if (this.keyIndex >= this.keys.length) this.keyIndex = 0;
+
+        let key = this.keys[this.keyIndex++];
+
+        console.log("Ping server: ", key, ", idx: ", this.keyIndex);
+
+        return this.http.get(APIS[key]+ API_PATH.ping + '?key=' + key)
+            .map(res => res.json());
 
         // mergeDelayError postpone the errors to the end so it will not cancel
         // the previous requests, but it is currently not defined yet
-        //return Observable.mergeDelayError(
-        return Observable.merge(
+        /*
+        return Observable.mergeDelayError(
             this.http.get(APIS.huluwa_uk + API_PATH.ping + '?key=huluwa_uk'),
             this.http.get(APIS.bangli_uk + API_PATH.ping + '?key=bangli_uk'),
             this.http.get(APIS.bangli_us + API_PATH.ping + '?key=bangli_us')
         ).map(res => res.json());
+        */
     }
 }

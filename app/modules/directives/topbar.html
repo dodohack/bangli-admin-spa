@@ -25,12 +25,15 @@
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="pref.menuColor">切换站点</a>
             <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
                 <li role="menuitem" *ngFor="let key of domainKeys">
-                    <a class="dropdown-item" role="button"
+                    <button *ngIf="!isOffline(key)" class="dropdown-item" role="button"
                        (click)="loginDomain.emit(key)">
                         {{ domains[key].name }}
-                        <span class="tag" [class.tag-danger-outline]="isOffline(key)"
-                              [class.tag-success-outline]="!isOffline(key)">{{ latency(key) }}</span>
-                    </a>
+                        <span class="tag tag-success-outline">{{ getLatency(key) }}</span>
+                    </button>
+                    <span *ngIf="isOffline(key)" class="dropdown-item" style="opacity: 0.5">
+                        {{ domains[key].name }}
+                        <span class="tag tag-danger-outline">离线</span>
+                    </span>
                 </li>
             </ul>
         </li>
@@ -54,8 +57,9 @@
         </li>
 
         <li class="float-right">
-            <span class="tag" [class.tag-danger-outline]="isOffline(curDomainKey)"
-                  [class.tag-success-outline]="!isOffline(curDomainKey)">{{ latency(curDomainKey) }}</span>
+            <span class="tag" *ngIf="latencies"
+                  [class.tag-danger-outline]="isOffline(curDomainKey)"
+                  [class.tag-success-outline]="!isOffline(curDomainKey)">{{ getLatency(curDomainKey) }}</span>
             <a [routerLink]="['/user', jwt?.sub]" routerLinkActive="active"
                [style.color]="pref.menuColor">
                 <i class="fa fa-user"></i>{{ jwt?.aud }}

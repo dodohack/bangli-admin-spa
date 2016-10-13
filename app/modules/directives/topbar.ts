@@ -19,31 +19,21 @@ export class Topbar {
     @Input() curDomainKey: string;
     @Input() jwt: JwtPayload;
     @Input() pref: PreferenceState;
+    @Input() latencies: any; // App server connectivities
 
     @Output() logout = new EventEmitter();
     @Output() loginDomain = new EventEmitter();
 
-    _latency: {[key: string]: number} = {};
-
-    constructor(private cd: ChangeDetectorRef) {
-        /*
-        this.ping.latency$.subscribe(l => {
-           this._latency = l;
-            cd.markForCheck();
-        });
-        */
-    }
-
-    latency(key) {
+    getLatency(key) {
         if (this.isOffline(key)) {
             return '离线';
-        } else if (this._latency[key]) {
-            return Math.floor(this._latency[key]) +'ms';
+        } else {
+            return this.latencies[key].delta + 'ms';
         }
     }
     
     isOffline(key) {
-        if (!this._latency[key] || this._latency[key] === -1)
+        if (!this.latencies[key].delta || this.latencies[key].delta === 0)
             return true;
         return false;
     }
