@@ -10,7 +10,7 @@ import { Observable }                      from 'rxjs/Observable';
 import { CacheSingleton }          from './cache.singleton';
 import { AUTH, APIS, API_PATH }    from '../api';
 import { AuthActions }             from '../actions';
-import { User }                    from '../models';
+import { AuthUser, User }          from '../models';
 import { AlertActions }            from '../actions';
 
 @Injectable()
@@ -96,7 +96,7 @@ export class AuthEffects {
     /**
      * Login a user with given email and password
      */
-    private login(form: string): Observable<User> {
+    private login(form: string): Observable<AuthUser> {
         return this._post(AUTH.login, form);
     }
     
@@ -117,8 +117,7 @@ export class AuthEffects {
         let uuid = this.cache.jwt.sub;
 
         // Form an API
-        let api = APIS[this.cache.key] + API_PATH.users + '/' + uuid + 
-            '?token=' + this.cache.token;
+        let api = APIS[this.cache.key] + API_PATH.login + '?token=' + this.cache.token;
 
         // Login user into specific application domain, user profile returned
         return this.http.get(api).map(res => res.json());

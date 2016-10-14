@@ -31,6 +31,20 @@ export class UserShopProfile {
     cart_items: Object;
 }
 
+/**
+ * Shop only, user baby profile
+ */
+export class UserBabyProfile {
+    id: number;
+}
+
+/**
+ * Shop only, user addresses
+ */
+export class UserAddress {
+    id: number;
+}
+
 // API request parameters to filter list of users
 export class UserParams {
     cur_page: string = '1';
@@ -68,7 +82,11 @@ export class User {
     created_at: string;
 
     role: UserRole;
+
+    // Shop related elements
     shop_profile: UserShopProfile;
+    baby_profiles: UserBabyProfile[];
+    addresses: UserAddress[];
 };
 
 /* This is user for Auth server */

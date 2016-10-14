@@ -20,8 +20,8 @@ const routes: Routes = [
             { path: 'page/:page/state/:role',  component: UsersPage },
 
             /* Single user */
-            { path: 'new', component: UserPage },
-            { path: ':id', component: UserPage }
+            { path: 'new',   component: UserPage },
+            { path: ':uuid', component: UserPage }
         ]
     }
 ];

@@ -3,6 +3,7 @@
  */
 import { Action }     from '@ngrx/store';
 import { User }       from '../models';
+import { AuthUser }   from '../models';
 
 export class AuthActions {
     static INIT = '[Auth] Init';
@@ -19,7 +20,7 @@ export class AuthActions {
     }
 
     static LOGIN_SUCCESS = '[Auth] Login Success';
-    static loginSuccess(user: User): Action {
+    static loginSuccess(user: AuthUser): Action {
         return {
             type: AuthActions.LOGIN_SUCCESS,
             payload: user

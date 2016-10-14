@@ -15,6 +15,9 @@ export const API_PATH = {
     /* Authentication callback with JWT token */
     register_callback: '/register',
 
+    /* Login in app server with token from auth server, get domain specific profile */
+    login: '/login',
+
     /* Retrieve users, authors, editors etc; Retrieve/update single user */
     users: '/users',
     /* Update users */

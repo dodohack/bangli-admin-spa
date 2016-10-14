@@ -48,7 +48,8 @@ my profile.
         <user-auth-profile [user]="user$ | async"
                            [isMyProfile]="isMyProfile$ | async"
                            [isSuperUser]="isSuperUser$ | async"
-                           (alerts)="displayAlerts($event)">
+                           (alerts)="displayAlerts($event)"
+                           (save)="saveAuthUser($event)">
         </user-auth-profile>
     </tab>
 
@@ -57,7 +58,7 @@ my profile.
         <user-domains-tab [user]="user$ | async"
                           [domains]="domains$ | async"
                           [isSuperUser]="isSuperUser$ | async"
-                          (save)="saveDomains($event)">
+                          (save)="saveAuthUser($event)">
         </user-domains-tab>
     </tab>
 

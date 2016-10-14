@@ -19,10 +19,12 @@ import { AuthState }         from '../../reducers/auth';
 import { UsersState }        from '../../reducers/users';
 import { PreferenceState }   from '../../reducers/preference';
 import { User, UserRole }    from '../../models';
+import { AuthUser }          from '../../models';
+import { Domain }            from '../../models';
 import { JwtPayload }        from '../../models/auth';
 
-import { isMyProfile, getCurUser, hasSuperUserRole,
-    getUserRoles, getDomainKeys, getDomains }  from '../../reducers';
+import { isMyProfile, getCurUser, hasSuperUserRole, getAuthUser,
+    getUserRoles, getDomainKeys, getAvailableDomains }  from '../../reducers';
 
 @Component({ template: require('./user.page.html') })
 export class UserPage implements OnInit, OnDestroy
@@ -38,12 +40,13 @@ export class UserPage implements OnInit, OnDestroy
     subParams: any;
 
     user$:        Observable<User>;
+    authUser$:    Observable<AuthUser>;
     isSuperUser$: Observable<boolean>;
     isMyProfile$: Observable<boolean>;
     pref$:        Observable<PreferenceState>;
     roles$:       Observable<UserRole[]>;
     domainKeys$:  Observable<string[]>;
-    domains$:     Observable<any>;
+    domains$:     Observable<Domain[]>;
     
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) {
@@ -56,8 +59,9 @@ export class UserPage implements OnInit, OnDestroy
         this.pref$        = this.store.select<PreferenceState>(s => s.pref);
         this.roles$       = this.store.let(getUserRoles());
         this.domainKeys$  = this.store.let(getDomainKeys());
-        this.domains      = this.store.let(getDomains());
-        
+
+        this.authUser$    = this.store.let(getAuthUser());
+        this.domains$     = this.store.let(getAvailableDomains());
 
         this.dispatchLoadUser();
     }
@@ -72,16 +76,9 @@ export class UserPage implements OnInit, OnDestroy
     dispatchLoadUser() {
         this.subParams = this.route.params
             .subscribe(params => {
-                if (params['id']) {
-                    this.store.dispatch(UserActions.loadUser(params['id']));
-
-                    // FIMXE: Currently we only support getting user by 'uuid'
-                    // so that we can easily download user's domain info as well
-                    // TODO: Domain is loaded seperately after user is load
-                    // TODO: as we requires 'uuid' to load user domains. and
-                    // TODO: majority of users doesn't have domains.
-
-                    this.store.dispatch(UserActions.loadUserDomains(params['id']));
+                if (params['uuid']) {
+                    this.store.dispatch(UserActions.loadUser(params['uuid']));
+                    this.store.dispatch(UserActions.loadAuthUser(params['uuid']));
                 }
             });
     }
@@ -90,18 +87,12 @@ export class UserPage implements OnInit, OnDestroy
         this.store.dispatch(PreferenceActions.save($event));
     }
 
-    saveDomains($event) {
-        this.store.dispatch(UserActions.saveUserDomains($event));
+    saveAuthUser($event) {
+        this.store.dispatch(UserActions.saveAuthUser($event));
     }
 
     /* TODO: Change from child view template need to be propergated up */
     saveProfile() {
-        //this.store.dispatch(UserActions.saveUser());
-    }
-
-    /* Save user password to bangli-auth */
-    saveCrefidential() {
-        // TODO: Should we use the same method as saveProfile()?
         //this.store.dispatch(UserActions.saveUser());
     }
 }

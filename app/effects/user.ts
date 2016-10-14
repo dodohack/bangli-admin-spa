@@ -59,7 +59,7 @@ export class UserEffects {
     /* Load domains of user can manage */
     @Effect() loadAuthUser$ = this.actions$.ofType(UserActions.LOAD_AUTH_USER)
         .switchMap(action => this.getAuthUser(action.payload)
-            .map(domains => UserActions.loadAuthUserSuccess(domains))
+            .map(res => UserActions.loadAuthUserSuccess(res.domains, res.user))
             .catch(() => Observable.of(UserActions.loadAuthUserFail()))
         );
 
@@ -86,8 +86,9 @@ export class UserEffects {
 
     /**
      * Get single user from Auth server by uuid
+     * The http request returns domains + user.
      */
-    private getAuthUser(uuid: string): Observable<AuthUser> {
+    private getAuthUser(uuid: string): Observable<any> {
         let api = AUTH.user + '/' + uuid + '?token=' + this.cache.token;
         return this.http.get(api).map(res => res.json());
     }

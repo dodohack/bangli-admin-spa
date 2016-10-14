@@ -116,26 +116,26 @@ export default function (state = initialState, action: Action): UsersState {
  * Helper functions
  ******************************************************************************/
 
-/* FIXME: For current logged user, we can not get it from s.entities */
+/* FIXME: For current logged user, we can not get it from s.users */
 export function getUser(uuid: string) {
     return (state$: Observable<UsersState>) => state$
-        .select(s => s.entities[uuid].user);
+        .select(s => s.users[uuid]);
 }
 
-export function getAuthUser(uuid: string) {
+export function getAuthUser() {
     return (state$: Observable<UsersState>) => state$
-        .select(s => s.entities[uuid].authUser);
+        .select(s => s.authUser);
 }
 
 export function getCurUser() {
     return (state$: Observable<UsersState>) => state$
-        .map(s => s.entities[s.uuidsEditing[0]]);
+        .map(s => s.users[s.uuidsEditing[0]]);
 }
 
 /**
  * If the profile current in editing/viewing belongs to current loggedin user
  */
-export function isProfile(uuid: string) {
+export function isMyProfile(uuid: string) {
     return (state$: Observable<UsersState>) => state$
         .map(s => s.uuidsEditing[0] === uuid);
 }
@@ -144,7 +144,7 @@ export function isProfile(uuid: string) {
  * Get current page users in object
  */
 export function getUsersObject() {
-    return (state$: Observable<UsersState>) => state$.select(s => s.entities);
+    return (state$: Observable<UsersState>) => state$.select(s => s.users);
 }
 
 /**
@@ -152,7 +152,7 @@ export function getUsersObject() {
  */
 export function getUsers() {
     return (state$: Observable<UsersState>) => state$
-        .map(s => s.uuids.map(uuid => s.entities[uuid]));
+        .map(s => s.uuids.map(uuid => s.users[uuid]));
 }
 
 export function getUserIds() {

@@ -111,10 +111,10 @@ export class App implements OnInit, OnDestroy
 
     loginDomain($event: string = undefined) {
         this.router.navigate(['/']);
+        this.store.dispatch(AuthActions.loginDomain($event));
         this.store.dispatch(ShopAttrActions.loadAll($event));
         this.store.dispatch(SysAttrActions.loadAll($event));
         this.store.dispatch(CmsAttrActions.loadAll($event));
-        this.store.dispatch(AuthActions.loginDomain($event));
     }
 
     toggleSidebar($event) {

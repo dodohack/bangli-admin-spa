@@ -16,7 +16,6 @@ export class UserShopProfileTab
     @Input() user: User;
 
     get hasShopProfile() {
-        return this.user && this.user.shop_profiles
-            && this.user.shop_profiles.length > 0;
+        return this.user && this.user.shop_profile;
     }
 }
