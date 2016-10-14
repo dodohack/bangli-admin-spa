@@ -2,29 +2,40 @@ import { Action }     from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { User }        from '../models';
+import { AuthUser }    from '../models';
+import { Domain }      from '../models';
 import { Paginator }   from '../models';
 import { UserActions } from '../actions';
 
 export interface UsersState {
-    ids: number[];
-    idsEditing: number[];
-    entities: { [id: number]: User };
+    uuids: string[];
+    uuidsEditing: string[];
+    users:     { [uuid: string]: User };
+    // Each time, we only have 1 auth user loaded in single user page
+    authUser:  AuthUser;
     isLoading: boolean;
     paginator: Paginator;
+    // Available domains for all users (get from bangli_auth.domains),
+    // TODO: we should move this out from user state when we have a seperate
+    // ngrx/store for authencation attributes???
+    domains: Domain[];
 };
 
 const initialState: UsersState = {
-    ids: [],
-    idsEditing: [],
-    entities: {},
+    uuids: [],
+    uuidsEditing: [],
+    users: {},
+    authUser:  null,
     isLoading: true,
-    paginator: null
+    paginator: null,
+    domains: []
 };
 
 export default function (state = initialState, action: Action): UsersState {
     switch (action.type)
     {
         case UserActions.LOAD_USER:
+        case UserActions.LOAD_AUTH_USER:
         case UserActions.LOAD_USERS:
         case UserActions.LOAD_USERS_ON_SCROLL: {
             return Object.assign({}, state, {isLoading: true});
@@ -33,80 +44,67 @@ export default function (state = initialState, action: Action): UsersState {
         case UserActions.SEARCH_COMPLETE:
         case UserActions.LOAD_USERS_SUCCESS: {
 
-            const users     = action.payload.users;
-            const ids       = users.map(user => user.id);
-            const entities  = users.reduce(
-                (entities: { [id: number]: User }, user: User) => {
-                   return Object.assign(entities, { [user.id]: user });
+            const usersAry  = action.payload.users;
+            const uuids     = usersAry.map(user => user.uuid);
+            const newUsers  = usersAry.reduce(
+                (users: {[uuid: string]: User}, user: User) => {
+                    return Object.assign(users, { [user.uuid]: { user: user } });
                 }, {});
 
             return Object.assign({}, state, {
-                ids:        ids,
-                idsEditing: [],
-                entities:   entities,
-                isLoading:  false,
-                paginator:  action.payload.paginator
+                uuids:        uuids,
+                uuidsEditing: [],
+                users:        newUsers,
+                isLoading:    false,
+                paginator:    action.payload.paginator
             });
         }
 
         // Almost identical to previous case, but ids and entities are merged
         // instead of replaced
         case UserActions.LOAD_USERS_ON_SCROLL_SUCCESS: {
-            const users     = action.payload.users;
-            const ids       = users.map(user => user.id);
-            const entities  = users.reduce(
-                (entities: { [id: number]: User }, user: User) => {
-                    return Object.assign(entities, { [user.id]: user });
+            const usersAry  = action.payload.users;
+            const uuids     = usersAry.map(user => user.uuid);
+            const newUsers  = usersAry.reduce(
+                (users: {[uuid: string]: User}, user: User) => {
+                    return Object.assign(users, { [user.uuid]: user });
                 }, {});
 
             return Object.assign({}, state, {
-                ids:        [...state.ids, ...ids],
-                idsEditing: [],
-                entities:   Object.assign({}, state.entities, entities),
-                isLoading:  false,
-                paginator:  action.payload.paginator
+                uuids:       [...state.uuids, ...uuids],
+                idsEditing:  [],
+                users:       Object.assign({}, state.users, newUsers),
+                isLoading:   false,
+                paginator:   action.payload.paginator
             });
         }
 
-        // TODO: We should have an action to load user credential from auth
-        // server.
-
         // User load successfully from application server
         case UserActions.LOAD_USER_SUCCESS: {
-            const id  = action.payload.id;
-            const ids = (state.ids.indexOf(id) === -1) ?
-                [...state.ids, id] : state.ids;
+            const user   = action.payload;
+            const uuids  = (state.uuids.indexOf(user.uuid) === -1) ?
+                [...state.uuids, user.uuid] : state.uuids;
 
             return Object.assign({}, state, {
-                ids:        ids,
-                idsEditing: [id],
-                entities:   Object.assign({},
-                    state.entities, { [id]: action.payload }),
+                uuids:        uuids,
+                uuidsEditing: [user.uuid],
+                users:        Object.assign({}, state.users, {[user.uuid]: user}),
                 isLoading:  false
             });
         }
 
-        // This action is returned from auth server, so we got uuid instead of id
-        case UserActions.LOAD_USER_DOMAINS_SUCCESS: {
-            const uuid = action.payload.uuid;
+        // This action is returned from auth server, we have available domains
+        // and user auth profile returned
+        case UserActions.LOAD_AUTH_USER_SUCCESS: {
+            const domains  = action.payload.domains;
+            const authUser = action.payload.user;
 
-            let newUser;
-            // Update the user with retrieved domains info
-            for (let id in state.ids) {
-                if (state.entities[id].uuid === uuid) {
-                    newUser = Object.assign({}, state.entities[id],
-                        {domains: action.payload.domains});
-                    break;
-                }
-            }
+            return Object.assign({}, state, {
+                authUser:  authUser,
+                domains:   domains,
+                isLoading: false
+            });
 
-            if (newUser) {
-                return Object.assign({}, state, {
-                    entities: Object.assign({},
-                        state.entities, {[newUser.id]: newUser})
-                });
-            }
-            break;
         }
 
         default:
@@ -119,24 +117,27 @@ export default function (state = initialState, action: Action): UsersState {
  ******************************************************************************/
 
 /* FIXME: For current logged user, we can not get it from s.entities */
-export function getUser(id: number) {
+export function getUser(uuid: string) {
     return (state$: Observable<UsersState>) => state$
-        .select(s => s.entities[id]);
+        .select(s => s.entities[uuid].user);
+}
+
+export function getAuthUser(uuid: string) {
+    return (state$: Observable<UsersState>) => state$
+        .select(s => s.entities[uuid].authUser);
 }
 
 export function getCurUser() {
     return (state$: Observable<UsersState>) => state$
-        .map(s => s.entities[s.idsEditing[0]]);
+        .map(s => s.entities[s.uuidsEditing[0]]);
 }
 
 /**
  * If the profile current in editing/viewing belongs to current loggedin user
  */
-export function isMyProfileUUID(uuid: string) {
+export function isProfile(uuid: string) {
     return (state$: Observable<UsersState>) => state$
-        .map(s => s.entities[s.idsEditing[0]])
-        .filter(e => typeof e != 'undefined')
-        .map(user => user.uuid === uuid);
+        .map(s => s.uuidsEditing[0] === uuid);
 }
 
 /**
@@ -151,11 +152,11 @@ export function getUsersObject() {
  */
 export function getUsers() {
     return (state$: Observable<UsersState>) => state$
-        .map(s => s.ids.map(id => s.entities[id]));
+        .map(s => s.uuids.map(uuid => s.entities[uuid]));
 }
 
 export function getUserIds() {
-    return (state$: Observable<UsersState>) => state$.select(s => s.ids);
+    return (state$: Observable<UsersState>) => state$.select(s => s.uuids);
 }
 
 /**
@@ -167,4 +168,8 @@ export function getIsUserLoading() {
 
 export function getUserPaginator() {
     return (state$: Observable<UsersState>) => state$.select(s => s.paginator);
+}
+
+export function getAvailableDomains() {
+    return (state$: Observable<UsersState>) => state$.select(s => s.domains);
 }

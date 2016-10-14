@@ -1,6 +1,7 @@
-import { Action } from '@ngrx/store';
-import { User }   from '../models';
-import { Domain } from '../models';
+import { Action }   from '@ngrx/store';
+import { User }     from '../models';
+import { AuthUser } from '../models';
+import { Domain }   from '../models';
 
 export class UserActions {
     static SEARCH = '[User] Search';
@@ -87,49 +88,49 @@ export class UserActions {
         };
     }
 
-    static LOAD_USER_DOMAINS = '[User] Load Domains';
-    static loadUserDomains(uuid: string): Action {
+    static LOAD_AUTH_USER = '[User] Load Auth User';
+    static loadAuthUser(uuid: string): Action {
         return {
-            type: UserActions.LOAD_USER_DOMAINS,
+            type: UserActions.LOAD_AUTH_USER,
             payload: uuid
         };
     }
 
-    static LOAD_USER_DOMAINS_SUCCESS = '[User] Load Domains Success';
-    static loadUserDomainsSuccess(domains: Domain[]): Action {
+    static LOAD_AUTH_USER_SUCCESS = '[User] Load Auth User Success';
+    static loadAuthUserSuccess(domains: Domain[], user: AuthUser): Action {
         return {
-            type: UserActions.LOAD_USER_DOMAINS_SUCCESS,
-            payload: domains
+            type: UserActions.LOAD_AUTH_USER_SUCCESS,
+            payload: {domains: domains, user: user}
         };
     }
 
-    static LOAD_USER_DOMAINS_FAIL = '[User] Load Domains Fail';
-    static loadUserDomainsFail(): Action {
+    static LOAD_AUTH_USER_FAIL = '[User] Load Auth User Fail';
+    static loadAuthUserFail(): Action {
         return {
-            type: UserActions.LOAD_USER_DOMAINS_FAIL
+            type: UserActions.LOAD_AUTH_USER_FAIL
         };
     }
 
-    static SAVE_USER_DOMAINS = '[User] Save Domains';
-    static saveUserDomains(user: User) {
+    static SAVE_AUTH_USER = '[User] Save Auth User';
+    static saveAuthUser(user: User) {
         return {
-            type: UserActions.SAVE_USER_DOMAINS,
+            type: UserActions.SAVE_AUTH_USER,
             payload: user
         };
     }
 
-    static SAVE_USER_DOMAINS_SUCCESS = '[User] Save Domains Success';
-    static saveUserDomainsSuccess(user: User) {
+    static SAVE_AUTH_USER_SUCCESS = '[User] Save Auth User Success';
+    static saveAuthUserSuccess(user: User) {
         return {
-            type: UserActions.SAVE_USER_DOMAINS_SUCCESS,
+            type: UserActions.SAVE_AUTH_USER_SUCCESS,
             payload: user
         };
     }
 
-    static SAVE_USER_DOMAINS_FAIL = '[User] Save Domains Fail';
-    static saveUserDomainsFail() {
+    static SAVE_AUTH_USER_FAIL = '[User] Save Auth User Fail';
+    static saveAuthUserFail() {
         return {
-            type: UserActions.SAVE_USER_DOMAINS_FAIL
+            type: UserActions.SAVE_AUTH_USER_FAIL
         };
     }
 

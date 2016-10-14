@@ -277,8 +277,8 @@ export function getUsersState() {
 /**
  *
  */
-export function isMyProfileUUID(uuid: string) {
-    return compose(fromUsers.isMyProfileUUID(uuid), getUsersState());
+export function isProfile(uuid: string) {
+    return compose(fromUsers.isProfile(uuid), getUsersState());
 }
 
 /**
@@ -287,7 +287,7 @@ export function isMyProfileUUID(uuid: string) {
 export function isMyProfile() {
     return (state$: Observable<AppState>) => state$
         .let(getAuthJwt())
-        .switchMap(jwt => state$.let(isMyProfileUUID(jwt.sub)));
+        .switchMap(jwt => state$.let(isProfile(jwt.sub)));
 }
 
 export function getUserIds() {
@@ -298,8 +298,8 @@ export function getUsers() {
     return compose(fromUsers.getUsers(), getUsersState());
 }
 
-export function getUser(id: number) {
-    return compose(fromUsers.getUser(id), getUsersState());
+export function getUser(uuid: string) {
+    return compose(fromUsers.getUser(uuid), getUsersState());
 }
 
 /**
@@ -315,6 +315,10 @@ export function getIsUserLoading() {
 
 export function getUserPaginator() {
     return compose(fromUsers.getUserPaginator(), getUsersState());
+}
+
+export function getAvailableDomains() {
+    return compose(fromUsers.getAvailableDomains(), getUsersState());
 }
 
 /*****************************************************************************

@@ -43,6 +43,7 @@ my profile.
         </form>
     </tab>
 
+    <!-- User auth is with bangli-auth server -->
     <tab heading="密码授权" *ngIf="(isMyProfile$ | async) || (isSuperUser$ | async)">
         <user-auth-profile [user]="user$ | async"
                            [isMyProfile]="isMyProfile$ | async"
@@ -51,6 +52,7 @@ my profile.
         </user-auth-profile>
     </tab>
 
+    <!-- User domains is with bangli-auth and all application servers -->
     <tab heading="站点权限" [active]="domain" *ngIf="(isMyProfile$ | async) || (isSuperUser$ | async)">
         <user-domains-tab [user]="user$ | async"
                           [domains]="domains$ | async"

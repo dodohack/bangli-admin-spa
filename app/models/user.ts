@@ -2,6 +2,8 @@
  * This defines the user model such as author, editor, etc
  */
 
+import { Domain } from './index';
+
 export const USER_ROLES = [
     'customer', 'administrator', 'shop_manager', 'editor', 'author'
 ];
@@ -47,7 +49,7 @@ export class UserParams {
     }
 }
 
-/* This user is per domain data */
+/* This is user for APP domain */
 export class User {
     id: number;
     role_id: number;
@@ -67,4 +69,20 @@ export class User {
 
     role: UserRole;
     shop_profile: UserShopProfile;
+};
+
+/* This is user for Auth server */
+export class AuthUser {
+    uuid: string;
+    name: string;
+    display_name: string;
+    email: string;
+    email_validated: boolean
+    created_at: string;
+    updated_at: string;
+    register_ip: string;
+    last_ip: string;
+
+    domains: Domain[];
+    super_user: any;
 }

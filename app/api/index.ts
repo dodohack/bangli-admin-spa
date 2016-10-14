@@ -28,13 +28,18 @@ export const IMG_SERVER = {
 export const AUTH = {
     endpoint: AUTH_API,
 
+    // TODO: DEPRECATED SOME OF THESE
     /* Authentication routes */
     register: AUTH_API + '/register',
     login:    AUTH_API + '/login',
     refresh:  AUTH_API + '/refresh',
     update_password: AUTH_API + '/update_password',
     
-    /* Domains management - superuser only API */
-    domains: AUTH_API + '/domains',
-    domains_user: AUTH_API + '/domains/user',
+    /* User auth and domain management */
+    user:    AUTH_API + '/user',
+    // TODO: Add following support
+    // user/register
+    // user/login
+    // user/refresh
+    // user/...
 };

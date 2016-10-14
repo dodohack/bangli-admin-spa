@@ -5,7 +5,7 @@ import { Observable }                    from 'rxjs/Observable';
 
 import { CacheSingleton } from './cache.singleton';
 import { UserActions }    from '../actions';
-import { User }           from '../models';
+import { AuthUser, User } from '../models';
 import { Domain }         from '../models';
 import { APIS }           from '../api';
 import { API_PATH, AUTH } from '../api';
@@ -57,17 +57,17 @@ export class UserEffects {
         );
 
     /* Load domains of user can manage */
-    @Effect() loadDomains$ = this.actions$.ofType(UserActions.LOAD_USER_DOMAINS)
-        .switchMap(action => this.getUserDomains(action.payload)
-            .map(domains => UserActions.loadUserDomainsSuccess(domains))
-            .catch(() => Observable.of(UserActions.loadUserDomainsFail()))
+    @Effect() loadAuthUser$ = this.actions$.ofType(UserActions.LOAD_AUTH_USER)
+        .switchMap(action => this.getAuthUser(action.payload)
+            .map(domains => UserActions.loadAuthUserSuccess(domains))
+            .catch(() => Observable.of(UserActions.loadAuthUserFail()))
         );
 
     /* Update domains of user can manage */
-    @Effect() saveDomains$ = this.actions$.ofType(UserActions.SAVE_USER_DOMAINS)
-        .switchMap(action => this.postUserDomains(action.payload)
-            .map(res => UserActions.saveUserDomainsSuccess(res))
-            .catch(() => Observable.of(UserActions.saveUserDomainsFail()))
+    @Effect() updateAuthUser$ = this.actions$.ofType(UserActions.SAVE_AUTH_USER)
+        .switchMap(action => this.putAuthUser(action.payload)
+            .map(res => UserActions.saveAuthUserSuccess(res))
+            .catch(() => Observable.of(UserActions.saveAuthUserFail()))
         );
 
     /////////////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ export class UserEffects {
 
 
     /**
-     * Get single user by id or uuid
+     * Get single user from API server by id or uuid
      */
     private getUser(id: string | number): Observable<User> {
         let api = APIS[this.cache.key] + API_PATH.users
@@ -83,6 +83,14 @@ export class UserEffects {
         return this.http.get(api).map(res => res.json());
     }
 
+
+    /**
+     * Get single user from Auth server by uuid
+     */
+    private getAuthUser(uuid: string): Observable<AuthUser> {
+        let api = AUTH.user + '/' + uuid + '?token=' + this.cache.token;
+        return this.http.get(api).map(res => res.json());
+    }
 
     /**
      * Update single user
@@ -93,6 +101,17 @@ export class UserEffects {
 
         let api = APIS[this.cache.key] + API_PATH.users + '/' + user.uuid;
         return this.http.put(api, body, options).map(res => res.json());
+    }
+
+    /**
+     * Update auth user
+     */
+    private putAuthUser(user: AuthUser): Observable<any> {
+        let body = ''; //JSON.stringify(user.domains);
+        let options = new RequestOptions({ headers: this.headers });
+
+        let api = AUTH.user + '/' + user.uuid;
+        return this.http.post(api, body, options);
     }
 
     /**
@@ -160,17 +179,4 @@ export class UserEffects {
         return this.http.get(api).map(res => res.json());
     }
 
-
-    private getUserDomains(uuid: string): Observable<Domain[]> {
-        let api = AUTH.domains + '/' + uuid + '&token=' + this.cache.token;
-        return this.http.get(api).map(res => res.json());
-    }
-
-    private postUserDomains(user: User): Observable<any> {
-        let body = ''; //JSON.stringify(user.domains);
-        let options = new RequestOptions({ headers: this.headers });
-
-        let api = AUTH.domains + '/' + user.uuid;
-        return this.http.post(api, body, options);
-    }
 }

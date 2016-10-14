@@ -90,8 +90,9 @@ export class App implements OnInit, OnDestroy
         });
     }
 
-    // TODO: This should be removed later
     // Redirect user to a guide page if failed to login to app server.
+    // This happens user does not have an account of does not have correct
+    // permission on given domain.
     redirectLoginDomain() {
         this.subFail = this.fail$
             .subscribe(() => this.router.navigate(['/domains']));
@@ -109,11 +110,11 @@ export class App implements OnInit, OnDestroy
     logout() {  this.store.dispatch(AuthActions.logout());  }
 
     loginDomain($event: string = undefined) {
+        this.router.navigate(['/']);
         this.store.dispatch(ShopAttrActions.loadAll($event));
         this.store.dispatch(SysAttrActions.loadAll($event));
         this.store.dispatch(CmsAttrActions.loadAll($event));
         this.store.dispatch(AuthActions.loginDomain($event));
-        this.router.navigate(['/']);
     }
 
     toggleSidebar($event) {

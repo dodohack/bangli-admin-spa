@@ -1,11 +1,14 @@
 
-<div class="alert alert-danger">
+<pre>
     如果在同一路径下切换页面(从其他用户切到当前用户),页面不会重新创建, 或导致所有变量无法重新从服务器读取,
     需要在每个具体的tab页面subscribe ActivatedRoute的改变,或者是从UserPage发送事件到子组件,子组件
     监听这个事件!
-    NOTE: 如果选中了用户可以管理其他站点,还需要检查此用户是否被添加到了其他站点。
+    NOTE: 如果选中了用户可以管理某个站点,还需要检查此用户是否被添加到了这个站点。
     NOTE: 如果用户没有后台权限(dashboard_user), 选中了站点需要同时开启用户的后台权限。
-</div>
+    1. Get all domains and user_domain from bangli-auth
+    2. Get isDashboardUser and isSuperUser permission for the user
+    3. Get user domain specific permssions from each application servers
+</pre>
 
 <form (ngSubmit)="save.emit(domains)" #domainsForm="ngForm">
     <table class="table table-hover" style="font-size: 85%">
