@@ -16,6 +16,7 @@ import { Paginator }     from '../models';
 import { Entity }        from '../models';
 import { ENTITY }        from '../models';
 import { EntityActions } from '../actions';
+import { AuthActions }   from '../actions';
 import { GMT }           from '../helper';
 
 /**

@@ -6,11 +6,6 @@ import { User }       from '../models';
 import { AuthUser }   from '../models';
 
 export class AuthActions {
-    static INIT = '[Auth] Init';
-    static init(): Action {
-        return { type: AuthActions.INIT };
-    }
-
     static LOGIN = '[Auth] Login';
     static login(user: AuthUser): Action {
         return {

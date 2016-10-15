@@ -32,6 +32,7 @@ import { isDashboardUser, hasAuthorRole, getCurDomainKey, getAuthToken,
 export class App implements OnInit, OnDestroy
 {
     subPing: any;
+    subKey: any;
     subDU: any;
 
     isLoggedIn: boolean;
@@ -64,11 +65,13 @@ export class App implements OnInit, OnDestroy
         this.isDashboardUser$ = this.store.let(isDashboardUser());
         
         this.listenOnBasicPermission();
+        this.loadDomainData();
         this.dispatchPing();
     }
 
     ngOnDestroy() {
         this.subDU.unsubscribe();
+        this.subKey.unsubscribe();
         this.subPing.unsubscribe();
     }
 
@@ -85,6 +88,16 @@ export class App implements OnInit, OnDestroy
                 this.logout();
             }
         });
+    }
+
+    // Load domain data when loginDomain success
+    loadDomainData() {
+        this.subKey = this.curDomainKey$.filter(key => key != undefined)
+            .subscribe(key => {
+                this.store.dispatch(ShopAttrActions.loadAll(key));
+                this.store.dispatch(SysAttrActions.loadAll(key));
+                this.store.dispatch(CmsAttrActions.loadAll(key));
+            });
     }
 
     // Ping app server in every 5 seconds
@@ -107,9 +120,6 @@ export class App implements OnInit, OnDestroy
         // error in some pages when cleaning up states.
         this.router.navigate(['/']);
         this.store.dispatch(AuthActions.loginDomain($event));
-        this.store.dispatch(ShopAttrActions.loadAll($event));
-        this.store.dispatch(SysAttrActions.loadAll($event));
-        this.store.dispatch(CmsAttrActions.loadAll($event));
     }
 
     toggleSidebar($event) {

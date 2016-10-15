@@ -138,18 +138,6 @@ export default function(state = initialState, action: Action): AuthState {
             return initialState;
         }
 
-            /*
-        case AuthActions.REGISTER:
-            return action.payload;
-
-        case AuthActions.REGISTER_SUCCESS:
-            return action.payload;
-
-        case AuthActions.REGISTER_FAIL:
-            return action.payload;
-           */
-
-        case AuthActions.INIT:
         default: // Return initial state
             return state;
     }
