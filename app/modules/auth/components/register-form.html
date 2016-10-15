@@ -23,7 +23,7 @@
         </div>
         -->
 
-        <form class="form-horizontal" role="form" (ngSubmit)="register.emit(auth)"
+        <form class="form-horizontal" role="form" (ngSubmit)="register.emit(user)"
               #registerForm="ngForm">
 
             <div class="form-group">
@@ -32,7 +32,7 @@
                         <i class="fa fa-user fa-lg"></i>
                     </span>
                     <input type="text" class="form-control" required
-                           [(ngModel)]="auth.name" name="name" placeholder="用户名">
+                           [(ngModel)]="user.name" name="name" placeholder="用户名">
                 </div>
             </div>
 
@@ -41,7 +41,7 @@
                     <span class="input-group-addon">
                         <i class="fa fa-envelope fa-lg"></i>
                     </span>
-                    <input type="email" class="form-control" [(ngModel)]="auth.email"
+                    <input type="email" class="form-control" [(ngModel)]="user.email"
                            name="email" placeholder="邮箱" required>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                     <span class="input-group-addon">
                         <i class="fa fa-lock fa-lg"></i>
                     </span>
-                    <input type="password" class="form-control" [(ngModel)]="auth.password"
+                    <input type="password" class="form-control" [(ngModel)]="user.password"
                            name="password" placeholder="密码" required>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                     <span class="input-group-addon">
                         <i class="fa fa-lock fa-lg"></i>
                     </span>
-                    <input type="password" class="form-control" [(ngModel)]="auth.password_confirmation"
+                    <input type="password" class="form-control" [(ngModel)]="user.password_confirmation"
                            name="password_confirmation" placeholder="确认密码" required>
                 </div>
             </div>

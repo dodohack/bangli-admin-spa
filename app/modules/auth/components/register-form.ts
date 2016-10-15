@@ -5,19 +5,19 @@
 import { Component }      from '@angular/core';
 import { EventEmitter }   from '@angular/core';
 import { Input, Output }  from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 
-import { User }           from '../../../models';
+import { AuthUser }       from '../../../models';
 
 @Component({
     selector: 'register-form',
-    template: require('./register-form.html')
+    template: require('./register-form.html'),
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterForm
 {
-    _auth: User;
-    @Input() set auth(value) { this._auth = Object.assign({}, value); }
-    get auth() { return this._auth; }
+    @Output() register = new EventEmitter();
 
-    @Output()
-    register = new EventEmitter();
+    /* Just a form data */
+    user = new AuthUser;
 }

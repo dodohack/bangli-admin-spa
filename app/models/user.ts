@@ -78,7 +78,6 @@ export class User {
     birthday: string;
     subscription: boolean;
     description: string;
-    password: string;
     created_at: string;
 
     role: UserRole;
@@ -95,7 +94,8 @@ export class AuthUser {
     name: string;
     display_name: string;
     email: string;
-    email_validated: boolean
+    email_validated: boolean;
+    password: string;
     created_at: string;
     updated_at: string;
     register_ip: string;

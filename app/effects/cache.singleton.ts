@@ -8,7 +8,6 @@ export class CacheSingleton {
     // The singleton
     private static _instance: CacheSingleton = new CacheSingleton();
 
-    // FIXME: This class is not singleton, there are multiple instance of it!!!
     _auth: AuthState;
 
     constructor() {

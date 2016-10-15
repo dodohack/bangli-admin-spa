@@ -21,8 +21,9 @@ import { Domain }            from './models';
 import { User }              from './models';
 import { JwtPayload }        from './models';
 
-import { isDashboardUser, getCurDomainKey, getAuthToken, getDomainLatencies,
-    getDomains, getDomainKeys, getAuthJwt, hasAuthFail }   from './reducers';
+import { isDashboardUser, hasAuthorRole, getCurDomainKey, getAuthToken,
+    getDomainLatencies, getDomains, getDomainKeys,
+    getAuthJwt, hasAuthFail }   from './reducers';
 
 @Component({
     selector: 'admin-spa',
@@ -31,8 +32,6 @@ import { isDashboardUser, getCurDomainKey, getAuthToken, getDomainLatencies,
 export class App implements OnInit, OnDestroy
 {
     subPing: any;
-    subFail: any;
-    subKey: any;
     subDU: any;
 
     isLoggedIn: boolean;
@@ -47,8 +46,8 @@ export class App implements OnInit, OnDestroy
     pref$:         Observable<PreferenceState>;
     fail$:         Observable<boolean>;
     latencies$:    Observable<any>;
-    isDashboardUser$: Observable<boolean>;
-    
+    isDashboardUser$: Observable<boolean>; // Per domain permission from auth server
+
     constructor(private viewContainerRef: ViewContainerRef,
                 private store: Store<AppState>,
                 private router: Router) { }
@@ -64,19 +63,17 @@ export class App implements OnInit, OnDestroy
         this.latencies$    = this.store.let(getDomainLatencies());
         this.isDashboardUser$ = this.store.let(isDashboardUser());
         
-        this.listenOnDashboardUser();
-        this.redirectLoginDomain();
+        this.listenOnBasicPermission();
         this.dispatchPing();
     }
 
     ngOnDestroy() {
         this.subDU.unsubscribe();
-        this.subFail.unsubscribe();
         this.subPing.unsubscribe();
     }
 
     // Switch state between login and logout state
-    listenOnDashboardUser() {
+    listenOnBasicPermission() {
         this.subDU = this.isDashboardUser$.subscribe(isDU => {
             if (isDU) {
                 console.log("Dashboard user is true!");
@@ -85,17 +82,9 @@ export class App implements OnInit, OnDestroy
             } else {
                 console.log("Dashboard user is false!");
                 this.isLoggedIn = false;
-                this.router.navigate(['/login']);
+                this.logout();
             }
         });
-    }
-
-    // Redirect user to a guide page if failed to login to app server.
-    // This happens user does not have an account of does not have correct
-    // permission on given domain.
-    redirectLoginDomain() {
-        this.subFail = this.fail$
-            .subscribe(() => this.router.navigate(['/domains']));
     }
 
     // Ping app server in every 5 seconds
@@ -107,9 +96,15 @@ export class App implements OnInit, OnDestroy
             });
     }
 
-    logout() {  this.store.dispatch(AuthActions.logout());  }
+    logout() {
+        // Kick a logout action to clean app state and cache
+        this.store.dispatch(AuthActions.logout());
+        this.router.navigate(['/login']);
+    }
 
     loginDomain($event: string = undefined) {
+        // We have to put the redirection before switching domain to avoid
+        // error in some pages when cleaning up states.
         this.router.navigate(['/']);
         this.store.dispatch(AuthActions.loginDomain($event));
         this.store.dispatch(ShopAttrActions.loadAll($event));

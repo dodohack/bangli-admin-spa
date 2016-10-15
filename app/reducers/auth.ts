@@ -20,7 +20,6 @@ class latencyType {
 export interface AuthState {
     // A generic failure status
     failure: boolean;
-
     // Global authentication info
     token: string;
     // Decoded JWT
@@ -130,19 +129,17 @@ export default function(state = initialState, action: Action): AuthState {
                 { failure: false, users: Object.assign({}, state.users, user) });
         }
 
-        case AuthActions.LOGIN_DOMAIN_FAIL: {
-            // Reset auth.key to default one
-            return Object.assign({}, state, { failure: true, key: state.keys[0] });
-        }
-
+        // Clear state if any failures or logout
+        case AuthActions.LOGIN_FAIL:
+        case AuthActions.LOGIN_FAIL_NO_DOMAIN:
+        case AuthActions.LOGIN_DOMAIN_FAIL:
+        case AuthActions.LOGIN_DOMAIN_FAIL_NO_PERMISSION:
         case AuthActions.LOGOUT: {
             return initialState;
         }
 
+            /*
         case AuthActions.REGISTER:
-            return action.payload;
-
-        case AuthActions.REGISTER_COMPLETE:
             return action.payload;
 
         case AuthActions.REGISTER_SUCCESS:
@@ -150,6 +147,7 @@ export default function(state = initialState, action: Action): AuthState {
 
         case AuthActions.REGISTER_FAIL:
             return action.payload;
+           */
 
         case AuthActions.INIT:
         default: // Return initial state
@@ -215,10 +213,13 @@ export function getCurProfile() {
         .map(auth => auth.users[auth.key]);
 }
 
+/**
+ * If user token is valid and can manage any domain
+ */
 export function isDashboardUser() {
     return (state$: Observable<AuthState>) => state$.select(auth => {
         let now = Math.floor(Date.now()/1000);
-        if (auth.jwt && auth.jwt.exp > now && auth.jwt.dbu === 1)
+        if (auth.jwt && auth.jwt.exp > now && auth.key)
             return true;
         return false;
     });
@@ -227,7 +228,7 @@ export function isDashboardUser() {
 export function hasAuthorRole() {
     return (state$: Observable<AuthState>) => state$.select(auth => {
         let now = Math.floor(Date.now()/1000);
-        if (auth.jwt && auth.jwt.exp > now && auth.jwt.dbu === 1 &&
+        if (auth.jwt && auth.jwt.exp > now && auth.key &&
             (auth.users[auth.key].name === 'author'         ||
              auth.users[auth.key].name === 'editor'         ||
              auth.users[auth.key].name === 'shop_manager'   ||
@@ -242,7 +243,7 @@ export function hasAuthorRole() {
 export function hasEditorRole() {
     return (state$: Observable<AuthState>) => state$.select(auth => {
         let now = Math.floor(Date.now()/1000);
-        if (auth.jwt && auth.jwt.exp > now && auth.jwt.dbu === 1 &&
+        if (auth.jwt && auth.jwt.exp > now && auth.key &&
             (auth.users[auth.key].name === 'editor'        ||
              auth.users[auth.key].name === 'shop_manager'  ||
              auth.users[auth.key].name === 'administrator' ||
@@ -255,7 +256,7 @@ export function hasEditorRole() {
 export function hasShopManagerRole() {
     return (state$: Observable<AuthState>) => state$.select(auth => {
         let now = Math.floor(Date.now()/1000);
-        if (auth.jwt && auth.jwt.exp > now && auth.jwt.dbu === 1 &&
+        if (auth.jwt && auth.jwt.exp > now && auth.key &&
             (auth.users[auth.key].name === 'shop_manager'  ||
              auth.users[auth.key].name === 'administrator' ||
              auth.jwt.spu === 1))
@@ -267,7 +268,7 @@ export function hasShopManagerRole() {
 export function hasAdminRole() {
     return (state$: Observable<AuthState>) => state$.select(auth => {
         let now = Math.floor(Date.now()/1000);
-        if (auth.jwt && auth.jwt.exp > now && auth.jwt.dbu === 1 &&
+        if (auth.jwt && auth.jwt.exp > now && auth.key &&
             (auth.users[auth.key].name === 'administrator' || auth.jwt.spu === 1))
             return true;
         return false;
@@ -277,7 +278,7 @@ export function hasAdminRole() {
 export function hasSuperUserRole() {
     return (state$: Observable<AuthState>) => state$.select(auth => {
         let now = Math.floor(Date.now()/1000);
-        if (auth.jwt && auth.jwt.exp > now && auth.jwt.dbu === 1 &&
+        if (auth.jwt && auth.jwt.exp > now && auth.key &&
             auth.jwt.spu === 1)
             return true;
         return false;

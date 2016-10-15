@@ -30,13 +30,12 @@ export class AuthEffects {
      * Step 1. Login authentication server
      */
     @Effect() login$ = this.actions$.ofType(AuthActions.LOGIN)
-        .map(action => JSON.stringify(action.payload))
-        .switchMap(payload => this.login(payload)
+        .switchMap(action => this.login(action.payload)
             .map(user => {
-                if (user.domains)
+                if (user.domains.length)
                     return AuthActions.loginSuccess(user);
                 else
-                    return AuthActions.loginFail();
+                    return AuthActions.loginFailNoDomain();
             })
             .catch(() => Observable.of(AuthActions.loginFail()))
         );
@@ -46,12 +45,20 @@ export class AuthEffects {
      */
     @Effect() loginDomain$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN)
         .switchMap(action => this.loginDomain(action.payload)
-            .map(user => AuthActions.loginDomainSuccess(user))
+            .map(user => {
+                if (this.hasDashboardUserRole(user))
+                    return AuthActions.loginDomainSuccess(user);
+                else
+                    return AuthActions.loginDomainFailNoPermission();
+            })
             .catch(() => Observable.of(AuthActions.loginDomainFail()))
         );
 
-    @Effect() loginFail$ = this.actions$.ofType(AuthActions.LOGIN_FAIL)
-        .map(action => AlertActions.error('登录授权服务器失败或者无权限使用后台!'));
+    @Effect() loginFail1$ = this.actions$.ofType(AuthActions.LOGIN_FAIL)
+        .map(action => AlertActions.error('登录授权服务器失败!'));
+
+    @Effect() loginFail2$ = this.actions$.ofType(AuthActions.LOGIN_FAIL_NO_DOMAIN)
+        .map(action => AlertActions.error('无权使用任何站点,请联系管理员开通权限!'));
 
     /**
      * Clean session cache for logout 
@@ -69,15 +76,25 @@ export class AuthEffects {
             .catch(() => Observable.of(AuthActions.pingDomainFail())));
 
 
+    @Effect() loginDomainFail1$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN_FAIL)
+        .map(res => AlertActions.error('登录应用服务器失败!'));
+
+    @Effect() loginDomainFail2$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN_FAIL_NO_PERMISSION)
+        .map(res => AlertActions.error('你无权管理此站点,请联系管理员开通权限!'));
+
     /**
-     * TODO:
-     * 1. Redirect user to page that will send out an register request
-     *    to application server.
-     * 2. Display an instruction to let user to tell admin assign application
-     *    server dashboard user permission to him.
+     * Register a user to auth server
      */
-    @Effect() loginDomainFail$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN_FAIL)
-        .map(action => AlertActions.error('登录应用服务器失败!'));
+    @Effect() register$ = this.actions$.ofType(AuthActions.REGISTER)
+        .switchMap(action => this.register(action.payload)
+            .map(res => AuthActions.registerSuccess(res))
+            .catch(() => Observable.of(AuthActions.registerFail())));
+
+    @Effect() registerSuccess$ = this.actions$.ofType(AuthActions.REGISTER_SUCCESS)
+        .map(action => AlertActions.success("注册成功,请联系管理员开通后台权限"));
+
+    @Effect() registerFail$ = this.actions$.ofType(AuthActions.REGISTER_FAIL)
+        .map(action => AlertActions.error("注册失败"));
 
 
     //////////////////////////////////////////////////////////////////////////
@@ -96,8 +113,15 @@ export class AuthEffects {
     /**
      * Login a user with given email and password
      */
-    private login(form: string): Observable<AuthUser> {
-        return this._post(AUTH.login, form);
+    private login(user: AuthUser): Observable<AuthUser> {
+        return this._post(AUTH.login, JSON.stringify(user));
+    }
+
+    /**
+     * Register a user to auth server with given email and password
+     */
+    private register(user: AuthUser): Observable<AuthUser> {
+        return this._post(AUTH.register, JSON.stringify(user));
     }
     
     private logout(): Observable<boolean> {
@@ -145,5 +169,20 @@ export class AuthEffects {
             this.http.get(APIS.bangli_us + API_PATH.ping + '?key=bangli_us')
         ).map(res => res.json());
         */
+    }
+
+    /**
+     * Test a domain user can use dashboard or not
+     */
+    private hasDashboardUserRole(user: User) {
+        switch (user.role.name) {
+            case 'author':
+            case 'editor':
+            case 'shop_manager':
+            case 'administrator':
+                return true;
+            default:
+                return false;
+        }
     }
 }

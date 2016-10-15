@@ -12,7 +12,7 @@ export class AuthActions {
     }
 
     static LOGIN = '[Auth] Login';
-    static login(user: User): Action {
+    static login(user: AuthUser): Action {
         return {
             type: AuthActions.LOGIN,
             payload: user
@@ -32,30 +32,26 @@ export class AuthActions {
         return { type: AuthActions.LOGIN_FAIL };
     }
 
+    static LOGIN_FAIL_NO_DOMAIN = '[Auth] Login Fail No Domain';
+    static loginFailNoDomain(): Action {
+        return { type: AuthActions.LOGIN_FAIL_NO_DOMAIN };
+    }
+
     static LOGOUT = '[Auth] Logout';
     static logout(): Action {
         return { type: AuthActions.LOGOUT };
     }
 
     static REGISTER = '[Auth] Register';
-    static register(user: User): Action {
+    static register(user: AuthUser): Action {
         return {
             type: AuthActions.REGISTER,
             payload: user
         };
     }
 
-    static REGISTER_COMPLETE = '[Auth] Register Complete';
-    static registerComplete(user: User): Action
-    {
-        return {
-            type: AuthActions.REGISTER_COMPLETE,
-            payload: user
-        };
-    }
-
     static REGISTER_SUCCESS = '[Auth] Register Success';
-    registerSuccess(user: User): Action {
+    static registerSuccess(user: AuthUser): Action {
         return {
             type: AuthActions.REGISTER_SUCCESS,
             payload: user
@@ -63,11 +59,8 @@ export class AuthActions {
     }
 
     static REGISTER_FAIL = '[Auth] Register Fail';
-    static registerFail(user: User): Action {
-        return {
-            type: AuthActions.REGISTER_FAIL,
-            payload: user
-        };
+    static registerFail(): Action {
+        return { type: AuthActions.REGISTER_FAIL };
     }
 
     // Test domain connectivity
@@ -108,8 +101,11 @@ export class AuthActions {
 
     static LOGIN_DOMAIN_FAIL = '[Auth] Login Domain Fail';
     static loginDomainFail(): Action {
-        return {
-            type: AuthActions.LOGIN_DOMAIN_FAIL
-        };
+        return { type: AuthActions.LOGIN_DOMAIN_FAIL };
+    }
+
+    static LOGIN_DOMAIN_FAIL_NO_PERMISSION = '[Auth] Login Domain Fail No Permission';
+    static loginDomainFailNoPermission(): Action {
+        return { type: AuthActions.LOGIN_DOMAIN_FAIL_NO_PERMISSION };
     }
 }

@@ -3,8 +3,6 @@
  */
 
 import { Component }         from '@angular/core';
-import { OnInit }            from '@angular/core';
-import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs';
 
@@ -13,15 +11,13 @@ import { AuthActions }       from '../../actions';
 import { AlertActions }      from '../../actions';
 
 @Component({
-    template: `<register-form [auth]="auth$ | async" 
-                              (submit)="onSubmit($event)"></register-form>`
+    template: `<register-form (register)="onSubmit($event)"></register-form>`
 })
 export class RegisterPage 
 {
     auth$: Observable<any>;
     
-    constructor(private store: Store<AppState>,
-                private router: Router) {
+    constructor(private store: Store<AppState>) {
         this.auth$ = store.select('auth');
     }
 
@@ -31,7 +27,7 @@ export class RegisterPage
             this.store.dispatch(AlertActions.error('两次输入的密码不匹配'));
             return;
         }
-        
+
         this.store.dispatch(AuthActions.register($event));
         
         /* Reset the error message */

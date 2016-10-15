@@ -7,7 +7,7 @@ import { EventEmitter }   from '@angular/core';
 import { Input, Output }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { User }           from '../../../models';
+import { AuthUser }       from '../../../models';
 
 @Component({
     selector: 'login-form',
@@ -22,5 +22,5 @@ export class LoginForm
     @Output() login = new EventEmitter();
 
     /* Just a form data */
-    user = new User;
+    user = new AuthUser;
 }
