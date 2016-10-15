@@ -48,7 +48,7 @@ export default function (state = initialState, action: Action): UsersState {
             const uuids     = usersAry.map(user => user.uuid);
             const newUsers  = usersAry.reduce(
                 (users: {[uuid: string]: User}, user: User) => {
-                    return Object.assign(users, { [user.uuid]: { user: user } });
+                    return Object.assign(users, { [user.uuid]: user });
                 }, {});
 
             return Object.assign({}, state, {
@@ -96,15 +96,44 @@ export default function (state = initialState, action: Action): UsersState {
         // This action is returned from auth server, we have available domains
         // and user auth profile returned
         case UserActions.LOAD_AUTH_USER_SUCCESS: {
-            const domains  = action.payload.domains;
-            const authUser = action.payload.user;
+            const domainsAry  = action.payload.domains;
+            const newDomains  = action.payload.user.domains.reduce(
+                (domains: {[id: number]: boolean }, domain: Domain) => {
+                    return Object.assign(domains, { [domain.id]: domain.dashboard_user });
+            }, {});
+
+            const authUser = Object.assign({}, action.payload.user, {domains: newDomains});
 
             return Object.assign({}, state, {
                 authUser:  authUser,
-                domains:   domains,
+                domains:   domainsAry,
                 isLoading: false
             });
+        }
 
+        case UserActions.TOGGLE_DASHBOARD_PERMISSION: {
+            const id      = action.payload;
+            const domains = state.authUser.domains;
+
+            // Default new dashboard permission
+            let newPerm = 1;
+
+            if (domains[id] && domains[id].dashboard_user) {
+                // User is registered to the domain, alter dashboard permission only
+                newPerm = domains[id].dashboard_user ? 0 : 1;
+            }
+
+            let newDomains = Object.assign({}, domains, { [id]: newPerm });
+
+            return Object.assign({}, state, {
+                authUser: Object.assign({}, state.authUser, {domains: newDomains})
+            });
+        }
+
+        case UserActions.TOGGLE_SUPER_USER: {
+            const newPerm = state.authUser.super_user ? 0 : 1;
+            const authUser = Object.assign({}, state.authUser, {super_user: newPerm});
+            return Object.assign({}, state, { authUser: authUser });
         }
 
         default:

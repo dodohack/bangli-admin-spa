@@ -12,7 +12,7 @@ import { USER_GENDERS, User, UserRole } from '../../../models';
 export class UserBaseProfileTab
 {
     @Input() isMyProfile: boolean;
-    @Input() isSuperUser: boolean;
+    @Input() isAdminUser: boolean;
     @Input() user: User;
     @Input() roles: UserRole[];
 

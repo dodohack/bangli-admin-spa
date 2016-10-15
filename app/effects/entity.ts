@@ -26,7 +26,7 @@ export class EntityEffects {
 
     get headers() {
         return new Headers({
-            'Authorization': 'Bearer' + this.cache.token,
+            'Authorization': 'Bearer ' + this.cache.token,
             'Content-Type': 'application/json'
         });
     }

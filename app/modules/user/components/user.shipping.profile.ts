@@ -14,7 +14,7 @@ import { zh_CN } from '../../../localization';
 export class UserShippingProfileTab
 {
     @Input() isMyProfile: boolean;
-    @Input() isSuperUser: boolean;
+    @Input() isAdminUser: boolean;
     @Input() user: User;
     
     get zh() { return zh_CN.user; }

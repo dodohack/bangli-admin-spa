@@ -10,49 +10,58 @@
     3. Get user domain specific permssions from each application servers
 </pre>
 
-<form (ngSubmit)="save.emit(domains)" #domainsForm="ngForm">
-    <table class="table table-hover" style="font-size: 85%">
-        <thead class="thead-default">
+<div class="alert alert-info">
+    你在这里可以设置用户是否可以使用管理平台以及超级管理员权限;<br>
+    如果需要设置用户在具体站点的权限,你需要切换到具体站点之后进行设置。
+</div>
+
+<table class="table table-hover" style="font-size: 85%">
+    <thead class="thead-default">
         <tr>
-            <th width="10%">可否访问</th>
-            <th width="10%">用户权限</th>
+            <th width="10%">可否访问后台</th>
+            <th width="10%">是否注册</th>
             <th width="10%">站点Key</th>
             <th width="20%">站点名字</th>
             <th width="20%">站点域名</th>
             <th width="30%">站点API</th>
         </tr>
-        </thead>
+    </thead>
 
-        <!-- Manage user domains, editable when current user is super-user -->
-        <tbody>
-            <tr *ngFor="let domain of domains; let i=index">
-                <td>
-                    <label class="form-check-inline">
-                        <input class="form-check-input" type="checkbox"
-                               name="du[]"  [checked]="domain.checked"
-                               (change)="domain.checked = $event.target.checked"
-                               [disabled]="!isSuperUser">
-                        {{ domain.checked ? '是' : '否' }}
-                    </label>
-                </td>
-                <td>
-                    <select name="perm{{i}}" class="form-control"
-                            [(ngModel)]="domain.userRoleId"
-                            [disabled]="!domain.checked || !isSuperUser">
-                        <!--<option *ngFor="let role of userRoles" [value]="role.id">{{ role.display_name }}</option>-->
-                    </select>
-                </td>
-                <td>{{ domain.key }}</td>
-                <td>{{ domain.name }}</td>
-                <td>{{ domain.url }}</td>
-                <td>{{ domain.api }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <!-- Manage user domains, editable when current user is super-user -->
+    <tbody>
+        <tr *ngFor="let domain of allDomains; let i=index">
+            <td>
+                <label class="form-check-inline">
+                    <input class="form-check-input" type="checkbox"
+                           name="du[]"  [checked]="canUseDashboard(domain.id)"
+                           (change)="toggleDomain.emit(domain.id)"
+                           [disabled]="!isSuperUser">
+                    {{ canUseDashboard(domain.id) ? '是' : '否' }}
+                </label>
+            </td>
+            <td>{{ isRegistered(domain.id) ? '是' : '否' }}</td>
+            <td>{{ domain.key }}</td>
+            <td>{{ domain.name }}</td>
+            <td>{{ domain.url }}</td>
+            <td>{{ domain.api }}</td>
+        </tr>
+    </tbody>
+</table>
 
-    <div class="row form-group" *ngIf="isSuperUser">
-        <div class="col-xs-12">
-            <button type="submit" class="btn btn-primary btn-block">保存</button>
-        </div>
+<div>
+    是否是超级管理员
+    <label class="form-check-inline">
+        <input class="form-check-input" type="checkbox"
+               name="isspu"  [checked]=""
+               (change)="toggleSuperUser.emit()"
+               [disabled]="!isSuperUser">
+        {{ isUserSuperUser ? '是' : '否' }}
+    </label>
+</div>
+
+<div class="row form-group" *ngIf="isSuperUser">
+    <div class="col-xs-12">
+        <button (click)="save.emit(user)" class="btn btn-primary btn-block">保存</button>
     </div>
-</form>
+</div>
+

@@ -12,7 +12,7 @@ import { User } from "../../../models";
 export class UserBabyProfileTab
 {
     @Input() isMyProfile: boolean;
-    @Input() isSuperUser: boolean;
+    @Input() isAdminUser: boolean;
     @Input() user: User;
     
     get hasBabyProfile() { 

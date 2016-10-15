@@ -13,28 +13,28 @@ my profile.
             <accordion>
                 <user-base-profile [user]="user$ | async"
                                    [isMyProfile]="isMyProfile$ | async"
-                                   [isSuperUser]="isSuperUser$ | async"
+                                   [isAdminUser]="isAdminUser$ | async"
                                    [roles]="roles$ | async">
                 </user-base-profile>
 
                 <user-shop-profile [user]="user$ | async"
                                    [isMyProfile]="isMyProfile$ | async"
-                                   [isSuperUser]="isSuperUser$ | async">
+                                   [isAdminUser]="isAdminUser$ | async">
                 </user-shop-profile>
 
                 <user-shipping-profile [user]="user$ | async"
                                        [isMyProfile]="isMyProfile$ | async"
-                                       [isSuperUser]="isSuperUser$ | async">
+                                       [isAdminUser]="isAdminUser$ | async">
                 </user-shipping-profile>
 
                 <user-baby-profile [user]="user$ | async"
                                    [isMyProfile]="isMyProfile$ | async"
-                                   [isSuperUser]="isSuperUser$ | async">
+                                   [isAdminUser]="isAdminUser$ | async">
                 </user-baby-profile>
 
             </accordion>
 
-            <div class="row form-group" *ngIf="(isSuperUser$ | async) || (isMyProfile$ | async)">
+            <div class="row form-group" *ngIf="(isAdminUser$ | async) || (isMyProfile$ | async)">
                 <div class="col-xs-12">
                     <button type="submit" class="btn btn-primary btn-block">保存</button>
                 </div>
@@ -45,7 +45,7 @@ my profile.
 
     <!-- User auth is with bangli-auth server -->
     <tab heading="密码授权" *ngIf="(isMyProfile$ | async) || (isSuperUser$ | async)">
-        <user-auth-profile [user]="user$ | async"
+        <user-auth-profile [user]="authUser$ | async"
                            [isMyProfile]="isMyProfile$ | async"
                            [isSuperUser]="isSuperUser$ | async"
                            (alerts)="displayAlerts($event)"
@@ -54,10 +54,12 @@ my profile.
     </tab>
 
     <!-- User domains is with bangli-auth and all application servers -->
-    <tab heading="站点权限" [active]="domain" *ngIf="(isMyProfile$ | async) || (isSuperUser$ | async)">
-        <user-domains-tab [user]="user$ | async"
-                          [domains]="domains$ | async"
+    <tab heading="后台权限" *ngIf="(isMyProfile$ | async) || (isSuperUser$ | async)">
+        <user-domains-tab [user]="authUser$ | async"
+                          [allDomains]="allDomains$ | async"
                           [isSuperUser]="isSuperUser$ | async"
+                          (toggleDomain)="toggleDomain($event)"
+                          (toggleSuperUser)="toggleSuperUser()"
                           (save)="saveAuthUser($event)">
         </user-domains-tab>
     </tab>
@@ -66,5 +68,5 @@ my profile.
         <user-preference [pref]="pref$ | async"
                          (save)="savePreference($event)">
         </user-preference>
-        </tab>
+    </tab>
 </tabset>

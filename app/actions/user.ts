@@ -156,4 +156,19 @@ export class UserActions {
             type: UserActions.SAVE_USER_FAIL
         };
     }
+
+    // Add or remove domain dashboard permission to a user
+    static TOGGLE_DASHBOARD_PERMISSION = '[User] Toggle User Dashboard Perm';
+    static toggleDashboardPermission(id: number) {
+        return {
+            type: UserActions.TOGGLE_DASHBOARD_PERMISSION,
+            payload: id
+        };
+    }
+
+    // Toggle a user's super user permission
+    static TOGGLE_SUPER_USER = '[User] Toggle Super User Perm';
+    static toggleSuperUser() {
+        return { type: UserActions.TOGGLE_SUPER_USER };
+    }
 }

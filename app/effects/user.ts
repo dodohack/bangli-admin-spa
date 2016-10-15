@@ -19,7 +19,7 @@ export class UserEffects {
 
     get headers() {
         return new Headers({
-            'Authorization': 'Bearer' + this.cache.token,
+            'Authorization': 'Bearer ' + this.cache.token,
             'Content-Type': 'application/json'
         });
     }
@@ -108,11 +108,11 @@ export class UserEffects {
      * Update auth user
      */
     private putAuthUser(user: AuthUser): Observable<any> {
-        let body = ''; //JSON.stringify(user.domains);
+        let body = JSON.stringify(user);
         let options = new RequestOptions({ headers: this.headers });
 
         let api = AUTH.user + '/' + user.uuid;
-        return this.http.post(api, body, options);
+        return this.http.put(api, body, options);
     }
 
     /**

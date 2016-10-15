@@ -5,7 +5,7 @@ import { Component, Input, Output }   from '@angular/core';
 import { EventEmitter}                from '@angular/core';
 import { ChangeDetectionStrategy }    from '@angular/core';
 
-import { User }            from '../../../models';
+import { AuthUser }        from '../../../models';
 import { Domain  }         from '../../../models'
 
 @Component({
@@ -15,19 +15,28 @@ import { Domain  }         from '../../../models'
 })
 export class UserDomainsTab
 {
-    @Input() user: User;
+    _user: AuthUser;
+    @Input() set user(u: AuthUser) { this._user = Object.assign({}, u); }
+    get user() { return this._user; }
 
-    @Input() domains: Domain[];
+    // All domains
+    @Input() allDomains: Domain[];
 
     @Input() isSuperUser: boolean;
 
-    @Output() save = new EventEmitter();
+    @Output() toggleDomain    = new EventEmitter();
+    @Output() toggleSuperUser = new EventEmitter();
+    @Output() save            = new EventEmitter();
 
-    /*
-    get userRoles() { }
-    */
+    canUseDashboard(id: number) {
+        if (this.user.domains[id] === 1) return true;
+        return false;
+    }
 
-    /* Save per website permssions for user to business api server */
-    onSubmitDomainPerms() { }
+    isRegistered(id: number) {
+        if (this.user.domains[id] != undefined) return true;
+        return false;
+    }
 
+    get isUserSuperUser() { return this.user && this.user.super_user; }
 }

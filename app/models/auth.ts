@@ -7,6 +7,8 @@ export class Domain {
     name: string;
     url: string; /* Frontend url */
     description: string;
+
+    dashboard_user: boolean; // Only used by AuthUser domain management
 }
 
 

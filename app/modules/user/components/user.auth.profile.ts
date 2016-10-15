@@ -4,7 +4,7 @@
  */
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { User }  from '../../../models';
+import { AuthUser }  from '../../../models';
 
 @Component({
     selector: 'user-auth-profile',
@@ -14,7 +14,7 @@ export class UserAuthProfileTab
 {
     @Input() isMyProfile: boolean;
     @Input() isSuperUser: boolean;
-    @Input() user: User;
+    @Input() user: AuthUser;
 
     @Output() save = new EventEmitter();
 

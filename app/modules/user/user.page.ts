@@ -23,30 +23,28 @@ import { AuthUser }          from '../../models';
 import { Domain }            from '../../models';
 import { JwtPayload }        from '../../models/auth';
 
-import { isMyProfile, getCurUser, hasSuperUserRole, getAuthUser,
-    getUserRoles, getDomainKeys, getAvailableDomains }  from '../../reducers';
+import { isMyProfile, getCurUser, hasAdminRole, hasSuperUserRole,
+    getAuthUser, getUserRoles, getDomainKeys,
+    getAvailableDomains }  from '../../reducers';
 
 @Component({ template: require('./user.page.html') })
 export class UserPage implements OnInit, OnDestroy
 {
+    subParams: any;
+
     user: User;
 
     // The domain we are going to switch to if it is given
     domain: string;
 
-    subUser: any;
-    subAuth: any;
-    subPref: any;
-    subParams: any;
-
     user$:        Observable<User>;
     authUser$:    Observable<AuthUser>;
     isSuperUser$: Observable<boolean>;
+    isAdminUser$: Observable<boolean>;
     isMyProfile$: Observable<boolean>;
     pref$:        Observable<PreferenceState>;
     roles$:       Observable<UserRole[]>;
-    domainKeys$:  Observable<string[]>;
-    domains$:     Observable<Domain[]>;
+    allDomains$:  Observable<Domain[]>; // All available domain
     
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) {
@@ -54,14 +52,14 @@ export class UserPage implements OnInit, OnDestroy
 
     ngOnInit() {
         this.user$        = this.store.let(getCurUser());
+        this.isAdminUser$ = this.store.let(hasAdminRole());
         this.isSuperUser$ = this.store.let(hasSuperUserRole());
         this.isMyProfile$ = this.store.let(isMyProfile());
         this.pref$        = this.store.select<PreferenceState>(s => s.pref);
         this.roles$       = this.store.let(getUserRoles());
-        this.domainKeys$  = this.store.let(getDomainKeys());
 
         this.authUser$    = this.store.let(getAuthUser());
-        this.domains$     = this.store.let(getAvailableDomains());
+        this.allDomains$  = this.store.let(getAvailableDomains());
 
         this.dispatchLoadUser();
     }
@@ -89,6 +87,17 @@ export class UserPage implements OnInit, OnDestroy
 
     saveAuthUser($event) {
         this.store.dispatch(UserActions.saveAuthUser($event));
+    }
+
+    /**
+     * Select of deselect a user domain
+     */
+    toggleDomain($event) {
+        this.store.dispatch(UserActions.toggleDashboardPermission($event));
+    }
+
+    toggleSuperUser() {
+        this.store.dispatch(UserActions.toggleSuperUser());
     }
 
     /* TODO: Change from child view template need to be propergated up */

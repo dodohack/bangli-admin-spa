@@ -11,22 +11,26 @@
         <div class="form-group row">
             <div class="col-xs-3">
                 <label>可用积分</label>
-                <input class="form-control" type="text" name="point_available" [(ngModel)]="user.shop_profile.point_available" disabled>
+                <input class="form-control" type="text" name="point_available"
+                       [(ngModel)]="user.shop_profile.point_available" disabled>
             </div>
 
             <div class="col-xs-3">
                 <label>已消费积分</label>
-                <input class="form-control" type="text" name="point_used" [(ngModel)]="user.shop_profile.point_used" disabled>
+                <input class="form-control" type="text" name="point_used"
+                       [(ngModel)]="user.shop_profile.point_used" disabled>
             </div>
 
             <div class="col-xs-3">
                 <label>账户余额 ({{ user.shop_profile.currency }})</label>
-                <input class="form-control" type="text" name="money_available" [(ngModel)]="user.shop_profile.money_available" disabled>
+                <input class="form-control" type="text" name="money_available"
+                       [(ngModel)]="user.shop_profile.money_available" disabled>
             </div>
 
             <div class="col-xs-3">
                 <label>已消费金额 ({{ user.shop_profile.currency }})</label>
-                <input class="form-control" type="text" name="money_spent" [(ngModel)]="user.shop_profile.money_spent" disabled>
+                <input class="form-control" type="text" name="money_spent"
+                       [(ngModel)]="user.shop_profile.money_spent" disabled>
             </div>
         </div>
 

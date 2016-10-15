@@ -101,6 +101,6 @@ export class AuthUser {
     register_ip: string;
     last_ip: string;
 
-    domains: Domain[];
+    domains: any; // Object of { domain.id: dashboard_user }
     super_user: any;
 }
