@@ -8,39 +8,30 @@ my profile.
 
 <tabset>
     <tab heading="用户资料">
-        <form (ngSubmit)="saveProfile()">
+        <accordion>
+            <user-base-profile [user]="user$ | async"
+                               [isMyProfile]="isMyProfile$ | async"
+                               [isAdminUser]="isAdminUser$ | async"
+                               [roles]="roles$ | async"
+                               (save)="saveProfile($event)">
+            </user-base-profile>
 
-            <accordion>
-                <user-base-profile [user]="user$ | async"
-                                   [isMyProfile]="isMyProfile$ | async"
-                                   [isAdminUser]="isAdminUser$ | async"
-                                   [roles]="roles$ | async">
-                </user-base-profile>
+            <user-shop-profile [user]="user$ | async"
+                               [isMyProfile]="isMyProfile$ | async"
+                               [isAdminUser]="isAdminUser$ | async">
+            </user-shop-profile>
 
-                <user-shop-profile [user]="user$ | async"
-                                   [isMyProfile]="isMyProfile$ | async"
-                                   [isAdminUser]="isAdminUser$ | async">
-                </user-shop-profile>
-
-                <user-shipping-profile [user]="user$ | async"
-                                       [isMyProfile]="isMyProfile$ | async"
-                                       [isAdminUser]="isAdminUser$ | async">
-                </user-shipping-profile>
-
-                <user-baby-profile [user]="user$ | async"
+            <user-shipping-profile [user]="user$ | async"
                                    [isMyProfile]="isMyProfile$ | async"
                                    [isAdminUser]="isAdminUser$ | async">
-                </user-baby-profile>
+            </user-shipping-profile>
 
-            </accordion>
+            <user-baby-profile [user]="user$ | async"
+                               [isMyProfile]="isMyProfile$ | async"
+                               [isAdminUser]="isAdminUser$ | async">
+            </user-baby-profile>
 
-            <div class="row form-group" *ngIf="(isAdminUser$ | async) || (isMyProfile$ | async)">
-                <div class="col-xs-12">
-                    <button type="submit" class="btn btn-primary btn-block">保存</button>
-                </div>
-            </div>
-
-        </form>
+        </accordion>
     </tab>
 
     <!-- User auth is with bangli-auth server -->

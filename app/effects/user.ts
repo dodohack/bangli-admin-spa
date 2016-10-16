@@ -5,6 +5,7 @@ import { Observable }                    from 'rxjs/Observable';
 
 import { CacheSingleton } from './cache.singleton';
 import { UserActions }    from '../actions';
+import { AlertActions }   from '../actions';
 import { AuthUser, User } from '../models';
 import { Domain }         from '../models';
 import { APIS }           from '../api';
@@ -32,7 +33,7 @@ export class UserEffects {
             .map(users => UserActions.searchComplete(users))
             .catch(() => Observable.of(UserActions.loadUserFail()))
         );
-    
+
     @Effect() clearSearch$ = this.actions$.ofType(UserActions.SEARCH)
         .map(action => JSON.stringify(action.payload))
         .filter(query => query === '')
@@ -56,6 +57,13 @@ export class UserEffects {
             .catch(() => Observable.of(UserActions.loadUserFail()))
         );
 
+    /* Update user app server related fields */
+    @Effect() updateUser$ = this.actions$.ofType(UserActions.SAVE_USER)
+        .switchMap(action => this.putUser(action.payload)
+            .map(user => UserActions.saveUserSuccess(user))
+            .catch(() => Observable.of(UserActions.saveUserFail()))
+        );
+
     /* Load domains of user can manage */
     @Effect() loadAuthUser$ = this.actions$.ofType(UserActions.LOAD_AUTH_USER)
         .switchMap(action => this.getAuthUser(action.payload)
@@ -63,12 +71,23 @@ export class UserEffects {
             .catch(() => Observable.of(UserActions.loadAuthUserFail()))
         );
 
-    /* Update domains of user can manage */
+    /* Update user auth server related fields */
     @Effect() updateAuthUser$ = this.actions$.ofType(UserActions.SAVE_AUTH_USER)
         .switchMap(action => this.putAuthUser(action.payload)
             .map(res => UserActions.saveAuthUserSuccess(res))
             .catch(() => Observable.of(UserActions.saveAuthUserFail()))
         );
+
+    @Effect() updateUOk$ = this.actions$.ofType(UserActions.SAVE_USER_SUCCESS)
+        .map(() => AlertActions.success("成功保存用户信息到应用服务器"));
+
+    @Effect() updateAUOk$ = this.actions$.ofType(UserActions.SAVE_AUTH_USER_SUCCESS)
+        .map(() => AlertActions.success("成功保存用户信息到授权服务器"));
+
+    @Effect() updateUFail$ = this.actions$.ofType(
+        UserActions.SAVE_USER_FAIL,
+        UserActions.SAVE_AUTH_USER_FAIL
+    ).map(() => AlertActions.error("保存用户信息失败"));
 
     /////////////////////////////////////////////////////////////////////////
     // Http functions
@@ -112,7 +131,7 @@ export class UserEffects {
         let options = new RequestOptions({ headers: this.headers });
 
         let api = AUTH.user + '/' + user.uuid;
-        return this.http.put(api, body, options);
+        return this.http.put(api, body, options).map(res => res.json());
     }
 
     /**

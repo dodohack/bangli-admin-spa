@@ -100,8 +100,10 @@ export class UserPage implements OnInit, OnDestroy
         this.store.dispatch(UserActions.toggleSuperUser());
     }
 
-    /* TODO: Change from child view template need to be propergated up */
-    saveProfile() {
-        //this.store.dispatch(UserActions.saveUser());
+    /**
+     * Save user domain specific profile
+     */
+    saveProfile($event) {
+        this.store.dispatch(UserActions.saveUser($event));
     }
 }

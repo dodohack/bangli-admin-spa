@@ -1,7 +1,7 @@
 /**
  * Display basic user profile, shop_managers can see this
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { USER_GENDERS, User, UserRole } from '../../../models';
 
@@ -13,8 +13,13 @@ export class UserBaseProfileTab
 {
     @Input() isMyProfile: boolean;
     @Input() isAdminUser: boolean;
-    @Input() user: User;
     @Input() roles: UserRole[];
+
+    _user: User;
+    @Input() set user(v) { this._user = Object.assign({}, v); }
+    get user() { return this._user; }
+
+    @Output() save = new EventEmitter();
 
     get genders() { return USER_GENDERS; }
 }

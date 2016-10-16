@@ -93,6 +93,16 @@ export default function (state = initialState, action: Action): UsersState {
             });
         }
 
+        case UserActions.SAVE_USER: {
+            const user = action.payload;
+            if (user.uuid === state.uuidsEditing[0]) {
+                const users = Object.assign({}, state.users, {[user.uuid]: user});
+                return Object.assign({}, state, {users: users});
+            } else {
+                return state;
+            }
+        }
+
         // This action is returned from auth server, we have available domains
         // and user auth profile returned
         case UserActions.LOAD_AUTH_USER_SUCCESS: {

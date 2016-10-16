@@ -96,4 +96,11 @@
                       [disabled]="!isAdminUser && !isMyProfile"></textarea>
         </div>
     </div>
+
+
+    <div class="row form-group" *ngIf="isAdminUser || isMyProfile">
+        <div class="col-xs-12">
+            <button (click)="save.emit(user)" class="btn btn-primary btn-block">保存</button>
+        </div>
+    </div>
 </accordion-group>
