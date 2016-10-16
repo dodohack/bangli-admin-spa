@@ -202,6 +202,46 @@ export function getCurProfile() {
 }
 
 /**
+ * Get user role of current domain
+ */
+export function getMyRoleName() {
+    return (state$: Observable<AuthState>) => state$
+        .map(auth => auth.users[auth.key].role.name);
+}
+
+/**
+ * Check if currnet user has given role in 'name'
+ */
+export function hasRole(name: string) {
+    return (state$: Observable<AuthState>) => state$.select(auth => {
+
+        if (!auth.key) return false; // Sanity check if user logged in
+
+        if (auth.jwt.spu === 1) return true;
+        else if (name === 'super_user' && auth.jwt.spu !== 1) return false;
+
+        switch (auth.users[auth.key].role.name) {
+            case 'administrator':
+                return true; // always true
+            case 'shop_manager':
+                if (name === 'author' || name === 'editor' || name === 'shop_manager')
+                    return true;
+                return false;
+            case 'editor':
+                if (name === 'author' || name === 'editor')
+                    return true;
+                return false;
+            case 'author':
+                if (name === 'author')
+                    return true;
+                return false;
+        }
+
+        return false;
+    });
+}
+
+/**
  * If user token is valid and can manage any domain
  */
 export function isDashboardUser() {
@@ -217,10 +257,10 @@ export function hasAuthorRole() {
     return (state$: Observable<AuthState>) => state$.select(auth => {
         let now = Math.floor(Date.now()/1000);
         if (auth.jwt && auth.jwt.exp > now && auth.key &&
-            (auth.users[auth.key].name === 'author'         ||
-             auth.users[auth.key].name === 'editor'         ||
-             auth.users[auth.key].name === 'shop_manager'   ||
-             auth.users[auth.key].name === 'administrator'  ||
+            (auth.users[auth.key].role.name === 'author'         ||
+             auth.users[auth.key].role.name === 'editor'         ||
+             auth.users[auth.key].role.name === 'shop_manager'   ||
+             auth.users[auth.key].role.name === 'administrator'  ||
              auth.jwt.spu === 1)) {
             return true;
         }
@@ -232,9 +272,9 @@ export function hasEditorRole() {
     return (state$: Observable<AuthState>) => state$.select(auth => {
         let now = Math.floor(Date.now()/1000);
         if (auth.jwt && auth.jwt.exp > now && auth.key &&
-            (auth.users[auth.key].name === 'editor'        ||
-             auth.users[auth.key].name === 'shop_manager'  ||
-             auth.users[auth.key].name === 'administrator' ||
+            (auth.users[auth.key].role.name === 'editor'        ||
+             auth.users[auth.key].role.name === 'shop_manager'  ||
+             auth.users[auth.key].role.name === 'administrator' ||
              auth.jwt.spu === 1))
             return true;
         return false;
@@ -245,8 +285,8 @@ export function hasShopManagerRole() {
     return (state$: Observable<AuthState>) => state$.select(auth => {
         let now = Math.floor(Date.now()/1000);
         if (auth.jwt && auth.jwt.exp > now && auth.key &&
-            (auth.users[auth.key].name === 'shop_manager'  ||
-             auth.users[auth.key].name === 'administrator' ||
+            (auth.users[auth.key].role.name === 'shop_manager'  ||
+             auth.users[auth.key].role.name === 'administrator' ||
              auth.jwt.spu === 1))
             return true;
         return false;
@@ -257,7 +297,7 @@ export function hasAdminRole() {
     return (state$: Observable<AuthState>) => state$.select(auth => {
         let now = Math.floor(Date.now()/1000);
         if (auth.jwt && auth.jwt.exp > now && auth.key &&
-            (auth.users[auth.key].name === 'administrator' || auth.jwt.spu === 1))
+            (auth.users[auth.key].role.name === 'administrator' || auth.jwt.spu === 1))
             return true;
         return false;
     });

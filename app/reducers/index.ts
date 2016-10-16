@@ -184,6 +184,14 @@ export function getCurProfile() {
     return compose(fromAuth.getCurProfile(), getAuthState());
 }
 
+export function getMyRoleName() {
+    return compose(fromAuth.getMyRoleName(), getAuthState());
+}
+
+export function hasRole(name: string) {
+    return compose(fromAuth.hasRole(name), getAuthState());
+}
+
 export function isDashboardUser() {
     return compose(fromAuth.isDashboardUser(), getAuthState());
 }

@@ -5,8 +5,7 @@
 
     <ul class="fixed-menu">
         <template ngFor let-menu [ngForOf]="menus">
-            <!--<li *ngIf="hasRole(menu.role)">-->
-            <li>
+            <li *ngIf="hasRole$(menu.role) | async">
                 <a [routerLink]="['/', menu.slug]"
                    [style.color]="pref.menuColor"
                    title="{{ menu.name }}"

@@ -98,6 +98,7 @@ const routes: Routes = [
     {
         // Deal post
         path: 'deal',
+        canActivate: [EditorGuard],
         children: [
             // List of deal posts wo/ channels
             {path: '', pathMatch: 'full', redirectTo: 'page/1/state/all'},

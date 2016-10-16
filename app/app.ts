@@ -92,7 +92,7 @@ export class App implements OnInit, OnDestroy
 
     // Load domain data when loginDomain success
     loadDomainData() {
-        this.subKey = this.curDomainKey$.filter(key => key != undefined)
+        this.subKey = this.curDomainKey$.filter(key => key != undefined && key != '')
             .subscribe(key => {
                 this.store.dispatch(ShopAttrActions.loadAll(key));
                 this.store.dispatch(SysAttrActions.loadAll(key));
