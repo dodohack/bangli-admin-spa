@@ -23,7 +23,7 @@ import { EntityActions }        from '../../actions';
  * TODO: loading/loaded status used in reducers(collection.ts).
  */
 import {
-    getCurDomain, getCurProfile,
+    getCurDomain, getMyId,
     getAuthors, getAuthorsObject, getEditors, getEditorsObject, 
     getCmsChannels, getCmsChannelsObject, getCmsCategories, getLocations,
     getPostStates, getPageStates, getTopicStates,
@@ -35,7 +35,7 @@ import {
 export class EntitiesPage implements OnInit, OnDestroy
 {
     // All subscribers, needs to unsubscribe on destory
-    subPro: any;
+    subMyId: any;
     subCmsCh: any;
     subEntity: any;
     subLoad: any;
@@ -56,7 +56,7 @@ export class EntitiesPage implements OnInit, OnDestroy
 
     isLoading$:   Observable<boolean>;
     domain$:      Observable<any>;  // Current managed domain
-    profile$:     Observable<User>; // User info of current domain
+    myId$:        Observable<number>; // User id of current domain
     authors$:     Observable<User[]>;
     editors$:     Observable<User[]>;
     authorsObject$: Observable<any>;
@@ -89,7 +89,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     ngOnInit() {
         this.isLoading$     = this.store.let(getIsLoading(this.etype));
         this.domain$        = this.store.let(getCurDomain());
-        this.profile$       = this.store.let(getCurProfile());
+        this.myId$          = this.store.let(getMyId());
         this.authors$       = this.store.let(getAuthors());
         this.editors$       = this.store.let(getEditors());
         this.authorsObject$ = this.store.let(getAuthorsObject());
@@ -103,7 +103,7 @@ export class EntitiesPage implements OnInit, OnDestroy
         this.idsEditing$    = this.store.let(getIdsEditing(this.etype));
         this.numEditing$    = this.idsEditing$.map(ids => ids.length);
         
-        this.subPro    = this.profile$.subscribe(p => this.myId = p.id);
+        this.subMyId   = this.myId$.subscribe(id => this.myId = id);
         this.subCmsCh  = this.cmsChannels$.subscribe(c => this.cmsChannels = c);
         this.subEntity = this.entity$.subscribe(e => this.entity = e);
         this.subLoad   = this.isLoading$.subscribe(i => this.isLoading = i);
@@ -133,7 +133,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     }
 
     ngOnDestroy() {
-        this.subPro.unsubscribe();
+        //this.subPro.unsubscribe();
         this.subCmsCh.unsubscribe();
         this.subEntity.unsubscribe();
         this.subLoad.unsubscribe();

@@ -38,9 +38,9 @@ export interface AuthState {
 
 const initialState: AuthState = {
     failure: false,
-    token: '',
+    token: undefined,
     jwt: new JwtPayload,
-    key: '',
+    key: undefined,
     keys: [],
     domains: {},
     latencies: {},
@@ -202,6 +202,15 @@ export function getCurProfile() {
 }
 
 /**
+ * Get current user id of current domain
+ */
+export function getMyId() {
+    return (state$: Observable<AuthState>) => state$
+        .filter(auth => auth.users[auth.key] != undefined)
+        .map(auth => auth.users[auth.key].id);
+}
+
+/**
  * Get user role of current domain
  */
 export function getMyRoleName() {
@@ -215,7 +224,7 @@ export function getMyRoleName() {
 export function hasRole(name: string) {
     return (state$: Observable<AuthState>) => state$.select(auth => {
 
-        if (!auth.key) return false; // Sanity check if user logged in
+        if (!auth.users[auth.key]) return false; // Sanity check if user logged in
 
         if (auth.jwt.spu === 1) return true;
         else if (name === 'super_user' && auth.jwt.spu !== 1) return false;
