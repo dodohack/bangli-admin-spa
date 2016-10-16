@@ -23,23 +23,25 @@
                     <div class="col-xs-6">
                         <label>密码</label>
                         <input class="form-control" type="password"
-                               name="password" [(ngModel)]="password">
+                               name="password" [(ngModel)]="user.password">
 
                     </div>
 
                     <div class="col-xs-6">
                         <label>重复密码</label>
                         <input class="form-control" type="password"
-                               name="password_repeat" [(ngModel)]="password_repeat">
+                               name="password_repeat" [(ngModel)]="user.password_repeat">
                     </div>
                 </div>
 
                 <div class="row form-group">
                     <div class="col-xs-12">
-                        <div class="alert alert-danger" *ngIf="password && password_repeat && password !== password_repeat">
+                        <div class="alert alert-danger"
+                             *ngIf="user.password && user.password_repeat && user.password !== user.password_repeat">
                             两次输入的密码不一致
                         </div>
-                        <button type="submit" class="btn btn-primary btn-block" [disabled]="!password || !password_repeat || password !== password_repeat">
+                        <button type="submit" class="btn btn-primary btn-block"
+                                [disabled]="!user.password || !user.password_repeat || user.password !== user.password_repeat">
                             保存
                         </button>
                     </div>

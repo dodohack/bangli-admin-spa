@@ -14,10 +14,10 @@ export class UserAuthProfileTab
 {
     @Input() isMyProfile: boolean;
     @Input() isSuperUser: boolean;
-    @Input() user: AuthUser;
+
+    _user: AuthUser;
+    @Input() set user(u: AuthUser) { this._user = Object.assign({}, u); }
+    get user() { return this._user; }
 
     @Output() save = new EventEmitter();
-
-    password: string = '';
-    password_repeat: string = '';
 }

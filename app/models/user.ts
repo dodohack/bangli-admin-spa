@@ -95,7 +95,8 @@ export class AuthUser {
     display_name: string;
     email: string;
     email_validated: boolean;
-    password: string;
+    password: string;         // User password updating use only
+    password_repeat: string;  // Form validation only
     created_at: string;
     updated_at: string;
     register_ip: string;

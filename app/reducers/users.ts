@@ -111,6 +111,10 @@ export default function (state = initialState, action: Action): UsersState {
             });
         }
 
+        case UserActions.SAVE_AUTH_USER: {
+            return Object.assign({}, state, {authUser: action.payload});
+        }
+
         case UserActions.TOGGLE_DASHBOARD_PERMISSION: {
             const id      = action.payload;
             const domains = state.authUser.domains;
@@ -118,10 +122,8 @@ export default function (state = initialState, action: Action): UsersState {
             // Default new dashboard permission
             let newPerm = 1;
 
-            if (domains[id] && domains[id].dashboard_user) {
-                // User is registered to the domain, alter dashboard permission only
-                newPerm = domains[id].dashboard_user ? 0 : 1;
-            }
+            // User has dashboard permssion
+            if (domains[id]) newPerm = 0;
 
             let newDomains = Object.assign({}, domains, { [id]: newPerm });
 

@@ -30,7 +30,7 @@ export class UserEffects {
         .filter(query => query !== '')
         .switchMap(query => this.searchUsers(query)
             .map(users => UserActions.searchComplete(users))
-            .catch(() => Observable.of(UserActions.searchComplete([])))
+            .catch(() => Observable.of(UserActions.loadUserFail()))
         );
     
     @Effect() clearSearch$ = this.actions$.ofType(UserActions.SEARCH)
