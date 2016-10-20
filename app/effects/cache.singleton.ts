@@ -1,4 +1,3 @@
-import { Headers }                   from '@angular/http';
 import { rehydrateApplicationState } from 'ngrx-store-localstorage';
 
 import { AuthState } from '../reducers/auth';
