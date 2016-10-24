@@ -388,6 +388,11 @@ export function getCurEntityContent(etype: string) {
         fromEntities.getCurEntity(), getEntitiesState(etype));
 }
 
+export function getCurEntityIntro(etype: string) {
+    return compose(fromEntities.getIntro(),
+        fromEntities.getCurEntity(), getEntitiesState(etype));
+}
+
 
 /*****************************************************************************
  * System

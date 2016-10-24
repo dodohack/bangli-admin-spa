@@ -686,6 +686,14 @@ export function getEntity(id: number) {
 }
 
 /**
+ * Return current editing entity description
+ */
+export function getIntro() {
+    return (entity$: Observable<Entity>)=> entity$
+        .filter(e => typeof e != 'undefined').select(e => e.intro);
+}
+
+/**
  * Return current editing entity content
  */
 export function getContent() {

@@ -1,46 +1,69 @@
 <form ngForm>
-<div class="row post-meta-row">
-    <div class="col-xs-7 col-sm-7 col-md-8">
-        <div class="input-group">
-            <span class="input-group-addon">标题</span>
-            <input type="text" name="title" class="form-control post-title"
-                   [ngModel]="title"
-                   (ngModelChange)="titleChange.emit($event)"
-                   placeholder="文章标题" required>
-        </div>
-    </div>
+    <div class="row post-meta-row">
+        <div class="col-xs-7 col-sm-7 col-md-8">
+            <div class="input-group">
+                <span class="input-group-addon">标题</span>
+                <input type="text" name="title" class="form-control post-title"
+                       [ngModel]="title"
+                       (ngModelChange)="titleChange.emit($event)"
+                       placeholder="文章标题" required>
+            </div>
 
-    <div class="col-xs-5 col-sm-5 col-md-4" *ngIf="date">
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="date-area float-right">
-                    <span class="date-time btn btn-sm btn-secondary"
-                          (click)="dpHidden = !dpHidden">
-                        显示时间(定时发布): {{ date | date: 'y-MM-dd HH:mm' }} GMT
-                        <i class="fa fa-chevron-down"
-                           [class.fa-chevron-down]="dpHidden"
-                           [class.fa-chevron-up]="!dpHidden"></i>
-                    </span>
-                    <div class="date-picker" [class.hidden]="dpHidden">
-                        <div>
-                            <datepicker name="date"
-                                        [ngModel]="date"
-                                        (ngModelChange)="dateChange.emit($event)"
-                                        [showWeeks]="false"></datepicker>
-                            <timepicker name="time"
-                                        [ngModel]="date"
-                                        (ngModelChange)="dateChange.emit($event)"
-                                        [showMeridian]="false"></timepicker>
-
-                            <button class="btn btn-info btn-sm float-right"
-                                    (click)="dpHidden = true">确定</button>
-                        </div>
-
-                    </div>
-
+            <div *ngIf="isTopic">
+                <div class="form-group post-meta">
+                    <label>关键字</label>
+                    <input type="text" name="keywords" class="form-control form-control-sm"
+                           [ngModel]="keywords"
+                           (ngModelChange)="keywordsChanged.emit($event)"
+                           placeholder="多个关键字用半角逗号隔开">
                 </div>
             </div>
         </div>
+
+        <div class="col-xs-5 col-sm-5 col-md-4" *ngIf="date">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="date-area float-right">
+                        <span class="date-time btn btn-sm btn-secondary"
+                              (click)="dpHidden = !dpHidden">
+                            显示时间(定时发布): {{ date | date: 'y-MM-dd HH:mm' }} GMT
+                            <i class="fa fa-chevron-down"
+                               [class.fa-chevron-down]="dpHidden"
+                               [class.fa-chevron-up]="!dpHidden"></i>
+                        </span>
+                        <div class="date-picker" [class.hidden]="dpHidden">
+                            <div>
+                                <datepicker name="date"
+                                            [ngModel]="date"
+                                            (ngModelChange)="dateChange.emit($event)"
+                                            [showWeeks]="false"></datepicker>
+                                <timepicker name="time"
+                                            [ngModel]="date"
+                                            (ngModelChange)="dateChange.emit($event)"
+                                            [showMeridian]="false"></timepicker>
+
+                                <button class="btn btn-info btn-sm float-right"
+                                        (click)="dpHidden = true">确定</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-</div>
+
+    <div class="row post-meta-row" *ngIf="isTopic">
+        <div class="col-xs-12">
+            <div class="form-group post-meta">
+                <label>专题描述</label>
+                <textarea rows="4" type="text" name="desc" class="form-control"
+                          [ngModel]="desc"
+                          (ngModelChange)="descChanged.emit($event)"
+                          placeholder="80字左右的介绍, 只展示在搜索结果页"></textarea>
+            </div>
+        </div>
+    </div>
 </form>

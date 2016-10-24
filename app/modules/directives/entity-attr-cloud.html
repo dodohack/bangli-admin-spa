@@ -6,7 +6,7 @@
             <div class="cms-tags">
                 <div class="cms-tag-group">
                     <span class="tag tag-warning-outline tag-item"
-                          (click)="toggle.emit()">文章分类:</span>
+                          (click)="toggle.emit(0)">文章分类:</span>
                     <ul class="tag-cloud">
                         <li *ngFor="let cat of categories"
                             class="tag tag-pill tag-primary-outline tag-item"
@@ -18,7 +18,7 @@
 
                 <div class="cms-tag-group">
                     <span class="tag tag-warning-outline tag-item"
-                          (click)="toggle.emit()">专题:</span>
+                          (click)="toggle.emit(1)">专题:</span>
                     <ul class="tag-cloud">
                         <li *ngFor="let topic of topics"
                             class="tag tag-pill tag-primary-outline tag-item"
@@ -30,7 +30,7 @@
 
                 <div class="cms-tag-group">
                     <span class="tag tag-warning-outline tag-item"
-                          (click)="toggle.emit()">Location:</span>
+                          (click)="toggle.emit(2)">Location:</span>
                     <ul class="tag-cloud">
                         <li *ngFor="let loc of locations"
                             class="tag tag-pill tag-primary-outline tag-item"
@@ -44,19 +44,44 @@
                     </ul>
                 </div>
 
-                <!--
-                <div class="cms-tag-group">
-                    <span class="tag tag-warning-outline tag-item"
-                          (click)="toggle.emit()">标签:</span>
-                    <ul class="tag-cloud">
-                        <li *ngFor="let tag of tags"
-                            class="tag tag-pill tag-primary-outline tag-item"
-                            (click)="deleteTag.emit(tag.id)">
-                            {{ tag.name }} x
-                        </li>
-                    </ul>
+                <div *ngIf="isTopic" style="margin-top: 1rem">
+                    <div class="cms-tag-group">
+                        <span class="tag tag-warning-outline tag-item"
+                              (click)="toggle.emit(3)">推荐产品系列:</span>
+                        <ul class="tag-cloud">
+                            <li *ngFor="let p of topicProductSeries"
+                                class="tag tag-pill tag-primary-outline tag-item"
+                                (click)="deleteTopicProductSeries.emit(p.id)">
+                                {{ p.name }} x
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="cms-tag-group">
+                        <span class="tag tag-warning-outline tag-item"
+                              (click)="toggle.emit(3)">推荐专题系列:</span>
+                        <ul class="tag-cloud">
+                            <li *ngFor="let t of topicTopicSeries"
+                                class="tag tag-pill tag-primary-outline tag-item"
+                                (click)="deleteTopicTopicSeries.emit(t.id)">
+                                {{ t.name }} x
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="cms-tag-group">
+                        <span class="tag tag-warning-outline tag-item"
+                              (click)="toggle.emit(3)">推荐文章系列:</span>
+                        <ul class="tag-cloud">
+                            <li *ngFor="let p of topicPostSeries"
+                                class="tag tag-pill tag-primary-outline tag-item"
+                                (click)="deleteTopicPostSeries.emit(p.id)">
+                                {{ p.name }} x
+                            </li>
+                        </ul>
+                    </div>
                 </div>
-                -->
+
             </div>
 
         </div>

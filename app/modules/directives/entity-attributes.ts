@@ -23,6 +23,7 @@ export class EntityAttributes {
     @Input() authors: User[];
     @Input() editors: User[];
     @Input() creativeTypes: any;
+    @Input() topicTypes: any;
     @Input() channels: Channel[];
 
     @Output() authorChanged = new EventEmitter();

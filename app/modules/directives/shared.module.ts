@@ -25,6 +25,7 @@ import { EditorPageHeader }          from './editor-page-header';
 import { EntityTitleDate }           from './entity-title-date';
 import { EntityButtons }             from './entity-buttons';
 import { EntityAttrCloud }           from './entity-attr-cloud';
+import { EntityPermalinkEdit }       from './entity-permalink-edit';
 import { EntityAttributes }          from './entity-attributes';
 import { EntityThumbnails }          from './entity-thumbnails';
 import { EntityExcerptNote }         from './entity-excerpt-note';
@@ -62,6 +63,7 @@ import { DateFilterComponent }       from './date-filter.component';
         EntityTitleDate,
         EntityButtons,
         EntityAttrCloud,
+        EntityPermalinkEdit,
         EntityAttributes,
         EntityThumbnails,
         EntityExcerptNote,
@@ -94,6 +96,7 @@ import { DateFilterComponent }       from './date-filter.component';
         EntityTitleDate,
         EntityButtons,
         EntityAttrCloud,
+        EntityPermalinkEdit,
         EntityAttributes,
         EntityThumbnails,
         EntityExcerptNote,

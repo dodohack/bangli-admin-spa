@@ -9,6 +9,32 @@
 </editor-page-header>
 
 
+<entity-attributes [editorId]="(entity$ | async)?.editor_id"
+                   [channelId]="(entity$ | async)?.channel_id"
+                   [editors]="editors$ | async"
+                   [channels]="cmsChannels$ | async"
+                   [topicTypes]="topicTypes"
+                   (editorChanged)="updateEditor($event)"
+                   (channelChanged)="updateChannel($event)"
+                   (topicTypeChanged)="updateTopicType($event)"
+                   (maxProductCountChanged)="updateMaxProductCount($event)">
+</entity-attributes>
+
+
+<!-- Topic location, category, topic, topic [product/topic/post] series etc -->
+<entity-attr-cloud [isTopic]="true"
+                   [categories]="(entity$ | async)?.categories"
+                   [locations]="(entity$ | async)?.locations"
+                   (toggle)="tabIdx = $event; openPanel = !openPanel"
+                   (deleteCat)="removeCat($event)"
+                   (deleteTag)="removeTag($event)"
+                   (toggleGeoLocation)="updateGeoLocation($event)"
+                   (deleteTopicProductSeries)="removeTopicProductSeries($event)"
+                   (deleteTopicTopicSeries)="removeTopicTopicSeries($event)"
+                   (deleteTopicPostSeries)="removeTopicPostSeries($event)">
+</entity-attr-cloud>
+
+
 <entity-buttons [entityState]="(entity$ | async)?.state"
                 (save)="save()"
                 (save2Pending)="save2Pending()"
@@ -17,33 +43,40 @@
                 (cancelSave)="cancelSave()">
 </entity-buttons>
 
-<entity-title-date [title]="(entity$ | async)?.title"
-                   (titleChange)="updateTitle($event)">
+<entity-title-date [isTopic]="true"
+                   [title]="(entity$ | async)?.title"
+                   [keywords]="(entity$ | async)?.keywords"
+                   [desc]="(entity$ | async)?.desc"
+                   [intro]="(entity$ | async)?.intro"
+                   (titleChange)="updateTitle($event)"
+                   (keywordsChanged)="updateKeywords($event)"
+                   (descChanged)="updateDesc($event)"
+                   (introChanged)="updateIntro($event)">
 </entity-title-date>
 
-<!-- Topic location, category, tag, topic etc -->
+<!-- Topic guid, anchor_text, website, aff_url -->
+<entity-permalink-edit [guid]="(entity$ | async)?.guid"
+                       [anchorText]="(entity$ | async)?.anchor_text"
+                       [website]="(entity$ | async)?.website"
+                       [affiliateUrl]="(entity$ | async)?.aff_url"
+                       (guidChanged)="updateGuid($event)"
+                       (anchorTextChanged)="updateAnchorText($event)"
+                       (websiteChanged)="updateWebsite($event)"
+                       (affiliateUrlChanged)="updateAffiliateUrl($event)">
+</entity-permalink-edit>
 
-<entity-attr-cloud [categories]="(entity$ | async)?.categories"
-                   [locations]="(entity$ | async)?.locations"
-                   (toggle)="openPanel = !openPanel"
-                   (deleteCat)="removeCat($event)"
-                   (deleteTag)="removeTag($event)"
-                   (toggleGeoLocation)="updateGeoLocation($event)">
-</entity-attr-cloud>
-
-<entity-attributes [editorId]="(entity$ | async)?.editor_id"
-                   [channelId]="(entity$ | async)?.channel_id"
-                   [editors]="editors$ | async"
-                   [channels]="cmsChannels$ | async"
-                   (editorChanged)="updateEditor($event)"
-                   (channelChanged)="updateChannel($event)">
-</entity-attributes>
 
 <!-- Froala Editor -->
 <!-- TODO: Use official one when ngModule bug is fixed -->
 <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
      [(froalaModel)]="inputPost.content"></div>-->
 
+<h2 style="font-size: 1.25rem">专题首段介绍</h2>
+<froala [froalaOptions]="froalaSimplifiedOptions"
+        [froalaData]="intro$ | async"
+        (model)="froalaIntroChanged($event)"></froala>
+
+<h2 style="font-size: 1.25rem">专题正文内容</h2>
 <froala [froalaOptions]="froalaOptions"
         [froalaData]="content$ | async"
         (model)="froalaContentChanged($event)"></froala>
@@ -52,7 +85,7 @@
 <right-panel [width]="'400px'" [isOpen]="openPanel"
              (toggle)="openPanel = !openPanel">
     <tabset>
-        <tab heading="分类">
+        <tab heading="分类" [active]="tabIdx == 0">
             <div class="treeview">
                 <category-tree [parentId]="0"
                                [channelId]="(entity$ | async)?.channel?.id"
@@ -63,10 +96,48 @@
             </div>
         </tab>
 
-        <tab heading="Location">
+        <tab heading="专题" [active]="tabIdx == 1">
+            <div class="alert alert-danger">
+                专题的专题需要分为几类来选择, 产品的品牌,网站,相关的产品,属于的知识类专题等,
+                比如HB维他命C需要分别选择品牌专题: Holland Barrett, 产品系列专题: HB维他命系列,
+                以及普通专题: 维他命, (还有网站专题: Holland Barrett网站??)
+            </div>
+            <topic-cloud [channel]="(entity$ | async)?.channel"
+                         [topics]="null"
+                         [selectedTopics]="(entity$ | async)?.topics"
+                         (addTopic)="addTopic($event)"
+                         (removeTopic)="removeTopic($event)">
+            </topic-cloud>
+        </tab>
+
+        <tab heading="Location" [active]="tabIdx == 2">
             <geo-location-cloud [locations]="geoLocations$ | async"
                                 (clickEvent)="updateGeoLocation($event)">
             </geo-location-cloud>
+        </tab>
+
+        <tab heading="专题系列" [active]="tabIdx == 3">
+            <div class="alert alert-danger">
+                系列推荐包括专题包含的产品专题和文章专题推荐, 比如当当前专题为'brand'的时候,我们有一下的情况:
+            </div>
+            <ul>
+                <li>推荐的产品系列: 用于显示返利购买链接, 从所有cms_topics.type为'products'的专题当中选择</li>
+                <li>推荐的产品系列,用于正文的相关从属关系推荐, 从所有cms_topics.type为'products'的专题当中选择</li>
+                <li>用于推荐文章的交叉专题, 从所有cms_topics.type为'general'的专题当中选择</li>
+            </ul>
+
+            <div class="alert alert-danger">
+                系列推荐包括专题包含的产品专题和文章专题推荐, 比如当当前专题为'products'的时候,我们有一下的情况:
+            </div>
+            <ul>
+                <li>推荐本系列的产品: 用于显示返利购买链接, 从所有cms_topics.type为'product'的专题当中选择</li>
+                <li>推荐本系列的产品,用于正文的相关从属关系推荐, 从所有cms_topics.type为'product'的专题当中选择</li>
+                <li>推荐同一品牌相关的产品系列,用于正文的相关从属关系推荐, 从相同'brand'的所有cms_topics.type为'products'的专题当中选择</li>
+                <li>推荐不同品牌相同功能的产品系列,用于正文的相关从属关系推荐, 从不同'brand'和cms_topics.type==='general', 并且当前产品系列所关联的所有general topic的'products' topics当中选择,
+                    比如, HB鱼油系列专题, 正文推荐专题会显示Natural Aids鱼油系列。
+                </li>
+                <li>用于推荐文章的交叉专题, 从所有cms_topics.type为'general'的专题当中选择</li>
+            </ul>
         </tab>
     </tabset>
 </right-panel>

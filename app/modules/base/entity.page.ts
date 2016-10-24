@@ -16,6 +16,7 @@ import { AlertActions }      from "../../actions";
 import { FroalaOptions }     from '../../models/froala.option';
 import { Entity }            from '../../models';
 import { CREATIVE_TYPES }    from '../../models';
+import { TOPIC_TYPES }       from '../../models';
 import { GeoLocation }       from '../../models';
 import { Channel }           from '../../models';
 import { Category }          from '../../models';
@@ -41,7 +42,7 @@ import {
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity,
     getIsLoading, getPaginator,
-    getEntitiesCurPage, getCurEntityContent} from '../../reducers';
+    getEntitiesCurPage, getCurEntityIntro, getCurEntityContent} from '../../reducers';
 
 
 export abstract class EntityPage implements OnInit, OnDestroy
@@ -54,6 +55,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     
     // FIXME: froala editor triggers content change at first time it initialize
     // the content, but actually the entity content is not modified yet.
+    introInitialized    = false;
     contentInitialized = false;
 
     isDirty        = false;   // Entity dirty bit
@@ -73,6 +75,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     cmsCategories$: Observable<Category[]>;
     paginator$:   Observable<any>;
     entity$:      Observable<Entity>;
+    intro$:       Observable<string>; // Topic only introduction
     content$:     Observable<string>;
     entities$:    Observable<Entity[]>;
     idsCurPage$:  Observable<number[]>;
@@ -110,6 +113,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.entity$        = this.store.let(getCurEntity(this.etype));
         this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
         this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
+        this.intro$         = this.store.let(getCurEntityIntro(this.etype));
         this.content$       = this.store.let(getCurEntityContent(this.etype));
 
         this.subDomain  = this.domain$.subscribe(d => this.domain = d);
@@ -175,6 +179,22 @@ export abstract class EntityPage implements OnInit, OnDestroy
         });
     }
 
+
+
+    /**
+     * Topic introduction changed event triggered by froala editor
+     */
+    froalaIntroChanged($event) {
+        // If no timeout set, the editor will throw an exception
+        setTimeout(() => {
+            // Set initialized state or set entity content dirty
+            console.log("intro changed: ", $event);
+            this.introInitialized ?
+                this.isDirty = true : this.introInitialized = true;
+            this.entity.intro = $event;
+        });
+    }
+
     /**
      * Entity content changed event triggered by froala editor
      */
@@ -192,7 +212,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
     abstract get previewUrl(): string;
 
     get creativeTypes() { return CREATIVE_TYPES; }
+    get topicTypes() { return TOPIC_TYPES; }
     get froalaOptions() { return FroalaOptions.getDefault(); }
+    get froalaSimplifiedOptions() { return FroalaOptions.getSimplified(); }
 
     gmt(value: string) { return GMT(value); }
 

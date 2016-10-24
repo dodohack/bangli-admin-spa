@@ -28,7 +28,7 @@
 <entity-attr-cloud [categories]="(entity$ | async)?.categories"
                    [topics]="(entity$ | async)?.topics"
                    [locations]="(entity$ | async)?.locations"
-                   (toggle)="openPanel = !openPanel"
+                   (toggle)="tabIdx = $event; openPanel = !openPanel"
                    (deleteCat)="removeCat($event)"
                    (deleteTag)="removeTag($event)"
                    (deleteTopic)="removeTopic($event)"
@@ -78,7 +78,7 @@
 <right-panel [width]="'400px'" [isOpen]="openPanel"
              (toggle)="openPanel = !openPanel">
     <tabset>
-        <tab heading="分类">
+        <tab heading="分类" [active]="tabIdx == 0">
             <div class="treeview">
                 <category-tree [parentId]="0"
                                [channelId]="(entity$ | async)?.channel?.id"
@@ -89,7 +89,7 @@
             </div>
         </tab>
 
-        <tab heading="专题">
+        <tab heading="专题" [active]="tabIdx == 1">
             <topic-cloud [channel]="(entity$ | async)?.channel"
                          [topics]="null"
                          [selectedTopics]="(entity$ | async)?.topics"
@@ -98,7 +98,7 @@
             </topic-cloud>
         </tab>
 
-        <tab heading="Location">
+        <tab heading="Location" [active]="tabIdx == 2">
             <geo-location-cloud [locations]="geoLocations$ | async"
                                 (clickEvent)="updateGeoLocation($event)">
             </geo-location-cloud>

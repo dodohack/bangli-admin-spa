@@ -10,11 +10,18 @@ import { ChangeDetectionStrategy }                from "@angular/core";
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityTitleDate {
+    @Input() isTopic: boolean;
     @Input() title: string;
     @Input() date: string;
+    @Input() keywords: string;
+    @Input() desc: string;
+    @Input() intro: string;
 
     @Output() titleChange = new EventEmitter();
     @Output() dateChange  = new EventEmitter();
+    @Output() keywordsChanged = new EventEmitter();
+    @Output() descChanged = new EventEmitter();
+    @Output() introChanged = new EventEmitter();
     
     // Datepicker hidden by default
     dpHidden = true;

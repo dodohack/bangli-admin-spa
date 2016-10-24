@@ -66,6 +66,17 @@ export const CREATIVE_TYPES = [
     {creative_type: 'review',        count: 0}  // 审稿
 ];
 
+export const TOPIC_TYPES = [
+    {type: 'brand',      count: 0}, // 品牌
+    {type: 'website',    count: 0}, // 网站
+    {type: 'products',   count: 0}, // 产品系列
+    {type: 'product',    count: 0},  // 产品
+    {type: 'general',    count: 0},  // 其他
+
+    {type: 'place',      count: 0},  // 目的地
+    {type: 'route',      count: 0},  // 线路
+];
+
 /** ALL:
  *  entity states, corresponding to each entity table column: state */
 export const ENTITY_STATES = [
@@ -168,9 +179,12 @@ export class Entity {
     creative_type: string; // ...
     title: string;
     categories: Category[];
-    tags: Tag[];
-    topics: Topic[];
+    tags: Tag[];           //
+    topics: Topic[];       // CMS post only
     excerpt: string;
+    keywords: string;      // CMS topic keywords
+    desc: string;          // CMS topic description
+    intro: string;         // CMS topic introduction
     content: string;
     note: string;          // CMS post and shop product only
     fake_published_at: string;

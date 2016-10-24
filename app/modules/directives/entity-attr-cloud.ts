@@ -15,15 +15,22 @@ import { GeoLocation } from '../../models';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityAttrCloud {
+    @Input() isTopic:    boolean;
     @Input() categories: Category[];
     @Input() topics:     Topic[];
     @Input() locations:  GeoLocation[];
+    @Input() topicProductSeries: Topic[];
+    @Input() topicTopicSeries:   Topic[];
+    @Input() topicPostSeries:    Topic[];
 
     @Output() toggle            = new EventEmitter();
     @Output() deleteCat         = new EventEmitter();
     @Output() deleteTag         = new EventEmitter();
     @Output() deleteTopic       = new EventEmitter();
     @Output() toggleGeoLocation = new EventEmitter();
-    
+    @Output() deleteTopicProductSeries = new EventEmitter();
+    @Output() deleteTopicTopicSeries   = new EventEmitter();
+    @Output() deleteTopicPostSeries    = new EventEmitter();
+
     get hasLocation() { return this.locations && this.locations.length > 0; }
 }

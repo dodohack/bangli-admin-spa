@@ -36,9 +36,9 @@
                     <label>稿件属性</label>
                     <select class="form-control form-control-sm custom-select"
                             name="c_type" [(ngModel)]="creativeType">
-                        <option *ngFor="let c_type of creativeTypes"
-                                [selected]="creativeType === c_type.creative_type"
-                                [value]="c_type.creative_type">{{ zh[c_type.creative_type] }}</option>
+                        <option *ngFor="let ctype of creativeTypes"
+                                [selected]="creativeType === ctype.creative_type"
+                                [value]="ctype.creative_type">{{ zh[ctype.creative_type] }}</option>
                     </select>
                 </div>
 
@@ -49,6 +49,16 @@
                         <option *ngFor="let ch of channels"
                                 [selected]="channelId === ch.id"
                                 [value]="ch.id">{{ ch.name }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group post-meta" *ngIf="topicTypes">
+                    <label>专题类型</label>
+                    <select class="form-control form-control-sm custom-select"
+                            name="t_type" [(ngModel)]="topicType">
+                        <option *ngFor="let ttype of topicTypes"
+                                [selected]="topicType === ttype.type"
+                                [value]="ttype.type">{{ zh[ttype.type] }}</option>
                     </select>
                 </div>
             </div>

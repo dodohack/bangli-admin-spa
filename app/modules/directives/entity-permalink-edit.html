@@ -1,0 +1,37 @@
+<div class="row post-meta-row">
+    <div class="col-xs-6">
+        <div class="form-group post-meta">
+            <label>URL昵称</label>
+            <input class="form-control form-control-sm"
+                    name="guid" [ngModel]="guid"
+                    (ngModelChanged)="guidChanged.emit($event)"/>
+        </div>
+    </div>
+
+    <div class="col-xs-6">
+        <div class="form-group post-meta">
+            <label>锚文本</label>
+            <input class="form-control form-control-sm"
+                   name="anchor" [ngModel]="anchorText"
+                   (ngModelChanged)="anchorTextChanged.emit($event)"/>
+        </div>
+    </div>
+
+    <div class="col-xs-6">
+        <div class="form-group post-meta">
+            <label>官网地址</label>
+            <input class="form-control form-control-sm"
+                   name="website" [ngModel]="website"
+                   (ngModelChanged)="websiteChanged.emit($event)"/>
+        </div>
+    </div>
+
+    <div class="col-xs-6">
+        <div class="form-group post-meta">
+            <label>默认返利链接</label>
+            <input class="form-control form-control-sm"
+                   name="affUrl" [ngModel]="affiliateUrl"
+                   (ngModelChanged)="affiliateUrlChanged.emit($event)"/>
+        </div>
+    </div>
+</div>

@@ -41,7 +41,25 @@ export class FroalaOptions {
             imageUploadURL: APIS[key] + API_PATH.file_upload,
         };
     }
+
+    // Simplified editor for topic introduction
+    static getSimplified() {
+        return {
+            // Past in WYSIWYG edit in plain text
+            pastePlain: true,
+
+            // Editor height in pixel
+            height: 200,
+
+            // Toolbars icons
+            toolbarButtons: ['bold', 'italic', 'insertLink',
+                'undo', 'redo', 'clearFormatting', 'html'],
+
+            toolbarSticky: false,
+        };
+    }
 }
+
 
 /*
 export const FROALA_OPTIONS = {

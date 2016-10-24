@@ -31,6 +31,17 @@ export const zh_CN = {
         culture: '文化',
         education: '教育',
         university: '大学',
+
+        /* Shopping channel topic type */
+        brand: '品牌专题',
+        website: '购物网站专题',
+        products: '产品系列专题',
+        product: '产品专题',
+        general: '普通专题',
+
+        /* Travel channel topic type */
+        place: '目的地专题',
+        route: '旅游线路专题'
     },
 
     product: {
