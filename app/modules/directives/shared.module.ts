@@ -30,6 +30,7 @@ import { EntityAttributes }          from './entity-attributes';
 import { EntityThumbnails }          from './entity-thumbnails';
 import { EntityExcerptNote }         from './entity-excerpt-note';
 import { EntityContent }             from './entity-content';
+import { DealTopicContent }          from './deal-topic-content';
 
 import { ListPageHeader }            from './list-page-header';
 import { ListFilterBar }             from './list-filter-bar';
@@ -68,6 +69,7 @@ import { DateFilterComponent }       from './date-filter.component';
         EntityThumbnails,
         EntityExcerptNote,
         EntityContent,
+        DealTopicContent,
 
         ModalEditTax,
         ModalEditGeoLoc,
@@ -101,6 +103,7 @@ import { DateFilterComponent }       from './date-filter.component';
         EntityThumbnails,
         EntityExcerptNote,
         EntityContent,
+        DealTopicContent,
 
         ModalEditTax,
         ModalEditGeoLoc,

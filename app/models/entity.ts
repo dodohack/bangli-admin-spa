@@ -197,6 +197,10 @@ export class Entity {
     statistics: Statistic[];
     activities: Activity[]; // Only have edit_lock currently
 
+    has_deal: boolean;     // CMS topic only, if we have a corresponding deal topic
+    deal_intro: string;    // CMS deal topic only
+    deal_content: string;  // CMS deal topic only
+
     sku: string;           // Shop product only
     made_in: string;       // ...
     min_age: number;       // ...

@@ -700,6 +700,15 @@ export function getContent() {
     return (entity$: Observable<Entity>)=> entity$
         .filter(e => typeof e != 'undefined').select(e => e.content);
 }
+
+/**
+ * Return is current editing topic has deal enabled
+ */
+export function getHasDeal() {
+    return (entity$: Observable<Entity>)=> entity$
+        .filter(e => typeof e != 'undefined').select(e => e.has_deal);
+}
+
 /**
  * Return current editing entity
  */

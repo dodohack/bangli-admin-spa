@@ -393,6 +393,12 @@ export function getCurEntityIntro(etype: string) {
         fromEntities.getCurEntity(), getEntitiesState(etype));
 }
 
+export function getCurEntityHasDeal(etype: string) {
+    return compose(fromEntities.getHasDeal(),
+        fromEntities.getCurEntity(), getEntitiesState(etype));
+}
+
+
 
 /*****************************************************************************
  * System

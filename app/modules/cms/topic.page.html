@@ -14,10 +14,11 @@
                    [editors]="editors$ | async"
                    [channels]="cmsChannels$ | async"
                    [topicTypes]="topicTypes"
+                   [hasDeal]="hasDeal$ | async"
                    (editorChanged)="updateEditor($event)"
                    (channelChanged)="updateChannel($event)"
                    (topicTypeChanged)="updateTopicType($event)"
-                   (maxProductCountChanged)="updateMaxProductCount($event)">
+                   (hasDealChanged)="updateHasDeal($event)">
 </entity-attributes>
 
 
@@ -80,6 +81,9 @@
 <froala [froalaOptions]="froalaOptions"
         [froalaData]="content$ | async"
         (model)="froalaContentChanged($event)"></froala>
+
+<!-- Extra deal topic only data -->
+<deal-topic-content *ngIf="hasDeal$ | async"></deal-topic-content>
 
 <!-- Right panel, we can trigger a seperate saving individually -->
 <right-panel [width]="'400px'" [isOpen]="openPanel"

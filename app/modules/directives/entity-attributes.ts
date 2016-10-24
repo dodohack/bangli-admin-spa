@@ -25,11 +25,14 @@ export class EntityAttributes {
     @Input() creativeTypes: any;
     @Input() topicTypes: any;
     @Input() channels: Channel[];
+    @Input() hasDeal: boolean;
 
     @Output() authorChanged = new EventEmitter();
     @Output() editorChanged = new EventEmitter();
     @Output() creativeTypeChanged = new EventEmitter();
-    @Output() channelChanged = new EventEmitter();
+    @Output() channelChanged   = new EventEmitter();
+    @Output() topicTypeChanged = new EventEmitter();
+    @Output() hasDealChanged   = new EventEmitter();
 
     get zh() { return zh_CN.cms; }
 }

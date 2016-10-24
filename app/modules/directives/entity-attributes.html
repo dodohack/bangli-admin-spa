@@ -35,7 +35,8 @@
                 <div class="form-group post-meta" *ngIf="creativeTypes">
                     <label>稿件属性</label>
                     <select class="form-control form-control-sm custom-select"
-                            name="c_type" [(ngModel)]="creativeType">
+                            name="c_type" [ngModel]="creativeType"
+                            (ngModelChanged)="creativeTypeChanged.emit($event)">
                         <option *ngFor="let ctype of creativeTypes"
                                 [selected]="creativeType === ctype.creative_type"
                                 [value]="ctype.creative_type">{{ zh[ctype.creative_type] }}</option>
@@ -45,7 +46,8 @@
                 <div class="form-group post-meta" *ngIf="channels">
                     <label>频道</label>
                     <select class="form-control form-control-sm custom-select"
-                            name="cid" [(ngModel)]="channelId">
+                            name="cid" [ngModel]="channelId"
+                            (ngModelChanged)="channelChanged.emit($event)">
                         <option *ngFor="let ch of channels"
                                 [selected]="channelId === ch.id"
                                 [value]="ch.id">{{ ch.name }}</option>
@@ -55,11 +57,19 @@
                 <div class="form-group post-meta" *ngIf="topicTypes">
                     <label>专题类型</label>
                     <select class="form-control form-control-sm custom-select"
-                            name="t_type" [(ngModel)]="topicType">
+                            name="t_type" [ngModel]="topicType"
+                            (ngModelChanged)="topicTypeChanged.emit($event)">>
                         <option *ngFor="let ttype of topicTypes"
                                 [selected]="topicType === ttype.type"
                                 [value]="ttype.type">{{ zh[ttype.type] }}</option>
                     </select>
+                </div>
+
+                <div class="form-group post-meta" *ngIf="topicTypes">
+                    <label>优惠专题</label>
+                    <input type="checkbox" class="form-control form-control-sm"
+                            name="hasDeal" [ngModel]="hasDeal"
+                           (ngModelChanged)="hasDealChanged.emit($event)"/>
                 </div>
             </div>
         </div>

@@ -44,6 +44,11 @@ export class TopicPage extends EntityPage
         //this.store.dispatch();
     }
 
+    // TODO: Update if current topic has a corrresponding deal
+    updateHasDeal($event) {
+
+    }
+
     // TODO: update cms_topics.product_series_ids
     addTopicProductSeries(topic: Entity) {}
     deleteTopicProductSeries(id: number) {

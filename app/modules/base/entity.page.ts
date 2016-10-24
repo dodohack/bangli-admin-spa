@@ -42,7 +42,8 @@ import {
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity,
     getIsLoading, getPaginator,
-    getEntitiesCurPage, getCurEntityIntro, getCurEntityContent} from '../../reducers';
+    getEntitiesCurPage, getCurEntityHasDeal,
+    getCurEntityIntro, getCurEntityContent} from '../../reducers';
 
 
 export abstract class EntityPage implements OnInit, OnDestroy
@@ -77,6 +78,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     entity$:      Observable<Entity>;
     intro$:       Observable<string>; // Topic only introduction
     content$:     Observable<string>;
+    hasDeal$:     Observable<boolean>;
     entities$:    Observable<Entity[]>;
     idsCurPage$:  Observable<number[]>;
 
@@ -115,6 +117,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
         this.intro$         = this.store.let(getCurEntityIntro(this.etype));
         this.content$       = this.store.let(getCurEntityContent(this.etype));
+        this.hasDeal$       = this.store.let(getCurEntityHasDeal(this.etype));
 
         this.subDomain  = this.domain$.subscribe(d => this.domain = d);
         this.subPro     = this.profile$.subscribe(p => this.profile = p);

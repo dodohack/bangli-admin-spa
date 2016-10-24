@@ -4,9 +4,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ChangeDetectionStrategy }                from "@angular/core";
 
-import { Entity }  from '../../models';
-import { zh_CN }   from '../../localization';
-
 @Component({
     selector: 'entity-permalink-edit',
     template: require('./entity-permalink-edit.html'),
