@@ -115,7 +115,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subDomain  = this.domain$.subscribe(d => this.domain = d);
         this.subPro     = this.profile$.subscribe(p => this.profile = p);
         this.subDirty   = this.isDirty$.subscribe(i => this.isDirty = i);
-        this.subEntity  = this.entity$.subscribe(e => this.entity = e);
+        this.subEntity  = this.entity$
+            .subscribe(e => this.entity = Object.assign({}, e));
 
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
