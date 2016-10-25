@@ -168,8 +168,8 @@ export function getProfiles() {
     return compose(fromAuth.getProfiles(), getAuthState());
 }
 
-export function hasAuthFail() {
-    return compose(fromAuth.hasAuthFail(), getAuthState());
+export function getAuthFail() {
+    return compose(fromAuth.getAuthFail(), getAuthState());
 }
 
 export function getCurDomainKey() {
@@ -246,6 +246,10 @@ export function getEditorsObject() {
     return compose(fromCms.getEditorsObject(), getCmsAttrsState());
 }
 
+export function getCmsCurChannel() {
+    return compose(fromCms.getCurChannel(), getCmsAttrsState());
+}
+
 export function getCmsChannels() {
     return compose(fromCms.getChannels(), getCmsAttrsState());
 }
@@ -256,6 +260,18 @@ export function getCmsChannelsObject() {
 
 export function getCmsCategories() {
     return compose(fromCms.getCategories(), getCmsAttrsState());
+}
+
+export function getCmsCategoriesByChannel(chId: number) {
+    return compose(fromCms.getCategoriesByChannel(chId), getCmsAttrsState());
+}
+
+export function getCmsTopicTypes() {
+    return compose(fromCms.getTopicTypes(), getCmsAttrsState());
+}
+
+export function getCmsTopicTypesByChannel(chId: number) {
+    return compose(fromCms.getTopicTypesByChannel(chId), getCmsAttrsState());
 }
 
 export function getLocations() {

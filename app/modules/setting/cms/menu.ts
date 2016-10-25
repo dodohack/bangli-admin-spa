@@ -3,8 +3,8 @@
  */
 import { Component, Input }        from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
-import { Channel }                 from "../../../models";
 
+import { Channel }                 from "../../../models";
 import { zh_CN }                   from '../../../localization';
 
 @Component({ 
@@ -15,11 +15,12 @@ import { zh_CN }                   from '../../../localization';
 export class CmsSettingMenu
 {
     @Input() cmsChannels: Channel[];
+    @Input() channel: Channel;
     @Input() taxonomy: string;
  
     // We manage these settings here
     //settings = ['category', 'tag', 'channel'];
-    settings = ['category'];
+    settings = ['category', 'topic'];
     
     get zh() { return zh_CN; }
 }

@@ -95,6 +95,15 @@ export class CreativeType {
 }
 */
 
+// Cms topic types, scope per channel
+export class TopicType {
+    id: number;
+    channel_id: number;
+    slug: string;
+    name: string;
+    description: string;
+}
+
 export class EntityState {
     state: string;
     count: number;

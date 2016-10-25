@@ -43,6 +43,10 @@ export const API_PATH = {
     cms_cats:       '/cms/categories',
     cms_cats_batch: '/cms/categories/batch',
 
+    /* Type of topics */
+    cms_topic_types: '/cms/topic_types',
+    cms_topic_types_batch: '/cms/topic_types/batch',
+
     /* Tags/Tag */
     cms_tags:       '/cms/tags',
     cms_tags_batch: '/cms/tags/batch',

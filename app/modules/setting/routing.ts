@@ -27,9 +27,9 @@ const routes: Routes = [
                 canActivate: [EditorGuard],
                 children: [
                     /* cms setting index */
-                    { path: '', pathMatch: 'full', redirectTo: 'category/shopping' },
-                    { path: ':taxonomy',          redirectTo: ':taxonomy/shopping' },
-                    { path: ':taxonomy/:channel', component: CmsPage }
+                    { path: '', pathMatch: 'full', redirectTo: 'shopping/category' },
+                    { path: ':channel',            redirectTo: ':channel/category' },
+                    { path: ':channel/:taxonomy',  component: CmsPage }
                 ]
             },
 
@@ -52,8 +52,8 @@ const routes: Routes = [
                 children: [
                     /* bbs setting index */
                     { path: '',                   component: BbsPage },
-                    { path: ':taxonomy',          redirectTo: ':taxonomy/shopping'},
-                    { path: ':taxonomy/:channel', component: BbsPage }
+                    { path: ':channel',           redirectTo: ':channel/category'},
+                    { path: ':channel/:taxonomy', component: BbsPage }
                 ]
             },
         ]

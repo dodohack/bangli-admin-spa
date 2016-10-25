@@ -23,7 +23,7 @@ import { JwtPayload }        from './models';
 
 import { isDashboardUser, hasAuthorRole, getCurDomainKey, getAuthToken,
     getDomainLatencies, getDomains, getDomainKeys,
-    getAuthJwt, hasAuthFail }   from './reducers';
+    getAuthJwt, getAuthFail }   from './reducers';
 
 @Component({
     selector: 'admin-spa',
@@ -60,7 +60,7 @@ export class App implements OnInit, OnDestroy
         this.domains$      = this.store.let(getDomains());
         this.jwt$          = this.store.let(getAuthJwt());
         this.pref$         = this.store.select<PreferenceState>('pref');
-        this.fail$         = this.store.let(hasAuthFail());
+        this.fail$         = this.store.let(getAuthFail());
         this.latencies$    = this.store.let(getDomainLatencies());
         this.isDashboardUser$ = this.store.let(isDashboardUser());
         
@@ -92,6 +92,19 @@ export class App implements OnInit, OnDestroy
 
     // Load domain data when loginDomain success
     loadDomainData() {
+        // When flag 'failure' turns from true to false
+        // FIXME: This action is triggered each time when doing the ping,
+        // as reducer creates a new state each time of PING_DOMAINS
+        /*
+        this.subKey = this.fail$.filter(f => f == false)
+            .subscribe(() => {
+                this.store.dispatch(ShopAttrActions.loadAll());
+                this.store.dispatch(SysAttrActions.loadAll());
+                this.store.dispatch(CmsAttrActions.loadAll());
+            });
+        */
+        // FIXME: We cant listen on domain key change as it may happens before
+        // loginDomainSuccess
         this.subKey = this.curDomainKey$.filter(key => key != undefined && key != '')
             .subscribe(key => {
                 this.store.dispatch(ShopAttrActions.loadAll(key));

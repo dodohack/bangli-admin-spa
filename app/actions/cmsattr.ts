@@ -7,6 +7,7 @@ import { GeoLocation }     from '../models';
 import { Category }        from '../models';
 import { Tag }             from '../models';
 import { Topic }           from '../models';
+import { TopicType }       from '../models';
 import { AuthState }       from '../reducers/auth';
 import { CmsAttrsState }   from '../reducers/cmsattrs';
 
@@ -31,6 +32,14 @@ export class CmsAttrActions {
     static loadAllFail(): Action {
         return {
             type: CmsAttrActions.LOAD_ALL_FAIL
+        };
+    }
+
+    static SWITCH_CHANNEL = '[CmsAttr] Switch Channel By Slug';
+    static switchChannel(slug: string): Aciton {
+        return {
+            type: CmsAttrActions.SWITCH_CHANNEL,
+            payload: slug
         };
     }
 
@@ -152,6 +161,14 @@ export class CmsAttrActions {
             payload: cat
         }
     }
+
+    static ADD_TOPIC_TYPE = '[CmsAttr] Add Topic Type';
+    static addTopicType(ttype: TopicType): Action {
+        return {
+            type: CmsAttrActions.ADD_TOPIC_TYPE,
+            payload: ttype
+        }
+    }
     
     static SAVE_TAG = '[CmsAttr] Save Tag';
     static saveTag(tag: Tag): Action {
@@ -166,6 +183,14 @@ export class CmsAttrActions {
         return {
             type: CmsAttrActions.SAVE_CATEGORY,
             payload: cat
+        }
+    }
+
+    static SAVE_TOPIC_TYPE = '[CmsAttr] Save Topic Type';
+    static saveTopicType(ttype: TopicType): Action {
+        return {
+            type: CmsAttrActions.SAVE_TOPIC_TYPE,
+            payload: ttype
         }
     }
     
@@ -185,6 +210,14 @@ export class CmsAttrActions {
         }
     }
 
+    static DELETE_TOPIC_TYPE = '[CmsAttr] Delete Topic Type';
+    static deleteTopicType(ttype: TopicType): Action {
+        return {
+            type: CmsAttrActions.DELETE_TOPIC_TYPE,
+            payload: ttype
+        }
+    }
+
     static SAVE_CATEGORY_SUCCESS = '[CmsAttr] Save Category Success';
     static saveCategorySuccess(cat: Category): Action {
         return {
@@ -198,6 +231,14 @@ export class CmsAttrActions {
         return {
             type: CmsAttrActions.SAVE_TAG_SUCCESS,
             payload: tag
+        }
+    }
+
+    static SAVE_TOPIC_TYPE_SUCCESS = '[CmsAttr] Save Topic Type Success';
+    static saveTopicTypeSuccess(ttype: TopicType): Action {
+        return {
+            type: CmsAttrActions.SAVE_TOPIC_TYPE_SUCCESS,
+            payload: ttype
         }
     }
 
@@ -217,6 +258,14 @@ export class CmsAttrActions {
         }
     }
 
+    static ADD_TOPIC_TYPE_SUCCESS = '[CmsAttr] Add Topic Type Success';
+    static addTopicTypeSuccess(ttype: TopicType): Action {
+        return {
+            type: CmsAttrActions.ADD_TOPIC_TYPE_SUCCESS,
+            payload: ttype
+        }
+    }
+
     static DELETE_CATEGORY_SUCCESS = '[CmsAttr] Delete Category Success';
     static deleteCategorySuccess(catId: number): Action {
         return {
@@ -230,6 +279,14 @@ export class CmsAttrActions {
         return {
             type: CmsAttrActions.DELETE_TAG_SUCCESS,
             payload: tagId
+        }
+    }
+
+    static DELETE_TOPIC_TYPE_SUCCESS = '[CmsAttr] Delete Topic Type Success';
+    static deleteTopicTypeSuccess(ttypeId: number): Action {
+        return {
+            type: CmsAttrActions.DELETE_TOPIC_TYPE_SUCCESS,
+            payload: ttypeId
         }
     }
 

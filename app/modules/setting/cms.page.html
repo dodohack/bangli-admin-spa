@@ -1,13 +1,21 @@
 <setting-menu></setting-menu>
 
 <cms-setting-menu [cmsChannels]="channels"
+                  [channel]="channel"
                   [taxonomy]="taxType"></cms-setting-menu>
 
 <div class="setting-body">
+    <!-- Category settings -->
     <cms-category-setting *ngIf="filteredCats && taxType == 'category'"
                           [cats]="filteredCats" [channel]="channel"
                           (edit)="onEdit($event)"
                           (add)="onAdd()"></cms-category-setting>
+
+    <!-- Topic relationship settings -->
+    <cms-topic-setting *ngIf="taxType == 'topic'"
+                       [channel]="channel"
+                       (edit)="onEdit($event)"
+                       (add)="onAdd()"></cms-topic-setting>
 
     <!-- Shared popup modal to edit taxonomies -->
     <div *ngIf="taxType === 'category'">

@@ -1,4 +1,5 @@
 /**
+ * DEPRECATED ??
  * This is the definition of topic model
  */
 

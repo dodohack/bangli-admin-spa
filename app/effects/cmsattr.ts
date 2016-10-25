@@ -11,6 +11,7 @@ import { APIS, API_PATH }   from '../api';
 import { CmsAttrsState }    from '../reducers/cmsattrs';
 import { CmsAttrActions }   from '../actions';
 import { Tag, Category }    from '../models';
+import { TopicType }        from '../models';
 import { GeoLocation }      from "../models";
 
 @Injectable()
@@ -43,6 +44,11 @@ export class CmsAttrEffects {
             .map(cat => CmsAttrActions.saveCategorySuccess(cat))
             .catch(() => Observable.of(CmsAttrActions.saveFail())));
 
+    @Effect() saveTType$ = this.actions$.ofType(CmsAttrActions.SAVE_TOPIC_TYPE)
+        .switchMap(action => this.putTopicType(action.payload)
+            .map(ttype => CmsAttrActions.saveTopicTypeSuccess(ttype))
+            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+
     @Effect() saveGeoLoc$ = this.actions$.ofType(CmsAttrActions.SAVE_GEO_LOCATION)
         .switchMap(action => this.putGeoLoc(action.payload)
             .map(loc => CmsAttrActions.saveGeoLocationSuccess(loc))
@@ -51,6 +57,11 @@ export class CmsAttrEffects {
     @Effect() addTag$ = this.actions$.ofType(CmsAttrActions.ADD_TAG)
         .switchMap(action => this.postTag(action.payload)
             .map(tag => CmsAttrActions.addTagSuccess(tag))
+            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+
+    @Effect() addTType$ = this.actions$.ofType(CmsAttrActions.ADD_TOPIC_TYPE)
+        .switchMap(action => this.postTopicType(action.payload)
+            .map(ttype => CmsAttrActions.addTopicTypeSuccess(ttype))
             .catch(() => Observable.of(CmsAttrActions.saveFail())));
 
     @Effect() addCat$ = this.actions$.ofType(CmsAttrActions.ADD_CATEGORY)
@@ -71,6 +82,11 @@ export class CmsAttrEffects {
     @Effect() deleteCat$ = this.actions$.ofType(CmsAttrActions.DELETE_CATEGORY)
         .switchMap(action => this.deleteCat(action.payload)
             .map(catId => CmsAttrActions.deleteCategorySuccess(catId))
+            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+
+    @Effect() deleteTType$ = this.actions$.ofType(CmsAttrActions.DELETE_TOPIC_TYPE)
+        .switchMap(action => this.deleteTopicType(action.payload)
+            .map(ttypeId => CmsAttrActions.deleteTopicTypeSuccess(ttypeId))
             .catch(() => Observable.of(CmsAttrActions.saveFail())));
 
     @Effect() deleteGeoLoc$ = this.actions$.ofType(CmsAttrActions.DELETE_GEO_LOCATION)
@@ -102,6 +118,13 @@ export class CmsAttrEffects {
      */
     private putCat(cat: Category) {
         return this.putTax(cat, API_PATH.cms_cats);
+    }
+
+    /**
+     * Update a topic type
+     */
+    private putTopicType(ttype: TopicType) {
+        return this.putTax(ttype, API_PATH.cms_topic_types);
     }
 
     /**
@@ -137,6 +160,13 @@ export class CmsAttrEffects {
     }
 
     /**
+     * Create topic type
+     */
+    private postTopicType(ttype: TopicType) {
+        return this.postTax(ttype, API_PATH.cms_topic_types);
+    }
+
+    /**
      * Create geo-location
      */
     private postGeoLoc(loc: GeoLocation) {
@@ -166,6 +196,13 @@ export class CmsAttrEffects {
      */
     private deleteCat(cat: Category) {
         return this.deleteTax(cat, API_PATH.cms_cats);
+    }
+
+    /**
+     * Delete a cms topic type
+     */
+    private deleteTopicType(ttype: TopicType) {
+        return this.deleteTax(ttype, API_PATH.cms_topic_types);
     }
 
     /**

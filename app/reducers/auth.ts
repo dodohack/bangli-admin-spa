@@ -37,7 +37,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-    failure: false,
+    failure: true,
     token: undefined,
     jwt: new JwtPayload,
     key: undefined,
@@ -117,16 +117,24 @@ export default function(state = initialState, action: Action): AuthState {
             // Record latest domain key as the default key for next time app
             // start
             if (action.payload)
-                return Object.assign({}, state, { key: action.payload });
+                return Object.assign({}, state, {
+                    failure: true,
+                    key: action.payload
+                });
             else
-                return Object.assign({}, state, { key: state.keys[0] });
+                return Object.assign({}, state, {
+                    failure: true,
+                    key: state.keys[0]
+                });
         }
 
         case AuthActions.LOGIN_DOMAIN_SUCCESS: {
             const user = { [state.key]: action.payload };
             // Append domain specific user profile to state.users
-            return Object.assign({}, state,
-                { failure: false, users: Object.assign({}, state.users, user) });
+            return Object.assign({}, state, {
+                failure: false,
+                users: Object.assign({}, state.users, user)
+            });
         }
 
         // Clear state if any failures or logout
@@ -158,9 +166,9 @@ export function getAuthJwt() {
         .select(auth => auth.jwt);
 }
 
-export function hasAuthFail() {
+export function getAuthFail() {
     return (state$: Observable<AuthState>) => state$
-        .map(auth => auth.failure).filter(f => f);
+        .map(auth => auth.failure); //.filter(f => f);
 }
 
 export function getDomainKeys() {

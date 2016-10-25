@@ -1,10 +1,20 @@
-<h5>{{ channel.name }}频道 - 设置专题/文章关系</h5>
+<div class="alert alert-danger">注意: 不要随意添加专题类型! 专题类型类似于专题分类, 比如购物专题可以分为'品牌', '网站', '产品系列', '产品' 和 '一般' 5大类</div>
+
+<div class="page-title">
+    <h5>
+        {{ channel.name }}频道 - 专题类型
+        <button class="page-title-action btn btn-outline-info btn-sm"
+                (click)="add.emit($event)">
+            <i class="fa fa-plus"></i> 新建专题类型
+        </button>
+    </h5>
+</div>
+
+
 <ul class="tag-cloud tag-setting">
-    <li *ngFor="let topic of topics" class="tag-item">
-        <div (dblclick)="edit(topic)">
-            <div>{{ topic.name }}</div>
-            <div>{{ topic.guid }}</div>
-        </div>
-        <div (click)="remove(topic)">x</div>
-    </li>
+    <li>品牌专题</li>
+    <li>网站专题</li>
+    <li>产品系列专题</li>
+    <li>产品专题</li>
+    <li>一般专题</li>
 </ul>

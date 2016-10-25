@@ -6,22 +6,35 @@ import { OnInit, OnDestroy }    from '@angular/core';
 import { ActivatedRoute }       from '@angular/router';
 import { Store }                from '@ngrx/store';
 
-import { AppState }          from '../../reducers';
 import { CmsAttrsState }     from "../../reducers/cmsattrs";
 import { Tag }               from "../../models";
 import { Category }          from "../../models";
 import { Topic }             from "../../models";
+import { TopicType }         from "../../models";
 import { Channel }           from "../../models";
 import { CmsAttrActions }    from "../../actions/cmsattr";
+
+import {
+    AppState,
+    getCmsChannels,
+    getCmsCategoriesByChannel,
+    getCmsTopicTypesByChannel } from '../../reducers';
+
 
 @Component({ template: require('./cms.page.html') })
 export class CmsPage implements OnInit, OnDestroy
 {
     // Popup modals
     @ViewChild('modalEdit')   modalEdit;
-    
+
+    channels$:   Observable<Channel[]>;
+    categories$: Observable<Category[]>;
+    topicTypes$: Observable<TopicType[]>;
+
+    subCh: any;
     subCms: any;
     subParams: any;
+    subPCh: any;
 
     filteredTags: Tag[];
     filteredCats: Category[];
@@ -39,22 +52,26 @@ export class CmsPage implements OnInit, OnDestroy
                 private store: Store<AppState>) {}
 
     ngOnInit() {
-        this.subCms = this.store.select<CmsAttrsState>('cms')
-            .subscribe(cmsState => {
-                //this.tags = cmsState.tags;
-                this.cats = cmsState.categories;
-                this.channels = cmsState.channels;
-                this.doFilterCats();
-            });
+        this.channels$  = this.store.let(getCmsChannels());
+        categories$ = this.store.let(getCmsCategoriesByChannel());
+        topicTypes$ = this.store.let(getCmsTopicTypesByChannel());
+
+        this.subCh = this.channels$.subscribe(c => this.channels = c);
+
+        // Change current active channel
+        this.subPCh = this.route.params.map(p => p.channel)
+            .subscribe(slug => this.store.dispatch(CmsAttrActions.switchChannel(slug)));
 
         this.subParams = this.route.params.subscribe(params => {
             this.taxType = params['taxonomy'];
             this.channel = this.channels.filter(c => c.slug === params['channel'])[0];
             this.doFilterCats();
+
         });
     }
 
     ngOnDestroy() {
+        this.subCh.unsubscribe();
         this.subCms.unsubscribe();
         this.subParams.unsubscribe();
     }

@@ -5,7 +5,7 @@ import { GeoLocation }    from '../models';
 import { User }           from '../models';
 import { Category }       from "../models";
 import { Tag }            from "../models";
-import { Topic }          from "../models";
+import { TopicType }      from "../models";
 import { Channel }        from '../models';
 import { POST_STATES }    from '../models';
 import { CREATIVE_TYPES } from '../models';
@@ -16,11 +16,14 @@ import { CmsAttrActions } from '../actions';
 
 
 export interface CmsAttrsState {
+    // Actively managed channel on some page, updated when parameter changes
+    curChannel: Channel;
     authors: User[];
     editors: User[];
     channels:  Channel[];
     locations: GeoLocation[];
     categories: Category[];
+    topic_types: TopicType[];
     //post_topic_cats: Topic[]; // Topic cats for post
     //tags: Tag[];
     // available - all available options for given attributes defined locally
@@ -33,11 +36,13 @@ export interface CmsAttrsState {
 };
 
 const initialState: CmsAttrsState = {
+    curChannel: {},
     authors: [],
     editors: [],
     channels:  [],
     locations: [],
     categories: [],
+    topic_types: [],
     //post_topic_cats: [],
     //tags: [],
     post_states: {available: POST_STATES, actual: []},
@@ -53,39 +58,43 @@ export default function (state = initialState, action: Action): CmsAttrsState {
         case CmsAttrActions.LOAD_ALL_SUCCESS: {
             let payload = action.payload;
 
-            let authors: User[];
+            let authors: User[] = [];
             if (payload.authors)
                 authors = payload.authors;
 
-            let editors: User[]
+            let editors: User[] = [];
             if (payload.editors)
                 editors = payload.editors;
 
-            let categories: Category[];
+            let categories: Category[] = [];
             if (payload.categories)
                 categories = payload.categories;
 
+            let topic_types: TopicType[] = [];
+            if (payload.topic_types)
+                topic_types = payload.topic_types;
+
             /*
-            let tags: Tag[];
+            let tags: Tag[] = [];
             if (action.payload.tags)
                 tags = action.payload.tags;
                 */
 
-            let channels: Channel[];
+            let channels: Channel[] = [];
             if (payload.channels && payload.channels.length > 0)
                 channels = payload.channels;
 
-            let locations: GeoLocation[];
+            let locations: GeoLocation[] = [];
             if (payload.locations && payload.locations.length > 0)
                 locations = payload.locations;
 
             /*
-            let post_topic_cats: Topic[];
+            let post_topic_cats: Topic[] = [];
             if (action.payload.post_topic_cats)
                 post_topic_cats = action.payload.post_topic_cats;
                 */
 
-            let post_states: PostState[];
+            let post_states: PostState[] = [];
             if (payload.post_states && payload.post_states.length > 0) {
                 let total = payload.post_states
                     .map(state => state.count)
@@ -94,11 +103,11 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                     {state: 'all', count: total}];
             }
 
-            let post_creative_types: CreativeType[];
+            let post_creative_types: CreativeType[] = [];
             if (payload.post_creative_types && payload.post_creative_types.length > 0)
                 post_creative_types = payload.post_creative_types;
 
-            let topic_states: PostState[];
+            let topic_states: PostState[] = [];
             if (payload.topic_states && payload.topic_states.length > 0) {
                 let total = payload.topic_states
                     .map(state => state.count)
@@ -107,7 +116,7 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                     {state: 'all', count: total}];
             }
 
-            let page_states: PostState[];
+            let page_states: PostState[] = [];
             if (payload.page_states && payload.page_states.length > 0) {
                 let total = payload.page_states
                     .map(state => state.count)
@@ -116,7 +125,7 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                     {state: 'all', count: total}];
             }
 
-            let deal_states: PostState[];
+            let deal_states: PostState[] = [];
             if (payload.deal_states && payload.deal_states.length > 0) {
                 let total = payload.deal_states
                     .map(state => state.count)
@@ -126,11 +135,13 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             }
 
             return {
+                curChannel: {},
                 authors: [...authors],
                 editors: [...editors],
                 channels: [...channels],
                 locations: [...locations],
                 categories: [...categories],
+                topic_types: [...topic_types],
                 //post_topic_cats: [...post_topic_cats],
                 //tags: [...tags],
                 post_states: Object.assign({}, state.post_states, {actual: post_states}),
@@ -142,17 +153,26 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             };
         }
 
+        case CmsActtrActions.SWITCH_CHANNEL: {
+            let channels = state.channels.filter(ch => ch.slug == action.payload);
+            if (channels.length > 0)
+                return Object.assign({}, state, {curChannel: channels[0]);
+            else
+                return state;
+        }
+
         case CmsAttrActions.SAVE_GEO_LOCATION_SUCCESS:
         case CmsAttrActions.SAVE_CATEGORY_SUCCESS:
+        case CmsAttrActions.SAVE_TOPIC_TYPE_SUCCESS:
         case CmsAttrActions.SAVE_TAG_SUCCESS: {
             // Update local copy of saved category/tag
             let taxes: any;
             // Object index key to specific attributes
             let key: string;
-            /*if (action.type === CmsAttrActions.SAVE_TAG_SUCCESS) {
-                key = 'tags';
-                taxes = state.tags;
-            } else */if (action.type === CmsAttrActions.SAVE_CATEGORY_SUCCESS) {
+            if (action.type === CmsAttrActions.SAVE_TOPIC_TYPE_SUCCESS) {
+                key = 'topic_types';
+                taxes = state.topic_types;
+            } else if (action.type === CmsAttrActions.SAVE_CATEGORY_SUCCESS) {
                 key = 'categories';
                 taxes = state.categories;
             } else {
@@ -171,12 +191,13 @@ export default function (state = initialState, action: Action): CmsAttrsState {
 
         case CmsAttrActions.ADD_GEO_LOCATION_SUCCESS:
         case CmsAttrActions.ADD_CATEGORY_SUCCESS:
+        case CmsAttrActions.ADD_TOPIC_TYPE_SUCCESS:
         case CmsAttrActions.ADD_TAG_SUCCESS: {
             // Add newly added location/category/tag to local copy
-            /*if (action.type === CmsAttrActions.ADD_TAG_SUCCESS)
+            if (action.type === CmsAttrActions.ADD_TOPIC_TYPE_SUCCESS)
                 return Object.assign({}, state,
-                    {tags: [...state.tags, action.payload]});
-            else */if (action.type === CmsAttrActions.ADD_CATEGORY_SUCCESS)
+                    {topic_types: [...state.topic_types, action.payload]});
+            else if (action.type === CmsAttrActions.ADD_CATEGORY_SUCCESS)
                 return Object.assign({}, state,
                     {categories: [...state.categories, action.payload]});
             else
@@ -186,14 +207,15 @@ export default function (state = initialState, action: Action): CmsAttrsState {
 
         case CmsAttrActions.DELETE_GEO_LOCATION_SUCCESS:
         case CmsAttrActions.DELETE_CATEGORY_SUCCESS:
+        case CmsAttrActions.DELETE_TOPIC_TYPE_SUCCESS:
         case CmsAttrActions.DELETE_TAG_SUCCESS: {
             // Delete local copy of deleted location/category/tag
             let taxes: any;
             let key: string;
-            /*if (action.type === CmsAttrActions.DELETE_TAG_SUCCESS) {
-                key = 'tags';
-                taxes = state.tags;
-            } else */if (action.type === CmsAttrActions.DELETE_CATEGORY_SUCCESS) {
+            if (action.type === CmsAttrActions.DELETE_TOPIC_TYPE_SUCCESS) {
+                key = 'topic_types';
+                taxes = state.topic_types;
+            } else if (action.type === CmsAttrActions.DELETE_CATEGORY_SUCCESS) {
                 key = 'categories';
                 taxes = state.categories;
             } else {
@@ -253,11 +275,19 @@ export function getEditorsObject() {
 }
 
 /**
+ * Return current active channel
+ */
+export function getCurChannel() {
+    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.curChannel);
+}
+
+/**
  * Return an array of cms channels
  */
 export function getChannels() {
     return (state$: Observable<CmsAttrsState>) => state$.select(s => s.channels);
 }
+
 
 /**
  * Return an object of channels indexed by channel id
@@ -275,6 +305,31 @@ export function getChannelsObject() {
  */
 export function getCategories() {
     return (state$: Observable<CmsAttrsState>) => state$.select(s => s.categories);
+}
+
+/**
+ * Return an array of cms categories of current active channel
+ */
+export function getCategoriesByChannel() {
+    // FIXME: Filter s.categories with s.curChannel
+    return (state$: Observable<CmsAttrsState>) => state$
+        .select(s => s.categories).filter(cat => cat.channel_id === chId);
+}
+
+/**
+ * Return an array of cms topic types
+ */
+export function getTopicTypes() {
+    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.topic_types);
+}
+
+/**
+ * Return an array of cms topic types of current active channel
+ */
+export function getTopicTypesByChannel() {
+    // FIXME: Filter s.categories with s.curChannel
+    return (state$: Observable<CmsAttrsState>) => state$
+        .select(s => s.topic_types).filter(tt => tt.channel_id === chId);
 }
 
 /**

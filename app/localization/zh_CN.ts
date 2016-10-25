@@ -7,6 +7,7 @@ export const zh_CN = {
     category: '分类',
     tag: '标签',
     channel: '频道',
+    topic: '专题',
 
     cms: {
         /* Post/Topic/Page status */
