@@ -17,6 +17,7 @@ import { FroalaOptions }     from '../../models/froala.option';
 import { Entity }            from '../../models';
 import { CREATIVE_TYPES }    from '../../models';
 import { TOPIC_TYPES }       from '../../models';
+import { TopicType }         from '../../models';
 import { GeoLocation }       from '../../models';
 import { Channel }           from '../../models';
 import { Category }          from '../../models';
@@ -39,6 +40,7 @@ import {
     getCurDomain, getCurProfile, getIsDirty,
     getAuthors, getAuthorsObject, getEditors, getEditorsObject,
     getCmsChannels, getCmsCategories, getLocations,
+    getCmsCurChannelTopicTypes,
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity,
     getIsLoading, getPaginator,
@@ -74,6 +76,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     geoLocations$: Observable<GeoLocation[]>;
     cmsChannels$: Observable<Channel[]>;
     cmsCategories$: Observable<Category[]>;
+    cmsTopicTypes$: Observable<TopicType[]>;
     paginator$:   Observable<any>;
     entity$:      Observable<Entity>;
     intro$:       Observable<string>; // Topic only introduction
@@ -111,6 +114,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.geoLocations$  = this.store.let(getLocations());
         this.cmsChannels$   = this.store.let(getCmsChannels());
         this.cmsCategories$ = this.store.let(getCmsCategories());
+        this.cmsTopicTypes$ = this.store.let(getCmsCurChannelTopicTypes());
         this.paginator$     = this.store.let(getPaginator(this.etype));
         this.entity$        = this.store.let(getCurEntity(this.etype));
         this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
