@@ -37,7 +37,6 @@ export class CmsPage implements OnInit, OnDestroy
     // Cms topic types of current active channel
     topicTypes$: Observable<TopicType[]>;
 
-    subCms: any;
     subParams: any;
     subPCh: any;
 

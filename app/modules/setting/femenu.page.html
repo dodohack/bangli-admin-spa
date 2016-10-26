@@ -1,5 +1,32 @@
 <setting-menu></setting-menu>
 
-<p>
-    this is frontend menu setting page
-</p>
+<!-- Sub menus -->
+<!--
+<nav class="navbar page-sub-menu">
+    <ul class="nav navbar-nav">
+        <li class="nav-item">
+            <a [routerLink]="['/setting/menu/desktop']"
+               routerLinkActive="active">
+                桌面版目录
+            </a>
+        </li>
+        <li class="nav-item">
+            <a [routerLink]="['/setting/menu/mobile']"
+               routerLinkActive="active">
+                手机版目录
+            </a>
+        </li>
+    </ul>
+</nav>
+-->
+
+<div class="setting-body">
+    <!-- List of all menus -->
+    <!--
+    <fe-menu-setting [menus]="menus$ | async"
+                         (edit)="onEdit($event)"
+                         (add)="onAdd()"></fe-menu-setting>
+                         -->
+    <h5> Dump of all menus </h5>
+    {{ feMenus$ | async | json }}
+</div>

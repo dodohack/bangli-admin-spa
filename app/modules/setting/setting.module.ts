@@ -19,7 +19,7 @@ import { CmsCategory }     from './cms/category.ts';
 import { CmsTag }          from './cms/tag.ts';
 import { CmsTopicType }    from './cms/topic-type.ts';
 import { CmsChannel }      from './cms/channel.ts';
-
+import { FeMenuSetting }   from './components/fe-menu-setting';
 
 @NgModule({
     imports: [ SharedModule, routing ],
@@ -38,6 +38,7 @@ import { CmsChannel }      from './cms/channel.ts';
         CmsTag,
         CmsTopicType,
         CmsChannel,
+        FeMenuSetting,
     ]
 })
 export class SettingModule {}

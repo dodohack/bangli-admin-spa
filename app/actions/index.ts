@@ -6,6 +6,7 @@ import { PreferenceActions } from './preference';
 import { CmsAttrActions }    from './cmsattr';
 import { ShopAttrActions }   from './shopattr';
 import { SysAttrActions }    from './sysattr';
+import { FeMenuActions }       from './femenu';
 
 export {
     AlertActions,
@@ -16,6 +17,7 @@ export {
     CmsAttrActions,
     ShopAttrActions,
     SysAttrActions,
+    FeMenuActions,
 };
 
 export default [
@@ -27,4 +29,5 @@ export default [
     CmsAttrActions,
     ShopAttrActions,
     SysAttrActions,
+    FeMenuActions,
 ];

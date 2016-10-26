@@ -1,6 +1,6 @@
 <!-- Title -->
 <div class="page-title">
-    <h5 class="title">
+    <h5 class="title" *ngIf="channel">
         {{ channel.name }}分类
         <button class="page-title-action btn btn-outline-info btn-sm"
                 (click)="add.emit($event)">

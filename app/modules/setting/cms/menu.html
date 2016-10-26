@@ -1,22 +1,22 @@
-<!-- Cms channels menu -->
-<nav class="navbar page-sub-menu">
+<!-- Cms channel menus -->
+<div class="channel-menu">
+    <div class="channel-heading">
+        <a *ngFor="let ch of channels"
+           [routerLink]="['/setting/cms', ch.slug]"
+           class="channel-title" routerLinkActive="active">
+            <h4>{{ ch.name }}</h4>
+        </a>
+    </div>
+</div>
+
+<!-- Cms taxonomy setting menus -->
+<nav class="navbar page-sub-menu" *ngIf="channel">
     <ul class="nav navbar-nav">
-        <li class="nav-item" *ngFor="let ch of channels">
-            <a [routerLink]="['/setting/cms', ch.slug]"
+        <li class="nav-item" *ngFor="let s of settings">
+            <a [routerLink]="['/setting/cms', channel.slug, s]"
                routerLinkActive="active">
-                {{ ch.name }}
+                {{ zh[s] }}
             </a>
         </li>
     </ul>
 </nav>
-
-<!-- Cms setting menus -->
-<div class="channel-menu" *ngIf="channel">
-    <div class="channel-heading">
-        <a *ngFor="let s of settings"
-           [routerLink]="['/setting/cms', channel.slug, s]"
-           class="channel-title" routerLinkActive="active">
-            <h4>{{ zh[s] }}</h4>
-        </a>
-    </div>
-</div>

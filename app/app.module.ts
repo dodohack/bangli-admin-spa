@@ -29,6 +29,7 @@ import { EntityEffects }   from './effects';
 import { CmsAttrEffects }  from './effects';
 import { ShopAttrEffects } from './effects';
 import { SysAttrEffects }  from './effects';
+import { FeMenuEffects }     from './effects';
 
 import { SharedModule }    from './modules/directives/shared.module';
 import { AuthModule }      from './modules/auth/auth.module';
@@ -82,6 +83,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         EffectsModule.run(CmsAttrEffects),
         EffectsModule.run(ShopAttrEffects),
         EffectsModule.run(SysAttrEffects),
+        EffectsModule.run(FeMenuEffects),
         StoreDevtoolsModule.instrumentStore({
             monitor: useLogMonitor({
                 visible: true,

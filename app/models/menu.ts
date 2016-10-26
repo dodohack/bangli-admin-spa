@@ -54,3 +54,23 @@ export class Menu {
                 public icon_style?: string,
                 public style?: string) {}
 }
+
+// Frontend menu data structure
+export class FeMenu {
+    id: number;
+    parent_id: number; // Parent menu id, we use menu with parent_id 0 as menu
+                       // selector, each type of menu has 1 menu with parent_id = 0,
+                       // So all level 1 menus belong to the menu has the same
+                       // parent_id
+    type: string;      // Menu type
+    name: string;      // Menu name, it has special use for menu with parent_id 0
+    url:  string;      // Pre-generated menu url
+    group: number;     // Do we display menus grouped with group number?
+                       // 0: no group, 1 - n: group number
+
+    order: number;     // Order of the menu to display, starts from 1
+    external: boolean; // In app link or external link, in app link starts with
+                       // '/', external link starts with domain name.
+    icon:  string;     // Menu icon class if any
+    style: string;     // Extra style apply to the menu if any
+}

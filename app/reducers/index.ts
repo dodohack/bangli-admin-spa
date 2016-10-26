@@ -47,6 +47,7 @@ import prefReducer, * as fromPref         from './preference';
 import cmsReducer, * as fromCms           from './cmsattrs';
 import shopReducer, * as fromShop         from './shopattrs';
 import sysReducer, * as fromSys           from './sysattrs';
+import feMenuReducer, * as fromFeMenu     from './femenus';
 
 import * as fromEntities from './entities';
 import { EntitiesState } from './entities';
@@ -81,6 +82,7 @@ export interface AppState {
     cms:      fromCms.CmsAttrsState;
     shop:     fromShop.ShopAttrsState;
     sys:      fromSys.SysAttrsState;
+    femenu:   fromFeMenu.FeMenusState;
     posts:    EntitiesState;
     pages:    EntitiesState;
     deals:    EntitiesState;
@@ -120,6 +122,7 @@ export default compose(
     cms:      cmsReducer,
     shop:     shopReducer,
     sys:      sysReducer,
+    femenu:   feMenuReducer,
     posts:    postsReducer,
     pages:    pagesReducer,
     deals:    dealsReducer,
@@ -425,4 +428,27 @@ export function getSysAttrsState() {
 
 export function getUserRoles() {
     return compose(fromSys.getUserRoles(), getSysAttrsState());
+}
+
+/*****************************************************************************
+ * Frontend menu settings
+ *****************************************************************************/
+export function getFeMenusState() {
+    return (state$: Observable<AppState>) => state$.select(s => s.femenu);
+}
+
+export function getFeRootMenuIds() {
+    return compose(fromFeMenu.getRootMenuIds(), getFeMenusState());
+}
+
+export function getFeMenus() {
+    return compose(fromFeMenu.getMenus(), getFeMenusState());
+}
+
+export function getFeMobileMenus() {
+    return compose(fromFeMenu.getMobileMenus(), getFeMenusState());
+}
+
+export function getFeDesktopMenus() {
+    return compose(fromFeMenu.getDesktopMenus(), getFeMenusState());
 }
