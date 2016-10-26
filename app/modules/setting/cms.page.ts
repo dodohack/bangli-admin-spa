@@ -5,8 +5,8 @@ import { Component, ViewChild } from '@angular/core';
 import { OnInit, OnDestroy }    from '@angular/core';
 import { ActivatedRoute }       from '@angular/router';
 import { Store }                from '@ngrx/store';
+import { Observable }           from 'rxjs/Observable';
 
-import { CmsAttrsState }     from "../../reducers/cmsattrs";
 import { Tag }               from "../../models";
 import { Category }          from "../../models";
 import { Topic }             from "../../models";
@@ -16,9 +16,10 @@ import { CmsAttrActions }    from "../../actions/cmsattr";
 
 import {
     AppState,
+    getCmsCurChannel,
     getCmsChannels,
-    getCmsCategoriesByChannel,
-    getCmsTopicTypesByChannel } from '../../reducers';
+    getCmsCurChannelCategories,
+    getCmsCurChannelTopicTypes } from '../../reducers';
 
 
 @Component({ template: require('./cms.page.html') })
@@ -27,62 +28,48 @@ export class CmsPage implements OnInit, OnDestroy
     // Popup modals
     @ViewChild('modalEdit')   modalEdit;
 
+    // Current active cms channel
+    channel$:    Observable<Channel>;
+    // All cms channels
     channels$:   Observable<Channel[]>;
+    // Cms categories of current active channel
     categories$: Observable<Category[]>;
+    // Cms topic types of current active channel
     topicTypes$: Observable<TopicType[]>;
 
-    subCh: any;
     subCms: any;
     subParams: any;
     subPCh: any;
 
-    filteredTags: Tag[];
-    filteredCats: Category[];
-    tags: Tag[];
-    cats: Category[];
-    channels: Channel[];
-
     tax: any; // object of 'category', 'tag' or 'topic'
     taxType: string; // one of 'category', 'tag' or 'topic'
-    channel: Channel;  // one of 7 cms channels
-    
+
     actionType: string; // 'add' or 'edit' a tax
 
     constructor(private route: ActivatedRoute,
                 private store: Store<AppState>) {}
 
     ngOnInit() {
-        this.channels$  = this.store.let(getCmsChannels());
-        categories$ = this.store.let(getCmsCategoriesByChannel());
-        topicTypes$ = this.store.let(getCmsTopicTypesByChannel());
+        this.channel$    = this.store.let(getCmsCurChannel());
+        this.channels$   = this.store.let(getCmsChannels());
+        this.categories$ = this.store.let(getCmsCurChannelCategories());
+        this.topicTypes$ = this.store.let(getCmsCurChannelTopicTypes());
 
-        this.subCh = this.channels$.subscribe(c => this.channels = c);
-
-        // Change current active channel
-        this.subPCh = this.route.params.map(p => p.channel)
-            .subscribe(slug => this.store.dispatch(CmsAttrActions.switchChannel(slug)));
+        // Change current active channel when channel changes in url
+        this.subPCh = this.route.params.map(p => p['channel'])
+            .subscribe(slug =>
+                this.store.dispatch(CmsAttrActions.switchChannel(slug)));
 
         this.subParams = this.route.params.subscribe(params => {
             this.taxType = params['taxonomy'];
-            this.channel = this.channels.filter(c => c.slug === params['channel'])[0];
-            this.doFilterCats();
-
         });
     }
 
     ngOnDestroy() {
-        this.subCh.unsubscribe();
-        this.subCms.unsubscribe();
+        this.subPCh.unsubscribe();
         this.subParams.unsubscribe();
     }
 
-    // Filter categories for given channel when url changes
-    doFilterCats() {
-        if (this.channel)
-            this.filteredCats = this.cats
-                .filter(t => t.channel_id === this.channel.id);        
-    }
-    
     onEdit($event) {
         this.tax = $event;
         this.actionType = 'edit';

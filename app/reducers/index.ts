@@ -262,16 +262,16 @@ export function getCmsCategories() {
     return compose(fromCms.getCategories(), getCmsAttrsState());
 }
 
-export function getCmsCategoriesByChannel(chId: number) {
-    return compose(fromCms.getCategoriesByChannel(chId), getCmsAttrsState());
+export function getCmsCurChannelCategories() {
+    return compose(fromCms.getCurChannelCategories(), getCmsAttrsState());
 }
 
 export function getCmsTopicTypes() {
     return compose(fromCms.getTopicTypes(), getCmsAttrsState());
 }
 
-export function getCmsTopicTypesByChannel(chId: number) {
-    return compose(fromCms.getTopicTypesByChannel(chId), getCmsAttrsState());
+export function getCmsCurChannelTopicTypes() {
+    return compose(fromCms.getCurChannelTopicTypes(), getCmsAttrsState());
 }
 
 export function getLocations() {

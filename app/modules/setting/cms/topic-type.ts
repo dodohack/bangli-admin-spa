@@ -6,18 +6,18 @@ import { Input, Output }     from '@angular/core';
 import { EventEmitter }      from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { Topic }             from "../../../models";
+import { TopicType }         from "../../../models";
 import { Channel }           from "../../../models";
 
 @Component({
     selector: 'cms-topic-setting',
-    template: require('./topic.html'),
+    template: require('./topic-type.html'),
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CmsTopic {
+export class CmsTopicType {
     
-    @Input() topics: Topic[];
-    @Input() channel:Channel;
+    @Input() channel: Channel;
+    @Input() topicTypes: TopicType[];
 
     @Output() edit = new EventEmitter();
     @Output() remove = new EventEmitter();

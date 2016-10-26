@@ -36,7 +36,7 @@ export class CmsAttrActions {
     }
 
     static SWITCH_CHANNEL = '[CmsAttr] Switch Channel By Slug';
-    static switchChannel(slug: string): Aciton {
+    static switchChannel(slug: string): Action {
         return {
             type: CmsAttrActions.SWITCH_CHANNEL,
             payload: slug

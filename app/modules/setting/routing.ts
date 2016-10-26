@@ -5,6 +5,7 @@ import { EditorGuard } from '../../guard';
 
 import { SettingPage }   from './setting.page';
 import { LocationsPage } from './locations.page';
+import { FeMenuPage }    from './femenu.page';
 import { CmsPage }       from './cms.page';
 import { ShopPage }      from './shop.page';
 import { BbsPage }       from './bbs.page';
@@ -20,6 +21,9 @@ const routes: Routes = [
             { path: '', component: SettingPage },
             /* Locations management */
             { path: 'location', component: LocationsPage, canActivate: [AdminGuard] },
+
+            /* Frontend menu setting */
+            { path: 'menu', component: FeMenuPage, canActivate: [AdminGuard] },
 
             /* Cms setting sub-path */
             {

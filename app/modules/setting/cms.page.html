@@ -1,19 +1,21 @@
 <setting-menu></setting-menu>
 
-<cms-setting-menu [cmsChannels]="channels"
-                  [channel]="channel"
+<cms-setting-menu [channels]="channels$ | async"
+                  [channel]="channel$ | async"
                   [taxonomy]="taxType"></cms-setting-menu>
 
 <div class="setting-body">
     <!-- Category settings -->
-    <cms-category-setting *ngIf="filteredCats && taxType == 'category'"
-                          [cats]="filteredCats" [channel]="channel"
+    <cms-category-setting *ngIf="taxType == 'category'"
+                          [channel]="channel$ | async"
+                          [cats]="categories$ | async"
                           (edit)="onEdit($event)"
                           (add)="onAdd()"></cms-category-setting>
 
     <!-- Topic relationship settings -->
     <cms-topic-setting *ngIf="taxType == 'topic'"
-                       [channel]="channel"
+                       [channel]="channel$ | async"
+                       [topicTypes]="topicTypes$ | async"
                        (edit)="onEdit($event)"
                        (add)="onAdd()"></cms-topic-setting>
 
@@ -23,8 +25,8 @@
             <div class="modal-dialog modal-sm">
                 <modal-edit-tax [actionType]="actionType"
                                 [taxType]="taxType"
-                                [categories]="filteredCats"
-                                [channels]="channels"
+                                [categories]="categories$ | async"
+                                [channels]="channels$ | async"
                                 [tax]="tax"
                                 (add)="newTax($event)"
                                 (save)="saveTax($event)"

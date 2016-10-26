@@ -12,9 +12,5 @@
 
 
 <ul class="tag-cloud tag-setting">
-    <li>品牌专题</li>
-    <li>网站专题</li>
-    <li>产品系列专题</li>
-    <li>产品专题</li>
-    <li>一般专题</li>
+    <li *ngFor="let tt of topicTypes">{{ tt.name }}</li>
 </ul>

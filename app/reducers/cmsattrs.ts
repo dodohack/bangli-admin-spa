@@ -36,7 +36,7 @@ export interface CmsAttrsState {
 };
 
 const initialState: CmsAttrsState = {
-    curChannel: {},
+    curChannel: null,
     authors: [],
     editors: [],
     channels:  [],
@@ -135,7 +135,7 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             }
 
             return {
-                curChannel: {},
+                curChannel: null,
                 authors: [...authors],
                 editors: [...editors],
                 channels: [...channels],
@@ -153,10 +153,11 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             };
         }
 
-        case CmsActtrActions.SWITCH_CHANNEL: {
+        case CmsAttrActions.SWITCH_CHANNEL: {
+            // Switch current active channel
             let channels = state.channels.filter(ch => ch.slug == action.payload);
             if (channels.length > 0)
-                return Object.assign({}, state, {curChannel: channels[0]);
+                return Object.assign({}, state, {curChannel: channels[0]});
             else
                 return state;
         }
@@ -310,10 +311,10 @@ export function getCategories() {
 /**
  * Return an array of cms categories of current active channel
  */
-export function getCategoriesByChannel() {
-    // FIXME: Filter s.categories with s.curChannel
+export function getCurChannelCategories() {
     return (state$: Observable<CmsAttrsState>) => state$
-        .select(s => s.categories).filter(cat => cat.channel_id === chId);
+        .filter(s => s.curChannel != null)
+        .map(s => s.categories.filter(cat => cat.channel_id === s.curChannel.id));
 }
 
 /**
@@ -326,10 +327,10 @@ export function getTopicTypes() {
 /**
  * Return an array of cms topic types of current active channel
  */
-export function getTopicTypesByChannel() {
-    // FIXME: Filter s.categories with s.curChannel
+export function getCurChannelTopicTypes() {
     return (state$: Observable<CmsAttrsState>) => state$
-        .select(s => s.topic_types).filter(tt => tt.channel_id === chId);
+        .filter( s=> s.curChannel != null)
+        .map(s => s.topic_types.filter(tt => tt.channel_id === s.curChannel.id));
 }
 
 /**

@@ -14,8 +14,8 @@ import { zh_CN }                   from '../../../localization';
 })
 export class CmsSettingMenu
 {
-    @Input() cmsChannels: Channel[];
-    @Input() channel: Channel;
+    @Input() channels: Channel[];
+    @Input() channel:  Channel;
     @Input() taxonomy: string;
  
     // We manage these settings here

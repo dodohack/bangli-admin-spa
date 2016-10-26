@@ -1,7 +1,7 @@
 <!-- Cms channels menu -->
-<nav class="navbar page-sub-menu" *ngIf="cmsChannels">
+<nav class="navbar page-sub-menu">
     <ul class="nav navbar-nav">
-        <li class="nav-item" *ngFor="let ch of cmsChannels">
+        <li class="nav-item" *ngFor="let ch of channels">
             <a [routerLink]="['/setting/cms', ch.slug]"
                routerLinkActive="active">
                 {{ ch.name }}
