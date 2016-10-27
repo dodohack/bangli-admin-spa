@@ -37,7 +37,7 @@ export class CmsAttrEffects {
 
     @Effect() sTopic$ = this.actions$.ofType(CmsAttrActions.SEARCH_TOPICS)
         .switchMap(action => this.searchTopics(action.payload)
-            .map(topics => CmsAttrActions.searchTopicsSuccess(topics))
+            .map(res => CmsAttrActions.searchTopicsSuccess(res.entities))
             .catch(() => Observable.of(CmsAttrActions.searchTopicsFail())));
 
     @Effect() saveTag$ = this.actions$.ofType(CmsAttrActions.SAVE_TAG)
@@ -113,7 +113,7 @@ export class CmsAttrEffects {
     }
 
     /**
-     * Search topics by string
+     * Search topics by string with current channel
      */
     private searchTopics(text: string) {
         // Return empty array if search string is empty

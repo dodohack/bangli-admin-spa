@@ -277,6 +277,10 @@ export function getCmsCurChannelTopicTypes() {
     return compose(fromCms.getCurChannelTopicTypes(), getCmsAttrsState());
 }
 
+export function getCmsTopics() {
+    return compose(fromCms.getTopics(), getCmsAttrsState());
+}
+
 export function getLocations() {
     return compose(fromCms.getLocations(), getCmsAttrsState());
 }

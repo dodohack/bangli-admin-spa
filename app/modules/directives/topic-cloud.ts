@@ -3,7 +3,7 @@ import { ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { TopicType } from '../../models';
-import { Entity }    from '../../models';
+import { Topic }     from '../../models';
 
 @Component({
     selector: 'topic-cloud',
@@ -15,8 +15,8 @@ export class TopicCloud implements OnInit {
     searchControl = new FormControl();
 
     @Input() topicTypes: TopicType[];  // Topic types of given channel
-    @Input() selectedTopics: Entity[]; // Topics owned by current entity
-    @Input() topics: Entity[];         // Searched topic candidates
+    @Input() selectedTopics: Topic[]; // Topics owned by current entity
+    @Input() topics: Topic[];         // Searched topic candidates
 
     @Output() searchTopic = new EventEmitter();
     @Output() addTopic    = new EventEmitter();

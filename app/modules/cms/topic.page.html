@@ -103,8 +103,8 @@
         </tab>
 
         <tab heading="相关专题" [active]="tabIdx == 1">
-            <topic-cloud [topicTypes]="topicTypes$ | async"
-                         [topics]="topics$ | async"
+            <topic-cloud [topicTypes]="cmsTopicTypes$ | async"
+                         [topics]="cmsTopics$ | async"
                          [selectedTopics]="(entity$ | async)?.topics"
                          (searchTopic)="searchTopic($event)"
                          (addTopic)="addTopic($event)"

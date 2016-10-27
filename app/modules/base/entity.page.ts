@@ -41,7 +41,7 @@ import {
     getCurDomain, getCurProfile, getIsDirty,
     getAuthors, getAuthorsObject, getEditors, getEditorsObject,
     getCmsChannels, getCmsCurChannelCategories, getLocations,
-    getCmsCurChannelTopicTypes,
+    getCmsCurChannelTopicTypes, getCmsTopics,
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity,
     getIsLoading, getPaginator, getCurEntityChannelId,
@@ -79,6 +79,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     cmsChannels$: Observable<Channel[]>;     // All cms channels
     cmsCategories$: Observable<Category[]>;  // Categories of current channel
     cmsTopicTypes$: Observable<TopicType[]>; // Topic types of current channel
+    cmsTopics$:   Observable<Topic[]>;      // Candidates topics
     paginator$:   Observable<any>;
     entity$:      Observable<Entity>;
     channelId$:   Observable<number>;    // Current entity channel id
@@ -119,6 +120,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.cmsChannels$   = this.store.let(getCmsChannels());
         this.cmsCategories$ = this.store.let(getCmsCurChannelCategories());
         this.cmsTopicTypes$ = this.store.let(getCmsCurChannelTopicTypes());
+        this.cmsTopics$     = this.store.let(getCmsTopics());
         this.paginator$     = this.store.let(getPaginator(this.etype));
         this.entity$        = this.store.let(getCurEntity(this.etype));
         this.channelId$     = this.store.let(getCurEntityChannelId(this.etype));

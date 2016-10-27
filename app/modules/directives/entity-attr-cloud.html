@@ -52,7 +52,7 @@
                             <li *ngFor="let t of topicsOfType(tt)"
                                 class="tag tag-pill tag-primary-outline tag-item"
                                 (click)="deleteTopic.emit(t.id)">
-                                {{ t.name }} x
+                                {{ t.title }} x
                             </li>
                         </ul>
                     </div>

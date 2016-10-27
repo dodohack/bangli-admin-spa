@@ -5,14 +5,14 @@
 
 <accordion>
     <!-- Show topics grouped by topic types -->
-    <accordion-group *ngFor="let ttype of topicTypes">
+    <accordion-group *ngFor="let ttype of topicTypes" isOpen="true">
 
         <div accordion-heading>
             {{ ttype.name }} <i class="pull-right fa customize-chevron"></i>
         </div>
 
         <span class="tag tag-warning-outline tag-item">已选中专题:</span>
-        <ul class="tag-cloud">
+        <ul class="tag-cloud" *ngIf="selectedTopics">
             <li *ngFor="let topic of selectedTopicsOfTType(ttype)"
                 class="tag-item tag tag-pill tag-primary-outline"
                 (click)="removeTopic.emit(topic.id)">
@@ -23,7 +23,7 @@
         <hr>
 
         <span class="tag tag-warning-outline tag-item">搜索结果:</span>
-        <ul class="tag-cloud">
+        <ul class="tag-cloud" *ngIf="topics">
             <li *ngFor="let topic of topicsOfTType(ttype)"
                 class="tag-item tag tag-pill tag-default-outline"
                 (click)="addTopic.emit(topic)">

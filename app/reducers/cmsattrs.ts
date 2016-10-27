@@ -346,7 +346,7 @@ export function getCurChannelTopicTypes() {
 }
 
 /**
- * Return an array of cms topics
+ * Return an array of cms topics, it is already filtered by server side
  */
 export function getTopics() {
     return (state$: Observable<CmsAttrsState>) => state$.select(s => s.topics);
@@ -355,11 +355,13 @@ export function getTopics() {
 /**
  * Return an array of cms topics of current active channel
  */
+/*
 export function getCurChannelTopics() {
     return (state$: Observable<CmsAttrsState>) => state$
         .filter( s=> s.curChannel != null)
         .map(s => s.topics.filter(t => t.channel_id === s.curChannel.id));
 }
+*/
 
 /**
  * Return an array of geo locations

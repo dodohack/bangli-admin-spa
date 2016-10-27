@@ -46,11 +46,15 @@ export class TopicParams {
     }
 }
 
+/**
+ * This is the topic model used as relationship to the main entity we editing.
+ */
 export class Topic {
     id: number;
     hide: boolean; // Only used by filtering
     editor_id: number;
     channel_id: number;
+    type_id: number;
     locations: GeoLocation[];
     state: string;
     guid: string;
