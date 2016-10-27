@@ -16,7 +16,7 @@
                     </ul>
                 </div>
 
-                <div class="cms-tag-group">
+                <div class="cms-tag-group" *ngIf="!isTopic">
                     <span class="tag tag-warning-outline tag-item"
                           (click)="toggle.emit(1)">专题:</span>
                     <ul class="tag-cloud">
@@ -44,39 +44,15 @@
                     </ul>
                 </div>
 
-                <div *ngIf="isTopic" style="margin-top: 1rem">
-                    <div class="cms-tag-group">
+                <div *ngIf="isTopic" style="margin-top: 0.5rem">
+                    <div class="cms-tag-group" *ngFor="let tt of topicTypes">
                         <span class="tag tag-warning-outline tag-item"
-                              (click)="toggle.emit(3)">推荐产品系列:</span>
-                        <ul class="tag-cloud">
-                            <li *ngFor="let p of topicProductSeries"
+                              (click)="toggle.emit(1)">{{ tt.name }}:</span>
+                        <ul class="tag-cloud" *ngIf="topics">
+                            <li *ngFor="let t of topicsOfType(tt)"
                                 class="tag tag-pill tag-primary-outline tag-item"
-                                (click)="deleteTopicProductSeries.emit(p.id)">
-                                {{ p.name }} x
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="cms-tag-group">
-                        <span class="tag tag-warning-outline tag-item"
-                              (click)="toggle.emit(3)">推荐专题系列:</span>
-                        <ul class="tag-cloud">
-                            <li *ngFor="let t of topicTopicSeries"
-                                class="tag tag-pill tag-primary-outline tag-item"
-                                (click)="deleteTopicTopicSeries.emit(t.id)">
+                                (click)="deleteTopic.emit(t.id)">
                                 {{ t.name }} x
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="cms-tag-group">
-                        <span class="tag tag-warning-outline tag-item"
-                              (click)="toggle.emit(3)">推荐文章系列:</span>
-                        <ul class="tag-cloud">
-                            <li *ngFor="let p of topicPostSeries"
-                                class="tag tag-pill tag-primary-outline tag-item"
-                                (click)="deleteTopicPostSeries.emit(p.id)">
-                                {{ p.name }} x
                             </li>
                         </ul>
                     </div>

@@ -14,7 +14,7 @@
                     <label>作者</label>
                     <select class="form-control form-control-sm custom-select"
                             name="author_id" [ngModel]="authorId"
-                            (ngModelChanged)="authorChanged.emit($event)">
+                            (ngModelChange)="authorChange.emit($event)">
                         <option *ngFor="let author of authors"
                                 [selected]="author.id === authorId"
                                 [value]="author.id">{{ author.display_name }}</option>
@@ -25,7 +25,7 @@
                     <label>编辑</label>
                     <select class="form-control form-control-sm custom-select"
                             name="editor_id" [ngModel]="editorId"
-                            (ngModelChanged)="editorChanged.emit($event)">
+                            (ngModelChange)="editorChange.emit($event)">
                         <option *ngFor="let editor of editors"
                                 [selected]="editor.id === editorId"
                                 [value]="editor.id">{{ editor.display_name }}</option>
@@ -36,7 +36,7 @@
                     <label>稿件属性</label>
                     <select class="form-control form-control-sm custom-select"
                             name="c_type" [ngModel]="creativeType"
-                            (ngModelChanged)="creativeTypeChanged.emit($event)">
+                            (ngModelChange)="creativeTypeChange.emit($event)">
                         <option *ngFor="let ctype of creativeTypes"
                                 [selected]="creativeType === ctype.creative_type"
                                 [value]="ctype.creative_type">{{ zh[ctype.creative_type] }}</option>
@@ -47,7 +47,7 @@
                     <label>频道</label>
                     <select class="form-control form-control-sm custom-select"
                             name="cid" [ngModel]="channelId"
-                            (ngModelChanged)="channelChanged.emit($event)">
+                            (ngModelChange)="channelChange.emit($event)">
                         <option *ngFor="let ch of channels"
                                 [selected]="channelId === ch.id"
                                 [value]="ch.id">{{ ch.name }}</option>
@@ -57,11 +57,11 @@
                 <div class="form-group post-meta" *ngIf="topicTypes">
                     <label>专题类型</label>
                     <select class="form-control form-control-sm custom-select"
-                            name="t_type" [ngModel]="topicType"
-                            (ngModelChanged)="topicTypeChanged.emit($event)">>
+                            name="t_type" [ngModel]="topicTypeId"
+                            (ngModelChange)="topicTypeChange.emit($event)">>
                         <option *ngFor="let ttype of topicTypes"
-                                [selected]="topicType === ttype.type"
-                                [value]="ttype.type">{{ zh[ttype.type] }}</option>
+                                [selected]="topicTypeId === ttype.id"
+                                [value]="ttype.id">{{ ttype.name }}</option>
                     </select>
                 </div>
 
@@ -69,7 +69,7 @@
                     <label>优惠专题</label>
                     <input type="checkbox" class="form-control form-control-sm"
                             name="hasDeal" [ngModel]="hasDeal"
-                           (ngModelChanged)="hasDealChanged.emit($event)"/>
+                           (ngModelChange)="hasDealChange.emit($event)"/>
                 </div>
             </div>
         </div>

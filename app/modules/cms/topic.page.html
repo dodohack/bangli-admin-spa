@@ -12,13 +12,14 @@
 <entity-attributes [editorId]="(entity$ | async)?.editor_id"
                    [channelId]="(entity$ | async)?.channel_id"
                    [editors]="editors$ | async"
+                   [topicTypeId]="(entity$ | async)?.type_id"
                    [channels]="cmsChannels$ | async"
-                   [topicTypes]="topicTypes"
+                   [topicTypes]="cmsTopicTypes$ | async"
                    [hasDeal]="hasDeal$ | async"
-                   (editorChanged)="updateEditor($event)"
-                   (channelChanged)="updateChannel($event)"
-                   (topicTypeChanged)="updateTopicType($event)"
-                   (hasDealChanged)="updateHasDeal($event)">
+                   (editorChange)="updateEditor($event)"
+                   (channelChange)="updateChannel($event)"
+                   (topicTypeChange)="updateTopicType($event)"
+                   (hasDealChange)="updateHasDeal($event)">
 </entity-attributes>
 
 
@@ -26,6 +27,8 @@
 <entity-attr-cloud [isTopic]="true"
                    [categories]="(entity$ | async)?.categories"
                    [locations]="(entity$ | async)?.locations"
+                   [topics]="(entity$ | async)?.topics"
+                   [topicTypes]="cmsTopicTypes$ | async"
                    (toggle)="tabIdx = $event; openPanel = !openPanel"
                    (deleteCat)="removeCat($event)"
                    (deleteTag)="removeTag($event)"
@@ -50,9 +53,9 @@
                    [desc]="(entity$ | async)?.desc"
                    [intro]="(entity$ | async)?.intro"
                    (titleChange)="updateTitle($event)"
-                   (keywordsChanged)="updateKeywords($event)"
-                   (descChanged)="updateDesc($event)"
-                   (introChanged)="updateIntro($event)">
+                   (keywordsChange)="updateKeywords($event)"
+                   (descChange)="updateDesc($event)"
+                   (introChange)="updateIntro($event)">
 </entity-title-date>
 
 <!-- Topic guid, anchor_text, website, aff_url -->
@@ -60,10 +63,10 @@
                        [anchorText]="(entity$ | async)?.anchor_text"
                        [website]="(entity$ | async)?.website"
                        [affiliateUrl]="(entity$ | async)?.aff_url"
-                       (guidChanged)="updateGuid($event)"
-                       (anchorTextChanged)="updateAnchorText($event)"
-                       (websiteChanged)="updateWebsite($event)"
-                       (affiliateUrlChanged)="updateAffiliateUrl($event)">
+                       (guidChange)="updateGuid($event)"
+                       (anchorTextChange)="updateAnchorText($event)"
+                       (websiteChange)="updateWebsite($event)"
+                       (affiliateUrlChange)="updateAffiliateUrl($event)">
 </entity-permalink-edit>
 
 
@@ -100,11 +103,6 @@
         </tab>
 
         <tab heading="相关专题" [active]="tabIdx == 1">
-            <div class="alert alert-danger">
-                专题的专题需要分为几类来选择, 产品的品牌,网站,相关的产品,属于的知识类专题等,
-                比如HB维他命C需要分别选择品牌专题: Holland Barrett, 产品系列专题: HB维他命系列,
-                以及普通专题: 维他命, (还有网站专题: Holland Barrett网站??)
-            </div>
             <topic-cloud [topicTypes]="topicTypes$ | async"
                          [topics]="topics$ | async"
                          [selectedTopics]="(entity$ | async)?.topics"
@@ -112,6 +110,12 @@
                          (addTopic)="addTopic($event)"
                          (removeTopic)="removeTopic($event)">
             </topic-cloud>
+
+            <div class="alert alert-danger">
+                专题的专题需要分为几类来选择, 产品的品牌,网站,相关的产品,属于的知识类专题等,
+                比如HB维他命C需要分别选择品牌专题: Holland Barrett, 产品系列专题: HB维他命系列,
+                以及普通专题: 维他命, (还有网站专题: Holland Barrett网站??)
+            </div>
 
             <div class="alert alert-danger">
                 系列推荐包括专题包含的产品专题和文章专题推荐, 比如当当前专题为'brand'的时候,我们有一下的情况:

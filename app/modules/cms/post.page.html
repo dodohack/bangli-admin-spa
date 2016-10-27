@@ -43,10 +43,10 @@
                    [editors]="editors$ | async"
                    [creativeTypes]="creativeTypes"
                    [channels]="cmsChannels$ | async"
-                   (authorChanged)="updateAuthor($event)"
-                   (editorChanged)="updateEditor($event)"
-                   (creativeTypeChanged)="updateCreativeType($event)"
-                   (channelChanged)="updateChannel($event)">
+                   (authorChange)="updateAuthor($event)"
+                   (editorChange)="updateEditor($event)"
+                   (creativeTypeChange)="updateCreativeType($event)"
+                   (channelChange)="updateChannel($event)">
 </entity-attributes>
 
 <entity-thumbnails>
@@ -54,8 +54,8 @@
 
 <entity-excerpt-note [excerpt]="(entity$ | async)?.excerpt"
                      [note]="(entity$ | async)?.internal_note"
-                     (excerptChanged)="updateExcerpt($event)"
-                     (noteChanged)="updateNote($event)">
+                     (excerptChange)="updateExcerpt($event)"
+                     (noteChange)="updateNote($event)">
 </entity-excerpt-note>
 
 <!-- Froala Editor -->

@@ -42,6 +42,7 @@ export class TopicPage extends EntityPage
 
     updateTopicType($event) {
         //this.store.dispatch();
+        console.error("dispatch update Topic Type");
     }
 
     // TODO: Update if current topic has a corrresponding deal

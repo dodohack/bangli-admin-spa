@@ -6,8 +6,9 @@ import { ChangeDetectionStrategy }                from "@angular/core";
 
 import { Entity }      from '../../models';
 import { Category }    from '../../models';
-import { Topic }       from '../../models';
+//import { Topic }       from '../../models';
 import { GeoLocation } from '../../models';
+import { TopicType }   from '../../models';
 
 @Component({
     selector: 'entity-attr-cloud',
@@ -17,11 +18,13 @@ import { GeoLocation } from '../../models';
 export class EntityAttrCloud {
     @Input() isTopic:    boolean;
     @Input() categories: Category[];
-    @Input() topics:     Topic[];
+    @Input() topics:     Entity[];
     @Input() locations:  GeoLocation[];
-    @Input() topicProductSeries: Topic[];
-    @Input() topicTopicSeries:   Topic[];
-    @Input() topicPostSeries:    Topic[];
+    @Input() topicTypes: TopicType[];
+
+    //@Input() topicProductSeries: Topic[];
+    //@Input() topicTopicSeries:   Topic[];
+    //@Input() topicPostSeries:    Topic[];
 
     @Output() toggle            = new EventEmitter();
     @Output() deleteCat         = new EventEmitter();
@@ -33,4 +36,9 @@ export class EntityAttrCloud {
     @Output() deleteTopicPostSeries    = new EventEmitter();
 
     get hasLocation() { return this.locations && this.locations.length > 0; }
+
+    // Get topics of given topic type
+    topicsOfType(ttype: TopicType) {
+        return this.topics.filter(t => t.type_id === ttype.id);
+    }
 }

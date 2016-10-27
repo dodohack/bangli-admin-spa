@@ -5,10 +5,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ChangeDetectionStrategy }                from "@angular/core";
 
-import { Entity }  from '../../models';
-import { Channel } from '../../models';
-import { User }    from '../../models';
-import { zh_CN }   from '../../localization';
+import { Entity }    from '../../models';
+import { TopicType } from '../../models';
+import { Channel }   from '../../models';
+import { User }      from '../../models';
+import { zh_CN }     from '../../localization';
 
 @Component({
     selector: 'entity-attributes',
@@ -19,20 +20,21 @@ export class EntityAttributes {
     @Input() authorId: number;
     @Input() editorId: number;
     @Input() creativeType: string;
-    @Input() channelId: number;
+    @Input() topicTypeId: number;  // Topic type id of current topic
+    @Input() channelId: number;    // Channel id of current topic
     @Input() authors: User[];
     @Input() editors: User[];
     @Input() creativeTypes: any;
-    @Input() topicTypes: any;
+    @Input() topicTypes: TopicType[];
     @Input() channels: Channel[];
     @Input() hasDeal: boolean;
 
-    @Output() authorChanged = new EventEmitter();
-    @Output() editorChanged = new EventEmitter();
-    @Output() creativeTypeChanged = new EventEmitter();
-    @Output() channelChanged   = new EventEmitter();
-    @Output() topicTypeChanged = new EventEmitter();
-    @Output() hasDealChanged   = new EventEmitter();
+    @Output() authorChange = new EventEmitter();
+    @Output() editorChange = new EventEmitter();
+    @Output() creativeTypeChange = new EventEmitter();
+    @Output() channelChange   = new EventEmitter();
+    @Output() topicTypeChange = new EventEmitter();
+    @Output() hasDealChange   = new EventEmitter();
 
     get zh() { return zh_CN.cms; }
 }
