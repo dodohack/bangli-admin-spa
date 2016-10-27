@@ -326,12 +326,60 @@ export class EntityActions {
             payload: {etype: etype, data: ch_id}
         };
     }
+
+    static UPDATE_TOPIC_TYPE = '[Entity] Update Topic Type';
+    static updateTopicType(etype: string, tid: number): Action {
+        return {
+            type: EntityActions.UPDATE_TOPIC_TYPE,
+            payload: {etype: etype, data: tid}
+        };
+    }
+
+    static UPDATE_TOPIC_HAS_DEAL = '[Entity] Update Topic Has Deal';
+    static updateTopicHasDeal(etype: string, x: boolean): Action {
+        return {
+            type: EntityActions.UPDATE_TOPIC_HAS_DEAL,
+            payload: {etype: etype, data: x}
+        };
+    }
+
+    static UPDATE_AUTHOR = '[Entity] Update Author';
+    static updateAuthor(etype: string, aid: number): Action {
+        return {
+            type: EntityActions.UPDATE_AUTHOR,
+            payload: {etype: etype, data: aid}
+        };
+    }
+
+    static UPDATE_EDITOR = '[Entity] Update Editor';
+    static updateEditor(etype: string, eid: number): Action {
+        return {
+            type: EntityActions.UPDATE_EDITOR,
+            payload: {etype: etype, data: eid}
+        };
+    }
     
     static UPDATE_TITLE = '[Entity] Update Title';
     static updateTitle(etype: string, title: string): Action {
         return {
             type: EntityActions.UPDATE_TITLE,
             payload: {etype: etype, data: title}
+        };
+    }
+
+    static UPDATE_KEYWORDS = '[Entity] Update Keywords';
+    static updateKeywords(etype: string, ks: string): Action {
+        return {
+            type: EntityActions.UPDATE_KEYWORDS,
+            payload: {etype: etype, data: ks}
+        };
+    }
+
+    static UPDATE_DESC = '[Entity] Update Desc';
+    static updateDesc(etype: string, desc: string): Action {
+        return {
+            type: EntityActions.UPDATE_DESC,
+            payload: {etype: etype, data: desc}
         };
     }
 

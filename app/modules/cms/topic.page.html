@@ -9,6 +9,25 @@
 </editor-page-header>
 
 
+<entity-buttons [entityState]="(entity$ | async)?.state"
+                (save)="save()"
+                (save2Pending)="save2Pending()"
+                (save2Draft)="save2Draft()"
+                (save2Publish)="save2Publish()"
+                (cancelSave)="cancelSave()">
+</entity-buttons>
+
+<entity-title-date [isTopic]="true"
+                   [title]="(entity$ | async)?.title"
+                   [keywords]="(entity$ | async)?.keywords"
+                   [desc]="(entity$ | async)?.desc"
+                   [intro]="(entity$ | async)?.intro"
+                   (titleChange)="updateTitle($event)"
+                   (keywordsChange)="updateKeywords($event)"
+                   (descChange)="updateDesc($event)">
+</entity-title-date>
+
+
 <entity-attributes [editorId]="(entity$ | async)?.editor_id"
                    [channelId]="(entity$ | async)?.channel_id"
                    [editors]="editors$ | async"
@@ -37,26 +56,6 @@
                    (deleteTopicTopicSeries)="removeTopicTopicSeries($event)"
                    (deleteTopicPostSeries)="removeTopicPostSeries($event)">
 </entity-attr-cloud>
-
-
-<entity-buttons [entityState]="(entity$ | async)?.state"
-                (save)="save()"
-                (save2Pending)="save2Pending()"
-                (save2Draft)="save2Draft()"
-                (save2Publish)="save2Publish()"
-                (cancelSave)="cancelSave()">
-</entity-buttons>
-
-<entity-title-date [isTopic]="true"
-                   [title]="(entity$ | async)?.title"
-                   [keywords]="(entity$ | async)?.keywords"
-                   [desc]="(entity$ | async)?.desc"
-                   [intro]="(entity$ | async)?.intro"
-                   (titleChange)="updateTitle($event)"
-                   (keywordsChange)="updateKeywords($event)"
-                   (descChange)="updateDesc($event)"
-                   (introChange)="updateIntro($event)">
-</entity-title-date>
 
 <!-- Topic guid, anchor_text, website, aff_url -->
 <entity-permalink-edit [guid]="(entity$ | async)?.guid"

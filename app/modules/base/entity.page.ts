@@ -137,8 +137,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
             .subscribe(e => this.entity = Object.assign({}, e));
 
         // Update the channel in CmsAttrStates with entity channel
-        this.subCh      = this.channelId$.subscribe(id => this.store
-                .dispatch(CmsAttrActions.switchChannel(id)));
+        this.subCh      = this.channelId$.distinctUntilChanged()
+            .subscribe(id => this.store.dispatch(CmsAttrActions.switchChannel(id)));
 
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
@@ -283,7 +283,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
     }
 
     updateChannel(id: number) {
-        console.log("Update current entity channel to : ", id);
         this.store.dispatch(EntityActions.updateChannel(this.etype, id));
     }
 
@@ -291,8 +290,53 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.store.dispatch(EntityActions.toggleGeoLocation(this.etype, loc));
     }
 
+    updateAuthor(id: number) {
+        this.store.dispatch(EntityActions.updateAuthor(this.etype, id));
+    }
+
+    updateEditor(id: number) {
+        this.store.dispatch(EntityActions.updateEditor(this.etype, id));
+    }
+
     updateTitle(title: string) {
         this.store.dispatch(EntityActions.updateTitle(this.etype, title));
+    }
+
+    updateKeywords(ks: string) {
+        this.store.dispatch(EntityActions.updateKeywords(this.etype, ks));
+    }
+
+    updateDesc(desc: string) {
+        this.store.dispatch(EntityActions.updateDesc(this.etype, desc));
+    }
+
+    updateTopicType(id: number) {
+        this.store.dispatch(EntityActions.updateTopicType(this.etype, id));
+    }
+
+    // TODO: Update if current topic has a corrresponding deal
+    updateHasDeal(x: boolean) {
+        this.store.dispatch(EntityActions.updateTopicHasDeal(this.etype, x));
+    }
+
+    updateIntro(intro: string) {
+        this.store.dispatch(EntityActions.updateTopicIntro(this.etype, intro));
+    }
+
+    updateGuid(guid: string) {
+        this.store.dispatch(EntityActions.updateGuid(this.etype, guid));
+    }
+
+    updateAnchorText(atext: string) {
+        this.store.dispatch(EntityActions.updateAnchorText(this.etype, atext));
+    }
+
+    updateWebsite(web: string) {
+        this.store.dispatch(EntityActions.updateWebsite(this.etype, web));
+    }
+
+    updateAffiliateUrl(affurl: string) {
+        this.store.dispatch(EntityActions.updateAffiliateUrl(this.etype, affurl));
     }
 
     updateFakePublishedAt(date: string) {

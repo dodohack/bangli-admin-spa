@@ -4,8 +4,7 @@
             <div class="input-group">
                 <span class="input-group-addon">标题</span>
                 <input type="text" name="title" class="form-control post-title"
-                       [ngModel]="title"
-                       (ngModelChange)="titleChange.emit($event)"
+                       [ngModel]="title" [formControl]="titleControl"
                        placeholder="文章标题" required>
             </div>
 
@@ -13,8 +12,7 @@
                 <div class="form-group post-meta">
                     <label>关键字</label>
                     <input type="text" name="keywords" class="form-control form-control-sm"
-                           [ngModel]="keywords"
-                           (ngModelChange)="keywordsChanged.emit($event)"
+                           [ngModel]="keywords" [formControl]="keywordsControl"
                            placeholder="多个关键字用半角逗号隔开">
                 </div>
             </div>
@@ -61,7 +59,7 @@
                 <label>专题描述</label>
                 <textarea rows="4" type="text" name="desc" class="form-control"
                           [ngModel]="desc"
-                          (ngModelChange)="descChanged.emit($event)"
+                          [formControl]="descControl"
                           placeholder="80字左右的介绍, 只展示在搜索结果页"></textarea>
             </div>
         </div>

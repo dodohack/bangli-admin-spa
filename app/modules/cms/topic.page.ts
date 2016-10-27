@@ -16,6 +16,7 @@ import { EntityPage }        from '../base/entity.page';
 import { Entity }            from '../../models';
 import { ENTITY }            from '../../models';
 import { AlertActions }      from '../../actions';
+import { EntityActions }     from '../../actions';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
 
@@ -34,62 +35,5 @@ export class TopicPage extends EntityPage
     get previewUrl() {
         if (this.entity && this.domain)
         return this.domain.url + '/cms/topic/' + this.entity.guid; 
-    }
-
-    /************************************************************************
-     * Topic only functions
-     *************************************************************************/
-
-    updateTopicType($event) {
-        //this.store.dispatch();
-        console.error("dispatch update Topic Type");
-    }
-
-    // TODO: Update if current topic has a corrresponding deal
-    updateHasDeal($event) {
-
-    }
-
-    // TODO: update cms_topics.product_series_ids
-    addTopicProductSeries(topic: Entity) {}
-    deleteTopicProductSeries(id: number) {
-    }
-
-    // TODO: update cms_topics.topic_series_ids
-    addTopicTopicSeries(topic: Entity) {}
-    deleteTopicTopicSeries(id: number) {
-    }
-
-    // TODO: update cms_topics.post_series_ids
-    addTopicPostSeries(topic: Entity) {}
-    deleteTopicPostSeries(id: number) {
-    }
-
-    updateKeywords($event) {
-
-    }
-
-    updateDesc($event) {
-
-    }
-
-    updateIntro($event) {
-
-    }
-
-    updateGuid($event) {
-
-    }
-
-    updateAnchorText($event) {
-
-    }
-
-    updateWebsite($event) {
-
-    }
-
-    updateAffiliateUrl($event) {
-
     }
 }

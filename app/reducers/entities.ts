@@ -547,10 +547,84 @@ function entitiesReducer (etype: string,
             });
         }
 
+        // Topic only action: update its type_id
+        case EntityActions.UPDATE_TOPIC_TYPE: {
+            let tid = action.payload.data;
+            let entity = state.entities[state.idsEditing[0]];
+            entity = Object.assign({}, entity, {type_id: tid});
+
+            return Object.assign({}, state, {
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
+                isDirty:    true
+            });
+        }
+
+        // Topic only action: update its has_deal
+        case EntityActions.UPDATE_TOPIC_HAS_DEAL: {
+            let hasDeal = action.payload.data;
+            let entity = state.entities[state.idsEditing[0]];
+            entity = Object.assign({}, entity, {has_deal: hasDeal});
+
+            return Object.assign({}, state, {
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
+                isDirty:    true
+            });
+        }
+
+        case EntityActions.UPDATE_AUTHOR: {
+            let authorId = action.payload.data;
+            let entity = state.entities[state.idsEditing[0]];
+            entity = Object.assign({}, entity, {author_id: authorId});
+
+            return Object.assign({}, state, {
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
+                isDirty:    true
+            });
+        }
+
+        case EntityActions.UPDATE_EDITOR: {
+            let editorId = action.payload.data;
+            let entity = state.entities[state.idsEditing[0]];
+            entity = Object.assign({}, entity, {editor_id: editorId});
+
+            return Object.assign({}, state, {
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
+                isDirty:    true
+            });
+        }
+
         case EntityActions.UPDATE_TITLE: {
             let title = action.payload.data;
             let entity = state.entities[state.idsEditing[0]];
             entity = Object.assign({}, entity, {title: title});
+
+            return Object.assign({}, state, {
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
+                isDirty:    true
+            });
+        }
+
+        case EntityActions.UPDATE_KEYWORDS: {
+            let ks = action.payload.data;
+            let entity = state.entities[state.idsEditing[0]];
+            entity = Object.assign({}, entity, {ks: ks});
+
+            return Object.assign({}, state, {
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
+                isDirty:    true
+            });
+        }
+
+        case EntityActions.UPDATE_DESC: {
+            let desc = action.payload.data;
+            let entity = state.entities[state.idsEditing[0]];
+            entity = Object.assign({}, entity, {desc: desc});
 
             return Object.assign({}, state, {
                 entities:   Object.assign({},
