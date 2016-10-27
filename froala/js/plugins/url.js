@@ -1,5 +1,5 @@
 /*!
- * froala_editor v2.3.4 (https://www.froala.com/wysiwyg-editor)
+ * froala_editor v2.3.5 (https://www.froala.com/wysiwyg-editor)
  * License https://froala.com/wysiwyg-editor/terms/
  * Copyright 2014-2016 Froala Labs
  */
@@ -32,7 +32,7 @@
     }
 }(function ($) {
 
-  'use strict';
+  
 
   // Extend defaults.
   $.extend($.FE.DEFAULTS, {
@@ -55,7 +55,7 @@
           // Check if text is URL.
           if ($.FE.URLRegEx.test(text)) {
             // Convert it to A.
-            $(this).before(text.replace($.FE.URLRegEx, '$1<a href="$2">$2</a>$7'));
+            $(this).before(text.replace($.FE.URLRegEx, '$1<a' + (editor.opts.linkAlwaysBlank ? ' target="_blank"' : '') + (editor.opts.linkAlwaysNoFollow ? ' rel="nofollow"' : '') + ' href="$2">$2</a>$7'));
 
             $(this).remove();
           }
@@ -75,7 +75,7 @@
     function _init () {
       editor.events.on('paste.afterCleanup', function (html) {
         if ($.FE.URLRegEx.test(html)) {
-          return html.replace($.FE.URLRegEx, '$1<a href="$2">$2</a>$7')
+          return html.replace($.FE.URLRegEx, '$1<a' + (editor.opts.linkAlwaysBlank ? ' target="_blank"' : '') + (editor.opts.linkAlwaysNoFollow ? ' rel="nofollow"' : '') + ' href="$2">$2</a>$7')
         }
       });
 

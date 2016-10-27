@@ -1,5 +1,5 @@
 /*!
- * froala_editor v2.3.4 (https://www.froala.com/wysiwyg-editor)
+ * froala_editor v2.3.5 (https://www.froala.com/wysiwyg-editor)
  * License https://froala.com/wysiwyg-editor/terms/
  * Copyright 2014-2016 Froala Labs
  */
@@ -32,7 +32,7 @@
     }
 }(function ($) {
 
-  'use strict';
+  
 
   $.extend($.FE.POPUP_TEMPLATES, {
     'video.insert': '[_BUTTONS_][_BY_URL_LAYER_][_EMBED_LAYER_]',
@@ -132,14 +132,16 @@
       var $popup = editor.popups.get('video.edit');
       if (!$popup) $popup = _initEditPopup();
 
-      editor.popups.setContainer('video.edit', $(editor.opts.scrollableContainer));
-      editor.popups.refresh('video.edit');
+      if ($popup) {
+        editor.popups.setContainer('video.edit', $(editor.opts.scrollableContainer));
+        editor.popups.refresh('video.edit');
 
-      var $video_obj = $current_video.find('iframe, embed, video');
-      var left = $video_obj.offset().left + $video_obj.outerWidth() / 2;
-      var top = $video_obj.offset().top + $video_obj.outerHeight();
+        var $video_obj = $current_video.find('iframe, embed, video');
+        var left = $video_obj.offset().left + $video_obj.outerWidth() / 2;
+        var top = $video_obj.offset().top + $video_obj.outerHeight();
 
-      editor.popups.show('video.edit', left, top, $video_obj.outerHeight());
+        editor.popups.show('video.edit', left, top, $video_obj.outerHeight());
+      }
     }
 
     function _initInsertPopup (delayed) {
@@ -583,25 +585,27 @@
     function _initEditPopup () {
       // Image buttons.
       var video_buttons = '';
-      if (editor.opts.videoEditButtons.length >= 1) {
+      if (editor.opts.videoEditButtons.length > 0) {
         video_buttons += '<div class="fr-buttons">';
         video_buttons += editor.button.buildList(editor.opts.videoEditButtons);
         video_buttons += '</div>';
-      }
 
-      var template = {
-        buttons: video_buttons
-      }
-
-      var $popup = editor.popups.create('video.edit', template);
-
-      editor.events.$on(editor.$wp, 'scroll.video-edit', function () {
-        if ($current_video && editor.popups.isVisible('video.edit')) {
-          _showEditPopup();
+        var template = {
+          buttons: video_buttons
         }
-      });
 
-      return $popup;
+        var $popup = editor.popups.create('video.edit', template);
+
+        editor.events.$on(editor.$wp, 'scroll.video-edit', function () {
+          if ($current_video && editor.popups.isVisible('video.edit')) {
+            _showEditPopup();
+          }
+        });
+
+        return $popup;
+      }
+
+      return false;
     }
 
     /**

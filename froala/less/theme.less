@@ -787,6 +787,10 @@
       width: @btn-width;
       height: @btn-height;
 
+      &.fr-btn-text {
+        width: auto;
+      }
+
       i {
         font-size: @btn-font-size;
         width: @btn-font-size;
@@ -798,6 +802,7 @@
         line-height:  @ui-font-size;
         min-width: @btn-width;
         height: @btn-font-size;
+        padding: 0 @btn-margin;
       }
 
       img {
@@ -867,7 +872,7 @@
     }
   }
 
-  .fr-desktop {
+  &.fr-desktop {
 
     .fr-command {
 

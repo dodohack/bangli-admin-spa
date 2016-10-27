@@ -1,5 +1,5 @@
 /*!
- * froala_editor v2.3.4 (https://www.froala.com/wysiwyg-editor)
+ * froala_editor v2.3.5 (https://www.froala.com/wysiwyg-editor)
  * License https://froala.com/wysiwyg-editor/terms/
  * Copyright 2014-2016 Froala Labs
  */
@@ -32,7 +32,7 @@
     }
 }(function ($) {
 
-  'use strict';
+  
 
   $.extend($.FE.POPUP_TEMPLATES, {
     'table.insert': '[_BUTTONS_][_ROWS_COLUMNS_]',
@@ -1927,12 +1927,148 @@
     }
 
     /*
+     * Move cursor in a nested table.
+     */
+    function _moveInNestedTable (cell, direction) {
+      var table = cell;
+
+      // Get parent table (editor might be initialized inside cell).
+      while (table && table.tagName != 'TABLE' && table.parentNode != editor.$el.get(0)) {
+        table = table.parentNode;
+      }
+
+      if (table && table.tagName == 'TABLE') {
+        var new_map = _tableMap($(table));
+
+        // Move up in the parent table.
+        if (direction == 'up') _moveUp(_cellOrigin(cell, new_map), table, new_map);
+        else if (direction == 'down') _moveDown(_cellOrigin(cell, new_map), table, new_map);
+      }
+    }
+
+    /*
+     * Move cursor up or down outside table.
+     */
+    function _moveWithArrows (origin, table, map, direction) {
+      var up = table;
+      var sibling;
+
+      // Look up in DOM for the previous or next element.
+      while (up != editor.$el.get(0)) {
+        // Nested table.
+        if (up.tagName == 'TD' || up.tagName == 'TH') {
+          break;
+        }
+
+        // The table has a sibling element.
+        if (direction == 'up') sibling = up.previousElementSibling;
+        else if (direction == 'down') sibling = up.nextElementSibling;
+
+        if (sibling) {
+          break;
+        }
+
+        // Table might be in a block tag.
+        up = up.parentNode;
+      }
+
+      // We have another table (nested).
+      if (up.tagName == 'TD' || up.tagName == 'TH') {
+        _moveInNestedTable(up, direction);
+      }
+
+      // Table has a sibling.
+      else if (sibling) {
+        if (direction == 'up') editor.selection.setAtEnd(sibling);
+        if (direction == 'down') editor.selection.setAtStart(sibling);
+      }
+    }
+
+    /*
+     * Move cursor up while in table cell.
+     */
+    function _moveUp (origin, table, map) {
+      // Not the first line.
+      if (origin.row > 0) {
+        editor.selection.setAtEnd(map[origin.row - 1][origin.col])
+      }
+
+      // First line.
+      else {
+        _moveWithArrows(origin, table, map, 'up');
+      }
+    }
+
+    /*
+     * Move cursor down while in table cell.
+     */
+    function _moveDown (origin, table, map) {
+      // Cell might have rowspan.
+      var row = parseInt(map[origin.row][origin.col].getAttribute('rowspan'), 10) || 1;
+
+      // Not the last line.
+      if (origin.row < map.length - row) {
+        editor.selection.setAtStart(map[origin.row + row][origin.col]);
+      }
+
+      // Last line.
+      else {
+        _moveWithArrows(origin, table, map, 'down');
+      }
+    }
+
+    /*
      * Using the arrow keys to move the cursor through the table will not select cells.
      */
     function _usingArrows (e) {
-      if (e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40) {
-        if (selectedCells().length > 0) {
-          _stopEdit();
+      // Get current selection.
+      var sel = editor.selection.blocks();
+
+      if (sel.length) {
+        sel = sel[0];
+
+        // Selection should be in a table cell.
+        if (sel.tagName == 'TD' || sel.tagName == 'TH') {
+          var table = sel;
+
+          // Get parent table (editor might be initialized inside cell).
+          while (table && table.tagName != 'TABLE' && table.parentNode != editor.$el.get(0)) {
+            table = table.parentNode;
+          }
+
+          if (table && table.tagName == 'TABLE') {
+            if (e.which == 37 || e.which == 38 || e.which == 39 || e.which == 40) {
+              if (selectedCells().length > 0) {
+                _stopEdit();
+              }
+
+              // Up and down in Webkit.
+              if (editor.browser.webkit && (e.which == 38 || e.which == 40)) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                // Table map.
+                var map = _tableMap($(table));
+
+                // Current cell map coordinates.
+                var origin = _cellOrigin(sel, map);
+
+                // Arrow up
+                if (e.which == 38) {
+                  _moveUp(origin, table, map);
+                }
+
+                // Arrow down
+                else if (e.which == 40) {
+                  _moveDown(origin, table, map);
+                }
+
+                // Update cursor position.
+                editor.selection.restore();
+                return false;
+              }
+            }
+          }
         }
       }
     }
@@ -1956,6 +2092,9 @@
 
         // Resize table only using left click.
         if (e.which == 1) {
+          // Save selection so that we can put cursor back at the end.
+          editor.selection.save();
+
           resizingFlag = true;
 
           $resizer.addClass('fr-moving');
@@ -2072,20 +2211,34 @@
           var max_right;
 
           if (editor.opts.direction != 'rtl') {
-            // Mouse is near the cells's left margin (skip left table border).
-            if (tag_origin.col > 0 && e.pageX - tag_left <= editor.opts.tableResizerOffset) {
+            // Mouse is near the cells's left margin.
+            if (e.pageX - tag_left <= editor.opts.tableResizerOffset) {
               // Table resizer's left position.
               resizer_left = tag_left;
 
-              // Left limit.
-              max_left = tag_left - _columnWidth(tag_origin.col - 1, map) + editor.opts.tableResizingLimit;
+              // Resize cells.
+              if (tag_origin.col > 0) {
+                // Left limit.
+                max_left = tag_left - _columnWidth(tag_origin.col - 1, map) + editor.opts.tableResizingLimit;
 
-              // Right limit.
-              max_right = tag_left + _columnWidth(tag_origin.col, map) - editor.opts.tableResizingLimit;
+                // Right limit.
+                max_right = tag_left + _columnWidth(tag_origin.col, map) - editor.opts.tableResizingLimit;
 
-              // Columns to resize.
-              first = tag_origin.col - 1;
-              second = tag_origin.col;
+                // Columns to resize.
+                first = tag_origin.col - 1;
+                second = tag_origin.col;
+              }
+
+              // Resize table.
+              else {
+                // Columns to resize.
+                first = 0;
+                second = null;
+
+                // Resizer limits.
+                max_left = $table.offset().left - 1 - parseInt($table.css('margin-left'), 10);
+                max_right = $table.offset().left - 1 + $table.width() - map[0].length * editor.opts.tableResizingLimit;
+              }
             }
 
             // Mouse is near the cell's right margin.
@@ -2121,20 +2274,33 @@
 
           // RTL
           else {
-            // Mouse is near the cell's right margin (skip right table border).
-            if (tag_origin.col > 0 && tag_right - e.pageX <= editor.opts.tableResizerOffset) {
+            // Mouse is near the cell's right margin.
+            if (tag_right - e.pageX <= editor.opts.tableResizerOffset) {
               // Table resizer's left position.
               resizer_left = tag_right;
 
-              // Left limit.
-              max_left = tag_right - _columnWidth(tag_origin.col, map) + editor.opts.tableResizingLimit;
+              // Resize cells.
+              if (tag_origin.col > 0) {
+                // Left limit.
+                max_left = tag_right - _columnWidth(tag_origin.col, map) + editor.opts.tableResizingLimit;
 
-              // Right limit.
-              max_right = tag_right + _columnWidth(tag_origin.col - 1, map) - editor.opts.tableResizingLimit;
+                // Right limit.
+                max_right = tag_right + _columnWidth(tag_origin.col - 1, map) - editor.opts.tableResizingLimit;
 
-              // Columns to resize.
-              first = tag_origin.col;
-              second = tag_origin.col - 1;
+                // Columns to resize.
+                first = tag_origin.col;
+                second = tag_origin.col - 1;
+              }
+
+              // Resize table.
+              else {
+                first = null;
+                second = 0;
+
+                // Resizer limits.
+                max_left = $table.offset().left + map[0].length * editor.opts.tableResizingLimit;
+                max_right = $table_parent.offset().left - 1 + $table_parent.width() + parseFloat($table_parent.css('padding-left'));
+              }
             }
 
             // Mouse is near the cell's left margin.
@@ -2163,7 +2329,7 @@
 
                 // Resizer limits.
                 max_left = $table_parent.offset().left + parseFloat($table_parent.css('padding-left'));
-                max_right = $table_parent.offset().left - 1 + $table_parent.width() + parseFloat($table_parent.css('padding-left')) - map[0].length * editor.opts.tableResizingLimit;
+                max_right = $table.offset().left - 1 + $table.width() - map[0].length * editor.opts.tableResizingLimit;
               }
             }
           }
@@ -2357,7 +2523,7 @@
             // We found a tag bellow.
             if (tag_below && ((tag_below.tagName == 'TH' || tag_below.tagName == 'TD' || tag_below.tagName == 'TABLE') && ($(tag_below).parents('.fr-wrapper').length || editor.opts.iframe))) {
               // Show the insert column helper button.
-              _showInsertColHelper (e, tag_below.closest('table'));
+              _showInsertColHelper (e, $(tag_below).closest('table'));
               return true;
             }
 
@@ -2370,7 +2536,7 @@
             // We found a tag at the right.
             if (tag_right && ((tag_right.tagName == 'TH' || tag_right.tagName == 'TD' || tag_right.tagName == 'TABLE') && ($(tag_right).parents('.fr-wrapper').length || editor.opts.iframe))) {
               // Show the insert row helper button.
-              _showInsertRowHelper (e, tag_right.closest('table'));
+              _showInsertRowHelper (e, $(tag_right).closest('table'));
               return true;
             }
           }
@@ -2485,14 +2651,40 @@
           var table_percentage = table_width / $table_parent.width() * 100;
           var width;
 
+          // RTL
           if (first == null) {
-            width = (table_width - release_position + initial_positon) / table_width * table_percentage;
+            // Right border.
+            if (second === 0) {
+              width = (table_width + release_position - initial_positon) / table_width * table_percentage;
+              $table.css('margin-right', 'calc(100% - ' + Math.round(width).toFixed(4) + '% - ' + (parseInt($table.css('margin-left'), 10) || 0) + 'px)');
+            }
+
+            // Left border.
+            else {
+              width = (table_width - release_position + initial_positon) / table_width * table_percentage;
+              $table.css('margin-left', 'calc(100% - ' + Math.round(width).toFixed(4) + '% - ' + (parseInt($table.css('margin-right'), 10) || 0) + 'px)');
+            }
+
+          // LTR
           } else {
-            width = (table_width + release_position - initial_positon) / table_width * table_percentage;
+            // Left border.
+            if (first === 0) {
+              width = (table_width - release_position + initial_positon) / table_width * table_percentage;
+              $table.css('margin-left', 'calc(100% - ' + Math.round(width).toFixed(4) + '% - ' + (parseInt($table.css('margin-right'), 10) || 0) + 'px)');
+            }
+
+            // Right border.
+            else {
+              width = (table_width + release_position - initial_positon) / table_width * table_percentage;
+              $table.css('margin-right', 'calc(100% - ' + Math.round(width).toFixed(4) + '% - ' + (parseInt($table.css('margin-left'), 10) || 0) + 'px)');
+            }
           }
 
           $table.css('width', Math.round(width).toFixed(4) + '%');
         }
+
+        editor.selection.restore();
+        editor.undo.saveStep();
       }
 
       // Clear resizer data.
@@ -2501,8 +2693,6 @@
       $resizer.removeData('first');
       $resizer.removeData('second');
       $resizer.removeData('table');
-
-      editor.undo.saveStep();
     }
 
     /*
@@ -2676,6 +2866,9 @@
 
           // Update cursor position.
           editor.selection.restore();
+
+          // Prevent event propagation.
+          return false;
         }
       }
     }
@@ -2938,7 +3131,7 @@
 
         editor.events.on('html.afterGet', function () {
           for (var i = 0; i < c_selected_cells.length; i++) {
-            c_selected_cells[i].className = (c_selected_cells[i].className ? c_selected_cells[i].className + ' ' : '') + 'fr-selected-cell';
+            c_selected_cells[i].className = (c_selected_cells[i].className ? c_selected_cells[i].className.trim() + ' ' : '') + 'fr-selected-cell';
           }
           c_selected_cells = [];
         });
@@ -2948,7 +3141,7 @@
       }
 
       // Tab in cell
-      editor.events.on('keydown', _useTab, true);
+      editor.events.on('keydown', _useTab);
 
       editor.events.on('destroy', _destroy);
     }

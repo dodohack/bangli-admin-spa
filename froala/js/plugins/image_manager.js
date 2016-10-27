@@ -1,5 +1,5 @@
 /*!
- * froala_editor v2.3.4 (https://www.froala.com/wysiwyg-editor)
+ * froala_editor v2.3.5 (https://www.froala.com/wysiwyg-editor)
  * License https://froala.com/wysiwyg-editor/terms/
  * Copyright 2014-2016 Froala Labs
  */
@@ -32,7 +32,7 @@
     }
 }(function ($) {
 
-  'use strict';
+  
 
   // Extend defaults.
   $.extend($.FE.DEFAULTS, {
@@ -85,8 +85,6 @@
     error_messages[ERROR_DURING_DELETE] = 'Error during delete image request.';
     error_messages[MISSING_DELETE_URL_OPTION] = 'Missing imageManagerDeleteURL option.';
 
-    var $current_image;
-
     /*
      * Show the media manager.
      */
@@ -100,7 +98,7 @@
       $modal.show();
       $overlay.show();
 
-      $current_image = editor.image.get();
+      $modal.data('current-image', editor.image.get());
 
       if (!$preloader) {
         _delayedInit();
@@ -250,7 +248,7 @@
           dataType: 'json',
           crossDomain: editor.opts.requestWithCORS,
           xhrFields: {
-            withCredentials: editor.opts.requestWithCORS
+            withCredentials: editor.opts.requestWithCredentials
           },
           headers: editor.opts.requestHeaders
         })
@@ -466,7 +464,7 @@
       };
 
       // Set the image object's src.
-      img.src = image.url;
+      img.src = image.thumb || image.url;
 
       // Add loaded or empty image to the media manager image list on the shortest column.
       _shortestColumn().append($img_container);
@@ -597,6 +595,7 @@
       var $img = $(e.currentTarget).siblings('img');
 
       var inst = $modal.data('instance') || editor;
+      var $current_image = $modal.data('current-image');
 
       hide();
       inst.image.showProgressBar();
@@ -616,6 +615,7 @@
         inst.popups.show('image.insert', left, top);
       }
       else {
+        $current_image.data('fr-old-src', $current_image.attr('src'));
         $current_image.trigger('click');
       }
 
@@ -647,7 +647,7 @@
               data: $.extend($.extend({ src: $img.attr('src') }, _getImageAttrs($img)), editor.opts.imageManagerDeleteParams),
               crossDomain: editor.opts.requestWithCORS,
               xhrFields: {
-                withCredentials: editor.opts.requestWithCORS
+                withCredentials: editor.opts.requestWithCredentials
               },
               headers: editor.opts.requestHeaders
             })

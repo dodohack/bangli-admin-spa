@@ -1,5 +1,5 @@
 /*!
- * froala_editor v2.3.4 (https://www.froala.com/wysiwyg-editor)
+ * froala_editor v2.3.5 (https://www.froala.com/wysiwyg-editor)
  * License https://froala.com/wysiwyg-editor/terms/
  * Copyright 2014-2016 Froala Labs
  */
@@ -32,7 +32,7 @@
     }
 }(function ($) {
 
-  'use strict';
+  
 
   $.extend($.FE.DEFAULTS, {
     codeMirror: true,
@@ -52,7 +52,8 @@
       indent_char: '\t',
       indent_size: 1,
       wrap_line_length: 0
-    }
+    },
+    codeViewKeepActiveButtons: ['fullscreen']
   })
 
   $.FE.PLUGINS.codeView = function (editor) {
@@ -159,6 +160,8 @@
       var html = editor.html.get(false, true);
       editor.$el.find('span.fr-tmp').remove();
 
+      editor.$box.toggleClass('fr-code-view', true);
+
       if (editor.core.hasFocus()) editor.$el.blur();
 
       html = html.replace(/<span class="fr-tmp fr-sm">F<\/span>/, 'FROALA-SM');
@@ -225,7 +228,9 @@
       }
 
       // Disable buttons.
-      editor.$tb.find(' > .fr-command').not($btn).addClass('fr-disabled');
+      editor.$tb.find(' > .fr-command').not($btn).filter(function () {
+        return editor.opts.codeViewKeepActiveButtons.indexOf($(this).data('cmd')) < 0;
+      }).addClass('fr-disabled');
       $btn.addClass('fr-active');
 
       if (!editor.helpers.isMobile() && editor.opts.toolbarInline) {
@@ -246,7 +251,6 @@
         _showText($btn);
       } else {
         editor.popups.hideAll();
-        editor.$box.toggleClass('fr-code-view', true);
         _showHTML($btn);
       }
     }

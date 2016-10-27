@@ -1,5 +1,5 @@
 /*!
- * froala_editor v2.3.4 (https://www.froala.com/wysiwyg-editor)
+ * froala_editor v2.3.5 (https://www.froala.com/wysiwyg-editor)
  * License https://froala.com/wysiwyg-editor/terms/
  * Copyright 2014-2016 Froala Labs
  */
@@ -32,7 +32,7 @@
     }
 }(function ($) {
 
-  'use strict';
+  
 
   $.extend($.FE.POPUP_TEMPLATES, {
     'file.insert': '[_BUTTONS_][_UPLOAD_LAYER_][_PROGRESS_BAR_]'
@@ -172,6 +172,8 @@
 
       editor.undo.saveStep();
 
+      _syncFiles();
+
       editor.events.trigger('file.inserted', [$file, response]);
     }
 
@@ -298,13 +300,14 @@
     }
 
     function upload (files) {
-      // Check if we should cancel the file upload.
-      if (editor.events.trigger('file.beforeUpload', [files]) === false) {
-        return false;
-      }
-
       // Make sure we have what to upload.
       if (typeof files != 'undefined' && files.length > 0) {
+        // Check if we should cancel the file upload.
+        if (editor.events.trigger('file.beforeUpload', [files]) === false) {
+          return false;
+        }
+
+
         var file = files[0];
 
         // Check file max size.
@@ -356,7 +359,12 @@
           // Create XHR request.
           var url = editor.opts.fileUploadURL;
           if (editor.opts.fileUploadToS3) {
-            url = 'https://' + editor.opts.fileUploadToS3.region + '.amazonaws.com/' + editor.opts.fileUploadToS3.bucket;
+            if (editor.opts.fileUploadToS3.uploadURL) {
+              url = editor.opts.fileUploadToS3.uploadURL;
+            }
+            else {
+              url = 'https://' + editor.opts.fileUploadToS3.region + '.amazonaws.com/' + editor.opts.fileUploadToS3.bucket;
+            }
           }
           var xhr = editor.core.getXHR(url, editor.opts.fileUploadMethod);
 
@@ -533,6 +541,32 @@
       editor.toolbar.showInline();
     }
 
+    var files;
+
+    function _syncFiles () {
+      // Get current files.
+      var c_files = Array.prototype.slice.call(editor.$el.get(0).querySelectorAll('a.fr-file'));
+
+      // Current files src.
+      var file_srcs = [];
+      var i;
+      for (i = 0; i < c_files.length; i++) {
+        file_srcs.push(c_files[i].getAttribute('href'));
+      }
+
+      // Loop previous files and check their src.
+      if (files) {
+        for (i = 0; i < files.length; i++) {
+          if (file_srcs.indexOf(files[i].getAttribute('href')) < 0) {
+            editor.events.trigger('file.unlink', [files[i]]);
+          }
+        }
+      }
+
+      // Current files are the old ones.
+      files = c_files;
+    }
+
     /*
      * Initialize.
      */
@@ -540,6 +574,11 @@
       _initEvents();
 
       editor.events.on('link.beforeRemove', _onRemove);
+
+      if (editor.$wp) {
+        _syncFiles();
+        editor.events.on('contentChanged', _syncFiles);
+      }
 
       _initInsertPopup(true);
     }

@@ -1,5 +1,5 @@
 /*!
- * froala_editor v2.3.4 (https://www.froala.com/wysiwyg-editor)
+ * froala_editor v2.3.5 (https://www.froala.com/wysiwyg-editor)
  * License https://froala.com/wysiwyg-editor/terms/
  * Copyright 2014-2016 Froala Labs
  */
@@ -32,7 +32,7 @@
     }
 }(function ($) {
 
-  'use strict';
+  
 
   $.extend($.FE.POPUP_TEMPLATES, {
     emoticons: '[_BUTTONS_][_EMOTICONS_]'
@@ -280,7 +280,7 @@
 
         if (!(e.which >= 37 && e.which <= 40)) {
           var el = inEmoticon();
-          if (el && (el.className || '').indexOf('fr-emoticon-img')) {
+          if (el && (el.getAttribute('class') || '').indexOf('fr-emoticon-img')) {
             $(el).append($.FE.MARKERS);
             editor.selection.restore();
           }

@@ -1,5 +1,5 @@
 /*!
- * froala_editor v2.3.4 (https://www.froala.com/wysiwyg-editor)
+ * froala_editor v2.3.5 (https://www.froala.com/wysiwyg-editor)
  * License https://froala.com/wysiwyg-editor/terms/
  * Copyright 2014-2016 Froala Labs
  */
@@ -32,7 +32,7 @@
     }
 }(function ($) {
 
-  'use strict';
+  
 
   // Extend defaults.
   $.extend($.FE.DEFAULTS, {
@@ -419,6 +419,9 @@
 
       // Hide the line breaker on cell edit.
       editor.events.on('popups.show.table.edit', _hide);
+
+      // Hide the line breaker after command is ran.
+      editor.events.on('commands.after', _hide);
 
       // Prevent line breaker from showing while selecting text or dragging images.
       editor.events.$on($(editor.win), 'mousedown', _mouseDown);
