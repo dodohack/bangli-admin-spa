@@ -59,6 +59,14 @@ export class CmsAttrActions {
         };
     }
 
+    static SEARCH_TOPICS = '[CmsAttr] Search Topics';
+    static searchTopics(text: string): Action {
+        return {
+            type: CmsAttrActions.SEARCH_TOPICS,
+            payload: text
+        };
+    }
+
     static LOAD_TOPICS = '[CmsAttr] Load Topics';
     static loadTopics(auth: AuthState): Action {
         return {
@@ -78,16 +86,23 @@ export class CmsAttrActions {
     static LOAD_TAGS_SUCCESS = '[CmsAttr] Load Tags Success';
     static loadTagsSuccess(tags: Tag[]): Action {
         return {
-            type: CmsAttrActions.LOAD_CATEGORIES_SUCCESS,
+            type: CmsAttrActions.LOAD_TAGS_SUCCESS,
             payload: tags
         };
     }
 
-    static LOAD_TOPICS_SUCCESS = '[CmsAttr] Load Topics Success';
-    static loadTopicsSuccess(topics: Topic[]): Action {
+    static SEARCH_TOPICS_SUCCESS = '[CmsAttr] Search Topics Success';
+    static searchTopicsSuccess(topics: Topic[]): Action {
         return {
-            type: CmsAttrActions.LOAD_CATEGORIES_SUCCESS,
+            type: CmsAttrActions.SEARCH_TOPICS_SUCCESS,
             payload: topics
+        };
+    }
+
+    static SEARCH_TOPICS_FAIL = '[CmsAttr] Search Topics Fail';
+    static searchTopicsFail(): Action {
+        return {
+            type: CmsAttrActions.SEARCH_TOPICS_FAIL
         };
     }
 

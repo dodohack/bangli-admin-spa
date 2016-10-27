@@ -92,7 +92,6 @@
         <tab heading="分类" [active]="tabIdx == 0">
             <div class="treeview">
                 <category-tree [parentId]="0"
-                               [channelId]="(entity$ | async)?.channel?.id"
                                [categories]="cmsCategories$ | async"
                                [selectedCats]="(entity$ | async)?.categories"
                                (checkEvent)="updateCat($event)">
@@ -100,32 +99,19 @@
             </div>
         </tab>
 
-        <tab heading="专题" [active]="tabIdx == 1">
+        <tab heading="相关专题" [active]="tabIdx == 1">
             <div class="alert alert-danger">
                 专题的专题需要分为几类来选择, 产品的品牌,网站,相关的产品,属于的知识类专题等,
                 比如HB维他命C需要分别选择品牌专题: Holland Barrett, 产品系列专题: HB维他命系列,
                 以及普通专题: 维他命, (还有网站专题: Holland Barrett网站??)
             </div>
-            <topic-cloud [channel]="(entity$ | async)?.channel"
-                         [topics]="null"
+            <topic-cloud [topicTypes]="topicTypes$ | async"
+                         [topics]="topics$ | async"
                          [selectedTopics]="(entity$ | async)?.topics"
+                         (searchTopic)="searchTopic($event)"
                          (addTopic)="addTopic($event)"
                          (removeTopic)="removeTopic($event)">
             </topic-cloud>
-        </tab>
-
-        <tab heading="Location" [active]="tabIdx == 2">
-            <geo-location-cloud [locations]="geoLocations$ | async"
-                                (clickEvent)="updateGeoLocation($event)">
-            </geo-location-cloud>
-        </tab>
-
-        <tab heading="专题系列" [active]="tabIdx == 3">
-            <!-- Each -->
-            <!--
-            <topic-type-cloud [topicTypes]="cmsTopicTypes$ | async">
-            </topic-type-cloud>
-            -->
 
             <div class="alert alert-danger">
                 系列推荐包括专题包含的产品专题和文章专题推荐, 比如当当前专题为'brand'的时候,我们有一下的情况:
@@ -149,6 +135,13 @@
                 <li>用于推荐文章的交叉专题, 从所有cms_topics.type为'general'的专题当中选择</li>
             </ul>
         </tab>
+
+        <tab heading="Location" [active]="tabIdx == 2">
+            <geo-location-cloud [locations]="geoLocations$ | async"
+                                (clickEvent)="updateGeoLocation($event)">
+            </geo-location-cloud>
+        </tab>
+
     </tabset>
 </right-panel>
 

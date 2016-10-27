@@ -1,25 +1,35 @@
 <div class="filter-wrapper">
-    <input placeholder="过滤" type="text" class="form-control"
-           [value]="filterText" [formControl]="filterControl">
+    <input placeholder="搜索" type="text" class="form-control"
+           [formControl]="searchControl">
 </div>
 
-<span class="tag tag-warning-outline tag-item">已选中专题:</span>
-<ul class="tag-cloud">
-    <li *ngFor="let topic of selectedTopics"
-        class="tag-item tag tag-pill tag-primary-outline"
-        (click)="removeTopic.emit(topic.id)">
-        {{ topic.title }} x
-    </li>
-</ul>
+<accordion>
+    <!-- Show topics grouped by topic types -->
+    <accordion-group *ngFor="let ttype of topicTypes">
 
-<hr>
-<!--
-<span class="tag tag-warning-outline tag-item">可用专题:</span>
-<ul class="tag-cloud">
-    <li *ngFor="let topic of availableTopics"
-        class="tag-item tag tag-pill tag-default-outline"
-        (click)="addTopic.emit(topic)">
-        {{ topic.title }}
-    </li>
-</ul>
--->
+        <div accordion-heading>
+            {{ ttype.name }} <i class="pull-right fa customize-chevron"></i>
+        </div>
+
+        <span class="tag tag-warning-outline tag-item">已选中专题:</span>
+        <ul class="tag-cloud">
+            <li *ngFor="let topic of selectedTopicsOfTType(ttype)"
+                class="tag-item tag tag-pill tag-primary-outline"
+                (click)="removeTopic.emit(topic.id)">
+                {{ topic.title }} x
+            </li>
+        </ul>
+
+        <hr>
+
+        <span class="tag tag-warning-outline tag-item">搜索结果:</span>
+        <ul class="tag-cloud">
+            <li *ngFor="let topic of topicsOfTType(ttype)"
+                class="tag-item tag tag-pill tag-default-outline"
+                (click)="addTopic.emit(topic)">
+                {{ topic.title }}
+            </li>
+        </ul>
+
+    </accordion-group>
+</accordion>

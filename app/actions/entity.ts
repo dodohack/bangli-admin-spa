@@ -318,6 +318,14 @@ export class EntityActions {
             payload: {etype: etype, data: tag_id}
         };
     }
+
+    static UPDATE_CHANNEL = '[Entity] Update Channel';
+    static updateChannel(etype: string, ch_id: number): Action {
+        return {
+            type: EntityActions.UPDATE_CHANNEL,
+            payload: {etype: etype, data: ch_id}
+        };
+    }
     
     static UPDATE_TITLE = '[Entity] Update Title';
     static updateTitle(etype: string, title: string): Action {

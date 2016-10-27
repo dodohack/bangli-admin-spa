@@ -686,6 +686,17 @@ export function getEntity(id: number) {
 }
 
 /**
+ * Return current editing entity channel
+ */
+export function getChannel() {
+    return (entity$: Observable<Entity>) => entity$
+        .filter(e => typeof e != 'undefined')
+        .map(e => e.channels)
+        .filter(chs => typeof chs != 'undefined')
+        .select(chs => chs[0]);
+}
+
+/**
  * Return current editing entity description
  */
 export function getIntro() {

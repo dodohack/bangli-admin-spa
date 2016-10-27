@@ -222,7 +222,7 @@ export class EntityEffects {
             + '&per_page=' + perPage
             + '&token=' + this.cache.token;
 
-        console.log("LOAD ENTITIES FROM URL: ", api);
+        //console.log("LOAD ENTITIES FROM URL: ", api);
 
         return this.http.get(api).map(res => res.json());
     }

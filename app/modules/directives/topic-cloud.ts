@@ -2,8 +2,8 @@ import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
-import { Channel } from '../../models';
-import { Topic }   from '../../models';
+import { TopicType } from '../../models';
+import { Entity }    from '../../models';
 
 @Component({
     selector: 'topic-cloud',
@@ -12,43 +12,29 @@ import { Topic }   from '../../models';
 })
 export class TopicCloud implements OnInit {
     
-    filterControl = new FormControl();
-    filterText: string = '';
-    filteredTopics: Topic[] = [];
+    searchControl = new FormControl();
 
-    @Input() channel: Channel;
-    @Input() selectedTopics: Topic[];
-    @Input() topics: Topic[];
+    @Input() topicTypes: TopicType[];  // Topic types of given channel
+    @Input() selectedTopics: Entity[]; // Topics owned by current entity
+    @Input() topics: Entity[];         // Searched topic candidates
 
+    @Output() searchTopic = new EventEmitter();
     @Output() addTopic    = new EventEmitter();
     @Output() removeTopic = new EventEmitter();
 
-    constructor(private cd: ChangeDetectorRef) {}
-    
     ngOnInit() {
-        this.filterControl.valueChanges
-            .debounceTime(100).subscribe(text => {
-            this.filterText = text;
-            this.filteredTopics = this.unselectedTopics.filter(t =>
-                (t.guid.includes(text) || t.title.includes(text)) ? true : false);
-            this.cd.markForCheck();
-        });
+        // Emit an event to search a limited topics
+        this.searchControl.valueChanges.debounceTime(200)
+            .subscribe(text => this.searchTopic.emit(text));
     }
 
-    get unselectedTopics() {
-        let selectedIds: number[] = [];
-        if (this.selectedTopics) selectedIds = this.selectedTopics.map(t => t.id);
-        return this.topics.filter(t =>
-            (this.channel && t.channel_id === this.channel.id) ?
-                ((selectedIds.indexOf(t.id) === -1) ? true : false) : false);
+    // Get topics of given topic type
+    topicsOfTType(ttype: TopicType) {
+        return this.topics.filter(t => t.type_id === ttype.id);
     }
 
-    /**
-     * Get filteredTopics if there is filter text, otherwise return
-     * default unselectedTopics.
-     * @returns {Topic[]}
-     */
-    get availableTopics() {
-        return this.filterText === '' ?  this.unselectedTopics : this.filteredTopics;
+    // Get selected topics of given topic type
+    selectedTopicsOfTType(ttype: TopicType) {
+        return this.selectedTopics.filter(t => t.type_id === ttype.id);
     }
 }

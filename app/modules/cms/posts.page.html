@@ -57,14 +57,12 @@
                 <div class="treeview">
                     <category-tree *ngIf="(numEditing$ | async) > 1"
                                    [parentId]="0"
-                                   [channelId]="channelId"
                                    [categories]="cmsCategories$ | async"
                                    (checkEvent)="selectCat($event)">
                     </category-tree>
 
                     <category-tree *ngIf="(numEditing$ | async) == 1"
                                    [parentId]="0"
-                                   [channelId]="channelId"
                                    [categories]="cmsCategories$ | async"
                                    [selectedCats]="(entity$ | async)?.categories"
                                    (checkEvent)="selectCat($event)">

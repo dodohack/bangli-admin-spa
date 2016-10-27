@@ -305,9 +305,6 @@ export function getUsersState() {
         state$.select(s => s.users);
 }
 
-/**
- *
- */
 export function isMyProfileUUID(uuid: string) {
     return compose(fromUsers.isMyProfile(uuid), getUsersState());
 }
@@ -400,6 +397,11 @@ export function getEntity(etype: string, id: number) {
 
 export function getCurEntity(etype: string) {
     return compose(fromEntities.getCurEntity(), getEntitiesState(etype));
+}
+
+export function getCurEntityChannel(etype: string) {
+    return compose(fromEntities.getChannel(),
+        fromEntities.getCurEntity(), getEntitiesState(etype));
 }
 
 export function getCurEntityContent(etype: string) {

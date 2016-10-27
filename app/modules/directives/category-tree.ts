@@ -12,23 +12,20 @@ import { Category }                from '../../models';
 export class CategoryTree {
     // Parent category id of current level of tree
     @Input() parentId: number;
-    // Current channel id
-    @Input() channelId: number;
-    @Input() selectedCats: Category[];
-    @Input() categories: Category[];
+    @Input() selectedCats: Category[]; // Categories of entity owns
+    @Input() categories: Category[];   // Categories of given channel
 
     @Output() checkEvent = new EventEmitter();
 
+    get hasCategory() { return this.categories && this.categories.length; }
+
     /**
-     * Return categories of selected channel if channelId is given
+     * Apply entity's selectedCats to categories
      */
-    get catsOfChannel(): Category[] {
+    get updatedCats(): Category[] {
         if (!this.categories) return [];
 
         let tmpCats = this.categories;
-
-        if (this.channelId)
-            tmpCats = tmpCats.filter(c => c.channel_id === this.channelId);
 
         if (this.selectedCats)  // Apply selected categories
             return tmpCats.map(cat => Object.assign({}, cat,
@@ -55,7 +52,7 @@ export class CategoryTree {
         }
 
         return children;
-}
+    }
 
     hasChild(cat: Category) {
         return this.getChild(cat).length > 0;

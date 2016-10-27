@@ -13,6 +13,7 @@ import { CmsAttrActions }   from '../actions';
 import { Tag, Category }    from '../models';
 import { TopicType }        from '../models';
 import { GeoLocation }      from "../models";
+import { ENTITY }           from '../models';
 
 @Injectable()
 export class CmsAttrEffects {
@@ -33,6 +34,11 @@ export class CmsAttrEffects {
         .switchMap(action => this.getAll(action.payload)
             .map(attrs => CmsAttrActions.loadAllSuccess(attrs))
             .catch(() => Observable.of(CmsAttrActions.loadAllFail())));
+
+    @Effect() sTopic$ = this.actions$.ofType(CmsAttrActions.SEARCH_TOPICS)
+        .switchMap(action => this.searchTopics(action.payload)
+            .map(topics => CmsAttrActions.searchTopicsSuccess(topics))
+            .catch(() => Observable.of(CmsAttrActions.searchTopicsFail())));
 
     @Effect() saveTag$ = this.actions$.ofType(CmsAttrActions.SAVE_TAG)
         .switchMap(action => this.putTag(action.payload)
@@ -103,6 +109,20 @@ export class CmsAttrEffects {
         
         let api = APIS[this.cache.key] + API_PATH.cms_attrs + 
             '?token=' + this.cache.token;
+        return this.http.get(api).map(res => res.json());
+    }
+
+    /**
+     * Search topics by string
+     */
+    private searchTopics(text: string) {
+        // Return empty array if search string is empty
+        if (!text || text == '') return Observable.of([]);
+
+        let api = APIS[this.cache.key] + API_PATH.cms_topics +
+            '?etype=' + ENTITY.CMS_TOPIC + '&token=' + this.cache.token +
+            '&query=' + text + '&per_page=50';
+
         return this.http.get(api).map(res => res.json());
     }
 

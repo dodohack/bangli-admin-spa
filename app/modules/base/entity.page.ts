@@ -11,6 +11,7 @@ import { Observable }        from 'rxjs/Observable';
 
 import { AppState }          from '../../reducers';
 import { EntityActions }     from '../../actions';
+import { CmsAttrActions }    from '../../actions';
 import { AlertActions }      from "../../actions";
 
 import { FroalaOptions }     from '../../models/froala.option';
@@ -39,13 +40,14 @@ import { GMT }               from '../../helper';
 import {
     getCurDomain, getCurProfile, getIsDirty,
     getAuthors, getAuthorsObject, getEditors, getEditorsObject,
-    getCmsChannels, getCmsCategories, getLocations,
+    getCmsChannels, getCmsCurChannelCategories, getLocations,
     getCmsCurChannelTopicTypes,
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity,
-    getIsLoading, getPaginator,
+    getIsLoading, getPaginator, getCurEntityChannel,
     getEntitiesCurPage, getCurEntityHasDeal,
     getCurEntityIntro, getCurEntityContent} from '../../reducers';
+
 
 
 export abstract class EntityPage implements OnInit, OnDestroy
@@ -74,14 +76,15 @@ export abstract class EntityPage implements OnInit, OnDestroy
     authorsObj$:  Observable<any>;
     editors$:     Observable<User[]>;
     geoLocations$: Observable<GeoLocation[]>;
-    cmsChannels$: Observable<Channel[]>;
-    cmsCategories$: Observable<Category[]>;
-    cmsTopicTypes$: Observable<TopicType[]>;
+    cmsChannels$: Observable<Channel[]>;     // All cms channels
+    cmsCategories$: Observable<Category[]>;  // Categories of current channel
+    cmsTopicTypes$: Observable<TopicType[]>; // Topic types of current channel
     paginator$:   Observable<any>;
     entity$:      Observable<Entity>;
-    intro$:       Observable<string>; // Topic only introduction
+    channel$:     Observable<Channel>;   // Current entity channel
+    intro$:       Observable<string>;    // Topic only introduction
     content$:     Observable<string>;
-    hasDeal$:     Observable<boolean>;
+    hasDeal$:     Observable<boolean>;   // Topic only attributes
     entities$:    Observable<Entity[]>;
     idsCurPage$:  Observable<number[]>;
 
@@ -89,6 +92,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     subDomain: any;
     subPro: any;
     subDirty: any;
+    subCh: any;
     subEntity: any;
     subParams: any;
     subTimer: any;
@@ -113,10 +117,11 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.authorsObj$    = this.store.let(getAuthorsObject());
         this.geoLocations$  = this.store.let(getLocations());
         this.cmsChannels$   = this.store.let(getCmsChannels());
-        this.cmsCategories$ = this.store.let(getCmsCategories());
+        this.cmsCategories$ = this.store.let(getCmsCurChannelCategories());
         this.cmsTopicTypes$ = this.store.let(getCmsCurChannelTopicTypes());
         this.paginator$     = this.store.let(getPaginator(this.etype));
         this.entity$        = this.store.let(getCurEntity(this.etype));
+        this.channel$       = this.store.let(getCurEntityChannel(this.etype));
         this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
         this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
         this.intro$         = this.store.let(getCurEntityIntro(this.etype));
@@ -129,6 +134,10 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subEntity  = this.entity$
             .subscribe(e => this.entity = Object.assign({}, e));
 
+        // Update the channel in CmsAttrStates with entity channel
+        this.subCh      = this.channel$.subscribe(c => this.store
+                .dispatch(CmsAttrActions.switchChannel(c.slug)));
+
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
         // Init auto save timer
@@ -140,6 +149,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subPro.unsubscribe();
         this.subDirty.unsubscribe();
         this.subEntity.unsubscribe();
+        this.subCh.unsubscribe();
         this.subParams.unsubscribe();
         this.subTimer.unsubscribe();
     }
@@ -239,6 +249,11 @@ export abstract class EntityPage implements OnInit, OnDestroy
         */
     }
 
+    // Search topics from API server
+    searchTopic(text: string) {
+        this.store.dispatch(CmsAttrActions.searchTopics(text));
+    }
+
     /**
      * Various action to add/remove entity attributes 
      */
@@ -264,6 +279,11 @@ export abstract class EntityPage implements OnInit, OnDestroy
     removeTopic(id: number) {
         this.store.dispatch(EntityActions.detachTopicFromEntity(this.etype, id));
     }
+
+    updateChannel(id: number) {
+        this.store.dispatch(EntityActions.updateChannel(this.etype, id));
+    }
+
     updateGeoLocation(loc: GeoLocation) {
         this.store.dispatch(EntityActions.toggleGeoLocation(this.etype, loc));
     }

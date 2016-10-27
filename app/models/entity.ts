@@ -179,7 +179,8 @@ export class Entity {
     author_id: number;     // CMS post only
     image_id: number;
     images: any;           // image urls
-    type: number;          // table.type entry for some entities
+    type_id: number;       // CMS topic only: Topic type id
+    type: string;          // table.type entry for some entities
     state: string;
     channel_id: number;    // CMS and DEAL only
     channels: Channel[];   // ...

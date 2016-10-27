@@ -4,7 +4,7 @@ import { Observable }     from 'rxjs/Observable';
 import { GeoLocation }    from '../models';
 import { User }           from '../models';
 import { Category }       from "../models";
-import { Tag }            from "../models";
+import { Topic }          from "../models";
 import { TopicType }      from "../models";
 import { Channel }        from '../models';
 import { POST_STATES }    from '../models';
@@ -24,7 +24,10 @@ export interface CmsAttrsState {
     locations: GeoLocation[];
     categories: Category[];
     topic_types: TopicType[];
-    //post_topic_cats: Topic[]; // Topic cats for post
+    // Topics, we do not preload them as there are too many, this entry is
+    // only used when user searches for it.
+    // TODO: We may preload hot topics here
+    topics: Topic[];
     //tags: Tag[];
     // available - all available options for given attributes defined locally
     // actual    - attributes with number of posts retrieved from server
@@ -43,7 +46,7 @@ const initialState: CmsAttrsState = {
     locations: [],
     categories: [],
     topic_types: [],
-    //post_topic_cats: [],
+    topics: [],
     //tags: [],
     post_states: {available: POST_STATES, actual: []},
     post_creative_types: {available: CREATIVE_TYPES, actual: []},
@@ -142,7 +145,7 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                 locations: [...locations],
                 categories: [...categories],
                 topic_types: [...topic_types],
-                //post_topic_cats: [...post_topic_cats],
+                topics: [],
                 //tags: [...tags],
                 post_states: Object.assign({}, state.post_states, {actual: post_states}),
                 post_creative_types: Object.assign({}, state.post_creative_types,
@@ -160,6 +163,14 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                 return Object.assign({}, state, {curChannel: channels[0]});
             else
                 return state;
+        }
+
+        case CmsAttrActions.SEARCH_TOPICS_SUCCESS: {
+            return Object.assign({}, state, { topics: action.payload });
+        }
+
+        case CmsAttrActions.SEARCH_TOPICS_FAIL: {
+            return Object.assign({}, state, { topics: [] });
         }
 
         case CmsAttrActions.SAVE_GEO_LOCATION_SUCCESS:
@@ -331,6 +342,22 @@ export function getCurChannelTopicTypes() {
     return (state$: Observable<CmsAttrsState>) => state$
         .filter( s=> s.curChannel != null)
         .map(s => s.topic_types.filter(tt => tt.channel_id === s.curChannel.id));
+}
+
+/**
+ * Return an array of cms topics
+ */
+export function getTopics() {
+    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.topics);
+}
+
+/**
+ * Return an array of cms topics of current active channel
+ */
+export function getCurChannelTopics() {
+    return (state$: Observable<CmsAttrsState>) => state$
+        .filter( s=> s.curChannel != null)
+        .map(s => s.topics.filter(t => t.channel_id === s.curChannel.id));
 }
 
 /**

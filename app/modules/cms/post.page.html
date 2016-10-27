@@ -81,7 +81,6 @@
         <tab heading="分类" [active]="tabIdx == 0">
             <div class="treeview">
                 <category-tree [parentId]="0"
-                               [channelId]="(entity$ | async)?.channel?.id"
                                [categories]="cmsCategories$ | async"
                                [selectedCats]="(entity$ | async)?.categories"
                                (checkEvent)="updateCat($event)">
@@ -90,9 +89,10 @@
         </tab>
 
         <tab heading="专题" [active]="tabIdx == 1">
-            <topic-cloud [channel]="(entity$ | async)?.channel"
-                         [topics]="null"
+            <topic-cloud [topicTypes]="topicTypes$ | async"
+                         [topics]="topics$ | async"
                          [selectedTopics]="(entity$ | async)?.topics"
+                         (searchTopic)="searchTopic($event)"
                          (addTopic)="addTopic($event)"
                          (removeTopic)="removeTopic($event)">
             </topic-cloud>
