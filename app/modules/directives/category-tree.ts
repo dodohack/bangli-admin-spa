@@ -25,13 +25,11 @@ export class CategoryTree {
     get updatedCats(): Category[] {
         if (!this.categories) return [];
 
-        let tmpCats = this.categories;
-
         if (this.selectedCats)  // Apply selected categories
-            return tmpCats.map(cat => Object.assign({}, cat,
+            return this.categories.map(cat => Object.assign({}, cat,
                 {checked: this.selectedCats.map(c => c.id).indexOf(cat.id) !== -1}));
         else   // Return categories with 'checked' state unset
-            return tmpCats.map(cat => Object.assign({}, cat, {checked: false}));
+            return this.categories.map(cat => Object.assign({}, cat, {checked: false}));
     }
 
     /**

@@ -157,8 +157,9 @@ export default function (state = initialState, action: Action): CmsAttrsState {
         }
 
         case CmsAttrActions.SWITCH_CHANNEL: {
-            // Switch current active channel
-            let channels = state.channels.filter(ch => ch.slug == action.payload);
+            // Switch current active channel by given channel slug or id
+            let channels = state.channels
+                .filter(ch => ch.slug == action.payload || ch.id == action.payload);
             if (channels.length > 0)
                 return Object.assign({}, state, {curChannel: channels[0]});
             else

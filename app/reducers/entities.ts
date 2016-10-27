@@ -535,6 +535,18 @@ function entitiesReducer (etype: string,
             });
         }
 
+        case EntityActions.UPDATE_CHANNEL: {
+            let chId = action.payload.data;
+            let entity = state.entities[state.idsEditing[0]];
+            entity = Object.assign({}, entity, {channel_id: chId});
+
+            return Object.assign({}, state, {
+                entities:   Object.assign({},
+                    state.entities, {[entity.id]: entity}),
+                isDirty:    true
+            });
+        }
+
         case EntityActions.UPDATE_TITLE: {
             let title = action.payload.data;
             let entity = state.entities[state.idsEditing[0]];
@@ -688,12 +700,9 @@ export function getEntity(id: number) {
 /**
  * Return current editing entity channel
  */
-export function getChannel() {
+export function getChannelId() {
     return (entity$: Observable<Entity>) => entity$
-        .filter(e => typeof e != 'undefined')
-        .map(e => e.channels)
-        .filter(chs => typeof chs != 'undefined')
-        .select(chs => chs[0]);
+        .filter(e => typeof e != 'undefined').map(e => e.channel_id);
 }
 
 /**

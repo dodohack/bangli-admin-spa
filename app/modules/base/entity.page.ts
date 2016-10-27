@@ -44,7 +44,7 @@ import {
     getCmsCurChannelTopicTypes,
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity,
-    getIsLoading, getPaginator, getCurEntityChannel,
+    getIsLoading, getPaginator, getCurEntityChannelId,
     getEntitiesCurPage, getCurEntityHasDeal,
     getCurEntityIntro, getCurEntityContent} from '../../reducers';
 
@@ -81,7 +81,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     cmsTopicTypes$: Observable<TopicType[]>; // Topic types of current channel
     paginator$:   Observable<any>;
     entity$:      Observable<Entity>;
-    channel$:     Observable<Channel>;   // Current entity channel
+    channelId$:   Observable<number>;    // Current entity channel id
     intro$:       Observable<string>;    // Topic only introduction
     content$:     Observable<string>;
     hasDeal$:     Observable<boolean>;   // Topic only attributes
@@ -121,7 +121,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.cmsTopicTypes$ = this.store.let(getCmsCurChannelTopicTypes());
         this.paginator$     = this.store.let(getPaginator(this.etype));
         this.entity$        = this.store.let(getCurEntity(this.etype));
-        this.channel$       = this.store.let(getCurEntityChannel(this.etype));
+        this.channelId$     = this.store.let(getCurEntityChannelId(this.etype));
         this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
         this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
         this.intro$         = this.store.let(getCurEntityIntro(this.etype));
@@ -135,8 +135,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
             .subscribe(e => this.entity = Object.assign({}, e));
 
         // Update the channel in CmsAttrStates with entity channel
-        this.subCh      = this.channel$.subscribe(c => this.store
-                .dispatch(CmsAttrActions.switchChannel(c.slug)));
+        this.subCh      = this.channelId$.subscribe(id => this.store
+                .dispatch(CmsAttrActions.switchChannel(id)));
 
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
@@ -281,6 +281,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     }
 
     updateChannel(id: number) {
+        console.log("Update current entity channel to : ", id);
         this.store.dispatch(EntityActions.updateChannel(this.etype, id));
     }
 

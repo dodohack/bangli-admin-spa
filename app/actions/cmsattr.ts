@@ -35,11 +35,11 @@ export class CmsAttrActions {
         };
     }
 
-    static SWITCH_CHANNEL = '[CmsAttr] Switch Channel By Slug';
-    static switchChannel(slug: string): Action {
+    static SWITCH_CHANNEL = '[CmsAttr] Switch Channel';
+    static switchChannel(slugOrId: string | number): Action {
         return {
             type: CmsAttrActions.SWITCH_CHANNEL,
-            payload: slug
+            payload: slugOrId
         };
     }
 
