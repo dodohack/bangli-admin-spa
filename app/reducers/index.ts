@@ -183,6 +183,10 @@ export function getCurDomain() {
     return compose(fromAuth.getCurDomain(), getAuthState());
 }
 
+export function hasCurProfile() {
+    return compose(fromAuth.hasCurProfile(), getAuthState());
+}
+
 export function getCurProfile() {
     return compose(fromAuth.getCurProfile(), getAuthState());
 }

@@ -202,6 +202,14 @@ export function getCurDomain() {
 }
 
 /**
+ * If user profile of current domain is loaded(via AuthActions.loginDomain)
+ */
+export function hasCurProfile() {
+    return (state$: Observable<AuthState>) => state$
+        .map(auth => typeof auth.users[auth.key] != 'undefined');
+}
+
+/**
  * Get user profile of current domain
  */
 export function getCurProfile() {

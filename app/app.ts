@@ -23,7 +23,7 @@ import { JwtPayload }        from './models';
 
 import { isDashboardUser, hasAuthorRole, getCurDomainKey, getAuthToken,
     getDomainLatencies, getDomains, getDomainKeys,
-    getAuthJwt, getAuthFail }   from './reducers';
+    hasCurProfile, getAuthJwt, getAuthFail }   from './reducers';
 
 @Component({
     selector: 'admin-spa',
@@ -34,6 +34,7 @@ export class App implements OnInit, OnDestroy
     subPing: any;
     subKey: any;
     subDU: any;
+    subIsLoggedInDomain: any;
 
     isLoggedIn: boolean;
 
@@ -48,6 +49,7 @@ export class App implements OnInit, OnDestroy
     fail$:         Observable<boolean>;
     latencies$:    Observable<any>;
     isDashboardUser$: Observable<boolean>; // Per domain permission from auth server
+    isLoggedInDomain$:Observable<boolean>; // Current domain user profile
 
     constructor(private viewContainerRef: ViewContainerRef,
                 private store: Store<AppState>,
@@ -62,7 +64,8 @@ export class App implements OnInit, OnDestroy
         this.pref$         = this.store.select<PreferenceState>('pref');
         this.fail$         = this.store.let(getAuthFail());
         this.latencies$    = this.store.let(getDomainLatencies());
-        this.isDashboardUser$ = this.store.let(isDashboardUser());
+        this.isDashboardUser$  = this.store.let(isDashboardUser());
+        this.isLoggedInDomain$ = this.store.let(hasCurProfile());
         
         this.listenOnBasicPermission();
         this.loadDomainData();
@@ -72,6 +75,7 @@ export class App implements OnInit, OnDestroy
     ngOnDestroy() {
         this.subDU.unsubscribe();
         this.subKey.unsubscribe();
+        this.subIsLoggedInDomain.unsubscribe();
         this.subPing.unsubscribe();
     }
 
@@ -81,30 +85,21 @@ export class App implements OnInit, OnDestroy
             if (isDU) {
                 console.log("Dashboard user is true!");
                 this.isLoggedIn = true;
-                this.loginDomain();
             } else {
                 console.log("Dashboard user is false!");
                 this.isLoggedIn = false;
                 this.logout();
             }
         });
+
+        // Load domain user profile if we haven't load it
+        this.subIsLoggedInDomain = this.isLoggedInDomain$
+            .take(1).filter(b => !b)
+            .subscribe(x => this.store.dispatch(AuthActions.loginDomain()));
     }
 
     // Load domain data when loginDomain success
     loadDomainData() {
-        // When flag 'failure' turns from true to false
-        // FIXME: This action is triggered each time when doing the ping,
-        // as reducer creates a new state each time of PING_DOMAINS
-        /*
-        this.subKey = this.fail$.filter(f => f == false)
-            .subscribe(() => {
-                this.store.dispatch(ShopAttrActions.loadAll());
-                this.store.dispatch(SysAttrActions.loadAll());
-                this.store.dispatch(CmsAttrActions.loadAll());
-            });
-        */
-        // FIXME: We cant listen on domain key change as it may happens before
-        // loginDomainSuccess
         this.subKey = this.curDomainKey$.filter(key => key != undefined && key != '')
             .subscribe(key => {
                 this.store.dispatch(ShopAttrActions.loadAll(key));
