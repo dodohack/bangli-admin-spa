@@ -112,35 +112,35 @@ export function getSubMenuGids(pid: number) {
 }
 
 /**
- * Return current topbar menu root id
- */
-export function getTopMenuRootId() {
-    return (state$: Observable<FeMenusState>) => state$
-        .select(menu => menu.curTopMenuId);
-}
-
-/**
- * Return current main menu root id
- */
-export function getMainMenuRootId() {
-    return (state$: Observable<FeMenusState>) => state$
-        .select(menu => menu.curMainMenuId);
-}
-
-/**
- * Return current footer menu root id
- */
-export function getFootMenuRootId() {
-    return (state$: Observable<FeMenusState>) => state$
-        .select(menu => menu.curFootMenuId);
-}
-
-/**
  * Return root menu ids
  */
 export function getRootMenuIds() {
     return (state$: Observable<FeMenusState>) => state$
         .select(menu => menu.rootIds);
+}
+
+/**
+ * Return root menus
+ */
+export function getRootMenus() {
+    return (state$: Observable<FeMenusState>) => state$
+        .select(menu => menu.roots);
+}
+
+/**
+ * Return menu group ids
+ */
+export function getMenuGroupIds() {
+    return (state$: Observable<FeMenusState>) => state$
+        .select(menu => menu.menuGids);
+}
+
+/**
+ * Return menu parent ids
+ */
+export function getMenuParentIds() {
+    return (state$: Observable<FeMenusState>) => state$
+        .select(menu => menu.parentIds);
 }
 
 /**

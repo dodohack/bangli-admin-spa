@@ -22,11 +22,11 @@
 
 <div class="setting-body">
     <!-- List of all menus -->
-    <!--
-    <fe-menu-setting [menus]="menus$ | async"
-                         (edit)="onEdit($event)"
-                         (add)="onAdd()"></fe-menu-setting>
-                         -->
-    <h5> Dump of all menus </h5>
-    {{ feMenus$ | async | json }}
+    <fe-menu-setting [rootIds]="feMenuRootIds$ | async"
+                     [roots]="feMenuRoots$ | async"
+                     [groupIds]="feMenuGroupIds$ | async"
+                     [parentIds]="feMenuParentIds$ | async"
+                     [menus]="feMenus$ | async"
+                     (edit)="onEdit($event)"
+                     (add)="onAdd()"></fe-menu-setting>
 </div>

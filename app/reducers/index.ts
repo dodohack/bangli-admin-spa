@@ -447,6 +447,18 @@ export function getFeRootMenuIds() {
     return compose(fromFeMenu.getRootMenuIds(), getFeMenusState());
 }
 
+export function getFeRootMenus() {
+    return compose(fromFeMenu.getRootMenus(), getFeMenusState());
+}
+
+export function getFeMenuGroupIds() {
+    return compose(fromFeMenu.getMenuGroupIds(), getFeMenusState());
+}
+
+export function getFeMenuParentIds() {
+    return compose(fromFeMenu.getMenuParentIds(), getFeMenusState());
+}
+
 export function getFeMenus() {
     return compose(fromFeMenu.getMenus(), getFeMenusState());
 }

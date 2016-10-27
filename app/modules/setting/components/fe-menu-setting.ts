@@ -15,9 +15,15 @@ import { Channel }           from "../../../models";
 })
 export class FeMenuSetting {
 
+    @Input() rootIds: number[];
+    @Input() roots: any;
+    @Input() groupIds: any;
+    @Input() parentIds: number[];
     @Input() menus: any;
 
     @Output() edit = new EventEmitter();
     @Output() remove = new EventEmitter();
     @Output() save = new EventEmitter();
+
+    getSubMenus(pid: number) { return this.menus[pid]; }
 }
