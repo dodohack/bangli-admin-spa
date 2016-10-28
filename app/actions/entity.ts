@@ -261,6 +261,43 @@ export class EntityActions {
         };
     }
 
+    /**
+     * Attach relationship specified in value to the entity, indexed by
+     * key - entity attributes
+     */
+    static ATTACH = '[Entity] Attach Relationship';
+    static attach(etype: string, key: string, value: any): Action {
+        return {
+            type: EntityActions.ATTACH,
+            payload: {etype: etype, key: key, value: value}
+        }
+    }
+
+    /**
+     * Detach a relationship from the entity matches given value, indexed by
+     * key - entity attributes
+     */
+    static DETACH = '[Entity] Detach Relationship';
+    static detach(etype: string, key: string, id: number): Action {
+        return {
+            type: EntityActions.DETACH,
+            payload: {etype: etype, key: key, id: id}
+        }
+    }
+
+    /**
+     * Update entity attribute or has-one relationship(relationship not in array)
+     */
+    static UPDATE = '[Entity] Update Attribute';
+    static update(etype: string, key: string, value: any): Action {
+        return {
+            type: EntityActions.UPDATE,
+            payload: {etype: etype, key: key, value: value}
+        }
+    }
+
+    //static DELETE_ENTITY = '[Entity] Delete entity';
+
     static TOGGLE_LOCATION = '[Entity] Toggle GeoLocation';
     static toggleGeoLocation(etype: string, loc: GeoLocation): Action {
         return {

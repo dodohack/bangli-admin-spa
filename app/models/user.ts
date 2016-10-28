@@ -71,6 +71,7 @@ export class User {
     uuid: string;
     name: string;
     display_name: string;
+    text: string;     // Same as display_name, used by ng2-select.
     email: string;
     gender: string; /* ENUM, One of 'M', 'F' or 'U' */
     first_name: string;

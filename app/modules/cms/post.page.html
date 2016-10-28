@@ -19,7 +19,7 @@
 
 <entity-title-date [title]="(entity$ | async)?.title"
                    [date]="(entity$ | async)?.fake_published_at"
-                   (titleChange)="updateTitle($event)"
+                   (titleChange)="update('title', $event)"
                    (dateChange)="updateFakePublishedAt($event)">
 </entity-title-date>
 
@@ -27,12 +27,11 @@
 
 <entity-attr-cloud [categories]="(entity$ | async)?.categories"
                    [topics]="(entity$ | async)?.topics"
-                   [locations]="(entity$ | async)?.locations"
+                   [location]="(entity$ | async)?.location"
                    (toggle)="tabIdx = $event; openPanel = !openPanel"
-                   (deleteCat)="removeCat($event)"
-                   (deleteTag)="removeTag($event)"
-                   (deleteTopic)="removeTopic($event)"
-                   (toggleGeoLocation)="updateGeoLocation($event)">
+                   (detachCat)="detach('categories', $event)"
+                   (detachTopic)="detach('topics', $event)"
+                   (updateLocation)="update('location', $event)">
 </entity-attr-cloud>
 
 <entity-attributes [authorId]="(entity$ | async)?.author_id"
@@ -43,8 +42,8 @@
                    [editors]="editors$ | async"
                    [creativeTypes]="creativeTypes"
                    [channels]="cmsChannels$ | async"
-                   (authorChange)="updateAuthor($event)"
-                   (editorChange)="updateEditor($event)"
+                   (authorChange)="update('author', $event)"
+                   (editorChange)="update('editor', $event)"
                    (creativeTypeChange)="updateCreativeType($event)"
                    (channelChange)="updateChannel($event)">
 </entity-attributes>

@@ -1,3 +1,11 @@
+<div class="alert alert-danger">
+    TODO: Evaluate ng2-uploader and ng2-file-upload for file upload
+    TODO: Evaluate ng2-completer, ng2-select, angular2-select, ng2-auto-complete...
+    TODO: Evaluate ng2-table, ng2-handsontable for future use.
+    TODO: Evaluate angular2-tree-component, ng2-tree for
+          setting of category, location, menu, etc.
+</div>
+
 <editor-page-header [slug]="'topic'"
                     [name]="'专题'"
                     [zh]="zh"
@@ -8,84 +16,118 @@
                     (cancelEdit)="cancelSave()">
 </editor-page-header>
 
+<div class="row">
+    <div class="col-xs-8">
+        <entity-buttons [entityState]="(entity$ | async)?.state"
+                        (save)="save()"
+                        (save2Pending)="save2Pending()"
+                        (save2Draft)="save2Draft()"
+                        (save2Publish)="save2Publish()"
+                        (cancelSave)="cancelSave()">
+        </entity-buttons>
 
-<entity-buttons [entityState]="(entity$ | async)?.state"
-                (save)="save()"
-                (save2Pending)="save2Pending()"
-                (save2Draft)="save2Draft()"
-                (save2Publish)="save2Publish()"
-                (cancelSave)="cancelSave()">
-</entity-buttons>
-
-<entity-title-date [isTopic]="true"
-                   [title]="(entity$ | async)?.title"
-                   [keywords]="(entity$ | async)?.keywords"
-                   [desc]="(entity$ | async)?.desc"
-                   [intro]="(entity$ | async)?.intro"
-                   (titleChange)="updateTitle($event)"
-                   (keywordsChange)="updateKeywords($event)"
-                   (descChange)="updateDesc($event)">
-</entity-title-date>
-
-
-<entity-attributes [editorId]="(entity$ | async)?.editor_id"
-                   [channelId]="(entity$ | async)?.channel_id"
-                   [editors]="editors$ | async"
-                   [topicTypeId]="(entity$ | async)?.type_id"
-                   [channels]="cmsChannels$ | async"
-                   [topicTypes]="cmsTopicTypes$ | async"
-                   [hasDeal]="hasDeal$ | async"
-                   (editorChange)="updateEditor($event)"
-                   (channelChange)="updateChannel($event)"
-                   (topicTypeChange)="updateTopicType($event)"
-                   (hasDealChange)="updateHasDeal($event)">
-</entity-attributes>
+        <div class="alert alert-danger">
+            TODO: Replace keywords input with ng2-completer ng2-select or angular2-select..
+            USE ng2-select as we can hook a network request when input changes
+            For keywords, we use array to store it, and have a prompt for each input, say:
+            if user input is 'xxx', we have a dropdown prompt: xxx好不好， xxx怎么样 etc.
+        </div>
+        <entity-title-date [isTopic]="true"
+                           [title]="(entity$ | async)?.title"
+                           [keywords]="(entity$ | async)?.keywords"
+                           [desc]="(entity$ | async)?.desc"
+                           [intro]="(entity$ | async)?.intro"
+                           (titleChange)="update('title', $event)"
+                           (keywordsChange)="update('keywords', $event)"
+                           (descChange)="update('desc', $event)">
+        </entity-title-date>
 
 
-<!-- Topic location, category, topic, topic [product/topic/post] series etc -->
-<entity-attr-cloud [isTopic]="true"
-                   [categories]="(entity$ | async)?.categories"
-                   [locations]="(entity$ | async)?.locations"
-                   [topics]="(entity$ | async)?.topics"
-                   [topicTypes]="cmsTopicTypes$ | async"
-                   (toggle)="tabIdx = $event; openPanel = !openPanel"
-                   (deleteCat)="removeCat($event)"
-                   (deleteTag)="removeTag($event)"
-                   (toggleGeoLocation)="updateGeoLocation($event)"
-                   (deleteTopicProductSeries)="removeTopicProductSeries($event)"
-                   (deleteTopicTopicSeries)="removeTopicTopicSeries($event)"
-                   (deleteTopicPostSeries)="removeTopicPostSeries($event)">
-</entity-attr-cloud>
+        <div class="alert alert-danger">
+            TODO: Replace editor, channel, topic type input with ng2-select
+        </div>
+        <entity-attributes [editorId]="(entity$ | async)?.editor_id"
+                           [channelId]="(entity$ | async)?.channel_id"
+                           [editors]="editors$ | async"
+                           [topicTypeId]="(entity$ | async)?.type_id"
+                           [channels]="cmsChannels$ | async"
+                           [topicTypes]="cmsTopicTypes$ | async"
+                           [hasDeal]="hasDeal$ | async"
+                           (editorChange)="update('editor_id', $event)"
+                           (channelChange)="update('channel_id', $event)"
+                           (topicTypeChange)="update('type_id', $event)"
+                           (hasDealChange)="update('has_deal', $event)">
+        </entity-attributes>
 
-<!-- Topic guid, anchor_text, website, aff_url -->
-<entity-permalink-edit [guid]="(entity$ | async)?.guid"
-                       [anchorText]="(entity$ | async)?.anchor_text"
-                       [website]="(entity$ | async)?.website"
-                       [affiliateUrl]="(entity$ | async)?.aff_url"
-                       (guidChange)="updateGuid($event)"
-                       (anchorTextChange)="updateAnchorText($event)"
-                       (websiteChange)="updateWebsite($event)"
-                       (affiliateUrlChange)="updateAffiliateUrl($event)">
-</entity-permalink-edit>
+        <div class="alert alert-danger">
+            TODO: Replace location, category, topic input with ng2-select
+        </div>
+        <!-- Topic location, category, topic, topic [product/topic/post] series etc -->
+        <entity-attr-cloud [isTopic]="true"
+                           [categories]="(entity$ | async)?.categories"
+                           [location]="(entity$ | async)?.location"
+                           [topics]="(entity$ | async)?.topics"
+                           [topicTypes]="cmsTopicTypes$ | async"
+                           (toggle)="tabIdx = $event; openPanel = !openPanel"
+                           (detachCat)="detach('categories', $event)"
+                           (updateLocation)="update('location', $event)">
+        </entity-attr-cloud>
+
+        <!-- Topic guid, anchor_text, website, aff_url -->
+        <entity-permalink-edit [guid]="(entity$ | async)?.guid"
+                               [anchorText]="(entity$ | async)?.anchor_text"
+                               [website]="(entity$ | async)?.website"
+                               [affiliateUrl]="(entity$ | async)?.aff_url"
+                               (guidChange)="update('guid', $event)"
+                               (anchorTextChange)="update('anchor_tex', $event)"
+                               (websiteChange)="update('website', $event)"
+                               (affiliateUrlChange)="update('aff_url', $event)">
+        </entity-permalink-edit>
 
 
-<!-- Froala Editor -->
-<!-- TODO: Use official one when ngModule bug is fixed -->
-<!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
-     [(froalaModel)]="inputPost.content"></div>-->
+        <!-- Froala Editor -->
+        <!-- TODO: Use official one when ngModule bug is fixed -->
+        <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
+             [(froalaModel)]="inputPost.content"></div>-->
 
-<h2 style="font-size: 1.25rem">专题首段介绍</h2>
-<froala [froalaOptions]="froalaSimplifiedOptions"
-        [froalaData]="intro$ | async"
-        (model)="froalaIntroChanged($event)"></froala>
+        <h2 style="font-size: 1.25rem">专题首段介绍</h2>
+        <froala [froalaOptions]="froalaSimplifiedOptions"
+                [froalaData]="intro$ | async"
+                (model)="froalaIntroChanged($event)"></froala>
 
-<h2 style="font-size: 1.25rem">专题正文内容</h2>
-<froala [froalaOptions]="froalaOptions"
-        [froalaData]="content$ | async"
-        (model)="froalaContentChanged($event)"></froala>
+        <h2 style="font-size: 1.25rem">专题正文内容</h2>
+        <froala [froalaOptions]="froalaOptions"
+                [froalaData]="content$ | async"
+                (model)="froalaContentChanged($event)"></froala>
 
-<!-- Extra deal topic only data -->
-<deal-topic-content *ngIf="hasDeal$ | async"></deal-topic-content>
+        <!-- Extra deal topic only data -->
+        <deal-topic-content *ngIf="hasDeal$ | async"></deal-topic-content>
+    </div>
+
+    <div class="col-xs-4">
+        <label>编辑</label>
+        <ng-select [active]="(editor$ | async) ? [editor$ | async] : []"
+                   [items]="editors$ | async"
+                   (selected)="update('editor', $event)"
+                   (removed)="update('editor', $event)"
+                   placeholder="选择编辑"></ng-select>
+
+        <label>关键字</label>
+        <ng-select [allowClear]="true"
+                   [items]="editors$ | async"
+                   (selected)="update('editor', $event)"
+                   (removed)="update('editor', $event)"
+                   placeholder="选择编辑"></ng-select>
+
+        <div class="alert alert-danger">
+            TODO: We are going to put everthing here except title, main content
+            edit area, such as datepicker, button, keywords, author, editor etc.
+            We are going to use ng2-select in many items.
+            TODO: We can genericalize the input/select with 1 or 2 template, and
+            pass in different data only.
+        </div>
+    </div>
+</div>
 
 <!-- Right panel, we can trigger a seperate saving individually -->
 <right-panel [width]="'400px'" [isOpen]="openPanel"
@@ -96,7 +138,7 @@
                 <category-tree [parentId]="0"
                                [categories]="cmsCategories$ | async"
                                [selectedCats]="(entity$ | async)?.categories"
-                               (checkEvent)="updateCat($event)">
+                               (checkEvent)="attach('categories', $event)">
                 </category-tree>
             </div>
         </tab>
@@ -106,8 +148,8 @@
                          [topics]="cmsTopics$ | async"
                          [selectedTopics]="(entity$ | async)?.topics"
                          (searchTopic)="searchTopic($event)"
-                         (addTopic)="addTopic($event)"
-                         (removeTopic)="removeTopic($event)">
+                         (addTopic)="attach('topics', $event)"
+                         (removeTopic)="detach('topics', $event)">
             </topic-cloud>
 
             <div class="alert alert-danger">
@@ -141,7 +183,7 @@
 
         <tab heading="Location" [active]="tabIdx == 2">
             <geo-location-cloud [locations]="geoLocations$ | async"
-                                (clickEvent)="updateGeoLocation($event)">
+                                (clickEvent)="update('location', $event)">
             </geo-location-cloud>
         </tab>
 

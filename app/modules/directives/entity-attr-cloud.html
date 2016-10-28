@@ -32,12 +32,12 @@
                     <span class="tag tag-warning-outline tag-item"
                           (click)="toggle.emit(2)">Location:</span>
                     <ul class="tag-cloud">
-                        <li *ngFor="let loc of locations"
+                        <li *ngIf="location"
                             class="tag tag-pill tag-primary-outline tag-item"
-                            (click)="toggleGeoLocation.emit(loc)">
-                            {{ loc.name }} x
+                            (click)="updateLocation.emit(location)">
+                            {{ location.name }} x
                         </li>
-                        <li *ngIf="!hasLocation"
+                        <li *ngIf="!location"
                             class="tag tag-pill tag-primary-outline tag-item">
                             everywhere
                         </li>

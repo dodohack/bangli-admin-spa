@@ -63,33 +63,48 @@ export default function (state = initialState, action: Action): CmsAttrsState {
 
             let authors: User[] = [];
             if (payload.authors)
-                authors = payload.authors;
+                authors = payload.authors.map(u => {
+                    // Create a 'text' key for ng2-select.
+                    u.text = u.display_name + ' | ' + u.name;
+                    return u;
+                });
 
             let editors: User[] = [];
             if (payload.editors)
-                editors = payload.editors;
+                editors = payload.editors.map(u => {
+                    // Create a 'text' key for ng2-select.
+                    u.text = u.display_name + ' | ' + u.name;
+                    return u;
+                });
 
             let categories: Category[] = [];
             if (payload.categories)
-                categories = payload.categories;
+                categories = payload.categories.map(u => {
+                    // Create a 'text' key for ng2-select.
+                    u.text = u.name + ' | ' + u.slug;
+                    return u;
+                });
 
             let topic_types: TopicType[] = [];
             if (payload.topic_types)
-                topic_types = payload.topic_types;
-
-            /*
-            let tags: Tag[] = [];
-            if (action.payload.tags)
-                tags = action.payload.tags;
-                */
+                topic_types = payload.topic_types.map(u => {
+                    u.text = u.name + ' | ' + u.slug;
+                    return u;
+                });
 
             let channels: Channel[] = [];
-            if (payload.channels && payload.channels.length > 0)
-                channels = payload.channels;
+            if (payload.channels && payload.channels.length)
+                channels = payload.channels.map(u => {
+                    u.text = u.name + ' | ' + u.slug;
+                    return u;
+                });
 
             let locations: GeoLocation[] = [];
-            if (payload.locations && payload.locations.length > 0)
-                locations = payload.locations;
+            if (payload.locations && payload.locations.length)
+                locations = payload.locations.map(u => {
+                    u.text = u.name + ' | ' + u.name_cn;
+                    return u;
+                });
 
             /*
             let post_topic_cats: Topic[] = [];

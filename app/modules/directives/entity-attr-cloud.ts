@@ -19,23 +19,14 @@ export class EntityAttrCloud {
     @Input() isTopic:    boolean;
     @Input() categories: Category[];
     @Input() topics:     Entity[];
-    @Input() locations:  GeoLocation[];
+    @Input() location:   GeoLocation;
     @Input() topicTypes: TopicType[];
 
-    //@Input() topicProductSeries: Topic[];
-    //@Input() topicTopicSeries:   Topic[];
-    //@Input() topicPostSeries:    Topic[];
-
     @Output() toggle            = new EventEmitter();
-    @Output() deleteCat         = new EventEmitter();
-    @Output() deleteTag         = new EventEmitter();
-    @Output() deleteTopic       = new EventEmitter();
-    @Output() toggleGeoLocation = new EventEmitter();
-    @Output() deleteTopicProductSeries = new EventEmitter();
-    @Output() deleteTopicTopicSeries   = new EventEmitter();
-    @Output() deleteTopicPostSeries    = new EventEmitter();
-
-    get hasLocation() { return this.locations && this.locations.length > 0; }
+    @Output() detachCat         = new EventEmitter();
+    @Output() detachTag         = new EventEmitter();
+    @Output() detachTopic       = new EventEmitter();
+    @Output() updateLocation    = new EventEmitter();
 
     // Get topics of given topic type
     topicsOfType(ttype: TopicType) {

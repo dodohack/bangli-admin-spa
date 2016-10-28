@@ -399,102 +399,6 @@ function entitiesReducer (etype: string,
             });
         }
 
-        // Set/unset geo location of single/multiple entity[s]
-        case EntityActions.TOGGLE_LOCATION: {
-            let loc = action.payload.data;
-
-            const newEntityArray = state.idsEditing.map(id => {
-
-                const oldEntity = state.entities[id];
-                const wasSet    = oldEntity.location_id == loc.id ? true : false;
-                if (wasSet) {
-                    // Unset the location from the entity
-                    return Object.assign({}, oldEntity, {
-                        ['location_id']: 0, ['locations']: []});
-                } else {
-                    // Set the location to the entity
-                    return Object.assign({}, oldEntity, {
-                        ['location_id']: loc.id, ['locations']: [loc]});
-                }
-            });
-
-            let newEntities: { [id: number]: Entity } = {};
-            newEntityArray.forEach(entity => newEntities[entity.id] = entity);
-
-            return Object.assign({}, state, {
-                entities:   Object.assign({}, state.entities, newEntities),
-                isDirty:    true,
-                isLoading:  false
-            });
-        }
-
-        // Add a tag/topic/category to single/multiple entity[s]
-        case EntityActions.ADD_TAG:
-        case EntityActions.ATTACH_TOPIC_TO_ENTITY:
-        case EntityActions.ADD_CATEGORY: {
-            let key = 'categories';
-            if (action.type == EntityActions.ADD_TAG) key = 'tags';
-            if (action.type == EntityActions.ATTACH_TOPIC_TO_ENTITY) key = 'topics';
-
-            const newEntityArray = state.idsEditing.map(id => {
-                const oldEntity = state.entities[id];
-
-                if (key in oldEntity) { // entity has an attribute 'key'
-                    const isDup     = oldEntity[key]
-                        .filter(item => item.id === action.payload.data);
-
-                    if (isDup && isDup.length) {
-                        // Use old entity in next state as nothing changes
-                        return oldEntity;
-                    } else {
-                        // Create a new entity
-                        const newItems = [...oldEntity[key], action.payload.data];
-                        return Object.assign({}, oldEntity, {[key]: newItems});
-                    }
-                } else {  // entity doesn't have an attribute 'key'
-                    const newItems = [action.payload.data];
-                    return Object.assign({}, oldEntity, {[key]: newItems});
-                }
-            });
-
-            let newEntities: { [id: number]: Entity } = {};
-            newEntityArray.forEach(entity => newEntities[entity.id] = entity);
-
-            return Object.assign({}, state, {
-                entities:   Object.assign({}, state.entities, newEntities),
-                isDirty:    true,
-                isLoading:  false
-            });
-        }
-
-        // Remove a tag/topic/category from single/multiple entity[s]
-        case EntityActions.REMOVE_TAG:
-        case EntityActions.DETACH_TOPIC_FROM_ENTITY:
-        case EntityActions.REMOVE_CATEGORY: {
-            let key = 'categories';
-            if (action.type == EntityActions.REMOVE_TAG) key = 'tags';
-            if (action.type == EntityActions.DETACH_TOPIC_FROM_ENTITY) key = 'topics';
-
-            const newEntityArray = state.idsEditing.map(id => {
-
-                const oldEntity = state.entities[id];
-                const leftItems = oldEntity[key]
-                    .filter(item => item.id !== action.payload.data);
-                // Always return a new object
-                return Object.assign({}, oldEntity, {[key]: leftItems});
-
-            });
-
-            let newEntities: { [id: number]: Entity } = {};
-            newEntityArray.forEach(entity => newEntities[entity.id] = entity);
-
-            return Object.assign({}, state, {
-                entities:   Object.assign({}, state.entities, newEntities),
-                isDirty:    true,
-                isLoading:  false
-            });
-        }
-
         case EntityActions.APPLY_REVISION: {
             const id    = action.payload.data[0];
             const revid = action.payload.data[1];
@@ -535,108 +439,79 @@ function entitiesReducer (etype: string,
             });
         }
 
-        case EntityActions.UPDATE_CHANNEL: {
-            let chId = action.payload.data;
-            let entity = state.entities[state.idsEditing[0]];
-            entity = Object.assign({}, entity, {channel_id: chId});
+        case EntityActions.ATTACH: {
+            // Each relationship is going to attach to entity has a name 'key',
+            // and has value.id as the unique indentifer.
+            const key   = action.payload.key;
+            const value = action.payload.value;
+            const rid   = value.id;
+
+            if (!key || !rid) {
+                console.error("Failed to attach relationship!");
+                return state;
+            }
+
+            const newEntityArray = state.idsEditing.map(id => {
+                const oldEntity = state.entities[id];
+
+                if (key in oldEntity) {
+                    // Entity has an relationship 'key'
+                    const isDup = oldEntity[key].filter(item => item.id === rid);
+
+                    if (isDup && isDup.length) {
+                        // Relationship is already with the entity, do not modify
+                        return oldEntity;
+                    } else {
+                        // Create a new entity with the relationship
+                        const relations = [...oldEntity[key], value];
+                        return Object.assign({}, oldEntity, {[key]: relations});
+                    }
+                } else {
+                    // Entity doesn't have an attribute 'key', create it
+                    // with the only relationship
+                    const relation = [value];
+                    return Object.assign({}, oldEntity, {[key]: relation});
+                }
+            });
+
+            let newEntities: { [id: number]: Entity } = {};
+            newEntityArray.forEach(entity => newEntities[entity.id] = entity);
 
             return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true
+                entities:   Object.assign({}, state.entities, newEntities),
+                isDirty:    true,
+                isLoading:  false
             });
         }
 
-        // Topic only action: update its type_id
-        case EntityActions.UPDATE_TOPIC_TYPE: {
-            let tid = action.payload.data;
-            let entity = state.entities[state.idsEditing[0]];
-            entity = Object.assign({}, entity, {type_id: tid});
+        case EntityActions.DETACH: {
+            // Entity relationship is detached by given relationship id
+            const key = action.payload.key;
+            const rid = action.payload.id;
+
+            const newEntityArray = state.idsEditing.map(id => {
+                const oldEntity = state.entities[id];
+                // Filter out given relationship
+                const relations = oldEntity[key].filter(item => item.id !== rid);
+                return Object.assign({}, oldEntity, {[key]: relations});
+            });
+
+            let newEntities: { [id: number]: Entity } = {};
+            newEntityArray.forEach(entity => newEntities[entity.id] = entity);
 
             return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true
+                entities:   Object.assign({}, state.entities, newEntities),
+                isDirty:    true,
+                isLoading:  false
             });
         }
 
-        // Topic only action: update its has_deal
-        case EntityActions.UPDATE_TOPIC_HAS_DEAL: {
-            let hasDeal = action.payload.data;
+        case EntityActions.UPDATE: {
+            let key   = action.payload.key;
+            let value = action.payload.value;
             let entity = state.entities[state.idsEditing[0]];
-            entity = Object.assign({}, entity, {has_deal: hasDeal});
 
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true
-            });
-        }
-
-        case EntityActions.UPDATE_AUTHOR: {
-            let authorId = action.payload.data;
-            let entity = state.entities[state.idsEditing[0]];
-            entity = Object.assign({}, entity, {author_id: authorId});
-
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true
-            });
-        }
-
-        case EntityActions.UPDATE_EDITOR: {
-            let editorId = action.payload.data;
-            let entity = state.entities[state.idsEditing[0]];
-            entity = Object.assign({}, entity, {editor_id: editorId});
-
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true
-            });
-        }
-
-        case EntityActions.UPDATE_TITLE: {
-            let title = action.payload.data;
-            let entity = state.entities[state.idsEditing[0]];
-            entity = Object.assign({}, entity, {title: title});
-
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true
-            });
-        }
-
-        case EntityActions.UPDATE_KEYWORDS: {
-            let ks = action.payload.data;
-            let entity = state.entities[state.idsEditing[0]];
-            entity = Object.assign({}, entity, {ks: ks});
-
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true
-            });
-        }
-
-        case EntityActions.UPDATE_DESC: {
-            let desc = action.payload.data;
-            let entity = state.entities[state.idsEditing[0]];
-            entity = Object.assign({}, entity, {desc: desc});
-
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true
-            });
-        }
-
-        case EntityActions.UPDATE_CONTENT: {
-            let content = action.payload.data;
-            let entity = state.entities[state.idsEditing[0]];
-            entity = Object.assign({}, entity, {content: content});
+            entity = Object.assign({}, entity, {key: value});
 
             return Object.assign({}, state, {
                 entities:   Object.assign({},
@@ -769,6 +644,14 @@ export function getIsLoading() {
  */
 export function getEntity(id: number) {
     return (state$: Observable<EntitiesState>) => state$.select(s => s.entities[id]);
+}
+
+/**
+ * Return current editing entity editor
+ */
+export function getEditor() {
+    return (entity$: Observable<Entity>) => entity$
+        .filter(e => typeof e != 'undefined').map(e => e.editor);
 }
 
 /**

@@ -11,6 +11,7 @@ import { Category } from './category';
 import { Tag }      from './tag';
 import { Topic }    from './topic';
 import { Brand }    from "./brand";
+import { User }     from './user';
 
 /**
  * Entity type constants
@@ -175,6 +176,8 @@ export class ProductVariation {
 export class Entity {
     id: number;
     guid: string;
+    author: User;
+    editor: User;
     editor_id: number;
     author_id: number;     // CMS post only
     image_id: number;
@@ -183,9 +186,9 @@ export class Entity {
     type: string;          // table.type entry for some entities
     state: string;
     channel_id: number;    // CMS and DEAL only
-    //channels: Channel[];   // DON'T USE THIS
+    channel: Channel;      //
     location_id: number;   // ...
-    locations: GeoLocation[]; // ... This array only contains 0 or 1 element
+    location: GeoLocation; // CMS geolocation
     creative_type: string; // ...
     title: string;
     categories: Category[];
@@ -204,9 +207,12 @@ export class Entity {
     created_at: string;
     updated_at: string;
     revisions: Revision[];
-    statistics: Statistic[];
+    statistics: Statistic[]; // FIXME: should be statistic: Statistic;
     activities: Activity[]; // Only have edit_lock currently
 
+    anchor_text: string;   // CMS topic only
+    website: string;       // CMS topic only
+    aff_url: string;       // CMS topic only
     has_deal: boolean;     // CMS topic only, if we have a corresponding deal topic
     deal_intro: string;    // CMS deal topic only
     deal_content: string;  // CMS deal topic only

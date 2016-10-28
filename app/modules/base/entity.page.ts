@@ -45,6 +45,7 @@ import {
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity,
     getIsLoading, getPaginator, getCurEntityChannelId,
+    getCurEntityEditor,
     getEntitiesCurPage, getCurEntityHasDeal,
     getCurEntityIntro, getCurEntityContent} from '../../reducers';
 
@@ -82,6 +83,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     cmsTopics$:   Observable<Topic[]>;      // Candidates topics
     paginator$:   Observable<any>;
     entity$:      Observable<Entity>;
+    editor$:      Observable<User>;
     channelId$:   Observable<number>;    // Current entity channel id
     intro$:       Observable<string>;    // Topic only introduction
     content$:     Observable<string>;
@@ -123,6 +125,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.cmsTopics$     = this.store.let(getCmsTopics());
         this.paginator$     = this.store.let(getPaginator(this.etype));
         this.entity$        = this.store.let(getCurEntity(this.etype));
+        this.editor$        = this.store.let(getCurEntityEditor(this.etype));
         this.channelId$     = this.store.let(getCurEntityChannelId(this.etype));
         this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
         this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
@@ -257,88 +260,21 @@ export abstract class EntityPage implements OnInit, OnDestroy
     }
 
     /**
-     * Various action to add/remove entity attributes 
+     * Attach/detach a relationship to/from an entity, update an attribute
+     * of an entity.
+     * There 3 are generic functions that can handle all the modification
+     * to any entity.
      */
-    updateCat(cat: Category) {
-        if (cat.checked) this.removeCat(cat.id);
-        else this.addCat(cat);
+    attach(key: string, value: any) {
+        this.store.dispatch(EntityActions.attach(this.etype, key, value));
     }
-    addCat(cat: Category) {
-        this.store.dispatch(EntityActions.addCategory(this.etype, cat));
+    detach(key: string, id: number) {
+        this.store.dispatch(EntityActions.detach(this.etype, key, id));
     }
-    addTag(tag: Tag) {
-        this.store.dispatch(EntityActions.addTag(this.etype, tag));
+    update(key: string, value: any) {
+        this.store.dispatch(EntityActions.update(this.etype, key, value));
     }
-    addTopic(topic: Topic) {
-        this.store.dispatch(EntityActions.attachTopicToEntity(this.etype, topic));
-    }
-    removeCat(id: number) {
-        this.store.dispatch(EntityActions.removeCategory(this.etype, id));
-    }
-    removeTag(id: number) {
-        this.store.dispatch(EntityActions.removeTag(this.etype, id));
-    }
-    removeTopic(id: number) {
-        this.store.dispatch(EntityActions.detachTopicFromEntity(this.etype, id));
-    }
-
-    updateChannel(id: number) {
-        this.store.dispatch(EntityActions.updateChannel(this.etype, id));
-    }
-
-    updateGeoLocation(loc: GeoLocation) {
-        this.store.dispatch(EntityActions.toggleGeoLocation(this.etype, loc));
-    }
-
-    updateAuthor(id: number) {
-        this.store.dispatch(EntityActions.updateAuthor(this.etype, id));
-    }
-
-    updateEditor(id: number) {
-        this.store.dispatch(EntityActions.updateEditor(this.etype, id));
-    }
-
-    updateTitle(title: string) {
-        this.store.dispatch(EntityActions.updateTitle(this.etype, title));
-    }
-
-    updateKeywords(ks: string) {
-        this.store.dispatch(EntityActions.updateKeywords(this.etype, ks));
-    }
-
-    updateDesc(desc: string) {
-        this.store.dispatch(EntityActions.updateDesc(this.etype, desc));
-    }
-
-    updateTopicType(id: number) {
-        this.store.dispatch(EntityActions.updateTopicType(this.etype, id));
-    }
-
-    // TODO: Update if current topic has a corrresponding deal
-    updateHasDeal(x: boolean) {
-        this.store.dispatch(EntityActions.updateTopicHasDeal(this.etype, x));
-    }
-
-    updateIntro(intro: string) {
-        this.store.dispatch(EntityActions.updateTopicIntro(this.etype, intro));
-    }
-
-    updateGuid(guid: string) {
-        this.store.dispatch(EntityActions.updateGuid(this.etype, guid));
-    }
-
-    updateAnchorText(atext: string) {
-        this.store.dispatch(EntityActions.updateAnchorText(this.etype, atext));
-    }
-
-    updateWebsite(web: string) {
-        this.store.dispatch(EntityActions.updateWebsite(this.etype, web));
-    }
-
-    updateAffiliateUrl(affurl: string) {
-        this.store.dispatch(EntityActions.updateAffiliateUrl(this.etype, affurl));
-    }
-
+    // TODO: Deprecate this and merge it into update.
     updateFakePublishedAt(date: string) {
         let d1 = new Date(date);
         let d2 = new Date(this.entity.fake_published_at);

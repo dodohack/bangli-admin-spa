@@ -8,6 +8,7 @@ import { ReactiveFormsModule }           from '@angular/forms';
 import { RouterModule }                  from '@angular/router';
 
 import { UPLOAD_DIRECTIVES }             from 'ng2-uploader';
+import { SelectModule }                  from 'ng2-select/ng2-select';
 import { Ng2BootstrapModule }            from 'ng2-bootstrap/ng2-bootstrap';
 
 //import { FroalaEditorDirective } from 'angular2-froala-wysiwyg/lib/froala.directives';
@@ -40,6 +41,7 @@ import { DateFilterComponent }       from './date-filter.component';
 @NgModule({
     imports: [
         Ng2BootstrapModule,
+        SelectModule,
 
         CommonModule,
         FormsModule,
@@ -80,6 +82,7 @@ import { DateFilterComponent }       from './date-filter.component';
     ],
     exports: [
         Ng2BootstrapModule,
+        SelectModule,
 
         UPLOAD_DIRECTIVES,
 
