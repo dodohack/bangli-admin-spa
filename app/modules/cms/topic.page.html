@@ -138,11 +138,11 @@
 
         <div class="form-group">
             <label>关键字</label>
-            <ng-select [items]="keywords"
+            <ng-select [active]="keywords$ | async"
+                       [items]="keywords"
                        [multiple]="true"
-                       (typed)="key = $event"
-                       (selected)="update('keywords', $event)"
-                       (removed)="update('keywords', $event)"
+                       (selected)="attachStr('keywords', $event)"
+                       (removed)="detachStr('keywords', $event)"
                        placeholder="选择关键字"></ng-select>
         </div>
 

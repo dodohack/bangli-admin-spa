@@ -441,12 +441,13 @@ function entitiesReducer (etype: string,
 
         case EntityActions.ATTACH: {
             // Each relationship is going to attach to entity has a name 'key',
-            // and has value.id as the unique indentifer.
+            // and has value.id as the unique indentifer, we support string
+            // match the value if no id specified.
             const key   = action.payload.key;
             const value = action.payload.value;
             const rid   = value.id;
 
-            if (!key || !rid) {
+            if (!key) {
                 console.error("Failed to attach relationship!");
                 return state;
             }
@@ -454,23 +455,36 @@ function entitiesReducer (etype: string,
             const newEntityArray = state.idsEditing.map(id => {
                 const oldEntity = state.entities[id];
 
-                if (key in oldEntity) {
+                if (key in oldEntity && oldEntity[key]) {
                     // Entity has an relationship 'key'
-                    const isDup = oldEntity[key].filter(item => item.id === rid);
+                    let isDup;
+                    let attrs = oldEntity[key];
+                    // If 'id' is specified with relationship, we index the
+                    // relationship with 'id', otherwise assume the whole
+                    // item as string.
+                    if (rid) {
+                        isDup = attrs.filter(item => item.id === rid);
+                    } else {
+                        attrs = attrs.split(',');
+                        isDup = attrs.filter(item => item === value);
+                    }
 
                     if (isDup && isDup.length) {
                         // Relationship is already with the entity, do not modify
                         return oldEntity;
                     } else {
                         // Create a new entity with the relationship
-                        const relations = [...oldEntity[key], value];
-                        return Object.assign({}, oldEntity, {[key]: relations});
+                        let newAttrs = [...attrs, value];
+                        if (!rid) newAttrs = newAttrs.join(',');
+                        return Object.assign({}, oldEntity, {[key]: newAttrs});
                     }
                 } else {
                     // Entity doesn't have an attribute 'key', create it
                     // with the only relationship
-                    const relation = [value];
-                    return Object.assign({}, oldEntity, {[key]: relation});
+                    let attr;
+                    if (rid) attr = [value];
+                    else     attr = value;
+                    return Object.assign({}, oldEntity, {[key]: attr});
                 }
             });
 
@@ -486,14 +500,30 @@ function entitiesReducer (etype: string,
 
         case EntityActions.DETACH: {
             // Entity relationship is detached by given relationship id
-            const key = action.payload.key;
-            const rid = action.payload.id;
+            const key   = action.payload.key;
+            const value = action.payload.value;
+            const rid   = value.id;
+
+            if (!key) {
+                console.error("Failed to detach relationship!");
+                return state;
+            }
 
             const newEntityArray = state.idsEditing.map(id => {
                 const oldEntity = state.entities[id];
                 // Filter out given relationship
-                const relations = oldEntity[key].filter(item => item.id !== rid);
-                return Object.assign({}, oldEntity, {[key]: relations});
+                let attrs = oldEntity[key];
+                let newAttrs;
+
+                if (rid) {
+                    newAttrs = attrs.filter(item => item.id !== rid);
+                } else {
+                    attrs = attrs.split(',');
+                    newAttrs = attrs.filter(item => item !== value);
+                }
+
+                newAttrs = newAttrs.join(',');
+                return Object.assign({}, oldEntity, {[key]: newAttrs});
             });
 
             let newEntities: { [id: number]: Entity } = {};
@@ -510,6 +540,11 @@ function entitiesReducer (etype: string,
             let key   = action.payload.key;
             let value = action.payload.value;
             let entity = state.entities[state.idsEditing[0]];
+
+            if (!key) {
+                console.error("Failed to update attributes!");
+                return state;
+            }
 
             if (value && value.hasOwnProperty("id")) {
                 // Update corresponding entity.'key'_id column as well
@@ -698,6 +733,15 @@ export function getTopicType() {
             if (t.text) return t;
             else return Object.assign({}, t, {text: t.name});
         });
+}
+
+/**
+ * Return current editing entity keywords as array
+ */
+export function getKeywordsAsArray() {
+    return (entity$: Observable<Entity>) => entity$
+        .filter(e => typeof e != 'undefined').map(e => e.keywords)
+        .map(ks => ks.split(','));
 }
 
 /**

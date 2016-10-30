@@ -27,7 +27,7 @@ export class EntityPermalinkEdit implements OnInit {
             .subscribe(v => this.websiteChange.emit(v));
 
         this.affControl.valueChanges.debounceTime(1000)
-            .filter(v => v !== this.website)
+            .filter(v => v !== this.affiliateUrl)
             .subscribe(v => this.affiliateUrlChange.emit(v));
     }
 }

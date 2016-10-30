@@ -278,10 +278,10 @@ export class EntityActions {
      * key - entity attributes
      */
     static DETACH = '[Entity] Detach Relationship';
-    static detach(etype: string, key: string, id: number): Action {
+    static detach(etype: string, key: string, value: any): Action {
         return {
             type: EntityActions.DETACH,
-            payload: {etype: etype, key: key, id: id}
+            payload: {etype: etype, key: key, value: value}
         }
     }
 
@@ -296,138 +296,6 @@ export class EntityActions {
         }
     }
 
-    //static DELETE_ENTITY = '[Entity] Delete entity';
-
-    static TOGGLE_LOCATION = '[Entity] Toggle GeoLocation';
-    static toggleGeoLocation(etype: string, loc: GeoLocation): Action {
-        return {
-            type: EntityActions.TOGGLE_LOCATION,
-            payload: {etype: etype, data: loc}
-        };
-    }
-
-    static ADD_CATEGORY = '[Entity] Add Category';
-    static addCategory(etype: string, cat: Category): Action {
-        return {
-            type: EntityActions.ADD_CATEGORY,
-            payload: {etype: etype, data: cat}
-        };
-    }
-
-    static ADD_TAG = '[Entity] Add Tag';
-    static addTag(etype: string, tag: Tag): Action {
-        return {
-            type: EntityActions.ADD_TAG,
-            payload: {etype: etype, data: tag}
-        };
-    }
-
-    // FIXME: Should we merge ATTACH_TOPIC_TO_ENTITY and
-    // ATTACH_ENTITY_TO_TOPIC into single ATTACH_ENTITY_TO_ENTITY??
-    static ATTACH_TOPIC_TO_ENTITY = '[Entity] Attach Topic To Entity';
-    static attachTopicToEntity(etype: string, topic: Topic): Action {
-        return {
-            type: EntityActions.ATTACH_TOPIC_TO_ENTITY,
-            payload: {etype: etype, data: topic}
-        }
-    }
-
-    static ATTACH_ENTITY_TO_TOPIC = '[Entity] Add Entity To Topic';
-    static attachEntityToTopic(etype: string, entity: Entity): Action {
-        return {
-            type: EntityActions.ATTACH_ENTITY_TO_TOPIC,
-            payload: {etype: etype, data: entity}
-        }
-    }
-
-    static REMOVE_CATEGORY = '[Entity] Remove Category';
-    static removeCategory(etype: string, cat_id: number): Action {
-        return {
-            type: EntityActions.REMOVE_CATEGORY,
-            payload: {etype: etype, data: cat_id}
-        };
-    }
-
-    static REMOVE_TAG = '[Entity] Remove Tag';
-    static removeTag(etype: string, tag_id: number): Action {
-        return {
-            type: EntityActions.REMOVE_TAG,
-            payload: {etype: etype, data: tag_id}
-        };
-    }
-
-    static UPDATE_CHANNEL = '[Entity] Update Channel';
-    static updateChannel(etype: string, ch_id: number): Action {
-        return {
-            type: EntityActions.UPDATE_CHANNEL,
-            payload: {etype: etype, data: ch_id}
-        };
-    }
-
-    static UPDATE_TOPIC_TYPE = '[Entity] Update Topic Type';
-    static updateTopicType(etype: string, tid: number): Action {
-        return {
-            type: EntityActions.UPDATE_TOPIC_TYPE,
-            payload: {etype: etype, data: tid}
-        };
-    }
-
-    static UPDATE_TOPIC_HAS_DEAL = '[Entity] Update Topic Has Deal';
-    static updateTopicHasDeal(etype: string, x: boolean): Action {
-        return {
-            type: EntityActions.UPDATE_TOPIC_HAS_DEAL,
-            payload: {etype: etype, data: x}
-        };
-    }
-
-    static UPDATE_AUTHOR = '[Entity] Update Author';
-    static updateAuthor(etype: string, aid: number): Action {
-        return {
-            type: EntityActions.UPDATE_AUTHOR,
-            payload: {etype: etype, data: aid}
-        };
-    }
-
-    static UPDATE_EDITOR = '[Entity] Update Editor';
-    static updateEditor(etype: string, eid: number): Action {
-        return {
-            type: EntityActions.UPDATE_EDITOR,
-            payload: {etype: etype, data: eid}
-        };
-    }
-    
-    static UPDATE_TITLE = '[Entity] Update Title';
-    static updateTitle(etype: string, title: string): Action {
-        return {
-            type: EntityActions.UPDATE_TITLE,
-            payload: {etype: etype, data: title}
-        };
-    }
-
-    static UPDATE_KEYWORDS = '[Entity] Update Keywords';
-    static updateKeywords(etype: string, ks: string): Action {
-        return {
-            type: EntityActions.UPDATE_KEYWORDS,
-            payload: {etype: etype, data: ks}
-        };
-    }
-
-    static UPDATE_DESC = '[Entity] Update Desc';
-    static updateDesc(etype: string, desc: string): Action {
-        return {
-            type: EntityActions.UPDATE_DESC,
-            payload: {etype: etype, data: desc}
-        };
-    }
-
-    static UPDATE_CONTENT = '[Entity] Update Content';
-    static updateContent(etype: string, content: string): Action {
-        return {
-            type: EntityActions.UPDATE_CONTENT,
-            payload: {etype: etype, data: content}
-        };
-    }    
-
     static UPDATE_FAKE_PUBLISHED_AT = '[Entity] Update Fake Published At';
     static updateFakePublishedAt(etype: string, date: string): Action {
         return {
@@ -435,23 +303,7 @@ export class EntityActions {
             payload: {etype: etype, data: date}
         };
     }
-    
-    static DETACH_TOPIC_FROM_ENTITY = '[Entity] Detach Topic From Entity';
-    static detachTopicFromEntity(etype: string, topic_id: number): Action {
-        return {
-            type: EntityActions.DETACH_TOPIC_FROM_ENTITY,
-            payload: {etype: etype, data: topic_id}
-        }
-    }
 
-    static DETACH_ENTITY_FROM_TOPIC = '[Entity] Detach Entity From Topic';
-    static detachEntityFromTopic(etype: string, entity_id: number): Action {
-        return {
-            type: EntityActions.DETACH_ENTITY_FROM_TOPIC,
-            payload: {etype: etype, data: entity_id}
-        }
-    }
-    
     static REFRESH_ACTIVITY_STATUS = '[Entity] Refresh Activity Status';
     static refreshActivityStatus(etype: string, activities: Activity[]): Action {
         return {

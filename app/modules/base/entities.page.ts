@@ -277,22 +277,22 @@ export class EntitiesPage implements OnInit, OnDestroy
         else this.addCat(cat);
     }
     addCat(cat: Category) {
-        this.store.dispatch(EntityActions.addCategory(this.etype, cat));
+        //this.store.dispatch(EntityActions.attach(this.etype, cat));
     }
     addTag(tag: Tag) {
-        this.store.dispatch(EntityActions.addTag(this.etype, tag));
+        //this.store.dispatch(EntityActions.addTag(this.etype, tag));
     }
     addTopic(topic: Topic) {
-        this.store.dispatch(EntityActions.attachTopicToEntity(this.etype, topic));
+        //this.store.dispatch(EntityActions.attachTopicToEntity(this.etype, topic));
     }
     removeCat(id: number) {
-        this.store.dispatch(EntityActions.removeCategory(this.etype, id));
+        //this.store.dispatch(EntityActions.removeCategory(this.etype, id));
     }
     removeTag(id: number) {
-        this.store.dispatch(EntityActions.removeTag(this.etype, id));
+        //this.store.dispatch(EntityActions.removeTag(this.etype, id));
     }
     removeTopic(id: number) {
-        this.store.dispatch(EntityActions.detachTopicFromEntity(this.etype, id));
+        //this.store.dispatch(EntityActions.detachTopicFromEntity(this.etype, id));
     }
 
     // TODO:

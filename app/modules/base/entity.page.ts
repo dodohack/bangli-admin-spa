@@ -47,6 +47,7 @@ import {
     getIdsCurPage, getIdsEditing, getCurEntity,
     getIsLoading, getPaginator, getCurEntityChannel,
     getCurEntityEditor, getCurEntityTopicType,
+    getCurEntityKeywordsAsArray,
     getEntitiesCurPage, getCurEntityHasDeal,
     getCurEntityIntro, getCurEntityContent} from '../../reducers';
 
@@ -86,6 +87,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     entity$:      Observable<Entity>;
     editor$:      Observable<User>;
     channel$:     Observable<Channel>;   // Current entity channel id
+    keywords$:    Observable<string[]>;  // Keywords array of current topic
     intro$:       Observable<string>;    // Topic only introduction
     content$:     Observable<string>;
     topicType$:   Observable<TopicType>; // Topic only type
@@ -133,6 +135,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
         this.intro$         = this.store.let(getCurEntityIntro(this.etype));
         this.content$       = this.store.let(getCurEntityContent(this.etype));
+        this.keywords$      = this.store.let(getCurEntityKeywordsAsArray(this.etype));
         this.topicType$     = this.store.let(getCurEntityTopicType(this.etype));
         this.hasDeal$       = this.store.let(getCurEntityHasDeal(this.etype));
 
@@ -246,8 +249,16 @@ export abstract class EntityPage implements OnInit, OnDestroy
     /**
      * Set/get a keywords prompt list
      */
-    key = '';
-    get keywords() { return KEYWORDS.map(k => k.replace('[KEY]', this.key)); }
+    get keywords() {
+        if (this.entity) {
+            if (this.entity.anchor_text)
+                return KEYWORDS.map(k => k.replace('[KEY]', this.entity.anchor_text));
+            else if (this.entity.title)
+                return KEYWORDS.map(k => k.replace('[KEY]', this.entity.title));
+        } else {
+            return ['请先输入标题或锚文本'];
+        }
+    }
 
     /**
      * Redirect /entity/new to /entity/:id once new entity is saved
@@ -270,15 +281,21 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
     /**
      * Attach/detach a relationship to/from an entity, update an attribute
-     * of an entity.
-     * There 3 are generic functions that can handle all the modification
+     * of an entity, attach/detach/update string properity from entity.
+     * There 6 are generic functions that can handle all the modification
      * to any entity.
      */
     attach(key: string, value: any) {
         this.store.dispatch(EntityActions.attach(this.etype, key, value));
     }
-    detach(key: string, id: number) {
-        this.store.dispatch(EntityActions.detach(this.etype, key, id));
+    attachStr(key: string, value: any) {
+        this.store.dispatch(EntityActions.attach(this.etype, key, value.text));
+    }
+    detach(key: string, value: any) {
+        this.store.dispatch(EntityActions.detach(this.etype, key, value));
+    }
+    detachStr(key: string, value: any) {
+        this.store.dispatch(EntityActions.detach(this.etype, key, value.text));
     }
     update(key: string, value: any) {
         this.store.dispatch(EntityActions.update(this.etype, key, value));

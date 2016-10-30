@@ -428,6 +428,11 @@ export function getCurEntityTopicType(etype: string) {
         fromEntities.getCurEntity(), getEntitiesState(etype));
 }
 
+export function getCurEntityKeywordsAsArray(etype: string) {
+    return compose(fromEntities.getKeywordsAsArray(),
+        fromEntities.getCurEntity(), getEntitiesState(etype));
+}
+
 export function getCurEntityContent(etype: string) {
     return compose(fromEntities.getContent(),
         fromEntities.getCurEntity(), getEntitiesState(etype));

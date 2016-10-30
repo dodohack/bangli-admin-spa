@@ -196,7 +196,7 @@ export class Entity {
     tags: Tag[];           //
     topics: Topic[];       // CMS post only
     excerpt: string;
-    keywords: string;      // CMS topic keywords
+    keywords: string;      // CMS topic keywords seperated by ','.
     desc: string;          // CMS topic description
     intro: string;         // CMS topic introduction
     content: string;
