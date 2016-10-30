@@ -6,6 +6,7 @@
     
 export class Channel {
     id: number;
+    text: string;  // Same as name name. for ng2-select only
     slug: string;
     name: string;
     description: string;

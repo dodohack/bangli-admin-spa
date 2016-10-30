@@ -36,7 +36,8 @@ export class App implements OnInit, OnDestroy
     subDU: any;
     subIsLoggedInDomain: any;
 
-    isLoggedIn: boolean;
+    isPingEnabled = true;
+    isLoggedIn    = false;
 
     /* TODO: This array will grow large, need to clean it periodically */
     alerts$: Observable<Alert[]>;
@@ -112,7 +113,7 @@ export class App implements OnInit, OnDestroy
     dispatchPing() {
         this.subPing = Observable.interval(5000)
             .subscribe(() => {
-                if (this.isLoggedIn)
+                if (this.isLoggedIn && this.isPingEnabled)
                     this.store.dispatch(AuthActions.pingDomains());
             });
     }

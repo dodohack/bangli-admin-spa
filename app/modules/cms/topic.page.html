@@ -18,68 +18,20 @@
 
 <div class="row">
     <div class="col-xs-8">
-        <entity-buttons [entityState]="(entity$ | async)?.state"
-                        (save)="save()"
-                        (save2Pending)="save2Pending()"
-                        (save2Draft)="save2Draft()"
-                        (save2Publish)="save2Publish()"
-                        (cancelSave)="cancelSave()">
-        </entity-buttons>
-
-        <div class="alert alert-danger">
-            TODO: Replace keywords input with ng2-completer ng2-select or angular2-select..
-            USE ng2-select as we can hook a network request when input changes
-            For keywords, we use array to store it, and have a prompt for each input, say:
-            if user input is 'xxx', we have a dropdown prompt: xxx好不好， xxx怎么样 etc.
-        </div>
         <entity-title-date [isTopic]="true"
                            [title]="(entity$ | async)?.title"
-                           [keywords]="(entity$ | async)?.keywords"
+                           [guid]="(entity$ | async)?.guid"
                            [desc]="(entity$ | async)?.desc"
-                           [intro]="(entity$ | async)?.intro"
+                           [anchorText]="(entity$ | async)?.anchor_text"
                            (titleChange)="update('title', $event)"
-                           (keywordsChange)="update('keywords', $event)"
-                           (descChange)="update('desc', $event)">
+                           (guidChange)="update('guid', $event)"
+                           (descChange)="update('desc', $event)"
+                           (anchorTextChange)="update('anchor_text', $event)">
         </entity-title-date>
 
-
-        <div class="alert alert-danger">
-            TODO: Replace editor, channel, topic type input with ng2-select
-        </div>
-        <entity-attributes [editorId]="(entity$ | async)?.editor_id"
-                           [channelId]="(entity$ | async)?.channel_id"
-                           [editors]="editors$ | async"
-                           [topicTypeId]="(entity$ | async)?.type_id"
-                           [channels]="cmsChannels$ | async"
-                           [topicTypes]="cmsTopicTypes$ | async"
-                           [hasDeal]="hasDeal$ | async"
-                           (editorChange)="update('editor_id', $event)"
-                           (channelChange)="update('channel_id', $event)"
-                           (topicTypeChange)="update('type_id', $event)"
-                           (hasDealChange)="update('has_deal', $event)">
-        </entity-attributes>
-
-        <div class="alert alert-danger">
-            TODO: Replace location, category, topic input with ng2-select
-        </div>
-        <!-- Topic location, category, topic, topic [product/topic/post] series etc -->
-        <entity-attr-cloud [isTopic]="true"
-                           [categories]="(entity$ | async)?.categories"
-                           [location]="(entity$ | async)?.location"
-                           [topics]="(entity$ | async)?.topics"
-                           [topicTypes]="cmsTopicTypes$ | async"
-                           (toggle)="tabIdx = $event; openPanel = !openPanel"
-                           (detachCat)="detach('categories', $event)"
-                           (updateLocation)="update('location', $event)">
-        </entity-attr-cloud>
-
         <!-- Topic guid, anchor_text, website, aff_url -->
-        <entity-permalink-edit [guid]="(entity$ | async)?.guid"
-                               [anchorText]="(entity$ | async)?.anchor_text"
-                               [website]="(entity$ | async)?.website"
+        <entity-permalink-edit [website]="(entity$ | async)?.website"
                                [affiliateUrl]="(entity$ | async)?.aff_url"
-                               (guidChange)="update('guid', $event)"
-                               (anchorTextChange)="update('anchor_tex', $event)"
                                (websiteChange)="update('website', $event)"
                                (affiliateUrlChange)="update('aff_url', $event)">
         </entity-permalink-edit>
@@ -104,20 +56,102 @@
         <deal-topic-content *ngIf="hasDeal$ | async"></deal-topic-content>
     </div>
 
-    <div class="col-xs-4">
-        <label>编辑</label>
-        <ng-select [active]="(editor$ | async) ? [editor$ | async] : []"
-                   [items]="editors$ | async"
-                   (selected)="update('editor', $event)"
-                   (removed)="update('editor', $event)"
-                   placeholder="选择编辑"></ng-select>
+    <!-- Sidebar -->
+    <div class="col-xs-4" style="background: #e1f6fd; padding: 1rem">
+        <entity-buttons [entityState]="(entity$ | async)?.state"
+                        (save)="save()"
+                        (save2Pending)="save2Pending()"
+                        (save2Draft)="save2Draft()"
+                        (save2Publish)="save2Publish()"
+                        (cancelSave)="cancelSave()">
+        </entity-buttons>
 
-        <label>关键字</label>
-        <ng-select [allowClear]="true"
-                   [items]="editors$ | async"
-                   (selected)="update('editor', $event)"
-                   (removed)="update('editor', $event)"
-                   placeholder="选择编辑"></ng-select>
+
+        <div class="date-area float-right" *ngIf="date">
+            <span class="date-time btn btn-sm btn-secondary"
+                  (click)="dpHidden = !dpHidden">
+                显示时间(定时发布): {{ date | date: 'y-MM-dd HH:mm' }} GMT
+                <i class="fa fa-chevron-down"
+                   [class.fa-chevron-down]="dpHidden"
+                   [class.fa-chevron-up]="!dpHidden"></i>
+            </span>
+            <div class="date-picker" [class.hidden]="dpHidden">
+                <div>
+                    <datepicker name="date"
+                                [ngModel]="date"
+                                (ngModelChange)="dateChange.emit($event)"
+                                [showWeeks]="false"></datepicker>
+                    <timepicker name="time"
+                                [ngModel]="date"
+                                (ngModelChange)="dateChange.emit($event)"
+                                [showMeridian]="false"></timepicker>
+
+                    <button class="btn btn-info btn-sm float-right"
+                            (click)="dpHidden = true">确定</button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>编辑</label>
+            <ng-select [active]="(editor$ | async) ? [editor$ | async] : []"
+                       [items]="editors$ | async"
+                       (selected)="update('editor', $event)"
+                       (removed)="update('editor', $event)"
+                       placeholder="选择编辑"></ng-select>
+        </div>
+
+        <div class="form-group">
+            <label>频道</label>
+            <ng-select [active]="(channel$ | async) ? [channel$ | async] : []"
+                       [items]="cmsChannels$ | async"
+                       (selected)="update('channel', $event)"
+                       (removed)="update('channel', $event)"
+                       placeholder="专题频道"></ng-select>
+        </div>
+
+        <div class="form-group">
+            <label>专题类型</label>
+            <ng-select [active]="(topicType$ | async) ? [topicType$ | async] : []"
+                       [items]="cmsTopicTypes$ | async"
+                       (selected)="update('type', $event)"
+                       (removed)="update('type', $event)"
+                       placeholder="专题类型"></ng-select>
+        </div>
+
+
+        <div class="alert alert-danger">
+            TODO: Replace location, category, topic input with ng2-select
+        </div>
+        <!-- Topic location, category, topic, topic [product/topic/post] series etc -->
+        <entity-attr-cloud [isTopic]="true"
+                           [categories]="(entity$ | async)?.categories"
+                           [location]="(entity$ | async)?.location"
+                           [topics]="(entity$ | async)?.topics"
+                           [topicTypes]="cmsTopicTypes$ | async"
+                           (toggle)="tabIdx = $event; openPanel = !openPanel"
+                           (detachCat)="detach('categories', $event)"
+                           (updateLocation)="update('location', $event)">
+        </entity-attr-cloud>
+
+
+        <div class="form-group">
+            <label>关键字</label>
+            <ng-select [items]="keywords"
+                       [multiple]="true"
+                       (typed)="key = $event"
+                       (selected)="update('keywords', $event)"
+                       (removed)="update('keywords', $event)"
+                       placeholder="选择关键字"></ng-select>
+        </div>
+
+        <div class="form-group">
+            <label>优惠专题</label>
+            <input type="checkbox" class="form-control form-control-sm"
+                   name="hasDeal" [ngModel]="hasDeal$ | async"
+                   (ngModelChange)="update('has_deal', $event)"/>
+        </div>
 
         <div class="alert alert-danger">
             TODO: We are going to put everthing here except title, main content

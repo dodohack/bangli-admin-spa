@@ -14,6 +14,7 @@ import { PreferenceState }  from '../../reducers/preference';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Topbar {
+    @Input() isPingEnabled: boolean;
     @Input() domainKeys: string[];
     @Input() domains: any;
     @Input() curDomainKey: string;
@@ -21,11 +22,15 @@ export class Topbar {
     @Input() pref: PreferenceState;
     @Input() latencies: any; // App server connectivities
 
-    @Output() logout = new EventEmitter();
+    @Output() logout      = new EventEmitter();
     @Output() loginDomain = new EventEmitter();
+    @Output() togglePing  = new EventEmitter();
 
     getLatency(key) {
-        return this.latencies[key].delta + 'ms';
+        if (this.isPingEnabled)
+            return this.latencies[key].delta + 'ms';
+        else
+            return 'DISABLED';
     }
     
     isOffline(key) {

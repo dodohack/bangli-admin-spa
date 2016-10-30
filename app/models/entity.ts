@@ -100,6 +100,7 @@ export class CreativeType {
 export class TopicType {
     id: number;
     channel_id: number;
+    text: string; // Same as name, for ng2-select only
     slug: string;
     name: string;
     description: string;
@@ -183,7 +184,7 @@ export class Entity {
     image_id: number;
     images: any;           // image urls
     type_id: number;       // CMS topic only: Topic type id
-    type: string;          // table.type entry for some entities
+    type: TopicType;       // table.type entry for some entities
     state: string;
     channel_id: number;    // CMS and DEAL only
     channel: Channel;      //

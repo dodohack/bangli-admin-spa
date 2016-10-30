@@ -65,7 +65,7 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             if (payload.authors)
                 authors = payload.authors.map(u => {
                     // Create a 'text' key for ng2-select.
-                    u.text = u.display_name + ' | ' + u.name;
+                    u.text = u.display_name;
                     return u;
                 });
 
@@ -73,7 +73,7 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             if (payload.editors)
                 editors = payload.editors.map(u => {
                     // Create a 'text' key for ng2-select.
-                    u.text = u.display_name + ' | ' + u.name;
+                    u.text = u.display_name;
                     return u;
                 });
 
@@ -81,28 +81,28 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             if (payload.categories)
                 categories = payload.categories.map(u => {
                     // Create a 'text' key for ng2-select.
-                    u.text = u.name + ' | ' + u.slug;
+                    u.text = u.name;
                     return u;
                 });
 
             let topic_types: TopicType[] = [];
             if (payload.topic_types)
                 topic_types = payload.topic_types.map(u => {
-                    u.text = u.name + ' | ' + u.slug;
+                    u.text = u.name;
                     return u;
                 });
 
             let channels: Channel[] = [];
             if (payload.channels && payload.channels.length)
                 channels = payload.channels.map(u => {
-                    u.text = u.name + ' | ' + u.slug;
+                    u.text = u.name;
                     return u;
                 });
 
             let locations: GeoLocation[] = [];
             if (payload.locations && payload.locations.length)
                 locations = payload.locations.map(u => {
-                    u.text = u.name + ' | ' + u.name_cn;
+                    u.text = u.name;
                     return u;
                 });
 

@@ -511,7 +511,13 @@ function entitiesReducer (etype: string,
             let value = action.payload.value;
             let entity = state.entities[state.idsEditing[0]];
 
-            entity = Object.assign({}, entity, {key: value});
+            if (value && value.hasOwnProperty("id")) {
+                // Update corresponding entity.'key'_id column as well
+                let idKey = key + '_id';
+                entity = Object.assign({}, entity, {[idKey]: value.id, [key]: value});
+            } else {
+                entity = Object.assign({}, entity, {[key]: value});
+            }
 
             return Object.assign({}, state, {
                 entities:   Object.assign({},
@@ -651,7 +657,13 @@ export function getEntity(id: number) {
  */
 export function getEditor() {
     return (entity$: Observable<Entity>) => entity$
-        .filter(e => typeof e != 'undefined').map(e => e.editor);
+        .filter(e => typeof e != 'undefined').map(e => e.editor)
+        .filter(editor => editor != null)
+        .map(editor => {
+            // Do not re create the text display for ng2-select if it already has.
+            if (editor.text) return editor;
+            else return Object.assign({}, editor, {text: editor.name});
+        });
 }
 
 /**
@@ -660,6 +672,32 @@ export function getEditor() {
 export function getChannelId() {
     return (entity$: Observable<Entity>) => entity$
         .filter(e => typeof e != 'undefined').map(e => e.channel_id);
+}
+
+/**
+ * Return current editing entity channel
+ */
+export function getChannel() {
+    return (entity$: Observable<Entity>) => entity$
+        .filter(e => typeof e != 'undefined').map(e => e.channel)
+        .filter(ch => ch != null)
+        .map(ch => {
+            if (ch.text) return ch;
+            else return Object.assign({}, ch, {text: ch.name});
+        });
+}
+
+/**
+ * Return current editing entity topic type
+ */
+export function getTopicType() {
+    return (entity$: Observable<Entity>) => entity$
+        .filter(e => typeof e != 'undefined').map(e => e.type)
+        .filter(t => t != null)
+        .map(t => {
+            if (t.text) return t;
+            else return Object.assign({}, t, {text: t.name});
+        });
 }
 
 /**

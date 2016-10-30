@@ -15,6 +15,7 @@ import { CmsAttrActions }    from '../../actions';
 import { AlertActions }      from "../../actions";
 
 import { FroalaOptions }     from '../../models/froala.option';
+import { KEYWORDS }          from '../../models';
 import { Entity }            from '../../models';
 import { CREATIVE_TYPES }    from '../../models';
 import { TOPIC_TYPES }       from '../../models';
@@ -44,8 +45,8 @@ import {
     getCmsCurChannelTopicTypes, getCmsTopics,
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity,
-    getIsLoading, getPaginator, getCurEntityChannelId,
-    getCurEntityEditor,
+    getIsLoading, getPaginator, getCurEntityChannel,
+    getCurEntityEditor, getCurEntityTopicType,
     getEntitiesCurPage, getCurEntityHasDeal,
     getCurEntityIntro, getCurEntityContent} from '../../reducers';
 
@@ -84,9 +85,10 @@ export abstract class EntityPage implements OnInit, OnDestroy
     paginator$:   Observable<any>;
     entity$:      Observable<Entity>;
     editor$:      Observable<User>;
-    channelId$:   Observable<number>;    // Current entity channel id
+    channel$:     Observable<Channel>;   // Current entity channel id
     intro$:       Observable<string>;    // Topic only introduction
     content$:     Observable<string>;
+    topicType$:   Observable<TopicType>; // Topic only type
     hasDeal$:     Observable<boolean>;   // Topic only attributes
     entities$:    Observable<Entity[]>;
     idsCurPage$:  Observable<number[]>;
@@ -126,11 +128,12 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.paginator$     = this.store.let(getPaginator(this.etype));
         this.entity$        = this.store.let(getCurEntity(this.etype));
         this.editor$        = this.store.let(getCurEntityEditor(this.etype));
-        this.channelId$     = this.store.let(getCurEntityChannelId(this.etype));
+        this.channel$       = this.store.let(getCurEntityChannel(this.etype));
         this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
         this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
         this.intro$         = this.store.let(getCurEntityIntro(this.etype));
         this.content$       = this.store.let(getCurEntityContent(this.etype));
+        this.topicType$     = this.store.let(getCurEntityTopicType(this.etype));
         this.hasDeal$       = this.store.let(getCurEntityHasDeal(this.etype));
 
         this.subDomain  = this.domain$.subscribe(d => this.domain = d);
@@ -140,8 +143,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
             .subscribe(e => this.entity = Object.assign({}, e));
 
         // Update the channel in CmsAttrStates with entity channel
-        this.subCh      = this.channelId$.distinctUntilChanged()
-            .subscribe(id => this.store.dispatch(CmsAttrActions.switchChannel(id)));
+        this.subCh      = this.channel$.distinctUntilChanged()
+            .subscribe(ch => this.store.dispatch(CmsAttrActions.switchChannel(ch.id)));
 
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
@@ -239,6 +242,12 @@ export abstract class EntityPage implements OnInit, OnDestroy
     get froalaSimplifiedOptions() { return FroalaOptions.getSimplified(); }
 
     gmt(value: string) { return GMT(value); }
+
+    /**
+     * Set/get a keywords prompt list
+     */
+    key = '';
+    get keywords() { return KEYWORDS.map(k => k.replace('[KEY]', this.key)); }
 
     /**
      * Redirect /entity/new to /entity/:id once new entity is saved

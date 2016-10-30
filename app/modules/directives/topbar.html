@@ -28,6 +28,7 @@
             </a>
         </li>
 
+        <!-- Switch between domains -->
         <li dropdown>
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="pref.menuColor">切换站点</a>
             <ul class="dropdown-menu" dropdownMenu aria-labelledby="domain-dropdown">
@@ -64,9 +65,16 @@
         </li>
 
         <li class="float-right">
+            <!-- Latency of current domain server, and disable/enable on click -->
             <span class="tag" *ngIf="latencies"
+                  style="cursor: pointer"
+                  (click)="togglePing.emit()"
                   [class.tag-danger-outline]="isOffline(curDomainKey)"
-                  [class.tag-success-outline]="!isOffline(curDomainKey)">{{ getLatency(curDomainKey) }}</span>
+                  [class.tag-success-outline]="!isOffline(curDomainKey)">
+                {{ getLatency(curDomainKey) }}
+            </span>
+
+            <!-- User link -->
             <a [routerLink]="['/user', jwt?.sub]" routerLinkActive="active"
                [style.color]="pref.menuColor">
                 <i class="fa fa-user"></i>{{ jwt?.aud }}

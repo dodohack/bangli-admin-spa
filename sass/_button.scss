@@ -1,0 +1,10 @@
+// Reset the bug of default button style
+[type="button"] {
+  -webkit-appearance: none !important;
+}
+
+.btn-xs {
+  @extend .btn-sm;
+  font-size: 0.75rem;
+}
+

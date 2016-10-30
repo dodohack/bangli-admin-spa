@@ -11,21 +11,24 @@ import { FormControl }                            from '@angular/forms';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityTitleDate implements OnInit {
-    titleControl    = new FormControl();
-    keywordsControl = new FormControl();
-    descControl     = new FormControl();
+    titleControl  = new FormControl();
+    guidControl   = new FormControl();
+    descControl   = new FormControl();
+    anchorTextControl = new FormControl();
 
     @Input() isTopic: boolean;
     @Input() title: string;
     @Input() date: string;
-    @Input() keywords: string;
+    @Input() guid: string;
     @Input() desc: string;
     @Input() intro: string;
+    @Input() anchorText: string;
 
     @Output() titleChange = new EventEmitter();
     @Output() dateChange  = new EventEmitter();
-    @Output() keywordsChange = new EventEmitter();
+    @Output() guidChange  = new EventEmitter();
     @Output() descChange  = new EventEmitter();
+    @Output() anchorTextChange = new EventEmitter();
 
     // Datepicker hidden by default
     dpHidden = true;
@@ -33,10 +36,19 @@ export class EntityTitleDate implements OnInit {
     ngOnInit() {
         // Limit the rate of event emitted by input box
         this.titleControl.valueChanges.debounceTime(1000)
-            .subscribe(text => this.titleChange.emit(text));
-        this.keywordsControl.valueChanges.debounceTime(1000)
-            .subscribe(text => this.keywordsChange.emit(text));
+            .filter(t => t !== this.title)
+            .subscribe(t => this.titleChange.emit(t));
+
+        this.guidControl.valueChanges.debounceTime(1000)
+            .filter(t => t !== this.guid)
+            .subscribe(t => this.guidChange.emit(t));
+
         this.descControl.valueChanges.debounceTime(1000)
-            .subscribe(text => this.descChange.emit(text));
+            .filter(t => t !== this.desc)
+            .subscribe(t => this.descChange.emit(t));
+
+        this.anchorTextControl.valueChanges.debounceTime(1000)
+            .filter(t => t !== this.anchorText)
+            .subscribe(t => this.anchorTextChange.emit(t));
     }
 }

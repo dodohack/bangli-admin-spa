@@ -412,8 +412,19 @@ export function getCurEntityEditor(etype: string) {
         fromEntities.getCurEntity(), getEntitiesState(etype));
 }
 
+// Deprecated
 export function getCurEntityChannelId(etype: string) {
     return compose(fromEntities.getChannelId(),
+        fromEntities.getCurEntity(), getEntitiesState(etype));
+}
+
+export function getCurEntityChannel(etype: string) {
+    return compose(fromEntities.getChannel(),
+        fromEntities.getCurEntity(), getEntitiesState(etype));
+}
+
+export function getCurEntityTopicType(etype: string) {
+    return compose(fromEntities.getTopicType(),
         fromEntities.getCurEntity(), getEntitiesState(etype));
 }
 
