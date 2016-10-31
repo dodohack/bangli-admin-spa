@@ -182,7 +182,7 @@ export default function (state = initialState, action: Action): CmsAttrsState {
         }
 
         case CmsAttrActions.SEARCH_TOPICS_SUCCESS: {
-            return Object.assign({}, state, { topics: action.payload });
+            return Object.assign({}, state, { topics: [...action.payload] });
         }
 
         case CmsAttrActions.SEARCH_TOPICS_FAIL: {
@@ -356,7 +356,7 @@ export function getTopicTypes() {
  */
 export function getCurChannelTopicTypes() {
     return (state$: Observable<CmsAttrsState>) => state$
-        .filter( s=> s.curChannel != null)
+        .filter(s => s.curChannel != null)
         .map(s => s.topic_types.filter(tt => tt.channel_id === s.curChannel.id));
 }
 
@@ -364,7 +364,9 @@ export function getCurChannelTopicTypes() {
  * Return an array of cms topics, it is already filtered by server side
  */
 export function getTopics() {
-    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.topics);
+    return (state$: Observable<CmsAttrsState>) => state$
+        .select(s => s.topics)
+        .map(ts => ts.map(t => Object.assign({}, t, {text: t.title})));
 }
 
 /**

@@ -36,7 +36,7 @@ export class CmsAttrEffects {
             .catch(() => Observable.of(CmsAttrActions.loadAllFail())));
 
     @Effect() sTopic$ = this.actions$.ofType(CmsAttrActions.SEARCH_TOPICS)
-        .switchMap(action => this.searchTopics(action.payload)
+        .switchMap(action => this.searchTopics(action.payload.ttid, action.payload.text)
             .map(res => CmsAttrActions.searchTopicsSuccess(res.entities))
             .catch(() => Observable.of(CmsAttrActions.searchTopicsFail())));
 
@@ -113,15 +113,18 @@ export class CmsAttrEffects {
     }
 
     /**
-     * Search topics by string with current channel
+     * Search topics by topic type id and title/slug with current channel
      */
-    private searchTopics(text: string) {
+    private searchTopics(ttid: number, text: string) {
         // Return empty array if search string is empty
         if (!text || text == '') return Observable.of([]);
 
         let api = APIS[this.cache.key] + API_PATH.cms_topics +
-            '?etype=' + ENTITY.CMS_TOPIC + '&token=' + this.cache.token +
-            '&query=' + text + '&per_page=50';
+            '?etype=' + ENTITY.CMS_TOPIC + '&type=' +  ttid +
+            '&query=' + text + '&per_page=50' +
+            '&columns=id,title,type_id' +
+            '&relations=' +
+            '&token=' + this.cache.token;
 
         return this.http.get(api).map(res => res.json());
     }

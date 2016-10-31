@@ -70,6 +70,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     entity: Entity;           // Current entity
     profile: User;            // Current user profile
     domain: Domain;           // Current domain
+    cmsTopics: Topic[];       // Filtered cms topics
 
     isLoading$:   Observable<boolean>;
     isDirty$:     Observable<boolean>;
@@ -100,6 +101,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     subPro: any;
     subDirty: any;
     subCh: any;
+    subTopics: any;
     subEntity: any;
     subParams: any;
     subTimer: any;
@@ -149,6 +151,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subCh      = this.channel$.distinctUntilChanged()
             .subscribe(ch => this.store.dispatch(CmsAttrActions.switchChannel(ch.id)));
 
+        this.subTopics  = this.cmsTopics$
+            .subscribe(topics => this.cmsTopics = topics);
+
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
         // Init auto save timer
@@ -161,6 +166,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subDirty.unsubscribe();
         this.subEntity.unsubscribe();
         this.subCh.unsubscribe();
+        this.subTopics.unsubscribe();
         this.subParams.unsubscribe();
         this.subTimer.unsubscribe();
     }
@@ -275,8 +281,14 @@ export abstract class EntityPage implements OnInit, OnDestroy
     }
 
     // Search topics from API server
-    searchTopic(text: string) {
-        this.store.dispatch(CmsAttrActions.searchTopics(text));
+    searchTopic(topicTypeId: number, text: string) {
+        this.store.dispatch(CmsAttrActions.searchTopics(topicTypeId, text));
+    }
+
+    // Get topics belongs to given topic type
+    topicsOfType(ttype: TopicType) {
+        if (this.cmsTopics)
+            return this.cmsTopics.filter(t => t.type_id === ttype.id);
     }
 
     /**

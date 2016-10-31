@@ -135,6 +135,16 @@
                            (updateLocation)="update('location', $event)">
         </entity-attr-cloud>
 
+        <div class="form-group" *ngFor="let tt of (cmsTopicTypes$ | async)">
+            <label>{{ tt.name }}</label>
+            <ng-select [items]="topicsOfType(tt)"
+                       [multiple]="true"
+                       (selected)="attach('topics', $event)"
+                       (removed)="detach('topics', $event)"
+                       (typed)="searchTopic(tt.id, $event)"
+                       placeholder="搜索关联专题"></ng-select>
+        </div>
+
 
         <div class="form-group">
             <label>关键字</label>
@@ -178,6 +188,7 @@
         </tab>
 
         <tab heading="相关专题" [active]="tabIdx == 1">
+            <!--
             <topic-cloud [topicTypes]="cmsTopicTypes$ | async"
                          [topics]="cmsTopics$ | async"
                          [selectedTopics]="(entity$ | async)?.topics"
@@ -185,6 +196,7 @@
                          (addTopic)="attach('topics', $event)"
                          (removeTopic)="detach('topics', $event)">
             </topic-cloud>
+            -->
 
             <div class="alert alert-danger">
                 专题的专题需要分为几类来选择, 产品的品牌,网站,相关的产品,属于的知识类专题等,

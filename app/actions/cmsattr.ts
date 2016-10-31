@@ -59,11 +59,12 @@ export class CmsAttrActions {
         };
     }
 
+    // Search topic by topic type id and topic title/slug
     static SEARCH_TOPICS = '[CmsAttr] Search Topics';
-    static searchTopics(text: string): Action {
+    static searchTopics(ttid: number, text: string): Action {
         return {
             type: CmsAttrActions.SEARCH_TOPICS,
-            payload: text
+            payload: {ttid: ttid, text: text}
         };
     }
 
