@@ -10,7 +10,7 @@
                     <ul class="tag-cloud">
                         <li *ngFor="let cat of categories"
                             class="tag tag-pill tag-primary-outline tag-item"
-                            (click)="deleteCat.emit(cat.id)">
+                            (click)="detachCat.emit(cat)">
                             {{ cat.name }} x
                         </li>
                     </ul>
@@ -22,7 +22,7 @@
                     <ul class="tag-cloud">
                         <li *ngFor="let topic of topics"
                             class="tag tag-pill tag-primary-outline tag-item"
-                            (click)="deleteTopic.emit(topic.id)">
+                            (click)="detachTopic.emit(topic)">
                             {{ topic.title }} x
                         </li>
                     </ul>
@@ -44,19 +44,19 @@
                     </ul>
                 </div>
 
-                <div *ngIf="isTopic" style="margin-top: 0.5rem">
+                <template [ngIf]="isTopic">
                     <div class="cms-tag-group" *ngFor="let tt of topicTypes">
                         <span class="tag tag-warning-outline tag-item"
                               (click)="toggle.emit(1)">{{ tt.name }}:</span>
                         <ul class="tag-cloud" *ngIf="topics">
                             <li *ngFor="let t of topicsOfType(tt)"
                                 class="tag tag-pill tag-primary-outline tag-item"
-                                (click)="deleteTopic.emit(t.id)">
+                                (click)="detachTopic.emit(t)">
                                 {{ t.title }} x
                             </li>
                         </ul>
                     </div>
-                </div>
+                </template>
 
             </div>
 

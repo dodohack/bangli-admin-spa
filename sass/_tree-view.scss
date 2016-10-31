@@ -8,6 +8,11 @@
   margin: 0;
   list-style: none;
 
+  label {
+    font-size: 1rem;
+    color: darkblue;
+  }
+
   label[for]::before,
   label span::before {
     content: "\25b6";

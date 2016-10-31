@@ -520,9 +520,9 @@ function entitiesReducer (etype: string,
                 } else {
                     attrs = attrs.split(',');
                     newAttrs = attrs.filter(item => item !== value);
+                    newAttrs = newAttrs.join(',');
                 }
 
-                newAttrs = newAttrs.join(',');
                 return Object.assign({}, oldEntity, {[key]: newAttrs});
             });
 

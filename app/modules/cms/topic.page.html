@@ -17,44 +17,6 @@
 </editor-page-header>
 
 <div class="row">
-    <div class="col-xs-8">
-        <entity-title-date [isTopic]="true"
-                           [title]="(entity$ | async)?.title"
-                           [guid]="(entity$ | async)?.guid"
-                           [desc]="(entity$ | async)?.desc"
-                           [anchorText]="(entity$ | async)?.anchor_text"
-                           (titleChange)="update('title', $event)"
-                           (guidChange)="update('guid', $event)"
-                           (descChange)="update('desc', $event)"
-                           (anchorTextChange)="update('anchor_text', $event)">
-        </entity-title-date>
-
-        <!-- Topic guid, anchor_text, website, aff_url -->
-        <entity-permalink-edit [website]="(entity$ | async)?.website"
-                               [affiliateUrl]="(entity$ | async)?.aff_url"
-                               (websiteChange)="update('website', $event)"
-                               (affiliateUrlChange)="update('aff_url', $event)">
-        </entity-permalink-edit>
-
-
-        <!-- Froala Editor -->
-        <!-- TODO: Use official one when ngModule bug is fixed -->
-        <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
-             [(froalaModel)]="inputPost.content"></div>-->
-
-        <h2 style="font-size: 1.25rem">专题首段介绍</h2>
-        <froala [froalaOptions]="froalaSimplifiedOptions"
-                [froalaData]="intro$ | async"
-                (model)="froalaIntroChanged($event)"></froala>
-
-        <h2 style="font-size: 1.25rem">专题正文内容</h2>
-        <froala [froalaOptions]="froalaOptions"
-                [froalaData]="content$ | async"
-                (model)="froalaContentChanged($event)"></froala>
-
-        <!-- Extra deal topic only data -->
-        <deal-topic-content *ngIf="hasDeal$ | async"></deal-topic-content>
-    </div>
 
     <!-- Sidebar -->
     <div class="col-xs-4" style="background: #e1f6fd; padding: 1rem">
@@ -132,6 +94,7 @@
                            [topicTypes]="cmsTopicTypes$ | async"
                            (toggle)="tabIdx = $event; openPanel = !openPanel"
                            (detachCat)="detach('categories', $event)"
+                           (detachTopic)="detach('topics', $event)"
                            (updateLocation)="update('location', $event)">
         </entity-attr-cloud>
 
@@ -171,6 +134,46 @@
             pass in different data only.
         </div>
     </div>
+
+    <div class="col-xs-8">
+        <entity-title-date [isTopic]="true"
+                           [title]="(entity$ | async)?.title"
+                           [guid]="(entity$ | async)?.guid"
+                           [desc]="(entity$ | async)?.desc"
+                           [anchorText]="(entity$ | async)?.anchor_text"
+                           (titleChange)="update('title', $event)"
+                           (guidChange)="update('guid', $event)"
+                           (descChange)="update('desc', $event)"
+                           (anchorTextChange)="update('anchor_text', $event)">
+        </entity-title-date>
+
+        <!-- Topic guid, anchor_text, website, aff_url -->
+        <entity-permalink-edit [website]="(entity$ | async)?.website"
+                               [affiliateUrl]="(entity$ | async)?.aff_url"
+                               (websiteChange)="update('website', $event)"
+                               (affiliateUrlChange)="update('aff_url', $event)">
+        </entity-permalink-edit>
+
+
+        <!-- Froala Editor -->
+        <!-- TODO: Use official one when ngModule bug is fixed -->
+        <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
+             [(froalaModel)]="inputPost.content"></div>-->
+
+        <h2 style="font-size: 1.25rem">专题首段介绍</h2>
+        <froala [froalaOptions]="froalaSimplifiedOptions"
+                [froalaData]="intro$ | async"
+                (model)="froalaIntroChanged($event)"></froala>
+
+        <h2 style="font-size: 1.25rem">专题正文内容</h2>
+        <froala [froalaOptions]="froalaOptions"
+                [froalaData]="content$ | async"
+                (model)="froalaContentChanged($event)"></froala>
+
+        <!-- Extra deal topic only data -->
+        <deal-topic-content *ngIf="hasDeal$ | async"></deal-topic-content>
+    </div>
+
 </div>
 
 <!-- Right panel, we can trigger a seperate saving individually -->
@@ -182,7 +185,7 @@
                 <category-tree [parentId]="0"
                                [categories]="cmsCategories$ | async"
                                [selectedCats]="(entity$ | async)?.categories"
-                               (checkEvent)="attach('categories', $event)">
+                               (checkEvent)="toggleAttr('categories', $event)">
                 </category-tree>
             </div>
         </tab>

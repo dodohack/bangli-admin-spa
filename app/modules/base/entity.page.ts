@@ -297,18 +297,25 @@ export abstract class EntityPage implements OnInit, OnDestroy
      * There 6 are generic functions that can handle all the modification
      * to any entity.
      */
+    toggleAttr(key: string, value: any) {
+        if (value.checked) this.detach(key, value);
+        else               this.attach(key, value);
+    }
+    // Attach hasMany attributes
     attach(key: string, value: any) {
         this.store.dispatch(EntityActions.attach(this.etype, key, value));
     }
     attachStr(key: string, value: any) {
         this.store.dispatch(EntityActions.attach(this.etype, key, value.text));
     }
+    // Detach hasMany attributes
     detach(key: string, value: any) {
         this.store.dispatch(EntityActions.detach(this.etype, key, value));
     }
     detachStr(key: string, value: any) {
         this.store.dispatch(EntityActions.detach(this.etype, key, value.text));
     }
+    // Update hasOne attributes
     update(key: string, value: any) {
         this.store.dispatch(EntityActions.update(this.etype, key, value));
     }
