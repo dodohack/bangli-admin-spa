@@ -534,7 +534,7 @@ function entitiesReducer (etype: string,
                 // Update corresponding entity.'key'_id column as well
                 let idKey = key + '_id';
                 entity = Object.assign({}, entity, {[idKey]: value.id, [key]: value});
-                dirtyMask = [...dirtyMask, key, idKey];
+                dirtyMask = [...dirtyMask, idKey];
             } else {
                 entity = Object.assign({}, entity, {[key]: value});
                 dirtyMask = [...dirtyMask, key];
