@@ -10,16 +10,24 @@
 
 <div class="row">
 
+    <div class="form-group">
+        <button class="btn btn-sm btn-outline-secondary" (click)="hide = !hide">
+            <template [ngIf]="!hide">隐藏侧栏</template>
+            <template [ngIf]="hide">显示侧栏</template>
+        </button>
+    </div>
+
     <!-- Sidebar -->
-    <div class="col-xs-4" style="background: #e1f6fd; padding: 1rem">
+    <div [class.col-xs-4]="!hide" [class.hidden]="hide"
+         style="background: #e1f6fd; padding: 1rem">
 
         <!-- Save button -->
         <div class="form-group">
             <button class="btn btn-sm btn-outline-success"
                     (click)="save" [disabled]="!isDirty || isLoading">
-                <template [ngIf]="isDirty && !isLoading">Save</template>
-                <template [ngIf]="!isDirty">Saved</template>
-                <template [ngIf]="isDirty && isLoading">Saving</template>
+                <template [ngIf]="isDirty && !isLoading">保存</template>
+                <template [ngIf]="!isDirty">已保存</template>
+                <template [ngIf]="isDirty && isLoading">保存中...</template>
             </button>
         </div>
 
@@ -99,7 +107,9 @@
         </div>
     </div>
 
-    <div class="col-xs-8">
+
+    <!-- Main area -->
+    <div [class.col-xs-8]="!hide" [class.col-xs-12]="hide">
         <entity-title-date [isTopic]="true"
                            [title]="(entity$ | async)?.title"
                            [guid]="(entity$ | async)?.guid"
