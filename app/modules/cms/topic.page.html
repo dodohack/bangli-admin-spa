@@ -132,23 +132,45 @@
         </entity-permalink-edit>
 
 
-        <!-- Froala Editor -->
-        <!-- TODO: Use official one when ngModule bug is fixed -->
-        <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
-             [(froalaModel)]="inputPost.content"></div>-->
+        <!-- Froala Editor, only 1 can be initialized at same time -->
+        <tabset>
+            <tab heading="专题首段介绍" [active]="contentIdx == 0 || true"
+                 (select)="contentIdx = 0">
+                <froala *ngIf="contentIdx == 0"
+                        [froalaOptions]="froalaOptions"
+                        [froalaData]="intro$ | async"
+                        (model)="froalaModel = $event"
+                        (editorInitialized)="onFroalaInitialized('intro')">
+                </froala>
+            </tab>
 
-        <h2 style="font-size: 1.25rem">专题首段介绍</h2>
-        <froala [froalaOptions]="froalaSimplifiedOptions"
-                [froalaData]="intro$ | async"
-                (model)="froalaIntroChanged($event)"></froala>
+            <tab heading="专题正文内容" (select)="contentIdx = 1">
+                <froala *ngIf="contentIdx == 1"
+                        [froalaOptions]="froalaOptions"
+                        [froalaData]="content$ | async"
+                        (model)="froalaModel = $event"
+                        (editorInitialized)="onFroalaInitialized('content')">
+                </froala>
+            </tab>
 
-        <h2 style="font-size: 1.25rem">专题正文内容</h2>
-        <froala [froalaOptions]="froalaOptions"
-                [froalaData]="content$ | async"
-                (model)="froalaContentChanged($event)"></froala>
+            <tab heading="优惠专题首段内容" (select)="contentIdx = 2" *ngIf="hasDeal$ | async">
+                <froala *ngIf="contentIdx == 2"
+                        [froalaOptions]="froalaOptions"
+                        [froalaData]="deal_intro$ | async"
+                        (model)="froalaModel = $event"
+                        (editorInitialized)="onFroalaInitialized('deal_intro')">
+                </froala>
+            </tab>
 
-        <!-- Extra deal topic only data -->
-        <deal-topic-content *ngIf="hasDeal$ | async"></deal-topic-content>
+            <tab heading="优惠专题正文内容" (select)="contentIdx = 3" *ngIf="hasDeal$ | async">
+                <froala *ngIf="contentIdx == 3"
+                        [froalaOptions]="froalaOptions"
+                        [froalaData]="deal_content$ | async"
+                        (model)="froalaModel = $event"
+                        (editorInitialized)="onFroalaInitialized('deal_content')">
+                </froala>
+            </tab>
+        </tabset>
     </div>
 
 </div>

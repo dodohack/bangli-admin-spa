@@ -433,13 +433,23 @@ export function getCurEntityKeywordsAsArray(etype: string) {
         fromEntities.getCurEntity(), getEntitiesState(etype));
 }
 
+export function getCurEntityIntro(etype: string) {
+    return compose(fromEntities.getIntro(),
+        fromEntities.getCurEntity(), getEntitiesState(etype));
+}
+
+export function getCurEntityDealIntro(etype: string) {
+    return compose(fromEntities.getDealIntro(),
+        fromEntities.getCurEntity(), getEntitiesState(etype));
+}
+
 export function getCurEntityContent(etype: string) {
     return compose(fromEntities.getContent(),
         fromEntities.getCurEntity(), getEntitiesState(etype));
 }
 
-export function getCurEntityIntro(etype: string) {
-    return compose(fromEntities.getIntro(),
+export function getCurEntityDealContent(etype: string) {
+    return compose(fromEntities.getDealContent(),
         fromEntities.getCurEntity(), getEntitiesState(etype));
 }
 

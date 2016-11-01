@@ -14,6 +14,7 @@ import { EntityActions }     from '../../actions';
 import { CmsAttrActions }    from '../../actions';
 import { AlertActions }      from "../../actions";
 
+import { FroalaEditorCompnoent } from 'ng2-froala-editor/ng2-froala-editor';
 import { FroalaOptions }     from '../../models/froala.option';
 import { KEYWORDS }          from '../../models';
 import { Entity }            from '../../models';
@@ -23,7 +24,6 @@ import { TopicType }         from '../../models';
 import { GeoLocation }       from '../../models';
 import { Channel }           from '../../models';
 import { Category }          from '../../models';
-import { Tag }               from '../../models';
 import { Topic }             from '../../models';
 import { User }              from '../../models';
 import { Domain }            from '../../models';
@@ -49,9 +49,8 @@ import {
     getCurEntityEditor, getCurEntityTopicType,
     getCurEntityKeywordsAsArray,
     getEntitiesCurPage, getCurEntityHasDeal,
-    getCurEntityIntro, getCurEntityContent} from '../../reducers';
-
-
+    getCurEntityIntro, getCurEntityContent,
+    getCurEntityDealIntro, getCurEntityDealContent} from '../../reducers';
 
 export abstract class EntityPage implements OnInit, OnDestroy
 {
@@ -61,10 +60,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
     // Use to keep track if url parameters is really changed.
     params: any;
     
-    // FIXME: froala editor triggers content change at first time it initialize
-    // the content, but actually the entity content is not modified yet.
-    introInitialized    = false;
-    contentInitialized = false;
+    froalaModel: string; // A temp storage for all content modified by froala
+    editor: any;         // Froala editor instance
 
     isDirty        = false;   // Entity dirty bit
     entity: Entity;           // Current entity
@@ -91,6 +88,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
     keywords$:    Observable<string[]>;  // Keywords array of current topic
     intro$:       Observable<string>;    // Topic only introduction
     content$:     Observable<string>;
+    deal_intro$:  Observable<string>;    // Deal topic only intro
+    deal_content$:Observable<string>;    // Deal topic only content
     topicType$:   Observable<TopicType>; // Topic only type
     hasDeal$:     Observable<boolean>;   // Topic only attributes
     entities$:    Observable<Entity[]>;
@@ -137,6 +136,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
         this.intro$         = this.store.let(getCurEntityIntro(this.etype));
         this.content$       = this.store.let(getCurEntityContent(this.etype));
+        this.deal_intro$    = this.store.let(getCurEntityDealIntro(this.etype));
+        this.deal_content$  = this.store.let(getCurEntityDealContent(this.etype));
         this.keywords$      = this.store.let(getCurEntityKeywordsAsArray(this.etype));
         this.topicType$     = this.store.let(getCurEntityTopicType(this.etype));
         this.hasDeal$       = this.store.let(getCurEntityHasDeal(this.etype));
@@ -213,36 +214,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
         });
     }
 
-
-
-    /**
-     * Topic introduction changed event triggered by froala editor
-     */
-    froalaIntroChanged($event) {
-        // If no timeout set, the editor will throw an exception
-        setTimeout(() => {
-            // Set initialized state or set entity content dirty
-            console.log("intro changed: ", $event);
-            this.introInitialized ?
-                this.isDirty = true : this.introInitialized = true;
-            this.entity.intro = $event;
-        });
-    }
-
-    /**
-     * Entity content changed event triggered by froala editor
-     */
-    froalaContentChanged($event) {
-        // If no timeout set, the editor will throw an exception
-        setTimeout(() => {
-            // Set initialized state or set entity content dirty
-            console.log("content changed: ", $event);
-            this.contentInitialized ?
-                this.isDirty = true : this.contentInitialized = true;
-            this.entity.content = $event;
-        });
-    }
-
     abstract get previewUrl(): string;
 
     get creativeTypes() { return CREATIVE_TYPES; }
@@ -316,10 +287,11 @@ export abstract class EntityPage implements OnInit, OnDestroy
     detachStr(key: string, value: any) {
         this.store.dispatch(EntityActions.detach(this.etype, key, value.text));
     }
-    // Update hasOne attributes
+    // Update hasOne/string/single attributes of entity
     update(key: string, value: any) {
         this.store.dispatch(EntityActions.update(this.etype, key, value));
     }
+
     // TODO: Deprecate this and merge it into update.
     updateFakePublishedAt(date: string) {
         let d1 = new Date(date);
@@ -327,7 +299,20 @@ export abstract class EntityPage implements OnInit, OnDestroy
         if (d1.toISOString() === d2.toISOString()) return;
         this.store.dispatch(EntityActions.updateFakePublishedAt(this.etype, date));
     }
-    
+
+    /**
+     * Listen on froala editor events
+     */
+    onFroalaInitialized(key: string) {
+        console.error("Froala Editor initialized, key: ", key);
+        this.editor = FroalaEditorCompnoent.getFroalaInstance();
+
+        // Kick an action to update content when it changes.
+        this.editor.on('froalaEditor.contentChanged', (e, editor) => {
+            this.update(key, this.froalaModel);
+        });
+    }
+
     /**
      *  Restore current content to given revision
      */

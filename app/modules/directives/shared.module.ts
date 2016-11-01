@@ -12,7 +12,7 @@ import { SelectModule }                  from 'ng2-select/ng2-select';
 import { Ng2BootstrapModule }            from 'ng2-bootstrap/ng2-bootstrap';
 
 //import { FroalaEditorDirective } from 'angular2-froala-wysiwyg/lib/froala.directives';
-import { FroalaEditorCompnoent } from "ng2-froala-editor/ng2-froala-editor";
+import { FroalaEditorModule } from "ng2-froala-editor/ng2-froala-editor";
 
 import { RevisionHistory }           from './revision-history';
 import { RightPanel }                from './right-panel';
@@ -47,12 +47,10 @@ import { DateFilterComponent }       from './date-filter.component';
         FormsModule,
         ReactiveFormsModule,
         RouterModule ,
+        FroalaEditorModule,
     ],
     declarations: [
         UPLOAD_DIRECTIVES,
-
-        FroalaEditorCompnoent,
-        //FroalaEditorDirective,
 
         RightPanel,
         ListPageHeader,
@@ -83,11 +81,9 @@ import { DateFilterComponent }       from './date-filter.component';
     exports: [
         Ng2BootstrapModule,
         SelectModule,
+        FroalaEditorModule,
 
         UPLOAD_DIRECTIVES,
-
-        FroalaEditorCompnoent,
-        //FroalaEditorDirective,
 
         RightPanel,
         ListPageHeader,

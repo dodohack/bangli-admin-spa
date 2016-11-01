@@ -730,11 +730,16 @@ export function getKeywordsAsArray() {
 }
 
 /**
- * Return current editing entity description
+ * Return current editing entity introduction
  */
 export function getIntro() {
     return (entity$: Observable<Entity>)=> entity$
         .filter(e => typeof e != 'undefined').select(e => e.intro);
+}
+
+export function getDealIntro() {
+    return (entity$: Observable<Entity>)=> entity$
+        .filter(e => typeof e != 'undefined').select(e => e.deal_intro);
 }
 
 /**
@@ -743,6 +748,11 @@ export function getIntro() {
 export function getContent() {
     return (entity$: Observable<Entity>)=> entity$
         .filter(e => typeof e != 'undefined').select(e => e.content);
+}
+
+export function getDealContent() {
+    return (entity$: Observable<Entity>)=> entity$
+        .filter(e => typeof e != 'undefined').select(e => e.deal_content);
 }
 
 /**
