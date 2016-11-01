@@ -15,7 +15,7 @@
         <ul class="tag-cloud" *ngIf="selectedTopics">
             <li *ngFor="let topic of selectedTopicsOfTType(ttype)"
                 class="tag-item tag tag-pill tag-primary-outline"
-                (click)="removeTopic.emit(topic.id)">
+                (click)="detachTopic.emit(topic)">
                 {{ topic.title }} x
             </li>
         </ul>
@@ -26,7 +26,7 @@
         <ul class="tag-cloud" *ngIf="topics">
             <li *ngFor="let topic of topicsOfTType(ttype)"
                 class="tag-item tag tag-pill tag-default-outline"
-                (click)="addTopic.emit(topic)">
+                (click)="attachTopic.emit(topic)">
                 {{ topic.title }}
             </li>
         </ul>

@@ -19,12 +19,13 @@ export class TopicCloud implements OnInit {
     @Input() topics: Topic[];         // Searched topic candidates
 
     @Output() searchTopic = new EventEmitter();
-    @Output() addTopic    = new EventEmitter();
-    @Output() removeTopic = new EventEmitter();
+    @Output() attachTopic = new EventEmitter();
+    @Output() detachTopic = new EventEmitter();
 
     ngOnInit() {
         // Emit an event to search a limited topics
-        this.searchControl.valueChanges.debounceTime(200)
+        this.searchControl.valueChanges.debounceTime(300)
+            .distinctUntilChanged()
             .subscribe(text => this.searchTopic.emit(text));
     }
 

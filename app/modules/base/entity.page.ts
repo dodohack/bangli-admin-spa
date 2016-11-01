@@ -282,6 +282,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
     // Search topics from API server
     searchTopic(topicTypeId: number, text: string) {
+        console.error("FIXME: topic-cloud should pass in topic type_id into searchTopic");
         this.store.dispatch(CmsAttrActions.searchTopics(topicTypeId, text));
     }
 
