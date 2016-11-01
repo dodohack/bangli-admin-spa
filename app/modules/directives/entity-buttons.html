@@ -1,22 +1,21 @@
 <div class="row">
-    <div class="col-xs-12">
-        <!-- Save buttons -->
+    <div class="col-xs-6">
+        <div class="form-group post-meta">
+            <label>状态</label>
+            <select class="form-control form-control-sm custom-select"
+                    name="st" [ngModel]="entityState"
+                    (ngModelChange)="stateChange.emit($event)">
+                <option *ngFor="let state of states"
+                        [selected]="state === entityState"
+                        [value]="state">{{ state }}</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-xs-6">
         <div class="float-right">
+            <!-- Save buttons -->
             <button class="btn btn-sm btn-outline-success"
-                    (click)="save.emit()"
-                    *ngIf="canSave">保存</button>
-
-            <button class="btn btn-sm btn-outline-primary"
-                    (click)="save2Pending.emit()"
-                    *ngIf="!canDraft">提交审稿</button>
-
-            <button class="btn btn-sm btn-outline-danger"
-                    (click)="save2Draft.emit()"
-                    *ngIf="canDraft">改为草稿</button>
-
-            <button class="btn btn-sm btn-outline-danger"
-                    (click)="save2Publish.emit()"
-                    *ngIf="canPublish">发布</button>
+                    (click)="save.emit()">保存</button>
         </div>
     </div>
 </div>

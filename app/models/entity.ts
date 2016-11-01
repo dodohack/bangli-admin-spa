@@ -81,12 +81,12 @@ export const TOPIC_TYPES = [
 /** ALL:
  *  entity states, corresponding to each entity table column: state */
 export const ENTITY_STATES = [
-    {state: 'unsaved',  count: 0}, // Initial state for offline display
-    {state: 'publish',  count: 0},
-    {state: 'featured', count: 0},
-    {state: 'pending',  count: 0},
-    {state: 'draft',    count: 0},
-    {state: 'trash',    count: 0}
+    'unsaved',
+    'publish',
+    'featured',
+    'pending',
+    'draft',
+    'trash',
 ];
 
 /*

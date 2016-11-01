@@ -221,12 +221,6 @@ export class EntitiesPage implements OnInit, OnDestroy
     saveEntity() {
         this.store.dispatch(EntityActions.saveEntity(this.etype, this.entity));
     }
-    save2Draft()   {
-        this.store.dispatch(EntityActions.saveEntityAsDraft(this.etype, this.entity));
-    }
-    save2Publish() {
-        this.store.dispatch(EntityActions.saveEntityAsPublish(this.etype, this.entity));
-    }
 
     // In page edit single or multiple entities
     batchEdit(ids: number[]) {

@@ -174,61 +174,21 @@ export class EntityActions {
     }
     
     static AUTO_SAVE = '[Entity] Auto Save';
-    static autoSave(etype: string, entity: Entity): Action {
+    static autoSave(etype: string, entity: Entity, dirtyMask: string[]): Action {
         return {
             type: EntityActions.AUTO_SAVE,
-            payload: {etype: etype, data: entity}
-        };
-    }
-
-    static AUTO_SAVE_ATTRIBUTES = '[Entity] Auto Save Attributes';
-    static autoSaveAttributes(etype: string, entity: Entity): Action {
-        return {
-            type: EntityActions.AUTO_SAVE_ATTRIBUTES,
-            payload: {etype: etype, data: entity}
+            payload: {etype: etype, data: entity, mask: dirtyMask}
         };
     }
 
     static SAVE_ENTITY = '[Entity] Save Entity';
-    static saveEntity(etype: string, entity: Entity): Action {
+    static saveEntity(etype: string, entity: Entity, dirtyMask: string[]): Action {
         return {
             type: EntityActions.SAVE_ENTITY,
-            payload: {etype: etype, data: entity}
+            payload: {etype: etype, data: entity, mask: dirtyMask}
         };
     }
 
-    static SAVE_ENTITY_AS_PENDING = '[Entity] Save Entity As Pending';
-    static saveEntityAsPending(etype: string, entity: Entity): Action {
-        return {
-            type: EntityActions.SAVE_ENTITY_AS_PENDING,
-            payload: {etype: etype, data: entity}
-        };
-    }
-
-    static SAVE_ENTITY_AS_PUBLISH = '[Entity] Save Entity As Publish';
-    static saveEntityAsPublish(etype: string, entity: Entity): Action {
-        return {
-            type: EntityActions.SAVE_ENTITY_AS_PUBLISH,
-            payload: {etype: etype, data: entity}
-        };
-    }
-
-    static SAVE_ENTITY_AS_DRAFT = '[Entity] Save Entity As Draft';
-    static saveEntityAsDraft(etype: string, entity: Entity): Action {
-        return {
-            type: EntityActions.SAVE_ENTITY_AS_DRAFT,
-            payload: {etype: etype, data: entity}
-        };
-    }
-
-    static APPLY_REVISION = '[Entity] Apply Revision';
-    static applyRevision(etype: string, ids: number[]): Action {
-        return {
-            type: EntityActions.APPLY_REVISION,
-            payload: {etype: etype, data: ids}
-        };
-    }
-    
     static SAVE_ENTITY_SUCCESS = '[Entity] Save Entity Success';
     static saveEntitySuccess(etype: string, entity: Entity): Action {
         return {
@@ -294,14 +254,6 @@ export class EntityActions {
             type: EntityActions.UPDATE,
             payload: {etype: etype, key: key, value: value}
         }
-    }
-
-    static UPDATE_FAKE_PUBLISHED_AT = '[Entity] Update Fake Published At';
-    static updateFakePublishedAt(etype: string, date: string): Action {
-        return {
-            type: EntityActions.UPDATE_FAKE_PUBLISHED_AT,
-            payload: {etype: etype, data: date}
-        };
     }
 
     static REFRESH_ACTIVITY_STATUS = '[Entity] Refresh Activity Status';

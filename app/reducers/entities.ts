@@ -17,7 +17,6 @@ import { Entity }        from '../models';
 import { ENTITY }        from '../models';
 import { EntityActions } from '../actions';
 import { AuthActions }   from '../actions';
-import { GMT }           from '../helper';
 
 /**
  * Entities state for each entity type
@@ -28,7 +27,9 @@ export interface EntitiesState {
     idsEditing: number[];  // IDs for entities in editing mode
     idsContent: number[];  // IDs for entities have content loaded
     entities: { [id:number]: Entity }; // All entities loaded to client
-    isDirty: boolean;      // If the entities in idsEditing is dirty
+    // Array of entity attribute names, indicates which
+    // attribute of the entity changes
+    dirtyMask: string[];
     isLoading: boolean;    // If the entities list is in loading
     paginator: Paginator;
 }
@@ -38,7 +39,8 @@ export interface EntitiesState {
  */
 const initState: EntitiesState = {
     idsTotal: [], idsCurPage: [], idsEditing: [], idsContent: [],
-    entities: {}, isDirty: false, isLoading: false, paginator: null
+    entities: {}, dirtyMask: [], isLoading: false,
+    paginator: null
 };
 
 
@@ -217,6 +219,7 @@ function entitiesReducer (etype: string,
             if (!idsCurPage.length)
                 return Object.assign({}, state, {
                     idsCurPage: [],
+                    dirtyMask: [],
                     isLoading: false,
                     paginator: action.payload.data.paginator});
 
@@ -244,6 +247,7 @@ function entitiesReducer (etype: string,
                 idsTotal:   idsTotal,
                 idsCurPage: idsCurPage,
                 entities:   Object.assign({}, state.entities, newEntities),
+                dirtyMask:  [],
                 isLoading:  false,
                 paginator:  action.payload.data.paginator
             });
@@ -364,7 +368,7 @@ function entitiesReducer (etype: string,
                 idsContent: idsContent,
                 entities:   Object.assign({},
                     state.entities, {[id]: action.payload.data}),
-                isDirty:    false,
+                dirtyMask:  [],
                 isLoading:  false,
                 paginator:  state.paginator
             });
@@ -372,7 +376,7 @@ function entitiesReducer (etype: string,
 
         case EntityActions.AUTO_SAVE_SUCCESS: {
             return Object.assign({}, state, {
-                isDirty:    false,
+                dirtyMask:  [],
                 isLoading:  false,
             });
         }
@@ -393,28 +397,9 @@ function entitiesReducer (etype: string,
                 idsEditing: [0],
                 idsContent: [...state.idsContent, 0],
                 entities:   Object.assign({}, state.entities, {[0]: newEntity}),
-                isDirty:    false,
+                dirtyMask:  [],
                 isLoading:  false,
                 paginator:  state.paginator
-            });
-        }
-
-        case EntityActions.APPLY_REVISION: {
-            const id    = action.payload.data[0];
-            const revid = action.payload.data[1];
-
-            // Get revision.body
-            const newBody = state.entities[id].revisions
-                .filter(r => r.id === revid).map(r => r.body);
-
-            // Apply revision.body to entity.content
-            const newEntity = Object.assign({}, state.entities[id],
-                                            { content: newBody });
-
-            return Object.assign({}, state, {
-                entities:   Object.assign({}, state.entities, {[id]: newEntity}),
-                isDirty:    true,
-                isLoading:  false
             });
         }
 
@@ -435,7 +420,7 @@ function entitiesReducer (etype: string,
             }
 
             return Object.assign({}, state, {
-                entities:   Object.assign({}, state.entities, newEntities),
+                entities: Object.assign({}, state.entities, newEntities),
             });
         }
 
@@ -493,8 +478,7 @@ function entitiesReducer (etype: string,
 
             return Object.assign({}, state, {
                 entities:   Object.assign({}, state.entities, newEntities),
-                isDirty:    true,
-                isLoading:  false
+                dirtyMask:  [...state.dirtyMask, key],
             });
         }
 
@@ -531,8 +515,7 @@ function entitiesReducer (etype: string,
 
             return Object.assign({}, state, {
                 entities:   Object.assign({}, state.entities, newEntities),
-                isDirty:    true,
-                isLoading:  false
+                dirtyMask:  [...state.dirtyMask, key],
             });
         }
 
@@ -555,98 +538,21 @@ function entitiesReducer (etype: string,
             }
 
             return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true
+                entities: Object.assign({}, state.entities, {[entity.id]: entity}),
+                dirtyMask: [...state.dirtyMask, key]
             });
         }
 
-        case EntityActions.UPDATE_FAKE_PUBLISHED_AT: {
-            let date = GMT(action.payload.data);
-            let entity = state.entities[state.idsEditing[0]];
-            entity = Object.assign({}, entity, {fake_published_at: date});
-            
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true
-            });
-        }            
-            
-
-        // Save entity to server, but do not save reversions
-        case EntityActions.AUTO_SAVE: {
-            let entity = action.payload.data;
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true,
-                isLoading:  true
-            });
-        }
-
-        // Save entity to server except its content
-        case EntityActions.AUTO_SAVE_ATTRIBUTES: {
-            let entity = action.payload.data;
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true,
-                isLoading:  true
-            });
-        }            
-
-        case EntityActions.SAVE_ENTITY_AS_PENDING: {
-            let entity = action.payload.data;
-            entity.state = 'pending';
-            
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true,
-                isLoading:  true
-            });
-        }
-            
-        case EntityActions.SAVE_ENTITY_AS_DRAFT: {
-            let entity = action.payload.data;
-            entity.state = 'draft';
-            
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true,
-                isLoading:  true
-            });
-        }
-            
-        case EntityActions.SAVE_ENTITY_AS_PUBLISH: {
-            let entity = action.payload.data;
-            // published_at can only be updated once
-            if (!entity.published_at)
-                entity.published_at = GMT(new Date());
-            entity.state = 'publish';
-            
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true,
-                isLoading:  true
-            });
-        }
-
+        // Auto save entity to API server, but do not save reversions
+        case EntityActions.AUTO_SAVE:
         case EntityActions.SAVE_ENTITY: {
+            /*
             let entity = action.payload.data;
             // Assign default state to entity
             if (!entity.state || entity.state === 'unsaved')
                 entity.state = 'draft';
-
-            return Object.assign({}, state, {
-                entities:   Object.assign({},
-                    state.entities, {[entity.id]: entity}),
-                isDirty:    true,
-                isLoading:  true
-            });
+            */
+            return Object.assign({}, state, {isLoading:  true});
         }
 
         default:
@@ -669,9 +575,17 @@ export function getEntitiesObject() {
  * Return the dirty bit of entities under editing
  */
 export function getIsDirty() {
-    return (state$: Observable<EntitiesState>) => state$.select(s => s.isDirty);
+    return (state$: Observable<EntitiesState>) => state$
+        .select(s => s.dirtyMask && s.dirtyMask.length > 0);
 }
 
+/**
+ * Return the dirty bit of entities under editing
+ */
+export function getDirtyMask() {
+    return (state$: Observable<EntitiesState>) => state$
+        .select(s => s.dirtyMask);
+}
 
 /**
  * Return if the single entity or entities list is in loading

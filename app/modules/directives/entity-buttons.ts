@@ -13,7 +13,9 @@ import { Entity } from '../../models';
 })
 export class EntityButtons {
     @Input() entityState: string;
-    
+    @Input() states: string[];
+
+    @Output() stateChange  = new EventEmitter();
     @Output() save         = new EventEmitter();
     @Output() save2Pending = new EventEmitter();
     @Output() save2Publish = new EventEmitter();
@@ -23,13 +25,5 @@ export class EntityButtons {
     // TODO: Add input dirty bit to check if entity is modified
     get canSave() {
         return true;
-    }
-    
-    get canDraft() {
-        return this.entityState === 'publish' || this.entityState === 'pending';
-    }
-    
-    get canPublish() {
-        return this.entityState !== 'publish';
     }
 }

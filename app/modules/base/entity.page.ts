@@ -18,6 +18,7 @@ import { FroalaEditorCompnoent } from 'ng2-froala-editor/ng2-froala-editor';
 import { FroalaOptions }     from '../../models/froala.option';
 import { KEYWORDS }          from '../../models';
 import { Entity }            from '../../models';
+import { ENTITY_STATES }     from '../../models';
 import { CREATIVE_TYPES }    from '../../models';
 import { TOPIC_TYPES }       from '../../models';
 import { TopicType }         from '../../models';
@@ -46,6 +47,7 @@ import {
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity,
     getIsLoading, getPaginator, getCurEntityChannel,
+    getEntityDirtyMask,
     getCurEntityEditor, getCurEntityTopicType,
     getCurEntityKeywordsAsArray,
     getEntitiesCurPage, getCurEntityHasDeal,
@@ -63,14 +65,14 @@ export abstract class EntityPage implements OnInit, OnDestroy
     froalaModel: string; // A temp storage for all content modified by froala
     editor: any;         // Froala editor instance
 
-    isDirty        = false;   // Entity dirty bit
+    dirtyMask: string[];      // Entity dirty mask
     entity: Entity;           // Current entity
     profile: User;            // Current user profile
     domain: Domain;           // Current domain
     cmsTopics: Topic[];       // Filtered cms topics
 
     isLoading$:   Observable<boolean>;
-    isDirty$:     Observable<boolean>;
+    dirtyMask$:   Observable<string[]>;
     domain$:      Observable<Domain>;
     profile$:     Observable<User>; // User info of current domain
     authors$:     Observable<User[]>;
@@ -98,12 +100,12 @@ export abstract class EntityPage implements OnInit, OnDestroy
     // subscriptions
     subDomain: any;
     subPro: any;
-    subDirty: any;
     subCh: any;
     subTopics: any;
     subEntity: any;
+    subDirty: any;
     subParams: any;
-    subTimer: any;
+    subAS: any;
 
     isNewEntity: boolean;
     // A flag to turn deactivate guard off
@@ -117,7 +119,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
     ngOnInit() {
         this.isLoading$     = this.store.let(getIsLoading(this.etype));
-        this.isDirty$       = this.store.let(getIsDirty(this.etype));
+        this.dirtyMask$     = this.store.let(getEntityDirtyMask(this.etype));
         this.domain$        = this.store.let(getCurDomain());
         this.profile$       = this.store.let(getCurProfile());
         this.authors$       = this.store.let(getAuthors());
@@ -144,7 +146,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
         this.subDomain  = this.domain$.subscribe(d => this.domain = d);
         this.subPro     = this.profile$.subscribe(p => this.profile = p);
-        this.subDirty   = this.isDirty$.subscribe(i => this.isDirty = i);
         this.subEntity  = this.entity$
             .subscribe(e => this.entity = Object.assign({}, e));
 
@@ -155,21 +156,24 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subTopics  = this.cmsTopics$
             .subscribe(topics => this.cmsTopics = topics);
 
+        this.subDirty   = this.dirtyMask$.subscribe(m => this.dirtyMask = m);
+
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
-        // Init auto save timer
+
+        // Auto saving setup
         this.autoSave();
     }
 
     ngOnDestroy() {
         this.subDomain.unsubscribe();
         this.subPro.unsubscribe();
-        this.subDirty.unsubscribe();
         this.subEntity.unsubscribe();
         this.subCh.unsubscribe();
         this.subTopics.unsubscribe();
         this.subParams.unsubscribe();
-        this.subTimer.unsubscribe();
+        this.subDirty.unsubscribe();
+        this.subAS.unsubscribe();
     }
 
     canDeactivate() {
@@ -214,13 +218,15 @@ export abstract class EntityPage implements OnInit, OnDestroy
         });
     }
 
+    abstract get zh();
     abstract get previewUrl(): string;
 
+    get isDirty() { return this.dirtyMask && this.dirtyMask.length; }
+    get entityStates() { return ENTITY_STATES; }
     get creativeTypes() { return CREATIVE_TYPES; }
     get topicTypes() { return TOPIC_TYPES; }
     get froalaOptions() { return FroalaOptions.getDefault(); }
     get froalaSimplifiedOptions() { return FroalaOptions.getSimplified(); }
-
     gmt(value: string) { return GMT(value); }
 
     /**
@@ -292,21 +298,18 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.store.dispatch(EntityActions.update(this.etype, key, value));
     }
 
-    // TODO: Deprecate this and merge it into update.
     updateFakePublishedAt(date: string) {
         let d1 = new Date(date);
         let d2 = new Date(this.entity.fake_published_at);
         if (d1.toISOString() === d2.toISOString()) return;
-        this.store.dispatch(EntityActions.updateFakePublishedAt(this.etype, date));
+        this.update('fake_published_at', date);
     }
 
     /**
      * Listen on froala editor events
      */
     onFroalaInitialized(key: string) {
-        console.error("Froala Editor initialized, key: ", key);
         this.editor = FroalaEditorCompnoent.getFroalaInstance();
-
         // Kick an action to update content when it changes.
         this.editor.on('froalaEditor.contentChanged', (e, editor) => {
             this.update(key, this.froalaModel);
@@ -314,45 +317,21 @@ export abstract class EntityPage implements OnInit, OnDestroy
     }
 
     /**
-     *  Restore current content to given revision
+     * Save entity to API server
      */
-    restoreRevision(rid: number) {
-        this.store.dispatch(EntityActions.applyRevision(this.etype, [this.entity.id, rid]));
-        this.store.dispatch(AlertActions.warning('请确认版本恢复正确后点击保存到服务器'));
+    save() {
+        this.store.dispatch(EntityActions
+            .saveEntity(this.etype, this.entity, this.dirtyMask));
     }
 
-    /**
-     * Automatically save entity in an interval
-     */
     autoSave() {
-        // Do the saving in every 10s.
-        this.subTimer = Observable.interval(10000).subscribe(x => {
-            // Save entity with content to server
-            if (this.isDirty) {
-                this.store.dispatch(EntityActions.autoSave(this.etype, this.entity));
-                // Save entity except content to server
-                //this.store.dispatch(EntityActions.autoSaveAttributes(this.etype, this.entity));
-            }
-
-            // Also ping server to set editing lock state
+        this.subAS = Observable.interval(10000).subscribe(() => {
+            if (this.isDirty)
+                this.store.dispatch(EntityActions
+                    .autoSave(this.etype, this.entity, this.dirtyMask));
         });
     }
 
-    /**
-     * Various save button and cancel
-     */
-    save() {
-        this.store.dispatch(EntityActions.saveEntity(this.etype, this.entity));
-    }
-    save2Pending() {
-        this.store.dispatch(EntityActions.saveEntityAsPending(this.etype, this.entity));
-    }
-    save2Draft() {
-        this.store.dispatch(EntityActions.saveEntityAsDraft(this.etype, this.entity));
-    }
-    save2Publish() {
-        this.store.dispatch(EntityActions.saveEntityAsPublish(this.etype, this.entity));
-    }
     cancelSave() {
         this.forceQuit = true;
         this.location.back();

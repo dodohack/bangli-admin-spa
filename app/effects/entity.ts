@@ -54,19 +54,15 @@ export class EntityEffects {
         );
 
     @Effect() saveEntity$ = this.actions$.ofType(EntityActions.SAVE_ENTITY)
-        .switchMap(action => this.saveEntity(action.payload.etype, action.payload.data)
+        .map(action => action.payload)
+        .switchMap(p => this.saveEntity(p.etype, p.data, p.mask)
             .map(ret => EntityActions.saveEntitySuccess(ret.etype, ret.entity))
             .catch(() => Observable.of(EntityActions.saveEntityFail()))
         );
 
     @Effect() autoSave$ = this.actions$.ofType(EntityActions.AUTO_SAVE)
-        .switchMap(action => this.autoSaveEntity(action.payload.etype, action.payload.data)
-            .map(ret => EntityActions.autoSaveSuccess(ret.etype, ret.entity))
-            .catch(() => Observable.of(EntityActions.saveEntityFail()))
-        );
-
-    @Effect() autoSaveAttrs$ = this.actions$.ofType(EntityActions.AUTO_SAVE_ATTRIBUTES)
-        .switchMap(action => this.autoSaveEntityAttrs(action.payload.etype, action.payload.data)
+        .map(action => action.payload)
+        .switchMap(p => this.autoSaveEntity(p.etype, p.data, p.mask)
             .map(ret => EntityActions.autoSaveSuccess(ret.etype, ret.entity))
             .catch(() => Observable.of(EntityActions.saveEntityFail()))
         );
@@ -159,29 +155,26 @@ export class EntityEffects {
     }
 
     /**
-     * Create/update an entity automatically 
+     * Save an entity automatically
      */
-    protected autoSaveEntity(t: string, entity: any): Observable<any> {
-        return this.saveEntity(t, entity, true);
-    }
-
-    /**
-     * Create/update an entity without content automatically 
-     */
-    protected autoSaveEntityAttrs(t: string, entity: any): Observable<any> {
-        // Remove content from the entity
-        //delete entity['content'];
-        console.error("Delete content from autoSaveEntityAttrs");
-        return this.saveEntity(t, entity, true);
+    protected autoSaveEntity(t: string, entity: any, mask: string[]): Observable<any> {
+        return this.saveEntity(t, entity, mask, true);
     }
 
     /**
      * Create/Update a entity, return a entity
      */
-    protected saveEntity(t: string, entity: any, isAuto = false): Observable<any> {
-        console.log("SAVING ENTITY: ", entity);
+    protected saveEntity(t: string, entity: any, mask: string[],
+                         isAuto = false): Observable<any> {
+        // Filter possible duplicated mask entries
+        let uniqueMask = mask.filter((m, idx, self) => idx == self.indexOf(m));
+        // Create a new entity with modified attributes only
+        let dirtyEntity = {id: entity.id};
+        mask.forEach(m => dirtyEntity[m] = entity[m]);
 
-        let body = JSON.stringify(entity);
+        console.log("[AUTO: ", isAuto ,"] SAVING ENTITY: ", dirtyEntity);
+
+        let body = JSON.stringify(dirtyEntity);
         let options = new RequestOptions({ headers: this.headers });
         let api = this.getApi(t, false);
 

@@ -1,11 +1,3 @@
-<div class="alert alert-danger">
-    TODO: Evaluate ng2-uploader and ng2-file-upload for file upload
-    TODO: Evaluate ng2-completer, ng2-select, angular2-select, ng2-auto-complete...
-    TODO: Evaluate ng2-table, ng2-handsontable for future use.
-    TODO: Evaluate angular2-tree-component, ng2-tree for
-          setting of category, location, menu, etc.
-</div>
-
 <editor-page-header [slug]="'topic'"
                     [name]="'专题'"
                     [zh]="zh"
@@ -20,38 +12,40 @@
 
     <!-- Sidebar -->
     <div class="col-xs-4" style="background: #e1f6fd; padding: 1rem">
-        <entity-buttons [entityState]="(entity$ | async)?.state"
-                        (save)="save()"
-                        (save2Pending)="save2Pending()"
-                        (save2Draft)="save2Draft()"
-                        (save2Publish)="save2Publish()"
-                        (cancelSave)="cancelSave()">
-        </entity-buttons>
 
+        <!-- Save button -->
+        <div class="form-group">
+            <button class="btn btn-sm btn-outline-success"
+                    (click)="save" [disabled]="!isDirty || isLoading">
+                <template [ngIf]="isDirty && !isLoading">Save</template>
+                <template [ngIf]="!isDirty">Saved</template>
+                <template [ngIf]="isDirty && isLoading">Saving</template>
+            </button>
+        </div>
 
-        <div class="date-area float-right" *ngIf="date">
-            <span class="date-time btn btn-sm btn-secondary"
-                  (click)="dpHidden = !dpHidden">
-                显示时间(定时发布): {{ date | date: 'y-MM-dd HH:mm' }} GMT
-                <i class="fa fa-chevron-down"
-                   [class.fa-chevron-down]="dpHidden"
-                   [class.fa-chevron-up]="!dpHidden"></i>
-            </span>
-            <div class="date-picker" [class.hidden]="dpHidden">
-                <div>
-                    <datepicker name="date"
-                                [ngModel]="date"
-                                (ngModelChange)="dateChange.emit($event)"
-                                [showWeeks]="false"></datepicker>
-                    <timepicker name="time"
-                                [ngModel]="date"
-                                (ngModelChange)="dateChange.emit($event)"
-                                [showMeridian]="false"></timepicker>
-
-                    <button class="btn btn-info btn-sm float-right"
-                            (click)="dpHidden = true">确定</button>
+        <!-- Enitity state and has deal attr -->
+        <div class="row">
+            <div class="col-xs-7">
+                <div class="form-group post-meta">
+                    <label>状态</label>
+                    <select class="form-control form-control-sm custom-select"
+                            name="st" [ngModel]="(entity$ | async)?.state"
+                            (ngModelChange)="update('state', $event)">
+                        <option *ngFor="let state of entityStates"
+                                [selected]="state === entityState"
+                                [value]="state">{{ zh[state] }}</option>
+                    </select>
                 </div>
-
+            </div>
+            <div class="col-xs-5">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input"
+                               name="hasDeal" [ngModel]="hasDeal$ | async"
+                               (ngModelChange)="update('has_deal', $event)"/>
+                        优惠专题
+                    </label>
+                </div>
             </div>
         </div>
 
@@ -102,13 +96,6 @@
                        (selected)="attachStr('keywords', $event)"
                        (removed)="detachStr('keywords', $event)"
                        placeholder="选择关键字"></ng-select>
-        </div>
-
-        <div class="form-group">
-            <label>优惠专题</label>
-            <input type="checkbox" class="form-control form-control-sm"
-                   name="hasDeal" [ngModel]="hasDeal$ | async"
-                   (ngModelChange)="update('has_deal', $event)"/>
         </div>
     </div>
 
@@ -173,6 +160,10 @@
         </tabset>
     </div>
 
+    <revision-history [entity]="entity$ | async"
+                      [authorsObj]="authorsObj$ | async"
+                      (restore2Revision)="update('content', $event)">
+    </revision-history>
 </div>
 
 <!-- Right panel, we can trigger a seperate saving individually -->
@@ -197,34 +188,6 @@
                          (attachTopic)="attach('topics', $event)"
                          (detachTopic)="detach('topics', $event)">
             </topic-cloud>
-
-            <div class="alert alert-danger">
-                专题的专题需要分为几类来选择, 产品的品牌,网站,相关的产品,属于的知识类专题等,
-                比如HB维他命C需要分别选择品牌专题: Holland Barrett, 产品系列专题: HB维他命系列,
-                以及普通专题: 维他命, (还有网站专题: Holland Barrett网站??)
-            </div>
-
-            <div class="alert alert-danger">
-                系列推荐包括专题包含的产品专题和文章专题推荐, 比如当当前专题为'brand'的时候,我们有一下的情况:
-            </div>
-            <ul>
-                <li>推荐的产品系列: 用于显示返利购买链接, 从所有cms_topics.type为'products'的专题当中选择</li>
-                <li>推荐的产品系列,用于正文的相关从属关系推荐, 从所有cms_topics.type为'products'的专题当中选择</li>
-                <li>用于推荐文章的交叉专题, 从所有cms_topics.type为'general'的专题当中选择</li>
-            </ul>
-
-            <div class="alert alert-danger">
-                系列推荐包括专题包含的产品专题和文章专题推荐, 比如当当前专题为'products'的时候,我们有一下的情况:
-            </div>
-            <ul>
-                <li>推荐本系列的产品: 用于显示返利购买链接, 从所有cms_topics.type为'product'的专题当中选择</li>
-                <li>推荐本系列的产品,用于正文的相关从属关系推荐, 从所有cms_topics.type为'product'的专题当中选择</li>
-                <li>推荐同一品牌相关的产品系列,用于正文的相关从属关系推荐, 从相同'brand'的所有cms_topics.type为'products'的专题当中选择</li>
-                <li>推荐不同品牌相同功能的产品系列,用于正文的相关从属关系推荐, 从不同'brand'和cms_topics.type==='general', 并且当前产品系列所关联的所有general topic的'products' topics当中选择,
-                    比如, HB鱼油系列专题, 正文推荐专题会显示Natural Aids鱼油系列。
-                </li>
-                <li>用于推荐文章的交叉专题, 从所有cms_topics.type为'general'的专题当中选择</li>
-            </ul>
         </tab>
 
         <tab heading="Location" [active]="tabIdx == 2">
@@ -236,15 +199,27 @@
     </tabset>
 </right-panel>
 
-<pre>
-    This page should have following entries:
-    1. cms topic related stuff
-    2. Manage cms post related to this topic
-    3. Manage deal post related to this topic
-    4. Manage topic deal content of this topic, we have auto generated template
-       for this, such as xxx的优惠, xxx折扣, xxx打折信息
-    5. deal topic option is default enabled for topic in shopping category, so
-       at least we have placeholder page stands for search engine ranking, as
-       we will automatically generate deal post for deal topic.
-</pre>
-<h2>This is topic</h2>
+
+<div style="display: none">
+    专题的专题需要分为几类来选择, 产品的品牌,网站,相关的产品,属于的知识类专题等,
+    比如HB维他命C需要分别选择品牌专题: Holland Barrett, 产品系列专题: HB维他命系列,
+    以及普通专题: 维他命, (还有网站专题: Holland Barrett网站??)
+    <br>
+    系列推荐包括专题包含的产品专题和文章专题推荐, 比如当当前专题为'brand'的时候,我们有一下的情况:
+
+    <ul>
+        <li>推荐的产品系列: 用于显示返利购买链接, 从所有cms_topics.type为'products'的专题当中选择</li>
+        <li>推荐的产品系列,用于正文的相关从属关系推荐, 从所有cms_topics.type为'products'的专题当中选择</li>
+        <li>用于推荐文章的交叉专题, 从所有cms_topics.type为'general'的专题当中选择</li>
+    </ul>
+    系列推荐包括专题包含的产品专题和文章专题推荐, 比如当当前专题为'products'的时候,我们有一下的情况:
+    <ul>
+        <li>推荐本系列的产品: 用于显示返利购买链接, 从所有cms_topics.type为'product'的专题当中选择</li>
+        <li>推荐本系列的产品,用于正文的相关从属关系推荐, 从所有cms_topics.type为'product'的专题当中选择</li>
+        <li>推荐同一品牌相关的产品系列,用于正文的相关从属关系推荐, 从相同'brand'的所有cms_topics.type为'products'的专题当中选择</li>
+        <li>推荐不同品牌相同功能的产品系列,用于正文的相关从属关系推荐, 从不同'brand'和cms_topics.type==='general', 并且当前产品系列所关联的所有general topic的'products' topics当中选择,
+            比如, HB鱼油系列专题, 正文推荐专题会显示Natural Aids鱼油系列。
+        </li>
+        <li>用于推荐文章的交叉专题, 从所有cms_topics.type为'general'的专题当中选择</li>
+    </ul>
+</div>

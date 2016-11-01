@@ -70,7 +70,7 @@
 
 <revision-history [entity]="entity$ | async"
                   [authorsObj]="authorsObj$ | async"
-                  (restore2Revision)="restoreRevision($event)">
+                  (restore2Revision)="update('content', $event)">
 </revision-history>
 
 <!-- Right panel, we can trigger a seperate saving individually -->

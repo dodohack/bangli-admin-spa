@@ -377,6 +377,10 @@ export function getIsDirty(etype: string) {
     return compose(fromEntities.getIsDirty(), getEntitiesState(etype));
 }
 
+export function getEntityDirtyMask(etype: string) {
+    return compose(fromEntities.getDirtyMask(), getEntitiesState(etype));
+}
+
 export function getIsLoading(etype: string) {
     return compose(fromEntities.getIsLoading(), getEntitiesState(etype));
 }
