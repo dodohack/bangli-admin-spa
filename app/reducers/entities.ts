@@ -474,7 +474,7 @@ function entitiesReducer (etype: string,
                         return oldEntity;
                     } else {
                         // Create a new entity with the relationship
-                        let newAttrs = [...attrs, value];
+                        let newAttrs: any = [...attrs, value];
                         if (!rid) newAttrs = newAttrs.join(',');
                         return Object.assign({}, oldEntity, {[key]: newAttrs});
                     }
@@ -692,13 +692,7 @@ export function getEntity(id: number) {
  */
 export function getEditor() {
     return (entity$: Observable<Entity>) => entity$
-        .filter(e => typeof e != 'undefined').map(e => e.editor)
-        .filter(editor => editor != null)
-        .map(editor => {
-            // Do not re create the text display for ng2-select if it already has.
-            if (editor.text) return editor;
-            else return Object.assign({}, editor, {text: editor.name});
-        });
+        .filter(e => typeof e != 'undefined').map(e => e.editor);
 }
 
 /**
@@ -714,12 +708,7 @@ export function getChannelId() {
  */
 export function getChannel() {
     return (entity$: Observable<Entity>) => entity$
-        .filter(e => typeof e != 'undefined').map(e => e.channel)
-        .filter(ch => ch != null)
-        .map(ch => {
-            if (ch.text) return ch;
-            else return Object.assign({}, ch, {text: ch.name});
-        });
+        .filter(e => typeof e != 'undefined').map(e => e.channel);
 }
 
 /**
@@ -727,12 +716,7 @@ export function getChannel() {
  */
 export function getTopicType() {
     return (entity$: Observable<Entity>) => entity$
-        .filter(e => typeof e != 'undefined').map(e => e.type)
-        .filter(t => t != null)
-        .map(t => {
-            if (t.text) return t;
-            else return Object.assign({}, t, {text: t.name});
-        });
+        .filter(e => typeof e != 'undefined').map(e => e.type);
 }
 
 /**
@@ -741,6 +725,7 @@ export function getTopicType() {
 export function getKeywordsAsArray() {
     return (entity$: Observable<Entity>) => entity$
         .filter(e => typeof e != 'undefined').map(e => e.keywords)
+        .filter(ks => ks != null)
         .map(ks => ks.split(','));
 }
 

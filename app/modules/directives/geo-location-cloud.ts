@@ -34,7 +34,7 @@ export class GeoLocationCloud implements OnInit {
             .debounceTime(100).subscribe(text => {
             this.filterText = text;
             this.filteredCities = this.cities.filter(t =>
-                (t.name.includes(text) || t.name_cn.includes(text)) ? true : false);
+                (t.text.includes(text) ? true : false);
             this.cd.markForCheck();
         });
     }

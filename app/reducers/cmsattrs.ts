@@ -63,48 +63,27 @@ export default function (state = initialState, action: Action): CmsAttrsState {
 
             let authors: User[] = [];
             if (payload.authors)
-                authors = payload.authors.map(u => {
-                    // Create a 'text' key for ng2-select.
-                    u.text = u.display_name;
-                    return u;
-                });
+                authors = payload.authors;
 
             let editors: User[] = [];
             if (payload.editors)
-                editors = payload.editors.map(u => {
-                    // Create a 'text' key for ng2-select.
-                    u.text = u.display_name;
-                    return u;
-                });
+                editors = payload.editors;
 
             let categories: Category[] = [];
             if (payload.categories)
-                categories = payload.categories.map(u => {
-                    // Create a 'text' key for ng2-select.
-                    u.text = u.name;
-                    return u;
-                });
+                categories = payload.categories;
 
             let topic_types: TopicType[] = [];
             if (payload.topic_types)
-                topic_types = payload.topic_types.map(u => {
-                    u.text = u.name;
-                    return u;
-                });
+                topic_types = payload.topic_types;
 
             let channels: Channel[] = [];
-            if (payload.channels && payload.channels.length)
-                channels = payload.channels.map(u => {
-                    u.text = u.name;
-                    return u;
-                });
+            if (payload.channels)
+                channels = payload.channels;
 
             let locations: GeoLocation[] = [];
-            if (payload.locations && payload.locations.length)
-                locations = payload.locations.map(u => {
-                    u.text = u.name;
-                    return u;
-                });
+            if (payload.locations)
+                locations = payload.locations;
 
             /*
             let post_topic_cats: Topic[] = [];

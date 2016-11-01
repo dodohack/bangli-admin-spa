@@ -14,6 +14,7 @@ export class GeoLocation {
     parent_id: number;
     rate: number; // editorial rate, 0-10 points
     slug: string; // url friendly name
+    text: string; // Client SPA display name, same as name.
     name: string; // English name
     name_cn: string; // Chinese name
     population: number;

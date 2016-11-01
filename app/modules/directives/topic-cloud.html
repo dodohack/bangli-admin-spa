@@ -8,7 +8,7 @@
     <accordion-group *ngFor="let ttype of topicTypes" isOpen="true">
 
         <div accordion-heading>
-            {{ ttype.name }} <i class="pull-right fa customize-chevron"></i>
+            {{ ttype.text }} <i class="pull-right fa customize-chevron"></i>
         </div>
 
         <span class="tag tag-warning-outline tag-item">已选中专题:</span>
@@ -16,7 +16,7 @@
             <li *ngFor="let topic of selectedTopicsOfTType(ttype)"
                 class="tag-item tag tag-pill tag-primary-outline"
                 (click)="detachTopic.emit(topic)">
-                {{ topic.title }} x
+                {{ topic.text }} x
             </li>
         </ul>
 
@@ -27,7 +27,7 @@
             <li *ngFor="let topic of topicsOfTType(ttype)"
                 class="tag-item tag tag-pill tag-default-outline"
                 (click)="attachTopic.emit(topic)">
-                {{ topic.title }}
+                {{ topic.text }}
             </li>
         </ul>
 
