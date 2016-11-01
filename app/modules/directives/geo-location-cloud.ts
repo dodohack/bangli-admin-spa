@@ -15,7 +15,6 @@ import { GeoLocation }                from '../../models';
 })
 export class GeoLocationCloud implements OnInit {
     filterControl = new FormControl();
-    filterText: string = '';
     filteredCities: GeoLocation[] = [];
 
     // All geo-locations
@@ -31,10 +30,9 @@ export class GeoLocationCloud implements OnInit {
 
     ngOnInit() {
         this.filterControl.valueChanges
-            .debounceTime(100).subscribe(text => {
-            this.filterText = text;
+            .debounceTime(200).subscribe(text => {
             this.filteredCities = this.cities.filter(t =>
-                (t.text.includes(text) ? true : false);
+                t.text.includes(text) ? true : false);
             this.cd.markForCheck();
         });
     }

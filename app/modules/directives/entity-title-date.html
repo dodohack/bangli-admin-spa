@@ -11,16 +11,16 @@
             <div class="row" *ngIf="isTopic">
                 <div class="col-xs-8">
                     <div class="form-group">
-                        <label>URL地址</label>
+                        <label>Permalink</label>
                         <input type="text" name="guid" class="form-control form-control-sm"
-                               [ngModel]="guid" [formControl]="guidControl">
+                               [ngModel]="guid" [formControl]="guidControl" required>
                     </div>
                 </div>
                 <div class="col-xs-4">
                     <div class="form-group">
                         <label>锚文本</label>
                         <input type="text" name="atext" class="form-control form-control-sm"
-                               [ngModel]="anchorText" [formControl]="anchorTextControl">
+                               [ngModel]="anchorText" [formControl]="anchorTextControl" required>
                     </div>
                 </div>
             </div>
