@@ -523,6 +523,7 @@ function entitiesReducer (etype: string,
             let key   = action.payload.key;
             let value = action.payload.value;
             let entity = state.entities[state.idsEditing[0]];
+            let dirtyMask = state.dirtyMask;
 
             if (!key) {
                 console.error("Failed to update attributes!");
@@ -533,13 +534,15 @@ function entitiesReducer (etype: string,
                 // Update corresponding entity.'key'_id column as well
                 let idKey = key + '_id';
                 entity = Object.assign({}, entity, {[idKey]: value.id, [key]: value});
+                dirtyMask = [...dirtyMask, key, idKey];
             } else {
                 entity = Object.assign({}, entity, {[key]: value});
+                dirtyMask = [...dirtyMask, key];
             }
 
             return Object.assign({}, state, {
                 entities: Object.assign({}, state.entities, {[entity.id]: entity}),
-                dirtyMask: [...state.dirtyMask, key]
+                dirtyMask: dirtyMask
             });
         }
 
@@ -599,6 +602,14 @@ export function getIsLoading() {
  */
 export function getEntity(id: number) {
     return (state$: Observable<EntitiesState>) => state$.select(s => s.entities[id]);
+}
+
+/**
+ * Return current editing entity author
+ */
+export function getAuthor() {
+    return (entity$: Observable<Entity>) => entity$
+        .filter(e => typeof e != 'undefined').map(e => e.author);
 }
 
 /**

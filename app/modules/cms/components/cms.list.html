@@ -50,13 +50,13 @@
                 <span class="tag tag-default-outline"
                       *ngIf="isOnlineLocked(entity)">
                     <i class="fa fa-pencil" style="color: red"></i>
-                    {{ authorsObj[entity.activities[0].user_id].name }} 正在编辑
+                    {{ authorsObj[entity.activities[0].user_id].text }} 正在编辑
                 </span>
                 <!-- Badge: Offline edit lock -->
                 <span class="tag tag-default-outline"
                       *ngIf="isOfflineLocked(entity)">
                     <i class="fa fa-pencil" style="color: blue"></i>
-                    {{ authorsObj[entity.activities[0].user_id].name }} 正在离线编辑
+                    {{ authorsObj[entity.activities[0].user_id].text }} 正在离线编辑
                 </span>
 
                 <span *ngIf="entity.state != 'publish'" class="tag tag-danger-outline">
@@ -76,16 +76,16 @@
 
             <td>
                 <!-- editor is always an author -->
-                <span *ngIf="entity.editor_id && entity.editor_id != entity.author_id">
-                    编辑: {{ authorName(entity.editor_id) }}
+                <span *ngIf="entity.editor">
+                    编辑: {{ entity.editor.text }}
                 </span>
-                <div *ngIf="entity.author_id">
-                    作者: {{ authorName(entity.author_id) }}
+                <div *ngIf="entity.author">
+                    作者: {{ entity.author.text }}
                 </div>
             </td>
 
             <td>
-                <span *ngFor="let cat of entity.categories">{{ cat.name }}, </span>
+                <span *ngFor="let cat of entity.categories">{{ cat.text }}, </span>
             </td>
             <td>
                 <span *ngIf="isPost">{{ entity.published_at }}</span>

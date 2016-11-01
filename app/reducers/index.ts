@@ -411,6 +411,11 @@ export function getCurEntity(etype: string) {
     return compose(fromEntities.getCurEntity(), getEntitiesState(etype));
 }
 
+export function getCurEntityAuthor(etype: string) {
+    return compose(fromEntities.getAuthor(),
+        fromEntities.getCurEntity(), getEntitiesState(etype));
+}
+
 export function getCurEntityEditor(etype: string) {
     return compose(fromEntities.getEditor(),
         fromEntities.getCurEntity(), getEntitiesState(etype));

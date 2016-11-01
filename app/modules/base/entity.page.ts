@@ -47,7 +47,7 @@ import {
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity,
     getIsLoading, getPaginator, getCurEntityChannel,
-    getEntityDirtyMask,
+    getEntityDirtyMask, getCurEntityAuthor,
     getCurEntityEditor, getCurEntityTopicType,
     getCurEntityKeywordsAsArray,
     getEntitiesCurPage, getCurEntityHasDeal,
@@ -85,6 +85,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     cmsTopics$:   Observable<Topic[]>;      // Candidates topics
     paginator$:   Observable<any>;
     entity$:      Observable<Entity>;
+    author$:      Observable<User>;
     editor$:      Observable<User>;
     channel$:     Observable<Channel>;   // Current entity channel id
     keywords$:    Observable<string[]>;  // Keywords array of current topic
@@ -132,6 +133,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.cmsTopics$     = this.store.let(getCmsTopics());
         this.paginator$     = this.store.let(getPaginator(this.etype));
         this.entity$        = this.store.let(getCurEntity(this.etype));
+        this.author$        = this.store.let(getCurEntityAuthor(this.etype));
         this.editor$        = this.store.let(getCurEntityEditor(this.etype));
         this.channel$       = this.store.let(getCurEntityChannel(this.etype));
         this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
@@ -302,7 +304,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         let d1 = new Date(date);
         let d2 = new Date(this.entity.fake_published_at);
         if (d1.toISOString() === d2.toISOString()) return;
-        this.update('fake_published_at', date);
+        this.update('fake_published_at', GMT(date));
     }
 
     /**

@@ -8,70 +8,150 @@
                     (cancelEdit)="cancelSave()">
 </editor-page-header>
 
+<div class="row">
 
-<entity-buttons [entityState]="(entity$ | async)?.state"
-                (save)="save()"
-                (save2Pending)="save2Pending()"
-                (save2Draft)="save2Draft()"
-                (save2Publish)="save2Publish()"
-                (cancelSave)="cancelSave()">
-</entity-buttons>
+    <div class="form-group">
+        <button class="btn btn-sm btn-outline-secondary" (click)="hide = !hide">
+            <template [ngIf]="!hide">隐藏侧栏</template>
+            <template [ngIf]="hide">显示侧栏</template>
+        </button>
+    </div>
 
-<entity-title-date [title]="(entity$ | async)?.title"
-                   [date]="(entity$ | async)?.fake_published_at"
-                   (titleChange)="update('title', $event)"
-                   (dateChange)="updateFakePublishedAt($event)">
-</entity-title-date>
+    <!-- Sidebar -->
+    <div [class.col-xs-4]="!hide" [class.hidden]="hide"
+         style="background: #e1f6fd; padding: 1rem">
 
-<!-- Post location, category, tag, topic etc -->
+        <!-- Enitity state -->
+        <div class="row">
+            <div class="col-xs-7">
+                <div class="form-group post-meta">
+                    <label>状态</label>
+                    <select class="form-control form-control-sm custom-select"
+                            name="st" [ngModel]="(entity$ | async)?.state"
+                            (ngModelChange)="update('state', $event)">
+                        <option *ngFor="let state of entityStates"
+                                [selected]="state === entityState"
+                                [value]="state">{{ zh[state] }}</option>
+                    </select>
+                </div>
+            </div>
 
-<entity-attr-cloud [categories]="(entity$ | async)?.categories"
-                   [topics]="(entity$ | async)?.topics"
-                   [location]="(entity$ | async)?.location"
-                   (toggle)="tabIdx = $event; openPanel = !openPanel"
-                   (detachCat)="detach('categories', $event)"
-                   (detachTopic)="detach('topics', $event)"
-                   (updateLocation)="update('location', $event)">
-</entity-attr-cloud>
 
-<entity-attributes [authorId]="(entity$ | async)?.author_id"
-                   [editorId]="(entity$ | async)?.editor_id"
-                   [creativeType]="(entity$ | async)?.creative_type"
-                   [channelId]="(entity$ | async)?.channel_id"
-                   [authors]="authors$ | async"
-                   [editors]="editors$ | async"
-                   [creativeTypes]="creativeTypes"
-                   [channels]="cmsChannels$ | async"
-                   (authorChange)="update('author', $event)"
-                   (editorChange)="update('editor', $event)"
-                   (creativeTypeChange)="updateCreativeType($event)"
-                   (channelChange)="updateChannel($event)">
-</entity-attributes>
+            <!-- Save button -->
+            <div class="col-xs-5">
+                    <button class="btn btn-sm btn-outline-success float-right"
+                        (click)="save" [disabled]="!isDirty || isLoading">
+                    <template [ngIf]="isDirty && !isLoading">保存</template>
+                    <template [ngIf]="!isDirty">已保存</template>
+                    <template [ngIf]="isDirty && isLoading">保存中...</template>
+                </button>
+            </div>
+        </div>
 
-<entity-thumbnails>
-</entity-thumbnails>
+        <div class="form-group date-area">
+            <label>前端发布时间:</label>
+            <span class="date-time btn btn-sm btn-secondary float-right"
+                  (click)="dpShow = !dpShow">
+                {{ (entity$ | async)?.fake_published_at | date: 'y-MM-dd HH:mm' }} GMT
+                <i class="fa fa-chevron-down"
+                   [class.fa-chevron-down]="!dpShow"
+                   [class.fa-chevron-up]="dpShow"></i>
+            </span>
+            <div class="date-picker" [class.hidden]="!dpShow">
+                <div>
+                    <datepicker name="date"
+                                [ngModel]="(entity$ | async)?.fake_published_at"
+                                (ngModelChange)="updateFakePublishedAt($event)"
+                                [showWeeks]="false"></datepicker>
+                    <timepicker name="time"
+                                [ngModel]="(entity$ | async)?.fake_published_at"
+                                (ngModelChange)="updateFakePublishedAt($event)"
+                                [showMeridian]="false"></timepicker>
 
-<entity-excerpt-note [excerpt]="(entity$ | async)?.excerpt"
-                     [note]="(entity$ | async)?.internal_note"
-                     (excerptChange)="updateExcerpt($event)"
-                     (noteChange)="updateNote($event)">
-</entity-excerpt-note>
+                    <button class="btn btn-info btn-sm float-right"
+                            (click)="dpShow = false">确定</button>
+                </div>
 
-<!-- Froala Editor -->
-<!-- TODO: Use official one when ngModule bug is fixed -->
-<!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
-     [(froalaModel)]="inputPost.content"></div>-->
+            </div>
 
-<!-- We must use content$ | async instead of other code here, otherwise the
-     post content is ether overwritten or empty -->
-<froala [froalaOptions]="froalaOptions"
-        [froalaData]="content$ | async"
-        (model)="froalaContentChanged($event)"></froala>
+        </div>
 
-<revision-history [entity]="entity$ | async"
-                  [authorsObj]="authorsObj$ | async"
-                  (restore2Revision)="update('content', $event)">
-</revision-history>
+        <div class="form-group">
+            <label>作者</label>
+            <ng-select [active]="(author$ | async) ? [author$ | async] : []"
+                       [items]="authors$ | async"
+                       (selected)="update('author', $event)"
+                       (removed)="update('author', $event)"
+                       placeholder="选择作者"></ng-select>
+        </div>
+
+        <div class="form-group">
+            <label>编辑</label>
+            <ng-select [active]="(editor$ | async) ? [editor$ | async] : []"
+                       [items]="editors$ | async"
+                       (selected)="update('editor', $event)"
+                       (removed)="update('editor', $event)"
+                       placeholder="选择编辑"></ng-select>
+        </div>
+
+        <div class="form-group">
+            <label>频道</label>
+            <ng-select [active]="(channel$ | async) ? [channel$ | async] : []"
+                       [items]="cmsChannels$ | async"
+                       (selected)="update('channel', $event)"
+                       (removed)="update('channel', $event)"
+                       placeholder="专题频道"></ng-select>
+        </div>
+
+        <!-- Post location, category, tag, topic etc -->
+        <entity-attr-cloud [categories]="(entity$ | async)?.categories"
+                           [topics]="(entity$ | async)?.topics"
+                           [location]="(entity$ | async)?.location"
+                           (toggle)="tabIdx = $event; openPanel = !openPanel"
+                           (detachCat)="detach('categories', $event)"
+                           (detachTopic)="detach('topics', $event)"
+                           (updateLocation)="update('location', $event)">
+        </entity-attr-cloud>
+
+</div>
+
+<!-- Main area -->
+<div [class.col-xs-8]="!hide" [class.col-xs-12]="hide">
+
+    <entity-title-date [title]="(entity$ | async)?.title"
+                       (titleChange)="update('title', $event)">
+    </entity-title-date>
+
+    <!--
+    <entity-thumbnails>
+    </entity-thumbnails>
+    -->
+    <!--
+    <entity-excerpt-note [excerpt]="(entity$ | async)?.excerpt"
+                         [note]="(entity$ | async)?.internal_note"
+                         (excerptChange)="updateExcerpt($event)"
+                         (noteChange)="updateNote($event)">
+    </entity-excerpt-note>
+    -->
+
+    <!-- Froala Editor -->
+    <!-- TODO: Use official one when ngModule bug is fixed -->
+    <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
+         [(froalaModel)]="inputPost.content"></div>-->
+
+    <!-- We must use content$ | async instead of other code here, otherwise the
+         post content is ether overwritten or empty -->
+    <froala [froalaOptions]="froalaOptions"
+            [froalaData]="content$ | async"
+            (model)="froalaModel = $event"
+            (editorInitialized)="onFroalaInitialized('content')"></froala>
+
+    <revision-history [entity]="entity$ | async"
+                      [authorsObj]="authorsObj$ | async"
+                      (restore2Revision)="update('content', $event)">
+    </revision-history>
+
+</div>
 
 <!-- Right panel, we can trigger a seperate saving individually -->
 <right-panel [width]="'400px'" [isOpen]="openPanel"
@@ -82,24 +162,24 @@
                 <category-tree [parentId]="0"
                                [categories]="cmsCategories$ | async"
                                [selectedCats]="(entity$ | async)?.categories"
-                               (checkEvent)="updateCat($event)">
+                               (checkEvent)="toggleAttr('categories', $event)">
                 </category-tree>
             </div>
         </tab>
 
         <tab heading="专题" [active]="tabIdx == 1">
-            <topic-cloud [topicTypes]="topicTypes$ | async"
-                         [topics]="topics$ | async"
+            <topic-cloud [topicTypes]="cmsTopicTypes$ | async"
+                         [topics]="cmsTopics$ | async"
                          [selectedTopics]="(entity$ | async)?.topics"
-                         (searchTopic)="searchTopic($event)"
-                         (addTopic)="addTopic($event)"
-                         (removeTopic)="removeTopic($event)">
+                         (searchTopic)="searchTopic(1, $event)"
+                         (attachTopic)="attach('topics', $event)"
+                         (detachTopic)="detach('topics', $event)">
             </topic-cloud>
         </tab>
 
         <tab heading="Location" [active]="tabIdx == 2">
             <geo-location-cloud [locations]="geoLocations$ | async"
-                                (clickEvent)="updateGeoLocation($event)">
+                                (clickEvent)="update('location', $event)">
             </geo-location-cloud>
         </tab>
     </tabset>
