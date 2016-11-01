@@ -178,6 +178,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subAS.unsubscribe();
     }
 
+    /**
+     * FIXME: Refactor
+     */
     canDeactivate() {
         let status = true;
         let msg;
@@ -186,7 +189,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
         if (this.forceQuit) {
             msg = '你的修改尚未保存, 你可以立即返回上个页面保存!';
-            status = false;
+            status = true;
         }
 
         if (!this.forceQuit && this.isDirty) {

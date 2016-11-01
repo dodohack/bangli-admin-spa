@@ -48,32 +48,32 @@
             </div>
         </div>
 
-        <div class="form-group date-area">
-            <label>前端发布时间:</label>
-            <span class="date-time btn btn-sm btn-secondary float-right"
-                  (click)="dpShow = !dpShow">
-                {{ (entity$ | async)?.fake_published_at | date: 'y-MM-dd HH:mm' }} GMT
-                <i class="fa fa-chevron-down"
-                   [class.fa-chevron-down]="!dpShow"
-                   [class.fa-chevron-up]="dpShow"></i>
-            </span>
-            <div class="date-picker" [class.hidden]="!dpShow">
-                <div>
-                    <datepicker name="date"
-                                [ngModel]="(entity$ | async)?.fake_published_at"
-                                (ngModelChange)="updateFakePublishedAt($event)"
-                                [showWeeks]="false"></datepicker>
-                    <timepicker name="time"
-                                [ngModel]="(entity$ | async)?.fake_published_at"
-                                (ngModelChange)="updateFakePublishedAt($event)"
-                                [showMeridian]="false"></timepicker>
+        <div class="form-group">
+            <div class="date-area">
+                <label>前端发布时间:</label>
+                <span class="date-time btn btn-sm btn-secondary float-right"
+                      (click)="dpShow = !dpShow">
+                    {{ (entity$ | async)?.fake_published_at | date: 'y-MM-dd HH:mm' }} GMT
+                    <i class="fa fa-chevron-down"
+                       [class.fa-chevron-down]="!dpShow"
+                       [class.fa-chevron-up]="dpShow"></i>
+                </span>
+                <div class="date-picker" [class.hidden]="!dpShow">
+                    <div>
+                        <datepicker name="date"
+                                    [ngModel]="(entity$ | async)?.fake_published_at"
+                                    (ngModelChange)="updateFakePublishedAt($event)"
+                                    [showWeeks]="false"></datepicker>
+                        <timepicker name="time"
+                                    [ngModel]="(entity$ | async)?.fake_published_at"
+                                    (ngModelChange)="updateFakePublishedAt($event)"
+                                    [showMeridian]="false"></timepicker>
 
-                    <button class="btn btn-info btn-sm float-right"
-                            (click)="dpShow = false">确定</button>
+                        <button class="btn btn-info btn-sm float-right"
+                                (click)="dpShow = false">确定</button>
+                    </div>
                 </div>
-
             </div>
-
         </div>
 
         <div class="form-group">
