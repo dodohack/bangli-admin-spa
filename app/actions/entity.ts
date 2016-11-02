@@ -10,6 +10,7 @@
 import { Action }       from '@ngrx/store';
 import { EntityParams } from '../models';
 import { Entity }       from '../models';
+import { User }         from '../models';
 import { GeoLocation }  from "../models";
 import { Category }     from "../models";
 import { Tag }          from "../models";
@@ -142,10 +143,10 @@ export class EntityActions {
     }
 
     static NEW_ENTITY = '[Entity] New Entity';
-    static newEntity(etype: string, userId: number): Action {
+    static newEntity(etype: string, user: User): Action {
         return {
             type: EntityActions.NEW_ENTITY,
-            payload: {etype: etype, data: userId}
+            payload: {etype: etype, data: user}
         };
     }
 

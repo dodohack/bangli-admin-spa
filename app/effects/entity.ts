@@ -169,25 +169,28 @@ export class EntityEffects {
         // Filter possible duplicated mask entries
         let uniqueMask = mask.filter((m, idx, self) => idx == self.indexOf(m));
         // Create a new entity with modified attributes only
-        let dirtyEntity = {id: entity.id};
+        let dirtyEntity: any = {id: entity.id};
         mask.forEach(m => dirtyEntity[m] = entity[m]);
 
         console.log("[AUTO: ", isAuto ,"] SAVING ENTITY: ", dirtyEntity);
+
+        // Change entity state from 'unsaved' to 'draft'.
+        if (this.isNewEntity(entity))  dirtyEntity.state = 'draft';
 
         let body = JSON.stringify(dirtyEntity);
         let options = new RequestOptions({ headers: this.headers });
         let api = this.getApi(t, false);
 
-        if (entity.id && entity.id !== 0) {
-            // Update an existing entity
-            api += '/' + entity.id + '?etype=' + t;
-            if (isAuto) api = api + '&auto=true';
-            return this.http.put(api, body, options).map(res => res.json());
-        } else {
+        if (this.isNewEntity(entity)) {
             // Create a new entity
             api += '?etype=' + t;
             if (isAuto) api = api + '&auto=true';
             return this.http.post(api, body, options).map(res => res.json());
+        } else {
+            // Update an existing entity
+            api += '/' + entity.id + '?etype=' + t;
+            if (isAuto) api = api + '&auto=true';
+            return this.http.put(api, body, options).map(res => res.json());
         }
     }
 
@@ -242,6 +245,13 @@ export class EntityEffects {
         // TODO: http.delete can't have a body
         console.error("Unimplemented: deletePosts");
         return this.http.delete(api, options).map(res => res.json());
+    }
+
+    /**
+     * If the entity is new which does not have a valid id(has placeholder id 0).
+     */
+    private isNewEntity(entity: any) {
+        return entity && entity.id == 0;
     }
 
 }

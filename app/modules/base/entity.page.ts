@@ -19,6 +19,7 @@ import { FroalaOptions }     from '../../models/froala.option';
 import { KEYWORDS }          from '../../models';
 import { Entity }            from '../../models';
 import { ENTITY_STATES }     from '../../models';
+import { ENTITY_INFO }       from '../../models';
 import { CREATIVE_TYPES }    from '../../models';
 import { TOPIC_TYPES }       from '../../models';
 import { TopicType }         from '../../models';
@@ -45,7 +46,7 @@ import {
     getCmsChannels, getCmsCurChannelCategories, getLocations,
     getCmsCurChannelTopicTypes, getCmsTopics,
     getPostStates, getPageStates, getTopicStates,
-    getIdsCurPage, getIdsEditing, getCurEntity,
+    getIdsCurPage, getIdsEditing, getCurEntity, getCurEntityId,
     getIsLoading, getPaginator, getCurEntityChannel,
     getEntityDirtyMask, getCurEntityAuthor,
     getCurEntityEditor, getCurEntityTopicType,
@@ -84,6 +85,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     cmsTopicTypes$: Observable<TopicType[]>; // Topic types of current channel
     cmsTopics$:   Observable<Topic[]>;      // Candidates topics
     paginator$:   Observable<any>;
+    id$:          Observable<number>;
     entity$:      Observable<Entity>;
     author$:      Observable<User>;
     editor$:      Observable<User>;
@@ -107,10 +109,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     subDirty: any;
     subParams: any;
     subAS: any;
-
-    isNewEntity: boolean;
-    // A flag to turn deactivate guard off
-    _canDeactivate: boolean;
+    subID: any;
 
     constructor(protected etype: string,
                 protected route: ActivatedRoute,
@@ -132,6 +131,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.cmsTopicTypes$ = this.store.let(getCmsCurChannelTopicTypes());
         this.cmsTopics$     = this.store.let(getCmsTopics());
         this.paginator$     = this.store.let(getPaginator(this.etype));
+        this.id$            = this.store.let(getCurEntityId(this.etype));
         this.entity$        = this.store.let(getCurEntity(this.etype));
         this.author$        = this.store.let(getCurEntityAuthor(this.etype));
         this.editor$        = this.store.let(getCurEntityEditor(this.etype));
@@ -163,6 +163,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
 
+        // Redirect newly created entity url
+        this.redirectNewEntity();
+
         // Auto saving setup
         this.autoSave();
     }
@@ -176,6 +179,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subParams.unsubscribe();
         this.subDirty.unsubscribe();
         this.subAS.unsubscribe();
+        this.subID.unsubscribe();
     }
 
     /**
@@ -184,8 +188,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
     canDeactivate() {
         let status = true;
         let msg;
-        // When this is set, we allow current page to be deactivate
-        if (this._canDeactivate) return true;
 
         if (this.forceQuit) {
             msg = '你的修改尚未保存, 你可以立即返回上个页面保存!';
@@ -206,32 +208,40 @@ export abstract class EntityPage implements OnInit, OnDestroy
      * Kick an action to load the entity when URL changes
      */
     dispatchLoadEntity() {
-        this.subParams = this.route.params.subscribe(params => {
-            if (JSON.stringify(this.params) !== JSON.stringify(params)) {
-                if (Object.keys(params).length === 0) {
-                    // Create a new entity
-                    this.isNewEntity = true;
+        this.subParams = this.route.params.distinctUntilChanged()
+            .subscribe(params => {
+                this.params = params;
+                if (this.isNewEntity) {
                     this.store.dispatch(EntityActions
-                        .newEntity(this.etype, this.profile.id));
+                        .newEntity(this.etype, this.profile));
                 } else {
-                    // Edit an entity by given id
-                    this.isNewEntity = false;
                     this.store.dispatch(EntityActions
                         .loadEntity(this.etype, params['id']));
                 }
-            }
-        });
+            });
+    }
+
+    /**
+     * Redirect new entity url to url with entity id
+     */
+    redirectNewEntity() {
+        this.subID = this.id$.filter(id => id > 0).distinctUntilChanged()
+            .subscribe(id => {
+                if (this.isNewEntity) {
+                    this.router.navigate(['/', ENTITY_INFO[this.etype].slug, id]);
+                }
+            });
     }
 
     abstract get zh();
     abstract get previewUrl(): string;
 
+    get isNewEntity() { return Object.keys(this.params).length === 0; }
     get isDirty() { return this.dirtyMask && this.dirtyMask.length; }
     get entityStates() { return ENTITY_STATES; }
     get creativeTypes() { return CREATIVE_TYPES; }
     get topicTypes() { return TOPIC_TYPES; }
     get froalaOptions() { return FroalaOptions.getDefault(); }
-    get froalaSimplifiedOptions() { return FroalaOptions.getSimplified(); }
     gmt(value: string) { return GMT(value); }
 
     /**
@@ -246,20 +256,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
         } else {
             return ['请先输入标题或锚文本'];
         }
-    }
-
-    /**
-     * Redirect /entity/new to /entity/:id once new entity is saved
-     */
-    redirect2NewEntity(id) {
-        // Changing from a newly created entity to a saved entity
-        /*
-        if (this.isNewEntity && id !== 0) {
-            this._canDeactivate = true;
-            this.isNewEntity = false;
-            this.router.navigate(['/', ENTITY_INFO[this.etype].slug, id]);
-        }
-        */
     }
 
     // Search topics from API server
@@ -329,9 +325,12 @@ export abstract class EntityPage implements OnInit, OnDestroy
             .saveEntity(this.etype, this.entity, this.dirtyMask));
     }
 
+    /**
+     * Save entity automatically, do not do this for new entity
+     */
     autoSave() {
         this.subAS = Observable.interval(10000).subscribe(() => {
-            if (this.isDirty)
+            if (this.isDirty && !this.isNewEntity)
                 this.store.dispatch(EntityActions
                     .autoSave(this.etype, this.entity, this.dirtyMask));
         });

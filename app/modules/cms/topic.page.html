@@ -24,7 +24,7 @@
         <!-- Save button -->
         <div class="form-group">
             <button class="btn btn-sm btn-outline-success"
-                    (click)="save" [disabled]="!isDirty || isLoading">
+                    (click)="save()" [disabled]="!isDirty || isLoading">
                 <template [ngIf]="isDirty && !isLoading">保存</template>
                 <template [ngIf]="!isDirty">已保存</template>
                 <template [ngIf]="isDirty && isLoading">保存中...</template>

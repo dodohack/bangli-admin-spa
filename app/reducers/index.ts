@@ -407,6 +407,10 @@ export function getEntity(etype: string, id: number) {
     return compose(fromEntities.getEntity(id), getEntitiesState(etype));
 }
 
+export function getCurEntityId(etype: string) {
+    return compose(fromEntities.getCurEntityId(), getEntitiesState(etype));
+}
+
 export function getCurEntity(etype: string) {
     return compose(fromEntities.getCurEntity(), getEntitiesState(etype));
 }

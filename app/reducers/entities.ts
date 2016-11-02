@@ -383,13 +383,17 @@ function entitiesReducer (etype: string,
 
         // Create a new entity, use id '0' as placeholder id
         case EntityActions.NEW_ENTITY: {
-            const userId  = action.payload.data;
+            const user = action.payload.data;
 
             let newEntity = new Entity;
+            let newUser: any = {id: user.id, text: user.display_name};
 
             newEntity.id        = 0;
             newEntity.state     = 'unsaved';
-            newEntity.author_id = userId;
+            newEntity.author_id = user.id;
+            newEntity.author    = newUser;
+            newEntity.editor_id = user.id;
+            newEntity.editor    = newUser;
 
             return Object.assign({}, state, {
                 idsTotal:   [...state.idsTotal, newEntity.id],
@@ -397,7 +401,9 @@ function entitiesReducer (etype: string,
                 idsEditing: [newEntity.id],
                 idsContent: [...state.idsContent, newEntity.id],
                 entities:   Object.assign({}, state.entities, {[newEntity.id]: newEntity}),
-                dirtyMask:  [],
+                // We specify id as dirty so that we know this is a new entity
+                // from effects.
+                dirtyMask:  ['id', 'state', 'author_id', 'editor_id'],
                 isLoading:  false,
                 paginator:  state.paginator
             });
@@ -687,6 +693,14 @@ export function getDealContent() {
 export function getHasDeal() {
     return (entity$: Observable<Entity>)=> entity$
         .filter(e => typeof e != 'undefined').select(e => e.has_deal);
+}
+
+/**
+ * Return current editing entity id
+ */
+export function getCurEntityId() {
+    return (state$: Observable<EntitiesState>) => state$
+        .map(s => s.idsEditing[0]);
 }
 
 /**
