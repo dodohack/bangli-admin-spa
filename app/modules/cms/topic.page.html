@@ -195,7 +195,7 @@
             <topic-cloud [topicTypes]="cmsTopicTypes$ | async"
                          [topics]="cmsTopics$ | async"
                          [selectedTopics]="(entity$ | async)?.topics"
-                         (searchTopic)="searchTopic(1, $event)"
+                         (searchTopic)="searchTopic(null, $event)"
                          (attachTopic)="attach('topics', $event)"
                          (detachTopic)="detach('topics', $event)">
             </topic-cloud>

@@ -5,7 +5,7 @@
 
 <accordion>
     <!-- Show topics grouped by topic types -->
-    <accordion-group *ngFor="let ttype of topicTypes" isOpen="true">
+    <accordion-group *ngFor="let ttype of topicTypes" [isOpen]="isOpen(ttype)">
 
         <div accordion-heading>
             {{ ttype.text }} <i class="pull-right fa customize-chevron"></i>

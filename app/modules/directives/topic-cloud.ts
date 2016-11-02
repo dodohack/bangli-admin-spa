@@ -38,4 +38,11 @@ export class TopicCloud implements OnInit {
     selectedTopicsOfTType(ttype: TopicType) {
         return this.selectedTopics.filter(t => t.type_id === ttype.id);
     }
+
+    isOpen(ttype) {
+        if ((this.topics && this.topicsOfTType(ttype).length > 0) ||
+            (this.selectedTopics && this.selectedTopicsOfTType(ttype).length > 0))
+            return true;
+        return false;
+    }
 }

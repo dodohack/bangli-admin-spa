@@ -119,8 +119,12 @@ export class CmsAttrEffects {
         // Return empty array if search string is empty
         if (!text || text == '') return Observable.throw(new Error('empty!'));
 
+        let ttype = '';
+        // If topic type id is given
+        if (ttid) ttype = '&type=' + ttid;
+
         let api = APIS[this.cache.key] + API_PATH.cms_topics +
-            '?etype=' + ENTITY.CMS_TOPIC + '&type=' +  ttid +
+            '?etype=' + ENTITY.CMS_TOPIC + ttype +
             '&query=' + text + '&per_page=50' +
             '&columns=id,title,type_id' +
             '&relations=' +
