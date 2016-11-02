@@ -152,8 +152,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
             .subscribe(e => this.entity = Object.assign({}, e));
 
         // Update the channel in CmsAttrStates with entity channel
-        this.subCh      = this.channel$.distinctUntilChanged()
-            .subscribe(ch => this.store.dispatch(CmsAttrActions.switchChannel(ch.id)));
+        this.subCh      = this.channel$.map(ch => ch.id).distinctUntilChanged()
+            .subscribe(cid => this.store.dispatch(CmsAttrActions.switchChannel(cid)));
 
         this.subTopics  = this.cmsTopics$
             .subscribe(topics => this.cmsTopics = topics);

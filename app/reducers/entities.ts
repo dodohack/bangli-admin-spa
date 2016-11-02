@@ -392,11 +392,11 @@ function entitiesReducer (etype: string,
             newEntity.author_id = userId;
 
             return Object.assign({}, state, {
-                idsTotal:   [...state.idsTotal, 0],
-                idsCurPage: [...state.idsCurPage, 0],
-                idsEditing: [0],
-                idsContent: [...state.idsContent, 0],
-                entities:   Object.assign({}, state.entities, {[0]: newEntity}),
+                idsTotal:   [...state.idsTotal, newEntity.id],
+                idsCurPage: [...state.idsCurPage, newEntity.id],
+                idsEditing: [newEntity.id],
+                idsContent: [...state.idsContent, newEntity.id],
+                entities:   Object.assign({}, state.entities, {[newEntity.id]: newEntity}),
                 dirtyMask:  [],
                 isLoading:  false,
                 paginator:  state.paginator
@@ -633,7 +633,8 @@ export function getChannelId() {
  */
 export function getChannel() {
     return (entity$: Observable<Entity>) => entity$
-        .filter(e => typeof e != 'undefined').map(e => e.channel);
+        .filter(e => typeof e != 'undefined').map(e => e.channel)
+        .filter(ch => typeof ch != 'undefined');
 }
 
 /**
