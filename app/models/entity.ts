@@ -78,6 +78,11 @@ export const TOPIC_TYPES = [
     {type: 'route',      count: 0},  // 线路
 ];
 
+/**
+ * Topic display ranking
+ */
+export const TOPIC_RANKINGS = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
+
 /** ALL:
  *  entity states, corresponding to each entity table column: state */
 export const ENTITY_STATES = [

@@ -18,6 +18,7 @@ import { FroalaEditorCompnoent } from 'ng2-froala-editor/ng2-froala-editor';
 import { FroalaOptions }     from '../../models/froala.option';
 import { KEYWORDS }          from '../../models';
 import { Entity }            from '../../models';
+import { TOPIC_RANKINGS }    from '../../models';
 import { ENTITY_STATES }     from '../../models';
 import { ENTITY_INFO }       from '../../models';
 import { CREATIVE_TYPES }    from '../../models';
@@ -242,6 +243,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     get creativeTypes() { return CREATIVE_TYPES; }
     get topicTypes() { return TOPIC_TYPES; }
     get froalaOptions() { return FroalaOptions.getDefault(); }
+    get rankings() { return TOPIC_RANKINGS; }
     gmt(value: string) { return GMT(value); }
 
     /**

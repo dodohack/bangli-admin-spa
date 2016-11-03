@@ -21,32 +21,20 @@
     <div [class.col-xs-4]="!hide" [class.hidden]="hide"
          style="background: #e1f6fd; padding: 1rem">
 
-        <!-- Save button -->
-        <div class="form-group">
-            <button class="btn btn-sm btn-outline-success"
-                    (click)="save()" [disabled]="!isDirty || isLoading">
-                <template [ngIf]="isDirty && !isLoading">保存</template>
-                <template [ngIf]="!isDirty">已保存</template>
-                <template [ngIf]="isDirty && isLoading">保存中...</template>
-            </button>
-        </div>
-
-        <!-- Enitity state and has deal attr -->
         <div class="row">
-            <div class="col-xs-7">
-                <div class="form-group post-meta">
-                    <label>状态</label>
-                    <select class="form-control form-control-sm custom-select"
-                            name="st" [ngModel]="(entity$ | async)?.state"
-                            (ngModelChange)="update('state', $event)">
-                        <option *ngFor="let state of entityStates"
-                                [selected]="state === entityState"
-                                [value]="state">{{ zh[state] }}</option>
-                    </select>
+            <div class="col-xs-6">
+                <!-- Save button -->
+                <div class="form-group">
+                    <button class="btn btn-sm btn-outline-success"
+                            (click)="save()" [disabled]="!isDirty || isLoading">
+                        <template [ngIf]="isDirty && !isLoading">保存</template>
+                        <template [ngIf]="!isDirty">已保存</template>
+                        <template [ngIf]="isDirty && isLoading">保存中...</template>
+                    </button>
                 </div>
             </div>
 
-            <div class="col-xs-5">
+            <div class="col-xs-6">
                 <div class="form-check">
                     <label class="form-check-label">
                         <input type="checkbox" class="form-check-input"
@@ -54,6 +42,34 @@
                                (ngModelChange)="update('has_deal', $event)"/>
                         优惠专题
                     </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enitity state and has deal attr -->
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group post-meta">
+                    <label>状态</label>
+                    <select class="form-control form-control-sm custom-select"
+                            name="st" [ngModel]="(entity$ | async)?.state"
+                            (ngModelChange)="update('state', $event)">
+                        <option *ngFor="let state of entityStates"
+                                [value]="state">{{ zh[state] }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-xs-6">
+                <!-- 热度,用于显示排名 -->
+                <div class="form-group post-meta">
+                    <label>热度</label>
+                    <select class="form-control form-control-sm custom-select"
+                            name="rk" [ngModel]="(entity$ | async)?.ranking"
+                            (ngModelChange)="update('ranking', $event)">
+                        <option *ngFor="let r of rankings"
+                                [value]="r">{{ r }}</option>
+                    </select>
                 </div>
             </div>
         </div>
