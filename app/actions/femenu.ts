@@ -3,6 +3,7 @@
  * mobile menus and desktop menus
  */
 import { Action }       from '@ngrx/store';
+import { FeMenu }       from '../models/menu';
 import { FeMenusState } from '../reducers/femenus';
 
 export class FeMenuActions {
@@ -25,6 +26,30 @@ export class FeMenuActions {
     static loadAllFail(): Action {
         return {
             type: FeMenuActions.LOAD_ALL_FAIL
+        };
+    }
+
+    static ADD_MENU = '[Menu] Add';
+    static addMenu(menu: FeMenu): Action {
+        return {
+            type: FeMenuActions.ADD_MENU,
+            payload: menu
+        };
+    }
+
+    static SAVE_MENU = '[Menu] Save';
+    static saveMenu(menu: FeMenu): Action {
+        return {
+            type: FeMenuActions.SAVE_MENU,
+            payload: menu
+        };
+    }
+
+    static DELETE_MENU = '[Menu] Delete';
+    static deleteMenu(menu: FeMenu): Action {
+        return {
+            type: FeMenuActions.DELETE_MENU,
+            payload: menu
         };
     }
 }

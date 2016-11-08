@@ -21,9 +21,10 @@ export class FeMenuSetting {
     @Input() parentIds: number[];
     @Input() menus: any;
 
+    @Output() add  = new EventEmitter();
     @Output() edit = new EventEmitter();
-    @Output() remove = new EventEmitter();
-    @Output() save = new EventEmitter();
+    //@Output() remove = new EventEmitter();
+    //@Output() save = new EventEmitter();
 
     getSubMenus(pid: number) { return this.menus[pid]; }
 }

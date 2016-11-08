@@ -1,0 +1,105 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" (click)="cancel.emit()">
+            <span>&times;</span>
+        </button>
+        <h5 class="modal-title" *ngIf="actionType == 'edit'">修改目录: {{ menu.name }}</h5>
+        <h5 class="modal-title" *ngIf="actionType == 'add'">新建目录</h5>
+    </div>
+    <br>
+    <div class="modal-body">
+        <form #taxForm="ngForm">
+            <div class="form-group">
+                <label>设备类型</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="device" [(ngModel)]="menu.device">
+                    <option value="DESKTOP">桌面版</option>
+                    <option value="MOBILE">手机版</option>
+                </select>
+            </div>
+
+            <!-- Root menu type: HOME, CHANNEL -->
+            <div class="form-group" *ngIf="isRoot">
+                <label>目录类型</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="type" [(ngModel)]="menu.type" required>
+                    <option value="HOME">首页目录</option>
+                    <option value="CHANNEL">频道目录</option>
+                </select>
+            </div>
+
+            <div class="form-group" *ngIf="!isRoot">
+                <label>父分类</label>
+                <input type="text" name="parent_id" class="form-control"
+                       [ngModel]="menu.parent_id" disabled>
+            </div>
+
+            <div class="form-group" *ngIf="!isRoot">
+                <label>显示名称</label>
+                <input type="text" name="name" class="form-control"
+                       [(ngModel)]="menu.name" required>
+            </div>
+
+            <div class="form-group" *ngIf="isRoot">
+                <label>目录显示位置</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="name" [(ngModel)]="menu.name" required>
+                    <option value="topbar">首页顶部</option>
+                    <option value="main">首页主目录(分页顶部)</option>
+                    <option *ngFor="let ch of channels" [value]="ch.slug">{{ch.text}}主目录</option>
+                </select>
+            </div>
+
+            <div class="form-group" *ngIf="!isRoot && !isL1Menu">
+                <label>目录分组(0表示不分组)</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="group" [(ngModel)]="menu.group" required>
+                    <option *ngFor="let g of groups" [value]="g">{{g}}</option>
+                </select>
+            </div>
+
+            <div class="form-group" *ngIf="!isRoot">
+                <label>目录排序</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="order" [(ngModel)]="menu.order" required>
+                    <option *ngFor="let o of orders" [value]="o">{{o}}</option>
+                </select>
+            </div>
+
+
+            <div class="form-group" *ngIf="!isRoot">
+                <label>URL地址</label>
+                <input type="text" name="url" class="form-control"
+                       [(ngModel)]="menu.url" required>
+            </div>
+
+            <div class="form-check" *ngIf="!isRoot">
+                <label class="form-check-label">
+                    <input type="checkbox" class="form-check-input"
+                           name="external" [(ngModel)]="menu.external">
+                    外部链接
+                </label>
+            </div>
+
+            <div class="form-group" *ngIf="!isRoot">
+                <label>目录CSS类</label>
+                <input type="text" name="style" class="form-control"
+                       [(ngModel)]="menu.style">
+            </div>
+        </form>
+
+        <button type="button" class="btn btn-block btn-success"
+                *ngIf="actionType == 'add'"
+                [disabled]="!taxForm.form.valid"
+                (click)="add.emit(menu)">添加</button>
+        <button type="button" class="btn btn-block btn-danger"
+                *ngIf="actionType == 'edit'"
+                (click)="remove.emit(menu)">删除</button>
+        <button type="button" class="btn btn-block btn-success"
+                *ngIf="actionType == 'edit'"
+                [disabled]="!taxForm.form.valid"
+                (click)="save.emit(menu)">保存</button>
+        <button type="button" class="btn btn-block btn-outline-danger"
+                (click)="cancel.emit()">取消</button>
+    </div>
+</div>

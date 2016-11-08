@@ -1,60 +1,60 @@
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" (click)="cancel.emit()">
-                    <span>&times;</span>
-                </button>
-                <h5 class="modal-title" *ngIf="actionType == 'edit'">修改{{ taxType }}: {{ tax.name }}</h5>
-                <h5 class="modal-title" *ngIf="actionType == 'add'">新建{{ taxType }}</h5>
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" (click)="cancel.emit()">
+            <span>&times;</span>
+        </button>
+        <h5 class="modal-title" *ngIf="actionType == 'edit'">修改{{ taxType }}: {{ tax.name }}</h5>
+        <h5 class="modal-title" *ngIf="actionType == 'add'">新建{{ taxType }}</h5>
+    </div>
+    <br>
+    <div class="modal-body">
+        <form (ngSubmit)="save()" #taxForm="ngForm">
+            <div class="form-group">
+                <label>{{taxType}} 名字</label>
+                <input type="text" name="name" class="form-control"
+                       [(ngModel)]="tax.name" required>
             </div>
-            <br>
-            <div class="modal-body">
-                <form (ngSubmit)="save()" #taxForm="ngForm">
-                    <div class="form-group">
-                        <label>{{taxType}} 名字</label>
-                        <input type="text" name="name" class="form-control"
-                               [(ngModel)]="tax.name" required>
-                    </div>
 
-                    <div class="form-group">
-                        <label>{{taxType}} slug</label>
-                        <input type="text" name="slug" class="form-control"
-                               [(ngModel)]="tax.slug" required>
-                    </div>
-
-                    <div class="form-group" *ngIf="isCategory">
-                        <label>父分类</label>
-                        <select class="form-control form-control-sm custom-select"
-                                name="catid" [(ngModel)]="tax.parent_id">
-                            <option [selected]="tax.parent_id == 0"
-                                    value="0">无父类</option>
-                            <option *ngFor="let cat of categories"
-                                    [selected]="tax.parent_id === cat.id"
-                                    [value]="cat.id">{{ cat.name }}</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label>频道</label>
-                        <select class="form-control form-control-sm custom-select"
-                                name="chid" [(ngModel)]="tax.channel_id" required>
-                            <option *ngFor="let ch of channels"
-                                    [selected]="tax.channel_id === ch.id"
-                                    [value]="ch.id">{{ ch.name }}</option>
-                        </select>
-                    </div>
-                </form>
-                <button type="button" class="btn btn-block btn-outline-success"
-                        *ngIf="actionType == 'add'"
-                        [disabled]="!taxForm.form.valid"
-                        (click)="add.emit(tax)">添加</button>
-                <button type="button" class="btn btn-block btn-outline-danger"
-                        *ngIf="actionType == 'edit'"
-                        (click)="remove.emit(tax)">删除</button>
-                <button type="button" class="btn btn-block btn-outline-success"
-                        *ngIf="actionType == 'edit'"
-                        [disabled]="!taxForm.form.valid"
-                        (click)="save.emit(tax)">保存</button>
-                <button type="button" class="btn btn-block btn-outline-danger"
-                        (click)="cancel.emit()">取消</button>
+            <div class="form-group">
+                <label>{{taxType}} slug</label>
+                <input type="text" name="slug" class="form-control"
+                       [(ngModel)]="tax.slug" required>
             </div>
-        </div>
+
+            <div class="form-group" *ngIf="isCategory">
+                <label>父分类</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="catid" [(ngModel)]="tax.parent_id">
+                    <option [selected]="tax.parent_id == 0"
+                            value="0">无父类</option>
+                    <option *ngFor="let cat of categories"
+                            [selected]="tax.parent_id === cat.id"
+                            [value]="cat.id">{{ cat.name }}</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>频道</label>
+                <select class="form-control form-control-sm custom-select"
+                        name="chid" [(ngModel)]="tax.channel_id" required>
+                    <option *ngFor="let ch of channels"
+                            [selected]="tax.channel_id === ch.id"
+                            [value]="ch.id">{{ ch.name }}</option>
+                </select>
+            </div>
+        </form>
+        <button type="button" class="btn btn-block btn-outline-success"
+                *ngIf="actionType == 'add'"
+                [disabled]="!taxForm.form.valid"
+                (click)="add.emit(tax)">添加</button>
+        <button type="button" class="btn btn-block btn-outline-danger"
+                *ngIf="actionType == 'edit'"
+                (click)="remove.emit(tax)">删除</button>
+        <button type="button" class="btn btn-block btn-outline-success"
+                *ngIf="actionType == 'edit'"
+                [disabled]="!taxForm.form.valid"
+                (click)="save.emit(tax)">保存</button>
+        <button type="button" class="btn btn-block btn-outline-danger"
+                (click)="cancel.emit()">取消</button>
+    </div>
+</div>

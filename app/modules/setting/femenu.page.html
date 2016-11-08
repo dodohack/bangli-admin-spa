@@ -1,3 +1,4 @@
+<!-- Setting module global menu -->
 <setting-menu></setting-menu>
 
 <!-- Sub menus -->
@@ -28,5 +29,19 @@
                      [parentIds]="feMenuParentIds$ | async"
                      [menus]="feMenus$ | async"
                      (edit)="onEdit($event)"
-                     (add)="onAdd()"></fe-menu-setting>
+                     (add)="onAdd($event)"></fe-menu-setting>
+</div>
+
+<div class="modal fade" bsModal #modalEdit="bs-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <modal-edit-menu [menu]="menu"
+                         [channels]="channels$ | async"
+                         [isRoot]="isRoot"
+                         [isL1Menu]="isL1Menu"
+                         [actionType]="actionType"
+                         (add)="newMenu($event)"
+                         (save)="saveMenu($event)"
+                         (remove)="removeMenu($event)"
+                         (cancel)="modalEdit.hide()"></modal-edit-menu>
+    </div>
 </div>

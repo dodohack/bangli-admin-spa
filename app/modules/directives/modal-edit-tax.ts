@@ -1,5 +1,5 @@
 /**
- * Edit a new taxonomy
+ * Edit, delete or create a taxonomy
  */
 import { Component }         from '@angular/core';
 import { Input, Output }     from '@angular/core';

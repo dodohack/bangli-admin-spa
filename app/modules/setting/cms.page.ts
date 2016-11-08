@@ -25,7 +25,7 @@ import {
 @Component({ template: require('./cms.page.html') })
 export class CmsPage implements OnInit, OnDestroy
 {
-    // Popup modals
+    // Popup modal
     @ViewChild('modalEdit')   modalEdit;
 
     // Current active cms channel

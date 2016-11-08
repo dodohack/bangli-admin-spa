@@ -15,7 +15,7 @@ export interface FeMenusState {
     rootIds: number[];     // The menus whose parent_id is 0
     parentIds: number[];   // All parent ids
     // Types and names for root menu
-    roots: { [id: number]: {type: string, name: string}};
+    roots: { [id: number]: {type: string, name: string, device: string}};
     // Array of menus grouped by parent id and group id, top level menu always
     // in group id 0
     menus: { [pid: number]: FeMenuGroup[] };
@@ -49,7 +49,8 @@ export default function (state = initialState, action: Action): FeMenusState {
 
             const roots        = rootMenusAry.reduce(
                 (roots: {[id: number]: { type: string, name: string}}, m: FeMenu) => {
-                    return Object.assign(roots, {[m.id]: {type: m.type, name: m.name}});
+                    return Object.assign(roots,
+                        {[m.id]: {type: m.type, name: m.name, device: m.device}});
                 }, {});
 
 

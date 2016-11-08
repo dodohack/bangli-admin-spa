@@ -3,8 +3,8 @@
     <h5 class="title">
         前端目录
         <button class="page-title-action btn btn-outline-info btn-sm"
-                (click)="add.emit($event)">
-            <i class="fa fa-plus"></i> 新建目录
+                (click)="add.emit({pid: 0})">
+            <i class="fa fa-plus"></i> 根目录
         </button>
     </h5>
 </div>
@@ -14,26 +14,50 @@
 <accordion>
     <accordion-group isOpen="true" *ngFor="let rid of rootIds">
         <div accordion-heading>
-            目录位置: {{ roots[rid].name }} | 类型: {{ roots[rid].type }}<i class="pull-right fa customize-chevron"></i>
+            目录位置: {{ roots[rid].name }} | 类型: {{ roots[rid].type }} | 设备 {{ roots[rid].device }}
+            <i class="pull-right fa customize-chevron"></i>
+        </div>
+
+        <div>
+            <span class="tag tag-primary-outline tag-item" (click)="edit.emit(roots[rid])">
+                根目录: {{ roots[rid].name }}
+            </span>
         </div>
 
         <!-- Loop over level 1 menu, we only have group 0 for level 1 menu -->
-        <div *ngFor="let menu of menus[rid][0]">
+        <div *ngFor="let menu of menus[rid][0]" style="margin-left: 0.5rem">
             <span class="tag tag-warning-outline tag-item">Level 1</span>
             <span class="tag tag-info-outline tag-item"
-                  (click)="clickEvent.emit(menu)">{{menu.name}}</span>
+                  (click)="edit.emit(menu)">{{menu.name}}</span>
+
+            <span class="tag tag-danger-outline tag-item" (click)="add.emit({pid: menu.id, l1: false})">
+                <i class="fa fa-plus"></i> 子目录
+            </span>
 
             <!-- Loop over child menus by group if any -->
-            <div *ngFor="let gid of groupIds[menu.id]">
-                <span class="tag tag-warning-outline tag-item">L1 Group {{ gid }}</span>
+            <div *ngFor="let gid of groupIds[menu.id]" style="margin-left: 1rem">
+                <span class="tag tag-warning-outline tag-item">
+                    子目录<i *ngIf="gid != 0">分组{{ gid }}</i>
+                </span>
                 <ul class="tag-cloud">
                     <li *ngFor="let submenu of menus[menu.id][gid]"
                         class="tag-item tag tag-pill tag-default-outline"
-                        (click)="clickEvent.emit(submenu)">
+                        (click)="edit.emit(submenu)">
                         {{submenu.name}}
                     </li>
                 </ul>
+
+                <span class="tag tag-danger-outline tag-item"
+                      (click)="add.emit({pid: menu.id, l1: false, gid: gid})">
+                    <i class="fa fa-plus"></i>
+                </span>
             </div>
+        </div>
+
+        <div>
+            <span class="tag tag-danger-outline tag-item" (click)="add.emit({pid: rid, l1: true})">
+                <i class="fa fa-plus"></i> L1目录
+            </span>
         </div>
 
     </accordion-group>

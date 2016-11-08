@@ -62,6 +62,7 @@ export class FeMenu {
                        // selector, each type of menu has 1 menu with parent_id = 0,
                        // So all level 1 menus belong to the menu has the same
                        // parent_id
+    device: string;    // DESKTOP or MOBILE
     type: string;      // Menu type
     name: string;      // Menu name, it has special use for menu with parent_id 0
     url:  string;      // Pre-generated menu url

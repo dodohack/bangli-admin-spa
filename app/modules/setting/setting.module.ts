@@ -20,6 +20,7 @@ import { CmsTag }          from './cms/tag.ts';
 import { CmsTopicType }    from './cms/topic-type.ts';
 import { CmsChannel }      from './cms/channel.ts';
 import { FeMenuSetting }   from './components/fe-menu-setting';
+import { ModalEditMenu }   from './components/modal-edit-menu';
 
 @NgModule({
     imports: [ SharedModule, routing ],
@@ -39,6 +40,7 @@ import { FeMenuSetting }   from './components/fe-menu-setting';
         CmsTopicType,
         CmsChannel,
         FeMenuSetting,
+        ModalEditMenu,
     ]
 })
 export class SettingModule {}
