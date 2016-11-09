@@ -14,7 +14,8 @@ export class PostsEditGuard implements CanDeactivate<PostsPage> {
     canDeactivate (component: PostsPage,
                    route: ActivatedRouteSnapshot,
                    state: RouterStateSnapshot) {
-        return component.canDeactivate();
+        return true;
+        //return component.canDeactivate();
     }
 }
 
@@ -23,6 +24,8 @@ export class PostEditGuard implements CanDeactivate<PostPage> {
     canDeactivate (component: PostPage,
                    route: ActivatedRouteSnapshot,
                    state: RouterStateSnapshot) {
-        return component.canDeactivate();
+        // FIXME: Revisit
+        return true;
+        //return component.canDeactivate();
     }
 }

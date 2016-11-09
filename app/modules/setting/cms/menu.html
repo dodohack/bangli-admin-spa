@@ -4,7 +4,7 @@
         <a *ngFor="let ch of channels"
            [routerLink]="['/setting/cms', ch.slug]"
            class="channel-title" routerLinkActive="active">
-            <h4>{{ ch.name }}</h4>
+            <h4>{{ ch.text }}</h4>
         </a>
     </div>
 </div>

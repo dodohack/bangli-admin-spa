@@ -187,6 +187,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
      * FIXME: Refactor
      */
     canDeactivate() {
+        return true;
+        /*
         let status = true;
         let msg;
 
@@ -203,6 +205,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         // Alert if can't deactive safely
         if (!status) this.store.dispatch(AlertActions.error(msg));
         return status;
+        */
     }
 
     /**
