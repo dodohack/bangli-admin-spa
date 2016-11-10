@@ -14,88 +14,97 @@
             上传图片<i class="pull-right fa customize-chevron"></i>
         </div>
 
-        <!-- Drop zone -->
-        <!--
-        <div ngFileDrop class="well drop-zone"
-             [options]="options" (onUpload)="handleUpload($event)">
-            <h2>把图片拖到此处上传</h2>
-            <p>或</p>
-            <p>
-                <label class="btn btn-secondary">
-                    <input type="file" ngFileSelect class="hidden"
-                           [options]="options" (onUpload)="handleUpload($event)">
-                    选择图片
-                </label>
-            </p>
-            <p>当前图片个数: ??</p>
-        </div>
-
-        <div>
-            <button class="btn btn-default" (click)="startUpload()">上传</button>
-        </div>
-        <div>Response: {{ response | json }}</div>
-        <div>Progress: {{ progress }}% </div>
-        -->
-
-
-        <!-- Image uploader area -->
-    <div class="uploader-area">
-
-        <div>
-            <!--
-            <div>
-                Queue progress:
-                <div class="progress" style="">
-                    <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
+        <!-- Drop zone and multiple file selector -->
+        <div class="row">
+            <div class="col-xs-3">
+                <div ng2FileDrop class="well drop-zone"
+                     [ngClass]="{'dropzone-file-over': hasDropZoneOver}"
+                     (fileOver)="fileOverZone($event)"
+                     [uploader]="uploader"
+                     style="height: 100px">
+                    把图片拖到此处
+                </div>
+                <div>
+                    <label class="btn btn-secondary">
+                        <input type="file" ng2FileSelect class="hidden"
+                               [uploader]="uploader" multiple>
+                        选择图片
+                    </label>
                 </div>
             </div>
-            <button type="button" class="btn btn-outline-success btn-sm"
-                    (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
-                <span class="fa fa-upload"></span> 全部上传
-            </button>
-            <button type="button" class="btn btn-outline-warning btn-sm"
-                    (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
-                <span class="fa fa-ban"></span> 全部取消
-            </button>
-            <button type="button" class="btn btn-outline-danger btn-sm"
-                    (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
-                <span class="fa fa-trash"></span> 全部删除
-            </button>
-            -->
-        </div>
 
-        <!-- Uploading list table -->
-        <table class="table" style="font-size: 85%">
-            <thead>
-            <tr>
-                <th width="50%">文件名</th>
-                <th width="15%">大小</th>
-                <th width="15%">状态</th>
-                <th width="20%">操作</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!--
-            <tr *ngFor="let item of uploader.queue">
-                <td><strong>{{ item?.file?.name }}</strong></td>
-                <td>0.00 MB</td>
-                <td class="text-center">
-                    <span *ngIf="item.isSuccess"><i class="fa fa-check"></i></span>
-                    <span *ngIf="item.isCancel"><i class="fa fa-ban"></i></span>
-                    <span *ngIf="item.isError"><i class="fa fa-close"></i></span>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-danger btn-sm"
-                            (click)="item.remove()">
-                        <span class="fa fa-trash"></span> 删除
+            <div class="col-xs-9">
+
+                <h3>文件列表</h3>
+                <p>列表长度: {{ uploader?.queue?.length }}</p>
+
+                <table class="table" style="font-size: 85%">
+                    <thead>
+                    <tr>
+                        <th width="30%">文件名</th>
+                        <th width="15%">大小</th>
+                        <th width="10%">进度</th>
+                        <th width="10%">状态</th>
+                        <th width="35%">操作</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr *ngFor="let item of uploader?.queue">
+                        <td><strong>{{ item?.file?.name }}</strong></td>
+                        <td nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
+                        <td>
+                            <div class="progress" style="margin-bottom: 0;">
+                                <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <span *ngIf="item.isSuccess"><i class="fa fa-check"></i></span>
+                            <span *ngIf="item.isCancel"><i class="fa fa-ban"></i></span>
+                            <span *ngIf="item.isError"><i class="fa fa-close"></i></span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-success btn-sm"
+                                    (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                <i class="fa fa-upload"></i> 上传
+                            </button>
+                            <button type="button" class="btn btn-cancel btn-sm"
+                                    (click)="item.cancel()" [disabled]="!item.isUploading">
+                                <i class="fa fa-ban"></i> 取消
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm"
+                                    (click)="item.remove()">
+                                <i class="fa fa-trash"></i> 删除
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div>
+                    <div>
+                        进度:
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar"
+                                 [ngStyle]="{'width': uploader.progress + '%'}"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-outline-success btn-sm"
+                            (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                        <span class="fa fa-upload"></span> 全部上传
                     </button>
-                </td>
-            </tr>
-            -->
-            </tbody>
-        </table>
+                    <button type="button" class="btn btn-outline-warning btn-sm"
+                            (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                        <span class="fa fa-ban"></span> 全部取消
+                    </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm"
+                            (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                        <span class="fa fa-trash"></span> 全部删除
+                    </button>
+                </div>
 
-    </div>
+            </div>
+        </div>
     </accordion-group>
 </accordion>
 

@@ -7,6 +7,7 @@ import { EventEmitter }   from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router }         from '@angular/router';
 import { Store }          from '@ngrx/store';
+import { FileUploader }   from 'ng2-file-upload';
 
 import { IMG_SERVER }        from '../../api';
 import { EntitiesPage }      from '../base/entities.page';
@@ -14,33 +15,18 @@ import { ENTITY }            from '../../models';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
 
+
 @Component({ template: require('./galleries.page.html') })
 export class GalleriesPage extends EntitiesPage
 {
-    zone: NgZone;
-    options: Object;
-    progress: number = 0;
-    response: any = {};
+    uploader: FileUploader = new FileUploader({url: 'http://localhost:5001'});
 
-    uploadEvents = new EventEmitter();
+    hasDropZoneOver: boolean = false;
 
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
                 protected router: Router) {
         super(ENTITY.ATTACHMENT, route, store, router, true/* pageless */);
-
-        /*
-        this.zone = new NgZone({ enableLongStackTrace: false });
-        this.options = {
-            filterExtensions: true,
-            allowedExtensions: ['image/png', 'image/jpg'],
-            calculateSpeed: true,
-            autoUpload: false,
-            authToken: AuthCache.token(),
-            authTokenPrefix: 'Bearer',
-            url: AuthCache.API() + API_PATH.file_upload
-        };
-        */
     }
 
     /**
@@ -48,15 +34,7 @@ export class GalleriesPage extends EntitiesPage
      */
     get imgBaseUrl() { return IMG_SERVER[sessionStorage.getItem('key')]; }
 
-    handleUpload(data: any): void {
-        console.log("handleUpload, data: ", data);
-        this.zone.run(() => {
-            this.response = data;
-            this.progress = data.progress.percent / 100;
-        });
-    }
-
-    startUpload() {
-        this.uploadEvents.emit('startUpload');
+    fileOverZone($event) {
+        this.hasDropZoneOver = $event;
     }
 }
