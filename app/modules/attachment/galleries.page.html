@@ -51,6 +51,7 @@
                         <td><strong>{{ item?.file?.name }}</strong></td>
                         <td nowrap>{{ item?.file?.size/1024 | number:'.0-1' }} KB</td>
                         <td>
+                            <span *ngIf="item.isUploading" ><i class="fa fa-spinner fa-spin"></i></span>
                             <span *ngIf="item.isSuccess" style="color: green"><i class="fa fa-check"></i></span>
                             <span *ngIf="item.isCancel" style="color: red"><i class="fa fa-ban"></i></span>
                             <span *ngIf="item.isError" style="color: red"><i class="fa fa-close"></i></span>
