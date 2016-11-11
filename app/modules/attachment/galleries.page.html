@@ -6,7 +6,8 @@
 
 
 <!-- Upload dropoff area -->
-<image-uploader [isOpen]="true"></image-uploader>
+<image-uploader [isOpen]="true"
+                (onCompleteItem)="onCompleteItem($event)"></image-uploader>
 
 <!-- sub menu -->
 <nav class="navbar page-sub-menu">

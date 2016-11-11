@@ -158,11 +158,16 @@ export class EntityActions {
         };
     }
 
+    /*
+     * A entity is returned from server, when prepend is true, it is added
+     * to the head of entity list. (for image and newly created entity)
+     */
     static LOAD_ENTITY_SUCCESS = '[Entity] Load Entity Success';
-    static loadEntitySuccess(etype: string, entity: Entity): Action {
+    static loadEntitySuccess(etype: string, entity: Entity,
+                             prepend: boolean = false): Action {
         return {
             type: EntityActions.LOAD_ENTITY_SUCCESS,
-            payload: {etype: etype, data: entity}
+            payload: {etype: etype, data: entity, prepend: prepend}
         };
     }
 

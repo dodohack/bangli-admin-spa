@@ -348,17 +348,33 @@ function entitiesReducer (etype: string,
             // Newly loaded entity id or saved new entity with newly created id
             const id = +action.payload.data['id'];
 
+            // Should the entity be inserted at the beginning of the list
+            const prepend = action.payload.prepend;
+
             // Merge with idsTotal
-            idsTotal = (idsTotal.indexOf(id) === -1) ?
-                [...idsTotal, id] : idsTotal;
+            if (prepend) {
+                idsTotal = (idsTotal.indexOf(id) === -1) ?
+                    [id, ...idsTotal] : idsTotal;
 
-            // Merge with idsCurPage
-            idsCurPage = (idsCurPage.indexOf(id) === -1) ?
-                [...idsCurPage, id] : idsCurPage;
+                // Merge with idsCurPage
+                idsCurPage = (idsCurPage.indexOf(id) === -1) ?
+                    [id, ...idsCurPage] : idsCurPage;
 
-            // Merge with idsContent
-            idsContent = (idsContent.indexOf(id) === -1) ?
-                [...idsContent, id] : idsContent;
+                // Merge with idsContent
+                idsContent = (idsContent.indexOf(id) === -1) ?
+                    [id, ...idsContent] : idsContent;
+            }  else {
+                idsTotal = (idsTotal.indexOf(id) === -1) ?
+                    [...idsTotal, id] : idsTotal;
+
+                // Merge with idsCurPage
+                idsCurPage = (idsCurPage.indexOf(id) === -1) ?
+                    [...idsCurPage, id] : idsCurPage;
+
+                // Merge with idsContent
+                idsContent = (idsContent.indexOf(id) === -1) ?
+                    [...idsContent, id] : idsContent;
+            }
 
             // Return state merged with newly loaded entity
             return Object.assign({}, state, {
