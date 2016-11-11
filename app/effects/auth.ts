@@ -150,7 +150,7 @@ export class AuthEffects {
     /**
      * Test connectivity of each available domain, the server returns key as well
      */
-    private pingDomains(): Observable<string> {
+    private pingDomains() {
         if (this.keyIndex >= this.cache.keys.length) this.keyIndex = 0;
 
         let key = this.cache.keys[this.keyIndex++];

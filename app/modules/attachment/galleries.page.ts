@@ -9,7 +9,8 @@ import { Router }         from '@angular/router';
 import { Store }          from '@ngrx/store';
 import { FileUploader }   from 'ng2-file-upload';
 
-import { IMG_SERVER }        from '../../api';
+import { APIS, API_PATH, IMG_SERVER }  from '../../api';
+import { CacheSingleton }    from '../../effects/cache.singleton';
 import { EntitiesPage }      from '../base/entities.page';
 import { ENTITY }            from '../../models';
 import { AppState }          from '../../reducers';
@@ -19,7 +20,9 @@ import { zh_CN }             from '../../localization';
 @Component({ template: require('./galleries.page.html') })
 export class GalleriesPage extends EntitiesPage
 {
-    uploader: FileUploader = new FileUploader({url: 'http://localhost:5001'});
+    cache = CacheSingleton.getInstance();
+
+    uploader: FileUploader;
 
     hasDropZoneOver: boolean = false;
 
@@ -27,14 +30,14 @@ export class GalleriesPage extends EntitiesPage
                 protected store: Store<AppState>,
                 protected router: Router) {
         super(ENTITY.ATTACHMENT, route, store, router, true/* pageless */);
+
+        this.uploader = new FileUploader({
+            url:  APIS[this.cache.key] + API_PATH.attachments,
+            authToken: 'bearer ' + this.cache.token,
+        });
     }
 
-    /**
-     * FIXME: Wrap sessionStorage here.
-     */
-    get imgBaseUrl() { return IMG_SERVER[sessionStorage.getItem('key')]; }
+    get imgBaseUrl() { return IMG_SERVER[this.cache.key]; }
 
-    fileOverZone($event) {
-        this.hasDropZoneOver = $event;
-    }
+    fileOverZone($event) { this.hasDropZoneOver = $event; }
 }
