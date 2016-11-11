@@ -3,19 +3,17 @@
  */
 
 .drop-zone {
+  height: 160px;
+  line-height: 160px;
   border: 2px dashed #dddddd;
   background: #efefef;
   text-align: center;
-  padding-top: 1rem;
   margin-bottom: 1rem;
-
-  h2 {
-    font-size: 1.5rem;
-  }
+  font-size: 1.25rem;
 }
 
 .file-over {
-  border: 2px dashed #bbbbbb;
+  border: 2px dashed red;
   background: #dddddd;
 }
 
