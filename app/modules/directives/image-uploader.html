@@ -1,0 +1,93 @@
+<accordion>
+
+    <accordion-group [isOpen]="isOpen">
+        <div accordion-heading>
+            上传图片<i class="pull-right fa customize-chevron"></i>
+        </div>
+
+        <!-- Drop zone and multiple file selector -->
+        <div class="row">
+            <div class="col-xs-3">
+                <div ng2FileDrop class="well drop-zone"
+                     [ngClass]="{'file-over': hasDropZoneOver}"
+                     (fileOver)="fileOverZone($event)"
+                     [uploader]="uploader">
+                    把图片拖到此处
+                </div>
+                <div>
+                    <label class="btn btn-secondary btn-block">
+                        <input type="file" ng2FileSelect class="hidden"
+                               [uploader]="uploader" multiple>
+                        选择图片
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-xs-9">
+
+                <h3>文件列表</h3>
+                <p>列表长度: {{ uploader?.queue?.length }}</p>
+
+                <table class="table" style="font-size: 85%">
+                    <thead>
+                    <tr>
+                        <th width="35%">文件名</th>
+                        <th width="15%">大小</th>
+                        <th width="10%">状态</th>
+                        <th width="40%">操作</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr *ngFor="let item of uploader?.queue">
+                        <td><strong>{{ item?.file?.name }}</strong></td>
+                        <td nowrap>{{ item?.file?.size/1024 | number:'.0-1' }} KB</td>
+                        <td>
+                            <span *ngIf="item.isUploading" ><i class="fa fa-spinner fa-spin"></i></span>
+                            <span *ngIf="item.isSuccess" style="color: green"><i class="fa fa-check"></i></span>
+                            <span *ngIf="item.isCancel" style="color: red"><i class="fa fa-ban"></i></span>
+                            <span *ngIf="item.isError" style="color: red"><i class="fa fa-close"></i></span>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-success btn-sm"
+                                    (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                                <i class="fa fa-upload"></i> 上传
+                            </button>
+                            <button type="button" class="btn btn-cancel btn-sm"
+                                    (click)="item.cancel()" [disabled]="!item.isUploading">
+                                <i class="fa fa-ban"></i> 取消
+                            </button>
+                            <button type="button" class="btn btn-danger btn-sm"
+                                    (click)="item.remove()">
+                                <i class="fa fa-trash"></i> 删除
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div>
+                    <div>
+                        进度:
+                        <progress class="progress progress-success" max="100"
+                                  [value]="uploader.progress || 0">
+                        </progress>
+                    </div>
+                    <button type="button" class="btn btn-outline-success btn-sm"
+                            (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                        <span class="fa fa-upload"></span> 全部上传
+                    </button>
+                    <button type="button" class="btn btn-outline-warning btn-sm"
+                            (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                        <span class="fa fa-ban"></span> 全部取消
+                    </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm"
+                            (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                        <span class="fa fa-trash"></span> 全部删除
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </accordion-group>
+</accordion>

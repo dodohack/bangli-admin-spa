@@ -10,9 +10,11 @@ import { RouterModule }                  from '@angular/router';
 import { UPLOAD_DIRECTIVES }             from 'ng2-uploader';
 import { SelectModule }                  from 'ng2-select/ng2-select';
 import { Ng2BootstrapModule }            from 'ng2-bootstrap/ng2-bootstrap';
+import { FileUploadModule }              from 'ng2-file-upload';
 
 //import { FroalaEditorDirective } from 'angular2-froala-wysiwyg/lib/froala.directives';
 import { FroalaEditorModule } from "ng2-froala-editor/ng2-froala-editor";
+
 
 import { RevisionHistory }           from './revision-history';
 import { RightPanel }                from './right-panel';
@@ -37,10 +39,12 @@ import { ListPageHeader }            from './list-page-header';
 import { ListFilterBar }             from './list-filter-bar';
 import { SearchBox }                 from './search-box';
 import { DateFilterComponent }       from './date-filter.component';
+import { ImageUploader }             from './image-uploader';
 
 @NgModule({
     imports: [
         Ng2BootstrapModule,
+        FileUploadModule,
         SelectModule,
 
         CommonModule,
@@ -77,6 +81,7 @@ import { DateFilterComponent }       from './date-filter.component';
         SearchBox,
         RevisionHistory,
         DateFilterComponent,
+        ImageUploader,
     ],
     exports: [
         Ng2BootstrapModule,
@@ -110,6 +115,7 @@ import { DateFilterComponent }       from './date-filter.component';
         SearchBox,
         RevisionHistory,
         DateFilterComponent,
+        ImageUploader,
 
         CommonModule,
         FormsModule

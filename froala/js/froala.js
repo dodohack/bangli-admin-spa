@@ -9,12 +9,14 @@ require('./plugins/code_view.js');
 require('./plugins/colors.js');
 require('./plugins/draggable.js');
 require('./plugins/entities.js');
-require('./plugins/file.js');
+//require('./plugins/file.js');
 require('./plugins/font_size.js');
 require('./plugins/forms.js');
 require('./plugins/fullscreen.js');
-require('./plugins/image.js');
-require('./plugins/image_manager.js');
+// We use our image manager(an model of gallery page) to easy of the upload
+// and insert.
+//require('./plugins/image.js');
+//require('./plugins/image_manager.js');
 require('./plugins/inline_style.js');
 require('./plugins/line_breaker.js');
 require('./plugins/link.js');

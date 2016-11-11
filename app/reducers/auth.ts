@@ -26,11 +26,13 @@ export interface AuthState {
     jwt:   JwtPayload;
     // Current managing domain
     key: string;
+    // Current managing domain corresponding image server url
+    img_server: string;
     // Domain keys array
     keys: string[];
     // Available domains to current user
     domains: { [key: string]: Domain };
-    // Domain connectivities
+    // Domain connectivity
     latencies: latencyType;
     // Domain specific user info, index by domain key
     users: { [key: string]: User };
@@ -41,6 +43,7 @@ const initialState: AuthState = {
     token: undefined,
     jwt: new JwtPayload,
     key: undefined,
+    img_server: undefined,
     keys: [],
     domains: {},
     latencies: {},
@@ -71,6 +74,7 @@ export default function(state = initialState, action: Action): AuthState {
                 token: token,
                 jwt: jwtDecode(token),
                 key: keys[0],
+                img_server: undefined,
                 keys: [...keys],
                 domains: Object.assign({}, domainEntities),
                 latencies: latencyEntities,
@@ -129,11 +133,12 @@ export default function(state = initialState, action: Action): AuthState {
         }
 
         case AuthActions.LOGIN_DOMAIN_SUCCESS: {
-            const user = { [state.key]: action.payload };
+            const user = { [state.key]: action.payload.user };
             // Append domain specific user profile to state.users
             return Object.assign({}, state, {
-                failure: false,
-                users: Object.assign({}, state.users, user)
+                failure:    false,
+                img_server: action.payload.img_server,
+                users:      Object.assign({}, state.users, user)
             });
         }
 

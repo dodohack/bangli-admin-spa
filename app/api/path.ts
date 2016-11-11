@@ -96,9 +96,9 @@ export const API_PATH = {
     attachments:        '/attachments',
     attachments_batch:  '/attachments/batch',
     // Return images that supported by froala image manager
-    froala_images:      '/froala-images',
+    //froala_images:      '/froala-images',
     /* File upload */
-    file_upload:        '/file/upload',
+    //file_upload:        '/file/upload',
 
     /*************************************************************************
      * Comments

@@ -14,6 +14,11 @@ export const APIS = {
     bangli_it: 'http://localhost:5006/admin'
 };
 
+// FIXME: We shouldn't set IMG_SERVER here, we should always
+// FIXME: passing back image full url from API server. So we
+// FIXME: have single truth of source and easy to maintain.
+// FIXME: And we keep only 1 copy of admin SPA untouched as long as possible.
+/*
 export const IMG_SERVER = {
     huluwa_uk: 'http://localhost:5000',
     bangli_uk: 'http://localhost:5001',
@@ -23,6 +28,7 @@ export const IMG_SERVER = {
     bangli_es: 'http://localhost:5005',
     bangli_it: 'http://localhost:5006'
 };
+*/
 
 /* Authentication server api endpoint */
 export const AUTH = {

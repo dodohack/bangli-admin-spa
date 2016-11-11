@@ -29,7 +29,8 @@ export class FroalaOptions {
 
             toolbarSticky: false,
 
-            // Image managers
+            /*
+             // Image managers
             imageManagerLoadURL: APIS[key] + API_PATH.froala_images,
             imageManagerLoadParams: {token: auth.token},
 
@@ -39,10 +40,12 @@ export class FroalaOptions {
             imageUploadMethod: 'POST',
             imageUploadParams: {token: auth.token},
             imageUploadURL: APIS[key] + API_PATH.file_upload,
+            */
         };
     }
 
     // Simplified editor for topic introduction
+    /*
     static getSimplified() {
         return {
             // Past in WYSIWYG edit in plain text
@@ -58,6 +61,7 @@ export class FroalaOptions {
             toolbarSticky: false,
         };
     }
+    */
 }
 
 

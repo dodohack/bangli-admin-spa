@@ -145,6 +145,7 @@
                                (affiliateUrlChange)="update('aff_url', $event)">
         </entity-permalink-edit>
 
+        <image-uploader></image-uploader>
 
         <!-- Froala Editor, only 1 can be initialized at same time -->
         <tabset>
@@ -159,6 +160,15 @@
             </tab>
 
             <tab heading="专题正文内容" (select)="contentIdx = 1">
+                <pre>
+                    TODO: 去掉Froala自带的image_manager， 使用自己的图片管理，
+                    用户可以在编辑页面批量上传图片，并且可以点击一键插入图片，一键
+                    删除文章当中所有图片。
+                    当点击一键插入图片的时候，派发一个update('content')的动作，把
+                    要插入的图片地址添加到内容的最前面。
+                    当点击一键删除文章图片的时候，派发动作进行正则表达式匹配，删除所有
+                    img的标签。
+                </pre>
                 <froala *ngIf="contentIdx == 1"
                         [froalaOptions]="froalaOptions"
                         [froalaData]="content$ | async"

@@ -28,7 +28,7 @@ export class EntityList
 
     // The entity type of the list: post, topic, page, product etc
     @Input() etype: string;
-    
+
     // Base resource url(base url to image root)
     @Input() baseResUrl: string;
 

@@ -45,9 +45,9 @@ export class AuthEffects {
      */
     @Effect() loginDomain$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN)
         .switchMap(action => this.loginDomain(action.payload)
-            .map(user => {
-                if (this.hasDashboardUserRole(user))
-                    return AuthActions.loginDomainSuccess(user);
+            .map(res => {
+                if (this.hasDashboardUserRole(res.user))
+                    return AuthActions.loginDomainSuccess(res);
                 else
                     return AuthActions.loginDomainFailNoPermission();
             })
@@ -132,7 +132,7 @@ export class AuthEffects {
     /**
      * Login user into specified application server by domain_key
      */
-    private loginDomain(key: string = undefined): Observable<User> {
+    private loginDomain(key: string = undefined) {
 
         // Cache the key for current session scope
         if (key) this.cache.key = key;
@@ -143,7 +143,8 @@ export class AuthEffects {
         // Form an API
         let api = APIS[this.cache.key] + API_PATH.login + '?token=' + this.cache.token;
 
-        // Login user into specific application domain, user profile returned
+        // Login user into specific application domain, user profile +
+        // img_server for the domain returned
         return this.http.get(api).map(res => res.json());
     }
 

@@ -67,6 +67,12 @@ export class CacheSingleton {
         sessionStorage.setItem('key', key);
     }
 
+    // Return image server url
+    get img_server() {
+        this._initAuth();
+        return this._auth.img_server;
+    }
+
     /**
      * Clean cache
      */
