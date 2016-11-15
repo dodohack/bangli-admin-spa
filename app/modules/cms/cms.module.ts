@@ -3,6 +3,7 @@
  */
 import { NgModule }     from '@angular/core';
 import { SharedModule } from '../directives/shared.module';
+import { AttachmentModule } from '../attachment/attachment.module';
 
 import { routing }      from './routing';
 
@@ -21,7 +22,7 @@ import { DealPage }     from './deal.page';
 
 
 @NgModule({
-    imports: [ SharedModule, routing ],
+    imports: [ SharedModule, AttachmentModule, routing ],
     declarations: [
         CmsList,
         PostsPage, PostPage,

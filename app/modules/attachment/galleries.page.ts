@@ -2,6 +2,7 @@
  *
  */
 import { Component }      from '@angular/core';
+import { Input, Output }  from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router }         from '@angular/router';
 import { Store }          from '@ngrx/store';
@@ -15,7 +16,10 @@ import { zh_CN }          from '../../localization';
 import { EntityActions }  from "../../actions";
 
 
-@Component({ template: require('./galleries.page.html') })
+@Component({
+    selector: 'galleries',
+    template: require('./galleries.page.html')
+})
 export class GalleriesPage extends EntitiesPage
 {
     cache = CacheSingleton.getInstance();
@@ -23,7 +27,7 @@ export class GalleriesPage extends EntitiesPage
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
                 protected router: Router) {
-        super(ENTITY.ATTACHMENT, route, store, router, true/* pageless */);
+        super(ENTITY.ATTACHMENT, route, store, router, true/*pageless*/);
     }
 
     /**

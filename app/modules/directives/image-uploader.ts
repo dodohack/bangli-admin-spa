@@ -22,9 +22,11 @@ import { zh_CN }          from '../../localization';
 })
 export class ImageUploader
 {
+    // Is this uploder accordion expanded
     @Input() isOpen: boolean = false;
 
     @Output() onCompleteItem = new EventEmitter();
+    @Output() showGallery    = new EventEmitter();
 
     cache = CacheSingleton.getInstance();
 

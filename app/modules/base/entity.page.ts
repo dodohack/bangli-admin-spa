@@ -13,11 +13,13 @@ import { AppState }          from '../../reducers';
 import { EntityActions }     from '../../actions';
 import { CmsAttrActions }    from '../../actions';
 import { AlertActions }      from "../../actions";
+import { CacheSingleton }    from '../../effects/cache.singleton';
 
 import { FroalaEditorCompnoent } from 'ng2-froala-editor/ng2-froala-editor';
-import { FroalaOptions }     from '../../models/froala.option';
-import { KEYWORDS }          from '../../models';
-import { Entity }            from '../../models';
+import { FroalaOptions }         from '../../models/froala.option';
+import { KEYWORDS }              from '../../models';
+import { Entity, EntityParams }  from '../../models';
+import { ENTITY }            from '../../models';
 import { TOPIC_RANKINGS }    from '../../models';
 import { ENTITY_STATES }     from '../../models';
 import { ENTITY_INFO }       from '../../models';
@@ -58,11 +60,16 @@ import {
 
 export abstract class EntityPage implements OnInit, OnDestroy
 {
+    cache = CacheSingleton.getInstance();
+
     // Force quit no matter if the entity is dirty or not.
     forceQuit = false;
 
     // Use to keep track if url parameters is really changed.
     params: any;
+
+    // Gallery modal image list parameters
+    galleryParams: EntityParams = new EntityParams;
     
     froalaModel: string; // A temp storage for all content modified by froala
     editor: any;         // Froala editor instance
@@ -100,6 +107,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
     hasDeal$:     Observable<boolean>;   // Topic only attributes
     entities$:    Observable<Entity[]>;
     idsCurPage$:  Observable<number[]>;
+
+    images$:      Observable<Entity[]>;  // Images for gallery modal
+    imageIds$:    Observable<number[]>; // Id index for images
 
     // subscriptions
     subDomain: any;
@@ -146,6 +156,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.keywords$      = this.store.let(getCurEntityKeywordsAsArray(this.etype));
         this.topicType$     = this.store.let(getCurEntityTopicType(this.etype));
         this.hasDeal$       = this.store.let(getCurEntityHasDeal(this.etype));
+
+        this.images$        = this.store.let(getEntitiesCurPage(ENTITY.ATTACHMENT));
+        this.imageIds$      = this.store.let(getIdsCurPage(ENTITY.ATTACHMENT));
 
         this.subDomain  = this.domain$.subscribe(d => this.domain = d);
         this.subPro     = this.profile$.subscribe(p => this.profile = p);
@@ -247,6 +260,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     get topicTypes() { return TOPIC_TYPES; }
     get froalaOptions() { return FroalaOptions.getDefault(); }
     get rankings() { return TOPIC_RANKINGS; }
+    get etypeAttachment() { return ENTITY.ATTACHMENT; }
     gmt(value: string) { return GMT(value); }
 
     /**
@@ -308,6 +322,34 @@ export abstract class EntityPage implements OnInit, OnDestroy
         let d2 = new Date(this.entity.fake_published_at);
         if (d1.toISOString() === d2.toISOString()) return;
         this.update('fake_published_at', GMT(date));
+    }
+
+    /**
+     * When a image uploaded successfully, we can add it to the head of the
+     * image list
+     */
+    onImageUploaded($event) {
+        this.store.dispatch(EntityActions
+            .loadEntitySuccess(ENTITY.ATTACHMENT, $event, true));
+    }
+
+    /**
+     * Popup gallery modal and dispatch an action to load images
+     */
+    showGallery(gallery: any) {
+        this.galleryParams.cur_page = 1;
+        this.store.dispatch(EntityActions
+            .loadEntitiesOnScroll(ENTITY.ATTACHMENT, this.galleryParams));
+        gallery.show();
+    }
+
+    /**
+     * Load next page images to the popup gallery
+     */
+    loadMoreImages() {
+        this.galleryParams.cur_page++;
+        this.store.dispatch(EntityActions
+            .loadEntitiesOnScroll(ENTITY.ATTACHMENT, this.galleryParams));
     }
 
     /**

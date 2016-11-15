@@ -14,6 +14,10 @@ import { GalleriesPage }  from './galleries.page';
     declarations: [
         ImageList,
         GalleriesPage
+    ],
+    exports: [
+        ImageList,
+        GalleriesPage
     ]
 })
 export class AttachmentModule {}

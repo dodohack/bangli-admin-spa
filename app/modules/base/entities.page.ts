@@ -79,6 +79,7 @@ export class EntitiesPage implements OnInit, OnDestroy
      * @param pageless  - if the entity list page is a pageless list, such as
      *                    images, pageless list will auto load next page when
      *                    page reaches its bottom)
+     * @param updateUrl - When entity list changes, should we update url
      */
     constructor(protected etype: string,    // Entity type
                 protected route: ActivatedRoute,
