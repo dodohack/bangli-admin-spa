@@ -1,18 +1,79 @@
-<ul class="attachments">
-    <li *ngFor="let entity of entities; let i=index"
-        class="attachment">
-        <div class="attachment-preview">
-            <div class="thumbnail" (click)="setImage(i, entity); modal.show()">
-                <div class="centered">
-                    <img [src]="imgUrl(entity)">
-                </div>
+<div style="position:absolute; top: 60px; left: 15px; right: 0; bottom: 60px; width: auto; height: auto; margin: 0; overflow: auto;">
+    <div style="position: relative; width: 100%; height: 100%; overflow: hidden">
+        <!-- Image filter menu -->
+        <div style="width: 100%">
+            <nav class="navbar page-sub-menu">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <!-- Grid layout -->
+                        <a class="nav-link"><i class="fa fa-th"></i></a>
+                    </li>
+
+                    <li class="nav-item">
+                        <!-- List layout -->
+                        <a class="nav-link"><i class="fa fa-list"></i></a>
+                    </li>
+
+                    <!-- Image category -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
+                           aria-haspopup="true" aria-expanded="false">图片分类</a>
+
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item">分类1</a>
+                            <a class="dropdown-item">分类3</a>
+                            <a class="dropdown-item">分类2</a>
+                        </div>
+                    </li>
+                </ul>
+
+                <search-box [slug]="'attachment'" [loading]="loading"></search-box>
+            </nav>
+        </div>
+
+        <!-- Image list -->
+        <div style="position: absolute; top: 120px; right: 300px">
+            <ul class="attachments">
+                <li *ngFor="let entity of entities; let i=index"
+                    class="attachment">
+                    <div class="attachment-preview">
+                        <div class="thumbnail" (click)="editImage(i, entity)">
+                            <div class="centered">
+                                <img [src]="imgUrl(entity)">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <button type="button" class="btn btn-block btn-default"
+                    *ngIf="embeddedEditor"
+                    (click)="loadMoreImages()">加载更多...</button>
+        </div>
+
+        <!-- Embedded image editor -->
+        <div style="position: absolute; top: 120px; width: 280px; right: 0;" *ngIf="embeddedEditor">
+            <h5>图片信息</h5>
+
+            <img style="width: 100%; height: auto;" [src]="curImageUrl">
+
+            <div *ngIf="image">
+                <div>文件名: {{ image.filename }}</div>
+                <div>文件类型: {{ image.mime_type }}</div>
+                <div>文件大小: {{ image.size }}</div>
+                <div>分辨率: {{ image.width }} x {{ image.height }}</div>
+                <div>上传时间: {{ image.created_at }}</div>
+                <hr>
+
             </div>
         </div>
-    </li>
-</ul>
+    </div>
+</div>
 
-<!-- In page editing modal -->
-<div class="modal fade" bsModal #modal="bs-modal" tabindex="-1" role="dialog">
+
+<!-- In page image editor modal -->
+<div class="modal fade" bsModal #modalEdit="bs-modal" tabindex="-1" role="dialog"
+     *ngIf="!embeddedEditor">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">

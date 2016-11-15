@@ -2,6 +2,7 @@
  * This is the base class of entity list includes:
  * Post, Topic, Page, Product, Order, Voucher, etc
  */
+import { ViewChild }     from '@angular/core';
 import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 
@@ -15,6 +16,10 @@ import { EntitiesState }  from "../../reducers/entities";
 
 export class EntityList
 {
+    // FIXME: ImageList class only, moving this to ImageList class causes
+    // build error.
+    @ViewChild('modalEdit') modalEdit;
+
     @Input() frontendUrl: string;
     @Input() paginator: any;
     @Input() entities: Entity[];
@@ -22,15 +27,19 @@ export class EntityList
     @Input() authorsObj: any;     // Authors object
     @Input() channelsObj: any;    // Channels object
 
-    _idsEditing: number[];
-    @Input() set idsEditing(value) { this._idsEditing = [...value]; }
-    get idsEditing() { return this._idsEditing; }
-
     // The entity type of the list: post, topic, page, product etc
     @Input() etype: string;
 
     // Base resource url(base url to image root)
     @Input() baseResUrl: string;
+
+    // Display a popup image editor or embedded editor at right side
+    // FIXME: Put this into ImageList class causes build error
+    @Input() embeddedEditor: boolean = false;
+
+    _idsEditing: number[];
+    @Input() set idsEditing(value) { this._idsEditing = [...value]; }
+    get idsEditing() { return this._idsEditing; }
 
     // Fast edit single or multiple entities
     @Output() batchEdit = new EventEmitter();

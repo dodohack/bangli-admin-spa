@@ -21,12 +21,7 @@ export class ImageList extends EntityList
     image: any;
     // Current selected image index
     index: number = 0;
-    
-    setImage(i, entity) {
-        this.index = i;
-        this.image = entity;
-    }
-    
+
     get curImageUrl() {
         if (this.image) return this.imgUrl(this.image);
     }
@@ -45,5 +40,14 @@ export class ImageList extends EntityList
 
     imgUrl(entity) {
         return this.baseResUrl + entity.path + entity.filename;
+    }
+
+    editImage(i, entity) {
+        this.index = i;
+        this.image = entity;
+        if (!this.embeddedEditor)
+            this.modalEdit.show();
+        else
+            console.log("Selected image idx: ", i, ", image: ", entity);
     }
 }
