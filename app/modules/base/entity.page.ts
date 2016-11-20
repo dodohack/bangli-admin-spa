@@ -72,6 +72,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     galleryParams: EntityParams = new EntityParams;
     
     froalaModel: string; // A temp storage for all content modified by froala
+    key: string;         // Index key of current editing content name
     editor: any;         // Froala editor instance
 
     dirtyMask: string[];      // Entity dirty mask
@@ -316,6 +317,11 @@ export abstract class EntityPage implements OnInit, OnDestroy
     update(key: string, value: any) {
         this.store.dispatch(EntityActions.update(this.etype, key, value));
     }
+    // Add or remove a image from the image
+    toggleImage(id: number) {
+        // TODO: We should toggle the list
+        this.store.dispatch(EntityActions.batchEditEntities(ENTITY.ATTACHMENT, [id]));
+    }
 
     updateFakePublishedAt(date: string) {
         let d1 = new Date(date);
@@ -353,9 +359,18 @@ export abstract class EntityPage implements OnInit, OnDestroy
     }
 
     /**
+     * Add images to the beginning of the content
+     */
+    insertImage($event) {
+        this.froalaModel = $event + this.froalaModel;
+        this.update(this.key, this.froalaModel);
+    }
+
+    /**
      * Listen on froala editor events
      */
     onFroalaInitialized(key: string) {
+        this.key    = key;
         this.editor = FroalaEditorCompnoent.getFroalaInstance();
         // Kick an action to update content when it changes.
         this.editor.on('froalaEditor.contentChanged', (e, editor) => {

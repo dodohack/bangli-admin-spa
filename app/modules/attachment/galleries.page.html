@@ -9,37 +9,6 @@
 <image-uploader [isOpen]="true"
                 (onCompleteItem)="onCompleteItem($event)"></image-uploader>
 
-<!-- sub menu -->
-<nav class="navbar page-sub-menu">
-    <ul class="nav navbar-nav">
-        <li class="nav-item">
-            <!-- Grid layout -->
-            <a class="nav-link"><i class="fa fa-th"></i></a>
-        </li>
-
-        <li class="nav-item">
-            <!-- List layout -->
-            <a class="nav-link"><i class="fa fa-list"></i></a>
-        </li>
-
-        <!-- Image category -->
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button"
-               aria-haspopup="true" aria-expanded="false">图片分类</a>
-
-            <div class="dropdown-menu">
-                <a class="dropdown-item">分类1</a>
-                <a class="dropdown-item">分类3</a>
-                <a class="dropdown-item">分类2</a>
-            </div>
-        </li>
-    </ul>
-
-    <search-box [slug]="'attachment'" [loading]="loading"></search-box>
-</nav>
-
-
-
 <!-- Image list -->
 <!-- FIXME: The image may looks like bit small if white space is too large at both side -->
 <!-- FIXME: We can set max-width to sth like 150% but needs to work out how to set height -->

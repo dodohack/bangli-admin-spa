@@ -111,6 +111,11 @@
         }
       }
     }
+
+    .attachment-selected {
+      border: 3px solid cadetblue;
+      background: darkgray;
+    }
   }
 }
 
@@ -131,10 +136,63 @@
   }
 }
 
-// Popup gallery modal
-/*
+// Popup gallery modal, using wordpress like popup media manager layout(using
+// position: absolute extensively).
 .gallery-modal-body {
-  height: 90%;
-  overflow-y: auto;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  tab.active {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding: 15px;
+  }
+
+  .gallery-menu {
+    position: absolute;
+    left: 15px;
+    right: 15px;
+  }
+
+  .image-list-wrapper {
+    position: absolute;
+    left: 0;
+    top: 80px;
+    right: 0;
+    bottom: 60px;
+  }
+
+  .image-list {
+    position: absolute;
+    left: 15px;
+    top: 0;
+    right: 300px;
+    bottom: 0;
+    overflow: auto;
+  }
+
+  .embedded-image-editor {
+    position: absolute;
+    top: 0;
+    width: 300px;
+    padding: 15px;
+    right: 0;
+    bottom: 0;
+    overflow: auto;
+    background: #f1f1f1;
+  }
+
+  .media-toolbar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+  }
 }
-*/

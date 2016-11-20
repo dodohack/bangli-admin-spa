@@ -23,6 +23,7 @@ export class EntityList
     @Input() frontendUrl: string;
     @Input() paginator: any;
     @Input() entities: Entity[];
+    @Input() selectedEntities: Entity[]; // Only used for gallery modal
     @Input() idsCurPage: number[]; // FIXME: entity id or user uuid
     @Input() authorsObj: any;     // Authors object
     @Input() channelsObj: any;    // Channels object
@@ -49,6 +50,10 @@ export class EntityList
     @Output() batchOfflineEdit = new EventEmitter();
     // Lock entities, so no one can edit it except admin.
     @Output() batchLock = new EventEmitter();
+    // Load next page image
+    @Output() loadMoreImages = new EventEmitter();
+    // Add/remove image to/from selected image list
+    @Output() insertImageEvent = new EventEmitter();
 
     batchAction: string = '';
 

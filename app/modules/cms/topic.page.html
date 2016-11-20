@@ -269,8 +269,11 @@
                         <image-list [etype]="etypeAttachment"
                                     [baseResUrl]="cache.img_server"
                                     [entities]="images$ | async"
-                                    [idsCurPage]="imageIds | async"
-                                    [embeddedEditor]="true"></image-list>
+                                    [selectedEntities]="selectedImages$ | async"
+                                    [idsCurPage]="imageIds$ | async"
+                                    [embeddedEditor]="true"
+                                    (loadMoreImages)="loadMoreImages()"
+                                    (insertImageEvent)="insertImage($event)"></image-list>
                     </tab>
 
                     <tab heading="上传图片">

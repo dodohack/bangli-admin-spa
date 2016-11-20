@@ -20,7 +20,12 @@ export class ImageList extends EntityList
     // Current selected image
     image: any;
     // Current selected image index
-    index: number = 0;
+    index: number = -1;
+
+    // Current selected images
+    //images: any;
+    // Current selected image index
+    indexes: number[] = [];
 
     get curImageUrl() {
         if (this.image) return this.imgUrl(this.image);
@@ -47,7 +52,33 @@ export class ImageList extends EntityList
         this.image = entity;
         if (!this.embeddedEditor)
             this.modalEdit.show();
-        else
-            console.log("Selected image idx: ", i, ", image: ", entity);
+        else {
+            if (this.indexes.indexOf(i) !== -1) // Remove the image from the list
+                this.indexes = this.indexes.filter(idx => idx != i);
+            else
+                this.indexes = [...this.indexes, i];
+        }
+    }
+
+    // If the image is selected or not
+    isSelected(i) {
+        if (this.indexes.indexOf(i) !== -1) return true;
+        return false;
+    }
+
+    // Cancel selection
+    cancelImage() { this.indexes = [];  }
+
+    // Add image to the content of current editing entity, this is done by
+    // insert 'html' of image tags to the head of the content.
+    insertImage() {
+        this.indexes.sort((a, b) => {return  a - b});
+
+        let ret = '';
+        for (let i = 0; i < this.indexes.length; i++) {
+            ret += '<img src="' + this.imgUrl(this.entities[i]) + '">';
+        }
+
+        this.insertImageEvent.emit(ret);
     }
 }
