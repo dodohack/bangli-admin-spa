@@ -46,10 +46,13 @@ export class AuthEffects {
     @Effect() loginDomain$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN)
         .switchMap(action => this.loginDomain(action.payload)
             .map(res => {
-                if (this.hasDashboardUserRole(res.user))
+                if (this.hasDashboardUserRole(res.user)) {
+                    // Clean previous cache when login domain success
+                    this.cache.clean();
                     return AuthActions.loginDomainSuccess(res);
-                else
+                } else {
                     return AuthActions.loginDomainFailNoPermission();
+                }
             })
             .catch(() => Observable.of(AuthActions.loginDomainFail()))
         );
@@ -114,6 +117,7 @@ export class AuthEffects {
      * Login a user with given email and password
      */
     private login(user: AuthUser): Observable<AuthUser> {
+        this.cache.clean();
         return this._post(AUTH.login, JSON.stringify(user));
     }
 
