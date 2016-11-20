@@ -286,6 +286,14 @@ export abstract class EntityPage implements OnInit, OnDestroy
             JSON.parse(img.thumbnail)['thumb-avatar'].file;
     }
 
+    /**
+     * Get featured thumbnail image with thumbnail name
+     */
+    thumbnailUrl(img, name: string) {
+        return this.cache.img_server + img.thumb_path +
+            JSON.parse(img.thumbnail)[name].file;
+    }
+
     // Search topics from API server
     searchTopic(topicTypeId: number, text: string) {
         this.store.dispatch(CmsAttrActions.searchTopics(topicTypeId, text));

@@ -41,9 +41,13 @@ export class ImageList extends EntityList
         this.image = this.getEntityByIndex(this.index);
     }
 
-    getEntityByIndex(i) { return this.entities[this.idsCurPage[i]]; }
+    getEntityByIndex(i) { return this.entities[i]; }
 
     imgUrl(entity) {
+        return this.baseResUrl + entity.path + entity.filename;
+    }
+
+    thumbUrl(entity) {
         let thumb = JSON.parse(entity.thumbnail)['thumb-avatar'];
         if (thumb)
             return this.baseResUrl + entity.thumb_path + thumb.file;
