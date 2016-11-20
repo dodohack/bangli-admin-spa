@@ -44,7 +44,9 @@ export class ImageList extends EntityList
     getEntityByIndex(i) { return this.entities[this.idsCurPage[i]]; }
 
     imgUrl(entity) {
-        return this.baseResUrl + entity.path + entity.filename;
+        let thumb = JSON.parse(entity.thumbnail)['thumb-avatar'];
+        if (thumb)
+            return this.baseResUrl + entity.thumb_path + thumb.file;
     }
 
     editImage(i, entity) {
@@ -69,14 +71,20 @@ export class ImageList extends EntityList
     // Cancel selection
     cancelImage() { this.indexes = [];  }
 
+    // Set feature image[s]
+    setFeatureImage() {
+        for (let i = 0; i < this.indexes.length; i++)
+            this.setFeatureImageEvent.emit(this.entities[i]);
+    }
+
     // Add image to the content of current editing entity, this is done by
     // insert 'html' of image tags to the head of the content.
-    insertImage() {
+    insertImages() {
         this.indexes.sort((a, b) => {return  a - b});
 
         let ret = '';
         for (let i = 0; i < this.indexes.length; i++) {
-            ret += '<img src="' + this.imgUrl(this.entities[i]) + '">';
+            ret += '<img src="' + this.imgUrl(this.entities[i]) + '">\n';
         }
 
         this.insertImageEvent.emit(ret);

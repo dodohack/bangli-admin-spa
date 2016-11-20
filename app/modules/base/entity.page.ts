@@ -278,6 +278,14 @@ export abstract class EntityPage implements OnInit, OnDestroy
         }
     }
 
+    /**
+     * Get featured thumbnail image
+     */
+    featureImageUrl(img) {
+        return this.cache.img_server + img.thumb_path +
+            JSON.parse(img.thumbnail)['thumb-avatar'].file;
+    }
+
     // Search topics from API server
     searchTopic(topicTypeId: number, text: string) {
         this.store.dispatch(CmsAttrActions.searchTopics(topicTypeId, text));
@@ -316,11 +324,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
     // Update hasOne/string/single attributes of entity
     update(key: string, value: any) {
         this.store.dispatch(EntityActions.update(this.etype, key, value));
-    }
-    // Add or remove a image from the image
-    toggleImage(id: number) {
-        // TODO: We should toggle the list
-        this.store.dispatch(EntityActions.batchEditEntities(ENTITY.ATTACHMENT, [id]));
     }
 
     updateFakePublishedAt(date: string) {

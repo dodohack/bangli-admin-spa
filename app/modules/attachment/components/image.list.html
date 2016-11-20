@@ -55,7 +55,7 @@
         <div class="embedded-image-editor" *ngIf="embeddedEditor">
             <h5>图片信息</h5>
 
-            <img style="width: 100%; height: auto;" [src]="curImageUrl">
+            <img style="max-width: 100%" [src]="curImageUrl">
 
             <div *ngIf="image">
                 <div>文件名: {{ image.filename }}</div>
@@ -76,9 +76,14 @@
         </span>
         <div class="float-right" style="padding: 15px">
             <button class="btn btn-default btn-sm"
-                    (click)="cancelImage()">取消选择</button>
+                    (click)="cancelImage()"
+                    [disabled]="indexes.length == 0">取消选择</button>
             <button class="btn btn-primary btn-sm"
-                    (click)="insertImage()">插入到文章</button>
+                    (click)="setFeatureImage()"
+                    [disabled]="indexes.length == 0">设置为特色图片</button>
+            <button class="btn btn-primary btn-sm"
+                    (click)="insertImages()"
+                    [disabled]="indexes.length == 0">插入到文章</button>
         </div>
     </div>
 </div>

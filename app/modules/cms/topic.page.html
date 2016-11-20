@@ -99,15 +99,19 @@
         </div>
 
         <div class="form-group">
-            <label>特殊图片</label>
-            <template [ngIf]="(entity$ | async)?.thumbnail">
-                <img src=""/>
-            </template>
-            <template [ngIf]="!(entity$ | async)?.thumbnail">
-                <div style="height: 300px">
-                    打开图片管理器选择特色图片
+            <label>特色图片</label>
+            <div *ngIf="(entity$ | async)?.images" style="margin: 5px">
+                <div *ngFor="let img of (entity$ | async)?.images"
+                     style="display: inline-block; max-width: 80px; margin: 5px">
+                    <img [src]="featureImageUrl(img)" style="width: 100%; cursor: pointer"
+                         (click)="detach('images', img)">
                 </div>
-            </template>
+            </div>
+            <button type="button"
+                    class="btn btn-primary btn-block"
+                    (click)="showGallery(galleryModal)">
+                设置特色图片
+            </button>
         </div>
 
         <div class="form-group">
@@ -176,15 +180,6 @@
             </tab>
 
             <tab heading="专题正文内容" (select)="contentIdx = 1">
-                <pre>
-                    TODO: 去掉Froala自带的image_manager， 使用自己的图片管理，
-                    用户可以在编辑页面批量上传图片，并且可以点击一键插入图片，一键
-                    删除文章当中所有图片。
-                    当点击一键插入图片的时候，派发一个update('content')的动作，把
-                    要插入的图片地址添加到内容的最前面。
-                    当点击一键删除文章图片的时候，派发动作进行正则表达式匹配，删除所有
-                    img的标签。
-                </pre>
                 <froala *ngIf="contentIdx == 1"
                         [froalaOptions]="froalaOptions"
                         [froalaData]="content$ | async"
@@ -273,6 +268,7 @@
                                     [idsCurPage]="imageIds$ | async"
                                     [embeddedEditor]="true"
                                     (loadMoreImages)="loadMoreImages()"
+                                    (setFeatureImageEvent)="attach('images', $event)"
                                     (insertImageEvent)="insertImage($event)"></image-list>
                     </tab>
 
