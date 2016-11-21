@@ -6,7 +6,7 @@ import { Input, Output }  from '@angular/core';
 import { EventEmitter }   from '@angular/core';
 import { FileUploader }   from 'ng2-file-upload';
 import { ParsedResponseHeaders }   from 'ng2-file-upload';
-import { FileItem }       from 'ng2-file-upload';
+import { FileItem }       from 'ng2-file-upload/components/file-upload/file-item.class';
 
 import { APIS, API_PATH } from '../../api';
 import { CacheSingleton } from '../../effects/cache.singleton';

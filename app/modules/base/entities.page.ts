@@ -23,7 +23,7 @@ import { EntityActions }        from '../../actions';
  * TODO: loading/loaded status used in reducers(collection.ts).
  */
 import {
-    getCurDomain, getMyId,
+    getCurDomain, getCurProfile,
     getAuthors, getAuthorsObject, getEditors, getEditorsObject, 
     getCmsChannels, getCmsChannelsObject, getCmsCategories, getLocations,
     getPostStates, getPageStates, getTopicStates,
@@ -35,7 +35,7 @@ import {
 export class EntitiesPage implements OnInit, OnDestroy
 {
     // All subscribers, needs to unsubscribe on destory
-    subMyId: any;
+    subPro: any;
     subCmsCh: any;
     subEntity: any;
     subLoad: any;
@@ -49,14 +49,14 @@ export class EntitiesPage implements OnInit, OnDestroy
     // entity query parameter for api request
     entityParams: EntityParams = new EntityParams;
 
-    myId:        number; // My id of current domain.
+    profile:     User;   // Current user profile
     isLoading:   boolean; // If the list is currently loading
     entity:      Entity; // First entity in idsEditing
     cmsChannels: Channel[];
 
     isLoading$:   Observable<boolean>;
     domain$:      Observable<any>;  // Current managed domain
-    myId$:        Observable<number>; // User id of current domain
+    profile$:     Observable<User>; // User info of current domain
     authors$:     Observable<User[]>;
     editors$:     Observable<User[]>;
     authorsObject$: Observable<any>;
@@ -90,7 +90,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     ngOnInit() {
         this.isLoading$     = this.store.let(getIsLoading(this.etype));
         this.domain$        = this.store.let(getCurDomain());
-        this.myId$          = this.store.let(getMyId());
+        this.profile$       = this.store.let(getCurProfile());
         this.authors$       = this.store.let(getAuthors());
         this.editors$       = this.store.let(getEditors());
         this.authorsObject$ = this.store.let(getAuthorsObject());
@@ -104,7 +104,7 @@ export class EntitiesPage implements OnInit, OnDestroy
         this.idsEditing$    = this.store.let(getIdsEditing(this.etype));
         this.numEditing$    = this.idsEditing$.map(ids => ids.length);
         
-        this.subMyId   = this.myId$.subscribe(id => this.myId = id);
+        this.subPro    = this.profile$.subscribe(p => this.profile = p);
         this.subCmsCh  = this.cmsChannels$.subscribe(c => this.cmsChannels = c);
         this.subEntity = this.entity$.subscribe(e => this.entity = e);
         this.subLoad   = this.isLoading$.subscribe(i => this.isLoading = i);
@@ -134,7 +134,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     }
 
     ngOnDestroy() {
-        //this.subPro.unsubscribe();
+        this.subPro.unsubscribe();
         this.subCmsCh.unsubscribe();
         this.subEntity.unsubscribe();
         this.subLoad.unsubscribe();
@@ -212,7 +212,7 @@ export class EntitiesPage implements OnInit, OnDestroy
      * Create a entity on entity list page
      */
     newEntity() {
-        this.store.dispatch(EntityActions.newEntity(this.etype, this.myId));
+        this.store.dispatch(EntityActions.newEntity(this.etype, this.profile));
     }
 
     /**
@@ -220,6 +220,7 @@ export class EntitiesPage implements OnInit, OnDestroy
      * Save single entity on entity list page
      */
     saveEntity() {
+        console.error("Add dirtyMask support!");
         this.store.dispatch(EntityActions.saveEntity(this.etype, this.entity));
     }
 

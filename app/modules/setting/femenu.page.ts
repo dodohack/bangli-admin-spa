@@ -32,7 +32,7 @@ export class FeMenuPage implements OnInit, OnDestroy
 
     isRoot: boolean;   // Is adding/editing a root menu
     isL1Menu: boolean; // Is adding/editing l1 menu
-    menu: FeMenu; // A menu object
+    menu: FeMenu | any; // A menu object
     actionType: string; // 'add' or 'edit' action
 
     channels$:    Observable<Channel[]>;
