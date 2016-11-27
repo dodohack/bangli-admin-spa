@@ -44,7 +44,7 @@
             </div>
 
             <div class="clearfix login-box-row">
-                <!--<a href="http://api.huluwa.uk/migrate/user" target="_blank" class="small">第一次使用请点这里移植用户数据表</a>-->
+                <a href="http://api.huluwa.uk/admin/migrate/user_stage1" target="_blank" class="small">第一次使用前移植用户数据表</a>
                 <a routerLink="/reset-password" class="small float-right">忘记密码</a>
             </div>
 
@@ -56,4 +56,6 @@
         </form>
 
     </div>
+
+    <div class="alert alert-info">访问 http://localhost:5000/admin/migrate/user_stage1 进行第一步数据移植，移植前需要导入wordpress数据库数据以及创建新版数据库</div>
 </div>

@@ -7,7 +7,6 @@ import { FormsModule }                   from '@angular/forms';
 import { ReactiveFormsModule }           from '@angular/forms';
 import { RouterModule }                  from '@angular/router';
 
-import { UPLOAD_DIRECTIVES }             from 'ng2-uploader';
 import { SelectModule }                  from 'ng2-select/ng2-select';
 import { Ng2BootstrapModule }            from 'ng2-bootstrap/ng2-bootstrap';
 import { FileUploadModule }              from 'ng2-file-upload';
@@ -54,7 +53,6 @@ import { ImageUploader }             from './image-uploader';
         FroalaEditorModule,
     ],
     declarations: [
-        UPLOAD_DIRECTIVES,
 
         RightPanel,
         ListPageHeader,
@@ -87,8 +85,6 @@ import { ImageUploader }             from './image-uploader';
         Ng2BootstrapModule,
         SelectModule,
         FroalaEditorModule,
-
-        UPLOAD_DIRECTIVES,
 
         RightPanel,
         ListPageHeader,
