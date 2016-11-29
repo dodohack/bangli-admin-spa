@@ -20,7 +20,7 @@
         </div>
         -->
 
-        <form class="form-horizontal" role="form" (ngSubmit)="login.emit(user)"
+        <form class="form-horizontal" role="form" (ngSubmit)="submit()"
               #loginForm="ngForm">
 
             <div class="form-group">
@@ -29,7 +29,8 @@
                         <i class="fa fa-envelope fa-lg"></i>
                     </span>
                     <input type="email" class="form-control" required
-                           [(ngModel)]="user.email" name="email" placeholder="邮箱">
+                           [(ngModel)]="email"
+                           name="email" placeholder="邮箱">
                 </div>
             </div>
 
@@ -39,7 +40,7 @@
                         <i class="fa fa-lock fa-lg"></i>
                     </span>
                     <input type="password" class="form-control" required
-                           [(ngModel)]="user.password" name="password" placeholder="密码">
+                           [(ngModel)]="password" name="password" placeholder="密码">
                 </div>
             </div>
 
