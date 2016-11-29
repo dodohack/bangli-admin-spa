@@ -24,11 +24,10 @@ export class MigrationPage
     isRunning: boolean;
 
     constructor(private http: Http, private title: Title) {
-        let auth = rehydrateApplicationState(['auth'], localStorage);
-
+        let rehydrated = rehydrateApplicationState(['auth'], localStorage);
         /* Set http authenticate header */
         this.headers =
-            new Headers({'Authorization': 'Bearer ' + auth.token});
+            new Headers({'Authorization': 'Bearer ' + rehydrated.auth.token});
 
         this.isRunning = false;
         this.title.setTitle('数据移植 - 全局管理平台');
@@ -83,11 +82,11 @@ export class MigrationPage
         this.isRunning = true;
 
         /* Get correct API endpoint */
-        let API = APIS[domainKey] + API_PATH.migrate_base;
-        
+        let api = APIS[domainKey] + API_PATH.migrate_base + '/' + endpoint;
+
         let options = new RequestOptions({ headers: this.headers });
 
-        return this.http.get(API + '/' + endpoint, options)
+        return this.http.get(api, options)
                    .map(res => res.json())
                    .subscribe(
                        res   => {
