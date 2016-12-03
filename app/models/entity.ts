@@ -121,6 +121,22 @@ export class EntityState {
  * API request parameters
  */
 export class EntityParams {
+
+    constructor(public cur_page: number = 1,
+                public channel: string,
+                public state: string,
+                public author: string,
+                public editor: string,
+                public brand: string,
+                public category: string,
+                public datetype: string,
+                public datefrom: string,
+                public dateto: string,
+                public query: string) {}
+
+    // NOTE: If we create an empty object and assign the properties of the
+    // the object individual, we get a error "can't assign to read only object".
+    /*
     cur_page: number = 1;
     channel: string;     // CMS and DEAL only
     state: string;
@@ -132,6 +148,7 @@ export class EntityParams {
     datefrom: string;
     dateto: string;
     query: string;
+    */
 
     // Create a API query string
     toQueryString(): string {

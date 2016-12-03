@@ -47,7 +47,7 @@ export class EntitiesPage implements OnInit, OnDestroy
     queryParams: any;
 
     // entity query parameter for api request
-    entityParams: EntityParams = new EntityParams;
+    entityParams: EntityParams; // = new EntityParams();
 
     profile:     User;   // Current user profile
     isLoading:   boolean; // If the list is currently loading
@@ -188,20 +188,19 @@ export class EntitiesPage implements OnInit, OnDestroy
     setupEntityParams(params) {
         this.params = params;
 
-        // Params
-        this.entityParams.channel  = this.params['channel'];
-        this.entityParams.cur_page = +this.params['page'] || 1;
-        this.entityParams.state    = this.params['state'];
-
-        // Query params
-        this.entityParams.author   = this.params['author'];
-        this.entityParams.editor   = this.params['editor'];
-        this.entityParams.category = this.params['category'];
-        this.entityParams.brand    = this.params['brand'];
-        this.entityParams.datetype = this.params['datetype'];
-        this.entityParams.datefrom = this.params['datefrom'];
-        this.entityParams.dateto   = this.params['dateto'];
-        this.entityParams.query    = this.params['query'];
+        this.entityParams = new EntityParams(
+            +this.params['page'],
+            this.params['channel'],
+            this.params['states'],
+            this.params['author'],
+            this.params['editor'],
+            this.params['category'],
+            this.params['brand'],
+            this.params['datetype'],
+            this.params['datefrom'],
+            this.params['dateto'],
+            this.params['query']
+        );
     }
 
     get channelId() { 
