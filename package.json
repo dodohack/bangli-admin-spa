@@ -4,7 +4,7 @@
   "scripts": {
     "start": "webpack-dev-server --inline --progress --port 8080",
     "test": "karma start",
-    "build": "rimraf dist && webpack --config webpack/webpack.prod.js --progress --profile --bail",
+    "build": "rimraf public && webpack --config webpack/webpack.prod.js --progress --profile --bail",
     "postinstall": "typings install"
   },
   "dependencies": {
