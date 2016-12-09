@@ -3,10 +3,10 @@
  * Environment.
  */
 
-const AUTH_BASE = 'http://localhost:10000';
+export const AUTH_BASE = 'http://localhost:10000';
 
 // App api servers
-const APIS = {
+export const APIS = {
     huluwa_uk: 'http://localhost:5000/admin',
     bangli_uk: 'http://localhost:5001/admin',
     bangli_us: 'http://localhost:5002/admin',
