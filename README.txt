@@ -18,6 +18,7 @@ https://code.google.com/p/google-diff-match-patch/ (a very good one)
 
 # DEVELOPMENT #
 
+*. Copy .config.ts.example to .config.ts and update it to fit your dev env.
 *. Run git pull and npm install
 *. Modify app/api/index.ts to correct set the auth-server and api-server to your
    test servers(you should run both bangli-auth and huluwa-api in order to
