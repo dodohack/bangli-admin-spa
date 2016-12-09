@@ -10,8 +10,8 @@ var froalaExtractor = new ExtractTextPlugin("froala.[hash].css");
 module.exports = {
     entry: {
         polyfills:    './app/polyfills.ts',
-        vendor:       ['./app/vendor.ts', 'jquery', './froala/js/froala.js'],
-        app:          './app/main.ts',
+        vendor:       ['jquery', './froala/js/froala.js'],
+        app:          ['./app/vendor.ts', './app/main.ts'],
         style:        './sass/style.scss',
         froala:       './froala/less/froala.less'
     },

@@ -1,3 +1,9 @@
+/**
+ * This file is included as part of final package 'app.js', the total size
+ * of the package is roughly the same, but this can reduce the runtime error in
+ * release build.
+ */
+
 // Angular 2
 import '@angular/platform-browser';
 import '@angular/platform-browser-dynamic';
@@ -6,9 +12,9 @@ import '@angular/common';
 import '@angular/http';
 import '@angular/router';
 
+
 // RxJS
 import 'rxjs';
-
 
 /*
 // Statics
