@@ -1,0 +1,17 @@
+/**
+ * Copy this file to .config.ts and modify the following constant to fit you
+ * Environment.
+ */
+
+const AUTH_BASE = 'http://localhost:10000';
+
+// App api servers
+const APIS = {
+    huluwa_uk: 'http://localhost:5000/admin',
+    bangli_uk: 'http://localhost:5001/admin',
+    bangli_us: 'http://localhost:5002/admin',
+    bangli_de: 'http://localhost:5003/admin',
+    bangli_fr: 'http://localhost:5004/admin',
+    bangli_es: 'http://localhost:5005/admin',
+    bangli_it: 'http://localhost:5006/admin'
+};

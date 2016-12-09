@@ -3,16 +3,7 @@
  */
 export * from './path';
 
-export const AUTH_API = 'http://localhost:10000';
-export const APIS = {
-    huluwa_uk: 'http://localhost:5000/admin',
-    bangli_uk: 'http://localhost:5001/admin',
-    bangli_us: 'http://localhost:5002/admin',
-    bangli_de: 'http://localhost:5003/admin',
-    bangli_fr: 'http://localhost:5004/admin',
-    bangli_es: 'http://localhost:5005/admin',
-    bangli_it: 'http://localhost:5006/admin'
-};
+import { AUTH_BASE, APIS } from '../../.config.ts';
 
 // FIXME: We shouldn't set IMG_SERVER here, we should always
 // FIXME: passing back image full url from API server. So we
@@ -32,17 +23,17 @@ export const IMG_SERVER = {
 
 /* Authentication server api endpoint */
 export const AUTH = {
-    endpoint: AUTH_API,
+    endpoint: AUTH_BASE,
 
     // TODO: DEPRECATED SOME OF THESE
     /* Authentication routes */
-    register: AUTH_API + '/register',
-    login:    AUTH_API + '/login',
-    refresh:  AUTH_API + '/refresh',
-    update_password: AUTH_API + '/update_password',
+    register: AUTH_BASE + '/register',
+    login:    AUTH_BASE + '/login',
+    refresh:  AUTH_BASE + '/refresh',
+    update_password: AUTH_BASE + '/update_password',
     
     /* User auth and domain management */
-    user:    AUTH_API + '/user',
+    user:    AUTH_BASE + '/user',
     // TODO: Add following support
     // user/register
     // user/login
