@@ -15,6 +15,7 @@
         </topbar>
 
         <sidebar [curDomainKey]="curDomainKey$ | async"
+                 [isLoggedInDomain]="isLoggedInDomain$ | async"
                  [pref]="pref$ | async"
                  (toggle)="toggleSidebar($event)">
         </sidebar>

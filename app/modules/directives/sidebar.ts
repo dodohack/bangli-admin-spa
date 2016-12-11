@@ -18,6 +18,7 @@ import { hasRole }         from '../../reducers';
 export class Sidebar {
 
     @Input() curDomainKey: string;
+    @Input() isLoggedInDomain: boolean;
     @Input() pref: PreferenceState;
 
     @Output() toggle = new EventEmitter();
