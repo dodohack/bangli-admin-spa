@@ -2,9 +2,9 @@
  * This file exports correct API server endpoints based on given Domain key.
  */
 export * from './path';
-export * from '../../.config.ts';
+export * from '../../.config';
 
-import { AUTH_BASE } from '../../.config.ts';
+import { AUTH_BASE } from '../../.config';
 
 // FIXME: We shouldn't set IMG_SERVER here, we should always
 // FIXME: passing back image full url from API server. So we
