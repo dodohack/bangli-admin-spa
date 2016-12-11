@@ -13,10 +13,6 @@
 
   /* Fixed width for font-awesome icon on input group */
   .input-group-addon {
-
-    /* Overwrite default bootstrap style */
-    padding-left: 0 !important;
-
     i {
       width: 18px;
     }
@@ -27,7 +23,9 @@
     padding: 0.75rem 0;
   }
 
+  /*
   .fa {
     margin-top: 0 !important;
   }
+  */
 }

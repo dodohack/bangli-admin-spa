@@ -26,7 +26,7 @@
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon">
-                        <i class="fa fa-envelope fa-lg"></i>
+                        <i class="fa fa-envelope"></i>
                     </span>
                     <input type="email" class="form-control" required
                            [(ngModel)]="email"
@@ -37,7 +37,7 @@
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon">
-                        <i class="fa fa-lock fa-lg"></i>
+                        <i class="fa fa-lock"></i>
                     </span>
                     <input type="password" class="form-control" required
                            [(ngModel)]="password" name="password" placeholder="密码">
@@ -58,5 +58,5 @@
 
     </div>
 
-    <div class="alert alert-info">访问 http://localhost:5000/admin/migrate/user_stage1 进行第一步数据移植，移植前需要导入wordpress数据库数据以及创建新版数据库</div>
+    <div class="alert alert-info">访问 API_SERVER/admin/migrate/user_stage1 进行第一步数据移植，移植前需要导入wordpress数据库数据以及创建新版数据库</div>
 </div>
