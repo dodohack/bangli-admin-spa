@@ -4,6 +4,7 @@
  */
 import { Component }  from '@angular/core';
 import { OnInit }     from '@angular/core';
+import { Router }     from '@angular/router';
 import { Store }      from '@ngrx/store';
 import { Observable } from "rxjs/Observable";
 
@@ -22,10 +23,14 @@ export class LoginPage implements OnInit
 {
     isDashboardUser$: Observable<boolean>;
 
-    constructor(private store: Store<AppState>) {}
+    constructor(private store: Store<AppState>,
+                private router: Router) {}
 
     ngOnInit() {
         this.isDashboardUser$ = this.store.let(isDashboardUser());
+
+        this.isDashboardUser$.filter(isDu => isDu)
+            .subscribe(isDu => this.router.navigate(['/dashboard']));
     }
 
     onSubmit($event) {
