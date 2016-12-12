@@ -5,11 +5,15 @@ import { SysAttrActions } from '../actions';
 import { UserRole }       from '../models';
 
 export interface SysAttrsState {
+    // Available user roles
     roles: UserRole[];
+    // Available thumbnail configurations
+    thumbs: [{name: string, width: number, height: number}];
 };
 
 const initState: SysAttrsState = {
     roles: [],
+    thumbs: null,
 };
 
 export default function (state = initState, action: Action): SysAttrsState {
@@ -19,11 +23,14 @@ export default function (state = initState, action: Action): SysAttrsState {
             let payload = action.payload;
 
             let roles: UserRole[];
-            if (payload.roles)
-                roles = payload.roles;
+            if (payload.roles)  roles = payload.roles;
+
+            let thumbs: any;
+            if (payload.thumbs) thumbs = payload.thumbs;
             
             return {
                 roles: [...roles],
+                thumbs: [...thumbs],
             };
         }
 
@@ -42,4 +49,11 @@ export default function (state = initState, action: Action): SysAttrsState {
  */
 export function getUserRoles() {
     return (state$: Observable<SysAttrsState>) => state$.select(s => s.roles);
+}
+
+/**
+ * Return an array of thumbnail configs
+ */
+export function getThumbConfig() {
+    return (state$: Observable<SysAttrsState>) => state$.select(s => s.thumbs);
 }

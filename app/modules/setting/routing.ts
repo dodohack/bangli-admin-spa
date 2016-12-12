@@ -9,6 +9,7 @@ import { FeMenuPage }    from './femenu.page';
 import { CmsPage }       from './cms.page';
 import { ShopPage }      from './shop.page';
 import { BbsPage }       from './bbs.page';
+import { ThumbPage }     from './thumb.page';
 
 const routes: Routes = [
     {
@@ -24,6 +25,9 @@ const routes: Routes = [
 
             /* Frontend menu setting */
             { path: 'menu', component: FeMenuPage, canActivate: [AdminGuard] },
+
+            /* Image and thumbnail */
+            { path: 'thumb', component: ThumbPage, canActivate: [AdminGuard] },
 
             /* Cms setting sub-path */
             {

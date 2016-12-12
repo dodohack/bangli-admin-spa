@@ -8,17 +8,18 @@ import { SharedModule } from '../directives/shared.module';
 import { routing }         from './routing';
 import { SettingPage }     from './setting.page';
 import { LocationsPage }   from './locations.page';
-import { CmsPage }         from './cms.page.ts';
-import { ShopPage }        from './shop.page.ts';
-import { BbsPage }         from './bbs.page.ts';
-import { FeMenuPage }      from './femenu.page.ts';
+import { CmsPage }         from './cms.page';
+import { ShopPage }        from './shop.page';
+import { BbsPage }         from './bbs.page';
+import { FeMenuPage }      from './femenu.page';
+import { ThumbPage }       from './thumb.page';
 
 import { SettingMenu }     from './components/menu';
-import { CmsSettingMenu }  from './cms/menu.ts';
-import { CmsCategory }     from './cms/category.ts';
-import { CmsTag }          from './cms/tag.ts';
-import { CmsTopicType }    from './cms/topic-type.ts';
-import { CmsChannel }      from './cms/channel.ts';
+import { CmsSettingMenu }  from './cms/menu';
+import { CmsCategory }     from './cms/category';
+import { CmsTag }          from './cms/tag';
+import { CmsTopicType }    from './cms/topic-type';
+import { CmsChannel }      from './cms/channel';
 import { FeMenuSetting }   from './components/fe-menu-setting';
 import { ModalEditMenu }   from './components/modal-edit-menu';
 
@@ -33,6 +34,7 @@ import { ModalEditMenu }   from './components/modal-edit-menu';
         ShopPage,
         BbsPage,
         FeMenuPage,
+        ThumbPage,
 
         CmsSettingMenu,
         CmsCategory,

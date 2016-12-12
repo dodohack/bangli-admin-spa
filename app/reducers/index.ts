@@ -484,6 +484,10 @@ export function getUserRoles() {
     return compose(fromSys.getUserRoles(), getSysAttrsState());
 }
 
+export function getThumbConfig() {
+    return compose(fromSys.getThumbConfig(), getSysAttrsState());
+}
+
 /*****************************************************************************
  * Frontend menu settings
  *****************************************************************************/
