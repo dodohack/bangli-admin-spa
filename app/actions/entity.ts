@@ -236,7 +236,7 @@ export class EntityActions {
         return {
             type: EntityActions.ATTACH,
             payload: {etype: etype, key: key, value: value}
-        }
+        };
     }
 
     /**
@@ -248,7 +248,7 @@ export class EntityActions {
         return {
             type: EntityActions.DETACH,
             payload: {etype: etype, key: key, value: value}
-        }
+        };
     }
 
     /**
@@ -259,7 +259,7 @@ export class EntityActions {
         return {
             type: EntityActions.UPDATE,
             payload: {etype: etype, key: key, value: value}
-        }
+        };
     }
 
     static REFRESH_ACTIVITY_STATUS = '[Entity] Refresh Activity Status';
@@ -275,6 +275,9 @@ export class EntityActions {
      **************************************************************************/
     static GENERATE_THUMBS = '[Attachment] Generate thumbs';
     static generateThumbs(etype: string): Action {
-        return { type: EntityActions.GENERATE_THUMBS };
+        return {
+            type: EntityActions.GENERATE_THUMBS,
+            payload: etype
+        };
     }
 }

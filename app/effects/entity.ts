@@ -78,8 +78,8 @@ export class EntityEffects {
 
 
     @Effect() genThumbs$ = this.actions$.ofType(EntityActions.GENERATE_THUMBS)
-        .map(action => action.type)
-        .switchMap(etype => this.postGenThumbs(etype));
+        .map(action => action.payload)
+        .switchMap(etype => this.putEntities(etype, [], 'gen-thumb'));
 
     /**************************************************************************
      * Helper functions
@@ -228,12 +228,19 @@ export class EntityEffects {
     }
 
     /**
-     * Update entities, return array of entities
+     * Update entities, return array of entities, this is also used to generate
+     * thumbnails etc.
+     * @param t        - entity type
+     * @param entities - entities to be updated
+     * @param params - attachemnt entity only argument, it is 'gen-thumb' for
+     *                 regenerating all thumbnails
      */
-    protected putEntities(t: string, entities: any): Observable<any> {
-        let body = JSON.stringify(entities);
+    protected putEntities(t: string, entities: any,
+                          params: any = null): Observable<any> {
+        let body    = JSON.stringify(entities);
         let options = new RequestOptions({ headers: this.headers });
-        let api = this.getApi(t, true) + '?etype=' + t;
+        let api     = this.getApi(t, true) + '?etype=' + t;
+        if (params) api += '&' + params;
 
         return this.http.put(api, body, options).map(res => res.json());
     }
@@ -249,15 +256,6 @@ export class EntityEffects {
         // TODO: http.delete can't have a body
         console.error("Unimplemented: deletePosts");
         return this.http.delete(api, options).map(res => res.json());
-    }
-
-    /**
-     * Post a request to API server to regen' all thumbnails
-     */
-    protected postGenThumbs(t: string) {
-        let api = this.getApi(t, false);
-        // FIXME: We should use sth like postEntities or putEntities to generate
-        // thumbnails, as it is a modification of attachment.
     }
 
     /**
