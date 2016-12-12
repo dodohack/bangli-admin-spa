@@ -42,7 +42,12 @@ const BANGLI_UK_SIDEBAR_MENUS = [
 
 export const SIDEBAR_MENUS = {
     huluwa_uk: HULUWA_UK_SIDEBAR_MENUS,
-    bangli_uk: BANGLI_UK_SIDEBAR_MENUS
+    bangli_uk: BANGLI_UK_SIDEBAR_MENUS,
+    bangli_us: BANGLI_UK_SIDEBAR_MENUS,
+    bangli_de: BANGLI_UK_SIDEBAR_MENUS,
+    bangli_it: BANGLI_UK_SIDEBAR_MENUS,
+    bangli_fr: BANGLI_UK_SIDEBAR_MENUS,
+    bangli_es: BANGLI_UK_SIDEBAR_MENUS
 };
 
 /* customized menus on sidebar/topbar */
