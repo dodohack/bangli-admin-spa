@@ -269,4 +269,12 @@ export class EntityActions {
             payload: {etype: etype, data: activities}
         };
     }
+
+    /**************************************************************************
+     * Attachment only
+     **************************************************************************/
+    static GENERATE_THUMBS = '[Attachment] Generate thumbs';
+    static generateThumbs(etype: string): Action {
+        return { type: EntityActions.GENERATE_THUMBS };
+    }
 }

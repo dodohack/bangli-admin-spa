@@ -8,7 +8,7 @@ export interface SysAttrsState {
     // Available user roles
     roles: UserRole[];
     // Available thumbnail configurations
-    thumbs: [{name: string, width: number, height: number}];
+    thumbs: any;
 };
 
 const initState: SysAttrsState = {

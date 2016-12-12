@@ -1,12 +1,15 @@
 <setting-menu></setting-menu>
 
-<p>
-    this is image thumbnail setting page
-</p>
-
-{{ thumbConfig$ | async | json }}
+<h5>可用缩略图</h5>
 
 <ul>
-    <li>1. Do not import thumbnails from wordpress when migrating</li>
-    <li>2. Run this individual thumbnail generation after migration</li>
+    <li *ngFor="let t of (thumbConfig$ | async)">
+        缩略图昵称: {{ t[0] }}, 宽: {{ t[1] }}px, 高: {{ t[2] }}px
+    </li>
 </ul>
+
+<h5>生成此站点的缩略图</h5>
+
+<button class="btn btn-primary" (click)="generateThumbs()">生成缩略图</button>
+
+<p><small style="color: red">*注：此操作会删除已经产生的所有缩略图</small></p>

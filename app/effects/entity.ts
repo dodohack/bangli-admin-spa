@@ -77,6 +77,10 @@ export class EntityEffects {
         .map(action => AlertActions.error('保存失败!'));
 
 
+    @Effect() genThumbs$ = this.actions$.ofType(EntityActions.GENERATE_THUMBS)
+        .map(action => action.type)
+        .switchMap(etype => this.postGenThumbs(etype));
+
     /**************************************************************************
      * Helper functions
      *************************************************************************/
@@ -245,6 +249,15 @@ export class EntityEffects {
         // TODO: http.delete can't have a body
         console.error("Unimplemented: deletePosts");
         return this.http.delete(api, options).map(res => res.json());
+    }
+
+    /**
+     * Post a request to API server to regen' all thumbnails
+     */
+    protected postGenThumbs(t: string) {
+        let api = this.getApi(t, false);
+        // FIXME: We should use sth like postEntities or putEntities to generate
+        // thumbnails, as it is a modification of attachment.
     }
 
     /**
