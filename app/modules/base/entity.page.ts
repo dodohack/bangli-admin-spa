@@ -279,11 +279,15 @@ export abstract class EntityPage implements OnInit, OnDestroy
     }
 
     /**
-     * Get featured thumbnail image
+     * Get featured thumbnail image, thumbnail key 'thumb-avatar'.
      */
     featureImageUrl(img) {
-        return this.cache.img_server + img.thumb_path +
-            JSON.parse(img.thumbnail)['thumb-avatar'].file;
+        let thumbs = JSON.parse(img.thumbnail);
+        if (thumbs.hasProperty('thumb-avatar'))
+            return this.cache.img_server + img.thumb_path +
+                thumbs['thumb-avatar'].file;
+        else
+            return null;
     }
 
     /**
