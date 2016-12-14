@@ -41,8 +41,13 @@ export class ListFilterBar implements OnInit, OnDestroy {
     filterCat: string;
     filterBrand: string;
     filterDateType: string;
+    // MySQL date format is different from ECMA standard, we use filterDisplayDate
+    // for displaying in the HTML, and use filterDate for MySQL. This fixes
+    // the bug in Safari browser.
     _filterDateFrom: string;
     _filterDateTo: string;
+    _filterDisplayDateFrom: string;
+    _filterDisplayDateTo: string;
 
     // Datapicker of entity filtering is hidden by default
     dpHidden = true;
@@ -79,10 +84,20 @@ export class ListFilterBar implements OnInit, OnDestroy {
         this.filterCat    = params['category'] || '';
         this.filterBrand  = params['brand'] || '';
         this.filterDateType  = params['datetype'] || '';
-        this._filterDateFrom = params['datefrom'] || Date.now();
-        this._filterDateFrom = this.dateFilterGMT(this._filterDateFrom, true);
-        this._filterDateTo   = params['dateto'] || Date.now();
-        this._filterDateTo   = this.dateFilterGMT(this._filterDateTo, false);
+        let dateFrom = params['datefrom'] || Date.now();
+        this._filterDateFrom = this.getMySQLDateGMT(dateFrom, true);
+        this._filterDisplayDateFrom = this.getDisplayDateGMT(dateFrom, true);
+        let dateTo   = params['dateto'] || Date.now();
+        this._filterDateTo   = this.getMySQLDateGMT(dateTo, false);
+        this._filterDisplayDateTo = this.getDisplayDateGMT(dateTo, false);
+    }
+
+    GMT(value) {
+        let d = new Date(value);
+        let offset = d.getTimezoneOffset() / 60;
+        // Patch user timezone offset, so we can get the GMT
+        d.setHours(d.getHours() - offset);
+        return d;
     }
 
     /**
@@ -90,21 +105,34 @@ export class ListFilterBar implements OnInit, OnDestroy {
      * We set from date start from 00:00:00 of the day and to date end with
      * 23:59:59 of the day.
      */
-    dateFilterGMT(value, isDateFrom: boolean) {
-        let d = new Date(value);
-        let offset = d.getTimezoneOffset() / 60;
-        // Patch user timezone offset, so we can get the GMT
-        d.setHours(d.getHours() - offset);
+    getMySQLDateGMT(value, isDateFrom: boolean) {
+        let d = this.GMT(value);
         if (isDateFrom)
             return d.toISOString().slice(0,10) + ' 00:00:00';
         else
             return d.toISOString().slice(0,10) + ' 23:59:59';
     }
 
+    /**
+     * Return ECMA compatible date format
+     */
+    getDisplayDateGMT(value, isDateFrom: boolean) {
+        let d = this.GMT(value);
+        if (isDateFrom)
+            return d.toISOString().slice(0,10) + 'T00:00:00';
+        else
+            return d.toISOString().slice(0,10) + 'T23:59:59';
+    }
+
     get filterDateFrom() { return this._filterDateFrom; }
-    set filterDateFrom(value) { this._filterDateFrom = this.dateFilterGMT(value, true); }
+    set filterDateFrom(value) { this._filterDateFrom = this.getMySQLDateGMT(value, true); }
     get filterDateTo() { return this._filterDateTo; }
-    set filterDateTo(value) { this._filterDateTo = this.dateFilterGMT(value, false); }
+    set filterDateTo(value) { this._filterDateTo = this.getMySQLDateGMT(value, false); }
+
+    get filterDisplayDateFrom() { return this._filterDisplayDateFrom; }
+    set filterDisplayDateFrom(value) { this._filterDisplayDateFrom = this.getDisplayDateGMT(value, true); }
+    get filterDisplayDateTo() { return this._filterDisplayDateTo; }
+    set filterDisplayDateTo(value) { this._filterDisplayDateTo = this.getDisplayDateGMT(value, false); }
 
     /**
      * Submit the filter
