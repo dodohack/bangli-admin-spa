@@ -48,6 +48,11 @@ export class MigrationPage
         this.migrate('attachment', domainKey);
     }
 
+    public migrateOldImage(domainKey: string) {
+        this.message = "正在移植" + domainKey + " 通过SSH上传的图片,可能需要等几分钟或更长时间,请不要刷新页面";
+        this.migrate('oldimage', domainKey);
+    }
+
     public migratePost(domainKey: string) {
         this.message = "正在移植" + domainKey + "文章和专题,可能需要等几分钟或更长时间,请不要刷新页面";
         this.migrate('post', domainKey);

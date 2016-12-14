@@ -29,6 +29,7 @@
         <div class="btn-toolbar" role="toolbar">
             <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateUser('bangli_uk')">[BUGGED] 合并用户表到bangli-auth</button>
             <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateAttachment('bangli_uk')">移植附件表</button>
+            <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateOldImage('bangli_uk')">移植SSH上传的图片</button>
             <button class="btn btn-primary" [disabled]="isRunning" (click)="migratePost('bangli_uk')">移植文章表</button>
             <button class="btn btn-primary" [disabled]="isRunning" (click)="migrateComment('bangli_uk')">移植文章评论表</button>
         </div>
