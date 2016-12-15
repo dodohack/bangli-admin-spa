@@ -294,9 +294,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
      * Get featured thumbnail image with thumbnail name
      */
     thumbnailUrl(img, name: string) {
-        let $thumb = JSON.parse(img.thumbnail)[name];
-        if ($thumb)
-            return this.cache.img_server + img.thumb_path + $thumb.file;
+        let $thumb = JSON.parse(img.thumbnail)
+        if ($thumb && $thumb.hasOwnProperty(name))
+            return this.cache.img_server + img.thumb_path + $thumb[name].file;
         else
             return '';
     }
