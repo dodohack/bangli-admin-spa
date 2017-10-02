@@ -54,7 +54,7 @@ import { emailsReducer }   from './entities';
 import { commentsReducer } from './entities';
 
 import { User }        from '../models';
-import { ENTITY_INFO } from '../models';
+import { ENTITY_INFO, ENTITY } from '../models';
 
 /**
  * As mentioned, we treat each reducer like a table in a database. This means
@@ -77,7 +77,7 @@ export interface AppState {
     newsletters: EntitiesState;
     attachments: EntitiesState;
     comments: EntitiesState;
-    routerReducer: fromRouter.RouterReducerState<RouterStateUrl>
+    routerReducer: fromRouter.RouterReducerState<RouterStateUrl>;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -247,14 +247,40 @@ export const getAvailableDomains = createSelector(getUsersState, fromUsers.getAv
 /*****************************************************************************
  * Entities - an entity type is always given
  *****************************************************************************/
+/*
 export function getEntitiesState(etype: string) {
     return (state$: Observable<AppState>) =>state$
         .select(ENTITY_INFO[etype].selector);
 }
+*/
 
-export function getPaginator(etype: string) {
+export const getEntitiesStateFactory = (etype: string) =>
+    createSelector([state => state], [state => state[ENTITY_INFO[etype].selector]]);
+
+export const getEntitiesState = (state: AppState, etype: string) => state[ENTITY_INFO[etype].selector];
+
+export const getPostsState = (state: AppState, etype: string) => state.posts;
+export const getPagesState = (state: AppState, etype: string) => state.pages;
+export const getDealsState = (state: AppState, etype: string) => state.deals;
+export const getTopicsState = (state: AppState, etype: string) => state.topics;
+export const getPlacesState = (state: AppState, etype: string) => state.places;
+export const getAdsStates = (state: AppState, etype: string) => state.advertises;
+export const getEmailsState = (state: AppState, etype: string) => state.newsletters;
+export const getAttachsState = (state: AppState, etype: string) => state.attachments;
+export const getCommentsState = (state: AppState, etype: string) => state.comments;
+
+export const getPaginator = createSelector(getEntitiesStateFactory, fromEntities.getPaginator);
+
+/*
+export const getPaginator = (etype: string) => {
+    switch (etype) {
+        case ENTITY.CMS_POST:
+            return createSelector(getEntitiesState(etype), fromEntities.getPaginator);
+
+    }
     return compose(fromEntities.getPaginator(), getEntitiesState(etype));
-}
+};
+*/
 
 export function getIsDirty(etype: string) {
     return compose(fromEntities.getIsDirty(), getEntitiesState(etype));
