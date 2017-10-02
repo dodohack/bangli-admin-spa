@@ -6,7 +6,7 @@ import { Category }                from '../../models';
 
 @Component({
     selector: 'category-tree',
-    template: require('./category-tree.html'),
+    templateUrl: './category-tree.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryTree {

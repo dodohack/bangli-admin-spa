@@ -8,10 +8,10 @@ import { Store }                from '@ngrx/store';
 import { Observable }           from 'rxjs/Observable';
 
 import { ENTITY }               from '../../models';
-import { EntityActions }        from '../../actions';
+import * as EntityActions       from '../../actions/entity';
 import { AppState, getThumbConfig } from '../../reducers';
 
-@Component({ template: require('./thumb.page.html') })
+@Component({ templateUrl: './thumb.page.html' })
 export class ThumbPage implements OnInit, OnDestroy
 {
     thumbConfig$: Observable<any>;
@@ -19,7 +19,7 @@ export class ThumbPage implements OnInit, OnDestroy
     constructor(private store: Store<AppState>) {}
 
     ngOnInit() {
-        this.thumbConfig$ = this.store.let(getThumbConfig());
+        this.thumbConfig$ = this.store.select(getThumbConfig);
     }
 
     ngOnDestroy() {}
@@ -29,6 +29,6 @@ export class ThumbPage implements OnInit, OnDestroy
      * new ones.
      */
     generateThumbs() {
-        this.store.dispatch(EntityActions.generateThumbs(ENTITY.ATTACHMENT));
+        this.store.dispatch(new EntityActions.GenerateThumbs({etype: ENTITY.ATTACHMENT}));
     }
 }

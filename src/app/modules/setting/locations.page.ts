@@ -8,9 +8,9 @@ import { Store }                from '@ngrx/store';
 import { AppState }          from '../../reducers';
 import { CmsAttrsState }     from '../../reducers/cmsattrs';
 import { GeoLocation }       from '../../models';
-import { CmsAttrActions }    from "../../actions";
+import * as CmsAttrActions   from "../../actions/cmsattr";
 
-@Component({ template: require('./locations.page.html') })
+@Component({ templateUrl: './locations.page.html' })
 export class LocationsPage implements OnInit, OnDestroy
 {
     @ViewChild('modalEdit')   modalEdit;
@@ -49,7 +49,7 @@ export class LocationsPage implements OnInit, OnDestroy
      * Delete a location
      */
     removeGeoLocation($event) {
-        this.store.dispatch(CmsAttrActions.deleteGeoLocation($event));
+        this.store.dispatch(new CmsAttrActions.DeleteGeoLocation($event));
         this.modalEdit.hide();
     }
 
@@ -57,7 +57,7 @@ export class LocationsPage implements OnInit, OnDestroy
      * Create a new location
      */
     newGeoLocation($event) {
-        this.store.dispatch(CmsAttrActions.addGeoLocation($event));
+        this.store.dispatch(new CmsAttrActions.AddGeoLocation($event));
         this.modalEdit.hide();
     }
 
@@ -73,7 +73,7 @@ export class LocationsPage implements OnInit, OnDestroy
      * Update an existing location
      */
     saveGeoLocation($event) {
-        this.store.dispatch(CmsAttrActions.saveGeoLocation($event));
+        this.store.dispatch(new CmsAttrActions.SaveGeoLocation($event));
         this.modalEdit.hide();
     }
 }

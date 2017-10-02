@@ -13,7 +13,7 @@ import { Channel }           from "../../../models";
 
 @Component({ 
     selector: 'cms-tag-setting',
-    template: require('./tag.html'),
+    templateUrl: './tag.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CmsTag implements OnChanges

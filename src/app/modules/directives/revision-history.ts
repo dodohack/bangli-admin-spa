@@ -24,7 +24,7 @@ var htmlTag = {'&': '&amp;', '<': '&lt;', '>': '&gt;',
 
 @Component({
     selector: 'revision-history',
-    template: require('./revision-history.html'),
+    templateUrl: './revision-history.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RevisionHistory

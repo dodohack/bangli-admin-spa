@@ -8,7 +8,7 @@ import { Entity } from '../../models';
 
 @Component({
     selector: 'entity-buttons',
-    template: require('./entity-buttons.html'),
+    templateUrl: './entity-buttons.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityButtons {

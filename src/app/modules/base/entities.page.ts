@@ -89,21 +89,21 @@ export class EntitiesPage implements OnInit, OnDestroy
                 protected pageless: boolean = false) {}
 
     ngOnInit() {
-        this.isLoading$     = this.store.let(getIsLoading(this.etype));
-        this.domain$        = this.store.let(getCurDomain);
-        this.profile$       = this.store.let(getCurProfile);
-        this.authors$       = this.store.let(getAuthors);
-        this.editors$       = this.store.let(getEditors);
-        this.authorsObject$ = this.store.let(getAuthorsObject);
-        this.cmsChannels$   = this.store.let(getCmsChannels);
-        this.cmsChannelsObject$ = this.store.let(getCmsChannelsObject);
-        this.cmsCategories$ = this.store.let(getCmsCategories);
+        this.isLoading$     = this.store.select(getIsLoading(this.etype));
+        this.domain$        = this.store.select(getCurDomain);
+        this.profile$       = this.store.select(getCurProfile);
+        this.authors$       = this.store.select(getAuthors);
+        this.editors$       = this.store.select(getEditors);
+        this.authorsObject$ = this.store.select(getAuthorsObject);
+        this.cmsChannels$   = this.store.select(getCmsChannels);
+        this.cmsChannelsObject$ = this.store.select(getCmsChannelsObject);
+        this.cmsCategories$ = this.store.select(getCmsCategories);
 
-        this.paginator$     = this.store.let(getPaginator(this.etype));
-        this.entity$        = this.store.let(getCurEntity(this.etype));
-        this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
-        this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
-        this.idsEditing$    = this.store.let(getIdsEditing(this.etype));
+        this.paginator$     = this.store.select(getPaginator(this.etype));
+        this.entity$        = this.store.select(getCurEntity(this.etype));
+        this.entities$      = this.store.select(getEntitiesCurPage(this.etype));
+        this.idsCurPage$    = this.store.select(getIdsCurPage(this.etype));
+        this.idsEditing$    = this.store.select(getIdsEditing(this.etype));
         this.numEditing$    = this.idsEditing$.map(ids => ids.length);
         
         this.subPro    = this.profile$.subscribe(p => this.profile = p);

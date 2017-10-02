@@ -4,7 +4,7 @@
 
 import { Component } from '@angular/core';
 
-@Component({ template: require('./social.page.html') })
+@Component({ templateUrl: './social.page.html' })
 export class SocialPage
 {
 

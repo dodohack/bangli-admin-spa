@@ -10,7 +10,7 @@ import { Channel }           from "../../../models";
 
 @Component({
     selector: 'fe-menu-setting',
-    template: require('./fe-menu-setting.html'),
+    templateUrl: './fe-menu-setting.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FeMenuSetting {

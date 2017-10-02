@@ -6,7 +6,7 @@
 
 import { Component } from '@angular/core';
 
-@Component({ template: require('./cms.page.html') })
+@Component({ templateUrl: './cms.page.html' })
 export class CmsAnalysisPage
 {
     constructor() {}

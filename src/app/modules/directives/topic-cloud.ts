@@ -7,7 +7,7 @@ import { Topic }     from '../../models';
 
 @Component({
     selector: 'topic-cloud',
-    template: require('./topic-cloud.html'),
+    templateUrl: './topic-cloud.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TopicCloud implements OnInit {

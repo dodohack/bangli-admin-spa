@@ -16,7 +16,7 @@ import { zh_CN }             from '../../localization';
 
 import { getDealStates }     from '../../reducers';
 
-@Component({ template: require('./deals.page.html') })
+@Component({ templateUrl: './deals.page.html' })
 export class DealsPage extends EntitiesPage
 {
     dealStates$:  Observable<any>;

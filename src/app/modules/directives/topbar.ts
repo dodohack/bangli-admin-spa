@@ -10,7 +10,7 @@ import { PreferenceState }  from '../../reducers/preference';
 
 @Component({
     selector: 'topbar',
-    template: require('./topbar.html'),
+    templateUrl: './topbar.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Topbar {

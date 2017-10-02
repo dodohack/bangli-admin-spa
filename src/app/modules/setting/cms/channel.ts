@@ -3,7 +3,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 
-@Component({ template: require('./channel.html') })
+@Component({ templateUrl: './channel.html' })
 export class CmsChannel implements OnInit
 {
     ngOnInit() {

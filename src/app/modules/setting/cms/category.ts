@@ -11,7 +11,7 @@ import { Channel }           from "../../../models";
 
 @Component({
     selector: 'cms-category-setting',
-    template: require('./category.html'),
+    templateUrl: './category.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CmsCategory

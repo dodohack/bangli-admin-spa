@@ -7,7 +7,7 @@ import { FormControl }                            from '@angular/forms';
 
 @Component({
     selector: 'entity-permalink-edit',
-    template: require('./entity-permalink-edit.html'),
+    templateUrl: './entity-permalink-edit.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityPermalinkEdit implements OnInit {

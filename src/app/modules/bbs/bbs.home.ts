@@ -10,7 +10,7 @@ import { Observable }        from 'rxjs/Observable';
 
 import { AppState }          from '../../reducers';
 
-@Component({ template: require('./bbs.home.html') })
+@Component({ templateUrl: './bbs.home.html' })
 export class BbsHome
 {
     constructor(protected route: ActivatedRoute,

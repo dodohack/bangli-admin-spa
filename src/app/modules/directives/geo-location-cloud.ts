@@ -10,7 +10,7 @@ import { GeoLocation }                from '../../models';
 
 @Component({
     selector: 'geo-location-cloud',
-    template: require('./geo-location-cloud.html'),
+    templateUrl: './geo-location-cloud.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GeoLocationCloud implements OnInit {

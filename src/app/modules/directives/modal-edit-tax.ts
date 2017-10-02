@@ -11,7 +11,7 @@ import { Channel }           from "../../models";
 
 @Component({
     selector: 'modal-edit-tax',
-    template: require('./modal-edit-tax.html'),
+    templateUrl: './modal-edit-tax.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ModalEditTax

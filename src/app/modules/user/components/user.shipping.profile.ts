@@ -9,7 +9,7 @@ import { zh_CN } from '../../../localization';
 
 @Component({
     selector: 'user-shipping-profile',
-    template: require('./user.shipping.profile.html')
+    templateUrl: './user.shipping.profile.html'
 })
 export class UserShippingProfileTab
 {

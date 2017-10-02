@@ -26,7 +26,7 @@ import { isDashboardUser, hasAuthorRole, getCurDomainKey, getAuthToken,
 
 @Component({
     selector: 'admin-spa',
-    template: require('./app.html')
+    templateUrl: './app.html'
 })
 export class App implements OnInit, OnDestroy
 {

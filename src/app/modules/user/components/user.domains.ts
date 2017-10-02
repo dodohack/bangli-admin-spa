@@ -10,7 +10,7 @@ import { Domain  }         from '../../../models'
 
 @Component({
     selector: 'user-domains-tab',
-    template: require('./user.domains.html'),
+    templateUrl: './user.domains.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserDomainsTab

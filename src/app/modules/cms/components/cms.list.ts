@@ -12,7 +12,7 @@ import { zh_CN } from '../../../localization';
 
 @Component({
     selector: 'cms-list',
-    template: require('./cms.list.html'),
+    templateUrl: './cms.list.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CmsList extends EntityList

@@ -10,7 +10,6 @@ import { UnauthGuard }   from './guard';
 import { BaseGuard }     from './guard';
 import { AuthorGuard }   from './guard';
 import { EditorGuard }   from './guard';
-import { ShopMgrGuard }  from './guard';
 import { AdminGuard }    from './guard';
 import { SuperUserGuard} from './guard';
 import { LockGuard }     from './guard';
@@ -38,7 +37,6 @@ import { BbsModule }       from './modules/bbs/bbs.module';
 import { CmsModule }       from './modules/cms/cms.module';
 import { AdsModule }       from './modules/ads/ads.module';
 import { EmailModule }     from './modules/email/email.module';
-import { ShopModule }      from './modules/shop/shop.module';
 import { CommentModule }   from './modules/comment/comment.module';
 import { CsModule }        from './modules/cs/cs.module';
 import { SocialModule }    from './modules/social/social.module';
@@ -67,7 +65,6 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         CmsModule,
         AdsModule,
         EmailModule,
-        ShopModule,
         CsModule,
         UserModule,
         CommentModule,
@@ -110,7 +107,6 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         BaseGuard,
         AuthorGuard,
         EditorGuard,
-        ShopMgrGuard,
         AdminGuard,
         SuperUserGuard,
         LockGuard,

@@ -10,7 +10,7 @@ import { rehydrateApplicationState }     from 'ngrx-store-localstorage';
 import { APIS, API_PATH }      from '../../api';
 
 @Component({
-    template: require('./migration.html')
+    templateUrl: './migration.html'
 })
 export class MigrationPage
 {

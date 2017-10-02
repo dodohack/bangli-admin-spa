@@ -10,7 +10,7 @@ import { Channel }           from "../../../models";
 
 @Component({
     selector: 'cms-tax-setting',
-    template: require('./cms.tax.html'),
+    templateUrl: './cms.tax.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CmsTax

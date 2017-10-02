@@ -12,7 +12,7 @@ import { Preference }     from '../../models';
 
 @Component({
     selector: 'right-panel',
-    template: require('./right-panel.html'),
+    templateUrl: './right-panel.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RightPanel {

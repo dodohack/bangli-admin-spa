@@ -11,7 +11,7 @@ import { Preference } from '../../../models';
 
 @Component({
     selector: 'user-preference',
-    template: require('./user.preference.html'),
+    templateUrl: './user.preference.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserPreferenceTab

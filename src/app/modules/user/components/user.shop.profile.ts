@@ -7,7 +7,7 @@ import { User } from '../../../models';
 
 @Component({
     selector: 'user-shop-profile',
-    template: require('./user.shop.profile.html')
+    templateUrl: './user.shop.profile.html'
 })
 export class UserShopProfileTab
 {

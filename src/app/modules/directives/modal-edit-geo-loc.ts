@@ -11,7 +11,7 @@ import { GeoLocation }       from "../../models";
 
 @Component({
     selector: 'modal-edit-geo-loc',
-    template: require('./modal-edit-geo-loc.html'),
+    templateUrl: './modal-edit-geo-loc.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ModalEditGeoLoc

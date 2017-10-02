@@ -11,7 +11,7 @@ import { Observable }        from 'rxjs/Observable';
 import { Store }             from '@ngrx/store';
 
 import { ENTITY }             from '../../models';
-import { UserActions }        from '../../actions';
+import * as UserActions       from '../../actions/user';
 import { AppState }           from '../../reducers';
 import { UsersState }         from '../../reducers/users';
 import { User, UserParams }   from '../../models';
@@ -20,7 +20,7 @@ import { zh_CN }    from '../../localization';
 
 import { getUsers, getIsUserLoading, getUserPaginator } from '../../reducers';
 
-@Component({ template: require('./users.page.html') })
+@Component({ templateUrl: './users.page.html' })
 export class UsersPage implements OnInit, OnDestroy
 {
     // Observable subscribers
@@ -43,9 +43,9 @@ export class UsersPage implements OnInit, OnDestroy
                 private router: Router) {}
 
     ngOnInit() {
-        this.isLoading$  = this.store.let(getIsUserLoading());
-        this.users$      = this.store.let(getUsers());
-        this.paginator$  = this.store.let(getUserPaginator());
+        this.isLoading$  = this.store.select(getIsUserLoading);
+        this.users$      = this.store.select(getUsers);
+        this.paginator$  = this.store.select(getUserPaginator);
 
         this.subLoad = this.isLoading$.subscribe(x => this.isLoading = x);
         
@@ -76,9 +76,9 @@ export class UsersPage implements OnInit, OnDestroy
                     this.params.query    = params['query'];
 
                     if (this.pageless)
-                        this.store.dispatch(UserActions.loadUsersOnScroll(this.params));
+                        this.store.dispatch(new UserActions.LoadUsersOnScroll(this.params));
                     else
-                        this.store.dispatch(UserActions.loadUsers(this.params));
+                        this.store.dispatch(new UserActions.LoadUsers(this.params));
                 }
             });
     }

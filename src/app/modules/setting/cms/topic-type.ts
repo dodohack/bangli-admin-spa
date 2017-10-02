@@ -11,7 +11,7 @@ import { Channel }           from "../../../models";
 
 @Component({
     selector: 'cms-topic-setting',
-    template: require('./topic-type.html'),
+    templateUrl: './topic-type.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CmsTopicType {

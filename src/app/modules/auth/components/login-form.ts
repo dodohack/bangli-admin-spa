@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'login-form',
-    template: require('./login-form.html'),
+    templateUrl: './login-form.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginForm

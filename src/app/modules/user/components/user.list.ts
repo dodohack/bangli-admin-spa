@@ -8,7 +8,7 @@ import { EntityList } from '../../base/entity.list';
 
 @Component({
     selector: 'user-list',
-    template: require('./user.list.html'),
+    templateUrl: './user.list.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserList extends EntityList

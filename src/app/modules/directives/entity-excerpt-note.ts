@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy }                from "@angular/core";
 
 @Component({
     selector: 'entity-excerpt-note',
-    template: require('./entity-excerpt-note.html'),
+    templateUrl: './entity-excerpt-note.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityExcerptNote {

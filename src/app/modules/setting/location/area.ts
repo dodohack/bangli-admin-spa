@@ -11,7 +11,7 @@ import { ChangeDetectorRef }       from '@angular/core';
 
 @Component({
     selector: 'location-area',
-    template: require('./area.html'),
+    templateUrl: './area.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GeoLocationArea

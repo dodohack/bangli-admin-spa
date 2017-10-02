@@ -7,7 +7,7 @@ import { Channel }                 from "../../../models";
 
 @Component({
     selector: 'location-country-menu',
-    template: require('./menu.html'),
+    templateUrl: './menu.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GeoLocationCountryMenu

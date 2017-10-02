@@ -15,7 +15,7 @@ import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
 import { getTopicStates }    from '../../reducers';
 
-@Component({ template: require('./topics.page.html') })
+@Component({ templateUrl: './topics.page.html' })
 export class TopicsPage extends EntitiesPage
 {
     topicStates$: Observable<any>;

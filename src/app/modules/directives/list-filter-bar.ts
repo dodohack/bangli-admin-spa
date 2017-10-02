@@ -14,7 +14,7 @@ import { ENTITY }      from '../../models';
 
 @Component({
     selector: 'list-filter-bar',
-    template: require('./list-filter-bar.html'),
+    templateUrl: './list-filter-bar.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListFilterBar implements OnInit, OnDestroy {

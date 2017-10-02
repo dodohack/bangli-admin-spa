@@ -12,9 +12,9 @@ import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
 import { AppState }          from '../../reducers';
-import { AlertActions }      from '../../actions';
-import { UserActions }       from '../../actions';
-import { PreferenceActions } from '../../actions';
+import * as AlertActions     from '../../actions/alert';
+import * as UserActions      from '../../actions/user';
+import * as PreferenceActions from '../../actions/preference';
 import { AuthState }         from '../../reducers/auth';
 import { UsersState }        from '../../reducers/users';
 import { PreferenceState }   from '../../reducers/preference';
@@ -27,7 +27,7 @@ import { isMyProfile, getCurUser, hasAdminRole, hasSuperUserRole,
     getAuthUser, getUserRoles, getDomainKeys,
     getAvailableDomains }  from '../../reducers';
 
-@Component({ template: require('./user.page.html') })
+@Component({ templateUrl: './user.page.html' })
 export class UserPage implements OnInit, OnDestroy
 {
     subParams: any;
@@ -51,15 +51,15 @@ export class UserPage implements OnInit, OnDestroy
     }
 
     ngOnInit() {
-        this.user$        = this.store.let(getCurUser());
-        this.isAdminUser$ = this.store.let(hasAdminRole());
-        this.isSuperUser$ = this.store.let(hasSuperUserRole());
-        this.isMyProfile$ = this.store.let(isMyProfile());
+        this.user$        = this.store.select(getCurUser);
+        this.isAdminUser$ = this.store.select(hasAdminRole);
+        this.isSuperUser$ = this.store.select(hasSuperUserRole);
+        this.isMyProfile$ = this.store.select(isMyProfile);
         this.pref$        = this.store.select<PreferenceState>(s => s.pref);
-        this.roles$       = this.store.let(getUserRoles());
+        this.roles$       = this.store.select(getUserRoles);
 
-        this.authUser$    = this.store.let(getAuthUser());
-        this.allDomains$  = this.store.let(getAvailableDomains());
+        this.authUser$    = this.store.select(getAuthUser);
+        this.allDomains$  = this.store.select(getAvailableDomains);
 
         this.dispatchLoadUser();
     }
@@ -75,35 +75,35 @@ export class UserPage implements OnInit, OnDestroy
         this.subParams = this.route.params
             .subscribe(params => {
                 if (params['uuid']) {
-                    this.store.dispatch(UserActions.loadUser(params['uuid']));
-                    this.store.dispatch(UserActions.loadAuthUser(params['uuid']));
+                    this.store.dispatch(new UserActions.LoadUser(params['uuid']));
+                    this.store.dispatch(new UserActions.LoadAuthUser(params['uuid']));
                 }
             });
     }
 
     savePreference($event) {
-        this.store.dispatch(PreferenceActions.save($event));
+        this.store.dispatch(new PreferenceActions.Save($event));
     }
 
     saveAuthUser($event) {
-        this.store.dispatch(UserActions.saveAuthUser($event));
+        this.store.dispatch(new UserActions.SaveAuthUser($event));
     }
 
     /**
      * Select of deselect a user domain
      */
     toggleDomain($event) {
-        this.store.dispatch(UserActions.toggleDashboardPermission($event));
+        this.store.dispatch(new UserActions.ToggleDashboardPermission($event));
     }
 
     toggleSuperUser() {
-        this.store.dispatch(UserActions.toggleSuperUser());
+        this.store.dispatch(new UserActions.ToggleSuperUser());
     }
 
     /**
      * Save user domain specific profile
      */
     saveProfile($event) {
-        this.store.dispatch(UserActions.saveUser($event));
+        this.store.dispatch(new UserActions.SaveUser($event));
     }
 }

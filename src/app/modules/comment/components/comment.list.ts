@@ -10,7 +10,7 @@ import { EntityList }    from '../../base/entity.list';
 
 @Component({
     selector: 'comment-list',
-    template: require('./comment.list.html'),
+    templateUrl: './comment.list.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CommentList extends EntityList

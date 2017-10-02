@@ -7,7 +7,7 @@ import { FormControl }                            from '@angular/forms';
 
 @Component({
     selector: 'entity-title-date',
-    template: require('./entity-title-date.html'),
+    templateUrl: './entity-title-date.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityTitleDate implements OnInit {

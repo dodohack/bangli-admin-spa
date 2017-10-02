@@ -7,7 +7,7 @@ import { USER_GENDERS, User, UserRole } from '../../../models';
 
 @Component({
     selector: 'user-base-profile',
-    template: require('./user.base.profile.html')
+    templateUrl: './user.base.profile.html'
 })
 export class UserBaseProfileTab
 {

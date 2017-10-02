@@ -12,11 +12,11 @@ import { Store }             from '@ngrx/store';
 
 import { EntityPage }        from '../base/entity.page';
 import { ENTITY }            from '../../models';
-import { AlertActions }      from '../../actions';
+import * as AlertActions     from '../../actions/alert';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
 
-@Component({ template: require('./page.page.html') })
+@Component({ templateUrl: './page.page.html' })
 export class PagePage extends EntityPage
 {
     constructor(protected route: ActivatedRoute,

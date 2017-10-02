@@ -13,7 +13,7 @@ import { zh_CN }     from '../../localization';
 
 @Component({
     selector: 'entity-attributes',
-    template: require('./entity-attributes.html'),
+    templateUrl: './entity-attributes.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityAttributes {

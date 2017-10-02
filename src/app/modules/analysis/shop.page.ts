@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-@Component({ template: require('./shop.page.html') })
+@Component({ templateUrl: './shop.page.html' })
 export class ShopAnalysisPage
 {
     constructor() {}

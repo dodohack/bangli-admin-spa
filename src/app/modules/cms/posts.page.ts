@@ -16,7 +16,7 @@ import { zh_CN }             from '../../localization';
 
 import { getPostStates } from '../../reducers';
 
-@Component({ template: require('./posts.page.html') })
+@Component({ templateUrl: './posts.page.html' })
 export class PostsPage extends EntitiesPage
 {
     postStates$:  Observable<any>;

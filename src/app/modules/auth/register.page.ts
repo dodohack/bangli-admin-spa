@@ -7,8 +7,8 @@ import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs';
 
 import { AppState }          from '../../reducers';
-import { AuthActions }       from '../../actions';
-import { AlertActions }      from '../../actions';
+import * as AuthActions      from '../../actions/auth';
+import * as AlertActions     from '../../actions/alert';
 
 @Component({
     template: `<register-form (register)="onSubmit($event)"></register-form>`
@@ -24,11 +24,11 @@ export class RegisterPage
     onSubmit($event)
     {
         if ($event.password != $event.password_confirmation) {
-            this.store.dispatch(AlertActions.error('两次输入的密码不匹配'));
+            this.store.dispatch(new AlertActions.Error('两次输入的密码不匹配'));
             return;
         }
 
-        this.store.dispatch(AuthActions.register($event));
+        this.store.dispatch(new AuthActions.Register($event));
         
         /* Reset the error message */
         /*

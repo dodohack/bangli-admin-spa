@@ -12,7 +12,7 @@ import { TopicType }   from '../../models';
 
 @Component({
     selector: 'entity-attr-cloud',
-    template: require('./entity-attr-cloud.html'),
+    templateUrl: './entity-attr-cloud.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityAttrCloud {

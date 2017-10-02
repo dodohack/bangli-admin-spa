@@ -8,7 +8,7 @@ import { Entity } from '../../models';
 
 @Component({
     selector: 'entity-thumbnails',
-    template: require('./entity-thumbnails.html'),
+    templateUrl: './entity-thumbnails.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityThumbnails {

@@ -9,7 +9,7 @@ import { zh_CN }                   from '../../../localization';
 
 @Component({ 
     selector: 'cms-setting-menu',
-    template: require('./menu.html'),
+    templateUrl: './menu.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CmsSettingMenu

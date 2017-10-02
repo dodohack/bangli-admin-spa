@@ -15,12 +15,12 @@ import { Store }             from '@ngrx/store';
 import { EntityPage }        from '../base/entity.page';
 import { Entity }            from '../../models';
 import { ENTITY }            from '../../models';
-import { AlertActions }      from '../../actions';
-import { EntityActions }     from '../../actions';
+import * as AlertActions     from '../../actions/alert';
+import * as EntityActions    from '../../actions/entity';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
 
-@Component({ template: require('./topic.page.html') })
+@Component({ templateUrl: './topic.page.html' })
 export class TopicPage extends EntityPage
 {
     constructor(protected route: ActivatedRoute,

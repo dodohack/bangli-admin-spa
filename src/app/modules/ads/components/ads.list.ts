@@ -10,7 +10,7 @@ import { EntityList }    from '../../base/entity.list';
 
 @Component({
     selector: 'ads-list',
-    template: require('./ads.list.html'),
+    templateUrl: './ads.list.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdsList extends EntityList

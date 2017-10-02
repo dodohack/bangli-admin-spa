@@ -14,7 +14,7 @@ import { ENTITY }            from '../../models';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
 
-@Component({ template: require('./comments.page.html') })
+@Component({ templateUrl: './comments.page.html' })
 export class CommentsPage extends EntitiesPage
 {
     constructor(protected route: ActivatedRoute,

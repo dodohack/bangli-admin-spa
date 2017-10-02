@@ -5,7 +5,7 @@ import { Entity } from '../../models';
 
 @Component({
     selector: 'entity-content',
-    template: require('./entity-content.html'),
+    templateUrl: './entity-content.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityContent {

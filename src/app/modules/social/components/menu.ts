@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
     selector: 'social-menu',
-    template: require('./menu.html'),
+    templateUrl: './menu.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SocialMenu

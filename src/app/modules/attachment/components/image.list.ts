@@ -12,7 +12,7 @@ import { zh_CN } from '../../../localization';
 
 @Component({
     selector: 'image-list',
-    template: require('./image.list.html'),
+    templateUrl: './image.list.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ImageList extends EntityList

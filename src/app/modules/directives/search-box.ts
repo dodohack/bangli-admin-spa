@@ -9,7 +9,7 @@ import { Router, NavigationExtras }  from '@angular/router';
 
 @Component({
     selector: 'search-box',
-    template: require('./search-box.html')
+    templateUrl: './search-box.html'
 })
 export class SearchBox implements OnInit {
 

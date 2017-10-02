@@ -12,7 +12,7 @@ import { Category }          from "../../models";
 import { Topic }             from "../../models";
 import { Channel }           from "../../models";
 
-@Component({ template: require('./bbs.page.html') })
+@Component({ templateUrl: './bbs.page.html' })
 export class BbsPage implements OnInit, OnDestroy
 {
     ngOnInit() {}

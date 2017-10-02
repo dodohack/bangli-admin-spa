@@ -11,7 +11,7 @@ import { AuthUser }       from '../../../models';
 
 @Component({
     selector: 'register-form',
-    template: require('./register-form.html'),
+    templateUrl: './register-form.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterForm

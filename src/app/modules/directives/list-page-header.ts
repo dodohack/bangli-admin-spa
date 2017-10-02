@@ -7,7 +7,7 @@ import { Channel }     from '../../models';
 
 @Component({
     selector: 'list-page-header',
-    template: require('./list-page-header.html'),
+    templateUrl: './list-page-header.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListPageHeader {

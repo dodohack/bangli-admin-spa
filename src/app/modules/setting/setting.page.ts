@@ -3,7 +3,7 @@
  */
 import { Component } from '@angular/core';
 
-@Component({ template: require('./setting.page.html') })
+@Component({ templateUrl: './setting.page.html' })
 export class SettingPage
 {
     constructor() {}

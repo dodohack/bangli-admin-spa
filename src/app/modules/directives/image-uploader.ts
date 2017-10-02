@@ -18,7 +18,7 @@ import { zh_CN }          from '../../localization';
 
 @Component({
     selector: 'image-uploader',
-    template: require('./image-uploader.html')
+    templateUrl: './image-uploader.html'
 })
 export class ImageUploader
 {

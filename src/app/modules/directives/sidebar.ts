@@ -12,7 +12,7 @@ import { hasRole }         from '../../reducers';
 
 @Component({
     selector: 'sidebar',
-    template: require('./sidebar.html'),
+    templateUrl: './sidebar.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Sidebar {

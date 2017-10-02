@@ -13,12 +13,12 @@ import { EntitiesPage }   from '../base/entities.page';
 import { ENTITY }         from '../../models';
 import { AppState }       from '../../reducers';
 import { zh_CN }          from '../../localization';
-import { EntityActions }  from "../../actions";
+import * as EntityActions from "../../actions/entity";
 
 
 @Component({
     selector: 'galleries',
-    template: require('./galleries.page.html')
+    templateUrl: './galleries.page.html'
 })
 export class GalleriesPage extends EntitiesPage
 {
@@ -37,7 +37,8 @@ export class GalleriesPage extends EntitiesPage
      * @param $event
      */
     onCompleteItem($event) {
-        this.store.dispatch(EntityActions
-            .loadEntitySuccess(ENTITY.ATTACHMENT, $event, true));
+        this.store.dispatch(
+            new EntityActions.LoadEntitySuccess(
+                {etype: ENTITY.ATTACHMENT, data: $event, prepend: true}));
     }
 }

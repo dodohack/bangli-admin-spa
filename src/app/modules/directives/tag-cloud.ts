@@ -6,7 +6,7 @@ import { Tag } from '../../models';
 
 @Component({
     selector: 'tag-cloud',
-    template: require('./tag-cloud.html'),
+    templateUrl: './tag-cloud.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TagCloud implements OnInit {

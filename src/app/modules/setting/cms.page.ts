@@ -12,7 +12,7 @@ import { Category }          from "../../models";
 import { Topic }             from "../../models";
 import { TopicType }         from "../../models";
 import { Channel }           from "../../models";
-import { CmsAttrActions }    from "../../actions/cmsattr";
+import * as CmsAttrActions   from "../../actions/cmsattr";
 
 import {
     AppState,
@@ -22,7 +22,7 @@ import {
     getCmsCurChannelTopicTypes } from '../../reducers';
 
 
-@Component({ template: require('./cms.page.html') })
+@Component({ templateUrl: './cms.page.html' })
 export class CmsPage implements OnInit, OnDestroy
 {
     // Popup modal
@@ -49,15 +49,15 @@ export class CmsPage implements OnInit, OnDestroy
                 private store: Store<AppState>) {}
 
     ngOnInit() {
-        this.channel$    = this.store.let(getCmsCurChannel());
-        this.channels$   = this.store.let(getCmsChannels());
-        this.categories$ = this.store.let(getCmsCurChannelCategories());
-        this.topicTypes$ = this.store.let(getCmsCurChannelTopicTypes());
+        this.channel$    = this.store.select(getCmsCurChannel);
+        this.channels$   = this.store.select(getCmsChannels);
+        this.categories$ = this.store.select(getCmsCurChannelCategories);
+        this.topicTypes$ = this.store.select(getCmsCurChannelTopicTypes);
 
         // Change current active channel when channel changes in url
         this.subPCh = this.route.params.map(p => p['channel'])
             .subscribe(slug =>
-                this.store.dispatch(CmsAttrActions.switchChannel(slug)));
+                this.store.dispatch(new CmsAttrActions.SwitchChannel(slug)));
 
         this.subParams = this.route.params.subscribe(params => {
             this.taxType = params['taxonomy'];
@@ -86,9 +86,9 @@ export class CmsPage implements OnInit, OnDestroy
      */
     removeTax($event) {
         if (this.taxType === 'tag')
-            this.store.dispatch(CmsAttrActions.deleteTag($event));
+            this.store.dispatch(new CmsAttrActions.DeleteTag($event));
         else if (this.taxType === 'category')
-            this.store.dispatch(CmsAttrActions.deleteCategory($event));
+            this.store.dispatch(new CmsAttrActions.DeleteCategory($event));
         
         this.modalEdit.hide();
     }
@@ -98,9 +98,9 @@ export class CmsPage implements OnInit, OnDestroy
      */
     newTax($event) {
         if (this.taxType === 'tag')
-            this.store.dispatch(CmsAttrActions.addTag($event));
+            this.store.dispatch(new CmsAttrActions.AddTag($event));
         else if (this.taxType === 'category')
-            this.store.dispatch(CmsAttrActions.addCategory($event));
+            this.store.dispatch(new CmsAttrActions.AddCategory($event));
 
         this.modalEdit.hide();        
     }
@@ -110,9 +110,9 @@ export class CmsPage implements OnInit, OnDestroy
      */
     saveTax($event) {
         if (this.taxType === 'tag')
-            this.store.dispatch(CmsAttrActions.saveTag($event));
+            this.store.dispatch(new CmsAttrActions.SaveTag($event));
         else if (this.taxType === 'category')
-            this.store.dispatch(CmsAttrActions.saveCategory($event));
+            this.store.dispatch(new CmsAttrActions.SaveCategory($event));
 
         this.modalEdit.hide();
     }

@@ -12,7 +12,7 @@ import { Category }          from "../../models";
 import { Topic }             from "../../models";
 import { Channel }           from "../../models";
 
-@Component({ template: require('./shop.page.html') })
+@Component({ templateUrl: './shop.page.html' })
 export class ShopPage implements OnInit, OnDestroy
 {
     ngOnInit() {}

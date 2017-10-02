@@ -10,7 +10,7 @@ import { Observable }           from 'rxjs/Observable';
 
 import { Channel }           from "../../models";
 import { FeMenu }            from "../../models";
-import { FeMenuActions }     from "../../actions";
+import * as FeMenuActions    from "../../actions/femenu";
 
 import {
     AppState,
@@ -24,7 +24,7 @@ import {
     getFeDesktopMenus }      from '../../reducers';
 
 
-@Component({ template: require('./femenu.page.html') })
+@Component({ templateUrl: './femenu.page.html' })
 export class FeMenuPage implements OnInit, OnDestroy
 {
     // Popup modal
@@ -48,16 +48,16 @@ export class FeMenuPage implements OnInit, OnDestroy
                 private store: Store<AppState>) {}
 
     ngOnInit() {
-        this.channels$       = this.store.let(getCmsChannels());
-        this.feMenus$        = this.store.let(getFeMenus());
-        this.feMenuRootIds$  = this.store.let(getFeRootMenuIds());
-        this.feMenuRoots$    = this.store.let(getFeRootMenus());
-        this.feMenuGroupIds$ = this.store.let(getFeMenuGroupIds());
-        this.feMenuParentIds$ = this.store.let(getFeMenuParentIds());
-        //this.feMobileMenus$ = this.store.let(getFeMobileMenus());
-        //this.feDesktopMenus$ = this.store.let(getFeDesktopMenus());
+        this.channels$       = this.store.select(getCmsChannels);
+        this.feMenus$        = this.store.select(getFeMenus);
+        this.feMenuRootIds$  = this.store.select(getFeRootMenuIds);
+        this.feMenuRoots$    = this.store.select(getFeRootMenus);
+        this.feMenuGroupIds$ = this.store.select(getFeMenuGroupIds);
+        this.feMenuParentIds$ = this.store.select(getFeMenuParentIds);
+        //this.feMobileMenus$ = this.store.select(getFeMobileMenus);
+        //this.feDesktopMenus$ = this.store.select(getFeDesktopMenus);
 
-        this.store.dispatch(FeMenuActions.loadAll());
+        this.store.dispatch(new FeMenuActions.LoadAll());
     }
 
     ngOnDestroy() {}
@@ -81,14 +81,14 @@ export class FeMenuPage implements OnInit, OnDestroy
 
     // Actions
     newMenu($event: FeMenu) {
-        this.store.dispatch(FeMenuActions.addMenu($event));
+        this.store.dispatch(new FeMenuActions.AddMenu($event));
     }
 
     saveMenu($event: FeMenu) {
-        this.store.dispatch(FeMenuActions.saveMenu($event));
+        this.store.dispatch(new FeMenuActions.SaveMenu($event));
     }
 
     removeMenu($event: FeMenu) {
-        this.store.dispatch(FeMenuActions.deleteMenu($event));
+        this.store.dispatch(new FeMenuActions.DeleteMenu($event));
     }
 }

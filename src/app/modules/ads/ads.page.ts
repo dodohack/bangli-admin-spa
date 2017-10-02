@@ -16,7 +16,7 @@ import { AppState }          from '../../reducers';
 import { GMT }               from '../../helper';
 import { zh_CN }             from '../../localization';
 
-@Component({ template: require('./ads.page.html') })
+@Component({ templateUrl: './ads.page.html' })
 export class AdsPage extends EntitiesPage
 {
     // Devices the advertise displays on

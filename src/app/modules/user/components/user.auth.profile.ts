@@ -8,7 +8,7 @@ import { AuthUser }  from '../../../models';
 
 @Component({
     selector: 'user-auth-profile',
-    template: require('./user.auth.profile.html')
+    templateUrl: './user.auth.profile.html'
 })
 export class UserAuthProfileTab
 {

@@ -9,7 +9,7 @@ import { zh_CN } from '../../localization';
 
 @Component({
     selector: 'fast-edit-post-form',
-    template: require('./fast-edit-post-form.html')
+    templateUrl: './fast-edit-post-form.html'
 })
 export class FastEditPostFormComponent implements AfterContentInit {
 

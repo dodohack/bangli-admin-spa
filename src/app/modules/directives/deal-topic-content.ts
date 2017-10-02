@@ -8,7 +8,7 @@ import { Entity }  from '../../models';
 
 @Component({
     selector: 'deal-topic-content',
-    template: require('./deal-topic-content.html'),
+    templateUrl: './deal-topic-content.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DealTopicContent {

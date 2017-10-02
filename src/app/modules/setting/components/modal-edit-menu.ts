@@ -11,7 +11,7 @@ import { Channel }           from "../../../models";
 
 @Component({
     selector: 'modal-edit-menu',
-    template: require('./modal-edit-menu.html'),
+    templateUrl: './modal-edit-menu.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ModalEditMenu

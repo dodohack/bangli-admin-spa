@@ -8,7 +8,7 @@ import { zh_CN }       from '../../localization';
 
 @Component({
     selector: 'editor-page-header',
-    template: require('./editor-page-header.html')
+    templateUrl: './editor-page-header.html'
 })
 export class EditorPageHeader {
     // Entity url slug

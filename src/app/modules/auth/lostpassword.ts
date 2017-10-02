@@ -4,10 +4,7 @@
 
 import { Component } from '@angular/core';
 
-let template = require('./lostpassword.html');
-@Component({
-    template: template
-})
+@Component({ templateUrl: './lostpassword.html' })
 export class LostPasswordPage
 {
     constructor() {}

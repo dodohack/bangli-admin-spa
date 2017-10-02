@@ -16,7 +16,7 @@ import { zh_CN }             from '../../localization';
 
 import { getPageStates }     from '../../reducers';
 
-@Component({ template: require('./pages.page.html') })
+@Component({ templateUrl: './pages.page.html' })
 export class PagesPage extends EntitiesPage
 {
     pageStates$:  Observable<any>;
