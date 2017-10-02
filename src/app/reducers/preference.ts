@@ -3,8 +3,9 @@
  */
 import { Action } from '@ngrx/store';
 
-import { PreferenceActions } from '../actions';
-import { Preference }        from '../models';
+import { Preference } from '../models';
+import * as pref      from '../actions/preference';
+
 
 export type PreferenceState = Preference;
 const initialState: PreferenceState = {
@@ -17,47 +18,47 @@ const initialState: PreferenceState = {
     mySidebarMenus: []
 }
 
-export default function(state = initialState, action: Action): PreferenceState {
+export default function(state = initialState, action: pref.Actions | any): PreferenceState {
     switch (action.type)
     {
-        case PreferenceActions.TOGGLE_SIDEBAR: {
+        case pref.TOGGLE_SIDEBAR: {
             return Object.assign({}, state, {
                 isIconSidebar: !state.isIconSidebar
             });
         }
 
-        case PreferenceActions.CHANGE_MENU_BACKGROUND: {
+        case pref.CHANGE_MENU_BACKGROUND: {
             return Object.assign({}, state, {
                 menuBackgroundColor: action.payload
             });
         }
 
-        case PreferenceActions.CHANGE_MENU_COLOR: {
+        case pref.CHANGE_MENU_COLOR: {
             return Object.assign({}, state, {
                 menuColor: action.payload
             });
         }
             
-        case PreferenceActions.SET_LIST_ITEM_COUNT: {
+        case pref.SET_LIST_ITEM_COUNT: {
             return Object.assign({}, state, {
                 listItemCount: action.payload
             });
         }
             
-        case PreferenceActions.TOGGLE_RICH_LIST: {
+        case pref.TOGGLE_RICH_LIST: {
             return Object.assign({}, state, {
                 isRichList: !state.isRichList
             });
         }
             
-        case PreferenceActions.ADD_TOPBAR_MENU: {
+        case pref.ADD_TOPBAR_MENU: {
             return Object.assign({}, state, {
                 myTopbarMenus: [...state.myTopbarMenus, action.payload]
             });
 
         }
             
-        case PreferenceActions.REMOVE_TOPBAR_MENU: {
+        case pref.REMOVE_TOPBAR_MENU: {
             return Object.assign({}, state, {
                 myTopbarMenus: state.myTopbarMenus.filter(
                     menu => menu.url != action.payload.url
@@ -65,13 +66,13 @@ export default function(state = initialState, action: Action): PreferenceState {
             });
         }
             
-        case PreferenceActions.ADD_SIDEBAR_MENU: {
+        case pref.ADD_SIDEBAR_MENU: {
             return Object.assign({}, state, {
                mySidebarMenus: [...state.mySidebarMenus, action.payload]
             });
         }
             
-        case PreferenceActions.REMOVE_SIDEBAR_MENU: {
+        case pref.REMOVE_SIDEBAR_MENU: {
             return Object.assign({}, state, {
                mySidebarMenus: state.mySidebarMenus.filter(
                    menu => menu.url != action.payload.url
@@ -79,7 +80,7 @@ export default function(state = initialState, action: Action): PreferenceState {
             });
         }
             
-        case PreferenceActions.SAVE: {
+        case pref.SAVE: {
             return Object.assign({}, action.payload);
         }
 

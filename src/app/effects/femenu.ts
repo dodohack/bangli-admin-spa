@@ -10,8 +10,9 @@ import { CacheSingleton }  from './cache.singleton';
 import { APIS, API_PATH }  from '../api';
 import { FeMenu }          from '../models';
 import { FeMenusState }    from '../reducers/femenus';
-import { FeMenuActions }   from '../actions';
-import { AlertActions }    from '../actions';
+
+import * as menu  from '../actions/femenu';
+import * as alert from '../actions/alert';
 
 @Injectable()
 export class FeMenuEffects {
@@ -28,28 +29,28 @@ export class FeMenuEffects {
         });
     }
 
-    @Effect() loadAll$ = this.actions$.ofType(FeMenuActions.LOAD_ALL)
+    @Effect() loadAll$ = this.actions$.ofType(menu.LOAD_ALL)
         .switchMap(() => this.getAll()
-            .map(menus => FeMenuActions.loadAllSuccess(menus))
-            .catch(() => Observable.of(FeMenuActions.loadAllFail()))
+            .map(menus => new menu.LoadAllSuccess(menus))
+            .catch(() => Observable.of(new menu.LoadAllFail()))
         );
 
-    @Effect() saveMenu$ = this.actions$.ofType(FeMenuActions.SAVE_MENU)
+    @Effect() saveMenu$ = this.actions$.ofType(menu.SAVE_MENU)
         .switchMap(action => this.putMenu(action.payload)
-            .map(() => AlertActions.success("保存目录成功"))
-            .catch(() => Observable.of(AlertActions.error("保存目录失败")))
+            .map(() => new alert.Success("保存目录成功"))
+            .catch(() => Observable.of(new alert.Error("保存目录失败")))
         );
 
-    @Effect() addMenu$ = this.actions$.ofType(FeMenuActions.ADD_MENU)
+    @Effect() addMenu$ = this.actions$.ofType(menu.ADD_MENU)
         .switchMap(action => this.postMenu(action.payload)
-            .map(() => AlertActions.success("新增目录成功"))
-            .catch(() => Observable.of(AlertActions.error("新增目录失败")))
+            .map(() => new alert.Success("新增目录成功"))
+            .catch(() => Observable.of(new alert.Error("新增目录失败")))
         );
 
-    @Effect() deleteMenu$ = this.actions$.ofType(FeMenuActions.DELETE_MENU)
+    @Effect() deleteMenu$ = this.actions$.ofType(menu.DELETE_MENU)
         .switchMap(action => this.deleteMenu(action.payload)
-            .map(() => AlertActions.success("删除目录成功"))
-            .catch(() => Observable.of(AlertActions.error("删除目录失败")))
+            .map(() => new alert.Success("删除目录成功"))
+            .catch(() => Observable.of(new alert.Error("删除目录失败")))
         );
 
     //////////////////////////////////////////////////////////////////////////

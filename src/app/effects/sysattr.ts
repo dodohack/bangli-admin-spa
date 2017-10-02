@@ -9,7 +9,7 @@ import { Observable }                    from 'rxjs/Observable';
 import { CacheSingleton }   from './cache.singleton';
 import { APIS, API_PATH }   from '../api';
 import { SysAttrsState }    from '../reducers/sysattrs';
-import { SysAttrActions }   from '../actions';
+import * as sys             from '../actions/sysattr';
 
 @Injectable()
 export class SysAttrEffects {
@@ -18,10 +18,10 @@ export class SysAttrEffects {
     constructor(private actions$: Actions,
                 private http: Http) { }
 
-    @Effect() loadAll$ = this.actions$.ofType(SysAttrActions.LOAD_ALL)
+    @Effect() loadAll$ = this.actions$.ofType(sys.LOAD_ALL)
         .switchMap(action => this.getAll(action.payload)
-            .map(attrs => SysAttrActions.loadAllSuccess(attrs))
-            .catch(() => Observable.of(SysAttrActions.loadAllFail())));
+            .map(attrs => new sys.LoadAllSuccess(attrs))
+            .catch(() => Observable.of(new sys.LoadAllFail())));
 
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions

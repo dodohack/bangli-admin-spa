@@ -6,10 +6,11 @@ import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { Action }     from '@ngrx/store';
 
-import { AuthActions } from '../actions';
 import { Domain }      from '../models';
 import { JwtPayload }  from '../models';
 import { User }        from '../models';
+import * as auth       from '../actions/auth';
+
 
 var jwtDecode = require('jwt-decode');
 
@@ -50,10 +51,10 @@ const initialState: AuthState = {
     users: {}
 };
 
-export default function(state = initialState, action: Action): AuthState {
+export default function(state = initialState, action: auth.Actions | any): AuthState {
     switch (action.type)
     {
-        case AuthActions.LOGIN_SUCCESS: {
+        case auth.LOGIN_SUCCESS: {
             const token: string     = action.payload.token;
             const domains: Domain[] = action.payload.domains;
 
@@ -85,7 +86,7 @@ export default function(state = initialState, action: Action): AuthState {
         // Set the latencies start to current msecond for all domains
         // and set end to the same as start, so we got the latency by doing
         // end - start
-        case AuthActions.PING_DOMAINS: {
+        case auth.PING_DOMAINS: {
             let timestamp = Math.round(performance.now());
 
             const latencyEntities = state.keys.reduce(
@@ -100,7 +101,7 @@ export default function(state = initialState, action: Action): AuthState {
         }
 
         // Update latencies.'end' for given domain
-        case AuthActions.PING_DOMAIN_SUCCESS: {
+        case auth.PING_DOMAIN_SUCCESS: {
 
             // Network problem will trigger empty payload
             if (!action.payload) return state;
@@ -117,7 +118,7 @@ export default function(state = initialState, action: Action): AuthState {
             return Object.assign({}, state, {latencies: latencies});
         }
 
-        case AuthActions.LOGIN_DOMAIN: {
+        case auth.LOGIN_DOMAIN: {
             // Record latest domain key as the default key for next time app
             // start
             if (action.payload)
@@ -132,7 +133,7 @@ export default function(state = initialState, action: Action): AuthState {
                 });
         }
 
-        case AuthActions.LOGIN_DOMAIN_SUCCESS: {
+        case auth.LOGIN_DOMAIN_SUCCESS: {
             const user = { [state.key]: action.payload.user };
             // Append domain specific user profile to state.users
             return Object.assign({}, state, {
@@ -143,11 +144,11 @@ export default function(state = initialState, action: Action): AuthState {
         }
 
         // Clear state if any failures or logout
-        case AuthActions.LOGIN_FAIL:
-        case AuthActions.LOGIN_FAIL_NO_DOMAIN:
-        case AuthActions.LOGIN_DOMAIN_FAIL:
-        case AuthActions.LOGIN_DOMAIN_FAIL_NO_PERMISSION:
-        case AuthActions.LOGOUT: {
+        case auth.LOGIN_FAIL:
+        case auth.LOGIN_FAIL_NO_DOMAIN:
+        case auth.LOGIN_DOMAIN_FAIL:
+        case auth.LOGIN_DOMAIN_FAIL_NO_PERMISSION:
+        case auth.LOGOUT: {
             return initialState;
         }
 
@@ -157,90 +158,50 @@ export default function(state = initialState, action: Action): AuthState {
 }
 
 /*****************************************************************************
- * These following reducer functions can't be used withour selecting AuthState
+ * These following reducer functions can't be used without selecting AuthState
  * from AppState in reducers/index.ts
  *****************************************************************************/
 
-export function getAuthToken() {
-    return (state$: Observable<AuthState>) => state$
-        .select(auth => auth.token);
-}
+export const getAuthToken = (state: AuthState) => state.token;
 
-export function getAuthJwt() {
-    return (state$: Observable<AuthState>) => state$
-        .select(auth => auth.jwt);
-}
+export const getAuthJwt = (state: AuthState) => state.jwt;
 
-export function getAuthFail() {
-    return (state$: Observable<AuthState>) => state$
-        .map(auth => auth.failure); //.filter(f => f);
-}
+export const getAuthFail = (state: AuthState) => state.failure;
 
-export function getDomainKeys() {
-    return (state$: Observable<AuthState>) => state$
-        .select(auth => auth.keys);
-}
+export const getDomainKeys = (state: AuthState) => state.keys;
 
-export function getDomains() {
-    return (state$: Observable<AuthState>) => state$
-        .select(auth => auth.domains);
-}
+export const getDomains = (state: AuthState) => state.domains;
 
-export function getDomainLatencies() {
-    return (state$: Observable<AuthState>) => state$
-        .select(auth => auth.latencies);
-}
+export const getDomainLatencies = (state: AuthState) => state.latencies;
 
-export function getProfiles() {
-    return (state$: Observable<AuthState>) => state$
-        .select(auth => auth.users);
-}
+export const getProfiles = (state: AuthState) => state.users;
 
-export function getCurDomainKey() {
-    return (state$: Observable<AuthState>) => state$
-        .select(auth => auth.key);
-}
+export const getCurDomainKey = (state: AuthState) => state.key;
 
-export function getCurDomain() {
-    return (state$: Observable<AuthState>) => state$
-        .map(auth => auth.domains[auth.key]);
-}
+export const getCurDomain = (state: AuthState) => state.domains[state.key];
 
 /**
  * If user profile of current domain is loaded(via AuthActions.loginDomain)
  */
-export function hasCurProfile() {
-    return (state$: Observable<AuthState>) => state$
-        .map(auth => typeof auth.users[auth.key] != 'undefined');
-}
+export const hasCurProfile = (state: AuthState) => typeof state.users[state.key] != 'undefined';
 
 /**
  * Get user profile of current domain
  */
-export function getCurProfile() {
-    return (state$: Observable<AuthState>) => state$
-        .map(auth => auth.users[auth.key]);
-}
+export const getCurProfile = (state: AuthState) => state.users[state.key];
 
 /**
  * Get current user id of current domain
  */
-export function getMyId() {
-    return (state$: Observable<AuthState>) => state$
-        .filter(auth => auth.users[auth.key] != undefined)
-        .map(auth => auth.users[auth.key].id);
-}
+export const getMyId = (state: AuthState) => hasCurProfile(state) && state.users[state.key].id;
 
 /**
  * Get user role of current domain
  */
-export function getMyRoleName() {
-    return (state$: Observable<AuthState>) => state$
-        .map(auth => auth.users[auth.key].role.name);
-}
+export const getMyRoleName = (state: AuthState) => state.users[state.key].role.name;
 
 /**
- * Check if currnet user has given role in 'name'
+ * Check if current user has given role in 'name'
  */
 export function hasRole(name: string) {
     return (state$: Observable<AuthState>) => state$.select(auth => {
@@ -268,61 +229,51 @@ export function hasRole(name: string) {
 /**
  * If user token is valid and can manage any domain
  */
-export function isDashboardUser() {
-    return (state$: Observable<AuthState>) => state$.select(auth => {
-        let now = Math.floor(Date.now()/1000);
-        if (auth.jwt && auth.jwt.exp > now && auth.key)
-            return true;
-        return false;
-    });
-}
+export const isDashboardUser = (state: AuthState) => {
+    let now = Math.floor(Date.now()/1000);
+    if (state.jwt && state.jwt.exp > now && state.key)
+        return true;
+    return false;
+};
 
-export function hasAuthorRole() {
-    return (state$: Observable<AuthState>) => state$.select(auth => {
-        let now = Math.floor(Date.now()/1000);
-        return (auth.jwt && auth.jwt.exp > now && auth.key &&
-            (auth.users[auth.key].role.name === 'author'         ||
-             auth.users[auth.key].role.name === 'editor'         ||
-             auth.users[auth.key].role.name === 'shop_manager'   ||
-             auth.users[auth.key].role.name === 'administrator'  ||
-             auth.jwt.spu === 1));
-    });
-}
+export const hasAuthorRole = (state: AuthState) => {
+    let now = Math.floor(Date.now()/1000);
+    return (state.jwt && state.jwt.exp > now && state.key &&
+    (state.users[state.key].role.name === 'author'         ||
+    state.users[state.key].role.name === 'editor'         ||
+    state.users[state.key].role.name === 'shop_manager'   ||
+    state.users[state.key].role.name === 'administrator'  ||
+    state.jwt.spu === 1));
 
-export function hasEditorRole() {
-    return (state$: Observable<AuthState>) => state$.select(auth => {
-        let now = Math.floor(Date.now()/1000);
-        return (auth.jwt && auth.jwt.exp > now && auth.key &&
-            (auth.users[auth.key].role.name === 'editor'        ||
-             auth.users[auth.key].role.name === 'shop_manager'  ||
-             auth.users[auth.key].role.name === 'administrator' ||
-             auth.jwt.spu === 1));
-    });
-}
+};
 
-export function hasShopManagerRole() {
-    return (state$: Observable<AuthState>) => state$.select(auth => {
-        let now = Math.floor(Date.now()/1000);
-        return (auth.jwt && auth.jwt.exp > now && auth.key &&
-            (auth.users[auth.key].role.name === 'shop_manager'  ||
-             auth.users[auth.key].role.name === 'administrator' ||
-             auth.jwt.spu === 1));
-    });
-}
+export const hasEditorRole = (state: AuthState) => {
+    let now = Math.floor(Date.now()/1000);
+    return (state.jwt && state.jwt.exp > now && state.key &&
+    (state.users[state.key].role.name === 'editor'        ||
+    state.users[state.key].role.name === 'shop_manager'  ||
+    state.users[state.key].role.name === 'administrator' ||
+    state.jwt.spu === 1));
+};
 
-export function hasAdminRole() {
-    return (state$: Observable<AuthState>) => state$.select(auth => {
-        let now = Math.floor(Date.now()/1000);
-        return (auth.jwt && auth.jwt.exp > now && auth.key &&
-            (auth.users[auth.key].role.name === 'administrator' ||
-             auth.jwt.spu === 1));
-    });
-}
+export const hasShopManagerRole = (state: AuthState) => {
+    let now = Math.floor(Date.now()/1000);
+    return (state.jwt && state.jwt.exp > now && state.key &&
+    (state.users[state.key].role.name === 'shop_manager'  ||
+    state.users[state.key].role.name === 'administrator' ||
+    state.jwt.spu === 1));
+};
 
-export function hasSuperUserRole() {
-    return (state$: Observable<AuthState>) => state$.select(auth => {
-        let now = Math.floor(Date.now()/1000);
-        return (auth.jwt && auth.jwt.exp > now && auth.key &&
-                auth.jwt.spu === 1);
-    });
-}
+export const hasAdminRole = (state: AuthState) => {
+    let now = Math.floor(Date.now()/1000);
+    return (state.jwt && state.jwt.exp > now && state.key &&
+    (state.users[state.key].role.name === 'administrator' ||
+    state.jwt.spu === 1));
+};
+
+export const hasSuperUserRole = (state: AuthState) => {
+    let now = Math.floor(Date.now()/1000);
+    return (state.jwt && state.jwt.exp > now && state.key &&
+    state.jwt.spu === 1);
+};
+

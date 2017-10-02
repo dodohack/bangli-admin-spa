@@ -5,13 +5,15 @@
 import { Injectable }                      from '@angular/core';
 import { Http, Headers, RequestOptions }   from '@angular/http';
 import { Effect, Actions }                 from '@ngrx/effects';
+import { Action }                          from '@ngrx/store';
 import { Observable }                      from 'rxjs/Observable';
 
 import { CacheSingleton }          from './cache.singleton';
 import { AUTH, APIS, API_PATH }    from '../api';
-import { AuthActions }             from '../actions';
 import { AuthUser, User }          from '../models';
-import { AlertActions }            from '../actions';
+
+import * as AuthA     from '../actions/auth';
+import * as AlertA    from '../actions/alert';
 
 @Injectable()
 export class AuthEffects {
@@ -29,75 +31,75 @@ export class AuthEffects {
     /**
      * Step 1. Login authentication server
      */
-    @Effect() login$ = this.actions$.ofType(AuthActions.LOGIN)
+    @Effect() login$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN)
         .switchMap(action => this.login(action.payload)
             .map(user => {
                 if (user.domains.length)
-                    return AuthActions.loginSuccess(user);
+                    return new AuthA.LoginSuccess(user);
                 else
-                    return AuthActions.loginFailNoDomain();
+                    return new AuthA.LoginFailNoDomain();
             })
-            .catch(() => Observable.of(AuthActions.loginFail()))
+            .catch(() => Observable.of(new AuthA.LoginFail()))
         );
 
     /**
      * Step 2. Switch or login to default application server
      */
-    @Effect() loginDomain$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN)
+    @Effect() loginDomain$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_DOMAIN)
         .switchMap(action => this.loginDomain(action.payload)
             .map(res => {
                 if (this.hasDashboardUserRole(res.user)) {
                     // Clean previous cache when login domain success
                     this.cache.clean();
-                    return AuthActions.loginDomainSuccess(res);
+                    return new AuthA.LoginDomainSuccess(res);
                 } else {
-                    return AuthActions.loginDomainFailNoPermission();
+                    return new AuthA.LoginDomainFailNoPermission();
                 }
             })
-            .catch(() => Observable.of(AuthActions.loginDomainFail()))
+            .catch(() => Observable.of(new AuthA.LoginDomainFail()))
         );
 
-    @Effect() loginFail1$ = this.actions$.ofType(AuthActions.LOGIN_FAIL)
-        .map(action => AlertActions.error('登录授权服务器失败!'));
+    @Effect() loginFail1$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_FAIL)
+        .map(action => new AlertA.Error('登录授权服务器失败!'));
 
-    @Effect() loginFail2$ = this.actions$.ofType(AuthActions.LOGIN_FAIL_NO_DOMAIN)
-        .map(action => AlertActions.error('无权使用任何站点,请联系管理员开通权限!'));
+    @Effect() loginFail2$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_FAIL_NO_DOMAIN)
+        .map(action => new AlertA.Error('无权使用任何站点,请联系管理员开通权限!'));
 
     /**
      * Clean session cache for logout 
      */
-    @Effect() logout$ = this.actions$.ofType(AuthActions.LOGOUT)
+    @Effect() logout$: Observable<Action> = this.actions$.ofType(AuthA.LOGOUT)
         .map(() => this.logout());
 
     /**
      * Each app server returns the domainKey so we know which server is
      * returned, we use the domainKey to update corresponding latency entry
      */
-    @Effect() pingDomains$ = this.actions$.ofType(AuthActions.PING_DOMAINS)
+    @Effect() pingDomains$: Observable<Action> = this.actions$.ofType(AuthA.PING_DOMAINS)
         .switchMap(() => this.pingDomains()
-            .map(domainKey => AuthActions.pingDomainSuccess(domainKey))
-            .catch(() => Observable.of(AuthActions.pingDomainFail())));
+            .map(domainKey => new AuthA.PingDomainSuccess(domainKey))
+            .catch(() => Observable.of(new AuthA.PingDomainFail())));
 
 
-    @Effect() loginDomainFail1$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN_FAIL)
-        .map(res => AlertActions.error('登录应用服务器失败!'));
+    @Effect() loginDomainFail1$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_DOMAIN_FAIL)
+        .map(res => new AlertA.Error('登录应用服务器失败!'));
 
-    @Effect() loginDomainFail2$ = this.actions$.ofType(AuthActions.LOGIN_DOMAIN_FAIL_NO_PERMISSION)
-        .map(res => AlertActions.error('你无权管理此站点,请联系管理员开通权限!'));
+    @Effect() loginDomainFail2$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_DOMAIN_FAIL_NO_PERMISSION)
+        .map(res => new AlertA.Error('你无权管理此站点,请联系管理员开通权限!'));
 
     /**
      * Register a user to auth server
      */
-    @Effect() register$ = this.actions$.ofType(AuthActions.REGISTER)
+    @Effect() register$: Observable<Action> = this.actions$.ofType(AuthA.REGISTER)
         .switchMap(action => this.register(action.payload)
-            .map(res => AuthActions.registerSuccess(res))
-            .catch(() => Observable.of(AuthActions.registerFail())));
+            .map(res => new AuthA.RegisterSuccess(res))
+            .catch(() => Observable.of(new AuthA.RegisterFail())));
 
-    @Effect() registerSuccess$ = this.actions$.ofType(AuthActions.REGISTER_SUCCESS)
-        .map(action => AlertActions.success("注册成功,请联系管理员开通后台权限"));
+    @Effect() registerSuccess$: Observable<Action> = this.actions$.ofType(AuthA.REGISTER_SUCCESS)
+        .map(action => new AlertA.Success("注册成功,请联系管理员开通后台权限"));
 
-    @Effect() registerFail$ = this.actions$.ofType(AuthActions.REGISTER_FAIL)
-        .map(action => AlertActions.error("注册失败"));
+    @Effect() registerFail$: Observable<Action> = this.actions$.ofType(AuthA.REGISTER_FAIL)
+        .map(action => new AlertA.Error("注册失败"));
 
 
     //////////////////////////////////////////////////////////////////////////

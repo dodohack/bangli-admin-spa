@@ -1,24 +1,33 @@
 /**
  * Action to show alert at fixed position(bottom left).
  */
-export class AlertActions {
-    static SUCCESS = '[Alert] Success';
-    static success(msg: string) {
-        return { type: AlertActions.SUCCESS, payload: msg }
-    }
+import { Action } from '@ngrx/store';
 
-    static INFO    = '[Alert] Info';
-    static info(msg: string) {
-        return { type: AlertActions.INFO, payload: msg }
-    }
+export const SUCCESS = '[Alert] Success';
+export const INFO    = '[Alert] Info';
+export const WARNING = '[Alert] Warning';
+export const ERROR   = '[Alert] Error';
 
-    static WARNING = '[Alert] Warning';
-    static warning(msg: string) {
-        return { type: AlertActions.WARNING, payload: msg }
-    }
-    
-    static ERROR   = '[Alert] Error';
-    static error(msg: string) {
-        return { type: AlertActions.ERROR, payload: msg }
-    }
+export class Success implements Action {
+    readonly type = SUCCESS;
+    constructor(public payload: string) {}
 }
+
+export class Info implements Action {
+    readonly type = INFO;
+    constructor(public payload: string) {}
+}
+
+export class Warning implements Action {
+    readonly type = WARNING;
+    constructor(public payload: string) {}
+}
+export class Error implements Action {
+    readonly type = ERROR;
+    constructor(public payload: string) {}
+}
+
+export type Actions = Success
+    | Info
+    | Warning
+    | Error;

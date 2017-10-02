@@ -1,22 +1,15 @@
-/**
- * The compose function is one of our most handy tools. In basic terms, you give
- * it any number of functions and it returns a function. This new function
- * takes a value and chains it through every composed function, returning
- * the output.
- *
- * More: https://drboolean.gitbooks.io/mostly-adequate-guide/content/ch5.html
- */
-import { compose }         from '@ngrx/core/compose';
+import {
+    ActionReducerMap,
+    createSelector,
+    createFeatureSelector,
+    ActionReducer,
+    MetaReducer
+} from '@ngrx/store';
+import * as fromRouter from '@ngrx/router-store';
 
-/**
- * combineReducers is another useful metareducer that takes a map of reducer
- * functions and creates a new reducer that stores the gathers the values
- * of each reducer and stores them using the reducer's key. Think of it
- * almost like a database, where every reducer is a table in the db.
- *
- * More: https://egghead.io/lessons/javascript-redux-implementing-combinereducers-from-scratch
- */
-import { combineReducers } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+
+import { environment } from '../../environments/environment';
 
 /**
  * Syncing between ngrx/store and browser local storage
@@ -45,7 +38,6 @@ import authReducer, * as fromAuth         from './auth';
 import usersReducer, * as fromUsers       from './users';
 import prefReducer, * as fromPref         from './preference';
 import cmsReducer, * as fromCms           from './cmsattrs';
-import shopReducer, * as fromShop         from './shopattrs';
 import sysReducer, * as fromSys           from './sysattrs';
 import feMenuReducer, * as fromFeMenu     from './femenus';
 
@@ -60,12 +52,6 @@ import { adsReducer }    from './entities';
 import { attachsReducer }  from './entities';
 import { emailsReducer }   from './entities';
 import { commentsReducer } from './entities';
-import { productsReducer } from './entities';
-import { ordersReducer }   from './entities';
-import { vouchersReducer } from './entities';
-
-
-import { Observable } from 'rxjs/Observable';
 
 import { User }        from '../models';
 import { ENTITY_INFO } from '../models';
@@ -80,7 +66,6 @@ export interface AppState {
     users:    fromUsers.UsersState;
     pref:     fromPref.PreferenceState;
     cms:      fromCms.CmsAttrsState;
-    shop:     fromShop.ShopAttrsState;
     sys:      fromSys.SysAttrsState;
     femenu:   fromFeMenu.FeMenusState;
     posts:    EntitiesState;
@@ -92,35 +77,15 @@ export interface AppState {
     newsletters: EntitiesState;
     attachments: EntitiesState;
     comments: EntitiesState;
-    products: EntitiesState;
-    orders:   EntitiesState;
-    vouchers: EntitiesState;
+    routerReducer: fromRouter.RouterReducerState<RouterStateUrl>
 }
 
-
-/**
- * Because metareducers take a reducer function and return a new reducer,
- * we can use our compose helper to chain them together. Here we are
- * using combineReducers to make our top level reducer, and then
- * wrapping that in storeLogger. Remember that compose applies
- * the result from right to left.
- */
-/**
- * We cache data that does not change frequently into localStorage by using
- * localStorageSync, instead of our own cache solution.
- */
-export default compose(
-    storeFreeze, storeLogger(),
-    localStorageSync(['auth', 'pref', 'cms'], true),
-    combineReducers
-)
-({
+export const reducers: ActionReducerMap<AppState> = {
     alerts:   alertsReducer,
     auth:     authReducer,
     users:    usersReducer,
     pref:     prefReducer,
     cms:      cmsReducer,
-    shop:     shopReducer,
     sys:      sysReducer,
     femenu:   feMenuReducer,
     posts:    postsReducer,
@@ -132,100 +97,75 @@ export default compose(
     newsletters: emailsReducer,
     attachments: attachsReducer,
     comments:    commentsReducer,
-    products: productsReducer,
-    orders:   ordersReducer,
-    vouchers: vouchersReducer,
-});
+};
+
+// Console.log all actions
+export function logger(reducer: ActionReducer<AppState>): ActionReducer<AppState> {
+    return storeLogger()(reducer);
+}
+
+/**
+ * We cache data that does not change frequently into localStorage by using
+ * localStorageSync, instead of our own cache solution.
+ */
+export function localStorageCache(reducer: ActionReducer<AppState>): ActionReducer<AppState> {
+    return localStorageSync(['auth', 'pref', 'cms'], true)(reducer);
+}
+
+/**
+ * By default, @ngrx/store uses combineReducers with the reducer map to compose
+ * the root meta-reducer. To add more meta-reducers, provide an array of
+ * meta-reducers that will be composed to from the root meta-reducer.
+ */
+export const metaReducers: MetaReducer<AppState>[] = !environment.production
+    ? [localStorageCache, logger, storeFreeze]
+    : [localStorageCache];
 
 /*****************************************************************************
  * Auth
  *****************************************************************************/
 
 /* Get AuthState from current AppState */
-export function getAuthState() {
-    return (state$: Observable<AppState>) =>
-        state$.select(s => s.auth);
-}
+export const getAuthState = (state: AppState) => state.auth;
 
-export function getAuthToken() {
-    return compose(fromAuth.getAuthToken(), getAuthState());
-}
+export const getAuthToken = createSelector(getAuthState, fromAuth.getAuthToken);
 
-export function getAuthJwt() {
-    return compose(fromAuth.getAuthJwt(), getAuthState());
-}
+export const getAuthJwt = createSelector(getAuthState, fromAuth.getAuthJwt);
 
-export function getDomainKeys() {
-    return compose(fromAuth.getDomainKeys(), getAuthState());
-}
+export const getDomainKeys = createSelector(getAuthState, fromAuth.getDomainKeys);
 
-export function getDomains() {
-    return compose(fromAuth.getDomains(), getAuthState());
-}
+export const getDomains = createSelector(getAuthState, fromAuth.getDomains);
 
-export function getDomainLatencies() {
-    return compose(fromAuth.getDomainLatencies(), getAuthState());
-}
+export const getDomainLatencies = createSelector(getAuthState, fromAuth.getDomainLatencies);
 
-export function getProfiles() {
-    return compose(fromAuth.getProfiles(), getAuthState());
-}
+export const getProfiles = createSelector(getAuthState, fromAuth.getProfiles);
 
-export function getAuthFail() {
-    return compose(fromAuth.getAuthFail(), getAuthState());
-}
+export const getAuthFail = createSelector(getAuthState, fromAuth.getAuthFail);
 
-export function getCurDomainKey() {
-    return compose(fromAuth.getCurDomainKey(), getAuthState());
-}
+export const getCurDomainKey = createSelector(getAuthState, fromAuth.getCurDomainKey);
 
-export function getCurDomain() {
-    return compose(fromAuth.getCurDomain(), getAuthState());
-}
+export const getCurDomain = createSelector(getAuthState, fromAuth.getCurDomain);
 
-export function hasCurProfile() {
-    return compose(fromAuth.hasCurProfile(), getAuthState());
-}
+export const hasCurProfile = createSelector(getAuthState, fromAuth.hasCurProfile);
 
-export function getCurProfile() {
-    return compose(fromAuth.getCurProfile(), getAuthState());
-}
+export const getCurProfile = createSelector(getAuthState, fromAuth.getCurProfile);
 
-export function getMyId() {
-    return compose(fromAuth.getMyId(), getAuthState());
-}
+export const getMyId = createSelector(getAuthState, fromAuth.getMyId);
 
-export function getMyRoleName() {
-    return compose(fromAuth.getMyRoleName(), getAuthState());
-}
+export const getMyRoleName = createSelector(getAuthState, fromAuth.getMyRoleName);
 
-export function hasRole(name: string) {
-    return compose(fromAuth.hasRole(name), getAuthState());
-}
+// FIXME: Argument to createSelector?
+export const hasRole = (name: string) => createSelector(getAuthState, fromAuth.hasRole(name));
 
-export function isDashboardUser() {
-    return compose(fromAuth.isDashboardUser(), getAuthState());
-}
+export const isDashboardUser = createSelector(getAuthState, fromAuth.isDashboardUser);
 
-export function hasAuthorRole() {
-    return compose(fromAuth.hasAuthorRole(), getAuthState());
-}
+export const hasAuthorRole  = createSelector(getAuthState, fromAuth.hasAuthorRole);
 
-export function hasEditorRole() {
-    return compose(fromAuth.hasEditorRole(), getAuthState());
-}
+export const hasEditorRole = createSelector(getAuthState, fromAuth.hasEditorRole);
 
-export function hasShopManagerRole() {
-    return compose(fromAuth.hasShopManagerRole(), getAuthState());
-}
+export const hasAdminRole = createSelector(getAuthState, fromAuth.hasAdminRole);
 
-export function hasAdminRole() {
-    return compose(fromAuth.hasAdminRole(), getAuthState());
-}
-
-export function hasSuperUserRole() {
-    return compose(fromAuth.hasSuperUserRole(), getAuthState());
-}
+export const hasSuperUserRole = createSelector(getAuthState, fromAuth.hasSuperUserRole);
 
 
 /*****************************************************************************
@@ -233,89 +173,48 @@ export function hasSuperUserRole() {
  *****************************************************************************/
 
 /* Get CmsAttrsState from current AppState */
-export function getCmsAttrsState() {
-    return (state$: Observable<AppState>) => state$.select(s => s.cms);
-}
+export const getCmsState = (state: AppState) => state.cms;
 
-export function getAuthors() {
-    return compose(fromCms.getAuthors(), getCmsAttrsState());
-}
+export const getAuthors = createSelector(getCmsState, fromCms.getAuthors);
 
-export function getAuthorsObject() {
-    return compose(fromCms.getAuthorsObject(), getCmsAttrsState());
-}
+export const getAuthorsObject = createSelector(getCmsState, fromCms.getAuthorsObject);
 
-export function getEditors() {
-    return compose(fromCms.getEditors(), getCmsAttrsState());
-}
+export const getEditors = createSelector(getCmsState, fromCms.getEditors);
 
-export function getEditorsObject() {
-    return compose(fromCms.getEditorsObject(), getCmsAttrsState());
-}
+export const getEditorsObject = createSelector(getCmsState, fromCms.getEditorsObject);
 
-export function getCmsCurChannel() {
-    return compose(fromCms.getCurChannel(), getCmsAttrsState());
-}
+export const getCmsCurChannel = createSelector(getCmsState, fromCms.getCurChannel);
 
-export function getCmsChannels() {
-    return compose(fromCms.getChannels(), getCmsAttrsState());
-}
+export const getCmsChannels = createSelector(getCmsState, fromCms.getChannels);
 
-export function getCmsChannelsObject() {
-    return compose(fromCms.getChannelsObject(), getCmsAttrsState());
-}
+export const getCmsChannelsObject = createSelector(getCmsState, fromCms.getChannelsObject);
 
-export function getCmsCategories() {
-    return compose(fromCms.getCategories(), getCmsAttrsState());
-}
+export const getCmsCategories = createSelector(getCmsState, fromCms.getCategories);
 
-export function getCmsCurChannelCategories() {
-    return compose(fromCms.getCurChannelCategories(), getCmsAttrsState());
-}
+export const getCmsCurChannelCategories = createSelector(getCmsState, fromCms.getCurChannelCategories);
 
-export function getCmsTopicTypes() {
-    return compose(fromCms.getTopicTypes(), getCmsAttrsState());
-}
+export const getCmsTopicTypes = createSelector(getCmsState, fromCms.getTopicTypes);
 
-export function getCmsCurChannelTopicTypes() {
-    return compose(fromCms.getCurChannelTopicTypes(), getCmsAttrsState());
-}
+export const getCmsCurChannelTopicTypes = createSelector(getCmsState, fromCms.getCurChannelTopicTypes);
 
-export function getCmsTopics() {
-    return compose(fromCms.getTopics(), getCmsAttrsState());
-}
+export const getCmsTopics = createSelector(getCmsState, fromCms.getTopics);
 
-export function getLocations() {
-    return compose(fromCms.getLocations(), getCmsAttrsState());
-}
+export const getLocations = createSelector(getCmsState, fromCms.getLocations);
 
-export function getPostStates() {
-    return compose(fromCms.getPostStates(), getCmsAttrsState());
-}
+export const getPostStates = createSelector(getCmsState, fromCms.getPostStates);
 
-export function getDealStates() {
-    return compose(fromCms.getDealStates(), getCmsAttrsState());
-}
+export const getDealStates = createSelector(getCmsState, fromCms.getDealStates);
 
-export function getPageStates() {
-    return compose(fromCms.getPageStates(), getCmsAttrsState());
-}
+export const getPageStates = createSelector(getCmsState, fromCms.getPageStates);
 
-export function getTopicStates() {
-    return compose(fromCms.getTopicStates(), getCmsAttrsState());
-}
+export const getTopicStates = createSelector(getCmsState, fromCms.getTopicStates);
 
 /*****************************************************************************
  * User
  *****************************************************************************/
-export function getUsersState() {
-    return (state$: Observable<AppState>) =>
-        state$.select(s => s.users);
-}
+export const getUsersState = (state: AppState) => state.users;
 
-export function isMyProfileUUID(uuid: string) {
-    return compose(fromUsers.isMyProfile(uuid), getUsersState());
-}
+export const isMyProfileUUID = (uuid: string) => createSelector(getUsersState, fromUsers.isMyProfile(uuid));
 
 /**
  * If the current editing user has the same uuid as current dashboard user
@@ -326,40 +225,24 @@ export function isMyProfile() {
         .switchMap(jwt => state$.let(isMyProfileUUID(jwt.sub)));
 }
 
-export function getUserIds() {
-    return compose(fromUsers.getUserIds(), getUsersState());
-}
+export const getUserIds = createSelector(getUsersState, fromUsers.getUserIds);
 
-export function getUsers() {
-    return compose(fromUsers.getUsers(), getUsersState());
-}
+export const getUsers = createSelector(getUsersState, fromUsers.getUsers);
 
-export function getUser(uuid: string) {
-    return compose(fromUsers.getUser(uuid), getUsersState());
-}
+export const getUser = (uuid: string) => createSelector(getUsersState, fromUsers.getUser(uuid));
 
-export function getAuthUser() {
-    return compose(fromUsers.getAuthUser(), getUsersState());
-}
+export const getAuthUser = createSelector(getUsersState, fromUsers.getAuthUser);
 
 /**
  * Get current user in UsersState.idsEditing
  */
-export function getCurUser() {
-    return compose(fromUsers.getCurUser(), getUsersState());
-}
+export const getCurUser = createSelector(getUsersState, fromUsers.getCurUser);
 
-export function getIsUserLoading() {
-    return compose(fromUsers.getIsUserLoading(), getUsersState());
-}
+export const getIsUserLoading = createSelector(getUsersState, fromUsers.getIsUserLoading);
 
-export function getUserPaginator() {
-    return compose(fromUsers.getUserPaginator(), getUsersState());
-}
+export const getUserPaginator = createSelector(getUsersState, fromUsers.getUserPaginator);
 
-export function getAvailableDomains() {
-    return compose(fromUsers.getAvailableDomains(), getUsersState());
-}
+export const getAvailableDomains = createSelector(getUsersState, fromUsers.getAvailableDomains);
 
 /*****************************************************************************
  * Entities - an entity type is always given
@@ -472,53 +355,30 @@ export function getCurEntityHasDeal(etype: string) {
 }
 
 
-
 /*****************************************************************************
  * System
  *****************************************************************************/
-export function getSysAttrsState() {
-    return (state$: Observable<AppState>) => state$.select(s => s.sys);
-}
+export const getSysState = (state: AppState) => state.sys;
 
-export function getUserRoles() {
-    return compose(fromSys.getUserRoles(), getSysAttrsState());
-}
+export const getUserRoles = createSelector(getSysState, fromSys.getUserRoles);
 
-export function getThumbConfig() {
-    return compose(fromSys.getThumbConfig(), getSysAttrsState());
-}
+export const getThumbConfig = createSelector(getSysState, fromSys.getThumbConfig);
 
 /*****************************************************************************
  * Frontend menu settings
  *****************************************************************************/
-export function getFeMenusState() {
-    return (state$: Observable<AppState>) => state$.select(s => s.femenu);
-}
+export const getFeMenusState = (state: AppState) => state.femenu;
 
-export function getFeRootMenuIds() {
-    return compose(fromFeMenu.getRootMenuIds(), getFeMenusState());
-}
+export const getFeRootMenuIds = createSelector(getFeMenusState, fromFeMenu.getRootMenuIds);
 
-export function getFeRootMenus() {
-    return compose(fromFeMenu.getRootMenus(), getFeMenusState());
-}
+export const getFeRootMenus = createSelector(getFeMenusState, fromFeMenu.getRootMenus);
 
-export function getFeMenuGroupIds() {
-    return compose(fromFeMenu.getMenuGroupIds(), getFeMenusState());
-}
+export const getFeMenuGroupIds = createSelector(getFeMenusState, fromFeMenu.getMenuGroupIds);
 
-export function getFeMenuParentIds() {
-    return compose(fromFeMenu.getMenuParentIds(), getFeMenusState());
-}
+export const getFeMenuParentIds = createSelector(getFeMenusState, fromFeMenu.getMenuParentIds);
 
-export function getFeMenus() {
-    return compose(fromFeMenu.getMenus(), getFeMenusState());
-}
+export const getFeMenus = createSelector(getFeMenusState, fromFeMenu.getMenus);
 
-export function getFeMobileMenus() {
-    return compose(fromFeMenu.getMobileMenus(), getFeMenusState());
-}
+export const getFeMobileMenus = createSelector(getFeMenusState, fromFeMenu.getMobileMenus);
 
-export function getFeDesktopMenus() {
-    return compose(fromFeMenu.getDesktopMenus(), getFeMenusState());
-}
+export const getFeDesktopMenus= createSelector(getFeMenusState, fromFeMenu.getDesktopMenus);

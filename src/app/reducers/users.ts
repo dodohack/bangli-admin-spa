@@ -5,7 +5,7 @@ import { User }        from '../models';
 import { AuthUser }    from '../models';
 import { Domain }      from '../models';
 import { Paginator }   from '../models';
-import { UserActions } from '../actions';
+import * as user       from '../actions/user';
 
 export interface UsersState {
     uuids: string[];
@@ -31,18 +31,18 @@ const initialState: UsersState = {
     domains: []
 };
 
-export default function (state = initialState, action: Action): UsersState {
+export default function (state = initialState, action: user.Actions | any): UsersState {
     switch (action.type)
     {
-        case UserActions.LOAD_USER:
-        case UserActions.LOAD_AUTH_USER:
-        case UserActions.LOAD_USERS:
-        case UserActions.LOAD_USERS_ON_SCROLL: {
+        case user.LOAD_USER:
+        case user.LOAD_AUTH_USER:
+        case user.LOAD_USERS:
+        case user.LOAD_USERS_ON_SCROLL: {
             return Object.assign({}, state, {isLoading: true});
         }
 
-        case UserActions.SEARCH_COMPLETE:
-        case UserActions.LOAD_USERS_SUCCESS: {
+        case user.SEARCH_COMPLETE:
+        case user.LOAD_USERS_SUCCESS: {
 
             const usersAry  = action.payload.users;
             const uuids     = usersAry.map(user => user.uuid);
@@ -62,7 +62,7 @@ export default function (state = initialState, action: Action): UsersState {
 
         // Almost identical to previous case, but ids and entities are merged
         // instead of replaced
-        case UserActions.LOAD_USERS_ON_SCROLL_SUCCESS: {
+        case user.LOAD_USERS_ON_SCROLL_SUCCESS: {
             const usersAry  = action.payload.users;
             const uuids     = usersAry.map(user => user.uuid);
             const newUsers  = usersAry.reduce(
@@ -80,7 +80,7 @@ export default function (state = initialState, action: Action): UsersState {
         }
 
         // User load successfully from application server
-        case UserActions.LOAD_USER_SUCCESS: {
+        case user.LOAD_USER_SUCCESS: {
             const user   = action.payload;
             const uuids  = (state.uuids.indexOf(user.uuid) === -1) ?
                 [...state.uuids, user.uuid] : state.uuids;
@@ -93,7 +93,7 @@ export default function (state = initialState, action: Action): UsersState {
             });
         }
 
-        case UserActions.SAVE_USER: {
+        case user.SAVE_USER: {
             const user = action.payload;
             if (user.uuid === state.uuidsEditing[0]) {
                 const users = Object.assign({}, state.users, {[user.uuid]: user});
@@ -105,7 +105,7 @@ export default function (state = initialState, action: Action): UsersState {
 
         // This action is returned from auth server, we have available domains
         // and user auth profile returned
-        case UserActions.LOAD_AUTH_USER_SUCCESS: {
+        case user.LOAD_AUTH_USER_SUCCESS: {
             const domainsAry  = action.payload.domains;
             const newDomains  = action.payload.user.domains.reduce(
                 (domains: {[id: number]: boolean }, domain: Domain) => {
@@ -121,11 +121,11 @@ export default function (state = initialState, action: Action): UsersState {
             });
         }
 
-        case UserActions.SAVE_AUTH_USER: {
+        case user.SAVE_AUTH_USER: {
             return Object.assign({}, state, {authUser: action.payload});
         }
 
-        case UserActions.TOGGLE_DASHBOARD_PERMISSION: {
+        case user.TOGGLE_DASHBOARD_PERMISSION: {
             const id      = action.payload;
             const domains = state.authUser.domains;
 
@@ -142,7 +142,7 @@ export default function (state = initialState, action: Action): UsersState {
             });
         }
 
-        case UserActions.TOGGLE_SUPER_USER: {
+        case user.TOGGLE_SUPER_USER: {
             const newPerm = state.authUser.super_user ? 0 : 1;
             const authUser = Object.assign({}, state.authUser, {super_user: newPerm});
             return Object.assign({}, state, { authUser: authUser });
@@ -158,59 +158,34 @@ export default function (state = initialState, action: Action): UsersState {
  ******************************************************************************/
 
 /* FIXME: For current logged user, we can not get it from s.users */
-export function getUser(uuid: string) {
-    return (state$: Observable<UsersState>) => state$
-        .select(s => s.users[uuid]);
-}
+export const getUser = (state: UsersState, uuid: string) => state.users[uuid];
 
-export function getAuthUser() {
-    return (state$: Observable<UsersState>) => state$
-        .select(s => s.authUser);
-}
+export const getAuthUser = (state: UsersState) => state.authUser;
 
-export function getCurUser() {
-    return (state$: Observable<UsersState>) => state$
-        .map(s => s.users[s.uuidsEditing[0]]);
-}
+export const getCurUser = (state: UsersState) => state.users[state.uuidsEditing[0]];
 
 /**
  * If the profile current in editing/viewing belongs to current loggedin user
  */
-export function isMyProfile(uuid: string) {
-    return (state$: Observable<UsersState>) => state$
-        .map(s => s.uuidsEditing[0] === uuid);
-}
+export const isMyProfile = (state: UsersState, uuid: string) => state.uuidsEditing[0] === uuid;
 
 /**
  * Get current page users in object
  */
-export function getUsersObject() {
-    return (state$: Observable<UsersState>) => state$.select(s => s.users);
-}
+export const getUsersObject = (state: UsersState) => state.users;
 
 /**
  * Get current page users in array
  */
-export function getUsers() {
-    return (state$: Observable<UsersState>) => state$
-        .map(s => s.uuids.map(uuid => s.users[uuid]));
-}
+export const getUsers = (state: UsersState) => state.uuids.map(uuid => state.users[uuid]);
 
-export function getUserIds() {
-    return (state$: Observable<UsersState>) => state$.select(s => s.uuids);
-}
+export const getUserIds = (state: UsersState) => state.uuids;
 
 /**
  * * Return if the single entity or entities list is in loading
  */
-export function getIsUserLoading() {
-    return (state$: Observable<UsersState>) => state$.select(s => s.isLoading);
-}
+export const getIsUserLoading = (state: UsersState) => state.isLoading;
 
-export function getUserPaginator() {
-    return (state$: Observable<UsersState>) => state$.select(s => s.paginator);
-}
+export const getUserPaginator = (state: UsersState) => state.paginator;
 
-export function getAvailableDomains() {
-    return (state$: Observable<UsersState>) => state$.select(s => s.domains);
-}
+export const getAvailableDomains = (state: UsersState) => state.domains;

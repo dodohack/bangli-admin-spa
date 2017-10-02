@@ -9,11 +9,12 @@ import { Observable }                    from 'rxjs/Observable';
 import { CacheSingleton }   from './cache.singleton';
 import { APIS, API_PATH }   from '../api';
 import { CmsAttrsState }    from '../reducers/cmsattrs';
-import { CmsAttrActions }   from '../actions';
 import { Tag, Category }    from '../models';
 import { TopicType }        from '../models';
 import { GeoLocation }      from "../models";
 import { ENTITY }           from '../models';
+
+import * as cms   from '../actions/cmsattr';
 
 @Injectable()
 export class CmsAttrEffects {
@@ -30,75 +31,75 @@ export class CmsAttrEffects {
         });
     }
 
-    @Effect() loadAll$ = this.actions$.ofType(CmsAttrActions.LOAD_ALL)
+    @Effect() loadAll$ = this.actions$.ofType(cms.LOAD_ALL)
         .switchMap(action => this.getAll(action.payload)
-            .map(attrs => CmsAttrActions.loadAllSuccess(attrs))
-            .catch(() => Observable.of(CmsAttrActions.loadAllFail())));
+            .map(attrs => new cms.LoadAllSuccess(attrs))
+            .catch(() => Observable.of(new cms.LoadAllFail())));
 
-    @Effect() sTopic$ = this.actions$.ofType(CmsAttrActions.SEARCH_TOPICS)
+    @Effect() sTopic$ = this.actions$.ofType(cms.SEARCH_TOPICS)
         .switchMap(action => this.searchTopics(action.payload.ttid, action.payload.text)
-            .map(res => CmsAttrActions.searchTopicsSuccess(res.entities))
-            .catch(() => Observable.of(CmsAttrActions.searchTopicsFail())));
+            .map(res => new cms.SearchTopicsSuccess(res.entities))
+            .catch(() => Observable.of(new cms.SearchTopicsFail())));
 
-    @Effect() saveTag$ = this.actions$.ofType(CmsAttrActions.SAVE_TAG)
+    @Effect() saveTag$ = this.actions$.ofType(cms.SAVE_TAG)
         .switchMap(action => this.putTag(action.payload)
-            .map(tag => CmsAttrActions.saveTagSuccess(tag))
-            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+            .map(tag => new cms.SaveTagSuccess(tag))
+            .catch(() => Observable.of(new cms.SaveFail())));
 
-    @Effect() saveCat$ = this.actions$.ofType(CmsAttrActions.SAVE_CATEGORY)
+    @Effect() saveCat$ = this.actions$.ofType(cms.SAVE_CATEGORY)
         .switchMap(action => this.putCat(action.payload)
-            .map(cat => CmsAttrActions.saveCategorySuccess(cat))
-            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+            .map(cat => new cms.SaveCategorySuccess(cat))
+            .catch(() => Observable.of(new cms.SaveFail())));
 
-    @Effect() saveTType$ = this.actions$.ofType(CmsAttrActions.SAVE_TOPIC_TYPE)
+    @Effect() saveTType$ = this.actions$.ofType(cms.SAVE_TOPIC_TYPE)
         .switchMap(action => this.putTopicType(action.payload)
-            .map(ttype => CmsAttrActions.saveTopicTypeSuccess(ttype))
-            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+            .map(ttype => new cms.SaveTopicTypeSuccess(ttype))
+            .catch(() => Observable.of(new cms.SaveFail())));
 
-    @Effect() saveGeoLoc$ = this.actions$.ofType(CmsAttrActions.SAVE_GEO_LOCATION)
+    @Effect() saveGeoLoc$ = this.actions$.ofType(cms.SAVE_GEO_LOCATION)
         .switchMap(action => this.putGeoLoc(action.payload)
-            .map(loc => CmsAttrActions.saveGeoLocationSuccess(loc))
-            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+            .map(loc => new cms.SaveGeoLocationSuccess(loc))
+            .catch(() => Observable.of(new cms.SaveFail())));
 
-    @Effect() addTag$ = this.actions$.ofType(CmsAttrActions.ADD_TAG)
+    @Effect() addTag$ = this.actions$.ofType(cms.ADD_TAG)
         .switchMap(action => this.postTag(action.payload)
-            .map(tag => CmsAttrActions.addTagSuccess(tag))
-            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+            .map(tag => new cms.AddTagSuccess(tag))
+            .catch(() => Observable.of(new cms.SaveFail())));
 
-    @Effect() addTType$ = this.actions$.ofType(CmsAttrActions.ADD_TOPIC_TYPE)
+    @Effect() addTType$ = this.actions$.ofType(cms.ADD_TOPIC_TYPE)
         .switchMap(action => this.postTopicType(action.payload)
-            .map(ttype => CmsAttrActions.addTopicTypeSuccess(ttype))
-            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+            .map(ttype => new cms.AddTopicTypeSuccess(ttype))
+            .catch(() => Observable.of(new cms.SaveFail())));
 
-    @Effect() addCat$ = this.actions$.ofType(CmsAttrActions.ADD_CATEGORY)
+    @Effect() addCat$ = this.actions$.ofType(cms.ADD_CATEGORY)
         .switchMap(action => this.postCat(action.payload)
-            .map(cat => CmsAttrActions.addCategorySuccess(cat))
-            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+            .map(cat => new cms.AddCategorySuccess(cat))
+            .catch(() => Observable.of(new cms.SaveFail())));
 
-    @Effect() addGeoLoc$ = this.actions$.ofType(CmsAttrActions.ADD_GEO_LOCATION)
+    @Effect() addGeoLoc$ = this.actions$.ofType(cms.ADD_GEO_LOCATION)
         .switchMap(action => this.postGeoLoc(action.payload)
-            .map(loc => CmsAttrActions.addGeoLocationSuccess(loc))
-            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+            .map(loc => new cms.AddGeoLocationSuccess(loc))
+            .catch(() => Observable.of(new cms.SaveFail())));
 
-    @Effect() deleteTag$ = this.actions$.ofType(CmsAttrActions.DELETE_TAG)
+    @Effect() deleteTag$ = this.actions$.ofType(cms.DELETE_TAG)
         .switchMap(action => this.deleteTag(action.payload)
-            .map(tagId => CmsAttrActions.deleteTagSuccess(tagId))
-            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+            .map(tagId => new cms.DeleteTagSuccess(tagId))
+            .catch(() => Observable.of(new cms.SaveFail())));
 
-    @Effect() deleteCat$ = this.actions$.ofType(CmsAttrActions.DELETE_CATEGORY)
+    @Effect() deleteCat$ = this.actions$.ofType(cms.DELETE_CATEGORY)
         .switchMap(action => this.deleteCat(action.payload)
-            .map(catId => CmsAttrActions.deleteCategorySuccess(catId))
-            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+            .map(catId => new cms.DeleteCategorySuccess(catId))
+            .catch(() => Observable.of(new cms.SaveFail())));
 
-    @Effect() deleteTType$ = this.actions$.ofType(CmsAttrActions.DELETE_TOPIC_TYPE)
+    @Effect() deleteTType$ = this.actions$.ofType(cms.DELETE_TOPIC_TYPE)
         .switchMap(action => this.deleteTopicType(action.payload)
-            .map(ttypeId => CmsAttrActions.deleteTopicTypeSuccess(ttypeId))
-            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+            .map(ttypeId => new cms.DeleteTopicTypeSuccess(ttypeId))
+            .catch(() => Observable.of(new cms.SaveFail())));
 
-    @Effect() deleteGeoLoc$ = this.actions$.ofType(CmsAttrActions.DELETE_GEO_LOCATION)
+    @Effect() deleteGeoLoc$ = this.actions$.ofType(cms.DELETE_GEO_LOCATION)
         .switchMap(action => this.deleteGeoLoc(action.payload)
-            .map(locId => CmsAttrActions.deleteGeoLocationSuccess(locId))
-            .catch(() => Observable.of(CmsAttrActions.saveFail())));
+            .map(locId => new cms.DeleteGeoLocationSuccess(locId))
+            .catch(() => Observable.of(new cms.SaveFail())));
 
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions

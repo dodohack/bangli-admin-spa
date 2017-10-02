@@ -17,267 +17,236 @@ import { Tag }          from "../models";
 import { Topic }        from "../models";
 import { Activity }     from '../models';
 
-/**
- * Template type 'T' can be Topic, Post, Product, Order etc.
- * We apply
- */
-export class EntityActions {
-    static SEARCH = '[Entity] Search';
-    static search(etype: string, params: EntityParams): Action {
-        return {
-            type: EntityActions.SEARCH,
-            payload: {etype: etype, data: params}
-        };
-    }
+export const SEARCH = '[Entity] Search';
+export const SEARCH_COMPLETE = '[Entity] Search Complete';
+export const LOAD_ENTITIES = '[Entity] Load Entities';
+export const LOAD_ENTITIES_SUCCESS = '[Entity] Load Entities Success';
+export const LOAD_ENTITIES_FAIL = '[Entity] Load Entities Fail';
+export const LOAD_ENTITIES_ON_SCROLL = '[Entity] Load Entities On Scroll';
+export const LOAD_ENTITIES_ON_SCROLL_SUCCESS = '[Entity] Load Entities On Scroll Success';
+export const LOAD_ENTITIES_ON_SCROLL_FAIL = '[Entity] Load Entities On Scroll Fail';
+export const BATCH_EDIT_ENTITIES = '[Entity] Batch Edit Entities';
+export const CANCEL_BATCH_EDIT_ENTITIES = '[Entity] Cancel Batch Edit Entities';
+export const BATCH_DELETE_ENTITIES = '[Entity] Batch Delete Entities';
+export const BATCH_OFFLINE_EDIT_ENTITIES = '[Entity] Batch Offline Edit Entities';
+export const BATCH_LOCK_ENTITIES = '[Entity] Batch Lock Entities';
+export const BATCH_EDIT_PREVIOUS_ENTITY = '[Entity] Batch Edit Previous Entity';
+export const BATCH_EDIT_NEXT_ENTITY = '[Entity] Batch Edit Next Entity';
+export const NEW_ENTITY = '[Entity] New Entity';
+export const LOAD_ENTITY = '[Entity] Load Entity';
+export const LOAD_ENTITY_SUCCESS = '[Entity] Load Entity Success';
+export const LOAD_ENTITY_FAIL = '[Entity] Load Entity Fail';
+export const AUTO_SAVE = '[Entity] Auto Save';
+export const SAVE_ENTITY = '[Entity] Save Entity';
+export const SAVE_ENTITY_SUCCESS = '[Entity] Save Entity Success';
+export const AUTO_SAVE_SUCCESS = '[Entity] Auto Save Success';
+export const SAVE_ENTITY_FAIL = '[Entity] Save Entity Fail';
+export const SAVE_ENTITIES = '[Entity] Save Entities';
+export const ATTACH = '[Entity] Attach Relationship';
+export const DETACH = '[Entity] Detach Relationship';
+export const UPDATE = '[Entity] Update Attribute';
+export const REFRESH_ACTIVITY_STATUS = '[Entity] Refresh Activity Status';
+export const GENERATE_THUMBS = '[Attachment] Generate thumbs';
 
-    static SEARCH_COMPLETE = '[Entity] Search Complete';
-    static searchComplete(etype: string, results: Entity[]): Action {
-        return {
-            type: EntityActions.SEARCH_COMPLETE,
-            payload: {etype: etype, data: results}
-        };
-    }
-
-    static LOAD_ENTITIES = '[Entity] Load Entities';
-    static loadEntities(etype: string, params: EntityParams): Action {
-        return {
-            type: EntityActions.LOAD_ENTITIES,
-            payload: {etype: etype, data: params}
-        };
-    }
-
-    static LOAD_ENTITIES_SUCCESS = '[Entity] Load Entities Success';
-    static loadEntitiesSuccess(etype: string, results: any): Action {
-        return {
-            type: EntityActions.LOAD_ENTITIES_SUCCESS,
-            payload: {etype: etype, data: results}
-        };
-    }
-
-    static LOAD_ENTITIES_FAIL = '[Entity] Load Entities Fail';
-    static loadEntitiesFail(/*etype: string*/): Action {
-        return {
-            type: EntityActions.LOAD_ENTITIES_FAIL/*,
-            payload: {etype: etype}*/
-        };
-    }
-    
-    static LOAD_ENTITIES_ON_SCROLL = '[Entity] Load Entities On Scroll';
-    static loadEntitiesOnScroll(etype: string, params: EntityParams): Action {
-        return {
-            type: EntityActions.LOAD_ENTITIES_ON_SCROLL,
-            payload: {etype: etype, data: params}
-        };
-    }
-
-    static LOAD_ENTITIES_ON_SCROLL_SUCCESS = '[Entity] Load Entities On Scroll Success';
-    static loadEntitiesOnScrollSuccess(etype: string, results: any): Action {
-        return {
-            type: EntityActions.LOAD_ENTITIES_ON_SCROLL_SUCCESS,
-            payload: {etype: etype, data: results}
-        };
-    }
-
-    static LOAD_ENTITIES_ON_SCROLL_FAIL = '[Entity] Load Entities On Scroll Fail';
-    static loadEntitiesOnScrollFail(/*etype: string*/): Action {
-        return {
-            type: EntityActions.LOAD_ENTITIES_ON_SCROLL_FAIL/*,
-             payload: {etype: etype}*/
-        };
-    }    
-
-    static BATCH_EDIT_ENTITIES = '[Entity] Batch Edit Entities';
-    static batchEditEntities(etype: string, ids: number[]): Action {
-        return {
-            type: EntityActions.BATCH_EDIT_ENTITIES,
-            payload: {etype: etype, data: ids}
-        };
-    }
-
-    static CANCEL_BATCH_EDIT_ENTITIES = '[Entity] Cancel Batch Edit Entities';
-    static cancelBatchEditEntities(etype: string): Action {
-        return {
-            type: EntityActions.CANCEL_BATCH_EDIT_ENTITIES,
-            payload: {etype: etype}
-        };
-    }
-    
-    static BATCH_DELETE_ENTITIES = '[Entity] Batch Delete Entities';
-    static batchDeleteEntities(etype: string, ids: number[]): Action {
-        return {
-            type: EntityActions.BATCH_DELETE_ENTITIES,
-            payload: {etype: etype, data: ids}
-        };
-    }
-    
-    static BATCH_OFFLINE_EDIT_ENTITIES = '[Entity] Batch Offline Edit Entities';
-    static batchOfflineEditEntities(etype: string, ids: number[]): Action {
-        return {
-            type: EntityActions.BATCH_OFFLINE_EDIT_ENTITIES,
-            payload: {etype: etype, data: ids}
-        };
-    }
-
-    static BATCH_LOCK_ENTITIES = '[Entity] Batch Lock Entities';
-    static batchLockEntities(etype: string, ids: number[]): Action {
-        return {
-            type: EntityActions.BATCH_LOCK_ENTITIES,
-            payload: {etype: etype, data: ids}
-        };
-    }
-
-    static BATCH_EDIT_PREVIOUS_ENTITY = '[Entity] Batch Edit Previous Entity';
-    static batchEditPreviousEntity(etype: string): Action {
-        return {
-            type: EntityActions.BATCH_EDIT_PREVIOUS_ENTITY,
-            payload: {etype: etype}
-        };
-    }
-
-    static BATCH_EDIT_NEXT_ENTITY = '[Entity] Batch Edit Next Entity';
-    static batchEditNextEntity(etype: string): Action {
-        return {
-            type: EntityActions.BATCH_EDIT_NEXT_ENTITY,
-            payload: {etype: etype}
-        };
-    }
-
-    static NEW_ENTITY = '[Entity] New Entity';
-    static newEntity(etype: string, user: User): Action {
-        return {
-            type: EntityActions.NEW_ENTITY,
-            payload: {etype: etype, data: user}
-        };
-    }
-
-    static LOAD_ENTITY = '[Entity] Load Entity';
-    static loadEntity(etype: string, id: string): Action {
-        return {
-            type: EntityActions.LOAD_ENTITY,
-            payload: {etype: etype, data: id}
-        };
-    }
-
-    /*
-     * A entity is returned from server, when prepend is true, it is added
-     * to the head of entity list. (for image and newly created entity)
-     */
-    static LOAD_ENTITY_SUCCESS = '[Entity] Load Entity Success';
-    static loadEntitySuccess(etype: string, entity: Entity,
-                             prepend: boolean = false): Action {
-        return {
-            type: EntityActions.LOAD_ENTITY_SUCCESS,
-            payload: {etype: etype, data: entity, prepend: prepend}
-        };
-    }
-
-    static LOAD_ENTITY_FAIL = '[Entity] Load Entity Fail';
-    static loadEntityFail(/*etype: string*/): Action {
-        return {
-            type: EntityActions.LOAD_ENTITY_FAIL/*,
-            payload: {etype: etype}*/
-        };
-    }
-    
-    static AUTO_SAVE = '[Entity] Auto Save';
-    static autoSave(etype: string, entity: Entity, dirtyMask: string[]): Action {
-        return {
-            type: EntityActions.AUTO_SAVE,
-            payload: {etype: etype, data: entity, mask: dirtyMask}
-        };
-    }
-
-    static SAVE_ENTITY = '[Entity] Save Entity';
-    static saveEntity(etype: string, entity: Entity, dirtyMask: string[]): Action {
-        return {
-            type: EntityActions.SAVE_ENTITY,
-            payload: {etype: etype, data: entity, mask: dirtyMask}
-        };
-    }
-
-    static SAVE_ENTITY_SUCCESS = '[Entity] Save Entity Success';
-    static saveEntitySuccess(etype: string, entity: Entity): Action {
-        return {
-            type: EntityActions.SAVE_ENTITY_SUCCESS,
-            payload: {etype: etype, data: entity}
-        };
-    }
-
-    static AUTO_SAVE_SUCCESS = '[Entity] Auto Save Success';
-    static autoSaveSuccess(etype: string, entity: Entity): Action {
-        return {
-            type: EntityActions.AUTO_SAVE_SUCCESS,
-            payload: {etype: etype, data: entity}
-        };
-    }    
-
-    static SAVE_ENTITY_FAIL = '[Entity] Save Entity Fail';
-    static saveEntityFail(/*etype: string*/): Action {
-        return {
-            type: EntityActions.SAVE_ENTITY_FAIL/*,
-            payload: {etype: etype}*/
-        };
-    }
-
-    static SAVE_ENTITIES = '[Entity] Save Entities';
-    static saveEntities(etype: string, entities: Entity[]): Action {
-        return {
-            type: EntityActions.SAVE_ENTITIES,
-            payload: {etype: etype, data: entities}
-        };
-    }
-
-    /**
-     * Attach relationship specified in value to the entity, indexed by
-     * key - entity attributes
-     */
-    static ATTACH = '[Entity] Attach Relationship';
-    static attach(etype: string, key: string, value: any): Action {
-        return {
-            type: EntityActions.ATTACH,
-            payload: {etype: etype, key: key, value: value}
-        };
-    }
-
-    /**
-     * Detach a relationship from the entity matches given value, indexed by
-     * key - entity attributes
-     */
-    static DETACH = '[Entity] Detach Relationship';
-    static detach(etype: string, key: string, value: any): Action {
-        return {
-            type: EntityActions.DETACH,
-            payload: {etype: etype, key: key, value: value}
-        };
-    }
-
-    /**
-     * Update entity attribute or has-one relationship(relationship not in array)
-     */
-    static UPDATE = '[Entity] Update Attribute';
-    static update(etype: string, key: string, value: any): Action {
-        return {
-            type: EntityActions.UPDATE,
-            payload: {etype: etype, key: key, value: value}
-        };
-    }
-
-    static REFRESH_ACTIVITY_STATUS = '[Entity] Refresh Activity Status';
-    static refreshActivityStatus(etype: string, activities: Activity[]): Action {
-        return {
-            type: EntityActions.REFRESH_ACTIVITY_STATUS,
-            payload: {etype: etype, data: activities}
-        };
-    }
-
-    /**************************************************************************
-     * Attachment only
-     **************************************************************************/
-    static GENERATE_THUMBS = '[Attachment] Generate thumbs';
-    static generateThumbs(etype: string): Action {
-        return {
-            type: EntityActions.GENERATE_THUMBS,
-            payload: etype
-        };
-    }
+export class Search implements Action {
+    readonly type = SEARCH;
+    constructor(public payload: {etype: string, data: EntityParams}) {}
 }
+
+export class SearchComplete implements Action {
+    readonly type = SEARCH_COMPLETE;
+    constructor(public payload: {etype: string, data: Entity[]}) {}
+}
+
+export class LoadEntities implements Action {
+    readonly type = LOAD_ENTITIES;
+    constructor(public payload: {etype: string, data: EntityParams}) {}
+}
+
+export class LoadEntitiesSuccess implements Action {
+    readonly type = LOAD_ENTITIES_SUCCESS;
+    constructor(public payload: {etype: string, data: any}) {}
+}
+
+export class LoadEntitiesFail implements Action {
+    readonly type = LOAD_ENTITIES_FAIL;
+}
+
+export class LoadEntitiesOnScroll implements Action {
+    readonly type = LOAD_ENTITIES_ON_SCROLL;
+    constructor(public payload: {etype: string, data: EntityParams}) {}
+}
+
+export class LoadEntitiesOnScrollSuccess implements Action {
+    readonly type = LOAD_ENTITIES_ON_SCROLL_SUCCESS;
+    constructor(public payload: {etype: string, data: any}) {}
+}
+
+export class LoadEntitiesOnScrollFail implements Action {
+    readonly type = LOAD_ENTITIES_ON_SCROLL_FAIL;
+}
+
+export class BatchEditEntities implements Action {
+    readonly type = BATCH_EDIT_ENTITIES;
+    // Payload - entities' ids
+    constructor(public payload: {etype: string, data: number[]}) {}
+}
+
+export class CancelBatchEditEntities implements Action {
+    readonly type = CANCEL_BATCH_EDIT_ENTITIES;
+    constructor(public payload: {etype: string}) {}
+}
+
+export class BatchDeleteEntities implements Action {
+    readonly type = BATCH_DELETE_ENTITIES;
+    // Payload - entities' ids
+    constructor(public payload: {etype: string, data: number[]}) {}
+}
+
+// DEPRECATED
+export class BatchOfflineEditEntities implements Action {
+    readonly type = BATCH_OFFLINE_EDIT_ENTITIES;
+    constructor(public payload: {etype: string, data: number[]}) {}
+}
+
+export class BatchLockEntities implements Action {
+    readonly type = BATCH_LOCK_ENTITIES;
+    constructor(public payload: {etype: string, data: number[]}) {}
+}
+
+export class BatchEditPreviousEntity implements Action {
+    readonly type = BATCH_EDIT_PREVIOUS_ENTITY;
+    constructor(public payload: {etype: string}) {}
+}
+
+export class BatchEditNextEntity implements Action {
+    readonly type = BATCH_EDIT_NEXT_ENTITY;
+    constructor(public payload: {etype: string}) {}
+}
+
+export class NewEntity implements Action {
+    readonly type = NEW_ENTITY;
+    // Payload.data: author
+    constructor(public payload: {etype: string, data: User}) {}
+}
+
+export class LoadEntity implements Action {
+    readonly type = LOAD_ENTITY;
+    // Payload: entity type, entity id
+    constructor(public payload: {etype: string, data: string}) {}
+}
+
+/*
+ * A entity is returned from server, if prepend is true, it is added
+ * to the head of entity list. (for image and newly created entity)
+ */
+export class LoadEntitySuccess implements Action {
+    readonly type = LOAD_ENTITY_SUCCESS;
+    constructor(public payload: {etype: string, data: Entity,
+        prepend: boolean }) {}
+}
+
+export class LoadEntityFail implements Action {
+    readonly type = LOAD_ENTITY_FAIL;
+}
+
+export class AutoSave implements Action {
+    readonly type = AUTO_SAVE;
+    // Auto save modified entries(marked by mask) of an entity,
+    constructor(public payload: {etype: string, data: Entity, mask: string[]}) {}
+}
+
+export class SaveEntity implements Action {
+    readonly type = SAVE_ENTITY;
+    constructor(public payload: {etype: string, data: Entity, mask: string[]}) {}
+}
+
+export class SaveEntitySuccess implements Action {
+    readonly type = SAVE_ENTITY_SUCCESS;
+    constructor(public payload: {etype: string, data: Entity}) {}
+}
+
+export class AutoSaveSuccess implements Action {
+    readonly type = AUTO_SAVE_SUCCESS;
+    constructor(public payload: {etype: string, data: Entity}) {}
+}
+
+export class SaveEntityFail implements Action {
+    readonly type = SAVE_ENTITY_FAIL;
+}
+
+export class SaveEntities implements Action {
+    readonly type = SAVE_ENTITIES;
+    constructor(public payload: {etype: string, data: Entity[]}) {}
+}
+
+/**
+ * Attach relationship specified in value to the entity, indexed by
+ * key - entity attributes
+ */
+export class Attach implements Action {
+    readonly type = ATTACH;
+    constructor(public payload: {etype: string, key: string, value: any}) {}
+}
+
+/**
+ * Detach a relationship from the entity matches given value, indexed by
+ * key - entity attributes
+ */
+export class Detach implements Action {
+    readonly type = DETACH;
+    constructor(public payload: {etype: string, key: string, value: any}) {}
+}
+
+/**
+ * Update entity attribute or has-one relationship(relationship not in array)
+ */
+export class Update implements Action {
+    readonly type = UPDATE;
+    constructor(public payload: {etype: string, key: string, value: any}) {}
+}
+
+export class RefreshActivityStatus implements Action {
+    readonly type = REFRESH_ACTIVITY_STATUS;
+    constructor(public payload: {etype: string, data: Activity[]}) {}
+}
+
+/**
+ * Attachment only
+ */
+export class GenerateThumbs implements Action {
+    readonly type = GENERATE_THUMBS;
+    constructor(public payload: {etype: string}) {}
+}
+
+export type Actions = Search
+| SearchComplete
+| LoadEntities
+| LoadEntitiesSuccess
+| LoadEntitiesFail
+| LoadEntitiesOnScroll
+| LoadEntitiesOnScrollSuccess
+| LoadEntitiesOnScrollFail
+| BatchEditEntities
+| CancelBatchEditEntities
+| BatchDeleteEntities
+| BatchOfflineEditEntities
+| BatchLockEntities
+| BatchEditPreviousEntity
+| BatchEditNextEntity
+| NewEntity
+| LoadEntity
+| LoadEntitySuccess
+| LoadEntityFail
+| AutoSave
+| SaveEntity
+| SaveEntitySuccess
+| AutoSaveSuccess
+| SaveEntityFail
+| SaveEntities
+| Attach
+| Detach
+| Update
+| RefreshActivityStatus
+| GenerateThumbs;
+

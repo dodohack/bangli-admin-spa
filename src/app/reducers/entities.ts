@@ -15,8 +15,9 @@ import { Action }     from '@ngrx/store';
 import { Paginator }     from '../models';
 import { Entity }        from '../models';
 import { ENTITY }        from '../models';
-import { EntityActions } from '../actions';
-import { AuthActions }   from '../actions';
+
+import * as entity from '../actions/entity';
+import * as auth   from '../actions/auth';
 
 /**
  * Entities state for each entity type
@@ -47,7 +48,7 @@ const initState: EntitiesState = {
 /**
  * Post reducer
  */
-export function postsReducer(state = initState, action: Action): EntitiesState {
+export function postsReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
     if (action.payload.etype === ENTITY.CMS_POST)
@@ -60,7 +61,7 @@ export function postsReducer(state = initState, action: Action): EntitiesState {
 /**
  * Page reducer
  */
-export function pagesReducer(state = initState, action: Action): EntitiesState {
+export function pagesReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
     if (action.payload.etype === ENTITY.CMS_PAGE)
@@ -72,7 +73,7 @@ export function pagesReducer(state = initState, action: Action): EntitiesState {
 /**
  * Topic/Deal topic reducer
  */
-export function topicsReducer(state = initState, action: Action): EntitiesState {
+export function topicsReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
     if (action.payload.etype === ENTITY.CMS_TOPIC)
@@ -84,7 +85,7 @@ export function topicsReducer(state = initState, action: Action): EntitiesState 
 /**
  * Places reducer
  */
-export function placesReducer(state = initState, action: Action): EntitiesState {
+export function placesReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
     if (action.payload.etype === ENTITY.PLACE)
@@ -96,7 +97,7 @@ export function placesReducer(state = initState, action: Action): EntitiesState 
 /**
  * Deal reducer
  */
-export function dealsReducer(state = initState, action: Action): EntitiesState {
+export function dealsReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
     if (action.payload.etype === ENTITY.CMS_DEAL)
@@ -108,7 +109,7 @@ export function dealsReducer(state = initState, action: Action): EntitiesState {
 /**
  * Email reducer
  */
-export function emailsReducer(state = initState, action: Action): EntitiesState {
+export function emailsReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
     if (action.payload.etype === ENTITY.NEWSLETTER)
@@ -120,7 +121,7 @@ export function emailsReducer(state = initState, action: Action): EntitiesState 
 /**
  * Attachment reducer
  */
-export function attachsReducer(state = initState, action: Action): EntitiesState {
+export function attachsReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
     if (action.payload.etype === ENTITY.ATTACHMENT)
@@ -132,7 +133,7 @@ export function attachsReducer(state = initState, action: Action): EntitiesState
 /**
  * Comment reducer
  */
-export function commentsReducer(state = initState, action: Action): EntitiesState {
+export function commentsReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
     if (action.payload.etype === ENTITY.COMMENT)
@@ -144,7 +145,7 @@ export function commentsReducer(state = initState, action: Action): EntitiesStat
 /**
  * Advertise reducer
  */
-export function adsReducer(state = initState, action: Action): EntitiesState {
+export function adsReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
     if (action.payload.etype === ENTITY.ADVERTISE)
@@ -154,43 +155,6 @@ export function adsReducer(state = initState, action: Action): EntitiesState {
 }
 
 /**
- * Shop product reducer
- */
-export function productsReducer(state = initState, action: Action): EntitiesState {
-    if (!action.payload) return state;
-
-    if (action.payload.etype === ENTITY.SHOP_PRODUCT)
-        return entitiesReducer(action.payload.etype, state, action);
-
-    return state;
-}
-
-/**
- * Shop order reducer
- */
-export function ordersReducer(state = initState, action: Action): EntitiesState {
-    if (!action.payload) return state;
-
-    if (action.payload.etype === ENTITY.SHOP_ORDER)
-        return entitiesReducer(action.payload.etype, state, action);
-
-    return state;
-}
-
-/**
- * Shop voucher reducer
- */
-export function vouchersReducer(state = initState, action: Action): EntitiesState {
-    if (!action.payload) return state;
-
-    if (action.payload.etype === ENTITY.SHOP_VOUCHER)
-        return entitiesReducer(action.payload.etype, state, action);
-
-    return state;
-}
-
-
-/**
  * FIXME: We are using lots of object references instead of copy of them
  * in returns, I'm not sure if this is safe to do so or not.
  *
@@ -198,18 +162,18 @@ export function vouchersReducer(state = initState, action: Action): EntitiesStat
  */
 function entitiesReducer (etype: string,
                           state = initState,
-                          action: Action): EntitiesState {
+                          action: entity.Actions | any): EntitiesState {
 
     switch (action.type)
     {
-        case EntityActions.LOAD_ENTITY:
-        case EntityActions.LOAD_ENTITIES:
-        case EntityActions.LOAD_ENTITIES_ON_SCROLL: {
+        case entity.LOAD_ENTITY:
+        case entity.LOAD_ENTITIES:
+        case entity.LOAD_ENTITIES_ON_SCROLL: {
             return Object.assign({}, state, {isLoading: true});
         }
             
-        case EntityActions.SEARCH_COMPLETE:
-        case EntityActions.LOAD_ENTITIES_SUCCESS: {
+        case entity.SEARCH_COMPLETE:
+        case entity.LOAD_ENTITIES_SUCCESS: {
             const entities = action.payload.data.entities;
 
             // Extract entity ids of current page
@@ -255,7 +219,7 @@ function entitiesReducer (etype: string,
 
         // Almost identical to previous case, but idsCurPage is merged with
         // newly loaded ones
-        case EntityActions.LOAD_ENTITIES_ON_SCROLL_SUCCESS: {
+        case entity.LOAD_ENTITIES_ON_SCROLL_SUCCESS: {
             const entities = action.payload.data.entities;
 
             // Extract entity ids of current page
@@ -297,15 +261,15 @@ function entitiesReducer (etype: string,
             });
         }
 
-        case EntityActions.BATCH_EDIT_ENTITIES: {
+        case entity.BATCH_EDIT_ENTITIES: {
             return Object.assign({}, state, {idsEditing: action.payload.data});
         }
 
-        case EntityActions.CANCEL_BATCH_EDIT_ENTITIES: {
+        case entity.CANCEL_BATCH_EDIT_ENTITIES: {
             return Object.assign({}, state, {idsEditing: []});
         }
 
-        case EntityActions.BATCH_EDIT_PREVIOUS_ENTITY: {
+        case entity.BATCH_EDIT_PREVIOUS_ENTITY: {
             // DO NOTHING IF WE ARE NOT FAST EDITING A SINGLE ENTITY
             if (state.idsEditing.length !== 1) return state;
 
@@ -317,7 +281,7 @@ function entitiesReducer (etype: string,
             return Object.assign({}, state, {idsEditing: [previousId]});
         }
 
-        case EntityActions.BATCH_EDIT_NEXT_ENTITY: {
+        case entity.BATCH_EDIT_NEXT_ENTITY: {
             // DO NOTHING IF WE ARE NOT FAST EDITING A SINGLE ENTITY
             if (state.idsEditing.length !== 1) return state;
 
@@ -330,8 +294,8 @@ function entitiesReducer (etype: string,
             return Object.assign({}, state, {idsEditing: [nextId]});
         }
 
-        case EntityActions.SAVE_ENTITY_SUCCESS:
-        case EntityActions.LOAD_ENTITY_SUCCESS: {
+        case entity.SAVE_ENTITY_SUCCESS:
+        case entity.LOAD_ENTITY_SUCCESS: {
             // If we have newly created entity in editing, remove the
             // placeholder id as we got a real id for it
             let idsTotal, idsCurPage, idsContent;
@@ -390,7 +354,7 @@ function entitiesReducer (etype: string,
             });
         }
 
-        case EntityActions.AUTO_SAVE_SUCCESS: {
+        case entity.AUTO_SAVE_SUCCESS: {
             return Object.assign({}, state, {
                 dirtyMask:  [],
                 isLoading:  false,
@@ -398,7 +362,7 @@ function entitiesReducer (etype: string,
         }
 
         // Create a new entity, use id '0' as placeholder id
-        case EntityActions.NEW_ENTITY: {
+        case entity.NEW_ENTITY: {
             const user = action.payload.data;
 
             let newEntity = new Entity;
@@ -425,7 +389,7 @@ function entitiesReducer (etype: string,
             });
         }
 
-        case EntityActions.REFRESH_ACTIVITY_STATUS: {
+        case entity.REFRESH_ACTIVITY_STATUS: {
             let newEntities: { [id: number]: Entity } = {};
             let activities = action.payload.data;
 
@@ -446,7 +410,7 @@ function entitiesReducer (etype: string,
             });
         }
 
-        case EntityActions.ATTACH: {
+        case entity.ATTACH: {
             // Each relationship is going to attach to entity has a name 'key',
             // and has value.id as the unique indentifer, we support string
             // match the value if no id specified.
@@ -504,7 +468,7 @@ function entitiesReducer (etype: string,
             });
         }
 
-        case EntityActions.DETACH: {
+        case entity.DETACH: {
             // Entity relationship is detached by given relationship id
             const key   = action.payload.key;
             const value = action.payload.value;
@@ -541,7 +505,7 @@ function entitiesReducer (etype: string,
             });
         }
 
-        case EntityActions.UPDATE: {
+        case entity.UPDATE: {
             let key   = action.payload.key;
             let value = action.payload.value;
             let entity = state.entities[state.idsEditing[0]];
@@ -569,8 +533,8 @@ function entitiesReducer (etype: string,
         }
 
         // Auto save entity to API server, but do not save reversions
-        case EntityActions.AUTO_SAVE:
-        case EntityActions.SAVE_ENTITY: {
+        case entity.AUTO_SAVE:
+        case entity.SAVE_ENTITY: {
             /*
             let entity = action.payload.data;
             // Assign default state to entity
@@ -592,187 +556,124 @@ function entitiesReducer (etype: string,
 /**
  * Return the entities object which contains all entities
  */
-export function getEntitiesObject() {
-    return (state$: Observable<EntitiesState>) => state$.select(s => s.entities);
-}
+export const getEntitiesObject = (state: EntitiesState) => state.entities;
 
 /**
  * Return the dirty bit of entities under editing
  */
-export function getIsDirty() {
-    return (state$: Observable<EntitiesState>) => state$
-        .select(s => s.dirtyMask && s.dirtyMask.length > 0);
-}
+export const getIsDirty = (state: EntitiesState) => state.dirtyMask && state.dirtyMask.length > 0;
 
 /**
  * Return the dirty bit of entities under editing
  */
-export function getDirtyMask() {
-    return (state$: Observable<EntitiesState>) => state$
-        .select(s => s.dirtyMask);
-}
+export const getDirtyMask = (state: EntitiesState) => state.dirtyMask;
+
 
 /**
  * Return if the single entity or entities list is in loading
  */
-export function getIsLoading() {
-    return (state$: Observable<EntitiesState>) => state$.select(s => s.isLoading);
-}
+export const getIsLoading = (state: EntitiesState) => state.isLoading;
 
 /**
  * Return a entity from current entity list by id
  */
-export function getEntity(id: number) {
-    return (state$: Observable<EntitiesState>) => state$.select(s => s.entities[id]);
-}
+export const getEntity = (state: EntitiesState, id: number) => state.entities[id];
 
 /**
  * Return current editing entity author
  */
-export function getAuthor() {
-    return (entity$: Observable<Entity>) => entity$
-        .filter(e => typeof e != 'undefined').map(e => e.author);
-}
+export const getAuthor = (entity: Entity) => {
+    if (typeof entity != 'undefined') return entity.author;
+};
 
 /**
  * Return current editing entity editor
  */
-export function getEditor() {
-    return (entity$: Observable<Entity>) => entity$
-        .filter(e => typeof e != 'undefined').map(e => e.editor);
-}
+export const getEditor = (entity: Entity) => {
+    if (typeof entity != 'undefined') return entity.editor;
+};
 
 /**
  * Return current editing entity channel
  */
-export function getChannelId() {
-    return (entity$: Observable<Entity>) => entity$
-        .filter(e => typeof e != 'undefined').map(e => e.channel_id);
-}
+export const getChannelId = (entity: Entity) => {
+    if (typeof entity != 'undefined') return entity.channel_id;
+};
 
 /**
  * Return current editing entity channel
  */
-export function getChannel() {
-    return (entity$: Observable<Entity>) => entity$
-        .filter(e => typeof e != 'undefined').map(e => e.channel)
-        .filter(ch => typeof ch != 'undefined');
-}
+export const getChannel = (entity: Entity) => {
+    if (typeof entity != 'undefined' && typeof entity.channel != 'undefined')
+        return entity.channel;
+};
 
 /**
  * Return current editing entity topic type
  */
-export function getTopicType() {
-    return (entity$: Observable<Entity>) => entity$
-        .filter(e => typeof e != 'undefined').map(e => e.type);
-}
+export const getTopicType = (entity: Entity) => {
+    if (typeof entity != 'undefined') return entity.type;
+};
 
 /**
  * Return current editing entity keywords as array
  */
-export function getKeywordsAsArray() {
-    return (entity$: Observable<Entity>) => entity$
-        .filter(e => typeof e != 'undefined').map(e => e.keywords)
-        .filter(ks => ks != null)
-        .map(ks => ks.split(','));
-}
+export const getKeywordsAsArray = (entity: Entity) => {
+    if (typeof entity != 'undefined' && entity.keywords != null)
+        return entity.keywords.split(',');
+};
 
 /**
  * Return current editing entity introduction
  */
-export function getIntro() {
-    return (entity$: Observable<Entity>)=> entity$
-        .filter(e => typeof e != 'undefined').select(e => e.intro);
-}
-
-export function getDealIntro() {
-    return (entity$: Observable<Entity>)=> entity$
-        .filter(e => typeof e != 'undefined').select(e => e.deal_intro);
-}
+export const getIntro = (entity: Entity) => {
+    if (typeof entity != 'undefined') return entity.intro;
+};
 
 /**
  * Return current editing entity content
  */
-export function getContent() {
-    return (entity$: Observable<Entity>)=> entity$
-        .filter(e => typeof e != 'undefined').select(e => e.content);
-}
-
-export function getDealContent() {
-    return (entity$: Observable<Entity>)=> entity$
-        .filter(e => typeof e != 'undefined').select(e => e.deal_content);
-}
-
-/**
- * Return is current editing topic has deal enabled
- */
-export function getHasDeal() {
-    return (entity$: Observable<Entity>)=> entity$
-        .filter(e => typeof e != 'undefined').select(e => e.has_deal);
-}
+export const getContent = (entity: Entity) => {
+    if (typeof entity != 'undefined') return entity.content;
+};
 
 /**
  * Return current editing entity id
  */
-export function getCurEntityId() {
-    return (state$: Observable<EntitiesState>) => state$
-        .map(s => s.idsEditing[0]);
-}
+export const getCurEntityId = (state: EntitiesState) => state.idsEditing[0];
 
 /**
  * Return current editing entity
  */
-export function getCurEntity() {
-    return (state$: Observable<EntitiesState>) => state$
-        .map(s => s.entities[s.idsEditing[0]]);
-}
+export const getCurEntity = (state: EntitiesState) => state.entities[state.idsEditing[0]];
 
 /**
  * Return an array of entites of given ids
  */
-export function getEntities(ids: number[]) {
-    return (state$: Observable<EntitiesState>) => state$
-        .select(s => s.entities)
-        .map(entities => ids.map(id => entities[id]));
-}
+export const getEntities = (state: EntitiesState, ids: number[]) => ids.map(id => state.entities[id]);
 
 /**
  * Return an array of entity ids of current page
  */
-export function getIdsCurPage() {
-    return (state$: Observable<EntitiesState>) => state$
-        .select(s => s.idsCurPage);
-}
+export const getIdsCurPage = (state: EntitiesState) => state.idsCurPage;
 
 /**
  * Return an array of entity ids of this is in editing mode
  */
-export function getIdsEditing() {
-    return (state$: Observable<EntitiesState>) => state$
-        .select(s => s.idsEditing);
-}
+export const getIdsEditing = (state: EntitiesState) => state.idsEditing;
 
 /**
  * If the entity exists in the entity list of current page
  */
-export function hasEntityInCurPage(id: number) {
-    return (state$: Observable<EntitiesState>) => state$
-        .select(s => s.idsCurPage.includes(id));
-}
+export const hasEntityInCurPage = (state: EntitiesState, id: number) => state.idsCurPage.find(id);
 
 
 /**
  * If the entity exists in the all entities loaded to client
  */
-export function hasEntity(id: number) {
-    return (state$: Observable<EntitiesState>) => state$
-        .select(s => s.idsTotal.includes(id));
-}
+export const hasEntity = (state: EntitiesState, id: number) => state.idsTotal.find(id);
 
 /**
  * Return current paginator
  */
-export function getPaginator() {
-    return (state$: Observable<EntitiesState>) => state$
-        .select(s => s.paginator);
-}
+export const getPaginator = (state: EntitiesState) => state.paginator;

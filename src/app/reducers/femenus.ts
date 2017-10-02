@@ -2,7 +2,7 @@ import { Action }         from '@ngrx/store';
 import { Observable }     from 'rxjs/Observable';
 
 import { FeMenu }         from '../models';
-import { FeMenuActions }  from '../actions';
+import * as menu          from '../actions/femenu';
 
 export interface FeMenuGroup {
     [gid: number]: FeMenu [];
@@ -34,12 +34,12 @@ const initialState: FeMenusState = {
     menuGids:              {},
 };
 
-export default function (state = initialState, action: Action): FeMenusState {
+export default function (state = initialState, action: menu.Actions | any): FeMenusState {
     switch (action.type)
     {
         // TODO: This reduce costs several ms to dozens of ms if number of menus
         // TODO: are huge, we should always cache menu into localStorage.
-        case FeMenuActions.LOAD_ALL_SUCCESS: {
+        case menu.LOAD_ALL_SUCCESS: {
             const menusAry = action.payload;
             const rootMenusAry = menusAry.filter(m => m.parent_id === 0);
             const rootIds      = rootMenusAry.map(menu => menu.id);
@@ -99,72 +99,45 @@ export default function (state = initialState, action: Action): FeMenusState {
  *****************************************************************************/
 
 
-export function getSubMenus(pid: number) {
-    return (state$: Observable<FeMenusState>) => state$
-        .select(m => m.menus[pid]);
-}
+export const getSubMenus = (state: FeMenusState, pid: number) => state.menus[pid];
 
 /**
  * Return group index of submenus object
  */
-export function getSubMenuGids(pid: number) {
-    return (state$: Observable<FeMenusState>) => state$
-        .select(m => m.menuGids[pid]);
-}
+export const getSubMenuGids = (state: FeMenusState, spid: number) => state.menuGids[spid];
 
 /**
  * Return root menu ids
  */
-export function getRootMenuIds() {
-    return (state$: Observable<FeMenusState>) => state$
-        .select(menu => menu.rootIds);
-}
+export const getRootMenuIds = (state: FeMenusState) => state.rootIds;
 
 /**
  * Return root menus
  */
-export function getRootMenus() {
-    return (state$: Observable<FeMenusState>) => state$
-        .select(menu => menu.roots);
-}
+export const getRootMenus = (state: FeMenusState) => state.roots;
 
 /**
  * Return menu group ids
  */
-export function getMenuGroupIds() {
-    return (state$: Observable<FeMenusState>) => state$
-        .select(menu => menu.menuGids);
-}
+export const getMenuGroupIds = (state: FeMenusState) => state.menuGids;
 
 /**
  * Return menu parent ids
  */
-export function getMenuParentIds() {
-    return (state$: Observable<FeMenusState>) => state$
-        .select(menu => menu.parentIds);
-}
+export const getMenuParentIds = (state: FeMenusState) => state.parentIds;
 
 /**
  * Return all menus
  */
-export function getMenus() {
-    return (state$: Observable<FeMenusState>) => state$
-        .select(menu => menu.menus);
-}
+export const getMenus = (state: FeMenusState) => state.menus;
 
 // FIXME: TODO
 /**
  * Return all mobile menus
  */
-export function getMobileMenus() {
-    return (state$: Observable<FeMenusState>) => state$
-        .select(menu => menu.menus);
-}
+export const getMobileMenus = (state: FeMenusState) => state.menus;
 
 /**
  * Return all desktop menus
  */
-export function getDesktopMenus() {
-    return (state$: Observable<FeMenusState>) => state$
-        .select(menu => menu.menus);
-}
+export const getDesktopMenus = (state: FeMenusState) => state.menus;

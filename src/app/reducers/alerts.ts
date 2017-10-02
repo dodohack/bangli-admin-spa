@@ -3,27 +3,27 @@
  */
 import { Action } from '@ngrx/store';
 
-import { Alert }        from '../models';
-import { AlertActions } from '../actions';
+import { Alert }     from '../models';
+import * as alert    from '../actions/alert';
 
 export type AlertsState = Alert[];
 
-export default function(state: AlertsState = [], action: Action): AlertsState {
+export default function(state: AlertsState = [], action: alert.Actions): AlertsState {
     switch(action.type)
     {
-        case AlertActions.SUCCESS: {
+        case alert.SUCCESS: {
             return [...state, { type: 'success', msg: action.payload }];
         }
 
-        case AlertActions.INFO: {
+        case alert.INFO: {
             return [...state, { type: 'info', msg: action.payload }];
         }
 
-        case AlertActions.WARNING: {
+        case alert.WARNING: {
             return [...state, { type: 'warning', msg: '注意: ' + action.payload }];
         }
 
-        case AlertActions.ERROR: {
+        case alert.ERROR: {
             return [...state, { type: 'danger', msg: '错误: ' + action.payload }];
         }
 

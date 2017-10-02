@@ -10,10 +10,11 @@ import { Observable }                from 'rxjs/Observable';
 
 import { CacheSingleton }  from './cache.singleton';
 import { APIS, API_PATH }  from '../api';
-import { EntityActions }   from '../actions';
-import { AlertActions }    from '../actions';
 import { ENTITY }          from '../models';
 import { EntityParams }    from '../models';
+
+import * as entity   from '../actions/entity';
+import * as alert    from '../actions/alert';
 
 
 @Injectable()
@@ -35,49 +36,49 @@ export class EntityEffects {
     /**************************************************************************
      * Entity
      *************************************************************************/
-    @Effect() loadEntities$ = this.actions$.ofType(EntityActions.LOAD_ENTITIES)
+    @Effect() loadEntities$ = this.actions$.ofType(entity.LOAD_ENTITIES)
         .switchMap(action => this.getEntities(action.payload.etype, action.payload.data)
-            .map(ret => EntityActions.loadEntitiesSuccess(ret.etype, ret))
-            .catch(() => Observable.of(EntityActions.loadEntitiesFail()))
+            .map(ret => new entity.LoadEntitiesSuccess(ret.etype, ret))
+            .catch(() => Observable.of(new entity.LoadEntitiesFail()))
         );
 
-    @Effect() loadEntitiesOnScroll$ = this.actions$.ofType(EntityActions.LOAD_ENTITIES_ON_SCROLL)
+    @Effect() loadEntitiesOnScroll$ = this.actions$.ofType(entity.LOAD_ENTITIES_ON_SCROLL)
         .switchMap(action => this.getEntities(action.payload.etype, action.payload.data)
-            .map(ret => EntityActions.loadEntitiesOnScrollSuccess(ret.etype, ret))
-            .catch(() => Observable.of(EntityActions.loadEntitiesOnScrollFail()))
+            .map(ret => new entity.LoadEntitiesOnScrollSuccess(ret.etype, ret))
+            .catch(() => Observable.of(new entity.LoadEntitiesOnScrollFail()))
         );    
 
-    @Effect() loadEntity$ = this.actions$.ofType(EntityActions.LOAD_ENTITY)
+    @Effect() loadEntity$ = this.actions$.ofType(entity.LOAD_ENTITY)
         .switchMap(action => this.getEntity(action.payload.etype, action.payload.data)
-            .map(ret => EntityActions.loadEntitySuccess(ret.etype, ret.entity))
-            .catch(() => Observable.of(EntityActions.loadEntityFail()))
+            .map(ret => new entity.LoadEntitySuccess(ret.etype, ret.entity))
+            .catch(() => Observable.of(new entity.LoadEntityFail()))
         );
 
-    @Effect() saveEntity$ = this.actions$.ofType(EntityActions.SAVE_ENTITY)
+    @Effect() saveEntity$ = this.actions$.ofType(entity.SAVE_ENTITY)
         .map(action => action.payload)
         .switchMap(p => this.saveEntity(p.etype, p.data, p.mask)
-            .map(ret => EntityActions.saveEntitySuccess(ret.etype, ret.entity))
-            .catch(() => Observable.of(EntityActions.saveEntityFail()))
+            .map(ret => new entity.SaveEntitySuccess(ret.etype, ret.entity))
+            .catch(() => Observable.of(new entity.SaveEntityFail()))
         );
 
-    @Effect() autoSave$ = this.actions$.ofType(EntityActions.AUTO_SAVE)
+    @Effect() autoSave$ = this.actions$.ofType(entity.AUTO_SAVE)
         .map(action => action.payload)
         .switchMap(p => this.autoSaveEntity(p.etype, p.data, p.mask)
-            .map(ret => EntityActions.autoSaveSuccess(ret.etype, ret.entity))
-            .catch(() => Observable.of(EntityActions.saveEntityFail()))
+            .map(ret => new entity.AutoSaveSuccess(ret.etype, ret.entity))
+            .catch(() => Observable.of(new entity.SaveEntityFail()))
         );
 
-    @Effect() autoSaveSuccess$ = this.actions$.ofType(EntityActions.AUTO_SAVE_SUCCESS)
-        .map(action => AlertActions.success('自动保存成功, 此消息应该不用这么明显'));    
+    @Effect() autoSaveSuccess$ = this.actions$.ofType(entity.AUTO_SAVE_SUCCESS)
+        .map(action => new alert.Success('自动保存成功, 此消息应该不用这么明显'));
     
-    @Effect() saveEntitySuccess$ = this.actions$.ofType(EntityActions.SAVE_ENTITY_SUCCESS)
-        .map(action => AlertActions.success('保存成功!'));
+    @Effect() saveEntitySuccess$ = this.actions$.ofType(entity.SAVE_ENTITY_SUCCESS)
+        .map(action => new alert.Success('保存成功!'));
 
-    @Effect() saveEntityFail$ = this.actions$.ofType(EntityActions.SAVE_ENTITY_FAIL)
-        .map(action => AlertActions.error('保存失败!'));
+    @Effect() saveEntityFail$ = this.actions$.ofType(entity.SAVE_ENTITY_FAIL)
+        .map(action => new alert.Error('保存失败!'));
 
 
-    @Effect() genThumbs$ = this.actions$.ofType(EntityActions.GENERATE_THUMBS)
+    @Effect() genThumbs$ = this.actions$.ofType(entity.GENERATE_THUMBS)
         .map(action => action.payload)
         .switchMap(etype => this.putEntities(etype, [], 'gen-thumb'));
 

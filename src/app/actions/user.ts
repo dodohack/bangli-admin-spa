@@ -3,172 +3,159 @@ import { User }     from '../models';
 import { AuthUser } from '../models';
 import { Domain }   from '../models';
 
-export class UserActions {
-    static SEARCH = '[User] Search';
-    static search(query: string): Action {
-        return {
-            type: UserActions.SEARCH,
-            payload: query
-        };
-    }
+export const SEARCH = '[User] Search';
+export const SEARCH_COMPLETE = '[User] Search Complete';
+export const LOAD_USERS = '[User] Load Users';
+export const LOAD_USERS_SUCCESS = '[User] Load Users Success';
+export const LOAD_USERS_FAIL = '[User] Load Users Fail';
+export const LOAD_USERS_ON_SCROLL = '[User] Load Users On Scroll';
+export const LOAD_USERS_ON_SCROLL_SUCCESS = '[User] Load Users On Scroll Success';
+export const LOAD_USERS_ON_SCROLL_FAIL = '[User] Load Users On Scroll Fail';
+export const LOAD_USER = '[User] Load User';
+export const LOAD_USER_SUCCESS = '[User] Load User Success';
+export const LOAD_USER_FAIL = '[User] Load User Fail';
+export const LOAD_AUTH_USER = '[User] Load Auth User';
+export const LOAD_AUTH_USER_SUCCESS = '[User] Load Auth User Success';
+export const LOAD_AUTH_USER_FAIL = '[User] Load Auth User Fail';
+export const SAVE_AUTH_USER = '[User] Save Auth User';
+export const SAVE_AUTH_USER_SUCCESS = '[User] Save Auth User Success';
+export const SAVE_AUTH_USER_FAIL = '[User] Save Auth User Fail';
+export const SAVE_USER = '[User] Save User';
+export const SAVE_USER_SUCCESS = '[User] Save User Success';
+export const SAVE_USER_FAIL = '[User] Save User Fail';
+export const TOGGLE_DASHBOARD_PERMISSION = '[User] Toggle User Dashboard Perm';
+export const TOGGLE_SUPER_USER = '[User] Toggle Super User Perm';
 
-    static SEARCH_COMPLETE = '[User] Search Complete';
-    static searchComplete(results: User[]): Action {
-        return {
-            type: UserActions.SEARCH_COMPLETE,
-            payload: results
-        };
-    }
-
-    static LOAD_USERS = '[User] Load Users';
-    static loadUsers(filters: any): Action {
-        return {
-            type: UserActions.LOAD_USERS,
-            payload: filters
-        };
-    }
-
-    static LOAD_USERS_SUCCESS = '[User] Load Users Success';
-    static loadUsersSuccess(users: User[]): Action {
-        return {
-            type: UserActions.LOAD_USERS_SUCCESS,
-            payload: users
-        };
-    }
-
-    static LOAD_USERS_FAIL = '[User] Load Users Fail';
-    static loadUsersFail(): Action {
-        return {
-            type: UserActions.LOAD_USERS_FAIL
-        };
-    }
-    
-    static LOAD_USERS_ON_SCROLL = '[User] Load Users On Scroll';
-    static loadUsersOnScroll(filters: any): Action {
-        return {
-            type: UserActions.LOAD_USERS_ON_SCROLL,
-            payload: filters
-        };
-    }
-
-    static LOAD_USERS_ON_SCROLL_SUCCESS = '[User] Load Users On Scroll Success';
-    static loadUsersOnScrollSuccess(users: User[]): Action {
-        return {
-            type: UserActions.LOAD_USERS_ON_SCROLL_SUCCESS,
-            payload: users
-        };
-    }
-
-    static LOAD_USERS_ON_SCROLL_FAIL = '[User] Load Users On Scroll Fail';
-    static loadUsersOnScrollFail(): Action {
-        return {
-            type: UserActions.LOAD_USERS_ON_SCROLL_FAIL
-        };
-    }
-    static LOAD_USER = '[User] Load User';
-    static loadUser(uuid: string): Action {
-        return {
-            type: UserActions.LOAD_USER,
-            payload: uuid
-        };
-    }
-    
-    static LOAD_USER_SUCCESS = '[User] Load User Success';
-    static loadUserSuccess(user: User): Action {
-        return {
-            type: UserActions.LOAD_USER_SUCCESS,
-            payload: user
-        };
-    }
-
-    static LOAD_USER_FAIL = '[User] Load User Fail';
-    static loadUserFail(): Action {
-        return {
-            type: UserActions.LOAD_USER_FAIL
-        };
-    }
-
-    static LOAD_AUTH_USER = '[User] Load Auth User';
-    static loadAuthUser(uuid: string): Action {
-        return {
-            type: UserActions.LOAD_AUTH_USER,
-            payload: uuid
-        };
-    }
-
-    static LOAD_AUTH_USER_SUCCESS = '[User] Load Auth User Success';
-    static loadAuthUserSuccess(domains: Domain[], user: AuthUser): Action {
-        return {
-            type: UserActions.LOAD_AUTH_USER_SUCCESS,
-            payload: {domains: domains, user: user}
-        };
-    }
-
-    static LOAD_AUTH_USER_FAIL = '[User] Load Auth User Fail';
-    static loadAuthUserFail(): Action {
-        return {
-            type: UserActions.LOAD_AUTH_USER_FAIL
-        };
-    }
-
-    static SAVE_AUTH_USER = '[User] Save Auth User';
-    static saveAuthUser(user: User) {
-        return {
-            type: UserActions.SAVE_AUTH_USER,
-            payload: user
-        };
-    }
-
-    static SAVE_AUTH_USER_SUCCESS = '[User] Save Auth User Success';
-    static saveAuthUserSuccess(user: User) {
-        return {
-            type: UserActions.SAVE_AUTH_USER_SUCCESS,
-            payload: user
-        };
-    }
-
-    static SAVE_AUTH_USER_FAIL = '[User] Save Auth User Fail';
-    static saveAuthUserFail() {
-        return {
-            type: UserActions.SAVE_AUTH_USER_FAIL
-        };
-    }
-
-    static SAVE_USER = '[User] Save User';
-    static saveUser(user: User) {
-        return {
-            type: UserActions.SAVE_USER,
-            payload: user
-        };
-    }
-
-    static SAVE_USER_SUCCESS = '[User] Save User Success';
-    static saveUserSuccess(user: User) {
-        return {
-            type: UserActions.SAVE_USER_SUCCESS,
-            payload: user
-        };
-    }
-
-    static SAVE_USER_FAIL = '[User] Save User Fail';
-    static saveUserFail() {
-        return {
-            type: UserActions.SAVE_USER_FAIL
-        };
-    }
-
-    // Add or remove domain dashboard permission to a user
-    static TOGGLE_DASHBOARD_PERMISSION = '[User] Toggle User Dashboard Perm';
-    static toggleDashboardPermission(id: number) {
-        return {
-            type: UserActions.TOGGLE_DASHBOARD_PERMISSION,
-            payload: id
-        };
-    }
-
-    // Toggle a user's super user permission
-    static TOGGLE_SUPER_USER = '[User] Toggle Super User Perm';
-    static toggleSuperUser() {
-        return { type: UserActions.TOGGLE_SUPER_USER };
-    }
+export class Search implements Action {
+    readonly type = SEARCH;
+    constructor(public payload: string) {}
 }
+
+export class SearchComplete implements Action {
+    readonly type = SEARCH_COMPLETE;
+    constructor(public payload: User[]) {}
+}
+
+export class LoadUsers implements Action {
+    readonly type = LOAD_USERS;
+    // Payload - filters
+    constructor(public payload: any) {}
+}
+
+export class LoadUsersSuccess implements Action {
+    readonly type = LOAD_USERS_SUCCESS;
+    constructor(public payload: User[]) {}
+}
+
+export class LoadUsersFail implements Action {
+    readonly type = LOAD_USERS_FAIL;
+}
+
+export class LoadUsersOnScroll implements Action {
+    readonly type = LOAD_USERS_ON_SCROLL;
+    // Payload: filters
+    constructor(public payload: any) {}
+}
+
+export class LoadUsersOnScrollSuccess implements Action {
+    readonly type = LOAD_USERS_ON_SCROLL_SUCCESS;
+    constructor(public payload: User[]) {}
+}
+
+export class LoadUsersOnScrollFail implements Action {
+    readonly type = LOAD_USERS_ON_SCROLL_FAIL;
+}
+
+export class LoadUser implements Action {
+    readonly type = LOAD_USER;
+    // Payload - user uuid
+    constructor(public payload: string) {}
+}
+
+export class LoadUserSuccess implements Action {
+    readonly type = LOAD_USER_SUCCESS;
+    constructor(public payload: User) {}
+}
+
+export class LoadUserFail implements Action {
+    readonly type = LOAD_USER_FAIL;
+}
+
+export class LoadAuthUser implements Action {
+    readonly type = LOAD_AUTH_USER;
+    // Payload - user uuid
+    constructor(public payload: string) {}
+}
+
+export class LoadAuthUserSuccess implements Action {
+    readonly type = LOAD_AUTH_USER_SUCCESS;
+    constructor(public payload: {domains: Domain[], user: AuthUser}) {}
+}
+
+export class LoadAuthUserFail implements Action {
+    readonly type = LOAD_AUTH_USER_FAIL;
+}
+
+export class SaveAuthUser implements Action {
+    readonly type = SAVE_AUTH_USER;
+    constructor(public payload: User) {}
+}
+
+export class SaveAuthUserSuccess implements Action {
+    readonly type = SAVE_AUTH_USER_SUCCESS;
+    constructor(public payload: User) {}
+}
+
+export class SaveAuthUserFail implements Action {
+    readonly type = SAVE_AUTH_USER_FAIL;
+}
+
+export class SaveUser implements Action {
+    readonly type = SAVE_USER;
+    constructor(public payload: User) {}
+}
+
+export class SaveUserSuccess implements Action {
+    readonly type = SAVE_USER_SUCCESS;
+    constructor(public payload: User) {}
+}
+
+export class SaveUserFail implements Action {
+    readonly type = SAVE_USER_FAIL;
+}
+
+// Add or remove domain dashboard permission to a user
+export class ToggleDashboardPermission implements Action {
+    readonly type = TOGGLE_DASHBOARD_PERMISSION;
+    // Payload - user id
+    constructor(public payload: number) {}
+}
+
+export class ToggleSuperUser implements Action {
+    readonly type = TOGGLE_SUPER_USER;
+}
+
+export type Actions = Search
+| SearchComplete
+| LoadUsers
+| LoadUsersSuccess
+| LoadUsersFail
+| LoadUsersOnScroll
+| LoadUsersOnScrollSuccess
+| LoadUsersOnScrollFail
+| LoadUser
+| LoadUserSuccess
+| LoadUserFail
+| LoadAuthUser
+| LoadAuthUserSuccess
+| LoadAuthUserFail
+| SaveAuthUser
+| SaveAuthUserSuccess
+| SaveAuthUserFail
+| SaveUser
+| SaveUserSuccess
+| SaveUserFail
+| ToggleDashboardPermission
+| ToggleSuperUser;
+
+

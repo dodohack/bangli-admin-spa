@@ -4,12 +4,13 @@ import { Effect, Actions }               from '@ngrx/effects';
 import { Observable }                    from 'rxjs/Observable';
 
 import { CacheSingleton } from './cache.singleton';
-import { UserActions }    from '../actions';
-import { AlertActions }   from '../actions';
 import { AuthUser, User } from '../models';
 import { Domain }         from '../models';
 import { APIS }           from '../api';
 import { API_PATH, AUTH } from '../api';
+
+import * as UA  from '../actions/user';
+import * as AA from '../actions/alert';
 
 @Injectable()
 export class UserEffects {
@@ -26,68 +27,68 @@ export class UserEffects {
     }
 
 
-    @Effect() search$ = this.actions$.ofType(UserActions.SEARCH)
+    @Effect() search$ = this.actions$.ofType(UA.SEARCH)
         .map(action => JSON.stringify(action.payload))
         .filter(query => query !== '')
         .switchMap(query => this.searchUsers(query)
-            .map(users => UserActions.searchComplete(users))
-            .catch(() => Observable.of(UserActions.loadUserFail()))
+            .map(users => new UA.SearchComplete(users))
+            .catch(() => Observable.of(new UA.LoadUserFail()))
         );
 
-    @Effect() clearSearch$ = this.actions$.ofType(UserActions.SEARCH)
+    @Effect() clearSearch$ = this.actions$.ofType(UA.SEARCH)
         .map(action => JSON.stringify(action.payload))
         .filter(query => query === '')
-        .mapTo(UserActions.searchComplete([]));
+        .mapTo(new UA.SearchComplete([]));
 
-    @Effect() loadUsers$ = this.actions$.ofType(UserActions.LOAD_USERS)
+    @Effect() loadUsers$ = this.actions$.ofType(UA.LOAD_USERS)
         .switchMap(action => this.getUsers(action.payload)
-            .map(users => UserActions.loadUsersSuccess(users))
-            .catch(() => Observable.of(UserActions.loadUsersFail()))
+            .map(users => new UA.LoadUsersSuccess(users))
+            .catch(() => Observable.of(new UA.LoadUsersFail()))
         );
 
-    @Effect() loadUsersScroll$ = this.actions$.ofType(UserActions.LOAD_USERS_ON_SCROLL)
+    @Effect() loadUsersScroll$ = this.actions$.ofType(UA.LOAD_USERS_ON_SCROLL)
         .switchMap(action => this.getUsers(action.payload)
-            .map(users => UserActions.loadUsersOnScrollSuccess(users))
-            .catch(() => Observable.of(UserActions.loadUsersOnScrollFail()))
+            .map(users => new UA.LoadUsersOnScrollSuccess(users))
+            .catch(() => Observable.of(new UA.LoadUsersOnScrollFail()))
         );
 
-    @Effect() loadUser$ = this.actions$.ofType(UserActions.LOAD_USER)
+    @Effect() loadUser$ = this.actions$.ofType(UA.LOAD_USER)
         .switchMap(action => this.getUser(action.payload)
-            .map(user => UserActions.loadUserSuccess(user))
-            .catch(() => Observable.of(UserActions.loadUserFail()))
+            .map(user => new UA.LoadUserSuccess(user))
+            .catch(() => Observable.of(new UA.LoadUserFail()))
         );
 
     /* Update user app server related fields */
-    @Effect() updateUser$ = this.actions$.ofType(UserActions.SAVE_USER)
+    @Effect() updateUser$ = this.actions$.ofType(UA.SAVE_USER)
         .switchMap(action => this.putUser(action.payload)
-            .map(user => UserActions.saveUserSuccess(user))
-            .catch(() => Observable.of(UserActions.saveUserFail()))
+            .map(user => new UA.SaveUserSuccess(user))
+            .catch(() => Observable.of(new UA.SaveUserFail()))
         );
 
     /* Load domains of user can manage */
-    @Effect() loadAuthUser$ = this.actions$.ofType(UserActions.LOAD_AUTH_USER)
+    @Effect() loadAuthUser$ = this.actions$.ofType(UA.LOAD_AUTH_USER)
         .switchMap(action => this.getAuthUser(action.payload)
-            .map(res => UserActions.loadAuthUserSuccess(res.domains, res.user))
-            .catch(() => Observable.of(UserActions.loadAuthUserFail()))
+            .map(res => new UA.LoadAuthUserSuccess(res.domains, res.user))
+            .catch(() => Observable.of(new UA.LoadAuthUserFail()))
         );
 
     /* Update user auth server related fields */
-    @Effect() updateAuthUser$ = this.actions$.ofType(UserActions.SAVE_AUTH_USER)
+    @Effect() updateAuthUser$ = this.actions$.ofType(UA.SAVE_AUTH_USER)
         .switchMap(action => this.putAuthUser(action.payload)
-            .map(res => UserActions.saveAuthUserSuccess(res))
-            .catch(() => Observable.of(UserActions.saveAuthUserFail()))
+            .map(res => new UA.SaveAuthUserSuccess(res))
+            .catch(() => Observable.of(new UA.SaveAuthUserFail()))
         );
 
-    @Effect() updateUOk$ = this.actions$.ofType(UserActions.SAVE_USER_SUCCESS)
-        .map(() => AlertActions.success("成功保存用户信息到应用服务器"));
+    @Effect() updateUOk$ = this.actions$.ofType(UA.SAVE_USER_SUCCESS)
+        .map(() => new AA.Success("成功保存用户信息到应用服务器"));
 
-    @Effect() updateAUOk$ = this.actions$.ofType(UserActions.SAVE_AUTH_USER_SUCCESS)
-        .map(() => AlertActions.success("成功保存用户信息到授权服务器"));
+    @Effect() updateAUOk$ = this.actions$.ofType(UA.SAVE_AUTH_USER_SUCCESS)
+        .map(() => new AA.Success("成功保存用户信息到授权服务器"));
 
     @Effect() updateUFail$ = this.actions$.ofType(
-        UserActions.SAVE_USER_FAIL,
-        UserActions.SAVE_AUTH_USER_FAIL
-    ).map(() => AlertActions.error("保存用户信息失败"));
+        UA.SAVE_USER_FAIL,
+        UA.SAVE_AUTH_USER_FAIL
+    ).map(() => new AA.Error("保存用户信息失败"));
 
     /////////////////////////////////////////////////////////////////////////
     // Http functions

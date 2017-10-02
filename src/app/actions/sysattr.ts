@@ -4,28 +4,24 @@
 import { Action }        from '@ngrx/store';
 import { SysAttrsState } from '../reducers/sysattrs';
 
-export class SysAttrActions {
-    
-    static LOAD_ALL = '[SysAttr] Load All';
-    static loadAll(key: string = undefined): Action {
-        return { 
-            type: SysAttrActions.LOAD_ALL,
-            payload: key
-        };
-    }
 
-    static LOAD_ALL_SUCCESS = '[SysAttr] Load All Success';
-    static loadAllSuccess(attr: SysAttrsState): Action {
-        return {
-            type: SysAttrActions.LOAD_ALL_SUCCESS,
-            payload: attr
-        };
-    }
+export const LOAD_ALL = '[SysAttr] Load All';
+export const LOAD_ALL_SUCCESS = '[SysAttr] Load All Success';
+export const LOAD_ALL_FAIL = '[SysAttr] Load All Fail';
 
-    static LOAD_ALL_FAIL = '[SysAttr] Load All Fail';
-    static loadAllFail(): Action {
-        return {
-            type: SysAttrActions.LOAD_ALL_FAIL
-        };
-    }
+export class LoadAll implements Action {
+    readonly type = LOAD_ALL;
+    // Payload - key
+    constructor(public payload: string = undefined) {}
 }
+
+export class LoadAllSuccess implements Action {
+    readonly type = LOAD_ALL_SUCCESS;
+    constructor(public payload: SysAttrsState) {}
+}
+
+export class LoadAllFail implements Action {
+    readonly type = LOAD_ALL_FAIL;
+}
+
+export type Actions = LoadAll | LoadAllSuccess | LoadAllFail;

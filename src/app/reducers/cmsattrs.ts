@@ -12,7 +12,7 @@ import { CREATIVE_TYPES } from '../models';
 import { PostState }      from '../models';
 import { CreativeType }   from '../models';
 
-import { CmsAttrActions } from '../actions';
+import * as attr          from '../actions/cmsattr';
 
 
 export interface CmsAttrsState {
@@ -55,10 +55,10 @@ const initialState: CmsAttrsState = {
     deal_states:  {available: POST_STATES, actual: []},
 };
 
-export default function (state = initialState, action: Action): CmsAttrsState {
+export default function (state = initialState, action: attr.Actions | any): CmsAttrsState {
     switch (action.type)
     {
-        case CmsAttrActions.LOAD_ALL_SUCCESS: {
+        case attr.LOAD_ALL_SUCCESS: {
             let payload = action.payload;
 
             let authors: User[] = [];
@@ -150,7 +150,7 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             };
         }
 
-        case CmsAttrActions.SWITCH_CHANNEL: {
+        case attr.SWITCH_CHANNEL: {
             // Switch current active channel by given channel slug or id
             let channels = state.channels
                 .filter(ch => ch.slug == action.payload || ch.id == action.payload);
@@ -160,26 +160,26 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                 return state;
         }
 
-        case CmsAttrActions.SEARCH_TOPICS_SUCCESS: {
+        case attr.SEARCH_TOPICS_SUCCESS: {
             return Object.assign({}, state, { topics: [...action.payload] });
         }
 
-        case CmsAttrActions.SEARCH_TOPICS_FAIL: {
+        case attr.SEARCH_TOPICS_FAIL: {
             return Object.assign({}, state, { topics: [] });
         }
 
-        case CmsAttrActions.SAVE_GEO_LOCATION_SUCCESS:
-        case CmsAttrActions.SAVE_CATEGORY_SUCCESS:
-        case CmsAttrActions.SAVE_TOPIC_TYPE_SUCCESS:
-        case CmsAttrActions.SAVE_TAG_SUCCESS: {
+        case attr.SAVE_GEO_LOCATION_SUCCESS:
+        case attr.SAVE_CATEGORY_SUCCESS:
+        case attr.SAVE_TOPIC_TYPE_SUCCESS:
+        case attr.SAVE_TAG_SUCCESS: {
             // Update local copy of saved category/tag
             let taxes: any;
             // Object index key to specific attributes
             let key: string;
-            if (action.type === CmsAttrActions.SAVE_TOPIC_TYPE_SUCCESS) {
+            if (action.type === attr.SAVE_TOPIC_TYPE_SUCCESS) {
                 key = 'topic_types';
                 taxes = state.topic_types;
-            } else if (action.type === CmsAttrActions.SAVE_CATEGORY_SUCCESS) {
+            } else if (action.type === attr.SAVE_CATEGORY_SUCCESS) {
                 key = 'categories';
                 taxes = state.categories;
             } else {
@@ -196,15 +196,15 @@ export default function (state = initialState, action: Action): CmsAttrsState {
             return Object.assign({}, state, {key: [...newTaxes]});
         }
 
-        case CmsAttrActions.ADD_GEO_LOCATION_SUCCESS:
-        case CmsAttrActions.ADD_CATEGORY_SUCCESS:
-        case CmsAttrActions.ADD_TOPIC_TYPE_SUCCESS:
-        case CmsAttrActions.ADD_TAG_SUCCESS: {
+        case attr.ADD_GEO_LOCATION_SUCCESS:
+        case attr.ADD_CATEGORY_SUCCESS:
+        case attr.ADD_TOPIC_TYPE_SUCCESS:
+        case attr.ADD_TAG_SUCCESS: {
             // Add newly added location/category/tag to local copy
-            if (action.type === CmsAttrActions.ADD_TOPIC_TYPE_SUCCESS)
+            if (action.type === attr.ADD_TOPIC_TYPE_SUCCESS)
                 return Object.assign({}, state,
                     {topic_types: [...state.topic_types, action.payload]});
-            else if (action.type === CmsAttrActions.ADD_CATEGORY_SUCCESS)
+            else if (action.type === attr.ADD_CATEGORY_SUCCESS)
                 return Object.assign({}, state,
                     {categories: [...state.categories, action.payload]});
             else
@@ -212,17 +212,17 @@ export default function (state = initialState, action: Action): CmsAttrsState {
                     {locations: [...state.locations, action.payload]});
         }
 
-        case CmsAttrActions.DELETE_GEO_LOCATION_SUCCESS:
-        case CmsAttrActions.DELETE_CATEGORY_SUCCESS:
-        case CmsAttrActions.DELETE_TOPIC_TYPE_SUCCESS:
-        case CmsAttrActions.DELETE_TAG_SUCCESS: {
+        case attr.DELETE_GEO_LOCATION_SUCCESS:
+        case attr.DELETE_CATEGORY_SUCCESS:
+        case attr.DELETE_TOPIC_TYPE_SUCCESS:
+        case attr.DELETE_TAG_SUCCESS: {
             // Delete local copy of deleted location/category/tag
             let taxes: any;
             let key: string;
-            if (action.type === CmsAttrActions.DELETE_TOPIC_TYPE_SUCCESS) {
+            if (action.type === attr.DELETE_TOPIC_TYPE_SUCCESS) {
                 key = 'topic_types';
                 taxes = state.topic_types;
-            } else if (action.type === CmsAttrActions.DELETE_CATEGORY_SUCCESS) {
+            } else if (action.type === attr.DELETE_CATEGORY_SUCCESS) {
                 key = 'categories';
                 taxes = state.categories;
             } else {
@@ -248,105 +248,86 @@ export default function (state = initialState, action: Action): CmsAttrsState {
 /**
  * Return an array of authors
  */
-export function getAuthors() {
-    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.authors);
-}
+export const getAuthors = (state: CmsAttrsState) => state.authors;
 
 /**
  * Return an object of authors indexed by author id
  */
-export function getAuthorsObject() {
-    return (state$: Observable<CmsAttrsState>) => state$
-        .select(s => s.authors).map(authors =>
-            authors.reduce((users: {[id: number]: User}, user: User) => {
-                return Object.assign(users, { [user.id]: user });
-            }, {}));
+export const getAuthorsObject = (state: CmsAttrsState) => {
+    return state.authors.map(authors =>
+        authors.reduce((users: {[id: number]: User}, user: User) => {
+            return Object.assign(users, { [user.id]: user });
+        }, {}));
 }
 
 /**
  * Return an array of editors
  */
-export function getEditors() {
-    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.editors);
-}
+export const getEditors = (state: CmsAttrsState) => state.editors;
 
 /**
  * Return an object of editors indexed by editor id
  */
-export function getEditorsObject() {
-    return (state$: Observable<CmsAttrsState>) => state$
-        .select(s => s.editors).map(editors =>
-            editors.reduce((users: {[id: number]: User}, user: User) => {
-                return Object.assign(users, { [user.id]: user });
-            }, {}));
+export const getEditorsObject = (state: CmsAttrsState) => {
+    return state.editors.map(editors =>
+        editors.reduce((users: {[id: number]: User}, user: User) => {
+            return Object.assign(users, { [user.id]: user });
+        }, {}));
 }
 
 /**
  * Return current active channel
  */
-export function getCurChannel() {
-    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.curChannel);
-}
+export const getCurChannel = (state: CmsAttrsState) => state.curChannel;
 
 /**
  * Return an array of cms channels
  */
-export function getChannels() {
-    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.channels);
-}
-
+export const getChannels = (state: CmsAttrsState) => state.channels;
 
 /**
  * Return an object of channels indexed by channel id
  */
-export function getChannelsObject() {
-    return (state$: Observable<CmsAttrsState>) => state$
-        .select(s => s.channels).map(channels =>
-            channels.reduce((channels: {[id: number]: Channel}, channel: Channel) => {
-                return Object.assign(channels, { [channel.id]: channel });
-            }, {}));
+export const getChannelsObject = (state: CmsAttrsState) => {
+    return state.channels.map(channels =>
+        channels.reduce((channels: {[id: number]: Channel}, channel: Channel) => {
+            return Object.assign(channels, { [channel.id]: channel });
+        }, {}));
 }
 
 /**
  * Return an array of cms categories
  */
-export function getCategories() {
-    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.categories);
-}
+export const getCategories = (state: CmsAttrsState) => state.categories;
 
 /**
  * Return an array of cms categories of current active channel
  */
-export function getCurChannelCategories() {
-    return (state$: Observable<CmsAttrsState>) => state$
-        .filter(s => s.curChannel != null)
-        .map(s => s.categories.filter(cat => cat.channel_id === s.curChannel.id));
+export const getCurChannelCategories = (state: CmsAttrsState) => {
+    if (state.curChannel != null)
+        return state.categories.filter(cat => cat.channel_id === state.curChannel.id);
 }
 
 /**
  * Return an array of cms topic types
  */
-export function getTopicTypes() {
-    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.topic_types);
-}
+export const getTopicTypes = (state: CmsAttrsState) => state.topic_types;
 
 /**
  * Return an array of cms topic types of current active channel
  */
-export function getCurChannelTopicTypes() {
-    return (state$: Observable<CmsAttrsState>) => state$
-        .filter(s => s.curChannel != null)
-        .map(s => s.topic_types.filter(tt => tt.channel_id === s.curChannel.id));
+export const getCurChannelTopicTypes = (state: CmsAttrsState) => {
+    if (state.curChannel != null)
+        return state.topic_types.filter(tt => tt.channel_id === state.curChannel.id);
 }
 
 /**
  * Return an array of cms topics, it is already filtered by server side
+ * FIXME: Will remove the 'text' entry after replace the 3rd party directive which
+ * requires it.
  */
-export function getTopics() {
-    return (state$: Observable<CmsAttrsState>) => state$
-        .select(s => s.topics)
-        .map(ts => ts.map(t => Object.assign({}, t, {text: t.title})));
-}
+export const getTopics = (state: CmsAttrsState) =>
+    state.topics.map(ts => ts.map(t => Object.assign({}, t, {text: t.title})));
 
 /**
  * Return an array of cms topics of current active channel
@@ -362,22 +343,12 @@ export function getCurChannelTopics() {
 /**
  * Return an array of geo locations
  */
-export function getLocations() {
-    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.locations);
-}
+export const getLocations = (state: CmsAttrsState) => state.locations;
 
-export function getPostStates() {
-    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.post_states);
-}
+export const getPostStates = (state: CmsAttrsState) => state.post_states;
 
-export function getDealStates() {
-    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.deal_states);
-}
+export const getDealStates  = (state: CmsAttrsState) => state.deal_states;
 
-export function getPageStates() {
-    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.page_states);
-}
+export const getPageStates = (state: CmsAttrsState) => state.page_states;
 
-export function getTopicStates() {
-    return (state$: Observable<CmsAttrsState>) => state$.select(s => s.topic_states);
-}
+export const getTopicStates = (state: CmsAttrsState) => state.topic_states;

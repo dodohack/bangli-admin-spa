@@ -1,8 +1,9 @@
 import { Action }         from '@ngrx/store';
 import { Observable }     from 'rxjs/Observable';
 
-import { SysAttrActions } from '../actions';
 import { UserRole }       from '../models';
+import * as sys           from '../actions/sysattr';
+
 
 export interface SysAttrsState {
     // Available user roles
@@ -16,10 +17,10 @@ const initState: SysAttrsState = {
     thumbs: null,
 };
 
-export default function (state = initState, action: Action): SysAttrsState {
+export default function (state = initState, action: sys.Actions | any): SysAttrsState {
     switch (action.type)
     {
-        case SysAttrActions.LOAD_ALL_SUCCESS: {
+        case sys.LOAD_ALL_SUCCESS: {
             let payload = action.payload;
 
             let roles: UserRole[];
@@ -47,13 +48,9 @@ export default function (state = initState, action: Action): SysAttrsState {
 /**
  * Return an array of user roles
  */
-export function getUserRoles() {
-    return (state$: Observable<SysAttrsState>) => state$.select(s => s.roles);
-}
+export const getUserRoles = (state: SysAttrsState) => state.roles;
 
 /**
  * Return an array of thumbnail configs
  */
-export function getThumbConfig() {
-    return (state$: Observable<SysAttrsState>) => state$.select(s => s.thumbs);
-}
+export const getThumbConfig = (state: SysAttrsState) => state.thumbs;
