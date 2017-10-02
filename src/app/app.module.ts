@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
 import { Title }         from '@angular/platform-browser';
 
-import { provideStore }  from '@ngrx/store';
+import { StoreModule }  from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
 import { UnauthGuard }   from './guard';
@@ -27,9 +27,8 @@ import { AuthEffects }     from './effects';
 import { UserEffects }     from './effects';
 import { EntityEffects }   from './effects';
 import { CmsAttrEffects }  from './effects';
-import { ShopAttrEffects } from './effects';
 import { SysAttrEffects }  from './effects';
-import { FeMenuEffects }     from './effects';
+import { FeMenuEffects }   from './effects';
 
 import { SharedModule }    from './modules/directives/shared.module';
 import { AuthModule }      from './modules/auth/auth.module';
@@ -50,9 +49,11 @@ import { MigrationModule } from './modules/migration/migration.module';
 import { SettingModule }   from './modules/setting/setting.module';
 
 /* Debug tools */
+/*
 import { StoreLogMonitorModule } from '@ngrx/store-log-monitor';
 import { useLogMonitor }         from '@ngrx/store-log-monitor';
 import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
+*/
 
 @NgModule({
     imports: [
@@ -77,13 +78,17 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         MigrationModule,
         SettingModule,
         SharedModule.forRoot(),
-        EffectsModule.run(AuthEffects),
-        EffectsModule.run(UserEffects),
-        EffectsModule.run(EntityEffects),
-        EffectsModule.run(CmsAttrEffects),
-        EffectsModule.run(ShopAttrEffects),
-        EffectsModule.run(SysAttrEffects),
-        EffectsModule.run(FeMenuEffects),
+
+        StoreModule.forRoot(reducer),
+        EffectsModule.forRoot([
+            AuthEffects,
+            UserEffects,
+            EntityEffects,
+            CmsAttrEffects,
+            SysAttrEffects,
+            FeMenuEffects
+        ]),
+        /*
         StoreDevtoolsModule.instrumentStore({
             monitor: useLogMonitor({
                 visible: true,
@@ -91,6 +96,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
             })
         }),
         StoreLogMonitorModule
+        */
     ],
     declarations: [
         App,
@@ -109,7 +115,6 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         SuperUserGuard,
         LockGuard,
         EditLockGuard,
-        provideStore(reducer),
     ],
     bootstrap: [ App ]
 })
