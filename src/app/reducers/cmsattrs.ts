@@ -55,7 +55,7 @@ const initialState: CmsAttrsState = {
     deal_states:  {available: POST_STATES, actual: []},
 };
 
-export default function (state = initialState, action: attr.Actions | any): CmsAttrsState {
+export function cmsReducer(state = initialState, action: attr.Actions | any): CmsAttrsState {
     switch (action.type)
     {
         case attr.LOAD_ALL_SUCCESS: {
@@ -253,12 +253,10 @@ export const getAuthors = (state: CmsAttrsState) => state.authors;
 /**
  * Return an object of authors indexed by author id
  */
-export const getAuthorsObject = (state: CmsAttrsState) => {
-    return state.authors.map(authors =>
-        authors.reduce((users: {[id: number]: User}, user: User) => {
-            return Object.assign(users, { [user.id]: user });
-        }, {}));
-}
+export const getAuthorsObject = (state: CmsAttrsState) =>
+    state.authors.reduce((users: {[id: number]: User}, user: User) =>
+    { return Object.assign(users, { [user.id]: user }); }, {});
+
 
 /**
  * Return an array of editors
@@ -268,12 +266,9 @@ export const getEditors = (state: CmsAttrsState) => state.editors;
 /**
  * Return an object of editors indexed by editor id
  */
-export const getEditorsObject = (state: CmsAttrsState) => {
-    return state.editors.map(editors =>
-        editors.reduce((users: {[id: number]: User}, user: User) => {
-            return Object.assign(users, { [user.id]: user });
-        }, {}));
-}
+export const getEditorsObject = (state: CmsAttrsState) =>
+    state.editors.reduce((users: {[id: number]: User}, user: User) =>
+    { return Object.assign(users, { [user.id]: user }); }, {});
 
 /**
  * Return current active channel
@@ -288,12 +283,9 @@ export const getChannels = (state: CmsAttrsState) => state.channels;
 /**
  * Return an object of channels indexed by channel id
  */
-export const getChannelsObject = (state: CmsAttrsState) => {
-    return state.channels.map(channels =>
-        channels.reduce((channels: {[id: number]: Channel}, channel: Channel) => {
-            return Object.assign(channels, { [channel.id]: channel });
-        }, {}));
-}
+export const getChannelsObject = (state: CmsAttrsState) =>
+    state.channels.reduce((channels: {[id: number]: Channel}, channel: Channel) =>
+    { return Object.assign(channels, { [channel.id]: channel }); }, {});
 
 /**
  * Return an array of cms categories
@@ -306,7 +298,7 @@ export const getCategories = (state: CmsAttrsState) => state.categories;
 export const getCurChannelCategories = (state: CmsAttrsState) => {
     if (state.curChannel != null)
         return state.categories.filter(cat => cat.channel_id === state.curChannel.id);
-}
+};
 
 /**
  * Return an array of cms topic types
@@ -319,15 +311,14 @@ export const getTopicTypes = (state: CmsAttrsState) => state.topic_types;
 export const getCurChannelTopicTypes = (state: CmsAttrsState) => {
     if (state.curChannel != null)
         return state.topic_types.filter(tt => tt.channel_id === state.curChannel.id);
-}
+};
 
 /**
  * Return an array of cms topics, it is already filtered by server side
  * FIXME: Will remove the 'text' entry after replace the 3rd party directive which
  * requires it.
  */
-export const getTopics = (state: CmsAttrsState) =>
-    state.topics.map(ts => ts.map(t => Object.assign({}, t, {text: t.title})));
+export const getTopics = (state: CmsAttrsState) => state.topics;
 
 /**
  * Return an array of cms topics of current active channel

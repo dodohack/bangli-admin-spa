@@ -10,9 +10,9 @@ import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
 import { AppState }          from '../../reducers';
-import { EntityActions }     from '../../actions';
-import { CmsAttrActions }    from '../../actions';
-import { AlertActions }      from "../../actions";
+import * as EntityActions    from '../../actions/entity';
+import * as CmsAttrActions   from '../../actions/cmsattr';
+import * as AlertActions     from "../../actions/alert";
 import { CacheSingleton }    from '../../effects/cache.singleton';
 
 import { FroalaEditorCompnoent } from 'ng2-froala-editor/ng2-froala-editor';
@@ -54,9 +54,9 @@ import {
     getEntityDirtyMask, getCurEntityAuthor,
     getCurEntityEditor, getCurEntityTopicType,
     getCurEntityKeywordsAsArray,
-    getEntitiesCurPage, getCurEntityHasDeal,
-    getCurEntityIntro, getCurEntityContent,
-    getCurEntityDealIntro, getCurEntityDealContent} from '../../reducers';
+    getEntitiesCurPage,
+    getCurEntityIntro, getCurEntityContent
+} from '../../reducers';
 
 export abstract class EntityPage implements OnInit, OnDestroy
 {
@@ -130,36 +130,33 @@ export abstract class EntityPage implements OnInit, OnDestroy
                 protected router: Router) {}
 
     ngOnInit() {
-        this.isLoading$     = this.store.let(getIsLoading(this.etype));
-        this.dirtyMask$     = this.store.let(getEntityDirtyMask(this.etype));
-        this.domain$        = this.store.let(getCurDomain());
-        this.profile$       = this.store.let(getCurProfile());
-        this.authors$       = this.store.let(getAuthors());
-        this.editors$       = this.store.let(getEditors());
-        this.authorsObj$    = this.store.let(getAuthorsObject());
-        this.geoLocations$  = this.store.let(getLocations());
-        this.cmsChannels$   = this.store.let(getCmsChannels());
-        this.cmsCategories$ = this.store.let(getCmsCurChannelCategories());
-        this.cmsTopicTypes$ = this.store.let(getCmsCurChannelTopicTypes());
-        this.cmsTopics$     = this.store.let(getCmsTopics());
-        this.paginator$     = this.store.let(getPaginator(this.etype));
-        this.id$            = this.store.let(getCurEntityId(this.etype));
-        this.entity$        = this.store.let(getCurEntity(this.etype));
-        this.author$        = this.store.let(getCurEntityAuthor(this.etype));
-        this.editor$        = this.store.let(getCurEntityEditor(this.etype));
-        this.channel$       = this.store.let(getCurEntityChannel(this.etype));
-        this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
-        this.idsCurPage$    = this.store.let(getIdsCurPage(this.etype));
-        this.intro$         = this.store.let(getCurEntityIntro(this.etype));
-        this.content$       = this.store.let(getCurEntityContent(this.etype));
-        this.deal_intro$    = this.store.let(getCurEntityDealIntro(this.etype));
-        this.deal_content$  = this.store.let(getCurEntityDealContent(this.etype));
-        this.keywords$      = this.store.let(getCurEntityKeywordsAsArray(this.etype));
-        this.topicType$     = this.store.let(getCurEntityTopicType(this.etype));
-        this.hasDeal$       = this.store.let(getCurEntityHasDeal(this.etype));
+        this.isLoading$     = this.store.select(getIsLoading(this.etype));
+        this.dirtyMask$     = this.store.select(getEntityDirtyMask(this.etype));
+        this.domain$        = this.store.select(getCurDomain);
+        this.profile$       = this.store.select(getCurProfile);
+        this.authors$       = this.store.select(getAuthors);
+        this.editors$       = this.store.select(getEditors);
+        this.authorsObj$    = this.store.select(getAuthorsObject);
+        this.geoLocations$  = this.store.select(getLocations);
+        this.cmsChannels$   = this.store.select(getCmsChannels);
+        this.cmsCategories$ = this.store.select(getCmsCurChannelCategories);
+        this.cmsTopicTypes$ = this.store.select(getCmsCurChannelTopicTypes);
+        this.cmsTopics$     = this.store.select(getCmsTopics);
+        this.paginator$     = this.store.select(getPaginator(this.etype));
+        this.id$            = this.store.select(getCurEntityId(this.etype));
+        this.entity$        = this.store.select(getCurEntity(this.etype));
+        this.author$        = this.store.select(getCurEntityAuthor(this.etype));
+        this.editor$        = this.store.select(getCurEntityEditor(this.etype));
+        this.channel$       = this.store.select(getCurEntityChannel(this.etype));
+        this.entities$      = this.store.select(getEntitiesCurPage(this.etype));
+        this.idsCurPage$    = this.store.select(getIdsCurPage(this.etype));
+        this.intro$         = this.store.select(getCurEntityIntro(this.etype));
+        this.content$       = this.store.select(getCurEntityContent(this.etype));
+        this.keywords$      = this.store.select(getCurEntityKeywordsAsArray(this.etype));
+        this.topicType$     = this.store.select(getCurEntityTopicType(this.etype));
 
-        this.images$        = this.store.let(getEntitiesCurPage(ENTITY.ATTACHMENT));
-        this.imageIds$      = this.store.let(getIdsCurPage(ENTITY.ATTACHMENT));
+        this.images$        = this.store.select(getEntitiesCurPage(ENTITY.ATTACHMENT));
+        this.imageIds$      = this.store.select(getIdsCurPage(ENTITY.ATTACHMENT));
 
         this.subDomain  = this.domain$.subscribe(d => this.domain = d);
         this.subPro     = this.profile$.subscribe(p => this.profile = p);
@@ -168,7 +165,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
         // Update the channel in CmsAttrStates with entity channel
         this.subCh      = this.channel$.map(ch => ch.id).distinctUntilChanged()
-            .subscribe(cid => this.store.dispatch(CmsAttrActions.switchChannel(cid)));
+            .subscribe(cid => this.store.dispatch(new CmsAttrActions.SwitchChannel(cid)));
 
         this.subTopics  = this.cmsTopics$
             .subscribe(topics => this.cmsTopics = topics);
@@ -230,11 +227,11 @@ export abstract class EntityPage implements OnInit, OnDestroy
             .subscribe(params => {
                 this.params = params;
                 if (this.isNewEntity) {
-                    this.store.dispatch(EntityActions
-                        .newEntity(this.etype, this.profile));
+                    this.store.dispatch(new EntityActions
+                        .NewEntity({etype: this.etype, data: this.profile}));
                 } else {
-                    this.store.dispatch(EntityActions
-                        .loadEntity(this.etype, params['id']));
+                    this.store.dispatch(new EntityActions
+                        .LoadEntity({etype: this.etype, data: params['id']}));
                 }
             });
     }
@@ -303,7 +300,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
     // Search topics from API server
     searchTopic(topicTypeId: number, text: string) {
-        this.store.dispatch(CmsAttrActions.searchTopics(topicTypeId, text));
+        this.store.dispatch(
+            new CmsAttrActions.SearchTopics({ttid: topicTypeId, text: text}))
+        ;
     }
 
     // Get topics belongs to given topic type
@@ -324,21 +323,31 @@ export abstract class EntityPage implements OnInit, OnDestroy
     }
     // Attach hasMany attributes
     attach(key: string, value: any) {
-        this.store.dispatch(EntityActions.attach(this.etype, key, value));
+        this.store.dispatch(
+            new EntityActions.Attach({etype: this.etype, key: key, value: value})
+        );
     }
     attachStr(key: string, value: any) {
-        this.store.dispatch(EntityActions.attach(this.etype, key, value.text));
+        this.store.dispatch(
+            new EntityActions.Attach({etype: this.etype, key: key, value: value.text})
+        );
     }
     // Detach hasMany attributes
     detach(key: string, value: any) {
-        this.store.dispatch(EntityActions.detach(this.etype, key, value));
+        this.store.dispatch(
+            new EntityActions.Detach({etype: this.etype, key: key, value: value})
+        );
     }
     detachStr(key: string, value: any) {
-        this.store.dispatch(EntityActions.detach(this.etype, key, value.text));
+        this.store.dispatch(
+            new EntityActions.Detach({etype: this.etype, key: key, value: value.text})
+        );
     }
     // Update hasOne/string/single attributes of entity
     update(key: string, value: any) {
-        this.store.dispatch(EntityActions.update(this.etype, key, value));
+        this.store.dispatch(
+            new EntityActions.Update({etype: this.etype, key: key, value: value})
+        );
     }
 
     updateFakePublishedAt(date: string) {
@@ -353,8 +362,10 @@ export abstract class EntityPage implements OnInit, OnDestroy
      * image list
      */
     onImageUploaded($event) {
-        this.store.dispatch(EntityActions
-            .loadEntitySuccess(ENTITY.ATTACHMENT, $event, true));
+        this.store.dispatch(
+            new EntityActions.LoadEntitySuccess(
+                {etype: ENTITY.ATTACHMENT, data: $event, prepend: true})
+        );
     }
 
     /**
@@ -362,8 +373,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
      */
     showGallery(gallery: any) {
         this.galleryParams.cur_page = 1;
-        this.store.dispatch(EntityActions
-            .loadEntitiesOnScroll(ENTITY.ATTACHMENT, this.galleryParams));
+        this.store.dispatch(
+            new EntityActions.LoadEntitiesOnScroll(
+                {etype: ENTITY.ATTACHMENT, data: this.galleryParams}));
         gallery.show();
     }
 
@@ -372,8 +384,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
      */
     loadMoreImages() {
         this.galleryParams.cur_page++;
-        this.store.dispatch(EntityActions
-            .loadEntitiesOnScroll(ENTITY.ATTACHMENT, this.galleryParams));
+        this.store.dispatch(
+            new EntityActions.LoadEntitiesOnScroll(
+                {etype: ENTITY.ATTACHMENT, data: this.galleryParams}));
     }
 
     /**
@@ -400,8 +413,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
      * Save entity to API server
      */
     save() {
-        this.store.dispatch(EntityActions
-            .saveEntity(this.etype, this.entity, this.dirtyMask));
+        this.store.dispatch(
+            new EntityActions.SaveEntity(
+                {etype: this.etype, data: this.entity, mask: this.dirtyMask}));
     }
 
     /**
@@ -410,8 +424,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
     autoSave() {
         this.subAS = Observable.interval(10000).subscribe(() => {
             if (this.isDirty && !this.isNewEntity)
-                this.store.dispatch(EntityActions
-                    .autoSave(this.etype, this.entity, this.dirtyMask));
+                this.store.dispatch(
+                    new EntityActions.AutoSave(
+                        {etype: this.etype, data: this.entity, mask: this.dirtyMask}));
         });
     }
 

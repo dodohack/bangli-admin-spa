@@ -8,7 +8,7 @@ import * as alert    from '../actions/alert';
 
 export type AlertsState = Alert[];
 
-export default function(state: AlertsState = [], action: alert.Actions): AlertsState {
+export function alertsReducer(state: AlertsState = [], action: alert.Actions): AlertsState {
     switch(action.type)
     {
         case alert.SUCCESS: {

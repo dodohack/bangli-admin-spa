@@ -32,7 +32,7 @@ export class AuthEffects {
      * Step 1. Login authentication server
      */
     @Effect() login$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN)
-        .switchMap(action => this.login(action.payload)
+        .switchMap((action: any) => this.login(action.payload)
             .map(user => {
                 if (user.domains.length)
                     return new AuthA.LoginSuccess(user);
@@ -46,7 +46,7 @@ export class AuthEffects {
      * Step 2. Switch or login to default application server
      */
     @Effect() loginDomain$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_DOMAIN)
-        .switchMap(action => this.loginDomain(action.payload)
+        .switchMap((action: any) => this.loginDomain(action.payload)
             .map(res => {
                 if (this.hasDashboardUserRole(res.user)) {
                     // Clean previous cache when login domain success
@@ -60,10 +60,10 @@ export class AuthEffects {
         );
 
     @Effect() loginFail1$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_FAIL)
-        .map(action => new AlertA.Error('登录授权服务器失败!'));
+        .map((action: any) => new AlertA.Error('登录授权服务器失败!'));
 
     @Effect() loginFail2$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_FAIL_NO_DOMAIN)
-        .map(action => new AlertA.Error('无权使用任何站点,请联系管理员开通权限!'));
+        .map((action: any) => new AlertA.Error('无权使用任何站点,请联系管理员开通权限!'));
 
     /**
      * Clean session cache for logout 
@@ -91,15 +91,15 @@ export class AuthEffects {
      * Register a user to auth server
      */
     @Effect() register$: Observable<Action> = this.actions$.ofType(AuthA.REGISTER)
-        .switchMap(action => this.register(action.payload)
+        .switchMap((action: any) => this.register(action.payload)
             .map(res => new AuthA.RegisterSuccess(res))
             .catch(() => Observable.of(new AuthA.RegisterFail())));
 
     @Effect() registerSuccess$: Observable<Action> = this.actions$.ofType(AuthA.REGISTER_SUCCESS)
-        .map(action => new AlertA.Success("注册成功,请联系管理员开通后台权限"));
+        .map((action: any) => new AlertA.Success("注册成功,请联系管理员开通后台权限"));
 
     @Effect() registerFail$: Observable<Action> = this.actions$.ofType(AuthA.REGISTER_FAIL)
-        .map(action => new AlertA.Error("注册失败"));
+        .map((action: any) => new AlertA.Error("注册失败"));
 
 
     //////////////////////////////////////////////////////////////////////////

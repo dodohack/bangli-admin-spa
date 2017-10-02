@@ -19,7 +19,7 @@ export class SysAttrEffects {
                 private http: Http) { }
 
     @Effect() loadAll$ = this.actions$.ofType(sys.LOAD_ALL)
-        .switchMap(action => this.getAll(action.payload)
+        .switchMap((action: any) => this.getAll(action.payload)
             .map(attrs => new sys.LoadAllSuccess(attrs))
             .catch(() => Observable.of(new sys.LoadAllFail())));
 

@@ -34,7 +34,7 @@ const initialState: FeMenusState = {
     menuGids:              {},
 };
 
-export default function (state = initialState, action: menu.Actions | any): FeMenusState {
+export function feMenuReducer(state = initialState, action: menu.Actions | any): FeMenusState {
     switch (action.type)
     {
         // TODO: This reduce costs several ms to dozens of ms if number of menus

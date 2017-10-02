@@ -17,7 +17,7 @@ const initState: SysAttrsState = {
     thumbs: null,
 };
 
-export default function (state = initState, action: sys.Actions | any): SysAttrsState {
+export function sysReducer(state = initState, action: sys.Actions | any): SysAttrsState {
     switch (action.type)
     {
         case sys.LOAD_ALL_SUCCESS: {

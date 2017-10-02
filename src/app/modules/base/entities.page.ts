@@ -15,7 +15,8 @@ import { ENTITY_INFO }          from '../../models';
 import { Category, Tag, Topic}  from '../../models';
 import { Activity }             from '../../models';
 import { AppState }             from '../../reducers';
-import { EntityActions }        from '../../actions';
+
+import * as EntityActions       from '../../actions/entity';
 
 /**
  * TODO: Reference how ngrx-example-app (the books) does, especially for the
@@ -89,14 +90,15 @@ export class EntitiesPage implements OnInit, OnDestroy
 
     ngOnInit() {
         this.isLoading$     = this.store.let(getIsLoading(this.etype));
-        this.domain$        = this.store.let(getCurDomain());
-        this.profile$       = this.store.let(getCurProfile());
-        this.authors$       = this.store.let(getAuthors());
-        this.editors$       = this.store.let(getEditors());
-        this.authorsObject$ = this.store.let(getAuthorsObject());
-        this.cmsChannels$   = this.store.let(getCmsChannels());
-        this.cmsChannelsObject$ = this.store.let(getCmsChannelsObject());
-        this.cmsCategories$ = this.store.let(getCmsCategories());
+        this.domain$        = this.store.let(getCurDomain);
+        this.profile$       = this.store.let(getCurProfile);
+        this.authors$       = this.store.let(getAuthors);
+        this.editors$       = this.store.let(getEditors);
+        this.authorsObject$ = this.store.let(getAuthorsObject);
+        this.cmsChannels$   = this.store.let(getCmsChannels);
+        this.cmsChannelsObject$ = this.store.let(getCmsChannelsObject);
+        this.cmsCategories$ = this.store.let(getCmsCategories);
+
         this.paginator$     = this.store.let(getPaginator(this.etype));
         this.entity$        = this.store.let(getCurEntity(this.etype));
         this.entities$      = this.store.let(getEntitiesCurPage(this.etype));
@@ -155,11 +157,11 @@ export class EntitiesPage implements OnInit, OnDestroy
                 if (JSON.stringify(this.params) !== JSON.stringify(params)) {
                     this.setupEntityParams(params);
                     if (this.pageless)
-                        this.store.dispatch(EntityActions
-                            .loadEntitiesOnScroll(this.etype, this.entityParams));
+                        this.store.dispatch(new EntityActions
+                            .LoadEntitiesOnScroll({etype: this.etype, data: this.entityParams}));
                     else
-                        this.store.dispatch(EntityActions
-                            .loadEntities(this.etype, this.entityParams));
+                        this.store.dispatch(new EntityActions
+                            .LoadEntities({etype: this.etype, data: this.entityParams}));
                 }
                 
             });
@@ -211,7 +213,7 @@ export class EntitiesPage implements OnInit, OnDestroy
      * Create a entity on entity list page
      */
     newEntity() {
-        this.store.dispatch(EntityActions.newEntity(this.etype, this.profile));
+        this.store.dispatch(new EntityActions.NewEntity({etype: this.etype, data: this.profile}));
     }
 
     /**
@@ -220,12 +222,12 @@ export class EntitiesPage implements OnInit, OnDestroy
      */
     saveEntity() {
         console.error("Add dirtyMask support!");
-        this.store.dispatch(EntityActions.saveEntity(this.etype, this.entity));
+        this.store.dispatch(new EntityActions.SaveEntity({etype: this.etype, data: this.entity, mask: []}));
     }
 
     // In page edit single or multiple entities
     batchEdit(ids: number[]) {
-        this.store.dispatch(EntityActions.batchEditEntities(this.etype, ids));
+        this.store.dispatch(new EntityActions.BatchEditEntities({etype: this.etype, data: ids}));
     }
     
     // Save single or multiple entities on entity list page
@@ -235,32 +237,32 @@ export class EntitiesPage implements OnInit, OnDestroy
 
     // FIXME: Should be Cancel batch options
     cancelBatchEdit() {
-        this.store.dispatch(EntityActions.cancelBatchEditEntities(this.etype));
+        this.store.dispatch(new EntityActions.CancelBatchEditEntities({etype: this.etype}));
     }
 
     // Edit previous entity in current posts list
     editPreviousEntity() {
-        this.store.dispatch(EntityActions.batchEditPreviousEntity(this.etype));
+        this.store.dispatch(new EntityActions.BatchEditPreviousEntity({etype: this.etype}));
     }
 
     // Edit next entity in current posts list
     editNextEntity() {
-        this.store.dispatch(EntityActions.batchEditNextEntity(this.etype));
+        this.store.dispatch(new EntityActions.BatchEditNextEntity({etype: this.etype}));
     }
 
     // Delete multiple posts
     batchDelete(ids: number[]) {
-        this.store.dispatch(EntityActions.batchDeleteEntities(this.etype, ids));
+        this.store.dispatch(new EntityActions.BatchDeleteEntities({etype: this.etype, data: ids}));
     }
 
     // Lock posts to offline edit
     batchOfflineEdit(ids: number[]) {
-        this.store.dispatch(EntityActions.batchOfflineEditEntities(this.etype, ids));
+        this.store.dispatch(new EntityActions.BatchOfflineEditEntities({etype: this.etype, data: ids}));
     }
 
     // Add lock to posts, so no one can edit the post
     batchLock(ids: number[]) {
-        this.store.dispatch(EntityActions.batchLockEntities(this.etype, ids));
+        this.store.dispatch(new EntityActions.BatchLockEntities({etype: this.etype, data: ids}));
     }
 
     /////////////////////////////////////////////////////////////////////////

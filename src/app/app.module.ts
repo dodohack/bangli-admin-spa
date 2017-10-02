@@ -22,7 +22,7 @@ import { Sidebar }       from './modules/directives/sidebar';
 import { Topbar }        from './modules/directives/topbar';
 
 /* Import the default export from these files */
-import reducer             from './reducers';
+import {reducers, metaReducers} from './reducers';
 import { AuthEffects }     from './effects';
 import { UserEffects }     from './effects';
 import { EntityEffects }   from './effects';
@@ -79,7 +79,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         SettingModule,
         SharedModule.forRoot(),
 
-        StoreModule.forRoot(reducer),
+        StoreModule.forRoot(reducers, {metaReducers}),
         EffectsModule.forRoot([
             AuthEffects,
             UserEffects,

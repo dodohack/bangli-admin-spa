@@ -11,7 +11,6 @@ import { Entity, ENTITY, ENTITY_INFO } from '../../models';
 import { Channel }        from '../../models';
 import { AuthState }      from '../../reducers/auth';
 import { CmsAttrsState }  from "../../reducers/cmsattrs";
-import { ShopAttrsState } from "../../reducers/shopattrs";
 import { EntitiesState }  from "../../reducers/entities";
 
 export class EntityList

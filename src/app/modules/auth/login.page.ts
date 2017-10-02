@@ -10,8 +10,8 @@ import { Observable } from "rxjs/Observable";
 
 import { AppState }     from '../../reducers';
 import { AuthState }    from '../../reducers/auth';
-import { AuthActions }  from '../../actions';
-import { AlertActions } from '../../actions';
+import * as AuthActions from '../../actions/auth';
+import * as AlertActions from '../../actions/alert';
 
 import { isDashboardUser } from '../../reducers';
 
@@ -27,13 +27,13 @@ export class LoginPage implements OnInit
                 private router: Router) {}
 
     ngOnInit() {
-        this.isDashboardUser$ = this.store.let(isDashboardUser());
+        this.isDashboardUser$ = this.store.select(isDashboardUser);
 
         this.isDashboardUser$.filter(isDu => isDu)
             .subscribe(isDu => this.router.navigate(['/dashboard']));
     }
 
     onSubmit($event) {
-        this.store.dispatch(AuthActions.login($event));
+        this.store.dispatch(new AuthActions.Login($event));
     }
 }

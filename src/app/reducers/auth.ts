@@ -51,7 +51,7 @@ const initialState: AuthState = {
     users: {}
 };
 
-export default function(state = initialState, action: auth.Actions | any): AuthState {
+export function authReducer(state = initialState, action: auth.Actions | any): AuthState {
     switch (action.type)
     {
         case auth.LOGIN_SUCCESS: {
@@ -252,14 +252,6 @@ export const hasEditorRole = (state: AuthState) => {
     return (state.jwt && state.jwt.exp > now && state.key &&
     (state.users[state.key].role.name === 'editor'        ||
     state.users[state.key].role.name === 'shop_manager'  ||
-    state.users[state.key].role.name === 'administrator' ||
-    state.jwt.spu === 1));
-};
-
-export const hasShopManagerRole = (state: AuthState) => {
-    let now = Math.floor(Date.now()/1000);
-    return (state.jwt && state.jwt.exp > now && state.key &&
-    (state.users[state.key].role.name === 'shop_manager'  ||
     state.users[state.key].role.name === 'administrator' ||
     state.jwt.spu === 1));
 };

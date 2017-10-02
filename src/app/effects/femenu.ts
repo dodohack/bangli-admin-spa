@@ -36,19 +36,19 @@ export class FeMenuEffects {
         );
 
     @Effect() saveMenu$ = this.actions$.ofType(menu.SAVE_MENU)
-        .switchMap(action => this.putMenu(action.payload)
+        .switchMap((action: any) => this.putMenu(action.payload)
             .map(() => new alert.Success("保存目录成功"))
             .catch(() => Observable.of(new alert.Error("保存目录失败")))
         );
 
     @Effect() addMenu$ = this.actions$.ofType(menu.ADD_MENU)
-        .switchMap(action => this.postMenu(action.payload)
+        .switchMap((action: any) => this.postMenu(action.payload)
             .map(() => new alert.Success("新增目录成功"))
             .catch(() => Observable.of(new alert.Error("新增目录失败")))
         );
 
     @Effect() deleteMenu$ = this.actions$.ofType(menu.DELETE_MENU)
-        .switchMap(action => this.deleteMenu(action.payload)
+        .switchMap((action: any) => this.deleteMenu(action.payload)
             .map(() => new alert.Success("删除目录成功"))
             .catch(() => Observable.of(new alert.Error("删除目录失败")))
         );

@@ -649,8 +649,9 @@ export const getCurEntity = (state: EntitiesState) => state.entities[state.idsEd
 
 /**
  * Return an array of entites of given ids
+ * Use getEntitiesObject instead
  */
-export const getEntities = (state: EntitiesState, ids: number[]) => ids.map(id => state.entities[id]);
+//export const getEntities = (state: EntitiesState, ids: number[]) => ids.map(id => state.entities[id]);
 
 /**
  * Return an array of entity ids of current page
@@ -665,13 +666,13 @@ export const getIdsEditing = (state: EntitiesState) => state.idsEditing;
 /**
  * If the entity exists in the entity list of current page
  */
-export const hasEntityInCurPage = (state: EntitiesState, id: number) => state.idsCurPage.find(id);
+//export const hasEntityInCurPage = (state: EntitiesState, id: number) => state.idsCurPage.find(id);
 
 
 /**
  * If the entity exists in the all entities loaded to client
  */
-export const hasEntity = (state: EntitiesState, id: number) => state.idsTotal.find(id);
+//export const hasEntity = (state: EntitiesState, id: number) => state.idsTotal.find(id);
 
 /**
  * Return current paginator

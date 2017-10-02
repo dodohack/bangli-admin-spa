@@ -12,7 +12,6 @@ import { Observable }             from 'rxjs/Observable';
 import { AppState }               from './reducers';
 import { hasAuthorRole }          from './reducers';
 import { hasEditorRole }          from './reducers';
-import { hasShopManagerRole }     from './reducers';
 import { hasAdminRole }           from './reducers';
 import { hasSuperUserRole }       from './reducers';
 //import { isPostLocked }           from './reducers';
@@ -85,7 +84,7 @@ export class AuthorGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasAuthorRole()).take(1);
+        return this.store.select(hasAuthorRole).take(1);
     }
 }
 
@@ -95,18 +94,7 @@ export class EditorGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasEditorRole()).take(1);
-    }
-}
-
-
-/* Shop manager guard */
-@Injectable()
-export class ShopMgrGuard implements CanActivate {
-    constructor(private store: Store<AppState>, private router: Router) {}
-
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasShopManagerRole()).take(1);
+        return this.store.select(hasEditorRole).take(1);
     }
 }
 
@@ -116,7 +104,7 @@ export class AdminGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasAdminRole()).take(1);
+        return this.store.select(hasAdminRole).take(1);
     }
 }
 
@@ -126,7 +114,7 @@ export class SuperUserGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return this.store.let(hasSuperUserRole()).take(1);
+        return this.store.select(hasSuperUserRole).take(1);
     }
 }
 
@@ -136,7 +124,7 @@ export class LockGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        console.log("LockGuard::canActivate route: ", route)
+        console.log("LockGuard::canActivate route: ", route);
         return true;
     }
 }
@@ -147,8 +135,8 @@ export class EditLockGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        console.log("EditLockGuard::canActivate route: ", route)
-        //return this.store.let<boolean>(isPostLocked()).take(1);
+        console.log("EditLockGuard::canActivate route: ", route);
+        //return this.store.select<boolean>(isPostLocked()).take(1);
         return true;
     }
 }

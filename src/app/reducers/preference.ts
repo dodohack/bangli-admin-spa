@@ -18,7 +18,7 @@ const initialState: PreferenceState = {
     mySidebarMenus: []
 }
 
-export default function(state = initialState, action: pref.Actions | any): PreferenceState {
+export function prefReducer(state = initialState, action: pref.Actions | any): PreferenceState {
     switch (action.type)
     {
         case pref.TOGGLE_SIDEBAR: {

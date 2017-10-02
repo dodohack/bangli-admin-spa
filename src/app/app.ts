@@ -11,11 +11,10 @@ import { Observable }        from 'rxjs/Observable';
 
 import { AppState }          from './reducers';
 import { PreferenceState }   from './reducers/preference';
-import { CmsAttrActions }    from './actions';
-import { ShopAttrActions }   from './actions';
-import { SysAttrActions }    from './actions';
-import { AuthActions }       from './actions';
-import { PreferenceActions } from './actions';
+import * as CmsAttrActions   from './actions/cmsattr';
+import * as SysAttrActions   from './actions/sysattr';
+import * as AuthActions      from './actions/auth';
+import * as PreferenceActions from './actions/preference';
 import { Alert }             from './models';
 import { Domain }            from './models';
 import { User }              from './models';
@@ -58,15 +57,15 @@ export class App implements OnInit, OnDestroy
 
     ngOnInit() {
         this.alerts$       = this.store.select<Alert[]>('alerts');
-        this.curDomainKey$ = this.store.let(getCurDomainKey());
-        this.domainKeys$   = this.store.let(getDomainKeys());
-        this.domains$      = this.store.let(getDomains());
-        this.jwt$          = this.store.let(getAuthJwt());
+        this.curDomainKey$ = this.store.select(getCurDomainKey);
+        this.domainKeys$   = this.store.select(getDomainKeys);
+        this.domains$      = this.store.select(getDomains);
+        this.jwt$          = this.store.select(getAuthJwt);
         this.pref$         = this.store.select<PreferenceState>('pref');
-        this.fail$         = this.store.let(getAuthFail());
-        this.latencies$    = this.store.let(getDomainLatencies());
-        this.isDashboardUser$  = this.store.let(isDashboardUser());
-        this.isLoggedInDomain$ = this.store.let(hasCurProfile());
+        this.fail$         = this.store.select(getAuthFail);
+        this.latencies$    = this.store.select(getDomainLatencies);
+        this.isDashboardUser$  = this.store.select(isDashboardUser);
+        this.isLoggedInDomain$ = this.store.select(hasCurProfile);
         
         this.listenOnBasicPermission();
         this.loadDomainData();
@@ -96,16 +95,15 @@ export class App implements OnInit, OnDestroy
         // Load domain user profile if we haven't load it
         this.subIsLoggedInDomain = this.isLoggedInDomain$
             .take(1).filter(b => !b)
-            .subscribe(x => this.store.dispatch(AuthActions.loginDomain()));
+            .subscribe(x => this.store.dispatch(new AuthActions.LoginDomain()));
     }
 
     // Load domain data when loginDomain success
     loadDomainData() {
         this.subKey = this.curDomainKey$.filter(key => key != undefined && key != '')
             .subscribe(key => {
-                this.store.dispatch(ShopAttrActions.loadAll(key));
-                this.store.dispatch(SysAttrActions.loadAll(key));
-                this.store.dispatch(CmsAttrActions.loadAll(key));
+                this.store.dispatch(new SysAttrActions.LoadAll(key));
+                this.store.dispatch(new CmsAttrActions.LoadAll(key));
             });
     }
 
@@ -114,13 +112,13 @@ export class App implements OnInit, OnDestroy
         this.subPing = Observable.interval(5000)
             .subscribe(() => {
                 if (this.isLoggedIn && this.isPingEnabled)
-                    this.store.dispatch(AuthActions.pingDomains());
+                    this.store.dispatch(new AuthActions.PingDomains());
             });
     }
 
     logout() {
         // Kick a logout action to clean app state and cache
-        this.store.dispatch(AuthActions.logout());
+        this.store.dispatch(new AuthActions.Logout());
         this.router.navigate(['/login']);
     }
 
@@ -128,10 +126,10 @@ export class App implements OnInit, OnDestroy
         // We have to put the redirection before switching domain to avoid
         // error in some pages when cleaning up states.
         this.router.navigate(['/']);
-        this.store.dispatch(AuthActions.loginDomain($event));
+        this.store.dispatch(new AuthActions.LoginDomain($event));
     }
 
     toggleSidebar($event) {
-        this.store.dispatch(PreferenceActions.toggleSidebar());
+        this.store.dispatch(new PreferenceActions.ToggleSidebar());
     }
 }

@@ -31,7 +31,7 @@ const initialState: UsersState = {
     domains: []
 };
 
-export default function (state = initialState, action: user.Actions | any): UsersState {
+export function usersReducer(state = initialState, action: user.Actions | any): UsersState {
     switch (action.type)
     {
         case user.LOAD_USER:
@@ -161,6 +161,8 @@ export default function (state = initialState, action: user.Actions | any): User
 export const getUser = (state: UsersState, uuid: string) => state.users[uuid];
 
 export const getAuthUser = (state: UsersState) => state.authUser;
+
+export const getCurUserUuid = (state: UsersState) => state.uuidsEditing[0];
 
 export const getCurUser = (state: UsersState) => state.users[state.uuidsEditing[0]];
 
