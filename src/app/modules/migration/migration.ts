@@ -25,7 +25,7 @@ export class MigrationPage
 
     constructor(private http: Http, private title: Title) {
         // FIXME: 3rd parameter!
-        let rehydrated = rehydrateApplicationState(['auth'], localStorage, null);
+        let rehydrated = rehydrateApplicationState(['auth'], localStorage, (key) => key);
         /* Set http authenticate header */
         this.headers =
             new Headers({'Authorization': 'Bearer ' + rehydrated.auth.token});

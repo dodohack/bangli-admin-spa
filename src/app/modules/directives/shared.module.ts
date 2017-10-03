@@ -7,8 +7,8 @@ import { FormsModule }                   from '@angular/forms';
 import { ReactiveFormsModule }           from '@angular/forms';
 import { RouterModule }                  from '@angular/router';
 
-import { SelectModule }                  from 'ng2-select-compat/ng2-select';
-import { Ng2BootstrapModule }            from 'ngx-bootstrap/ng2-bootstrap';
+import { SelectModule }                  from 'ng2-select-compat';
+import { Ng2BootstrapModule }            from 'ngx-bootstrap';
 import { FileUploadModule }              from 'ng2-file-upload';
 
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';

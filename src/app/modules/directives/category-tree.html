@@ -3,7 +3,7 @@
 </div>
 
 <ul *ngIf="categories">
-    <template ngFor let-cat [ngForOf]="updatedCats">
+    <ng-template ngFor let-cat [ngForOf]="updatedCats">
         <li *ngIf="cat.parent_id === parentId">
 
             <!-- This checkbox is used to manage the display of tree children -->
@@ -18,7 +18,7 @@
 
             <!-- category name with post/topic/deal count belongs to it -->
             <label [attr.for]="cat.id">
-                {{cat.text}} <template [ngIf]="hasChild(cat)">+</template>
+                {{cat.text}} <ng-template [ngIf]="hasChild(cat)">+</ng-template>
             </label>
 
             <category-tree *ngIf="hasChild(cat)"
@@ -27,5 +27,5 @@
                            [selectedCats]="selectedCats"
                            (checkEvent)="checkEvent.emit($event)"></category-tree>
         </li>
-    </template>
+    </ng-template>
 </ul>

@@ -44,7 +44,7 @@
                     </ul>
                 </div>
 
-                <template [ngIf]="isTopic">
+                <ng-template [ngIf]="isTopic">
                     <div class="cms-tag-group" *ngFor="let tt of topicTypes">
                         <span class="tag tag-warning-outline tag-item"
                               (click)="toggle.emit(1)">{{ tt.text }}:</span>
@@ -56,7 +56,7 @@
                             </li>
                         </ul>
                     </div>
-                </template>
+                </ng-template>
 
             </div>
 

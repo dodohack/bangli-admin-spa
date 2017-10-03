@@ -48,14 +48,14 @@
 
         <!-- List of customized menus -->
         <!--
-        <template ngFor let-menu [ngForOf]="myTopbarMenus">
+        <ng-template ngFor let-menu [ngForOf]="myTopbarMenus">
             <li *ngIf="menu">
                 <a [routerLink]="[menu.url]" routerLinkActive="active"
                    [style.color]="menuColor">
                     <i></i>{{ menu.name }} FIXME: css_class
                 </a>
             </li>
-        </template>
+        </ng-template>
         -->
 
         <li class="float-right">

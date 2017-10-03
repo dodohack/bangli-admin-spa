@@ -41,9 +41,12 @@
 
 <!-- We must use content$ | async instead of other code here, otherwise the
      post content is ether overwritten or empty -->
+<div [froalaEditor]></div>
+<!--
 <froala [froalaOptions]="froalaOptions"
         [froalaData]="content$ | async"
         (model)="froalaContentChanged($event)"></froala>
+        -->
 
 
 <pre>

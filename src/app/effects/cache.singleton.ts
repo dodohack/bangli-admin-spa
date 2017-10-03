@@ -25,7 +25,7 @@ export class CacheSingleton {
     private _initAuth() {
         if (!this._auth) {
             // FIXME: 3rd parameter!
-            let rehydrate = rehydrateApplicationState(['auth'], localStorage, null);
+            let rehydrate = rehydrateApplicationState(['auth'], localStorage, (key) => key);
             // Cache auth to app lifespan scope
             this._auth = rehydrate.auth;
             // Init app scope key to key stored sessionStorage if it is there

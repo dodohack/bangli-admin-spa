@@ -12,8 +12,8 @@
 
     <div class="form-group">
         <button class="btn btn-sm btn-outline-secondary" (click)="hide = !hide">
-            <template [ngIf]="!hide">隐藏侧栏</template>
-            <template [ngIf]="hide">显示侧栏</template>
+            <ng-template [ngIf]="!hide">隐藏侧栏</ng-template>
+            <ng-template [ngIf]="hide">显示侧栏</ng-template>
         </button>
 
         <button type="button"
@@ -47,9 +47,9 @@
             <div class="col-xs-5">
                     <button class="btn btn-sm btn-outline-success float-right"
                         (click)="save" [disabled]="!isDirty || isLoading">
-                    <template [ngIf]="isDirty && !isLoading">保存</template>
-                    <template [ngIf]="!isDirty">已保存</template>
-                    <template [ngIf]="isDirty && isLoading">保存中...</template>
+                    <ng-template [ngIf]="isDirty && !isLoading">保存</ng-template>
+                    <ng-template [ngIf]="!isDirty">已保存</ng-template>
+                    <ng-template [ngIf]="isDirty && isLoading">保存中...</ng-template>
                 </button>
             </div>
         </div>
@@ -159,10 +159,13 @@
 
         <!-- We must use content$ | async instead of other code here, otherwise the
              post content is ether overwritten or empty -->
+        <div [froalaEditor]></div>
+        <!--
         <froala [froalaOptions]="froalaOptions"
                 [froalaData]="content$ | async"
                 (model)="froalaModel = $event"
                 (editorInitialized)="onFroalaInitialized('content')"></froala>
+                -->
 
         <revision-history [entity]="entity$ | async"
                           [authorsObj]="authorsObj$ | async"

@@ -3,13 +3,13 @@
     <a class="toggle" (click)="toggle.emit($event)"
        [style.color]="pref.menuColor"><i class="fa fa-ellipsis-v"></i></a>
 
-    <template [ngIf]="!isLoggedInDomain">
+    <ng-template [ngIf]="!isLoggedInDomain">
         <span [style.color]="pref.menuColor">请点击顶部"切换站点"登陆具体站点！</span>
-    </template>
+    </ng-template>
 
 
     <ul class="fixed-menu">
-        <template ngFor let-menu [ngForOf]="menus">
+        <ng-template ngFor let-menu [ngForOf]="menus">
             <li *ngIf="hasRole$(menu.role) | async">
                 <a [routerLink]="['/', menu.slug]"
                    [style.color]="pref.menuColor"
@@ -19,6 +19,6 @@
                     <span>{{ menu.name }}</span>
                 </a>
             </li>
-        </template>
+        </ng-template>
     </ul>
 </div>

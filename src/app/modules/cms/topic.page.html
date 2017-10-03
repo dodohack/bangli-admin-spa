@@ -12,8 +12,8 @@
 
     <div class="form-group">
         <button class="btn btn-sm btn-outline-secondary" (click)="hide = !hide">
-            <template [ngIf]="!hide">隐藏侧栏</template>
-            <template [ngIf]="hide">显示侧栏</template>
+            <ng-template [ngIf]="!hide">隐藏侧栏</ng-template>
+            <ng-template [ngIf]="hide">显示侧栏</ng-template>
         </button>
 
         <button type="button"
@@ -33,9 +33,9 @@
                 <div class="form-group">
                     <button class="btn btn-sm btn-outline-success"
                             (click)="save()" [disabled]="!isDirty || isLoading">
-                        <template [ngIf]="isDirty && !isLoading">保存</template>
-                        <template [ngIf]="!isDirty">已保存</template>
-                        <template [ngIf]="isDirty && isLoading">保存中...</template>
+                        <ng-template [ngIf]="isDirty && !isLoading">保存</ng-template>
+                        <ng-template [ngIf]="!isDirty">已保存</ng-template>
+                        <ng-template [ngIf]="isDirty && isLoading">保存中...</ng-template>
                     </button>
                 </div>
             </div>
@@ -171,40 +171,29 @@
         <tabset>
             <tab heading="专题首段介绍" [active]="contentIdx == 0 || true"
                  (select)="contentIdx = 0">
+                <!--
                 <froala *ngIf="contentIdx == 0"
                         [froalaOptions]="froalaOptions"
                         [froalaData]="intro$ | async"
                         (model)="froalaModel = $event"
                         (editorInitialized)="onFroalaInitialized('intro')">
                 </froala>
+                -->
+                <div *ngIf="contentIdx == 0" [froalaEditor]></div>
             </tab>
 
             <tab heading="专题正文内容" (select)="contentIdx = 1">
+                <!--
                 <froala *ngIf="contentIdx == 1"
                         [froalaOptions]="froalaOptions"
                         [froalaData]="content$ | async"
                         (model)="froalaModel = $event"
                         (editorInitialized)="onFroalaInitialized('content')">
                 </froala>
+                -->
+                <div  *ngIf="contentIdx == 1" [froalaEditor]></div>
             </tab>
 
-            <tab heading="优惠专题首段内容" (select)="contentIdx = 2" *ngIf="hasDeal$ | async">
-                <froala *ngIf="contentIdx == 2"
-                        [froalaOptions]="froalaOptions"
-                        [froalaData]="deal_intro$ | async"
-                        (model)="froalaModel = $event"
-                        (editorInitialized)="onFroalaInitialized('deal_intro')">
-                </froala>
-            </tab>
-
-            <tab heading="优惠专题正文内容" (select)="contentIdx = 3" *ngIf="hasDeal$ | async">
-                <froala *ngIf="contentIdx == 3"
-                        [froalaOptions]="froalaOptions"
-                        [froalaData]="deal_content$ | async"
-                        (model)="froalaModel = $event"
-                        (editorInitialized)="onFroalaInitialized('deal_content')">
-                </froala>
-            </tab>
         </tabset>
     </div>
 

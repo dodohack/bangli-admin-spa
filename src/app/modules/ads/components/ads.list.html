@@ -34,7 +34,7 @@
     <tbody>
 
     <!-- table row of entities -->
-    <template ngFor let-entity [ngForOf]="entities" let-i="index">
+    <ng-template ngFor let-entity [ngForOf]="entities" let-i="index">
         <!-- Enable fast editing if double click on the row -->
         <tr (dblclick)="batchEdit.emit([entity.id])">
             <th>{{i+1}}</th>
@@ -58,7 +58,7 @@
 
             <td>{{ entity.ended_at }}</td>
         </tr>
-    </template>
+    </ng-template>
 
     </tbody>
 </table>

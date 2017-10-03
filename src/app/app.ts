@@ -93,10 +93,11 @@ export class App implements OnInit, OnDestroy
             }
         });
 
+        // FIXME: We have fixed the domain key here!!
         // Load domain user profile if we haven't load it
         this.subIsLoggedInDomain = this.isLoggedInDomain$
             .take(1).filter(b => !b)
-            .subscribe(x => this.store.dispatch(new AuthActions.LoginDomain()));
+            .subscribe(x => this.store.dispatch(new AuthActions.LoginDomain('bangli_uk')));
     }
 
     // Load domain data when loginDomain success
