@@ -10,6 +10,7 @@ export const LOGIN_SUCCESS = '[Auth] Login Success';
 export const LOGIN_FAIL    = '[Auth] Login Fail';
 export const LOGIN_FAIL_NO_DOMAIN  = '[Auth] Login Fail No Domain';
 export const LOGOUT        = '[Auth] Logout';
+export const LOGOUT_SUCCESS = '[Auth] Logout Success';
 export const REGISTER      = '[Auth] Register';
 export const REGISTER_SUCCESS      = '[Auth] Register Success';
 export const REGISTER_FAIL         = '[Auth] Register Fail';
@@ -41,6 +42,10 @@ export class LoginFailNoDomain implements Action {
 
 export class Logout implements Action {
     readonly type = LOGOUT;
+}
+
+export class LogoutSuccess implements Action {
+    readonly type = LOGOUT_SUCCESS;
 }
 
 export class Register implements Action {
@@ -95,6 +100,7 @@ export type Actions = Login
     | LoginFail
     | LoginFailNoDomain
     | Logout
+    | LogoutSuccess
     | Register
     | RegisterSuccess
     | RegisterFail

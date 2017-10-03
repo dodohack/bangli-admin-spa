@@ -1,7 +1,6 @@
 /**
  * Authentication related reducer
  */
-import '@ngrx/core/add/operator/select';
 import 'rxjs/add/operator/map';
 import { Observable } from 'rxjs/Observable';
 import { Action }     from '@ngrx/store';
@@ -203,6 +202,7 @@ export const getMyRoleName = (state: AuthState) => state.users[state.key].role.n
 /**
  * Check if current user has given role in 'name'
  */
+/*
 export function hasRole(name: string) {
     return (state$: Observable<AuthState>) => state$.select(auth => {
 
@@ -225,6 +225,7 @@ export function hasRole(name: string) {
         return false;
     });
 }
+*/
 
 /**
  * If user token is valid and can manage any domain

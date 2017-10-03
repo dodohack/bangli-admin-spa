@@ -23,7 +23,7 @@ import { AuthUser }          from '../../models';
 import { Domain }            from '../../models';
 import { JwtPayload }        from '../../models/auth';
 
-import { isMyProfile, getCurUser, hasAdminRole, hasSuperUserRole,
+import { /*isMyProfile, */getCurUser, hasAdminRole, hasSuperUserRole,
     getAuthUser, getUserRoles, getDomainKeys,
     getAvailableDomains }  from '../../reducers';
 
@@ -54,7 +54,9 @@ export class UserPage implements OnInit, OnDestroy
         this.user$        = this.store.select(getCurUser);
         this.isAdminUser$ = this.store.select(hasAdminRole);
         this.isSuperUser$ = this.store.select(hasSuperUserRole);
-        this.isMyProfile$ = this.store.select(isMyProfile);
+        // FIXME:
+        this.isMyProfile$ = Observable.of(false);
+        //this.isMyProfile$ = this.store.select(isMyProfile);
         this.pref$        = this.store.select<PreferenceState>(s => s.pref);
         this.roles$       = this.store.select(getUserRoles);
 

@@ -26,7 +26,7 @@ export class PagesPage extends EntitiesPage
                 protected router: Router) {
         super(ENTITY.CMS_PAGE, route, store, router);
         
-        this.pageStates$ = this.store.let(getPageStates());        
+        this.pageStates$ = this.store.select(getPageStates);
     }
 
     get zh() { return zh_CN.cms; }

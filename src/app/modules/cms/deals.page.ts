@@ -26,7 +26,7 @@ export class DealsPage extends EntitiesPage
                 protected router: Router) {
         super(ENTITY.CMS_DEAL, route, store, router);
 
-        this.dealStates$ = this.store.let(getDealStates());
+        this.dealStates$ = this.store.select(getDealStates);
     }
 
     get zh() { return zh_CN.cms; }

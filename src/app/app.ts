@@ -22,7 +22,8 @@ import { JwtPayload }        from './models';
 
 import { isDashboardUser, hasAuthorRole, getCurDomainKey, getAuthToken,
     getDomainLatencies, getDomains, getDomainKeys,
-    hasCurProfile, getAuthJwt, getAuthFail }   from './reducers';
+    hasCurProfile, getAuthJwt, getAuthFail, getAlert, getPreference
+}   from './reducers';
 
 @Component({
     selector: 'admin-spa',
@@ -56,12 +57,12 @@ export class App implements OnInit, OnDestroy
                 private router: Router) { }
 
     ngOnInit() {
-        this.alerts$       = this.store.select<Alert[]>('alerts');
+        this.alerts$       = this.store.select(getAlert);
         this.curDomainKey$ = this.store.select(getCurDomainKey);
         this.domainKeys$   = this.store.select(getDomainKeys);
         this.domains$      = this.store.select(getDomains);
         this.jwt$          = this.store.select(getAuthJwt);
-        this.pref$         = this.store.select<PreferenceState>('pref');
+        this.pref$         = this.store.select(getPreference);
         this.fail$         = this.store.select(getAuthFail);
         this.latencies$    = this.store.select(getDomainLatencies);
         this.isDashboardUser$  = this.store.select(isDashboardUser);

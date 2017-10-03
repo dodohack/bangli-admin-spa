@@ -123,16 +123,16 @@ export class EntityState {
 export class EntityParams {
 
     constructor(public cur_page: number = 1,
-                public channel: string,
-                public state: string,
-                public author: string,
-                public editor: string,
-                public brand: string,
-                public category: string,
-                public datetype: string,
-                public datefrom: string,
-                public dateto: string,
-                public query: string) {}
+                public channel: string = null,
+                public state: string = null,
+                public author: string = null,
+                public editor: string = null,
+                public brand: string = null,
+                public category: string = null,
+                public datetype: string = null,
+                public datefrom: string = null,
+                public dateto: string = null,
+                public query: string = null) {}
 
     // NOTE: If we create an empty object and assign the properties of the
     // the object individual, we get a error "can't assign to read only object".

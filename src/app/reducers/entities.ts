@@ -8,9 +8,6 @@
  * We will carry a selector key for each entity in the action payload, so we
  * can distinguish which entity list we are dealing with.
  */
-import '@ngrx/core/add/operator/select';
-import { Observable } from 'rxjs/Observable';
-import { Action }     from '@ngrx/store';
 
 import { Paginator }     from '../models';
 import { Entity }        from '../models';

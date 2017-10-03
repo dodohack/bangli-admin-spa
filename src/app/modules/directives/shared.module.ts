@@ -7,13 +7,11 @@ import { FormsModule }                   from '@angular/forms';
 import { ReactiveFormsModule }           from '@angular/forms';
 import { RouterModule }                  from '@angular/router';
 
-import { SelectModule }                  from 'ng2-select/ng2-select';
-import { Ng2BootstrapModule }            from 'ng2-bootstrap/ng2-bootstrap';
+import { SelectModule }                  from 'ng2-select-compat/ng2-select';
+import { Ng2BootstrapModule }            from 'ngx-bootstrap/ng2-bootstrap';
 import { FileUploadModule }              from 'ng2-file-upload';
 
-//import { FroalaEditorDirective } from 'angular2-froala-wysiwyg/lib/froala.directives';
-import { FroalaEditorModule } from "ng2-froala-editor/ng2-froala-editor";
-
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 
 import { RevisionHistory }           from './revision-history';
 import { RightPanel }                from './right-panel';
@@ -51,6 +49,7 @@ import { ImageUploader }             from './image-uploader';
         ReactiveFormsModule,
         RouterModule ,
         FroalaEditorModule,
+        FroalaViewModule,
     ],
     declarations: [
 
@@ -85,6 +84,7 @@ import { ImageUploader }             from './image-uploader';
         Ng2BootstrapModule,
         SelectModule,
         FroalaEditorModule,
+        FroalaViewModule,
 
         RightPanel,
         ListPageHeader,

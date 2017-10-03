@@ -5,7 +5,7 @@ import { Component, ViewChild } from '@angular/core';
 import { OnInit, OnDestroy }    from '@angular/core';
 import { Store }                from '@ngrx/store';
 
-import { AppState }          from '../../reducers';
+import {AppState, getCmsState}          from '../../reducers';
 import { CmsAttrsState }     from '../../reducers/cmsattrs';
 import { GeoLocation }       from '../../models';
 import * as CmsAttrActions   from "../../actions/cmsattr";
@@ -25,7 +25,7 @@ export class LocationsPage implements OnInit, OnDestroy
     constructor(private store: Store<AppState>) {}
 
     ngOnInit() {
-        this.subCms = this.store.select<CmsAttrsState>('cms')
+        this.subCms = this.store.select(getCmsState)
             .subscribe(cmsState => this.locations = cmsState.locations);
     }
 

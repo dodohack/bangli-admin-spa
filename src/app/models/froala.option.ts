@@ -9,7 +9,8 @@ export class FroalaOptions {
     
     // Static method returns froala options
     static getDefault() {
-        let auth = rehydrateApplicationState(['auth'], localStorage);
+        // FIXME: 3rd parameter!
+        let auth = rehydrateApplicationState(['auth'], localStorage, null);
         let key  = sessionStorage.getItem('key');
 
         return {

@@ -69,7 +69,7 @@ export class AuthEffects {
      * Clean session cache for logout 
      */
     @Effect() logout$: Observable<Action> = this.actions$.ofType(AuthA.LOGOUT)
-        .map(() => this.logout());
+        .map(() => {this.logout(); return new AuthA.LogoutSuccess();});
 
     /**
      * Each app server returns the domainKey so we know which server is
@@ -130,9 +130,8 @@ export class AuthEffects {
         return this._post(AUTH.register, JSON.stringify(user));
     }
     
-    private logout(): Observable<boolean> {
+    private logout() {
         this.cache.clean();
-        return Observable.of(true);
     }
 
     /**

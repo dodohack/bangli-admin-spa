@@ -68,7 +68,7 @@ export class UserEffects {
     /* Load domains of user can manage */
     @Effect() loadAuthUser$ = this.actions$.ofType(UA.LOAD_AUTH_USER)
         .switchMap((action: any) => this.getAuthUser(action.payload)
-            .map(res => new UA.LoadAuthUserSuccess(res.domains, res.user))
+            .map(res => new UA.LoadAuthUserSuccess({domains: res.domains, user: res.user}))
             .catch(() => Observable.of(new UA.LoadAuthUserFail()))
         );
 

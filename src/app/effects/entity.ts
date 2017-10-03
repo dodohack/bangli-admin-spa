@@ -50,7 +50,7 @@ export class EntityEffects {
 
     @Effect() loadEntity$ = this.actions$.ofType(entity.LOAD_ENTITY)
         .switchMap((action: any) => this.getEntity(action.payload.etype, action.payload.data)
-            .map(ret => new entity.LoadEntitySuccess({etype: ret.etype, data: ret.entity}))
+            .map(ret => new entity.LoadEntitySuccess({etype: ret.etype, data: ret.entity, prepend: false}))
             .catch(() => Observable.of(new entity.LoadEntityFail()))
         );
 

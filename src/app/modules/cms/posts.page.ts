@@ -26,7 +26,7 @@ export class PostsPage extends EntitiesPage
                 protected router: Router) {
         super(ENTITY.CMS_POST, route, store, router);
 
-        this.postStates$    = this.store.let(getPostStates());
+        this.postStates$    = this.store.select(getPostStates);
     }
 
     get zh() { return zh_CN.cms; }

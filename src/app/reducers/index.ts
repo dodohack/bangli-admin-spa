@@ -743,3 +743,6 @@ export const getFeMenus = createSelector(getFeMenusState, fromFeMenu.getMenus);
 export const getFeMobileMenus = createSelector(getFeMenusState, fromFeMenu.getMobileMenus);
 
 export const getFeDesktopMenus= createSelector(getFeMenusState, fromFeMenu.getDesktopMenus);
+
+export const getAlert = (state: AppState) => state.alerts;
+export const getPreference = (state: AppState) => state.pref;

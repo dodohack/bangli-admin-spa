@@ -25,7 +25,7 @@ export class TopicsPage extends EntitiesPage
                 protected router: Router) {
         super(ENTITY.CMS_TOPIC, route, store, router);
         
-        this.topicStates$ = this.store.let(getTopicStates());
+        this.topicStates$ = this.store.select(getTopicStates);
     }
 
     get zh() { return zh_CN.cms; }

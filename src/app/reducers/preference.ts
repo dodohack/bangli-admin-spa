@@ -1,13 +1,21 @@
 /**
  * User preference reducer
  */
-import { Action } from '@ngrx/store';
 
-import { Preference } from '../models';
+import { Menu } from '../models';
 import * as pref      from '../actions/preference';
 
 
-export type PreferenceState = Preference;
+export interface PreferenceState {
+    isIconSidebar: boolean;
+    listItemCount: number;
+    isRichList: boolean;
+    menuColor: string;
+    menuBackgroundColor: string;
+    myTopbarMenus: Menu[];
+    mySidebarMenus: Menu[];
+};
+
 const initialState: PreferenceState = {
     isIconSidebar: false,
     listItemCount: 20,
@@ -16,7 +24,7 @@ const initialState: PreferenceState = {
     menuBackgroundColor: '#383838',
     myTopbarMenus: [],
     mySidebarMenus: []
-}
+};
 
 export function prefReducer(state = initialState, action: pref.Actions | any): PreferenceState {
     switch (action.type)

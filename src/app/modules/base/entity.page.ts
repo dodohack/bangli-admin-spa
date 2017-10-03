@@ -15,7 +15,6 @@ import * as CmsAttrActions   from '../../actions/cmsattr';
 import * as AlertActions     from "../../actions/alert";
 import { CacheSingleton }    from '../../effects/cache.singleton';
 
-import { FroalaEditorCompnoent } from 'ng2-froala-editor/ng2-froala-editor';
 import { FroalaOptions }         from '../../models/froala.option';
 import { KEYWORDS }              from '../../models';
 import { Entity, EntityParams }  from '../../models';
@@ -399,14 +398,17 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
     /**
      * Listen on froala editor events
+     * FIXME: This is used by old ng2-froala-editor module
      */
     onFroalaInitialized(key: string) {
+        /*
         this.key    = key;
         this.editor = FroalaEditorCompnoent.getFroalaInstance();
         // Kick an action to update content when it changes.
         this.editor.on('froalaEditor.contentChanged', (e, editor) => {
             this.update(key, this.froalaModel);
         });
+        */
     }
 
     /**

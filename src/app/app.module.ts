@@ -6,6 +6,8 @@ import { Title }         from '@angular/platform-browser';
 import { StoreModule }  from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
+//import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+
 import { UnauthGuard }   from './guard';
 import { BaseGuard }     from './guard';
 import { AuthorGuard }   from './guard';
@@ -38,9 +40,7 @@ import { CmsModule }       from './modules/cms/cms.module';
 import { AdsModule }       from './modules/ads/ads.module';
 import { EmailModule }     from './modules/email/email.module';
 import { CommentModule }   from './modules/comment/comment.module';
-import { CsModule }        from './modules/cs/cs.module';
 import { SocialModule }    from './modules/social/social.module';
-import { AffiliateModule } from './modules/affiliate/affiliate.module';
 import { AnalysisModule }  from './modules/analysis/analysis.module';
 import { AttachmentModule }from './modules/attachment/attachment.module';
 import { MigrationModule } from './modules/migration/migration.module';
@@ -65,11 +65,9 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         CmsModule,
         AdsModule,
         EmailModule,
-        CsModule,
         UserModule,
         CommentModule,
         SocialModule,
-        AffiliateModule,
         AnalysisModule,
         AttachmentModule,
         MigrationModule,
