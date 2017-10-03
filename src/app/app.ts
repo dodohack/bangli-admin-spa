@@ -69,6 +69,7 @@ export class App implements OnInit, OnDestroy
         this.isLoggedInDomain$ = this.store.select(hasCurProfile);
         
         this.listenOnBasicPermission();
+        // FIXME: loadDomainData may return before LoginDomain data return.
         this.loadDomainData();
         this.dispatchPing();
     }
