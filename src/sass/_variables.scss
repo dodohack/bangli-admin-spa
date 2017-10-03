@@ -29,7 +29,7 @@ $light-blue: #7BD3DB;
 
 // Overwrite default font-awesome variable
 // We have script to copy the fonts into this folder
-$fa-font-path: "/fonts";
+$fa-font-path: "../node_modules/font-awesome/fonts";
 
 // Admin menu color and bg
 $menu-color: #ffffff;

@@ -46,6 +46,8 @@ import { AttachmentModule }from './modules/attachment/attachment.module';
 import { MigrationModule } from './modules/migration/migration.module';
 import { SettingModule }   from './modules/setting/setting.module';
 
+import { BsDropdownModule }              from 'ngx-bootstrap';
+
 /* Debug tools */
 /*
 import { StoreLogMonitorModule } from '@ngrx/store-log-monitor';
@@ -74,6 +76,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         SettingModule,
         SharedModule.forRoot(),
 
+        BsDropdownModule.forRoot(),
         StoreModule.forRoot(reducers, {metaReducers}),
         EffectsModule.forRoot([
             AuthEffects,
