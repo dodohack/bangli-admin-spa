@@ -31,5 +31,5 @@ export class Sidebar {
         //return this.store.let(hasRole(name));
     }
 
-    get menus() { if (this.curDomainKey) return SIDEBAR_MENUS[this.curDomainKey]; }
+    get menus() { return SIDEBAR_MENUS; }
 }

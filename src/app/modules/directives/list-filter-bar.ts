@@ -173,14 +173,12 @@ export class ListFilterBar implements OnInit, OnDestroy {
      */
     catCount(cat: any) {
         switch(this.etype) {
-            case ENTITY.CMS_POST:
+            case ENTITY.POST:
                 return cat.posts_count;
-            case ENTITY.CMS_TOPIC:
+            case ENTITY.TOPIC:
                 return cat.topics_count;
-            case ENTITY.CMS_DEAL:
+            case ENTITY.OFFER:
                 return cat.deals_count;
-            case ENTITY.SHOP_PRODUCT:
-                return cat.products_count;
             default:
                 console.error("Unhandled entity type: ", this.etype);
         }
@@ -191,12 +189,10 @@ export class ListFilterBar implements OnInit, OnDestroy {
      */
     editorWorkCount(editor: any) {
         switch(this.etype) {
-            case ENTITY.CMS_POST:
+            case ENTITY.POST:
                 return editor.posts_by_editor_count;
-            case ENTITY.CMS_TOPIC:
+            case ENTITY.TOPIC:
                 return editor.topics_by_editor_count;
-            case ENTITY.SHOP_PRODUCT:
-                return editor.products_by_editor_count;
             default:
                 return null;
         }

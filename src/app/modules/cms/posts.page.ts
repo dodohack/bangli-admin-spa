@@ -24,7 +24,7 @@ export class PostsPage extends EntitiesPage
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
                 protected router: Router) {
-        super(ENTITY.CMS_POST, route, store, router);
+        super(ENTITY.POST, route, store, router);
 
         this.postStates$    = this.store.select(getPostStates);
     }

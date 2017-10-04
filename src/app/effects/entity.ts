@@ -92,13 +92,13 @@ export class EntityEffects {
     private getApi(t: string, isBatch: boolean) {
         if (!isBatch) {
             switch (t) {
-                case ENTITY.CMS_POST:
+                case ENTITY.POST:
                     return APIS[this.cache.key] + API_PATH.cms_posts;
-                case ENTITY.CMS_TOPIC:
+                case ENTITY.TOPIC:
                     return APIS[this.cache.key] + API_PATH.cms_topics;
-                case ENTITY.CMS_DEAL:
+                case ENTITY.OFFER:
                     return APIS[this.cache.key] + API_PATH.cms_deals;
-                case ENTITY.CMS_PAGE:
+                case ENTITY.PAGE:
                     return APIS[this.cache.key] + API_PATH.cms_pages;
                 case ENTITY.ADVERTISE:
                     return APIS[this.cache.key] + API_PATH.advertises;
@@ -108,24 +108,18 @@ export class EntityEffects {
                     return APIS[this.cache.key] + API_PATH.attachments;
                 case ENTITY.COMMENT:
                     return APIS[this.cache.key] + API_PATH.comments;
-                case ENTITY.SHOP_ORDER:
-                    return APIS[this.cache.key] + API_PATH.shop_orders;
-                case ENTITY.SHOP_PRODUCT:
-                    return APIS[this.cache.key] + API_PATH.shop_products;
-                case ENTITY.SHOP_VOUCHER:
-                    return APIS[this.cache.key] + API_PATH.shop_vouchers;
                 default:
                     return null;
             }
         } else {
             switch (t) {
-                case ENTITY.CMS_POST:
+                case ENTITY.POST:
                     return APIS[this.cache.key] + API_PATH.cms_posts_batch;
-                case ENTITY.CMS_TOPIC:
+                case ENTITY.TOPIC:
                     return APIS[this.cache.key] + API_PATH.cms_topics_batch;
-                case ENTITY.CMS_DEAL:
+                case ENTITY.OFFER:
                     return APIS[this.cache.key] + API_PATH.cms_deals_batch;
-                case ENTITY.CMS_PAGE:
+                case ENTITY.PAGE:
                     return APIS[this.cache.key] + API_PATH.cms_pages_batch;
                 case ENTITY.ADVERTISE:
                     return APIS[this.cache.key] + API_PATH.advertises_batch;
@@ -135,12 +129,6 @@ export class EntityEffects {
                     return APIS[this.cache.key] + API_PATH.attachments_batch;
                 case ENTITY.COMMENT:
                     return APIS[this.cache.key] + API_PATH.comments_batch;
-                case ENTITY.SHOP_ORDER:
-                    return APIS[this.cache.key] + API_PATH.shop_orders_batch;
-                case ENTITY.SHOP_PRODUCT:
-                    return APIS[this.cache.key] + API_PATH.shop_products_batch;
-                case ENTITY.SHOP_VOUCHER:
-                    return APIS[this.cache.key] + API_PATH.shop_vouchers_batch;
                 default:
                     return null;
             }

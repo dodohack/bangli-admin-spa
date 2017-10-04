@@ -48,7 +48,7 @@ const initState: EntitiesState = {
 export function postsReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
-    if (action.payload.etype === ENTITY.CMS_POST)
+    if (action.payload.etype === ENTITY.POST)
         return entitiesReducer(action.payload.etype, state, action);
 
     return state;
@@ -61,7 +61,7 @@ export function postsReducer(state = initState, action: entity.Actions | any): E
 export function pagesReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
-    if (action.payload.etype === ENTITY.CMS_PAGE)
+    if (action.payload.etype === ENTITY.PAGE)
         return entitiesReducer(action.payload.etype, state, action);
 
     return state;
@@ -73,7 +73,7 @@ export function pagesReducer(state = initState, action: entity.Actions | any): E
 export function topicsReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
-    if (action.payload.etype === ENTITY.CMS_TOPIC)
+    if (action.payload.etype === ENTITY.TOPIC)
         return entitiesReducer(action.payload.etype, state, action);
 
     return state;
@@ -97,7 +97,7 @@ export function placesReducer(state = initState, action: entity.Actions | any): 
 export function dealsReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
-    if (action.payload.etype === ENTITY.CMS_DEAL)
+    if (action.payload.etype === ENTITY.OFFER)
         return entitiesReducer(action.payload.etype, state, action);
 
     return state;

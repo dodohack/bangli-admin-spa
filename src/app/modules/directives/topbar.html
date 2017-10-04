@@ -2,10 +2,13 @@
      *ngIf="pref && domains">
     <ul class="fixed-menu">
 
+        <!--
+        FIXME: Enable this after auth enabled.
         <li>
             <a href="{{ domains[curDomainKey].url }}" target="_blank"
                [style.color]="pref.menuColor"><i class="fa fa-home"></i>{{ domains[curDomainKey].name }}</a>
         </li>
+        -->
 
         <li>
             <a [routerLink]="['/post/new']" routerLinkActive="active"
@@ -29,6 +32,8 @@
         </li>
 
         <!-- Switch between domains -->
+        <!--
+        FIXME: Enable this after auth enabled.
         <li dropdown>
             <a dropdownToggle id="domain-dropdown" role="button" [style.color]="pref.menuColor">切换站点</a>
             <ul class="dropdown-menu" *dropdownMenu aria-labelledby="domain-dropdown">
@@ -45,6 +50,7 @@
                 </li>
             </ul>
         </li>
+        -->
 
         <!-- List of customized menus -->
         <!--

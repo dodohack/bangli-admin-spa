@@ -24,7 +24,7 @@ export class DealsPage extends EntitiesPage
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
                 protected router: Router) {
-        super(ENTITY.CMS_DEAL, route, store, router);
+        super(ENTITY.OFFER, route, store, router);
 
         this.dealStates$ = this.store.select(getDealStates);
     }

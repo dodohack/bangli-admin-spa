@@ -145,17 +145,13 @@ export class EntityList
         let base = this.frontendUrl + '/';
 
         switch (this.etype) {
-            case ENTITY.CMS_TOPIC: {
+            case ENTITY.TOPIC: {
                 if (!this.channelsObj) return;
 
                 return base + ENTITY_INFO[this.etype].slug + '/'
                     + this.channelsObj[entity.channel_id].slug + '/'
                     + entity.guid;
             }
-
-            case ENTITY.SHOP_PRODUCT:
-                return base + ENTITY_INFO[this.etype].slug
-                    + '/' + entity.guid;
 
             // Default to cms type
             default:

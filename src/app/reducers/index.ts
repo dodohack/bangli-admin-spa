@@ -271,10 +271,10 @@ export const getAttachPaginator = createSelector(getAttachsState, fromEntities.g
 export const getCommentPaginator = createSelector(getCommentsState, fromEntities.getPaginator);
 export function getPaginator(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getPostPaginator;
-        case ENTITY.CMS_PAGE: return getPagePaginator;
-        case ENTITY.CMS_DEAL: return getDealPaginator;
-        case ENTITY.CMS_TOPIC: return getTopicPaginator;
+        case ENTITY.POST: return getPostPaginator;
+        case ENTITY.PAGE: return getPagePaginator;
+        case ENTITY.OFFER: return getDealPaginator;
+        case ENTITY.TOPIC: return getTopicPaginator;
         case ENTITY.PLACE:     return getPlacePaginator;
         case ENTITY.ADVERTISE: return getAdPaginator;
         case ENTITY.NEWSLETTER: return getEmailPaginator;
@@ -296,10 +296,10 @@ export const getIsAttachDirty = createSelector(getAttachsState, fromEntities.get
 export const getIsCommentDirty = createSelector(getCommentsState, fromEntities.getIsDirty);
 export function getIsDirty(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getIsPostDirty;
-        case ENTITY.CMS_PAGE: return getIsPageDirty;
-        case ENTITY.CMS_DEAL: return getIsDealDirty;
-        case ENTITY.CMS_TOPIC: return getIsTopicDirty;
+        case ENTITY.POST: return getIsPostDirty;
+        case ENTITY.PAGE: return getIsPageDirty;
+        case ENTITY.OFFER: return getIsDealDirty;
+        case ENTITY.TOPIC: return getIsTopicDirty;
         case ENTITY.PLACE:     return getIsPlaceDirty;
         case ENTITY.ADVERTISE: return getIsAdDirty;
         case ENTITY.NEWSLETTER: return getIsEmailDirty;
@@ -322,10 +322,10 @@ export const getAttachDirtyMask = createSelector(getAttachsState, fromEntities.g
 export const getCommentDirtyMask = createSelector(getCommentsState, fromEntities.getDirtyMask);
 export function getEntityDirtyMask(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getPostDirtyMask;
-        case ENTITY.CMS_PAGE: return getPageDirtyMask;
-        case ENTITY.CMS_DEAL: return getDealDirtyMask;
-        case ENTITY.CMS_TOPIC: return getTopicDirtyMask;
+        case ENTITY.POST: return getPostDirtyMask;
+        case ENTITY.PAGE: return getPageDirtyMask;
+        case ENTITY.OFFER: return getDealDirtyMask;
+        case ENTITY.TOPIC: return getTopicDirtyMask;
         case ENTITY.PLACE:     return getPlaceDirtyMask;
         case ENTITY.ADVERTISE: return getAdDirtyMask;
         case ENTITY.NEWSLETTER: return getEmailDirtyMask;
@@ -347,10 +347,10 @@ export const getIsAttachLoading = createSelector(getAttachsState, fromEntities.g
 export const getIsCommentLoading = createSelector(getCommentsState, fromEntities.getIsLoading);
 export function getIsLoading(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getIsPostLoading;
-        case ENTITY.CMS_PAGE: return getIsPageLoading;
-        case ENTITY.CMS_DEAL: return getIsDealLoading;
-        case ENTITY.CMS_TOPIC: return getIsTopicLoading;
+        case ENTITY.POST: return getIsPostLoading;
+        case ENTITY.PAGE: return getIsPageLoading;
+        case ENTITY.OFFER: return getIsDealLoading;
+        case ENTITY.TOPIC: return getIsTopicLoading;
         case ENTITY.PLACE:     return getIsPlaceLoading;
         case ENTITY.ADVERTISE: return getIsAdLoading;
         case ENTITY.NEWSLETTER: return getIsEmailLoading;
@@ -372,10 +372,10 @@ export const getAttachEntities = createSelector(getAttachsState, fromEntities.ge
 export const getCommentEntities = createSelector(getCommentsState, fromEntities.getEntitiesObject);
 export function getEntities(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getPostEntities;
-        case ENTITY.CMS_PAGE: return getPageEntities;
-        case ENTITY.CMS_DEAL: return getDealEntities;
-        case ENTITY.CMS_TOPIC: return getTopicEntities;
+        case ENTITY.POST: return getPostEntities;
+        case ENTITY.PAGE: return getPageEntities;
+        case ENTITY.OFFER: return getDealEntities;
+        case ENTITY.TOPIC: return getTopicEntities;
         case ENTITY.PLACE:     return getPlaceEntities;
         case ENTITY.ADVERTISE: return getAdEntities;
         case ENTITY.NEWSLETTER: return getEmailEntities;
@@ -403,10 +403,10 @@ export const getAttachIdsCurPage = createSelector(getAttachsState, fromEntities.
 export const getCommentIdsCurPage = createSelector(getCommentsState, fromEntities.getIdsCurPage);
 export function getIdsCurPage(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getPostIdsCurPage;
-        case ENTITY.CMS_PAGE: return getPageIdsCurPage;
-        case ENTITY.CMS_DEAL: return getDealIdsCurPage;
-        case ENTITY.CMS_TOPIC: return getTopicIdsCurPage;
+        case ENTITY.POST: return getPostIdsCurPage;
+        case ENTITY.PAGE: return getPageIdsCurPage;
+        case ENTITY.OFFER: return getDealIdsCurPage;
+        case ENTITY.TOPIC: return getTopicIdsCurPage;
         case ENTITY.PLACE:     return getPlaceIdsCurPage;
         case ENTITY.ADVERTISE: return getAdIdsCurPage;
         case ENTITY.NEWSLETTER: return getEmailIdsCurPage;
@@ -428,10 +428,10 @@ export const getAttachIdsEditing = createSelector(getAttachsState, fromEntities.
 export const getCommentIdsEditing = createSelector(getCommentsState, fromEntities.getIdsEditing);
 export function getIdsEditing(etype: string) {
     switch(etype) { 
-        case ENTITY.CMS_POST: return getPostIdsEditing;
-        case ENTITY.CMS_PAGE: return getPageIdsEditing;
-        case ENTITY.CMS_DEAL: return getDealIdsEditing;
-        case ENTITY.CMS_TOPIC: return getTopicIdsEditing;
+        case ENTITY.POST: return getPostIdsEditing;
+        case ENTITY.PAGE: return getPageIdsEditing;
+        case ENTITY.OFFER: return getDealIdsEditing;
+        case ENTITY.TOPIC: return getTopicIdsEditing;
         case ENTITY.PLACE:     return getPlaceIdsEditing;
         case ENTITY.ADVERTISE: return getAdIdsEditing;
         case ENTITY.NEWSLETTER: return getEmailIdsEditing;
@@ -461,10 +461,10 @@ export const getCommentsCurPage = createSelector(getCommentIdsCurPage, getCommen
     (ids, entities) => ids.map(id => entities[id]));
 export function getEntitiesCurPage(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getPostsCurPage;
-        case ENTITY.CMS_PAGE: return getPagesCurPage;
-        case ENTITY.CMS_DEAL: return getDealsCurPage;
-        case ENTITY.CMS_TOPIC: return getTopicsCurPage;
+        case ENTITY.POST: return getPostsCurPage;
+        case ENTITY.PAGE: return getPagesCurPage;
+        case ENTITY.OFFER: return getDealsCurPage;
+        case ENTITY.TOPIC: return getTopicsCurPage;
         case ENTITY.PLACE:     return getPlacesCurPage;
         case ENTITY.ADVERTISE: return getAdsCurPage;
         case ENTITY.NEWSLETTER: return getEmailsCurPage;
@@ -493,10 +493,10 @@ export const getCurAttachId = createSelector(getAttachsState, fromEntities.getCu
 export const getCurCommentId = createSelector(getCommentsState, fromEntities.getCurEntityId);
 export function getCurEntityId(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getCurPostId;
-        case ENTITY.CMS_PAGE: return getCurPageId;
-        case ENTITY.CMS_DEAL: return getCurDealId;
-        case ENTITY.CMS_TOPIC: return getCurTopicId;
+        case ENTITY.POST: return getCurPostId;
+        case ENTITY.PAGE: return getCurPageId;
+        case ENTITY.OFFER: return getCurDealId;
+        case ENTITY.TOPIC: return getCurTopicId;
         case ENTITY.PLACE:     return getCurPlaceId;
         case ENTITY.ADVERTISE: return getCurAdId;
         case ENTITY.NEWSLETTER: return getCurEmailId;
@@ -517,10 +517,10 @@ export const getCurAttach = createSelector(getAttachsState, fromEntities.getCurE
 export const getCurComment = createSelector(getCommentsState, fromEntities.getCurEntity);
 export function getCurEntity(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getCurPost;
-        case ENTITY.CMS_PAGE: return getCurPage;
-        case ENTITY.CMS_DEAL: return getCurDeal;
-        case ENTITY.CMS_TOPIC: return getCurTopic;
+        case ENTITY.POST: return getCurPost;
+        case ENTITY.PAGE: return getCurPage;
+        case ENTITY.OFFER: return getCurDeal;
+        case ENTITY.TOPIC: return getCurTopic;
         case ENTITY.PLACE:     return getCurPlace;
         case ENTITY.ADVERTISE: return getCurAd;
         case ENTITY.NEWSLETTER: return getCurEmail;
@@ -542,10 +542,10 @@ export const getCurAttachAuthor = createSelector(getAttachsState, getCurAttachId
 export const getCurCommentAuthor = createSelector(getCommentsState, getCurCommentId, getAuthor);
 export function getCurEntityAuthor(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getCurPostAuthor;
-        case ENTITY.CMS_PAGE: return getCurPageAuthor;
-        case ENTITY.CMS_DEAL: return getCurDealAuthor;
-        case ENTITY.CMS_TOPIC: return getCurTopicAuthor;
+        case ENTITY.POST: return getCurPostAuthor;
+        case ENTITY.PAGE: return getCurPageAuthor;
+        case ENTITY.OFFER: return getCurDealAuthor;
+        case ENTITY.TOPIC: return getCurTopicAuthor;
         case ENTITY.PLACE:     return getCurPlaceAuthor;
         case ENTITY.ADVERTISE: return getCurAdAuthor;
         case ENTITY.NEWSLETTER: return getCurEmailAuthor;
@@ -567,10 +567,10 @@ export const getCurAttachEditor = createSelector(getAttachsState, getCurAttachId
 export const getCurCommentEditor = createSelector(getCommentsState, getCurCommentId, getEditor);
 export function getCurEntityEditor(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getCurPostEditor;
-        case ENTITY.CMS_PAGE: return getCurPageEditor;
-        case ENTITY.CMS_DEAL: return getCurDealEditor;
-        case ENTITY.CMS_TOPIC: return getCurTopicEditor;
+        case ENTITY.POST: return getCurPostEditor;
+        case ENTITY.PAGE: return getCurPageEditor;
+        case ENTITY.OFFER: return getCurDealEditor;
+        case ENTITY.TOPIC: return getCurTopicEditor;
         case ENTITY.PLACE:     return getCurPlaceEditor;
         case ENTITY.ADVERTISE: return getCurAdEditor;
         case ENTITY.NEWSLETTER: return getCurEmailEditor;
@@ -601,10 +601,10 @@ export const getCurAttachChannel = createSelector(getAttachsState, getCurAttachI
 export const getCurCommentChannel = createSelector(getCommentsState, getCurCommentId, getChannel);
 export function getCurEntityChannel(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getCurPostChannel;
-        case ENTITY.CMS_PAGE: return getCurPageChannel;
-        case ENTITY.CMS_DEAL: return getCurDealChannel;
-        case ENTITY.CMS_TOPIC: return getCurTopicChannel;
+        case ENTITY.POST: return getCurPostChannel;
+        case ENTITY.PAGE: return getCurPageChannel;
+        case ENTITY.OFFER: return getCurDealChannel;
+        case ENTITY.TOPIC: return getCurTopicChannel;
         case ENTITY.PLACE:     return getCurPlaceChannel;
         case ENTITY.ADVERTISE: return getCurAdChannel;
         case ENTITY.NEWSLETTER: return getCurEmailChannel;
@@ -626,10 +626,10 @@ export const getCurAttachTopicType = createSelector(getAttachsState, getCurAttac
 export const getCurCommentTopicType = createSelector(getCommentsState, getCurCommentId, getTopicType);
 export function getCurEntityTopicType(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getCurPostTopicType;
-        case ENTITY.CMS_PAGE: return getCurPageTopicType;
-        case ENTITY.CMS_DEAL: return getCurDealTopicType;
-        case ENTITY.CMS_TOPIC: return getCurTopicTopicType;
+        case ENTITY.POST: return getCurPostTopicType;
+        case ENTITY.PAGE: return getCurPageTopicType;
+        case ENTITY.OFFER: return getCurDealTopicType;
+        case ENTITY.TOPIC: return getCurTopicTopicType;
         case ENTITY.PLACE:     return getCurPlaceTopicType;
         case ENTITY.ADVERTISE: return getCurAdTopicType;
         case ENTITY.NEWSLETTER: return getCurEmailTopicType;
@@ -651,10 +651,10 @@ export const getCurAttachKeywordsAsArray = createSelector(getAttachsState, getCu
 export const getCurCommentKeywordsAsArray = createSelector(getCommentsState, getCurCommentId, getKeywordsAsArray);
 export function getCurEntityKeywordsAsArray(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getCurPostKeywordsAsArray;
-        case ENTITY.CMS_PAGE: return getCurPageKeywordsAsArray;
-        case ENTITY.CMS_DEAL: return getCurDealKeywordsAsArray;
-        case ENTITY.CMS_TOPIC: return getCurTopicKeywordsAsArray;
+        case ENTITY.POST: return getCurPostKeywordsAsArray;
+        case ENTITY.PAGE: return getCurPageKeywordsAsArray;
+        case ENTITY.OFFER: return getCurDealKeywordsAsArray;
+        case ENTITY.TOPIC: return getCurTopicKeywordsAsArray;
         case ENTITY.PLACE:     return getCurPlaceKeywordsAsArray;
         case ENTITY.ADVERTISE: return getCurAdKeywordsAsArray;
         case ENTITY.NEWSLETTER: return getCurEmailKeywordsAsArray;
@@ -677,10 +677,10 @@ export const getCurAttachIntro = createSelector(getAttachsState, getCurAttachId,
 export const getCurCommentIntro = createSelector(getCommentsState, getCurCommentId, getIntro);
 export function getCurEntityIntro(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getCurPostIntro;
-        case ENTITY.CMS_PAGE: return getCurPageIntro;
-        case ENTITY.CMS_DEAL: return getCurDealIntro;
-        case ENTITY.CMS_TOPIC: return getCurTopicIntro;
+        case ENTITY.POST: return getCurPostIntro;
+        case ENTITY.PAGE: return getCurPageIntro;
+        case ENTITY.OFFER: return getCurDealIntro;
+        case ENTITY.TOPIC: return getCurTopicIntro;
         case ENTITY.PLACE:     return getCurPlaceIntro;
         case ENTITY.ADVERTISE: return getCurAdIntro;
         case ENTITY.NEWSLETTER: return getCurEmailIntro;
@@ -702,10 +702,10 @@ export const getCurAttachContent = createSelector(getAttachsState, getCurAttachI
 export const getCurCommentContent = createSelector(getCommentsState, getCurCommentId, getContent);
 export function getCurEntityContent(etype: string) {
     switch(etype) {
-        case ENTITY.CMS_POST: return getCurPostContent;
-        case ENTITY.CMS_PAGE: return getCurPageContent;
-        case ENTITY.CMS_DEAL: return getCurDealContent;
-        case ENTITY.CMS_TOPIC: return getCurTopicContent;
+        case ENTITY.POST: return getCurPostContent;
+        case ENTITY.PAGE: return getCurPageContent;
+        case ENTITY.OFFER: return getCurDealContent;
+        case ENTITY.TOPIC: return getCurTopicContent;
         case ENTITY.PLACE:     return getCurPlaceContent;
         case ENTITY.ADVERTISE: return getCurAdContent;
         case ENTITY.NEWSLETTER: return getCurEmailContent;

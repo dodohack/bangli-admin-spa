@@ -67,11 +67,12 @@ export class App implements OnInit, OnDestroy
         this.latencies$    = this.store.select(getDomainLatencies);
         this.isDashboardUser$  = this.store.select(isDashboardUser);
         this.isLoggedInDomain$ = this.store.select(hasCurProfile);
-        
+
+        // FIXME: Disabled all permission checks.
         this.listenOnBasicPermission();
         // FIXME: loadDomainData may return before LoginDomain data return.
         this.loadDomainData();
-        this.dispatchPing();
+        //this.dispatchPing();
     }
 
     ngOnDestroy() {

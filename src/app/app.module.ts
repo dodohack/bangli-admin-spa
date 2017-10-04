@@ -46,7 +46,9 @@ import { AttachmentModule }from './modules/attachment/attachment.module';
 import { MigrationModule } from './modules/migration/migration.module';
 import { SettingModule }   from './modules/setting/setting.module';
 
-import { BsDropdownModule }              from 'ngx-bootstrap';
+import { BsDropdownModule }             from 'ngx-bootstrap';
+import { AccordionConfig }              from 'ngx-bootstrap';
+import { DatepickerModule }             from 'ngx-bootstrap';
 
 /* Debug tools */
 /*
@@ -77,6 +79,8 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         SharedModule.forRoot(),
 
         BsDropdownModule.forRoot(),
+        DatepickerModule.forRoot(),
+
         StoreModule.forRoot(reducers, {metaReducers}),
         EffectsModule.forRoot([
             AuthEffects,
@@ -112,6 +116,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         SuperUserGuard,
         LockGuard,
         EditLockGuard,
+        AccordionConfig,
     ],
     bootstrap: [ App ]
 })

@@ -24,7 +24,7 @@ export class PostPage extends EntityPage
                 protected location: Location,
                 protected store: Store<AppState>,
                 protected router: Router) {
-        super(ENTITY.CMS_POST, route, location, store, router);
+        super(ENTITY.POST, route, location, store, router);
     }
 
     get zh() { return zh_CN.cms; } // Localization

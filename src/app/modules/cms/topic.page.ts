@@ -27,7 +27,7 @@ export class TopicPage extends EntityPage
                 protected location: Location,
                 protected store: Store<AppState>,
                 protected router: Router) {
-        super(ENTITY.CMS_TOPIC, route, location, store, router);
+        super(ENTITY.TOPIC, route, location, store, router);
     }
 
     get zh() { return zh_CN.cms; } // Localization

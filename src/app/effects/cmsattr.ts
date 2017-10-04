@@ -125,7 +125,7 @@ export class CmsAttrEffects {
         if (ttid) ttype = '&type=' + ttid;
 
         let api = APIS[this.cache.key] + API_PATH.cms_topics +
-            '?etype=' + ENTITY.CMS_TOPIC + ttype +
+            '?etype=' + ENTITY.TOPIC + ttype +
             '&query=' + text + '&per_page=50' +
             '&columns=id,title,type_id' +
             '&relations=' +

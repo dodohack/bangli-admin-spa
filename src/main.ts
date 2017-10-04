@@ -7,12 +7,14 @@ import 'rxjs/add/operator/take';
 
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/interval';
+import 'rxjs/add/observable/merge';
 
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
+
 
 if (environment.production) {
     enableProdMode();

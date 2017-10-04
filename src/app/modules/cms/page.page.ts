@@ -23,7 +23,7 @@ export class PagePage extends EntityPage
                 protected location: Location,
                 protected store: Store<AppState>,
                 protected router: Router) {
-        super(ENTITY.CMS_PAGE, route, location, store, router);
+        super(ENTITY.PAGE, route, location, store, router);
     }
 
     get zh() { return zh_CN.cms; } // Localization

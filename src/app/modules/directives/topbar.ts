@@ -27,15 +27,21 @@ export class Topbar {
     @Output() togglePing  = new EventEmitter();
 
     getLatency(key) {
+        // FIXME: Reenable this when auth is enabled.
+        /*
         if (this.isPingEnabled)
             return this.latencies[key].delta + 'ms';
         else
+        */
             return 'DISABLED';
     }
     
     isOffline(key) {
+        // FIXME: Reenable this when auth is enabled.
+        /*
         if (!this.latencies[key].delta || this.latencies[key].delta === 0)
             return true;
+            */
         return false;
     }
 }

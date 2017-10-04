@@ -19,20 +19,15 @@ import { User }     from './user';
 export const ENTITY = {
     // These entities are managed by single entity reducer/effects.
     INVALID:   'invalid',
-    CMS_POST:  'cms-post',
-    CMS_TOPIC: 'cms-topic',
-    CMS_PAGE:  'cms-page',
-    CMS_DEAL:  'cms-deal',
+    POST:  'post',
+    TOPIC: 'topic',
+    PAGE:  'page',
+    OFFER:  'offer',
     ADVERTISE: 'advertise',
     NEWSLETTER: 'newsletter',
     PLACE:      'place',     // Geolocation topic
     ATTACHMENT: 'attachment',
     COMMENT:    'comment',
-
-    // Shop related entities
-    SHOP_ORDER:   'shop-order',
-    SHOP_PRODUCT: 'shop-product',
-    SHOP_VOUCHER: 'shop-voucher',
 
     // Following entities are not managed by unified entity reducer/effects.
     USER: 'user'
@@ -42,14 +37,11 @@ export const ENTITY = {
  * Name, reducer selector and url for ENTITY
  */
 export const ENTITY_INFO = {
-    'cms-post':      {selector: 'posts',      name: '文章',     slug: 'post'},
-    'cms-topic':     {selector: 'topics',     name: '专题',     slug: 'topic'},
-    'cms-page':      {selector: 'pages',      name: '页面',     slug: 'page'},
-    'cms-deal':      {selector: 'deals',      name: '优惠',     slug: 'deal'},
+    'post':      {selector: 'posts',      name: '文章',     slug: 'post'},
+    'topic':     {selector: 'topics',     name: '专题',     slug: 'topic'},
+    'page':      {selector: 'pages',      name: '页面',     slug: 'page'},
+    'offer':     {selector: 'offers',     name: '优惠',     slug: 'offer'},
     'advertise':     {selector: 'advertises', name: '广告',     slug: 'ads'},
-    'shop-order':    {selector: 'orders',     name: '订单',     slug: 'order'},
-    'shop-product':  {selector: 'products',    name: '商品',     slug: 'product'},
-    'shop-voucher':  {selector: 'vouchers',    name: '优惠券',   slug: 'voucher'},
     'newsletter':    {selector: 'newsletters', name: '订阅邮件',  slug: 'newsletter'},
     'attachment':    {selector: 'attachments', name: '附件',     slug: 'attachment'},
     'comment':       {selector: 'comments',    name: '用户评论',  slug: 'comment'},
