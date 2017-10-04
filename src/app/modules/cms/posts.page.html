@@ -3,7 +3,7 @@
                   [zh]="zh"
                   [cmsChannels]="cmsChannels$ | async"
                   [curChannelSlug]="params['channel']"
-                  [states]="postStates$ | async"
+                  [statuses]="postStates$ | async"
                   [loading]="isLoading$ | async"
                   [isPageless]="pageless"
                   (togglePagelessEvent)="pageless = !pageless">
@@ -94,14 +94,14 @@
 
         <!-- Use form-group to wrap buttons so to pad bottom for right-panel 100% height issue -->
         <div class="row form-group">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <button type="submit" class="btn btn-primary btn-block">保存</button>
             </div>
         </div>
     </form>
 
     <!-- Put this outside the form to avoid trigger submit event -->
-    <div class="row form-group"><div class="col-xs-12">
+    <div class="row form-group"><div class="col-12">
         <button type="button" class="btn btn-danger btn-block"
                 (click)="cancelBatchEdit()">取消</button>
     </div></div>

@@ -49,7 +49,7 @@ import { postsReducer }  from './entities';
 import { pagesReducer }  from './entities';
 import { topicsReducer } from './entities';
 import { placesReducer } from './entities';
-import { dealsReducer }  from './entities';
+import { offersReducer }  from './entities';
 import { adsReducer }    from './entities';
 import { attachsReducer }  from './entities';
 import { emailsReducer }   from './entities';
@@ -73,7 +73,7 @@ export interface AppState {
     femenu:   fromFeMenu.FeMenusState;
     posts:    EntitiesState;
     pages:    EntitiesState;
-    deals:    EntitiesState;
+    offers:    EntitiesState;
     topics:   EntitiesState;
     places:   EntitiesState;
     advertises:  EntitiesState;
@@ -93,7 +93,7 @@ export const reducers: ActionReducerMap<AppState> = {
     femenu:   fromFeMenu.feMenuReducer,
     posts:    postsReducer,
     pages:    pagesReducer,
-    deals:    dealsReducer,
+    offers:    offersReducer,
     topics:   topicsReducer,
     places:   placesReducer,
     advertises:  adsReducer,
@@ -208,7 +208,7 @@ export const getLocations = createSelector(getCmsState, fromCms.getLocations);
 
 export const getPostStates = createSelector(getCmsState, fromCms.getPostStates);
 
-export const getDealStates = createSelector(getCmsState, fromCms.getDealStates);
+export const getOfferStates = createSelector(getCmsState, fromCms.getOfferStates);
 
 export const getPageStates = createSelector(getCmsState, fromCms.getPageStates);
 
@@ -252,7 +252,7 @@ export const getAvailableDomains = createSelector(getUsersState, fromUsers.getAv
 /* FIXME: Can we have better way to reduce these massive code ? */
 export const getPostsState = (state: AppState) => state.posts;
 export const getPagesState = (state: AppState) => state.pages;
-export const getDealsState = (state: AppState) => state.deals;
+export const getOffersState = (state: AppState) => state.offers;
 export const getTopicsState = (state: AppState) => state.topics;
 export const getPlacesState = (state: AppState) => state.places;
 export const getAdsState = (state: AppState) => state.advertises;
@@ -262,7 +262,7 @@ export const getCommentsState = (state: AppState) => state.comments;
 
 export const getPostPaginator = createSelector(getPostsState, fromEntities.getPaginator);
 export const getPagePaginator = createSelector(getPagesState, fromEntities.getPaginator);
-export const getDealPaginator = createSelector(getDealsState, fromEntities.getPaginator);
+export const getOfferPaginator = createSelector(getOffersState, fromEntities.getPaginator);
 export const getTopicPaginator = createSelector(getTopicsState, fromEntities.getPaginator);
 export const getPlacePaginator = createSelector(getPlacesState, fromEntities.getPaginator);
 export const getAdPaginator = createSelector(getAdsState, fromEntities.getPaginator);
@@ -273,7 +273,7 @@ export function getPaginator(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getPostPaginator;
         case ENTITY.PAGE: return getPagePaginator;
-        case ENTITY.OFFER: return getDealPaginator;
+        case ENTITY.OFFER: return getOfferPaginator;
         case ENTITY.TOPIC: return getTopicPaginator;
         case ENTITY.PLACE:     return getPlacePaginator;
         case ENTITY.ADVERTISE: return getAdPaginator;
@@ -287,7 +287,7 @@ export function getPaginator(etype: string) {
 
 export const getIsPostDirty = createSelector(getPostsState, fromEntities.getIsDirty);
 export const getIsPageDirty = createSelector(getPagesState, fromEntities.getIsDirty);
-export const getIsDealDirty = createSelector(getDealsState, fromEntities.getIsDirty);
+export const getIsOfferDirty = createSelector(getOffersState, fromEntities.getIsDirty);
 export const getIsTopicDirty = createSelector(getTopicsState, fromEntities.getIsDirty);
 export const getIsPlaceDirty = createSelector(getPlacesState, fromEntities.getIsDirty);
 export const getIsAdDirty = createSelector(getAdsState, fromEntities.getIsDirty);
@@ -298,7 +298,7 @@ export function getIsDirty(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getIsPostDirty;
         case ENTITY.PAGE: return getIsPageDirty;
-        case ENTITY.OFFER: return getIsDealDirty;
+        case ENTITY.OFFER: return getIsOfferDirty;
         case ENTITY.TOPIC: return getIsTopicDirty;
         case ENTITY.PLACE:     return getIsPlaceDirty;
         case ENTITY.ADVERTISE: return getIsAdDirty;
@@ -313,7 +313,7 @@ export function getIsDirty(etype: string) {
 
 export const getPostDirtyMask = createSelector(getPostsState, fromEntities.getDirtyMask);
 export const getPageDirtyMask = createSelector(getPagesState, fromEntities.getDirtyMask);
-export const getDealDirtyMask = createSelector(getDealsState, fromEntities.getDirtyMask);
+export const getOfferDirtyMask = createSelector(getOffersState, fromEntities.getDirtyMask);
 export const getTopicDirtyMask = createSelector(getTopicsState, fromEntities.getDirtyMask);
 export const getPlaceDirtyMask = createSelector(getPlacesState, fromEntities.getDirtyMask);
 export const getAdDirtyMask = createSelector(getAdsState, fromEntities.getDirtyMask);
@@ -324,7 +324,7 @@ export function getEntityDirtyMask(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getPostDirtyMask;
         case ENTITY.PAGE: return getPageDirtyMask;
-        case ENTITY.OFFER: return getDealDirtyMask;
+        case ENTITY.OFFER: return getOfferDirtyMask;
         case ENTITY.TOPIC: return getTopicDirtyMask;
         case ENTITY.PLACE:     return getPlaceDirtyMask;
         case ENTITY.ADVERTISE: return getAdDirtyMask;
@@ -338,7 +338,7 @@ export function getEntityDirtyMask(etype: string) {
 
 export const getIsPostLoading = createSelector(getPostsState, fromEntities.getIsLoading);
 export const getIsPageLoading = createSelector(getPagesState, fromEntities.getIsLoading);
-export const getIsDealLoading = createSelector(getDealsState, fromEntities.getIsLoading);
+export const getIsOfferLoading = createSelector(getOffersState, fromEntities.getIsLoading);
 export const getIsTopicLoading = createSelector(getTopicsState, fromEntities.getIsLoading);
 export const getIsPlaceLoading = createSelector(getPlacesState, fromEntities.getIsLoading);
 export const getIsAdLoading = createSelector(getAdsState, fromEntities.getIsLoading);
@@ -349,7 +349,7 @@ export function getIsLoading(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getIsPostLoading;
         case ENTITY.PAGE: return getIsPageLoading;
-        case ENTITY.OFFER: return getIsDealLoading;
+        case ENTITY.OFFER: return getIsOfferLoading;
         case ENTITY.TOPIC: return getIsTopicLoading;
         case ENTITY.PLACE:     return getIsPlaceLoading;
         case ENTITY.ADVERTISE: return getIsAdLoading;
@@ -363,7 +363,7 @@ export function getIsLoading(etype: string) {
 // FIXME: Need extra argument ids: number[] to be passed in
 export const getPostEntities = createSelector(getPostsState, fromEntities.getEntitiesObject);
 export const getPageEntities = createSelector(getPagesState, fromEntities.getEntitiesObject);
-export const getDealEntities = createSelector(getDealsState, fromEntities.getEntitiesObject);
+export const getOfferEntities = createSelector(getOffersState, fromEntities.getEntitiesObject);
 export const getTopicEntities = createSelector(getTopicsState, fromEntities.getEntitiesObject);
 export const getPlaceEntities = createSelector(getPlacesState, fromEntities.getEntitiesObject);
 export const getAdEntities = createSelector(getAdsState, fromEntities.getEntitiesObject);
@@ -374,7 +374,7 @@ export function getEntities(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getPostEntities;
         case ENTITY.PAGE: return getPageEntities;
-        case ENTITY.OFFER: return getDealEntities;
+        case ENTITY.OFFER: return getOfferEntities;
         case ENTITY.TOPIC: return getTopicEntities;
         case ENTITY.PLACE:     return getPlaceEntities;
         case ENTITY.ADVERTISE: return getAdEntities;
@@ -394,7 +394,7 @@ export function getEntities(etype: string, ids: number[]) {
 
 export const getPostIdsCurPage = createSelector(getPostsState, fromEntities.getIdsCurPage);
 export const getPageIdsCurPage = createSelector(getPagesState, fromEntities.getIdsCurPage);
-export const getDealIdsCurPage = createSelector(getDealsState, fromEntities.getIdsCurPage);
+export const getOfferIdsCurPage = createSelector(getOffersState, fromEntities.getIdsCurPage);
 export const getTopicIdsCurPage = createSelector(getTopicsState, fromEntities.getIdsCurPage);
 export const getPlaceIdsCurPage = createSelector(getPlacesState, fromEntities.getIdsCurPage);
 export const getAdIdsCurPage = createSelector(getAdsState, fromEntities.getIdsCurPage);
@@ -405,7 +405,7 @@ export function getIdsCurPage(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getPostIdsCurPage;
         case ENTITY.PAGE: return getPageIdsCurPage;
-        case ENTITY.OFFER: return getDealIdsCurPage;
+        case ENTITY.OFFER: return getOfferIdsCurPage;
         case ENTITY.TOPIC: return getTopicIdsCurPage;
         case ENTITY.PLACE:     return getPlaceIdsCurPage;
         case ENTITY.ADVERTISE: return getAdIdsCurPage;
@@ -419,7 +419,7 @@ export function getIdsCurPage(etype: string) {
 
 export const getPostIdsEditing = createSelector(getPostsState, fromEntities.getIdsEditing);
 export const getPageIdsEditing = createSelector(getPagesState, fromEntities.getIdsEditing);
-export const getDealIdsEditing = createSelector(getDealsState, fromEntities.getIdsEditing);
+export const getOfferIdsEditing = createSelector(getOffersState, fromEntities.getIdsEditing);
 export const getTopicIdsEditing = createSelector(getTopicsState, fromEntities.getIdsEditing);
 export const getPlaceIdsEditing = createSelector(getPlacesState, fromEntities.getIdsEditing);
 export const getAdIdsEditing = createSelector(getAdsState, fromEntities.getIdsEditing);
@@ -430,7 +430,7 @@ export function getIdsEditing(etype: string) {
     switch(etype) { 
         case ENTITY.POST: return getPostIdsEditing;
         case ENTITY.PAGE: return getPageIdsEditing;
-        case ENTITY.OFFER: return getDealIdsEditing;
+        case ENTITY.OFFER: return getOfferIdsEditing;
         case ENTITY.TOPIC: return getTopicIdsEditing;
         case ENTITY.PLACE:     return getPlaceIdsEditing;
         case ENTITY.ADVERTISE: return getAdIdsEditing;
@@ -445,7 +445,7 @@ export const getPostsCurPage = createSelector(getPostIdsCurPage, getPostEntities
     (ids, entities) => ids.map(id => entities[id]));
 export const getPagesCurPage = createSelector(getPageIdsCurPage, getPageEntities,
     (ids, entities) => ids.map(id => entities[id]));
-export const getDealsCurPage = createSelector(getDealIdsCurPage, getDealEntities,
+export const getOffersCurPage = createSelector(getOfferIdsCurPage, getOfferEntities,
     (ids, entities) => ids.map(id => entities[id]));
 export const getTopicsCurPage = createSelector(getTopicIdsCurPage, getTopicEntities,
     (ids, entities) => ids.map(id => entities[id]));
@@ -463,7 +463,7 @@ export function getEntitiesCurPage(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getPostsCurPage;
         case ENTITY.PAGE: return getPagesCurPage;
-        case ENTITY.OFFER: return getDealsCurPage;
+        case ENTITY.OFFER: return getOffersCurPage;
         case ENTITY.TOPIC: return getTopicsCurPage;
         case ENTITY.PLACE:     return getPlacesCurPage;
         case ENTITY.ADVERTISE: return getAdsCurPage;
@@ -484,7 +484,7 @@ export function getEntity(etype: string, id: number) {
 
 export const getCurPostId = createSelector(getPostsState, fromEntities.getCurEntityId);
 export const getCurPageId = createSelector(getPagesState, fromEntities.getCurEntityId);
-export const getCurDealId = createSelector(getDealsState, fromEntities.getCurEntityId);
+export const getCurOfferId = createSelector(getOffersState, fromEntities.getCurEntityId);
 export const getCurTopicId = createSelector(getTopicsState, fromEntities.getCurEntityId);
 export const getCurPlaceId = createSelector(getPlacesState, fromEntities.getCurEntityId);
 export const getCurAdId = createSelector(getAdsState, fromEntities.getCurEntityId);
@@ -495,7 +495,7 @@ export function getCurEntityId(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getCurPostId;
         case ENTITY.PAGE: return getCurPageId;
-        case ENTITY.OFFER: return getCurDealId;
+        case ENTITY.OFFER: return getCurOfferId;
         case ENTITY.TOPIC: return getCurTopicId;
         case ENTITY.PLACE:     return getCurPlaceId;
         case ENTITY.ADVERTISE: return getCurAdId;
@@ -508,7 +508,7 @@ export function getCurEntityId(etype: string) {
 
 export const getCurPost = createSelector(getPostsState, fromEntities.getCurEntity);
 export const getCurPage = createSelector(getPagesState, fromEntities.getCurEntity);
-export const getCurDeal = createSelector(getDealsState, fromEntities.getCurEntity);
+export const getCurOffer = createSelector(getOffersState, fromEntities.getCurEntity);
 export const getCurTopic = createSelector(getTopicsState, fromEntities.getCurEntity);
 export const getCurPlace = createSelector(getPlacesState, fromEntities.getCurEntity);
 export const getCurAd = createSelector(getAdsState, fromEntities.getCurEntity);
@@ -519,7 +519,7 @@ export function getCurEntity(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getCurPost;
         case ENTITY.PAGE: return getCurPage;
-        case ENTITY.OFFER: return getCurDeal;
+        case ENTITY.OFFER: return getCurOffer;
         case ENTITY.TOPIC: return getCurTopic;
         case ENTITY.PLACE:     return getCurPlace;
         case ENTITY.ADVERTISE: return getCurAd;
@@ -530,10 +530,10 @@ export function getCurEntity(etype: string) {
     }
 }
 
-export const getAuthor = (posts: EntitiesState, id: number) => posts.entities[id].author;
+export const getAuthor = (posts: EntitiesState, id: number) => posts.entities[id] && posts.entities[id].author;
 export const getCurPostAuthor = createSelector(getPostsState, getCurPostId, getAuthor);
 export const getCurPageAuthor = createSelector(getPagesState, getCurPageId, getAuthor);
-export const getCurDealAuthor = createSelector(getDealsState, getCurDealId, getAuthor);
+export const getCurOfferAuthor = createSelector(getOffersState, getCurOfferId, getAuthor);
 export const getCurTopicAuthor = createSelector(getTopicsState, getCurTopicId, getAuthor);
 export const getCurPlaceAuthor = createSelector(getPlacesState, getCurPlaceId, getAuthor);
 export const getCurAdAuthor = createSelector(getAdsState, getCurAdId, getAuthor);
@@ -544,7 +544,7 @@ export function getCurEntityAuthor(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getCurPostAuthor;
         case ENTITY.PAGE: return getCurPageAuthor;
-        case ENTITY.OFFER: return getCurDealAuthor;
+        case ENTITY.OFFER: return getCurOfferAuthor;
         case ENTITY.TOPIC: return getCurTopicAuthor;
         case ENTITY.PLACE:     return getCurPlaceAuthor;
         case ENTITY.ADVERTISE: return getCurAdAuthor;
@@ -555,10 +555,10 @@ export function getCurEntityAuthor(etype: string) {
     }
 }
 
-export const getEditor = (posts: EntitiesState, id: number) => posts.entities[id].editor;
+export const getEditor = (posts: EntitiesState, id: number) => posts.entities[id] && posts.entities[id].editor;
 export const getCurPostEditor = createSelector(getPostsState, getCurPostId, getEditor);
 export const getCurPageEditor = createSelector(getPagesState, getCurPageId, getEditor);
-export const getCurDealEditor = createSelector(getDealsState, getCurDealId, getEditor);
+export const getCurOfferEditor = createSelector(getOffersState, getCurOfferId, getEditor);
 export const getCurTopicEditor = createSelector(getTopicsState, getCurTopicId, getEditor);
 export const getCurPlaceEditor = createSelector(getPlacesState, getCurPlaceId, getEditor);
 export const getCurAdEditor = createSelector(getAdsState, getCurAdId, getEditor);
@@ -569,7 +569,7 @@ export function getCurEntityEditor(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getCurPostEditor;
         case ENTITY.PAGE: return getCurPageEditor;
-        case ENTITY.OFFER: return getCurDealEditor;
+        case ENTITY.OFFER: return getCurOfferEditor;
         case ENTITY.TOPIC: return getCurTopicEditor;
         case ENTITY.PLACE:     return getCurPlaceEditor;
         case ENTITY.ADVERTISE: return getCurAdEditor;
@@ -589,10 +589,10 @@ export function getCurEntityChannelId(etype: string) {
 }
 */
 
-export const getChannel = (posts: EntitiesState, id: number) => posts.entities[id].channel;
+export const getChannel = (posts: EntitiesState, id: number) => posts.entities[id] && posts.entities[id].channel;
 export const getCurPostChannel = createSelector(getPostsState, getCurPostId, getChannel);
 export const getCurPageChannel = createSelector(getPagesState, getCurPageId, getChannel);
-export const getCurDealChannel = createSelector(getDealsState, getCurDealId, getChannel);
+export const getCurOfferChannel = createSelector(getOffersState, getCurOfferId, getChannel);
 export const getCurTopicChannel = createSelector(getTopicsState, getCurTopicId, getChannel);
 export const getCurPlaceChannel = createSelector(getPlacesState, getCurPlaceId, getChannel);
 export const getCurAdChannel = createSelector(getAdsState, getCurAdId, getChannel);
@@ -603,7 +603,7 @@ export function getCurEntityChannel(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getCurPostChannel;
         case ENTITY.PAGE: return getCurPageChannel;
-        case ENTITY.OFFER: return getCurDealChannel;
+        case ENTITY.OFFER: return getCurOfferChannel;
         case ENTITY.TOPIC: return getCurTopicChannel;
         case ENTITY.PLACE:     return getCurPlaceChannel;
         case ENTITY.ADVERTISE: return getCurAdChannel;
@@ -614,10 +614,10 @@ export function getCurEntityChannel(etype: string) {
     }
 }
 
-export const getTopicType = (posts: EntitiesState, id: number) => posts.entities[id].type;
+export const getTopicType = (posts: EntitiesState, id: number) => posts.entities[id] && posts.entities[id].type;
 export const getCurPostTopicType = createSelector(getPostsState, getCurPostId, getTopicType);
 export const getCurPageTopicType = createSelector(getPagesState, getCurPageId, getTopicType);
-export const getCurDealTopicType = createSelector(getDealsState, getCurDealId, getTopicType);
+export const getCurOfferTopicType = createSelector(getOffersState, getCurOfferId, getTopicType);
 export const getCurTopicTopicType = createSelector(getTopicsState, getCurTopicId, getTopicType);
 export const getCurPlaceTopicType = createSelector(getPlacesState, getCurPlaceId, getTopicType);
 export const getCurAdTopicType = createSelector(getAdsState, getCurAdId, getTopicType);
@@ -628,7 +628,7 @@ export function getCurEntityTopicType(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getCurPostTopicType;
         case ENTITY.PAGE: return getCurPageTopicType;
-        case ENTITY.OFFER: return getCurDealTopicType;
+        case ENTITY.OFFER: return getCurOfferTopicType;
         case ENTITY.TOPIC: return getCurTopicTopicType;
         case ENTITY.PLACE:     return getCurPlaceTopicType;
         case ENTITY.ADVERTISE: return getCurAdTopicType;
@@ -639,10 +639,12 @@ export function getCurEntityTopicType(etype: string) {
     }
 }
 
-export const getKeywordsAsArray = (posts: EntitiesState, id: number) => posts.entities[id].keywords.split(',');
+export const getKeywordsAsArray =
+    (posts: EntitiesState, id: number) =>
+    posts.entities[id] && posts.entities[id].keywords && posts.entities[id].keywords.split(',');
 export const getCurPostKeywordsAsArray = createSelector(getPostsState, getCurPostId, getKeywordsAsArray);
 export const getCurPageKeywordsAsArray = createSelector(getPagesState, getCurPageId, getKeywordsAsArray);
-export const getCurDealKeywordsAsArray = createSelector(getDealsState, getCurDealId, getKeywordsAsArray);
+export const getCurOfferKeywordsAsArray = createSelector(getOffersState, getCurOfferId, getKeywordsAsArray);
 export const getCurTopicKeywordsAsArray = createSelector(getTopicsState, getCurTopicId, getKeywordsAsArray);
 export const getCurPlaceKeywordsAsArray = createSelector(getPlacesState, getCurPlaceId, getKeywordsAsArray);
 export const getCurAdKeywordsAsArray = createSelector(getAdsState, getCurAdId, getKeywordsAsArray);
@@ -653,7 +655,7 @@ export function getCurEntityKeywordsAsArray(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getCurPostKeywordsAsArray;
         case ENTITY.PAGE: return getCurPageKeywordsAsArray;
-        case ENTITY.OFFER: return getCurDealKeywordsAsArray;
+        case ENTITY.OFFER: return getCurOfferKeywordsAsArray;
         case ENTITY.TOPIC: return getCurTopicKeywordsAsArray;
         case ENTITY.PLACE:     return getCurPlaceKeywordsAsArray;
         case ENTITY.ADVERTISE: return getCurAdKeywordsAsArray;
@@ -665,10 +667,10 @@ export function getCurEntityKeywordsAsArray(etype: string) {
 }
 
 
-export const getIntro = (posts: EntitiesState, id: number) => posts.entities[id].intro;
+export const getIntro = (posts: EntitiesState, id: number) => posts.entities[id] && posts.entities[id].intro;
 export const getCurPostIntro = createSelector(getPostsState, getCurPostId, getIntro);
 export const getCurPageIntro = createSelector(getPagesState, getCurPageId, getIntro);
-export const getCurDealIntro = createSelector(getDealsState, getCurDealId, getIntro);
+export const getCurOfferIntro = createSelector(getOffersState, getCurOfferId, getIntro);
 export const getCurTopicIntro = createSelector(getTopicsState, getCurTopicId, getIntro);
 export const getCurPlaceIntro = createSelector(getPlacesState, getCurPlaceId, getIntro);
 export const getCurAdIntro = createSelector(getAdsState, getCurAdId, getIntro);
@@ -679,7 +681,7 @@ export function getCurEntityIntro(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getCurPostIntro;
         case ENTITY.PAGE: return getCurPageIntro;
-        case ENTITY.OFFER: return getCurDealIntro;
+        case ENTITY.OFFER: return getCurOfferIntro;
         case ENTITY.TOPIC: return getCurTopicIntro;
         case ENTITY.PLACE:     return getCurPlaceIntro;
         case ENTITY.ADVERTISE: return getCurAdIntro;
@@ -690,10 +692,10 @@ export function getCurEntityIntro(etype: string) {
     }
 }
 
-export const getContent = (posts: EntitiesState, id: number) => posts.entities[id].content;
+export const getContent = (posts: EntitiesState, id: number) => posts.entities[id] && posts.entities[id].content;
 export const getCurPostContent = createSelector(getPostsState, getCurPostId, getContent);
 export const getCurPageContent = createSelector(getPagesState, getCurPageId, getContent);
-export const getCurDealContent = createSelector(getDealsState, getCurDealId, getContent);
+export const getCurOfferContent = createSelector(getOffersState, getCurOfferId, getContent);
 export const getCurTopicContent = createSelector(getTopicsState, getCurTopicId, getContent);
 export const getCurPlaceContent = createSelector(getPlacesState, getCurPlaceId, getContent);
 export const getCurAdContent = createSelector(getAdsState, getCurAdId, getContent);
@@ -704,7 +706,7 @@ export function getCurEntityContent(etype: string) {
     switch(etype) {
         case ENTITY.POST: return getCurPostContent;
         case ENTITY.PAGE: return getCurPageContent;
-        case ENTITY.OFFER: return getCurDealContent;
+        case ENTITY.OFFER: return getCurOfferContent;
         case ENTITY.TOPIC: return getCurTopicContent;
         case ENTITY.PLACE:     return getCurPlaceContent;
         case ENTITY.ADVERTISE: return getCurAdContent;

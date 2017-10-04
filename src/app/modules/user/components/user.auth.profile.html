@@ -6,13 +6,13 @@
 
             <form *ngIf="user" (ngSubmit)="save.emit(user)">
                 <div class="row form-group">
-                    <div class="col-xs-6">
+                    <div class="col-6">
                         <label>登录名</label>
                         <input class="form-control" type="text" name="name"
                                [ngModel]="user.name" disabled>
                     </div>
 
-                    <div class="col-xs-6">
+                    <div class="col-6">
                         <label>邮箱</label>
                         <input class="form-control" type="text" name="email"
                                [ngModel]="user.email" disabled>
@@ -20,14 +20,14 @@
                 </div>
 
                 <div class="row form-group">
-                    <div class="col-xs-6">
+                    <div class="col-6">
                         <label>密码</label>
                         <input class="form-control" type="password"
                                name="password" [(ngModel)]="user.password">
 
                     </div>
 
-                    <div class="col-xs-6">
+                    <div class="col-6">
                         <label>重复密码</label>
                         <input class="form-control" type="password"
                                name="password_repeat" [(ngModel)]="user.password_repeat">
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="row form-group">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <div class="alert alert-danger"
                              *ngIf="user.password && user.password_repeat && user.password !== user.password_repeat">
                             两次输入的密码不一致
@@ -54,6 +54,6 @@
             已登录设备<i class="pull-right fa customize-chevron"></i>
         </div>
 
-        <div class="alert alert-info">Invalidate user token (bangli-auth + huluwa-api domains)</div>
+        <div class="alert alert-info">Invalidate user token</div>
     </accordion-group>
 </accordion>

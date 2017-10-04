@@ -61,6 +61,9 @@ export abstract class EntityPage implements OnInit, OnDestroy
 {
     cache = CacheSingleton.getInstance();
 
+    // Local version of entity content, updated by froala editor
+    content: string;
+
     // Force quit no matter if the entity is dirty or not.
     forceQuit = false;
 
@@ -101,10 +104,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     keywords$:    Observable<string[]>;  // Keywords array of current topic
     intro$:       Observable<string>;    // Topic only introduction
     content$:     Observable<string>;
-    deal_intro$:  Observable<string>;    // Deal topic only intro
-    deal_content$:Observable<string>;    // Deal topic only content
     topicType$:   Observable<TopicType>; // Topic only type
-    hasDeal$:     Observable<boolean>;   // Topic only attributes
     entities$:    Observable<Entity[]>;
     idsCurPage$:  Observable<number[]>;
 
@@ -121,6 +121,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     subParams: any;
     subAS: any;
     subID: any;
+    subContent: any;
 
     constructor(protected etype: string,
                 protected route: ActivatedRoute,
@@ -163,13 +164,17 @@ export abstract class EntityPage implements OnInit, OnDestroy
             .subscribe(e => this.entity = Object.assign({}, e));
 
         // Update the channel in CmsAttrStates with entity channel
-        this.subCh      = this.channel$.map(ch => ch.id).distinctUntilChanged()
+        this.subCh      = this.channel$
+            .map(ch => ch && ch.id).distinctUntilChanged()
             .subscribe(cid => this.store.dispatch(new CmsAttrActions.SwitchChannel(cid)));
 
         this.subTopics  = this.cmsTopics$
             .subscribe(topics => this.cmsTopics = topics);
 
         this.subDirty   = this.dirtyMask$.subscribe(m => this.dirtyMask = m);
+
+
+        this.subContent = this.content$.subscribe(content => this.content = content);
 
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
@@ -179,6 +184,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
         // Auto saving setup
         this.autoSave();
+
     }
 
     ngOnDestroy() {
@@ -191,6 +197,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subDirty.unsubscribe();
         this.subAS.unsubscribe();
         this.subID.unsubscribe();
+        this.subContent.unsubscribe();
     }
 
     /**
@@ -261,12 +268,13 @@ export abstract class EntityPage implements OnInit, OnDestroy
     gmt(value: string) { return GMT(value); }
 
     /**
+     * FIXME: Deprecated! Use tag instead.
      * Set/get a keywords prompt list
      */
     get keywords() {
         if (this.entity) {
-            if (this.entity.anchor_text)
-                return KEYWORDS.map(k => k.replace('[KEY]', this.entity.anchor_text));
+            if (this.entity.title_cn)
+                return KEYWORDS.map(k => k.replace('[KEY]', this.entity.title_cn));
             else if (this.entity.title)
                 return KEYWORDS.map(k => k.replace('[KEY]', this.entity.title));
         } else {
@@ -349,13 +357,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
         );
     }
 
-    updateFakePublishedAt(date: string) {
-        let d1 = new Date(date);
-        let d2 = new Date(this.entity.fake_published_at);
-        if (d1.toISOString() === d2.toISOString()) return;
-        this.update('fake_published_at', GMT(date));
-    }
-
     /**
      * When a image uploaded successfully, we can add it to the head of the
      * image list
@@ -394,21 +395,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
     insertImage($event) {
         this.froalaModel = $event + this.froalaModel;
         this.update(this.key, this.froalaModel);
-    }
-
-    /**
-     * Listen on froala editor events
-     * FIXME: This is used by old ng2-froala-editor module
-     */
-    onFroalaInitialized(key: string) {
-        /*
-        this.key    = key;
-        this.editor = FroalaEditorCompnoent.getFroalaInstance();
-        // Kick an action to update content when it changes.
-        this.editor.on('froalaEditor.contentChanged', (e, editor) => {
-            this.update(key, this.froalaModel);
-        });
-        */
     }
 
     /**

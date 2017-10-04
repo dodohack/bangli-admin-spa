@@ -12,8 +12,8 @@ import { TopicsPage }   from './topics.page';
 import { TopicPage }    from './topic.page';
 import { PagesPage }    from './pages.page';
 import { PagePage }     from './page.page';
-import { DealsPage }    from './deals.page';
-import { DealPage }     from './deal.page';
+import { OffersPage }   from './offers.page';
+import { OfferPage }    from './offer.page';
 
 const routes: Routes = [
 
@@ -32,14 +32,14 @@ const routes: Routes = [
             /* List of posts wo/ channels */
             //{ path: '',                    component: PostsPage },
             //{ path: 'page/:page',          component: PostsPage },
-            { path: '', pathMatch: 'full', redirectTo: 'page/1/state/all' },
-            { path: 'page/:page',          redirectTo: 'page/:page/state/all' },
-            { path: 'page/:page/state/:state', component: PostsPage, canActivate: [AuthorGuard]},
+            { path: '', pathMatch: 'full', redirectTo: 'page/1/status/all' },
+            { path: 'page/:page',          redirectTo: 'page/:page/status/all' },
+            { path: 'page/:page/status/:status', component: PostsPage, canActivate: [AuthorGuard]},
             
             /* List of posts w/ channels */
-            { path: 'channel/:channel',            redirectTo: 'channel/:channel/page/1/state/all' },
-            { path: 'channel/:channel/page/:page', redirectTo: 'channel/:channel/page/:page/state/all' },
-            { path: 'channel/:channel/page/:page/state/:state', component: PostsPage,  canActivate: [AuthorGuard]},
+            { path: 'channel/:channel',            redirectTo: 'channel/:channel/page/1/status/all' },
+            { path: 'channel/:channel/page/:page', redirectTo: 'channel/:channel/page/:page/status/all' },
+            { path: 'channel/:channel/page/:page/status/:status', component: PostsPage,  canActivate: [AuthorGuard]},
             
             /* Single post */
             { path: 'new', component: PostPage,
@@ -58,14 +58,14 @@ const routes: Routes = [
         children: [
 
             /* List of topics wo/ channels */
-            { path: '', pathMatch: 'full', redirectTo: 'page/1/state/all' },
-            { path: 'page/:page',          redirectTo: 'page/:page/state/all' },
-            { path: 'page/:page/state/:state', component: TopicsPage },
+            { path: '', pathMatch: 'full', redirectTo: 'page/1/status/all' },
+            { path: 'page/:page',          redirectTo: 'page/:page/status/all' },
+            { path: 'page/:page/status/:status', component: TopicsPage },
 
             /* List of topics w/ channels */
-            { path: 'channel/:channel',            redirectTo: 'channel/:channel/page/1/state/all' },
-            { path: 'channel/:channel/page/:page', redirectTo: 'channel/:channel/page/:page/state/all' },
-            { path: 'channel/:channel/page/:page/state/:state', component: TopicsPage },
+            { path: 'channel/:channel',            redirectTo: 'channel/:channel/page/1/status/all' },
+            { path: 'channel/:channel/page/:page', redirectTo: 'channel/:channel/page/:page/status/all' },
+            { path: 'channel/:channel/page/:page/status/:status', component: TopicsPage },
 
             
             /* Single topic */
@@ -83,9 +83,9 @@ const routes: Routes = [
         children: [
 
             /* List of pages */
-            { path: '', pathMatch: 'full', redirectTo: 'page/1/state/all' },
-            { path: 'page/:page',          redirectTo: 'page/:page/state/all' },
-            { path: 'page/:page/state/:state', component: PagesPage },
+            { path: '', pathMatch: 'full', redirectTo: 'page/1/status/all' },
+            { path: 'page/:page',          redirectTo: 'page/:page/status/all' },
+            { path: 'page/:page/status/:status', component: PagesPage },
 
             /* Single page */
             { path: 'new', component: PagePage },
@@ -94,26 +94,26 @@ const routes: Routes = [
     },
 
     {
-        // Deal post
-        path: 'deal',
+        // Offer path
+        path: 'offer',
         canActivate: [EditorGuard],
         children: [
-            // List of deal posts wo/ channels
-            {path: '', pathMatch: 'full', redirectTo: 'page/1/state/all'},
-            {path: 'page/:page',  redirectTo: 'page/:page/state/all'},
-            {path: 'page/:page/state/:state', component: DealsPage},
+            // List of offers wo/ channels
+            {path: '', pathMatch: 'full', redirectTo: 'page/1/status/all'},
+            {path: 'page/:page',  redirectTo: 'page/:page/status/all'},
+            {path: 'page/:page/status/:status', component: OffersPage},
 
-            // List of deal posts w/ channels
+            // List of offers w/ channels
             { path: 'channel/:channel',
-                redirectTo: 'channel/:channel/page/1/state/all' },
+                redirectTo: 'channel/:channel/page/1/status/all' },
             { path: 'channel/:channel/page/:page',
-                redirectTo: 'channel/:channel/page/:page/state/all' },
-            { path: 'channel/:channel/page/:page/state/:state',
-                component: DealsPage},
+                redirectTo: 'channel/:channel/page/:page/status/all' },
+            { path: 'channel/:channel/page/:page/status/:status',
+                component: OffersPage},
 
-            // Single deal post
-            { path: 'new', component: DealPage },
-            { path: ':id', component: DealPage}
+            // Single offer
+            { path: 'new', component: OfferPage },
+            { path: ':id', component: OfferPage}
         ]
     }
 ];

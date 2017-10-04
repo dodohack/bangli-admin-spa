@@ -3,7 +3,7 @@
                   [zh]="zh"
                   [cmsChannels]="cmsChannels$ | async"
                   [curChannelSlug]="params['channel']"
-                  [states]="topicStates$ | async"
+                  [statuses]="topicStates$ | async"
                   [loading]="isLoading$ | async"
                   [isPageless]="pageless"
                   (togglePagelessEvent)="pageless = !pageless">

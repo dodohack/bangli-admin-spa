@@ -13,9 +13,9 @@ import { Entity } from '../../models';
 })
 export class EntityButtons {
     @Input() entityState: string;
-    @Input() states: string[];
+    @Input() statuses: string[];
 
-    @Output() stateChange  = new EventEmitter();
+    @Output() statusChange  = new EventEmitter();
     @Output() save         = new EventEmitter();
     @Output() save2Pending = new EventEmitter();
     @Output() save2Publish = new EventEmitter();

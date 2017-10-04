@@ -7,7 +7,7 @@
         </div>
 
         <div class="row form-group">
-            <div class="col-xs-4">
+            <div class="col-4">
                 <label>侧栏目录</label>
                 <select name="toggleSidebar" class="form-control" [ngModel]="pref.isIconSidebar"
                         (ngModelChange)="pref.isIconSidebar = $event === 'true' ? true : false">
@@ -16,7 +16,7 @@
                 </select>
             </div>
 
-            <div class="col-xs-4">
+            <div class="col-4">
                 <label>显示详细列表</label>
                 <select name="showRichList" class="form-control" [ngModel]="pref.isRichList"
                         (ngModelChange)="pref.isRichList = $event === 'true' ? true : false">
@@ -25,7 +25,7 @@
                 </select>
             </div>
 
-            <div class="col-xs-4">
+            <div class="col-4">
                 <label>列表每页显示条数</label>
                 <select name="listItemCount" class="form-control"
                         [(ngModel)]="pref.listItemCount">
@@ -35,23 +35,23 @@
         </div>
 
         <div class="row form-group">
-            <div class="col-xs-3">
+            <div class="col-3">
                 <label>目录字体颜色</label>
                 <input class="form-control" type="color" name="menuColor"
                        [(ngModel)]="pref.menuColor">
             </div>
-            <div class="col-xs-3">
+            <div class="col-3">
                 <label>目录背景颜色</label>
                 <input class="form-control" type="color" name="menuBgColor"
                        [(ngModel)]="pref.menuBackgroundColor">
             </div>
             <!--
-            <div class="col-xs-3">
+            <div class="col-3">
                 <label>内容背景颜色</label>
                 <input class="form-control" type="color" name="contentBgColor"
                        [(ngModel)]="pref.contentBackgroundColor">
             </div>
-            <div class="col-xs-3">
+            <div class="col-3">
                 <label>后台页面底色</label>
                 <input class="form-control" type="color" name="bodyBgColor"
                        [(ngModel)]="pref.bodyBackgroundColor">
@@ -73,7 +73,7 @@
 </accordion>
 
     <div class="row form-group">
-        <div class="col-xs-12">
+        <div class="col-12">
             <button type="submit" class="btn btn-primary btn-block"
                     [disabled]="!settingForm.form.dirty">保存</button>
         </div>

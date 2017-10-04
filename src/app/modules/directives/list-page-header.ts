@@ -12,7 +12,7 @@ import { Channel }     from '../../models';
 })
 export class ListPageHeader {
     // Entity statuses
-    @Input() states: any[];
+    @Input() statuses: any[];
 
     // Cms channels
     @Input() cmsChannels: Channel[];
@@ -35,7 +35,7 @@ export class ListPageHeader {
     // If current list is loaded as pageless mode
     @Input() isPageless: boolean;
 
-    // Advertise, shop order and voucher using inPageEdit(a popup modal), this
+    // Advertise using inPageEdit(a popup modal), this
     // is used with newEntityEvent event.
     @Input() inPageEdit: boolean = false;
     

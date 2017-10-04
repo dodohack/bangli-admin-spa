@@ -7,7 +7,7 @@
 
         <!-- Drop zone and multiple file selector -->
         <div class="row">
-            <div class="col-xs-3">
+            <div class="col-3">
                 <div ng2FileDrop class="well drop-zone"
                      [ngClass]="{'file-over': hasDropZoneOver}"
                      (fileOver)="fileOverZone($event)"
@@ -23,7 +23,7 @@
                 </div>
             </div>
 
-            <div class="col-xs-9">
+            <div class="col-9">
 
                 <h5>文件列表</h5>
                 <p>列表长度: {{ uploader?.queue?.length }}</p>

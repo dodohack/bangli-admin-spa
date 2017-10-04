@@ -1,5 +1,5 @@
 /**
- * This is the entry point of admin.huluwa.uk
+ * This is the entry point fo the app.
  */
 
 import { Component }         from '@angular/core';
@@ -128,7 +128,7 @@ export class App implements OnInit, OnDestroy
 
     loginDomain($event: string = undefined) {
         // We have to put the redirection before switching domain to avoid
-        // error in some pages when cleaning up states.
+        // error in some pages when cleaning up statuses.
         this.router.navigate(['/']);
         this.store.dispatch(new AuthActions.LoginDomain($event));
     }

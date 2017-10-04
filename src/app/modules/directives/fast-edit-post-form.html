@@ -1,13 +1,13 @@
 <p style="text-align: center; background: lightgrey; padding: 0.25rem;">快速编辑</p>
 <form (ngSubmit)="onSubmit()" #fastEditForm="ngForm">
     <div class="row">
-        <div class="col-xs-4" *ngIf="post">
+        <div class="col-4" *ngIf="post">
             <label>标题</label>
             <input type="text" class="form-control input-sm" placeholder="文章标题"
                    name="title" [(ngModel)]="post.title">
         </div>
 
-        <div class="col-xs-2">
+        <div class="col-2">
             <label>作者</label>
             <select name="author_id" class="c-select c-select-sm"
                     [(ngModel)]="post ? post.author_id : tempPost.author_id">
@@ -17,7 +17,7 @@
             </select>
         </div>
 
-        <div class="col-xs-2">
+        <div class="col-2">
             <label>编辑</label>
             <select name="editor_id" class="c-select c-select-sm"
                     [(ngModel)]="post ? post.editor_id : tempPost.editor_id">
@@ -27,7 +27,7 @@
             </select>
         </div>
 
-        <div class="col-xs-2">
+        <div class="col-2">
             <label>状态</label>
             <select name="post_status" class="c-select c-select-sm"
                     [(ngModel)]="post ? post.status : tempPost.status">
@@ -36,7 +36,7 @@
             </select>
         </div>
 
-        <div class="col-xs-2" *ngIf="post">
+        <div class="col-2" *ngIf="post">
             <label>发布时间(use date picker)</label>
             <input name="fake_published_at" type="text" name="fake_published_at"
                    [(ngModel)]="post.fake_published_at">
@@ -45,7 +45,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
             <!--
             <post-ctt-cloud *ngIf="post"  [post]="post" (toggle)="toggleRightBar($event)"></post-ctt-cloud>
             <post-ctt-cloud *ngIf="posts" [post]="tempPost" (toggle)="toggleRightBar($event)"></post-ctt-cloud>
@@ -54,7 +54,7 @@
     </div>
 
     <div class="row" *ngIf="post">
-        <div class="form-group col-xs-12">
+        <div class="form-group col-12">
             <label>文章摘要</label>
             <textarea name="excerpt" rows="2" class="form-control"
                       placeholder="文章摘要" [(ngModel)]="post.excerpt"></textarea>
@@ -65,7 +65,7 @@
     <!-- TODO: Serialize form instead of manually get elements -->
     <!-- TODO: We are going to do the same in single post editing page as well -->
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
             <button type="reset" class="btn btn-outline-danger btn-sm"
                     (click)="cancelEditing($event)">取消</button>
             <button type="submit" class="btn btn-outline-primary btn-sm float-right"

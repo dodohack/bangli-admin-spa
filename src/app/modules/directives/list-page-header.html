@@ -43,12 +43,12 @@
 
 <!-- navbar and search box, only show navbar for those has statistics loaded -->
 <nav class="navbar page-sub-menu">
-    <ul class="nav navbar-nav" *ngIf="!curChannelSlug && states">
+    <ul class="nav navbar-nav" *ngIf="!curChannelSlug && statuses">
         <!-- Entity status navbar -->
-        <li *ngFor="let state of states.actual" class="nav-item">
-            <a class="nav-link" [routerLink]="['/', slug, 'page', 1, 'state', state.state]"
+        <li *ngFor="let status of statuses.actual" class="nav-item">
+            <a class="nav-link" [routerLink]="['/', slug, 'page', 1, 'status', status.status]"
                routerLinkActive="active">
-                {{ zh[state.state] }}<span> ({{ state.count }})</span>
+                {{ zh[status.status] }}<span> ({{ status.count }})</span>
             </a>
         </li>
     </ul>

@@ -35,7 +35,7 @@ export class ListFilterBar implements OnInit, OnDestroy {
 
     queryParams: Params;
     curChannelSlug: string;
-    state: string;
+    status: string;
     filterAuthor: string;
     filterEditor: string;
     filterCat: string;
@@ -74,7 +74,7 @@ export class ListFilterBar implements OnInit, OnDestroy {
 
     initParams(params: Params) {
         this.curChannelSlug = params['channel'] || null;
-        this.state = params['state'] || 'all';
+        this.status = params['status'] || 'all';
     }
 
     initQueryParams(params: Params) {
@@ -178,7 +178,7 @@ export class ListFilterBar implements OnInit, OnDestroy {
             case ENTITY.TOPIC:
                 return cat.topics_count;
             case ENTITY.OFFER:
-                return cat.deals_count;
+                return cat.offers_count;
             default:
                 console.error("Unhandled entity type: ", this.etype);
         }
@@ -234,8 +234,8 @@ export class ListFilterBar implements OnInit, OnDestroy {
     pageUrl(page) {
         if (this.curChannelSlug)
             return '/' + this.slug + '/channel/' + this.curChannelSlug +
-                '/page/' + page + '/state/' + this.state;
+                '/page/' + page + '/status/' + this.status;
         else
-            return '/' + this.slug + '/page/' + page + '/state/' + this.state;
+            return '/' + this.slug + '/page/' + page + '/status/' + this.status;
     }
 }

@@ -31,11 +31,11 @@ export interface CmsAttrsState {
     //tags: Tag[];
     // available - all available options for given attributes defined locally
     // actual    - attributes with number of posts retrieved from server
-    post_states:         {available: PostState[],    actual: PostState[]};
+    post_statuses:         {available: PostState[],    actual: PostState[]};
     post_creative_types: {available: CreativeType[], actual: CreativeType[]};
-    topic_states:        {available: PostState[],    actual: PostState[]};
-    page_states:         {available: PostState[],    actual: PostState[]};
-    deal_states:         {available: PostState[],    actual: PostState[]};
+    topic_statuses:        {available: PostState[],    actual: PostState[]};
+    page_statuses:         {available: PostState[],    actual: PostState[]};
+    offer_statuses:         {available: PostState[],    actual: PostState[]};
 };
 
 const initialState: CmsAttrsState = {
@@ -48,11 +48,11 @@ const initialState: CmsAttrsState = {
     topic_types: [],
     topics: [],
     //tags: [],
-    post_states: {available: POST_STATES, actual: []},
+    post_statuses: {available: POST_STATES, actual: []},
     post_creative_types: {available: CREATIVE_TYPES, actual: []},
-    topic_states: {available: POST_STATES, actual: []},
-    page_states:  {available: POST_STATES, actual: []},
-    deal_states:  {available: POST_STATES, actual: []},
+    topic_statuses: {available: POST_STATES, actual: []},
+    page_statuses:  {available: POST_STATES, actual: []},
+    offer_statuses:  {available: POST_STATES, actual: []},
 };
 
 export function cmsReducer(state = initialState, action: attr.Actions | any): CmsAttrsState {
@@ -91,12 +91,12 @@ export function cmsReducer(state = initialState, action: attr.Actions | any): Cm
                 post_topic_cats = action.payload.post_topic_cats;
                 */
 
-            let post_states: PostState[] = [];
-            if (payload.post_states && payload.post_states.length > 0) {
-                let total = payload.post_states
+            let post_statuses: PostState[] = [];
+            if (payload.post_statuses && payload.post_statuses.length > 0) {
+                let total = payload.post_statuses
                     .map(state => state.count)
                     .reduce((total, count) => total + count);
-                post_states = [...payload.post_states,
+                post_statuses = [...payload.post_statuses,
                     {state: 'all', count: total}];
             }
 
@@ -104,30 +104,30 @@ export function cmsReducer(state = initialState, action: attr.Actions | any): Cm
             if (payload.post_creative_types && payload.post_creative_types.length > 0)
                 post_creative_types = payload.post_creative_types;
 
-            let topic_states: PostState[] = [];
-            if (payload.topic_states && payload.topic_states.length > 0) {
-                let total = payload.topic_states
+            let topic_statuses: PostState[] = [];
+            if (payload.topic_statuses && payload.topic_statuses.length > 0) {
+                let total = payload.topic_statuses
                     .map(state => state.count)
                     .reduce((total, count) => total + count);
-                topic_states = [...payload.topic_states,
+                topic_statuses = [...payload.topic_statuses,
                     {state: 'all', count: total}];
             }
 
-            let page_states: PostState[] = [];
-            if (payload.page_states && payload.page_states.length > 0) {
-                let total = payload.page_states
+            let page_statuses: PostState[] = [];
+            if (payload.page_statuses && payload.page_statuses.length > 0) {
+                let total = payload.page_statuses
                     .map(state => state.count)
                     .reduce((total, count) => total + count);
-                page_states = [...payload.page_states,
+                page_statuses = [...payload.page_statuses,
                     {state: 'all', count: total}];
             }
 
-            let deal_states: PostState[] = [];
-            if (payload.deal_states && payload.deal_states.length > 0) {
-                let total = payload.deal_states
+            let offer_statuses: PostState[] = [];
+            if (payload.offer_statuses && payload.offer_statuses.length > 0) {
+                let total = payload.offer_statuses
                     .map(state => state.count)
                     .reduce((total, count) => total + count);
-                deal_states = [...payload.deal_states,
+                offer_statuses = [...payload.offer_statuses,
                     {state: 'all', count: total}];
             }
 
@@ -141,12 +141,12 @@ export function cmsReducer(state = initialState, action: attr.Actions | any): Cm
                 topic_types: [...topic_types],
                 topics: [],
                 //tags: [...tags],
-                post_states: Object.assign({}, state.post_states, {actual: post_states}),
+                post_statuses: Object.assign({}, state.post_statuses, {actual: post_statuses}),
                 post_creative_types: Object.assign({}, state.post_creative_types,
                     {actual: post_creative_types}),
-                topic_states: Object.assign({}, state.topic_states, {actual: topic_states}),
-                page_states: Object.assign({}, state.page_states, {actual: page_states}),
-                deal_states: Object.assign({}, state.deal_states, {actual: deal_states})
+                topic_statuses: Object.assign({}, state.topic_statuses, {actual: topic_statuses}),
+                page_statuses: Object.assign({}, state.page_statuses, {actual: page_statuses}),
+                offer_statuses: Object.assign({}, state.offer_statuses, {actual: offer_statuses})
             };
         }
 
@@ -336,10 +336,10 @@ export function getCurChannelTopics() {
  */
 export const getLocations = (state: CmsAttrsState) => state.locations;
 
-export const getPostStates = (state: CmsAttrsState) => state.post_states;
+export const getPostStates = (state: CmsAttrsState) => state.post_statuses;
 
-export const getDealStates  = (state: CmsAttrsState) => state.deal_states;
+export const getOfferStates  = (state: CmsAttrsState) => state.offer_statuses;
 
-export const getPageStates = (state: CmsAttrsState) => state.page_states;
+export const getPageStates = (state: CmsAttrsState) => state.page_statuses;
 
-export const getTopicStates = (state: CmsAttrsState) => state.topic_states;
+export const getTopicStates = (state: CmsAttrsState) => state.topic_statuses;

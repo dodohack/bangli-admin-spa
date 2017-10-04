@@ -16,21 +16,6 @@ my profile.
                                (save)="saveProfile($event)">
             </user-base-profile>
 
-            <user-shop-profile [user]="user$ | async"
-                               [isMyProfile]="isMyProfile$ | async"
-                               [isAdminUser]="isAdminUser$ | async">
-            </user-shop-profile>
-
-            <user-shipping-profile [user]="user$ | async"
-                                   [isMyProfile]="isMyProfile$ | async"
-                                   [isAdminUser]="isAdminUser$ | async">
-            </user-shipping-profile>
-
-            <user-baby-profile [user]="user$ | async"
-                               [isMyProfile]="isMyProfile$ | async"
-                               [isAdminUser]="isAdminUser$ | async">
-            </user-baby-profile>
-
         </accordion>
     </tab>
 

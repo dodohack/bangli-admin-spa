@@ -7,7 +7,7 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <ul class="revision-history">
                     <li *ngFor="let revision of revisions">
                         <label class="custom-control custom-checkbox">
@@ -16,7 +16,7 @@
                                    name="d[]" (change)="checkRevision(revision)">
                             <span class="custom-control-indicator"></span>
                             <span class="custom-control-description">
-                                版本号: #{{ revision.id }} | {{ zh[revision.state] }} |
+                                版本号: #{{ revision.id }} | {{ zh[revision.status] }} |
                                 修改日期：{{ revision.created_at }} @ {{ authorsObj[revision.user_id].display_name }}
                             </span>
                         </label>
@@ -44,7 +44,7 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-12 revision-diff">
+            <div class="col-12 revision-diff">
                 <div class="revision-diff" [innerHtml]="diffHtml"></div>
             </div>
         </div>

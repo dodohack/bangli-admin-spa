@@ -1,16 +1,16 @@
-<list-page-header [slug]="'deal'"
+<list-page-header [slug]="'offer'"
                   [name]="'优惠'"
                   [zh]="zh"
                   [cmsChannels]="cmsChannels$ | async"
                   [curChannelSlug]="params['channel']"
-                  [states]="dealStates$ | async"
+                  [statuses]="offerStates$ | async"
                   [loading]="isLoading$ | async"
                   [isPageless]="pageless"
                   (togglePagelessEvent)="pageless = !pageless">
 </list-page-header>
 
-<!-- Deal post filter/tool bar at top -->
-<list-filter-bar [slug]="'deal'"
+<!-- Offer post filter/tool bar at top -->
+<list-filter-bar [slug]="'offer'"
                  [zh]="zh"
                  [etype]="etype"
                  [editors]="editors$ | async"
@@ -19,7 +19,7 @@
                  [paginator]="paginator$ | async"
                  (filterEvent)="filterEvent($event)"></list-filter-bar>
 
-<!-- Deal post list table -->
+<!-- Offer post list table -->
 <cms-list [etype]="etype"
           [authorsObj]="authorsObject$ | async"
           [entities]="entities$ | async"

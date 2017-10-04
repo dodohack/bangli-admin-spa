@@ -1,6 +1,6 @@
 /**
  * This action is shared by almost everything, includes product, order, voucher,
- * cms->post, deal->post, page, newsletter, etc.
+ * cms->post, offer->post, page, newsletter, etc.
  * We use centralized ngrx behavior for those entities because they shares more
  * than 90% of common code base, but with different view templates.
  * The only thing we need to do is selecting different API for those entities, as

@@ -17,8 +17,8 @@ import { TopicsPage }   from './topics.page';
 import { TopicPage }    from './topic.page';
 import { PagesPage }    from './pages.page';
 import { PagePage }     from './page.page';
-import { DealsPage }    from './deals.page';
-import { DealPage }     from './deal.page';
+import { OffersPage }   from './offers.page';
+import { OfferPage }    from './offer.page';
 
 
 @NgModule({
@@ -28,7 +28,7 @@ import { DealPage }     from './deal.page';
         PostsPage, PostPage,
         TopicsPage, TopicPage, 
         PagesPage, PagePage,
-        DealsPage, DealPage
+        OffersPage, OfferPage
     ],
     providers: [
         PostsEditGuard,

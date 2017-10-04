@@ -1,6 +1,5 @@
 /**
- * Show detailed information about a user, includes shop order history,
- * user profile, shop cart state, vouchers, etc.
+ * Show detailed information about a user.
  * Also used to set customized settings,
  * some are stored in local storage, some are stored in database.
  */

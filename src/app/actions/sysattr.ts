@@ -1,5 +1,5 @@
 /**
- * Action of getting all non cms, shop, bbs attributes.
+ * Action of getting all non cms, bbs attributes.
  */
 import { Action }        from '@ngrx/store';
 import { SysAttrsState } from '../reducers/sysattrs';

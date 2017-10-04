@@ -59,8 +59,8 @@
                     {{ authorsObj[entity.activities[0].user_id].text }} 正在离线编辑
                 </span>
 
-                <span *ngIf="entity.state != 'publish'" class="tag tag-danger-outline">
-                    {{ zh[entity.state] }}
+                <span *ngIf="entity.status != 'publish'" class="tag tag-danger-outline">
+                    {{ zh[entity.status] }}
                 </span>
                 <span class="tag tag-default-outline">{{ zh[entity.creative_type] }}</span>
 

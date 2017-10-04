@@ -1,26 +1,25 @@
 <form ngForm>
     <div class="row post-meta-row">
-        <div class="col-xs-12">
-            <div class="form-group input-group">
-                <span class="input-group-addon">标题</span>
+        <div class="col-12">
+            <div class="form-group">
                 <input type="text" name="title" class="form-control post-title"
                        [ngModel]="title" [formControl]="titleControl"
-                       placeholder="文章标题" required>
+                       placeholder="文章标题/专题英文标题" required>
             </div>
 
             <div class="row" *ngIf="isTopic">
-                <div class="col-xs-8">
+                <div class="col-7">
                     <div class="form-group">
                         <label>Permalink</label>
                         <input type="text" name="guid" class="form-control form-control-sm"
                                [ngModel]="guid" [formControl]="guidControl" required>
                     </div>
                 </div>
-                <div class="col-xs-4">
+                <div class="col-5">
                     <div class="form-group">
-                        <label>锚文本</label>
+                        <label>中文标题</label>
                         <input type="text" name="atext" class="form-control form-control-sm"
-                               [ngModel]="anchorText" [formControl]="anchorTextControl" required>
+                               [ngModel]="titleCN" [formControl]="titleCNControl" required>
                     </div>
                 </div>
             </div>
@@ -30,7 +29,7 @@
                 <textarea rows="4" type="text" name="desc" class="form-control"
                           [ngModel]="desc"
                           [formControl]="descControl"
-                          placeholder="80字左右的介绍, 只展示在搜索结果页"></textarea>
+                          placeholder="80字左右的介绍, 只展示在搜索引擎结果页"></textarea>
             </div>
         </div>
     </div>

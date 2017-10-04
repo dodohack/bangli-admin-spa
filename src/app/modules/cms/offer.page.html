@@ -1,4 +1,4 @@
-<editor-page-header [slug]="'deal'"
+<editor-page-header [slug]="'offer'"
                     [name]="'优惠'"
                     [zh]="zh"
                     [previewUrl]="previewUrl"
@@ -8,7 +8,7 @@
                     (cancelEdit)="cancelSave()">
 </editor-page-header>
 
-<entity-buttons [entityState]="(entity$ | async)?.state"
+<entity-buttons [entityState]="(entity$ | async)?.status"
                 (save)="save()"
                 (save2Pending)="save2Pending()"
                 (save2Draft)="save2Draft()"
@@ -50,8 +50,8 @@
 
 
 <pre>
-    In single deal post page, we can manage:
-    1. Choose cms topic for this deal, once the cms topic is chosen, and
-       the deal topic content is empty, a placeholder deal topic content
+    In single offer post page, we can manage:
+    1. Choose cms topic for this offer, once the cms topic is chosen, and
+       the offer topic content is empty, a placeholder offer topic content
        will be generated.
 </pre>

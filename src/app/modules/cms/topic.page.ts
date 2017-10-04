@@ -1,6 +1,6 @@
 /**
- *  For each topic page, we have an extra column to have deal information stored
- *  , so that when we have a topic, we will automatically create a deal topic
+ *  For each topic page, we have an extra column to have offer information stored
+ *  , so that when we have a topic, we will automatically create a offer topic
  *  for it.
  */
 

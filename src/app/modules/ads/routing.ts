@@ -6,9 +6,9 @@ const routes: Routes = [
     {
         path: 'ads',
         children: [
-            { path: '', pathMatch: 'full', redirectTo: 'page/1/state/all'},
-            { path: 'page/:page',          redirectTo: 'page/:page/state/all' },
-            { path: 'page/:page/state/:state', component: AdsPage },
+            { path: '', pathMatch: 'full', redirectTo: 'page/1/status/all'},
+            { path: 'page/:page',          redirectTo: 'page/:page/status/all' },
+            { path: 'page/:page/status/:status', component: AdsPage },
         ]
     }
 ];

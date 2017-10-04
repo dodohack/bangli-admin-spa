@@ -4,7 +4,7 @@
     </div>
 
     <div class="row form-group">
-        <div class="col-xs-6">
+        <div class="col-6">
             <label>用户角色</label>
             <select name="role_id" class="form-control"
                     [(ngModel)]="user.role_id" [disabled]="!isAdminUser">
@@ -12,7 +12,7 @@
             </select>
         </div>
 
-        <div class="col-xs-6">
+        <div class="col-6">
             <label>昵称</label>
             <input class="form-control" type="text" name="display_name"
                    [(ngModel)]="user.display_name" [disabled]="!isAdminUser && !isMyProfile">
@@ -20,12 +20,12 @@
     </div>
 
     <div class="row form-group">
-        <div class="col-xs-6">
+        <div class="col-6">
             <label>登录名</label>
             <input class="form-control" type="text" name="name" [ngModel]="user.name" disabled>
         </div>
 
-        <div class="col-xs-6">
+        <div class="col-6">
             <label>邮箱</label>
             <input class="form-control" type="text" name="email" [ngModel]="user.email" disabled>
         </div>
@@ -33,7 +33,7 @@
 
 
     <div class="row form-group">
-        <div class="col-xs-3">
+        <div class="col-3">
             <label>性别</label>
             <select name="gender" class="form-control" [(ngModel)]="user.gender"
                     [disabled]="!isAdminUser && !isMyProfile">
@@ -41,19 +41,19 @@
             </select>
         </div>
 
-        <div class="col-xs-3">
+        <div class="col-3">
             <label>生日</label>
             <input class="form-control" type="text" name="birthday"
                    [(ngModel)]="user.birthday" [disabled]="!isAdminUser && !isMyProfile">
         </div>
 
-        <div class="col-xs-3">
+        <div class="col-3">
             <label>名字</label>
             <input class="form-control" type="text" name="first_name"
                    [(ngModel)]="user.first_name" [disabled]="!isAdminUser && !isMyProfile">
         </div>
 
-        <div class="col-xs-3">
+        <div class="col-3">
             <label>姓氏</label>
             <input class="form-control" type="text" name="last_name"
                    [(ngModel)]="user.last_name" [disabled]="!isAdminUser && !isMyProfile">
@@ -62,13 +62,13 @@
 
 
     <div class="row form-group">
-        <div class="col-xs-9">
+        <div class="col-9">
             <label>用户头像ID</label>
             <input class="form-control" type="text" name="avatar"
                    [(ngModel)]="user.avatar_id" [disabled]="!isAdminUser && !isMyProfile">
         </div>
 
-        <div class="col-xs-3">
+        <div class="col-3">
             <label>是否订阅</label>
             <div>
                 <label class="form-check-inline">
@@ -89,7 +89,7 @@
     </div>
 
     <div class="form-group row">
-        <div class="col-xs-12">
+        <div class="col-12">
             <label>简介 (最长255个字)</label>
             <textarea class="form-control" type="text" rows="3" maxlength="255"
                       name="description" [(ngModel)]="user.description"
@@ -99,7 +99,7 @@
 
 
     <div class="row form-group" *ngIf="isAdminUser || isMyProfile">
-        <div class="col-xs-12">
+        <div class="col-12">
             <button (click)="save.emit(user)" class="btn btn-primary btn-block">保存</button>
         </div>
     </div>

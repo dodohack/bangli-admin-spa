@@ -5,7 +5,7 @@
 import { Domain } from './index';
 
 export const USER_ROLES = [
-    'customer', 'administrator', 'shop_manager', 'editor', 'author'
+    'customer', 'administrator', 'editor', 'author'
 ];
 
 export const USER_GENDERS = [
@@ -82,11 +82,6 @@ export class User {
     created_at: string;
 
     role: UserRole;
-
-    // Shop related elements
-    shop_profile: UserShopProfile;
-    baby_profiles: UserBabyProfile[];
-    addresses: UserAddress[];
 };
 
 /* This is user for Auth server */

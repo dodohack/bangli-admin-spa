@@ -76,7 +76,7 @@ export const TOPIC_TYPES = [
 export const TOPIC_RANKINGS = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
 
 /** ALL:
- *  entity states, corresponding to each entity table column: state */
+ *  entity status, corresponding to each entity table column: status */
 export const ENTITY_STATES = [
     'unsaved',
     'publish',
@@ -103,8 +103,8 @@ export class TopicType {
     description: string;
 }
 
-export class EntityState {
-    state: string;
+export class EntityStatus {
+    status: string;
     count: number;
 }
 
@@ -116,7 +116,7 @@ export class EntityParams {
 
     constructor(public cur_page: number = 1,
                 public channel: string = null,
-                public state: string = null,
+                public status: string = null,
                 public author: string = null,
                 public editor: string = null,
                 public brand: string = null,
@@ -131,7 +131,7 @@ export class EntityParams {
     /*
     cur_page: number = 1;
     channel: string;     // CMS and DEAL only
-    state: string;
+    status: string;
     author: string;     // CMS post only
     editor: string;
     brand: string;      // Shop product only
@@ -146,7 +146,7 @@ export class EntityParams {
     toQueryString(): string {
         let s = '?page=' + this.cur_page;
         if (this.channel) s= s+ '&channel=' + this.channel;
-        if (this.state) s = s + '&state=' + this.state;
+        if (this.status) s = s + '&status=' + this.status;
         if (this.author) s = s + '&author=' + this.author;
         if (this.editor) s = s + '&editor=' + this.editor;
         if (this.brand) s = s + '&brand=' + this.brand;
@@ -199,23 +199,21 @@ export class Entity {
     images: any;           // image urls
     type_id: number;       // CMS topic only: Topic type id
     type: TopicType;       // table.type entry for some entities
-    state: string;
+    status: string;
     channel_id: number;    // CMS and DEAL only
     channel: Channel;      //
     location_id: number;   // ...
     location: GeoLocation; // CMS geolocation
-    creative_type: string; // ...
     title: string;
+    title_cn: string;
     categories: Category[];
     tags: Tag[];           //
     topics: Topic[];       // CMS post only
     excerpt: string;
     keywords: string;      // CMS topic keywords seperated by ','.
-    desc: string;          // CMS topic description
+    description: string;   // CMS topic description
     intro: string;         // CMS topic introduction
     content: string;
-    note: string;          // CMS post and shop product only
-    fake_published_at: string;
     published_at: string;
     started_at: string;    // Advertise only
     ended_at: string;      // Advertise only
@@ -223,21 +221,10 @@ export class Entity {
     updated_at: string;
     revisions: Revision[];
     statistics: Statistic[]; // FIXME: should be statistic: Statistic;
-    activities: Activity[]; // Only have edit_lock currently
+    activities: Activity[];  // Only have edit_lock currently
 
-    anchor_text: string;   // CMS topic only
-    website: string;       // CMS topic only
-    aff_url: string;       // CMS topic only
-    has_deal: boolean;     // CMS topic only, if we have a corresponding deal topic
-    deal_intro: string;    // CMS deal topic only
-    deal_content: string;  // CMS deal topic only
-
-    sku: string;           // Shop product only
-    made_in: string;       // ...
-    min_age: number;       // ...
-    max_age: number;       // ...
-    bbd: string;           // ...: best before date
-    //variations: ProductVariation[]; // ...
+    display_url: string;     // CMS topic only
+    tracking_url: string;    // CMS topic only
 
     brands: Brand[];
 

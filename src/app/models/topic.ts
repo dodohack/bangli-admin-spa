@@ -15,7 +15,7 @@ import { Post }      from './post';
 export class TopicParams {
     channel: string = 'all';
     cur_page: string = '1';
-    state: string;
+    status: string;
     editor: string;
     category: string;
     datetype: string;
@@ -24,7 +24,7 @@ export class TopicParams {
     query: string;
     /*
      constructor(public cur_page: string = '1',
-     public state: string = 'all',
+     public status: string = 'all',
      public editor?: string,
      public category?: string,
      public datefrom?: string,
@@ -35,7 +35,7 @@ export class TopicParams {
     toQueryString(): string {
         let s = '?page=' + this.cur_page;
         if (this.channel) s = s + '&channel=' + this.channel;
-        if (this.state) s = s + '&state=' + this.state;
+        if (this.status) s = s + '&status=' + this.status;
         if (this.editor) s = s + '&editor=' + this.editor;
         if (this.category) s = s + '&category=' + this.category;
         if (this.datetype) s = s + '&datetype=' + this.datetype;
@@ -56,7 +56,7 @@ export class Topic {
     channel_id: number;
     type_id: number;
     locations: GeoLocation[];
-    state: string;
+    status: string;
     guid: string;
     title: string;
     tags: Tag[];

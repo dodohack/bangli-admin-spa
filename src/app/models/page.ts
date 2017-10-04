@@ -1,13 +1,13 @@
 export class PageParams {
     cur_page: string = '1';
-    state: string;
+    status: string;
     editor: string;
     query: string;
 
     // Form a API query string
     toQueryString(): string {
         let s = '?page=' + this.cur_page;
-        if (this.state) s = s + '&state=' + this.state;
+        if (this.status) s = s + '&status=' + this.status;
         if (this.editor) s = s + '&editor=' + this.editor;
         if (this.query) s = s + '&query=' + this.query;
         return s;

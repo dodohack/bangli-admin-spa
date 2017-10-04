@@ -8,14 +8,8 @@
                     (cancelEdit)="cancelSave()">
 </editor-page-header>
 
-<div class="row">
-
-    <div class="form-group">
-        <button class="btn btn-sm btn-outline-secondary" (click)="hide = !hide">
-            <ng-template [ngIf]="!hide">隐藏侧栏</ng-template>
-            <ng-template [ngIf]="hide">显示侧栏</ng-template>
-        </button>
-
+<div class="row" style="padding: 1rem;">
+    <div class="col-auto mr-auto">
         <button type="button"
                 class="btn btn-sm btn-secondary"
                 (click)="showGallery(galleryModal)">
@@ -23,28 +17,78 @@
         </button>
     </div>
 
+    <div class="col-auto">
+        <button class="btn btn-sm btn-secondary" (click)="hide = !hide">
+            <ng-template [ngIf]="!hide">隐藏侧栏</ng-template>
+            <ng-template [ngIf]="hide">显示侧栏</ng-template>
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Main area -->
+    <div [class.col-8]="!hide" [class.col-12]="hide">
+
+        <entity-title-date [title]="(entity$ | async)?.title"
+                           (titleChange)="update('title', $event)">
+        </entity-title-date>
+
+        <!--
+        <entity-thumbnails>
+        </entity-thumbnails>
+        -->
+        <!--
+        <entity-excerpt-note [excerpt]="(entity$ | async)?.excerpt"
+                             [note]="(entity$ | async)?.internal_note"
+                             (excerptChange)="updateExcerpt($event)"
+                             (noteChange)="updateNote($event)">
+        </entity-excerpt-note>
+        -->
+
+        <!-- Froala Editor -->
+        <!-- TODO: Use official one when ngModule bug is fixed -->
+        <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
+             [(froalaModel)]="inputPost.content"></div>-->
+
+        <!-- We must use content$ | async instead of other code here, otherwise the
+             post content is ether overwritten or empty -->
+        <div [froalaEditor]="froalaOptions" [(froalaModel)]="content"></div>
+        <!--
+        <froala [froalaOptions]="froalaOptions"
+                [froalaData]="content$ | async"
+                (model)="froalaModel = $event"
+                (editorInitialized)="onFroalaInitialized('content')"></froala>
+                -->
+
+        <revision-history [entity]="entity$ | async"
+                          [authorsObj]="authorsObj$ | async"
+                          (restore2Revision)="update('content', $event)">
+        </revision-history>
+
+    </div>
+
     <!-- Sidebar -->
-    <div [class.col-xs-4]="!hide" [class.hidden]="hide"
+    <div [class.col-4]="!hide" [class.hidden]="hide"
          style="background: #e1f6fd; padding: 1rem">
 
-        <!-- Enitity state -->
+        <!-- Enitity status -->
         <div class="row">
-            <div class="col-xs-7">
+            <div class="col-7">
                 <div class="form-group post-meta">
                     <label>状态</label>
                     <select class="form-control form-control-sm custom-select"
-                            name="st" [ngModel]="(entity$ | async)?.state"
-                            (ngModelChange)="update('state', $event)">
-                        <option *ngFor="let state of entityStates"
-                                [selected]="state === entityState"
-                                [value]="state">{{ zh[state] }}</option>
+                            name="st" [ngModel]="(entity$ | async)?.status"
+                            (ngModelChange)="update('status', $event)">
+                        <option *ngFor="let status of entityStates"
+                                [selected]="status === entityState"
+                                [value]="status">{{ zh[status] }}</option>
                     </select>
                 </div>
             </div>
 
 
             <!-- Save button -->
-            <div class="col-xs-5">
+            <div class="col-5">
                     <button class="btn btn-sm btn-outline-success float-right"
                         (click)="save" [disabled]="!isDirty || isLoading">
                     <ng-template [ngIf]="isDirty && !isLoading">保存</ng-template>
@@ -130,47 +174,6 @@
                            (detachTopic)="detach('topics', $event)"
                            (updateLocation)="update('location', $event)">
         </entity-attr-cloud>
-
-    </div>
-
-    <!-- Main area -->
-    <div [class.col-xs-8]="!hide" [class.col-xs-12]="hide">
-
-        <entity-title-date [title]="(entity$ | async)?.title"
-                           (titleChange)="update('title', $event)">
-        </entity-title-date>
-
-        <!--
-        <entity-thumbnails>
-        </entity-thumbnails>
-        -->
-        <!--
-        <entity-excerpt-note [excerpt]="(entity$ | async)?.excerpt"
-                             [note]="(entity$ | async)?.internal_note"
-                             (excerptChange)="updateExcerpt($event)"
-                             (noteChange)="updateNote($event)">
-        </entity-excerpt-note>
-        -->
-
-        <!-- Froala Editor -->
-        <!-- TODO: Use official one when ngModule bug is fixed -->
-        <!--<div *ngIf="inputPost" [froalaEditor]="froalaOptions"
-             [(froalaModel)]="inputPost.content"></div>-->
-
-        <!-- We must use content$ | async instead of other code here, otherwise the
-             post content is ether overwritten or empty -->
-        <div [froalaEditor]></div>
-        <!--
-        <froala [froalaOptions]="froalaOptions"
-                [froalaData]="content$ | async"
-                (model)="froalaModel = $event"
-                (editorInitialized)="onFroalaInitialized('content')"></froala>
-                -->
-
-        <revision-history [entity]="entity$ | async"
-                          [authorsObj]="authorsObj$ | async"
-                          (restore2Revision)="update('content', $event)">
-        </revision-history>
 
     </div>
 

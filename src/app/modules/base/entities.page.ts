@@ -177,9 +177,9 @@ export class EntitiesPage implements OnInit, OnDestroy
             (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
             setTimeout(() => {
                 if (this.isLoading) return;
-                if (this.params['state'])
+                if (this.params['status'])
                     this.router.navigate(['/', ENTITY_INFO[this.etype].slug,
-                        'page', +this.params['page'] + 1, 'state', this.params['state']]);
+                        'page', +this.params['page'] + 1, 'status', this.params['status']]);
                 else
                     this.router.navigate(['/', ENTITY_INFO[this.etype].slug,
                         'page', +this.params['page'] + 1]);
@@ -193,7 +193,7 @@ export class EntitiesPage implements OnInit, OnDestroy
         this.entityParams = new EntityParams(
             +this.params['page'],
             this.params['channel'],
-            this.params['states'],
+            this.params['status'],
             this.params['author'],
             this.params['editor'],
             this.params['category'],

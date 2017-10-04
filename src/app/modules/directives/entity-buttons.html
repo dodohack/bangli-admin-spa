@@ -1,17 +1,17 @@
 <div class="row">
-    <div class="col-xs-6">
+    <div class="col-6">
         <div class="form-group post-meta">
             <label>状态</label>
             <select class="form-control form-control-sm custom-select"
                     name="st" [ngModel]="entityState"
-                    (ngModelChange)="stateChange.emit($event)">
-                <option *ngFor="let state of states"
-                        [selected]="state === entityState"
-                        [value]="state">{{ state }}</option>
+                    (ngModelChange)="statusChange.emit($event)">
+                <option *ngFor="let status of statuses"
+                        [selected]="status === entityState"
+                        [value]="status">{{ status }}</option>
             </select>
         </div>
     </div>
-    <div class="col-xs-6">
+    <div class="col-6">
         <div class="float-right">
             <!-- Save buttons -->
             <button class="btn btn-sm btn-outline-success"

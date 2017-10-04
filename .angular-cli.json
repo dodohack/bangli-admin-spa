@@ -19,9 +19,14 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "style.scss"
+        "style.scss",
+        "../node_modules/froala-editor/css/froala_editor.pkgd.min.css",
+        "../node_modules/froala-editor/css/froala_style.min.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/jquery/dist/jquery.min.js",
+        "../node_modules/froala-editor/js/froala_editor.pkgd.min.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

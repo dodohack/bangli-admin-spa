@@ -1,6 +1,6 @@
 /**
  * Action to get CMS attributes, includes:
- * authors, editors, categories, tags, topic_cats, state, channels etc
+ * authors, editors, categories, tags, topic_cats, statuses, channels etc
  */
 import { Action }          from '@ngrx/store';
 import { GeoLocation }     from '../models';

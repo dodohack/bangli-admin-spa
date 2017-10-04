@@ -7,7 +7,6 @@ import { SettingPage }   from './setting.page';
 import { LocationsPage } from './locations.page';
 import { FeMenuPage }    from './femenu.page';
 import { CmsPage }       from './cms.page';
-import { ShopPage }      from './shop.page';
 import { BbsPage }       from './bbs.page';
 import { ThumbPage }     from './thumb.page';
 
@@ -38,18 +37,6 @@ const routes: Routes = [
                     { path: '', pathMatch: 'full', redirectTo: 'shopping/category' },
                     { path: ':channel',            redirectTo: ':channel/category' },
                     { path: ':channel/:taxonomy',  component: CmsPage }
-                ]
-            },
-
-
-            /* Shop setting sub-path */
-            {
-                path: 'shop',
-                canActivate: [EditorGuard],
-                children: [
-                    /* cms setting index */
-                    { path: '', pathMatch: 'full', redirectTo: 'category' },
-                    { path: ':taxonomy',           component: ShopPage }
                 ]
             },
 

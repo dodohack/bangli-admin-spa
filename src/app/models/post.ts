@@ -13,12 +13,12 @@ import { Topic }    from './topic';
 
 /* POST_STATES definition, all possible entries of table column cms_post.status */
 export const POST_STATES = [
-    {state: 'unsaved',  count: 0}, // Initial state for offline display
-    {state: 'publish',  count: 0},
-    {state: 'featured', count: 0},
-    {state: 'pending',  count: 0},
-    {state: 'draft',    count: 0},
-    {state: 'trash',    count: 0}
+    {status: 'unsaved',  count: 0}, // Initial status for offline display
+    {status: 'publish',  count: 0},
+    {status: 'featured', count: 0},
+    {status: 'pending',  count: 0},
+    {status: 'draft',    count: 0},
+    {status: 'trash',    count: 0}
 ];
 
 export class CreativeType {
@@ -27,7 +27,7 @@ export class CreativeType {
 }
 
 export class PostState {
-    state: string;
+    status: string;
     count: number;
 }
 
@@ -35,7 +35,7 @@ export class PostState {
 export class PostParams {
     channel: string  = 'all';
     cur_page: string = '1';
-    state: string;
+    status: string;
     author: string;
     editor: string;
     category: string;
@@ -45,7 +45,7 @@ export class PostParams {
     query: string;
     /*
     constructor(public cur_page: string = '1',
-                public state: string = 'all',
+                public status: string = 'all',
                 public author?: string,
                 public editor?: string,
                 public category?: string,
@@ -57,7 +57,7 @@ export class PostParams {
     toQueryString(): string {
         let s = '?page=' + this.cur_page;
         if (this.channel) s= s+ '&channel=' + this.channel;
-        if (this.state) s = s + '&state=' + this.state;
+        if (this.status) s = s + '&status=' + this.status;
         if (this.author) s = s + '&author=' + this.author;
         if (this.editor) s = s + '&editor=' + this.editor;
         if (this.category) s = s + '&category=' + this.category;
@@ -75,7 +75,7 @@ export class Post {
     author_id: number;
     image_id: number;
     images: any; // image urls
-    state: string;
+    status: string;
     channel_id: number;
     channels: Channel[];
     location_id: number;

@@ -1,9 +1,8 @@
 <!-- List toolbar with paginator -->
 <div class="row list-toolbar">
-    <div class="col-xs-12 form-inline">
+    <div class="col-12 form-inline" style="justify-content: space-between">
 
-        <form #filterForm="ngForm"
-              style="display: inline-block">
+        <form #filterForm="ngForm" style="display: flex">
 
             <div class="form-group" *ngIf="authors">
                 <select [(ngModel)]="filterAuthor" name="a"
@@ -90,7 +89,7 @@
         </form>
 
         <!-- Paginator -->
-        <div class="float-right paginator" *ngIf="paginator">
+        <div class="paginator" *ngIf="paginator">
             <span>共{{ paginator.total }}条 |
                 {{ paginator.cur_page }}/{{ paginator.last_page }}页</span>
             <a *ngFor="let p of pagers" class="btn btn-sm btn-secondary"

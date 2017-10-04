@@ -9,7 +9,7 @@
 </editor-page-header>
 
 
-<entity-buttons [entityState]="(entity$ | async)?.state"
+<entity-buttons [entityState]="(entity$ | async)?.status"
                 (save)="save()"
                 (save2Pending)="save2Pending()"
                 (save2Draft)="save2Draft()"

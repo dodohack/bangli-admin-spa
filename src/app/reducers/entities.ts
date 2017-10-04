@@ -3,8 +3,7 @@
  * As entities share majority of the behaviors, so we use 1 generic reducer to
  * deal with all entities listed below, basically, all entities that can be
  * accessed by id can share the same reducer, (user entity can not use this).
- * cms post, cms topic, cms page, deal post, shop order, shop product,
- * voucher, newsletter, etc.
+ * post, topic, page, offer, newsletter, etc.
  * We will carry a selector key for each entity in the action payload, so we
  * can distinguish which entity list we are dealing with.
  */
@@ -92,9 +91,9 @@ export function placesReducer(state = initState, action: entity.Actions | any): 
 }
 
 /**
- * Deal reducer
+ * Offer reducer
  */
-export function dealsReducer(state = initState, action: entity.Actions | any): EntitiesState {
+export function offersReducer(state = initState, action: entity.Actions | any): EntitiesState {
     if (!action.payload) return state;
 
     if (action.payload.etype === ENTITY.OFFER)
@@ -366,7 +365,7 @@ function entitiesReducer (etype: string,
             let newUser: any = {id: user.id, text: user.display_name};
 
             newEntity.id        = 0;
-            newEntity.state     = 'unsaved';
+            newEntity.status    = 'unsaved';
             newEntity.author_id = user.id;
             newEntity.author    = newUser;
             newEntity.editor_id = user.id;

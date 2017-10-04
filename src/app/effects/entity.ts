@@ -1,7 +1,6 @@
 /**
  * Side effects for entities listed below:
- * cms-post, cms-topic, cms-page, deal, shop-order,
- * shop-product, voucher, newsletter, etc
+ * post, topic, page, offer, newsletter, etc
  */
 import { Injectable }                from '@angular/core';
 import { Http, Headers, RequestOptions }  from '@angular/http';
@@ -97,7 +96,7 @@ export class EntityEffects {
                 case ENTITY.TOPIC:
                     return APIS[this.cache.key] + API_PATH.cms_topics;
                 case ENTITY.OFFER:
-                    return APIS[this.cache.key] + API_PATH.cms_deals;
+                    return APIS[this.cache.key] + API_PATH.cms_offers;
                 case ENTITY.PAGE:
                     return APIS[this.cache.key] + API_PATH.cms_pages;
                 case ENTITY.ADVERTISE:
@@ -118,7 +117,7 @@ export class EntityEffects {
                 case ENTITY.TOPIC:
                     return APIS[this.cache.key] + API_PATH.cms_topics_batch;
                 case ENTITY.OFFER:
-                    return APIS[this.cache.key] + API_PATH.cms_deals_batch;
+                    return APIS[this.cache.key] + API_PATH.cms_offers_batch;
                 case ENTITY.PAGE:
                     return APIS[this.cache.key] + API_PATH.cms_pages_batch;
                 case ENTITY.ADVERTISE:
@@ -167,8 +166,8 @@ export class EntityEffects {
 
         console.log("[AUTO: ", isAuto ,"] SAVING ENTITY: ", dirtyEntity);
 
-        // Change entity state from 'unsaved' to 'draft'.
-        if (this.isNewEntity(entity))  dirtyEntity.state = 'draft';
+        // Change entity status from 'unsaved' to 'draft'.
+        if (this.isNewEntity(entity))  dirtyEntity.status = 'draft';
 
         let body = JSON.stringify(dirtyEntity);
         let options = new RequestOptions({ headers: this.headers });

@@ -11,7 +11,7 @@ const routes: Routes = [
             { path: '',      pathMatch: 'full', redirectTo: 'page/1/role/0' },
             { path: 'page/:page',               redirectTo: 'page/:page/role/0' },
             { path: 'page/:page/role/:role',   component: UsersPage, canActivate: [ AdminGuard ] },
-            { path: 'page/:page/state/:role',  component: UsersPage, canActivate: [ AdminGuard ] },
+            { path: 'page/:page/status/:role',  component: UsersPage, canActivate: [ AdminGuard ] },
 
             /* Single user */
             { path: 'new',   component: UserPage, canActivate: [ AdminGuard ] },

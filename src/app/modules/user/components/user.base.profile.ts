@@ -1,5 +1,5 @@
 /**
- * Display basic user profile, shop_managers can see this
+ * Display basic user profile
  */
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 

@@ -41,7 +41,7 @@
     <form (ngSubmit)="saveEntity()" *ngIf="entity">
 
         <div class="row form-group">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <label>广告标题</label>
                 <input name="title" class="form-control form-control-sm"
                        [(ngModel)]="entity.title" required>
@@ -49,7 +49,7 @@
         </div>
 
         <div class="row form-group">
-            <div class="col-xs-4">
+            <div class="col-4">
                 <label>显示设备</label>
                 <select name="device" class="form-control form-control-sm"
                         [(ngModel)]="entity.device">
@@ -57,7 +57,7 @@
                 </select>
             </div>
 
-            <div class="col-xs-4">
+            <div class="col-4">
                 <label>显示位置</label>
                 <select name="device" class="form-control form-control-sm"
                         [(ngModel)]="entity.position">
@@ -65,7 +65,7 @@
                 </select>
             </div>
 
-            <div class="col-xs-4">
+            <div class="col-4">
                 <label>显示国家</label>
                 <select name="cty" class="form-control form-control-sm"
                         [(ngModel)]="entity.location">
@@ -75,7 +75,7 @@
         </div>
 
         <div class="row form-group">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <label>广告图片</label>
                 <input name="image" class="form-control form-control-sm"
                        [(ngModel)]="entity.image_id" required>
@@ -83,7 +83,7 @@
         </div>
 
         <div class="row form-group">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <label>目标地址</label>
                 <input name="url" class="form-control form-control-sm"
                        [(ngModel)]="entity.target_url">
@@ -91,13 +91,13 @@
         </div>
 
         <div class="row form-group">
-            <div class="col-xs-6">
+            <div class="col-6">
                 <label>开始日期 {{ entity.started_at | date: 'y-MM-dd HH:mm:ss' }}</label>
                 <datepicker name="dateFrom" [(ngModel)]="startedAt"
                             [showWeeks]="false"></datepicker>
             </div>
 
-            <div class="col-xs-6">
+            <div class="col-6">
                 <label>截止日期 {{ entity.ended_at | date: 'y-MM-dd HH:mm:ss'}}</label>
                 <datepicker name="dateTo" [(ngModel)]="endedAt"
                             [showWeeks]="false"></datepicker>
@@ -105,7 +105,7 @@
         </div>
 
         <div class="row form-group">
-            <div class="col-xs-12">
+            <div class="col-12">
                 <label>广告描述</label>
                 <textarea rows="3" name="desc" class="form-control form-control-sm"
                        [(ngModel)]="entity.description"></textarea>

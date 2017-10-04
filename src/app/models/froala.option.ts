@@ -30,6 +30,9 @@ export class FroalaOptions {
 
             toolbarSticky: false,
 
+
+            placeholderText: "正文内容。 专题内容的前面120字用于桌面版专题页面的简介!",
+
             /*
              // Image managers
             imageManagerLoadURL: APIS[key] + API_PATH.froala_images,
@@ -87,6 +90,6 @@ export const FROALA_OPTIONS = {
     // Image upload
     imageAllowTypes: ['jpeg', 'jpg', 'png', 'gif'],
     imageUploadMethod: 'POST',
-    imageUploadURL: APIS['huluwa_uk'] + API_PATH['huluwa_uk'].file_upload,
+    imageUploadURL: APIS['bangli_uk'] + API_PATH['bangli_uk'].file_upload,
 };
 */

@@ -8,14 +8,8 @@
                     (cancelEdit)="cancelSave()">
 </editor-page-header>
 
-<div class="row">
-
-    <div class="form-group">
-        <button class="btn btn-sm btn-outline-secondary" (click)="hide = !hide">
-            <ng-template [ngIf]="!hide">隐藏侧栏</ng-template>
-            <ng-template [ngIf]="hide">显示侧栏</ng-template>
-        </button>
-
+<div class="row" style="padding: 1rem;">
+    <div class="col-auto mr-auto">
         <button type="button"
                 class="btn btn-sm btn-secondary"
                 (click)="showGallery(galleryModal)">
@@ -23,12 +17,47 @@
         </button>
     </div>
 
+    <div class="col-auto">
+        <button class="btn btn-sm btn-secondary" (click)="hide = !hide">
+            <ng-template [ngIf]="!hide">隐藏侧栏</ng-template>
+            <ng-template [ngIf]="hide">显示侧栏</ng-template>
+        </button>
+    </div>
+</div>
+
+<div class="row">
+
+
+    <!-- Main area -->
+    <div [class.col-8]="!hide" [class.col-12]="hide">
+        <entity-title-date [isTopic]="true"
+                           [title]="(entity$ | async)?.title"
+                           [titleCN]="(entity$ | async)?.title_cn"
+                           [guid]="(entity$ | async)?.guid"
+                           [desc]="(entity$ | async)?.description"
+                           (titleChange)="update('title', $event)"
+                           (guidChange)="update('guid', $event)"
+                           (descChange)="update('description', $event)"
+                           (titleCNChange)="update('title_cn', $event)">
+        </entity-title-date>
+
+        <!-- Topic guid, anchor_text, website, aff_url -->
+        <entity-permalink-edit [website]="(entity$ | async)?.display_url"
+                               [affiliateUrl]="(entity$ | async)?.tracking_url"
+                               (websiteChange)="update('display_url', $event)"
+                               (affiliateUrlChange)="update('tracking_url', $event)">
+        </entity-permalink-edit>
+
+
+        <div [froalaEditor]="froalaOptions" [(froalaModel)]="content"></div>
+    </div>
+
     <!-- Sidebar -->
-    <div [class.col-xs-4]="!hide" [class.hidden]="hide"
+    <div [class.col-4]="!hide" [class.hidden]="hide"
          style="background: #e1f6fd; padding: 1rem">
 
         <div class="row">
-            <div class="col-xs-6">
+            <div class="col-6">
                 <!-- Save button -->
                 <div class="form-group">
                     <button class="btn btn-sm btn-outline-success"
@@ -39,34 +68,23 @@
                     </button>
                 </div>
             </div>
-
-            <div class="col-xs-6">
-                <div class="form-check">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input"
-                               name="hasDeal" [ngModel]="hasDeal$ | async"
-                               (ngModelChange)="update('has_deal', $event)"/>
-                        优惠专题
-                    </label>
-                </div>
-            </div>
         </div>
 
-        <!-- Enitity state and has deal attr -->
+        <!-- Enitity status and has offer attr -->
         <div class="row">
-            <div class="col-xs-6">
+            <div class="col-6">
                 <div class="form-group post-meta">
                     <label>状态</label>
                     <select class="form-control form-control-sm custom-select"
-                            name="st" [ngModel]="(entity$ | async)?.state"
-                            (ngModelChange)="update('state', $event)">
-                        <option *ngFor="let state of entityStates"
-                                [value]="state">{{ zh[state] }}</option>
+                            name="st" [ngModel]="(entity$ | async)?.status"
+                            (ngModelChange)="update('status', $event)">
+                        <option *ngFor="let status of entityStates"
+                                [value]="status">{{ zh[status] }}</option>
                     </select>
                 </div>
             </div>
 
-            <div class="col-xs-6">
+            <div class="col-6">
                 <!-- 热度,用于显示排名 -->
                 <div class="form-group post-meta">
                     <label>热度</label>
@@ -136,65 +154,17 @@
         </entity-attr-cloud>
 
         <div class="form-group">
-            <label>关键字</label>
+            <label>标签</label>
+            <p>TODO: Set up tag selector with Material2</p>
+            <!--
             <ng-select [active]="keywords$ | async"
                        [items]="keywords"
                        [multiple]="true"
                        (selected)="attachStr('keywords', $event)"
                        (removed)="detachStr('keywords', $event)"
                        placeholder="选择关键字"></ng-select>
+                       -->
         </div>
-    </div>
-
-
-    <!-- Main area -->
-    <div [class.col-xs-8]="!hide" [class.col-xs-12]="hide">
-        <entity-title-date [isTopic]="true"
-                           [title]="(entity$ | async)?.title"
-                           [guid]="(entity$ | async)?.guid"
-                           [desc]="(entity$ | async)?.desc"
-                           [anchorText]="(entity$ | async)?.anchor_text"
-                           (titleChange)="update('title', $event)"
-                           (guidChange)="update('guid', $event)"
-                           (descChange)="update('desc', $event)"
-                           (anchorTextChange)="update('anchor_text', $event)">
-        </entity-title-date>
-
-        <!-- Topic guid, anchor_text, website, aff_url -->
-        <entity-permalink-edit [website]="(entity$ | async)?.website"
-                               [affiliateUrl]="(entity$ | async)?.aff_url"
-                               (websiteChange)="update('website', $event)"
-                               (affiliateUrlChange)="update('aff_url', $event)">
-        </entity-permalink-edit>
-
-        <!-- Froala Editor, only 1 can be initialized at same time -->
-        <tabset>
-            <tab heading="专题首段介绍" [active]="contentIdx == 0 || true"
-                 (select)="contentIdx = 0">
-                <!--
-                <froala *ngIf="contentIdx == 0"
-                        [froalaOptions]="froalaOptions"
-                        [froalaData]="intro$ | async"
-                        (model)="froalaModel = $event"
-                        (editorInitialized)="onFroalaInitialized('intro')">
-                </froala>
-                -->
-                <div *ngIf="contentIdx == 0" [froalaEditor]></div>
-            </tab>
-
-            <tab heading="专题正文内容" (select)="contentIdx = 1">
-                <!--
-                <froala *ngIf="contentIdx == 1"
-                        [froalaOptions]="froalaOptions"
-                        [froalaData]="content$ | async"
-                        (model)="froalaModel = $event"
-                        (editorInitialized)="onFroalaInitialized('content')">
-                </froala>
-                -->
-                <div  *ngIf="contentIdx == 1" [froalaEditor]></div>
-            </tab>
-
-        </tabset>
     </div>
 
     <revision-history [entity]="entity$ | async"

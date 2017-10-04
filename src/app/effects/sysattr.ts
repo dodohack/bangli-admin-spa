@@ -1,5 +1,5 @@
 /**
- * System attributes, excluding cms, shop and bbs related.
+ * System attributes, excluding cms and bbs related.
  */
 import { Injectable }                    from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';

@@ -14,7 +14,7 @@ export class EntityTitleDate implements OnInit {
     titleControl  = new FormControl();
     guidControl   = new FormControl();
     descControl   = new FormControl();
-    anchorTextControl = new FormControl();
+    titleCNControl = new FormControl();
 
     @Input() isTopic: boolean;
     @Input() title: string;
@@ -22,13 +22,13 @@ export class EntityTitleDate implements OnInit {
     @Input() guid: string;
     @Input() desc: string;
     @Input() intro: string;
-    @Input() anchorText: string;
+    @Input() titleCN: string;
 
     @Output() titleChange = new EventEmitter();
     @Output() dateChange  = new EventEmitter();
     @Output() guidChange  = new EventEmitter();
     @Output() descChange  = new EventEmitter();
-    @Output() anchorTextChange = new EventEmitter();
+    @Output() titleCNChange = new EventEmitter();
 
     // Datepicker hidden by default
     dpHidden = true;
@@ -47,8 +47,8 @@ export class EntityTitleDate implements OnInit {
             .filter(t => t !== this.desc)
             .subscribe(t => this.descChange.emit(t));
 
-        this.anchorTextControl.valueChanges.debounceTime(1000)
-            .filter(t => t !== this.anchorText)
-            .subscribe(t => this.anchorTextChange.emit(t));
+        this.titleCNControl.valueChanges.debounceTime(1000)
+            .filter(t => t !== this.titleCN)
+            .subscribe(t => this.titleCNChange.emit(t));
     }
 }

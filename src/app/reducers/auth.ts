@@ -214,8 +214,6 @@ export function hasRole(name: string) {
         switch (auth.users[auth.key].role.name) {
             case 'administrator':
                 return true; // always true
-            case 'shop_manager':
-                return name === 'author' || name === 'editor' || name === 'shop_manager';
             case 'editor':
                 return name === 'author' || name === 'editor';
             case 'author':
@@ -251,7 +249,6 @@ export const hasAuthorRole = (state: AuthState) => {
     return (state.jwt && state.jwt.exp > now && state.key &&
     (state.users[state.key].role.name === 'author'         ||
     state.users[state.key].role.name === 'editor'         ||
-    state.users[state.key].role.name === 'shop_manager'   ||
     state.users[state.key].role.name === 'administrator'  ||
     state.jwt.spu === 1));
 
@@ -261,7 +258,6 @@ export const hasEditorRole = (state: AuthState) => {
     let now = Math.floor(Date.now()/1000);
     return (state.jwt && state.jwt.exp > now && state.key &&
     (state.users[state.key].role.name === 'editor'        ||
-    state.users[state.key].role.name === 'shop_manager'  ||
     state.users[state.key].role.name === 'administrator' ||
     state.jwt.spu === 1));
 };

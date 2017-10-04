@@ -30,13 +30,40 @@ import { EntityAttributes }          from './entity-attributes';
 import { EntityThumbnails }          from './entity-thumbnails';
 import { EntityExcerptNote }         from './entity-excerpt-note';
 import { EntityContent }             from './entity-content';
-import { DealTopicContent }          from './deal-topic-content';
 
 import { ListPageHeader }            from './list-page-header';
 import { ListFilterBar }             from './list-filter-bar';
 import { SearchBox }                 from './search-box';
 import { DateFilterComponent }       from './date-filter.component';
 import { ImageUploader }             from './image-uploader';
+
+export const COMPONENTS = [
+    RightPanel,
+    ListPageHeader,
+    ListFilterBar,
+    GeoLocationCloud,
+    CategoryTree,
+    TopicCloud,
+    TagCloud,
+    EditorPageHeader,
+
+    EntityTitleDate,
+    EntityButtons,
+    EntityAttrCloud,
+    EntityPermalinkEdit,
+    EntityAttributes,
+    EntityThumbnails,
+    EntityExcerptNote,
+    EntityContent,
+
+    ModalEditTax,
+    ModalEditGeoLoc,
+    //FastEditPostFormComponent,
+    SearchBox,
+    RevisionHistory,
+    DateFilterComponent,
+    ImageUploader,
+];
 
 @NgModule({
     imports: [
@@ -51,70 +78,16 @@ import { ImageUploader }             from './image-uploader';
         FroalaEditorModule,
         FroalaViewModule,
     ],
-    declarations: [
-
-        RightPanel,
-        ListPageHeader,
-        ListFilterBar,
-        GeoLocationCloud,
-        CategoryTree,
-        TopicCloud,
-        TagCloud,
-        EditorPageHeader,
-
-        EntityTitleDate,
-        EntityButtons,
-        EntityAttrCloud,
-        EntityPermalinkEdit,
-        EntityAttributes,
-        EntityThumbnails,
-        EntityExcerptNote,
-        EntityContent,
-        DealTopicContent,
-
-        ModalEditTax,
-        ModalEditGeoLoc,
-        //FastEditPostFormComponent,
-        SearchBox,
-        RevisionHistory,
-        DateFilterComponent,
-        ImageUploader,
-    ],
+    declarations: COMPONENTS,
     exports: [
         Ng2BootstrapModule,
         SelectModule,
         FroalaEditorModule,
         FroalaViewModule,
-
-        RightPanel,
-        ListPageHeader,
-        ListFilterBar,
-        GeoLocationCloud,
-        CategoryTree,
-        TopicCloud,
-        TagCloud,
-
-        EditorPageHeader,
-        EntityTitleDate,
-        EntityButtons,
-        EntityAttrCloud,
-        EntityPermalinkEdit,
-        EntityAttributes,
-        EntityThumbnails,
-        EntityExcerptNote,
-        EntityContent,
-        DealTopicContent,
-
-        ModalEditTax,
-        ModalEditGeoLoc,
-        //FastEditPostFormComponent,
-        SearchBox,
-        RevisionHistory,
-        DateFilterComponent,
-        ImageUploader,
-
         CommonModule,
-        FormsModule
+        FormsModule,
+
+        ...COMPONENTS
     ]
 })
 export class SharedModule {

@@ -7,7 +7,6 @@ import { SharedModule } from '../directives/shared.module';
 import { routing }           from './routing';
 import { AnalysisPage }      from './analysis.page';
 import { CmsAnalysisPage }   from './cms.page';
-import { ShopAnalysisPage } from './shop.page';
 import { BbsAnalysisPage }   from './bbs.page';
 
 @NgModule({
@@ -15,7 +14,6 @@ import { BbsAnalysisPage }   from './bbs.page';
     declarations: [
         AnalysisPage,
         CmsAnalysisPage,
-        ShopAnalysisPage,
         BbsAnalysisPage
     ]
 })

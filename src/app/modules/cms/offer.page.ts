@@ -1,5 +1,5 @@
 /**
- * This is the single deal post page
+ * This is the single offer post page
  */
 
 import { Component }         from '@angular/core';
@@ -16,8 +16,8 @@ import * as AlertActions     from '../../actions/alert';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
 
-@Component({ templateUrl: './deal.page.html' })
-export class DealPage extends EntityPage
+@Component({ templateUrl: './offer.page.html' })
+export class OfferPage extends EntityPage
 {
     constructor(protected route: ActivatedRoute,
                 protected location: Location,
@@ -30,6 +30,6 @@ export class DealPage extends EntityPage
 
     get previewUrl() {
         if (this.domain && this.entity)
-            return this.domain.url + '/cms/deal/' + this.entity.id; 
+            return this.domain.url + '/cms/offer/' + this.entity.id;
     }
 }

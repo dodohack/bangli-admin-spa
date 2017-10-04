@@ -49,6 +49,8 @@ import { SettingModule }   from './modules/setting/setting.module';
 import { BsDropdownModule }             from 'ngx-bootstrap';
 import { AccordionConfig }              from 'ngx-bootstrap';
 import { DatepickerModule }             from 'ngx-bootstrap';
+import { TimepickerModule }             from 'ngx-bootstrap';
+import { TabsetConfig }                 from 'ngx-bootstrap';
 
 /* Debug tools */
 /*
@@ -80,6 +82,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
 
         BsDropdownModule.forRoot(),
         DatepickerModule.forRoot(),
+        TimepickerModule.forRoot(),
 
         StoreModule.forRoot(reducers, {metaReducers}),
         EffectsModule.forRoot([
@@ -116,7 +119,9 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         SuperUserGuard,
         LockGuard,
         EditLockGuard,
+
         AccordionConfig,
+        TabsetConfig,
     ],
     bootstrap: [ App ]
 })

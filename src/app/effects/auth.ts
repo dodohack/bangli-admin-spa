@@ -170,7 +170,6 @@ export class AuthEffects {
         // the previous requests, but it is currently not defined yet
         /*
         return Observable.mergeDelayError(
-            this.http.get(APIS.huluwa_uk + API_PATH.ping + '?key=huluwa_uk'),
             this.http.get(APIS.bangli_uk + API_PATH.ping + '?key=bangli_uk'),
             this.http.get(APIS.bangli_us + API_PATH.ping + '?key=bangli_us')
         ).map(res => res.json());
@@ -184,7 +183,6 @@ export class AuthEffects {
         switch (user.role.name) {
             case 'author':
             case 'editor':
-            case 'shop_manager':
             case 'administrator':
                 return true;
             default:

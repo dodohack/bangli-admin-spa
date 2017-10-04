@@ -1,5 +1,5 @@
 /**
- * This is the deal post list management page component
+ * This is the offer post list management page component
  */
 
 import { Component }         from '@angular/core';
@@ -14,19 +14,19 @@ import { ENTITY }            from '../../models';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
 
-import { getDealStates }     from '../../reducers';
+import { getOfferStates }     from '../../reducers';
 
-@Component({ templateUrl: './deals.page.html' })
-export class DealsPage extends EntitiesPage
+@Component({ templateUrl: './offers.page.html' })
+export class OffersPage extends EntitiesPage
 {
-    dealStates$:  Observable<any>;
+    offerStates$:  Observable<any>;
 
     constructor(protected route: ActivatedRoute,
                 protected store: Store<AppState>,
                 protected router: Router) {
         super(ENTITY.OFFER, route, store, router);
 
-        this.dealStates$ = this.store.select(getDealStates);
+        this.offerStates$ = this.store.select(getOfferStates);
     }
 
     get zh() { return zh_CN.cms; }

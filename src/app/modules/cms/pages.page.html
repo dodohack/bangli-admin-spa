@@ -1,7 +1,7 @@
 <list-page-header [slug]="'page'"
                   [name]="'页面'"
                   [zh]="zh"
-                  [states]="pageStates$ | async"
+                  [statuses]="pageStates$ | async"
                   [loading]="isLoading$ | async"
                   [isPageless]="pageless"
                   (togglePagelessEvent)="pageless = !pageless">

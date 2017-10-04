@@ -37,7 +37,7 @@ export const API_PATH = {
     cms_posts:       '/cms/posts',
     cms_posts_batch: '/cms/posts/batch',
     /* List of post statuses */
-    cms_post_states: '/cms/posts/states',
+    cms_post_statuses: '/cms/posts/statuses',
 
     /* Categories/Category */
     cms_cats:       '/cms/categories',
@@ -58,19 +58,19 @@ export const API_PATH = {
     cms_topics:       '/cms/topics',
     cms_topics_batch: '/cms/topics/batch',
 
-    /* Deal */
-    cms_deals:        '/cms/deals',
-    cms_deals_batch:  '/cms/deals/batch',
+    /* Offer */
+    cms_offers:        '/cms/offers',
+    cms_offers_batch:  '/cms/offers/batch',
 
     /* Pages/Page */
     cms_pages:       '/cms/pages',
     cms_pages_batch: '/cms/pages/batch',
 
-    /* Pages status */
-    cms_page_states: '/cms/pages/states',
+    /* Pages statuses */
+    cms_page_statuses: '/cms/pages/statuses',
 
     /* List of topic statuses */
-    cms_topic_states: '/cms/topics/states',
+    cms_topic_statuses: '/cms/topics/statuses',
 
     /*************************************************************************
      * Advertisement
@@ -105,43 +105,6 @@ export const API_PATH = {
      *************************************************************************/
     comments:          '/comments',
     comments_batch:    '/comments/batch',
-
-    /*************************************************************************
-     * Affiliate
-     *************************************************************************/
-
-    /*************************************************************************
-     * Shop
-     *************************************************************************/
-    /* Shop attributes includes product categories, brands etc */
-    shop_attrs:       '/shop/attributes',
-
-    /* Orders/Order */
-    shop_orders:       '/shop/orders',
-    shop_orders_batch: '/shop/orders/batch',
-
-    /* Order states */
-    shop_order_states: '/shop/orders/states',
-
-    /* Products/Product */
-    shop_products:       '/shop/products',
-    shop_products_batch: '/shop/products/batch',
-
-    /* Products states */
-    shop_product_states: '/shop/products/states',
-
-    /* Voucher */
-    shop_vouchers:       '/shop/vouchers',
-    shop_vouchers_batch: '/shop/vouchers/batch',
-
-    /* Categories/Category */
-    shop_cats:       '/shop/categories',
-    shop_cats_batch: '/shop/categories/batch',
-
-    /* Tags/Tag */
-    shop_tags:        '/shop/tags',
-    shop_tags_batch:  '/shop/tags/batch',
-
 
     /*************************************************************************
      * More
