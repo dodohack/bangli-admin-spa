@@ -408,7 +408,7 @@ function entitiesReducer (etype: string,
 
         case entity.ATTACH: {
             // Each relationship is going to attach to entity has a name 'key',
-            // and has value.id as the unique indentifer, we support string
+            // and has value.id as the unique identity, we support string
             // match the value if no id specified.
             const key   = action.payload.key;
             const value = action.payload.value;
@@ -526,6 +526,42 @@ function entitiesReducer (etype: string,
                 entities: Object.assign({}, state.entities, {[entity.id]: entity}),
                 dirtyMask: dirtyMask
             });
+        }
+
+        case entity.UPDATE_MANY: {
+            let key = action.payload.key;
+            let idx = action.payload.idx;
+            let value = action.payload.value;
+            let entity = state.entities[state.idsEditing[0]];
+            let dirtyMask = state.dirtyMask;
+
+            let newRelations: Entity[];
+
+            // Check if entity has hasMany relation 'key'
+            if (key in entity && entity[key]) {
+                let relations = entity[key];
+                // Check if entity has multiple relations indexed by 'key'
+                if (idx >= 0 && relations[idx]) {
+                    // Update an existed relation, create a new array by replacing
+                    // the entry with modified one.
+                    newRelations = [...relations.slice(0, idx), value, ...relations.slice(idx+1)];
+                } else {
+                    newRelations = [value];
+                }
+
+                // Create a new entity with updated relations
+                entity = Object.assign({}, entity, {[key]: newRelations});
+
+                dirtyMask = [...dirtyMask, key];
+
+                return Object.assign({}, state, {
+                    entities: Object.assign({}, state.entities, {[entity.id]: entity}),
+                    dirtyMask: dirtyMask
+                });
+            } else {
+                // Nothing changed.
+                return state;
+            }
         }
 
         // Auto save entity to API server, but do not save reversions

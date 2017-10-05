@@ -1,0 +1,28 @@
+<div class="col-12">
+    <div class="form-group">
+        <label>优惠内容</label>
+        <textarea rows="2" type="text" name="title"
+                  class="form-control"
+                  [(ngModel)]="offer.title"></textarea>
+    </div>
+</div>
+
+<div class="col-12">
+    <div class="form-group">
+        <label>显示链接</label>
+        <input type="text" name="display_url" class="form-control"
+               [(ngModel)]="offer.display_url">
+    </div>
+</div>
+
+<div class="col-12">
+    <div class="form-group">
+        <label>返利链接(自动根据显示链接生成)</label>
+        <input type="text" name="tracking_url" class="form-control"
+               [(ngModel)]="offer.tracking_url">
+    </div>
+</div>
+
+<div class="col-12">
+    <button class="btn btn-success" (click)="onSave()">保存</button>
+</div>

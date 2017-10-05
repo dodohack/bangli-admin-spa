@@ -45,6 +45,7 @@ export const SAVE_ENTITIES = '[Entity] Save Entities';
 export const ATTACH = '[Entity] Attach Relationship';
 export const DETACH = '[Entity] Detach Relationship';
 export const UPDATE = '[Entity] Update Attribute';
+export const UPDATE_MANY = '[Entity] Update Relationships';
 export const REFRESH_ACTIVITY_STATUS = '[Entity] Refresh Activity Status';
 export const GENERATE_THUMBS = '[Attachment] Generate thumbs';
 
@@ -206,6 +207,15 @@ export class Update implements Action {
     constructor(public payload: {etype: string, key: string, value: any}) {}
 }
 
+/**
+ * Update entity has-many relationship(relationship in array)
+ */
+export class UpdateMany implements Action {
+    readonly type = UPDATE_MANY;
+    constructor(public payload: {etype: string, key: string,
+        idx: number, value: any}) {}
+}
+
 export class RefreshActivityStatus implements Action {
     readonly type = REFRESH_ACTIVITY_STATUS;
     constructor(public payload: {etype: string, data: Activity[]}) {}
@@ -247,6 +257,7 @@ export type Actions = Search
 | Attach
 | Detach
 | Update
+| UpdateMany
 | RefreshActivityStatus
 | GenerateThumbs;
 

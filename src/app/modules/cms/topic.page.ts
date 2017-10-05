@@ -34,6 +34,11 @@ export class TopicPage extends EntityPage
 
     get previewUrl() {
         if (this.entity && this.domain)
-        return this.domain.url + '/cms/topic/' + this.entity.guid; 
+            return this.domain.url + '/cms/topic/' + this.entity.guid;
+    }
+
+    get offersTabName() {
+        if (this.entity)
+            return '优惠 (' + this.entity.offers_count + ')';
     }
 }

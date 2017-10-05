@@ -320,7 +320,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
     /**
      * Attach/detach a relationship to/from an entity, update an attribute
-     * of an entity, attach/detach/update string properity from entity.
+     * of an entity, attach/detach/update string property from entity.
      * There 6 are generic functions that can handle all the modification
      * to any entity.
      */
@@ -354,6 +354,22 @@ export abstract class EntityPage implements OnInit, OnDestroy
     update(key: string, value: any) {
         this.store.dispatch(
             new EntityActions.Update({etype: this.etype, key: key, value: value})
+        );
+    }
+
+    /**
+     * Update 1 of hasMany relationships of entity, granularity is an object
+     * of the relationship in the array.
+     * @param key - entity attributes selector
+     * @param idx - relationship array index, starts from 0.
+     * @param value - relationship value, an javascript object
+     * TODO: When idx is 0, it should mean attaching a new relation to the array
+     * Example: entity.key[idx] = value
+     */
+    updateMany(key: string, idx: number, value: any) {
+        this.store.dispatch(
+            new EntityActions.UpdateMany({etype: this.etype, key: key,
+                idx: idx, value: value})
         );
     }
 

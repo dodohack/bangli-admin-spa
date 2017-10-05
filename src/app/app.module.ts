@@ -47,7 +47,9 @@ import { MigrationModule } from './modules/migration/migration.module';
 import { SettingModule }   from './modules/setting/setting.module';
 
 import { BsDropdownModule }             from 'ngx-bootstrap';
+import { AccordionModule }              from 'ngx-bootstrap';
 import { AccordionConfig }              from 'ngx-bootstrap';
+import { AccordionComponent }           from 'ngx-bootstrap';
 import { DatepickerModule }             from 'ngx-bootstrap';
 import { TimepickerModule }             from 'ngx-bootstrap';
 import { TabsetConfig }                 from 'ngx-bootstrap';
@@ -83,6 +85,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         BsDropdownModule.forRoot(),
         DatepickerModule.forRoot(),
         TimepickerModule.forRoot(),
+        AccordionModule.forRoot(),
 
         StoreModule.forRoot(reducers, {metaReducers}),
         EffectsModule.forRoot([
@@ -121,6 +124,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         EditLockGuard,
 
         AccordionConfig,
+        AccordionComponent,
         TabsetConfig,
     ],
     bootstrap: [ App ]

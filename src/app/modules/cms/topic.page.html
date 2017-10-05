@@ -52,8 +52,28 @@
                                (affPlatformChange)="update('aff_platform', $event)">
         </entity-permalink-edit>
 
+        <tabset>
+            <tab heading="专题内容">
+                <div [froalaEditor]="froalaOptions" [(froalaModel)]="content"></div>
+            </tab>
+            <tab [heading]="offersTabName">
+                <div>具体优惠的更新需要单独创建一个popup editor，每次编辑好单独保存此优惠的信息，
+                    不同此优惠相关的专题一起更新，这样可以大幅降低复杂度.
+                </div>
+                <accordion-group isOpen="true"
+                                 *ngFor="let offer of (entity$ | async)?.offers let idx=index">
+                    <div accordion-heading>
+                        优惠{{ idx+1 }}.<i class="pull-right fa customize-chevron"></i>
+                    </div>
 
-        <div [froalaEditor]="froalaOptions" [(froalaModel)]="content"></div>
+                    <div class="row form-group">
+                        <offer-editor [offer]="offer"
+                                      (save)="updateMany('offers', idx, $event)"
+                                      style="width: 100%"></offer-editor>
+                    </div>
+                </accordion-group>
+            </tab>
+        </tabset>
     </div>
 
     <!-- Sidebar -->

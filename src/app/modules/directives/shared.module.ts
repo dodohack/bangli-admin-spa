@@ -21,6 +21,7 @@ import { TopicCloud }                from './topic-cloud';
 import { TagCloud }                  from './tag-cloud';
 import { ModalEditTax }              from './modal-edit-tax';
 import { ModalEditGeoLoc }           from './modal-edit-geo-loc';
+import { OfferEditor }               from './offer.editor';
 import { EditorPageHeader }          from './editor-page-header';
 import { EntityTitleDate }           from './entity-title-date';
 import { EntityButtons }             from './entity-buttons';
@@ -37,6 +38,7 @@ import { SearchBox }                 from './search-box';
 import { DateFilterComponent }       from './date-filter.component';
 import { ImageUploader }             from './image-uploader';
 
+
 export const COMPONENTS = [
     RightPanel,
     ListPageHeader,
@@ -46,7 +48,7 @@ export const COMPONENTS = [
     TopicCloud,
     TagCloud,
     EditorPageHeader,
-
+    OfferEditor,
     EntityTitleDate,
     EntityButtons,
     EntityAttrCloud,
