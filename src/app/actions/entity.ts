@@ -193,6 +193,7 @@ export class Attach implements Action {
 /**
  * Detach a relationship from the entity matches given value, indexed by
  * key - entity attributes
+ * value - relation object or relation object id
  */
 export class Detach implements Action {
     readonly type = DETACH;

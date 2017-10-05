@@ -429,7 +429,7 @@ function entitiesReducer (etype: string,
                     // If 'id' is specified with relationship, we index the
                     // relationship with 'id', otherwise assume the whole
                     // item as string.
-                    if (rid) {
+                    if (typeof rid !== "undefined") {
                         isDup = attrs.filter(item => item.id === rid);
                     } else {
                         attrs = attrs.split(',');
@@ -442,14 +442,15 @@ function entitiesReducer (etype: string,
                     } else {
                         // Create a new entity with the relationship
                         let newAttrs: any = [...attrs, value];
-                        if (!rid) newAttrs = newAttrs.join(',');
+                        if (typeof rid === "undefined") // stringish attributes
+                            newAttrs = newAttrs.join(',');
                         return Object.assign({}, oldEntity, {[key]: newAttrs});
                     }
                 } else {
                     // Entity doesn't have an attribute 'key', create it
                     // with the only relationship
                     let attr;
-                    if (rid) attr = [value];
+                    if (typeof rid !== "undefined") attr = [value];
                     else     attr = value;
                     return Object.assign({}, oldEntity, {[key]: attr});
                 }

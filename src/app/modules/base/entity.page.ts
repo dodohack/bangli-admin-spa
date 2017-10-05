@@ -426,7 +426,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
      * Save entity automatically, do not do this for new entity
      */
     autoSave() {
-        this.subAS = Observable.interval(10000).subscribe(() => {
+        this.subAS = Observable.interval(30000).subscribe(() => {
             if (this.isDirty && !this.isNewEntity)
                 this.store.dispatch(
                     new EntityActions.AutoSave(
