@@ -57,6 +57,14 @@
                 <div [froalaEditor]="froalaOptions" [(froalaModel)]="content"></div>
             </tab>
             <tab [heading]="'优惠 (' + (entity$ | async)?.offers_count + ')'">
+                <ul>
+                    <li>TODO</li>
+                    <li>Delete the complicated UPDATE_MANY operations</li>
+                    <li>Use template cms-list or offer-editor like with detailed editing enabled here</li>
+                    <li>Do not load offers details with topic</li>
+                    <li>When user clicks on this tab, load offers separately</li>
+                    <li>Each operation on the offer below is to offer entity, not to offer relation of topic</li>
+                </ul>
                 <div class="row">
                     <div class="col-6">
                         <button class="btn btn-success" (click)="newOffer()">新建优惠</button>
