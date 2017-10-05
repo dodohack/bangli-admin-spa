@@ -225,6 +225,7 @@ export class Entity {
 
     display_url: string;     // CMS topic only
     tracking_url: string;    // CMS topic only
+    offers_count: number;    // CMS topic only
 
     brands: Brand[];
 

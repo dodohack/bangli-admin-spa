@@ -44,8 +44,12 @@
         <!-- Topic guid, anchor_text, website, aff_url -->
         <entity-permalink-edit [website]="(entity$ | async)?.display_url"
                                [affiliateUrl]="(entity$ | async)?.tracking_url"
+                               [affId]="(entity$ | async)?.aff_id"
+                               [affPlatform]="(entity$ | async)?.aff_platform"
                                (websiteChange)="update('display_url', $event)"
-                               (affiliateUrlChange)="update('tracking_url', $event)">
+                               (affiliateUrlChange)="update('tracking_url', $event)"
+                               (affIdChange)="update('aff_id', $event)"
+                               (affPlatformChange)="update('aff_platform', $event)">
         </entity-permalink-edit>
 
 

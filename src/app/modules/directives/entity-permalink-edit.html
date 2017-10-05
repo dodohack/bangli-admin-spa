@@ -1,5 +1,5 @@
 <div class="row post-meta-row">
-    <div class="col-6">
+    <div class="col-4">
         <div class="form-group post-meta">
             <label>官网地址</label>
             <input class="form-control form-control-sm"
@@ -8,12 +8,39 @@
         </div>
     </div>
 
-    <div class="col-6">
+    <div class="col-4">
         <div class="form-group post-meta">
-            <label>默认返利链接</label>
+            <label>返利链接</label>
             <input class="form-control form-control-sm"
                    name="affUrl" [ngModel]="affiliateUrl"
                    [formControl]="affControl"/>
+        </div>
+    </div>
+
+    <div class="col-2">
+        <div class="form-group post-meta">
+            <label>返利平台</label>
+            <select class="form-control form-control-sm custom-select"
+                    name="affPlatform" [ngModel]="affPlatform"
+                    [formControl]="affPfControl">
+                <option value="AWIN">Affiliate Window</option>
+                <option value="LINK">Linkshare</option>
+                <option value="WEBG">Webgain</option>
+            </select>
+            <!--
+            <input class="form-control form-control-sm"
+                   name="affPlatform" [ngModel]="affPlatform"
+                   [formControl]="affPfControl"/>
+            -->
+        </div>
+    </div>
+
+    <div class="col-2">
+        <div class="form-group post-meta">
+            <label>返利平台ID</label>
+            <input class="form-control form-control-sm"
+                   name="affId" [ngModel]="affId"
+                   [formControl]="affIdControl"/>
         </div>
     </div>
 </div>

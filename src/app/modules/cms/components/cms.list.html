@@ -47,25 +47,25 @@
                 <!-- Badge: Locked post -->
                 <i class="fa fa-lock" style="color: red" *ngIf="entity.lock"></i>
                 <!-- Badge: Online edit lock -->
-                <span class="tag tag-default-outline"
-                      *ngIf="isOnlineLocked(entity)">
+                <span class="badge badge-secondary" *ngIf="isOnlineLocked(entity)">
                     <i class="fa fa-pencil" style="color: red"></i>
                     {{ authorsObj[entity.activities[0].user_id].text }} 正在编辑
                 </span>
                 <!-- Badge: Offline edit lock -->
-                <span class="tag tag-default-outline"
-                      *ngIf="isOfflineLocked(entity)">
+                <span class="badge badge-secondary" *ngIf="isOfflineLocked(entity)">
                     <i class="fa fa-pencil" style="color: blue"></i>
                     {{ authorsObj[entity.activities[0].user_id].text }} 正在离线编辑
                 </span>
 
-                <span *ngIf="entity.status != 'publish'" class="tag tag-danger-outline">
+                <span *ngIf="entity.status != 'publish'" class="badge badge-danger">
                     {{ zh[entity.status] }}
                 </span>
-                <span class="tag tag-default-outline">{{ zh[entity.creative_type] }}</span>
 
                 <!-- Title -->
-                <strong><a [routerLink]="[editLink(entity.id)]">{{ entity.title }}</a></strong>
+                <strong>
+                    <a [routerLink]="[editLink(entity.id)]">{{ entity.title }}</a>
+                    <span *ngIf="entity.offers_count" class="badge badge-info">{{ entity.offers_count }}个优惠</span>
+                </strong>
 
                 <div class="row-actions">
                     <span class="trash"><a>删除</a> | </span>

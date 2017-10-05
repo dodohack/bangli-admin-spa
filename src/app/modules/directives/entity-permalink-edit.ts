@@ -11,14 +11,20 @@ import { FormControl }                            from '@angular/forms';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EntityPermalinkEdit implements OnInit {
-    webControl = new FormControl();
-    affControl = new FormControl();
+    webControl   = new FormControl();
+    affControl   = new FormControl();
+    affIdControl = new FormControl();
+    affPfControl = new FormControl();
 
     @Input() website: string;
     @Input() affiliateUrl: string;
+    @Input() affId: number;
+    @Input() affPlatform: number;
 
     @Output() websiteChange      = new EventEmitter();
     @Output() affiliateUrlChange = new EventEmitter();
+    @Output() affIdChange        = new EventEmitter();
+    @Output() affPlatformChange   = new EventEmitter();
 
     ngOnInit() {
         // Limit the rate of event emitted by input box
@@ -29,5 +35,13 @@ export class EntityPermalinkEdit implements OnInit {
         this.affControl.valueChanges.debounceTime(1000)
             .filter(v => v !== this.affiliateUrl)
             .subscribe(v => this.affiliateUrlChange.emit(v));
+
+        this.affIdControl.valueChanges.debounceTime(1000)
+            .filter(v => v !== this.affId)
+            .subscribe(v => this.affIdChange.emit(v));
+
+        this.affPfControl.valueChanges.debounceTime(1000)
+            .filter(v => v !== this.affPlatform)
+            .subscribe(v => this.affPlatformChange.emit(v));
     }
 }
