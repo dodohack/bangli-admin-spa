@@ -5,7 +5,8 @@
             <label>优惠内容</label>
             <textarea rows="2" type="text" name="title"
                       class="form-control"
-                      [(ngModel)]="offer.title" (keyup)="keyUp.next($event)"></textarea>
+                      [ngModel]="offer.title"
+                      (ngModelChange)="modify('title', $event)"></textarea>
         </div>
     </div>
 
@@ -13,7 +14,8 @@
         <div class="form-group">
             <label>显示链接</label>
             <input type="text" name="display_url" class="form-control"
-                   [(ngModel)]="offer.display_url" (keyup)="keyUp.next($event)">
+                   [ngModel]="offer.display_url"
+                   (ngModelChange)="modify('display_url', $event)">
         </div>
     </div>
 
@@ -21,7 +23,8 @@
         <div class="form-group">
             <label>返利链接(自动根据显示链接生成)</label>
             <input type="text" name="tracking_url" class="form-control"
-                   [(ngModel)]="offer.tracking_url" (keyup)="keyUp.next($event)">
+                   [ngModel]="offer.tracking_url"
+                   (ngModelChange)="modify('tracking_url', $event)">
         </div>
     </div>
 
@@ -29,7 +32,8 @@
         <div class="form-group">
             <label>开始日期</label>
             <input text="text" name="starts" class="form-control"
-                   [(ngModel)]="offer.starts" (keyup)="keyUp.next($event)">
+                   [ngModel]="offer.starts"
+                   (ngModelChange)="modify('starts', $event)">
         </div>
     </div>
 
@@ -37,7 +41,8 @@
         <div class="form-group">
             <label>结束日期</label>
             <input text="text" name="ends" class="form-control"
-                   [(ngModel)]="offer.ends" (keyup)="keyUp.next($event)">
+                   [ngModel]="offer.ends"
+                   (ngModelChange)="modify('ends', $event)">
         </div>
     </div>
 
@@ -45,7 +50,8 @@
         <div class="form-group">
             <label>优惠码</label>
             <input text="text" name="vouchers" class="form-control"
-                   [(ngModel)]="offer.vouchers" (keyup)="keyUp.next($event)">
+                   [ngModel]="offer.vouchers"
+                   (ngModelChange)="modify('vouchers', $event)">
         </div>
     </div>
 
@@ -53,7 +59,8 @@
         <div class="form-group">
             <label>推荐优惠</label>
             <select class="form-control custom-select" name="featured"
-            [(ngModel)]="offer.featured" (keyup)="keyUp.next($event)">
+            [ngModel]="offer.featured"
+            (ngModelChange)="modify('featured', $event)">
                 <option value="1">YES</option>
                 <option value="0">NO</option>
             </select>
@@ -61,8 +68,10 @@
     </div>
 
     <div class="col-12">
-        <button class="btn btn-danger" (click)="onSaveNew()">保存优惠</button>
-        <button class="btn btn-danger" (click)="onDelete()">删除优惠</button>
+        <button class="btn btn-danger"
+                (click)="onDestroy()" [class.hidden]="isNew">删除优惠</button>
+        <button class="btn btn-primary"
+                (click)="onSave()" [class.hidden]="!isDirty">保存优惠</button>
     </div>
 
 </div>

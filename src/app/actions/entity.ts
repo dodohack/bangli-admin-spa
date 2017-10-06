@@ -33,6 +33,9 @@ export const BATCH_LOCK_ENTITIES = '[Entity] Batch Lock Entities';
 export const BATCH_EDIT_PREVIOUS_ENTITY = '[Entity] Batch Edit Previous Entity';
 export const BATCH_EDIT_NEXT_ENTITY = '[Entity] Batch Edit Next Entity';
 export const NEW_ENTITY = '[Entity] New Entity';
+export const DELETE_ENTITY = '[Entity] Delete Entity';
+export const DELETE_ENTITY_SUCCESS = '[Entity] Delete Entity Success';
+export const DELETE_ENTITY_FAIL = '[Entity] Delete Entity Fail';
 export const LOAD_ENTITY = '[Entity] Load Entity';
 export const LOAD_ENTITY_SUCCESS = '[Entity] Load Entity Success';
 export const LOAD_ENTITY_FAIL = '[Entity] Load Entity Fail';
@@ -45,7 +48,6 @@ export const SAVE_ENTITIES = '[Entity] Save Entities';
 export const ATTACH = '[Entity] Attach Relationship';
 export const DETACH = '[Entity] Detach Relationship';
 export const UPDATE = '[Entity] Update Attribute';
-export const UPDATE_MANY = '[Entity] Update Relationships';
 export const REFRESH_ACTIVITY_STATUS = '[Entity] Refresh Activity Status';
 export const GENERATE_THUMBS = '[Attachment] Generate thumbs';
 
@@ -127,8 +129,22 @@ export class BatchEditNextEntity implements Action {
 
 export class NewEntity implements Action {
     readonly type = NEW_ENTITY;
-    // Payload.data: author
+    // Payload.data: author - the user create the entity is not always the author
     constructor(public payload: {etype: string, data: User}) {}
+}
+
+export class DeleteEntity implements Action {
+    readonly type = DELETE_ENTITY;
+    // Payload.data: entity id
+    constructor(public payload: {etype: string, data: number}) {}
+}
+
+export class DeleteEntitySuccess implements Action {
+    readonly type = DELETE_ENTITY_SUCCESS;
+}
+
+export class DeleteEntityFail implements Action {
+    readonly type = DELETE_ENTITY_FAIL;
 }
 
 export class LoadEntity implements Action {
@@ -208,15 +224,6 @@ export class Update implements Action {
     constructor(public payload: {etype: string, key: string, value: any}) {}
 }
 
-/**
- * Update entity has-many relationship(relationship in array)
- */
-export class UpdateMany implements Action {
-    readonly type = UPDATE_MANY;
-    constructor(public payload: {etype: string, key: string,
-        idx: number, value: any}) {}
-}
-
 export class RefreshActivityStatus implements Action {
     readonly type = REFRESH_ACTIVITY_STATUS;
     constructor(public payload: {etype: string, data: Activity[]}) {}
@@ -246,6 +253,9 @@ export type Actions = Search
 | BatchEditPreviousEntity
 | BatchEditNextEntity
 | NewEntity
+| DeleteEntity
+| DeleteEntitySuccess
+| DeleteEntityFail
 | LoadEntity
 | LoadEntitySuccess
 | LoadEntityFail
@@ -258,7 +268,6 @@ export type Actions = Search
 | Attach
 | Detach
 | Update
-| UpdateMany
 | RefreshActivityStatus
 | GenerateThumbs;
 

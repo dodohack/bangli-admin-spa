@@ -60,6 +60,13 @@ export class EntityEffects {
             .catch(() => Observable.of(new entity.SaveEntityFail()))
         );
 
+    @Effect() deleteEntity$ = this.actions$.ofType(entity.DELETE_ENTITY)
+        .map((action: any) => action.payload)
+        .switchMap(p => this.deleteEntity(p.etype, p.data)
+            .map(ret => new entity.DeleteEntitySuccess())
+            .catch(() => Observable.of(new entity.DeleteEntityFail()))
+        );
+
     @Effect() autoSave$ = this.actions$.ofType(entity.AUTO_SAVE)
         .map((action: any) => action.payload)
         .switchMap(p => this.autoSaveEntity(p.etype, p.data, p.mask)
@@ -187,12 +194,12 @@ export class EntityEffects {
     }
 
     /**
-     * Delete a entity, return a entity
+     * Delete a entity by it's id, return a entity
      */
-    protected deleteEntity(t: string, entity: any): Observable<any> {
+    protected deleteEntity(t: string, id: number): Observable<any> {
         let options = new RequestOptions({ headers: this.headers });
 
-        let api = this.getApi(t, false) + '/' + entity.id + '?etype=' + t;
+        let api = this.getApi(t, false) + '/' + id + '?etype=' + t;
         return this.http.delete(api, options).map(res => res.json());
     }
 

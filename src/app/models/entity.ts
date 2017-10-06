@@ -121,6 +121,7 @@ export class EntityParams {
                 public editor: string = null,
                 public brand: string = null,
                 public category: string = null,
+                public topic: string = null,
                 public datetype: string = null,
                 public datefrom: string = null,
                 public dateto: string = null,
@@ -151,6 +152,7 @@ export class EntityParams {
         if (this.editor) s = s + '&editor=' + this.editor;
         if (this.brand) s = s + '&brand=' + this.brand;
         if (this.category) s = s + '&category=' + this.category;
+        if (this.topic) s = s + '&topic=' + this.topic;
         if (this.datetype) s = s + '&datetype=' + this.datetype;
         if (this.datefrom) s = s + '&datefrom=' + this.datefrom;
         if (this.dateto) s = s + '&dateto=' + this.dateto;

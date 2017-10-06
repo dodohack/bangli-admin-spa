@@ -11,6 +11,7 @@ import { ActivatedRoute }    from '@angular/router';
 import { Location }          from '@angular/common';
 import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
+import { Observable }        from "rxjs";
 
 import { EntityPage }        from '../base/entity.page';
 import { Entity }            from '../../models';
@@ -19,17 +20,33 @@ import * as AlertActions     from '../../actions/alert';
 import * as EntityActions    from '../../actions/entity';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
+import { EntityParams }      from "../../models/entity";
+
+import {
+    getCurEntity,
+    getEntitiesCurPage,
+    getPaginator,
+    getIdsCurPage
+} from '../../reducers';
 
 @Component({ templateUrl: './topic.page.html' })
 export class TopicPage extends EntityPage
 {
-    isNewOffer: boolean = false;
+    newOffer$: Observable<Entity>;
+    offers$: Observable<Entity[]>;
+    offerIds$: Observable<number[]>;
+    offerPager$: Observable<any>;
 
     constructor(protected route: ActivatedRoute,
                 protected location: Location,
                 protected store: Store<AppState>,
                 protected router: Router) {
         super(ENTITY.TOPIC, route, location, store, router);
+
+        this.offers$ = this.store.select(getEntitiesCurPage(ENTITY.OFFER));
+        this.offerPager$ = this.store.select(getPaginator(ENTITY.OFFER));
+        this.offerIds$ = this.store.select(getIdsCurPage(ENTITY.OFFER));
+        this.newOffer$ = this.store.select(getCurEntity(ENTITY.OFFER));
     }
 
     get zh() { return zh_CN.cms; } // Localization
@@ -39,36 +56,13 @@ export class TopicPage extends EntityPage
             return this.domain.url + '/cms/topic/' + this.entity.guid;
     }
 
-    //
-    // FIXME: We should avoid attach a new offer to a topic, instead,
-    // we should create a offer entity and attach topic to the offer entity.
-    // and then reload topic entity.
-    //
-    newOffer() {
-        this.isNewOffer = true;
-        let offer = new Entity;
-        offer.id = 0;
-        // FIXME: Dummy user:
-        let user: any = {id: 1, display_name: 'Aries'};
-        // Create offer entity
-        this.store.dispatch(new EntityActions.NewEntity({etype: ENTITY.OFFER, data: user}));
-        /*
-        this.store.dispatch(new EntityActions.Attach(
-            {etype: this.etype, key: 'offers', value: offer})
-        );
-        */
-    }
-
-    // TODO: mask
-    saveNewOffer(offer) {
-        // Save newly created offer
-       this.store.dispatch(new EntityActions.SaveEntity(
-           {etype: ENTITY.OFFER, data: offer, mask: []})
-       );
-    }
-
-    // TODO
-    reloadTopicAfterNewOfferSaved() {
-        // Reload current topic
+    /**
+     * When offers tab is selected, we will call this function to load offers
+     * belongs to this topic
+     */
+    loadOffers() {
+        let params: EntityParams = new EntityParams();
+        params.topic = this.entity.guid;
+        this.store.dispatch(new EntityActions.LoadEntities({etype: ENTITY.OFFER, data: params}));
     }
 }

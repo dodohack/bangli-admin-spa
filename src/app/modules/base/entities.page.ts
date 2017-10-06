@@ -197,6 +197,7 @@ export class EntitiesPage implements OnInit, OnDestroy
             this.params['author'],
             this.params['editor'],
             this.params['category'],
+            this.params['topic'],
             this.params['brand'],
             this.params['datetype'],
             this.params['datefrom'],

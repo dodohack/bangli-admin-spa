@@ -385,6 +385,36 @@ function entitiesReducer (etype: string,
             });
         }
 
+        // Delete an entity by id
+        case entity.DELETE_ENTITY: {
+            let id = action.payload.data;
+
+            let idx = state.idsTotal.indexOf(id);
+            let newIdsTotal = [...state.idsTotal.slice(0,idx), ...state.idsTotal.slice(idx+1)];
+
+            idx = state.idsCurPage.indexOf(id);
+            let newIdsCurPage = [...state.idsCurPage.slice(0, idx), ...state.idsCurPage.slice(idx+1)];
+
+            idx = state.idsEditing.indexOf(id);
+            let newIdsEditing = [...state.idsEditing.slice(0, idx), ...state.idsEditing.slice(idx+1)];
+
+            idx = state.idsContent.indexOf(id);
+            let newIdsContent = [...state.idsContent.slice(0, idx), ...state.idsContent.slice(idx+1)];
+
+            let newEntities = Object.assign({}, state.entities, {[id]: null});
+
+            return Object.assign({}, state, {
+                idsTotal:   newIdsTotal,
+                idsCurPage: newIdsCurPage,
+                idsEditing: newIdsEditing,
+                idsContent: newIdsContent,
+                entities:   newEntities,
+                dirtyMask:  [],
+                isLoading:  false,
+                paginator:  state.paginator
+            });
+        }
+
         case entity.REFRESH_ACTIVITY_STATUS: {
             let newEntities: { [id: number]: Entity } = {};
             let activities = action.payload.data;
@@ -527,42 +557,6 @@ function entitiesReducer (etype: string,
                 entities: Object.assign({}, state.entities, {[entity.id]: entity}),
                 dirtyMask: dirtyMask
             });
-        }
-
-        case entity.UPDATE_MANY: {
-            let key = action.payload.key;
-            let idx = action.payload.idx;
-            let value = action.payload.value;
-            let entity = state.entities[state.idsEditing[0]];
-            let dirtyMask = state.dirtyMask;
-
-            let newRelations: Entity[];
-
-            // Check if entity has hasMany relation 'key'
-            if (key in entity && entity[key]) {
-                let relations = entity[key];
-                // Check if entity has multiple relations indexed by 'key'
-                if (idx >= 0 && relations[idx]) {
-                    // Update an existed relation, create a new array by replacing
-                    // the entry with modified one.
-                    newRelations = [...relations.slice(0, idx), value, ...relations.slice(idx+1)];
-                } else {
-                    newRelations = [value];
-                }
-
-                // Create a new entity with updated relations
-                entity = Object.assign({}, entity, {[key]: newRelations});
-
-                dirtyMask = [...dirtyMask, key];
-
-                return Object.assign({}, state, {
-                    entities: Object.assign({}, state.entities, {[entity.id]: entity}),
-                    dirtyMask: dirtyMask
-                });
-            } else {
-                // Nothing changed.
-                return state;
-            }
         }
 
         // Auto save entity to API server, but do not save reversions

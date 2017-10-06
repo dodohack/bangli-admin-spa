@@ -350,26 +350,42 @@ export abstract class EntityPage implements OnInit, OnDestroy
             new EntityActions.Detach({etype: this.etype, key: key, value: value.text})
         );
     }
+
     // Update hasOne/string/single attributes of entity
     update(key: string, value: any) {
+        this.updateWithEtype(this.etype, key, value);
+    }
+
+    // Update hasOne/string/single attributes of entity of given etype, this
+    // enables editing offers with topic page.
+    updateWithEtype(etype: string, key: string, value: any) {
         this.store.dispatch(
-            new EntityActions.Update({etype: this.etype, key: key, value: value})
+            new EntityActions.Update({etype: etype, key: key, value: value})
         );
     }
 
-    /**
-     * Update 1 of hasMany relationships of entity, granularity is an object
-     * of the relationship in the array.
-     * @param key - entity attributes selector
-     * @param idx - relationship array index, starts from 0.
-     * @param value - relationship value, an javascript object
-     * TODO: When idx is 0, it should mean attaching a new relation to the array
-     * Example: entity.key[idx] = value
-     */
-    updateMany(key: string, idx: number, value: any) {
+    // Create a new entity
+    newEntity() {
+        this.newEntityWithEtype(this.etype, this.profile);
+    }
+
+    // Create a new entity with given entity type
+    newEntityWithEtype(etype: string, user: User) {
         this.store.dispatch(
-            new EntityActions.UpdateMany({etype: this.etype, key: key,
-                idx: idx, value: value})
+            new EntityActions.NewEntity({etype: etype, data: user})
+        );
+    }
+
+    // Delete current entity
+    destroy() {
+        this.destroyWithEtype(this.etype, this.entity.id);
+    }
+
+    // Delete entity given by id and etype, this enables delete offers from
+    // topic page.
+    destroyWithEtype(etype: string, id: any) {
+        this.store.dispatch(
+            new EntityActions.DeleteEntity({etype: etype, data: id})
         );
     }
 
@@ -417,9 +433,15 @@ export abstract class EntityPage implements OnInit, OnDestroy
      * Save entity to API server
      */
     save() {
+        this.saveWithEtype(this.etype, this.entity, this.dirtyMask);
+    }
+
+    /**
+     * Save entity to API server with given entity type
+     */
+    saveWithEtype(etype: string, entity: Entity, mask: string[]) {
         this.store.dispatch(
-            new EntityActions.SaveEntity(
-                {etype: this.etype, data: this.entity, mask: this.dirtyMask}));
+            new EntityActions.SaveEntity({etype: etype, data: entity, mask: mask}));
     }
 
     /**

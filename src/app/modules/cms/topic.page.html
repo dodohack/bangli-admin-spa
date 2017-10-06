@@ -56,18 +56,14 @@
             <tab heading="专题内容">
                 <div [froalaEditor]="froalaOptions" [(froalaModel)]="content"></div>
             </tab>
-            <tab [heading]="'优惠 (' + (entity$ | async)?.offers_count + ')'">
-                <ul>
-                    <li>TODO</li>
-                    <li>Delete the complicated UPDATE_MANY operations</li>
-                    <li>Use template cms-list or offer-editor like with detailed editing enabled here</li>
-                    <li>Do not load offers details with topic</li>
-                    <li>When user clicks on this tab, load offers separately</li>
-                    <li>Each operation on the offer below is to offer entity, not to offer relation of topic</li>
-                </ul>
+            <tab [heading]="'优惠 (' + (entity$ | async)?.offers_count + ')'"
+                 (select)="loadOffers()">
                 <div class="row">
                     <div class="col-6">
-                        <button class="btn btn-success" (click)="newOffer()">新建优惠</button>
+                        <button class="btn btn-success"
+                                (click)="newEntityWithEtype('offer', profile)">
+                            新建优惠
+                        </button>
                     </div>
                     <div class="col-6">
                         <button class="btn btn-danger">删除所有优惠</button>
@@ -75,30 +71,27 @@
                 </div>
 
                 <!-- New offer editor -->
-                <accordion-group isOpen="true" *ngIf="isNewOffer">
+                <accordion-group isOpen="true" *ngIf="newOffer$ | async">
 
                     <div accordion-heading>
                         新增优惠 <i class="pull-right fa customize-chevron"></i>
                     </div>
 
-                    <!--
-                    <offer-editor [offer]=""
-                                  [isNewOffer]="'true'"
-                                  (create)="saveNewOffer($event)"
+                    <offer-editor [offer]="newOffer$ | async"
+                                  (save)="saveWithEtype('offer', $event.offer, $event.mask)"
                                   style="width: 100%"></offer-editor>
-                                  -->
                 </accordion-group>
 
                 <!-- List of offers -->
                 <accordion-group isOpen="true"
-                                 *ngFor="let offer of (entity$ | async)?.offers let idx=index">
+                                 *ngFor="let offer of (offers$ | async) let idx=index">
                     <div accordion-heading>
-                        优惠 {{ idx+1 }}<i class="pull-right fa customize-chevron"></i>
+                        优惠 {{ idx+1 }}, 更新日期: {{ offer.updated_at }}, STATUS: {{ offer.status }}<i class="pull-right fa customize-chevron"></i>
                     </div>
 
                     <offer-editor [offer]="offer"
-                                  (update)="updateMany('offers', idx, $event)"
-                                  (detach)="detach('offers', offer)"
+                                  (save)="saveWithEtype('offer', $event.offer, $event.mask)"
+                                  (destroy)="destroyWithEtype('offer', offer.id)"
                                   style="width: 100%"></offer-editor>
                 </accordion-group>
             </tab>
