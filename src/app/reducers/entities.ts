@@ -169,19 +169,37 @@ function entitiesReducer (etype: string,
         }
             
         case entity.SEARCH_COMPLETE:
-        case entity.LOAD_ENTITIES_SUCCESS: {
+        case entity.LOAD_ENTITIES_SUCCESS:
+        case entity.LOAD_ENTITIES_ON_SCROLL_SUCCESS: {
             const entities = action.payload.data.entities;
 
-            // Extract entity ids of current page
-            const idsCurPage   = entities.map(p => p.id);
+            let dirtyMask;
 
-            // Early return if nothing is loaded
-            if (!idsCurPage.length)
-                return Object.assign({}, state, {
-                    idsCurPage: [],
-                    dirtyMask: [],
-                    isLoading: false,
-                    paginator: action.payload.data.paginator});
+            // Extract entity ids of current page
+            let idsCurPage = entities.map(p => p.id);
+
+            if (action.type == entity.LOAD_ENTITIES_ON_SCROLL_SUCCESS) {
+                // Keep dirtyMask
+                dirtyMask = state.dirtyMask;
+                // Early return if nothing is loaded
+                if (!idsCurPage.length)
+                    return Object.assign({}, state, {isLoading: false});
+
+                // Merge idsCurPage with previously loaded ones
+                idsCurPage = [...state.idsCurPage, ...idsCurPage].filter(
+                    (elem, idx, self) => idx == self.indexOf(elem));
+            } else {
+                // Reset dirtyMask
+                dirtyMask = [];
+                // Early return if nothing is loaded
+                if (!idsCurPage.length)
+                    return Object.assign({}, state, {
+                        idsCurPage: [],
+                        dirtyMask: dirtyMask,
+                        isLoading: false,
+                        paginator: action.payload.data.paginator
+                    });
+            }
 
             // Merge new idsCurPage with idsTotal
             const idsTotal = [...state.idsTotal, ...idsCurPage].filter(
@@ -207,53 +225,9 @@ function entitiesReducer (etype: string,
                 idsTotal:   idsTotal,
                 idsCurPage: idsCurPage,
                 entities:   Object.assign({}, state.entities, newEntities),
-                dirtyMask:  [],
+                dirtyMask:  dirtyMask,
                 isLoading:  false,
                 paginator:  action.payload.data.paginator
-            });
-        }
-
-        // Almost identical to previous case, but idsCurPage is merged with
-        // newly loaded ones
-        case entity.LOAD_ENTITIES_ON_SCROLL_SUCCESS: {
-            const entities = action.payload.data.entities;
-
-            // Extract entity ids of current page
-            const idsNew  = entities.map(p => p.id);
-
-            // Early return if nothing is loaded
-            if (!idsNew.length) return state;
-
-            // Merge idsNew with idsCurPage
-            const idsCurPage = [...state.idsCurPage, ...idsNew].filter(
-                (elem, idx, self) => idx == self.indexOf(elem));
-
-            // Merge idsNew with idsTotal
-            const idsTotal = [...state.idsTotal, ...idsNew].filter(
-                (elem, idx, self) => idx == self.indexOf(elem));
-
-            // Get new entities and avoid local entities content isn't
-            // overwritten by new entities with no content.
-            const newEntities = entities.reduce((entities, entity) => {
-                if (entity.id in state.idsContent) {
-                    // This entity has the same id as local entities with
-                    // content loaded
-                    const e = Object.assign({}, entity,
-                        {content: state.entities[entity.id].content});
-                    return Object.assign(entities, {[entity.id]: e});
-                } else {
-                    // Completely new entity
-                    return Object.assign(entities, {[entity.id]: entity});
-                }
-            }, {});
-
-            // Return merged entities and updated ID indexes
-            return Object.assign({}, state, {
-                idsTotal:   idsTotal,
-                idsCurPage: idsCurPage,
-                entities:   Object.assign({}, state.entities, newEntities),
-                isLoading:  false,
-                paginator:  action.payload.data.paginator,
             });
         }
 

@@ -161,34 +161,6 @@ export class EntityParams {
     }
 }
 
-/**
- * Shop product only:
- * Product variation
- */
-    /*
-export class ProductVariation {
-    id: number;
-    image_id: number;   // Product variation specified image
-    parent_id: number;  // Base product id
-    backorder: boolean; // Allow backorder when out of stock
-    RSP: number;        // Retail Suggested Price
-    cost: number;
-    spec: string;
-    price: number;
-    width: number;
-    height: number;
-    length: number;
-    sale_from: string; // Date of the begin of sale
-    sale_to: string; // Date of the end of sale
-    sale_price: number;
-    warehouse: string;
-    real_sale: number;
-    real_stock: number;
-    virtual_sale: number;
-    virtual_stock: number;
-    gross_weight: number;
-}
-*/
 
 export class Entity {
     id: number;
