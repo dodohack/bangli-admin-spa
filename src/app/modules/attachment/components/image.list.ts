@@ -48,9 +48,14 @@ export class ImageList extends EntityList
     }
 
     thumbUrl(entity) {
-        let thumb = JSON.parse(entity.thumbnail)['thumb-avatar'];
-        if (thumb)
-            return this.baseResUrl + entity.thumb_path + thumb.file;
+        if (entity.thumbnail) {
+            let thumb = JSON.parse(entity.thumbnail)['thumb-avatar'];
+            if (thumb)
+                return this.baseResUrl + entity.thumb_path + thumb.file;
+        } else {
+            // TODO: Replace with a placeholder image on our server.
+            return 'http://via.placeholder.com/80x80?text=thumbnail';
+        }
     }
 
     editImage(i, entity) {

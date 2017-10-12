@@ -1,6 +1,7 @@
 import { rehydrateApplicationState } from 'ngrx-store-localstorage';
 
 import { AuthState } from '../reducers/auth';
+import { IMG_SERVER } from '../api';
 
 export class CacheSingleton {
 
@@ -69,9 +70,11 @@ export class CacheSingleton {
     }
 
     // Return image server url
+    // TODO: Should we use local defined IMG_SERVER or the one passed from remote?
     get img_server() {
         this._initAuth();
-        return this._auth.img_server;
+        return IMG_SERVER[this._auth.key];
+        //return this._auth.img_server;
     }
 
     /**
