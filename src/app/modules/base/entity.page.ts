@@ -460,4 +460,12 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.forceQuit = true;
         this.location.back();
     }
+
+    displayDisplayName(value: any): string {
+        return value && typeof value === 'object' ? value.display_name : value;
+    }
+
+    displayName(value: any): string {
+        return value && typeof value === 'object' ? value.name : value;
+    }
 }

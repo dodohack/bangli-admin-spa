@@ -1,0 +1,76 @@
+/**
+ * Define the baseline theme of bangli admin spa based on angular material
+ */
+
+//////////////////////////////////////////////////////////////////////////////
+// Define base style for material design
+
+// Font size base line
+// Pixel value used to responsively scale all typography. Applied to the `<html>` element.
+$font-size-root: 16px;
+$font-size-base: $font-size-root;
+$md-body-font-size-base: $font-size-root;
+
+$font-size-xl:   1.5rem;
+$font-size-lg:   1.25rem;
+$font-size-sm:   .875rem;
+$font-size-xs:   .75rem;
+
+// Font family
+$md-font-family: Roboto, 'Helvetica Neue', sans-serif;
+
+//////////////////////////////////////////////////////////////////////////////
+// Include material design
+@import "~@angular/material/theming";
+
+// Include the common styles for Angular Material.
+@include mat-core();
+
+
+//////////////////////////////////////////////////////////////////////////////
+// Define theme and variables
+
+// Primary color
+$primary: mat-palette($mat-light-blue);
+// Accent color
+$accent:  mat-palette($mat-red, A200, A100, A400);
+
+$theme: mat-light-theme($primary, $accent);
+
+// Include all theme styles for the components
+@include angular-material-theme($theme);
+
+//////////////////////////////////////////////////////////////////////////////
+// Variables
+
+// Body
+//
+// Settings for the `<body>` element.
+
+$body-bg:    #fff !default;
+$body-color: #222 !default;
+
+// Border color
+//
+// Default color for border
+$border-color: mat-color($primary, 100) !default; // #dadada !default;
+
+// Background color
+//
+// Default light background color
+$bg-color: mat-color($primary, 50) !default; //  #f3f3f3 !default;
+
+// Links
+//
+// Style anchor elements.
+$link-color:            mat-color($primary, 600) !default;
+$link-decoration:       none !default;
+$link-hover-color:      mat-color($primary, 400) !default;
+$link-hover-decoration: underline !default;
+$link-visited-color:    mat-color($primary, 900) !default;
+
+// Buttons
+//
+// Style buttons based on md-color
+$btn-primary-color:        $link-color;
+$btn-primary-hover-color:  $link-hover-color;

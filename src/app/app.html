@@ -1,7 +1,6 @@
 <!-- This is the template page for all pages -->
 <div class="container-fluid" style="min-width: 768px; max-width: 1400px;">
     <div *ngIf="isDashboardUser$ | async">
-
         <topbar [isPingEnabled]="isPingEnabled"
                 [domainKeys]="domainKeys$ | async"
                 [domains]="domains$ | async"

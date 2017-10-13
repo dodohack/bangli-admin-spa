@@ -106,7 +106,7 @@
             <div class="col-6">
                 <!-- Save button -->
                 <div class="form-group">
-                    <button class="btn btn-sm btn-outline-success"
+                    <button mat-raised-button color="primary"
                             (click)="save()" [disabled]="!isDirty || isLoading">
                         <ng-template [ngIf]="isDirty && !isLoading">保存</ng-template>
                         <ng-template [ngIf]="!isDirty">已保存</ng-template>
@@ -114,52 +114,74 @@
                     </button>
                 </div>
             </div>
+
+            <div class="col-6">
+                <mat-checkbox [ngModel]="(entity$ | async)?.featured"
+                              (ngModelChange)="update('featured', $event)">推荐专题</mat-checkbox>
+            </div>
         </div>
 
-        <!-- Enitity status and has offer attr -->
+        <!-- Enitity status -->
         <div class="row">
             <div class="col-6">
                 <div class="form-group post-meta">
-                    <mat-select placeholder="状态" [ngModel]="(entity$ | async)?.status" name="st"
-                               (ngModelChange)="update('status', $event)">
-                        <mat-option *ngFor="let status of entityStates" [value]="status">
-                            {{ zh[status] }}
-                        </mat-option>
-                    </mat-select>
+                    <mat-form-field style="width: 150px !important;">
+                        <mat-select placeholder="状态" [ngModel]="(entity$ | async)?.status" name="st"
+                                    (ngModelChange)="update('status', $event)">
+                            <mat-option *ngFor="let status of entityStates" [value]="status">
+                                {{ zh[status] }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
 
             <div class="col-6">
                 <!-- 热度,用于显示排名 -->
-                <div class="form-group post-meta">
-                    <label>热度</label>
-                    <select class="form-control form-control-sm custom-select"
-                            name="rk" [ngModel]="(entity$ | async)?.ranking"
-                            (ngModelChange)="update('ranking', $event)">
-                        <option *ngFor="let r of rankings"
-                                [value]="r">{{ r }}</option>
-                    </select>
-                </div>
+                <mat-form-field style="width: 150px !important;">
+                    <mat-select placeholder="热度" [ngModel]="(entity$ | async)?.ranking"
+                                name="rk" (ngModelChange)="update('ranking', $event)">
+                        <mat-option *ngFor="let r of rankings" [value]="r">{{r}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </div>
 
-        <div class="form-group">
-            <label>编辑</label>
-            <ng-select [active]="(editor$ | async) ? [editor$ | async] : []"
-                       [items]="editors$ | async"
-                       (selected)="update('editor', $event)"
-                       (removed)="update('editor', $event)"
-                       placeholder="选择编辑"></ng-select>
-        </div>
+        <mat-form-field>
+            <mat-select placeholder="编辑" [ngModel]="(editor$ | async)?.id"
+                        name="ed" (ngModelChange)="update('editor_id', $event)">
+                <mat-option *ngFor="let e of (editors$ | async)" [value]="e.id">{{ e.display_name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
 
-        <div class="form-group">
-            <label>频道</label>
-            <ng-select [active]="(channel$ | async) ? [channel$ | async] : []"
-                       [items]="cmsChannels$ | async"
-                       (selected)="update('channel', $event)"
-                       (removed)="update('channel', $event)"
-                       placeholder="专题频道"></ng-select>
-        </div>
+        <mat-form-field>
+            <mat-select placeholder="专题频道" [ngModel]="(channel$ | async)?.id"
+                        name="ch" (ngModelChange)="update('channel_id', $event)">
+                <mat-option *ngFor="let ch of (cmsChannels$ | async)" [value]="ch.id">{{ ch.name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-select placeholder="专题类型" [ngModel]="(topicType$ | async)?.id"
+                        name="tt" (ngModelChange)="update('type_id', $event)">
+                <mat-option *ngFor="let tt of (cmsTopicTypes$ | async)" [value]="tt.id">{{ tt.name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-chip-list #catChipList>
+                <mat-chip *ngFor="let cat of (entity$ | async)?.categories"
+                          removable="true" selectable="true"
+                          (remove)="detach('categories', cat)">{{ cat.name }} <i matChipRemove class="fa fa-lg fa-close"></i></mat-chip>
+                <input placeholder="专题分类(max 2 levels only)"
+                       [matChipInputFor]="catChipList" [matAutocomplete]="autoChips">
+                <mat-autocomplete #autoChips="matAutocomplete" [displayWith]="displayDisplayName">
+                    <mat-option *ngFor="let e of (editors$ | async)" [value]="e">
+                        <span>{{ e.display_name }}</span>
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-chip-list>
+        </mat-form-field>
 
         <div class="form-group">
             <label>特色图片</label>
@@ -175,15 +197,6 @@
                     (click)="showGallery(galleryModal)">
                 设置特色图片
             </button>
-        </div>
-
-        <div class="form-group">
-            <label>专题类型</label>
-            <ng-select [active]="(topicType$ | async) ? [topicType$ | async] : []"
-                       [items]="cmsTopicTypes$ | async"
-                       (selected)="update('type', $event)"
-                       (removed)="update('type', $event)"
-                       placeholder="专题类型"></ng-select>
         </div>
 
         <!-- Topic location, category, topic, topic [product/topic/post] series etc -->

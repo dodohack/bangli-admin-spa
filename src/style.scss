@@ -7,6 +7,9 @@
 // Import font-awesome
 @import "../node_modules/font-awesome/scss/font-awesome";
 
+// Import angular 2 material theme
+@import "./sass/theme";
+
 @import "./sass/date-picker";
 @import "./sass/modal";
 @import "./sass/panel";

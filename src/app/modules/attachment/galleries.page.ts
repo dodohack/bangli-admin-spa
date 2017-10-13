@@ -42,3 +42,8 @@ export class GalleriesPage extends EntitiesPage
                 {etype: ENTITY.ATTACHMENT, data: $event, prepend: true}));
     }
 }
+
+/**
+ * TODO: Should we use flex layout to re-layout the gallery page???
+ * TODO: or do it later after we finish the main logic.
+ */
