@@ -100,7 +100,7 @@
 
     <!-- Sidebar -->
     <div [class.col-4]="!hide" [class.hidden]="hide"
-         style="background: #e1f6fd; padding: 1rem">
+         style="background: #efefef; padding: 1rem">
 
         <div class="row">
             <div class="col-6">
@@ -120,13 +120,12 @@
         <div class="row">
             <div class="col-6">
                 <div class="form-group post-meta">
-                    <label>状态</label>
-                    <select class="form-control form-control-sm custom-select"
-                            name="st" [ngModel]="(entity$ | async)?.status"
-                            (ngModelChange)="update('status', $event)">
-                        <option *ngFor="let status of entityStates"
-                                [value]="status">{{ zh[status] }}</option>
-                    </select>
+                    <mat-select placeholder="状态" [ngModel]="(entity$ | async)?.status" name="st"
+                               (ngModelChange)="update('status', $event)">
+                        <mat-option *ngFor="let status of entityStates" [value]="status">
+                            {{ zh[status] }}
+                        </mat-option>
+                    </mat-select>
                 </div>
             </div>
 
@@ -188,6 +187,7 @@
         </div>
 
         <!-- Topic location, category, topic, topic [product/topic/post] series etc -->
+        <h2>Use material chips to replace tags</h2>
         <entity-attr-cloud [isTopic]="true"
                            [categories]="(entity$ | async)?.categories"
                            [location]="(entity$ | async)?.location"

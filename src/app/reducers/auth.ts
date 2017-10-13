@@ -69,17 +69,17 @@ export function authReducer(state = initialState, action: auth.Actions | any): A
                         [domain.key]: {start: 0, end: 0, delta: 0} });
                 }, {});
 
-            return {
+            return Object.assign({}, state, {
                 failure: false,
                 token: token,
                 jwt: jwtDecode(token),
                 key: keys[0],
                 img_server: undefined,
                 keys: [...keys],
-                domains: Object.assign({}, domainEntities),
+                domains:  domainEntities,
                 latencies: latencyEntities,
                 users: state.users
-            };
+            });
         }
 
         // Set the latencies start to current msecond for all domains

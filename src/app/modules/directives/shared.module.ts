@@ -38,6 +38,8 @@ import { SearchBox }                 from './search-box';
 import { DateFilterComponent }       from './date-filter.component';
 import { ImageUploader }             from './image-uploader';
 
+import { MaterialModule }            from '../../material.module';
+
 
 export const COMPONENTS = [
     RightPanel,
@@ -79,6 +81,7 @@ export const COMPONENTS = [
         RouterModule ,
         FroalaEditorModule,
         FroalaViewModule,
+        MaterialModule,
     ],
     declarations: COMPONENTS,
     exports: [
@@ -88,6 +91,7 @@ export const COMPONENTS = [
         FroalaViewModule,
         CommonModule,
         FormsModule,
+        MaterialModule,
 
         ...COMPONENTS
     ]

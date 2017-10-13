@@ -2,6 +2,7 @@ import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule }    from '@angular/http';
 import { Title }         from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StoreModule }  from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -54,6 +55,10 @@ import { DatepickerModule }             from 'ngx-bootstrap';
 import { TimepickerModule }             from 'ngx-bootstrap';
 import { TabsetConfig }                 from 'ngx-bootstrap';
 
+//import { MaterialModule }    from './material.module';
+
+
+
 /* Debug tools */
 /*
 import { StoreLogMonitorModule } from '@ngrx/store-log-monitor';
@@ -80,6 +85,9 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
         AttachmentModule,
         MigrationModule,
         SettingModule,
+
+        BrowserAnimationsModule,
+
         SharedModule.forRoot(),
 
         BsDropdownModule.forRoot(),
