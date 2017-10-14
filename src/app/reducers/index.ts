@@ -530,6 +530,30 @@ export function getCurEntity(etype: string) {
     }
 }
 
+export const getCurNewPost = createSelector(getPostsState, fromEntities.getCurNewEntity);
+export const getCurNewPage = createSelector(getPagesState, fromEntities.getCurNewEntity);
+export const getCurNewOffer = createSelector(getOffersState, fromEntities.getCurNewEntity);
+export const getCurNewTopic = createSelector(getTopicsState, fromEntities.getCurNewEntity);
+export const getCurNewPlace = createSelector(getPlacesState, fromEntities.getCurNewEntity);
+export const getCurNewAd = createSelector(getAdsState, fromEntities.getCurNewEntity);
+export const getCurNewEmail = createSelector(getEmailsState, fromEntities.getCurNewEntity);
+export const getCurNewAttach = createSelector(getAttachsState, fromEntities.getCurNewEntity);
+export const getCurNewComment = createSelector(getCommentsState, fromEntities.getCurNewEntity);
+export function getCurNewEntity(etype: string) {
+    switch(etype) {
+        case ENTITY.POST: return getCurNewPost;
+        case ENTITY.PAGE: return getCurNewPage;
+        case ENTITY.OFFER: return getCurNewOffer;
+        case ENTITY.TOPIC: return getCurNewTopic;
+        case ENTITY.PLACE:     return getCurNewPlace;
+        case ENTITY.ADVERTISE: return getCurNewAd;
+        case ENTITY.NEWSLETTER: return getCurNewEmail;
+        case ENTITY.ATTACHMENT: return getCurNewAttach;
+        case ENTITY.COMMENT: return getCurNewComment;
+        default: console.error("REDUCER EXCEPTION!");
+    }
+}
+
 export const getAuthor = (posts: EntitiesState, id: number) => posts.entities[id] && posts.entities[id].author;
 export const getCurPostAuthor = createSelector(getPostsState, getCurPostId, getAuthor);
 export const getCurPageAuthor = createSelector(getPagesState, getCurPageId, getAuthor);

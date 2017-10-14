@@ -24,7 +24,7 @@ import { zh_CN }             from '../../localization';
 import { EntityParams }      from "../../models/entity";
 
 import {
-    getCurEntity,
+    getCurNewEntity,
     getEntitiesCurPage,
     getPaginator,
     getIdsCurPage
@@ -55,7 +55,7 @@ export class TopicPage extends EntityPage
         this.offers$ = this.store.select(getEntitiesCurPage(ENTITY.OFFER));
         this.offerPager$ = this.store.select(getPaginator(ENTITY.OFFER));
         this.offerIds$ = this.store.select(getIdsCurPage(ENTITY.OFFER));
-        this.newOffer$ = this.store.select(getCurEntity(ENTITY.OFFER));
+        this.newOffer$ = this.store.select(getCurNewEntity(ENTITY.OFFER));
     }
 
     get zh() { return zh_CN.cms; } // Localization

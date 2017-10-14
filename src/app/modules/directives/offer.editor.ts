@@ -7,7 +7,9 @@ import { EventEmitter }  from '@angular/core';
 import { FormControl }   from '@angular/forms';
 import { ChangeDetectionStrategy } from '@angular/core';
 
-import { Entity } from "../../models";
+import { Entity, ENTITY_STATES } from "../../models";
+import { zh_CN } from '../../localization';
+import { getMySQLDateGMT } from '../../helper';
 
 @Component({
     selector: 'offer-editor',
@@ -27,6 +29,9 @@ export class OfferEditor
     }
     get offer(): Entity { return this._offer; }
 
+    // When saving new offer, topic id will be attached as relationship
+    @Input() topicId: number;
+
     // Update existing offer/Save newly created offer
     @Output() save = new EventEmitter();
     // Remove existing offer from topic
@@ -42,16 +47,35 @@ export class OfferEditor
             this.dirtyMask.push(key);
     }
 
+    // Edit date attribute, convert date into MySQL date format
+    modifyDate(key: string, value: any, start: boolean) {
+        let date;
+        if (start) date = getMySQLDateGMT(value, true);
+        else date = getMySQLDateGMT(value, false);
+
+        this.modify(key, date);
+    }
+
     get isDirty() { return this.dirtyMask.length; }
 
     get isNew() { return this._offer.id == 0; }
+
+    get entityStatus() { return ENTITY_STATES; }
+
+    get zh() { return zh_CN.cms; }
 
     // Delete the offer
     onDestroy() { this.destroy.emit(); }
 
     // Update the offer of save newly created offer
     onSave() {
-        if (this.isDirty)
-            this.save.emit({offer: this._offer, mask: this.dirtyMask})
+        if (this.isDirty) {
+            // Set relationship for new offer.
+            if (this.topicId) {
+                this._offer['topics'] = [{id: this.topicId}];
+                this.dirtyMask.push('topics');
+            }
+            this.save.emit({offer: this._offer, mask: this.dirtyMask});
+        }
     }
 }

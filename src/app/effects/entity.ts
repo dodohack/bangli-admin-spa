@@ -56,12 +56,20 @@ export class EntityEffects {
     @Effect() saveEntity$ = this.actions$.ofType(entity.SAVE_ENTITY)
         .map((action: any) => action.payload)
         .switchMap(p => this.saveEntity(p.etype, p.data, p.mask)
-            .map(ret => new entity.SaveEntitySuccess({etype: ret.etype, data: ret.entity}))
+            .mergeMap(ret => {
+                let actions = [
+                    // Delete draft(id=0) entity when save is succeed
+                    new entity.DeleteEntity({etype: ret.etype, data: 0}),
+                    new entity.SaveEntitySuccess({etype: ret.etype, data: ret.entity})
+                ];
+                return Observable.from(actions);
+            })
             .catch(() => Observable.of(new entity.SaveEntityFail()))
         );
 
     @Effect() deleteEntity$ = this.actions$.ofType(entity.DELETE_ENTITY)
         .map((action: any) => action.payload)
+        .filter(p => p.id) // Do not send delete action for id 0 entity
         .switchMap(p => this.deleteEntity(p.etype, p.data)
             .map(ret => new entity.DeleteEntitySuccess())
             .catch(() => Observable.of(new entity.DeleteEntityFail()))
@@ -149,7 +157,7 @@ export class EntityEffects {
     private params2String(params: EntityParams) {
         let s = '?';
         for (let key in params) {
-            if (params.hasOwnProperty(key) && params[key] !== '' && params[key] !== null)
+            if (params.hasOwnProperty(key) && typeof params[key] !== 'undefined' && params[key] !== null)
                 s += key + '=' + params[key] + '&';
         }
 
@@ -185,7 +193,7 @@ export class EntityEffects {
         let uniqueMask = mask.filter((m, idx, self) => idx == self.indexOf(m));
         // Create a new entity with modified attributes only
         let dirtyEntity: any = {id: entity.id};
-        mask.forEach(m => dirtyEntity[m] = entity[m]);
+        uniqueMask.forEach(m => dirtyEntity[m] = entity[m]);
 
         console.log("[AUTO: ", isAuto ,"] SAVING ENTITY: ", dirtyEntity);
 

@@ -75,9 +75,11 @@
                         <mat-expansion-panel-header>
                             <mat-panel-title>新增优惠</mat-panel-title>
                         </mat-expansion-panel-header>
-                            <offer-editor [offer]="newOffer$ | async"
-                                          (save)="saveWithEtype('offer', $event.offer, $event.mask)"
-                                          style="width: 100%"></offer-editor>
+
+                        <offer-editor [offer]="newOffer$ | async"
+                                      [topicId]="id$ | async"
+                                      (save)="saveWithEtype('offer', $event.offer, $event.mask)"
+                                      style="width: 100%"></offer-editor>
                     </mat-expansion-panel>
 
                     <!-- list of existing offers -->

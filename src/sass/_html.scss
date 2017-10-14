@@ -59,9 +59,9 @@ label {
     float: right;
 }
 
-/* Hide a tag */
+/* Hide */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 /* Logo font color */
@@ -100,37 +100,6 @@ input.input-sm {
 .tag-group {
     display: inline-block;
     padding-right: 2rem;
-}
-
-
-.tag-primary-outline {
-    border: 1px solid $tag-primary-bg;
-    color: $tag-primary-bg;
-}
-
-.tag-warning-outline {
-    border: 1px solid $tag-warning-bg;
-    color: $tag-warning-bg;
-}
-
-.tag-danger-outline {
-    border: 1px solid $tag-danger-bg;
-    color: $tag-danger-bg;
-}
-
-.tag-default-outline {
-    border: 1px solid $tag-default-bg;
-    color: $tag-default-bg;
-}
-
-.tag-success-outline {
-    border: 1px solid $tag-success-bg;
-    color: $tag-success-bg;
-}
-
-.tag-info-outline {
-    border: 1px solid $tag-info-bg;
-    color: $tag-info-bg;
 }
 
 /* Test activated anchor via routerLinkActive directive */

@@ -333,6 +333,10 @@ function entitiesReducer (etype: string,
 
         // Create a new entity, use id '0' as placeholder id
         case entity.NEW_ENTITY: {
+
+            // There is already have a new entity created and not saved yet.
+            if (state.idsEditing[0] === 0) return state;
+
             const user = action.payload.data;
 
             let newUser: any = {id: user.id, text: user.display_name};
@@ -362,6 +366,9 @@ function entitiesReducer (etype: string,
         // Delete an entity by id
         case entity.DELETE_ENTITY: {
             let id = action.payload.data;
+
+            // Can't find the entity to delete.
+            if (state.idsTotal.indexOf(id) === -1) return state;
 
             let idx = state.idsTotal.indexOf(id);
             let newIdsTotal = [...state.idsTotal.slice(0,idx), ...state.idsTotal.slice(idx+1)];
@@ -649,6 +656,11 @@ export const getCurEntityId = (state: EntitiesState) => state.idsEditing[0];
 export const getCurEntity = (state: EntitiesState) => state.entities[state.idsEditing[0]];
 
 /**
+ * Return current created new entity(id = 0)
+ */
+export const getCurNewEntity = (state: EntitiesState) => state.idsEditing[0] == 0 && state.entities[state.idsEditing[0]];
+
+/**
  * Return an array of entites of given ids
  * Use getEntitiesObject instead
  */
@@ -657,7 +669,7 @@ export const getCurEntity = (state: EntitiesState) => state.entities[state.idsEd
 /**
  * Return an array of entity ids of current page
  */
-export const getIdsCurPage = (state: EntitiesState) => state.idsCurPage;
+export const getIdsCurPage = (state: EntitiesState) => state.idsCurPage.filter(id => id != 0);
 
 /**
  * Return an array of entity ids of this is in editing mode

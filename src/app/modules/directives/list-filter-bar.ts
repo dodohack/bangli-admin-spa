@@ -11,6 +11,7 @@ import { Channel }     from '../../models';
 import { Category }    from '../../models';
 import { Brand }       from '../../models';
 import { ENTITY }      from '../../models';
+import { getMySQLDateGMT, getDisplayDateGMT } from '../../helper';
 
 @Component({
     selector: 'list-filter-bar',
@@ -85,54 +86,22 @@ export class ListFilterBar implements OnInit, OnDestroy {
         this.filterBrand  = params['brand'] || '';
         this.filterDateType  = params['datetype'] || '';
         let dateFrom = params['datefrom'] || Date.now();
-        this._filterDateFrom = this.getMySQLDateGMT(dateFrom, true);
-        this._filterDisplayDateFrom = this.getDisplayDateGMT(dateFrom, true);
+        this._filterDateFrom = getMySQLDateGMT(dateFrom, true);
+        this._filterDisplayDateFrom = getDisplayDateGMT(dateFrom, true);
         let dateTo   = params['dateto'] || Date.now();
-        this._filterDateTo   = this.getMySQLDateGMT(dateTo, false);
-        this._filterDisplayDateTo = this.getDisplayDateGMT(dateTo, false);
-    }
-
-    GMT(value) {
-        let d = new Date(value);
-        let offset = d.getTimezoneOffset() / 60;
-        // Patch user timezone offset, so we can get the GMT
-        d.setHours(d.getHours() - offset);
-        return d;
-    }
-
-    /**
-     * Return MySQL compatible date in GMT
-     * We set from date start from 00:00:00 of the day and to date end with
-     * 23:59:59 of the day.
-     */
-    getMySQLDateGMT(value, isDateFrom: boolean) {
-        let d = this.GMT(value);
-        if (isDateFrom)
-            return d.toISOString().slice(0,10) + ' 00:00:00';
-        else
-            return d.toISOString().slice(0,10) + ' 23:59:59';
-    }
-
-    /**
-     * Return ECMA compatible date format
-     */
-    getDisplayDateGMT(value, isDateFrom: boolean) {
-        let d = this.GMT(value);
-        if (isDateFrom)
-            return d.toISOString().slice(0,10) + 'T00:00:00';
-        else
-            return d.toISOString().slice(0,10) + 'T23:59:59';
+        this._filterDateTo   = getMySQLDateGMT(dateTo, false);
+        this._filterDisplayDateTo = getDisplayDateGMT(dateTo, false);
     }
 
     get filterDateFrom() { return this._filterDateFrom; }
-    set filterDateFrom(value) { this._filterDateFrom = this.getMySQLDateGMT(value, true); }
+    set filterDateFrom(value) { this._filterDateFrom = getMySQLDateGMT(value, true); }
     get filterDateTo() { return this._filterDateTo; }
-    set filterDateTo(value) { this._filterDateTo = this.getMySQLDateGMT(value, false); }
+    set filterDateTo(value) { this._filterDateTo = getMySQLDateGMT(value, false); }
 
     get filterDisplayDateFrom() { return this._filterDisplayDateFrom; }
-    set filterDisplayDateFrom(value) { this._filterDisplayDateFrom = this.getDisplayDateGMT(value, true); }
+    set filterDisplayDateFrom(value) { this._filterDisplayDateFrom = getDisplayDateGMT(value, true); }
     get filterDisplayDateTo() { return this._filterDisplayDateTo; }
-    set filterDisplayDateTo(value) { this._filterDisplayDateTo = this.getDisplayDateGMT(value, false); }
+    set filterDisplayDateTo(value) { this._filterDisplayDateTo = getDisplayDateGMT(value, false); }
 
     /**
      * Submit the filter
