@@ -31,6 +31,12 @@ export class EntityPermalinkEdit implements OnInit, OnDestroy {
     @Output() affIdChange        = new EventEmitter();
     @Output() affPlatformChange   = new EventEmitter();
 
+    platforms = [
+        {key: "AWIN", name: "Affiliate Window"},
+        {key: "LINK", name: "Linkshare"},
+        {key: "WEBG", name: "Webgain"}
+    ];
+
     ngOnInit() {
         // Limit the rate of event emitted by input box
         this.sub1 = this.webControl.valueChanges.debounceTime(1000)
@@ -56,4 +62,5 @@ export class EntityPermalinkEdit implements OnInit, OnDestroy {
         this.sub3.unsubscribe();
         this.sub4.unsubscribe();
     }
+
 }

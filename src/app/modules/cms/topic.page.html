@@ -8,25 +8,18 @@
                     (cancelEdit)="cancelSave()">
 </editor-page-header>
 
-<div class="row" style="padding: 1rem;">
-    <div class="col-auto mr-auto">
-        <button type="button"
-                class="btn btn-sm btn-secondary"
-                (click)="showGallery(galleryModal)">
-            媒体库
-        </button>
-    </div>
+<div style="display: flex; justify-content: space-between; margin-bottom: 1rem">
+    <button mat-raised-button (click)="showGallery(galleryModal)">
+        媒体库
+    </button>
 
-    <div class="col-auto">
-        <button class="btn btn-sm btn-secondary" (click)="hide = !hide">
-            <ng-template [ngIf]="!hide">隐藏侧栏</ng-template>
-            <ng-template [ngIf]="hide">显示侧栏</ng-template>
-        </button>
-    </div>
+    <button mat-raised-button (click)="hide = !hide">
+        <ng-template [ngIf]="!hide">隐藏侧栏</ng-template>
+        <ng-template [ngIf]="hide">显示侧栏</ng-template>
+    </button>
 </div>
 
 <div class="row">
-
 
     <!-- Main area -->
     <div [class.col-8]="!hide" [class.col-12]="hide">
@@ -52,50 +45,56 @@
                                (affPlatformChange)="update('aff_platform', $event)">
         </entity-permalink-edit>
 
-        <tabset>
-            <tab heading="专题内容">
+        <mat-tab-group  [selectedIndex]="tabIdx" (selectedIndexChange)="loadOffers($event)">
+
+            <!-- Content area -->
+            <mat-tab label="专题内容">
                 <div [froalaEditor]="froalaOptions" [(froalaModel)]="content"></div>
-            </tab>
-            <tab [heading]="'优惠 (' + (entity$ | async)?.offers_count + ')'"
-                 (select)="loadOffers()">
-                <div class="row">
-                    <div class="col-6">
-                        <button class="btn btn-success"
-                                (click)="newEntityWithEtype('offer', profile)">
-                            新建优惠
-                        </button>
-                    </div>
-                    <div class="col-6">
-                        <button class="btn btn-danger">删除所有优惠</button>
-                    </div>
+            </mat-tab>
+
+            <!-- Topic's offers -->
+            <mat-tab [label]="'优惠 (' + (entity$ | async)?.offers_count + ')'">
+                <div style="padding: 1rem; display: flex; justify-content: space-around;">
+
+                    <button mat-raised-button color="primary"
+                            (click)="newEntityWithEtype('offer', profile)">
+                        新建优惠
+                    </button>
+
+                    <button mat-raised-button (click)="offerExpanded=!offerExpanded">
+                        <span *ngIf="offerExpanded">收起优惠</span>
+                        <span *ngIf="!offerExpanded">展开优惠</span>
+                    </button>
+
+                    <button mat-raised-button>删除所有优惠</button>
                 </div>
 
-                <!-- New offer editor -->
-                <accordion-group isOpen="true" *ngIf="newOffer$ | async">
+                <mat-accordion displayMode="default" multi="true" style="display: block; width: 100%">
+                    <!-- new offer -->
+                    <mat-expansion-panel *ngIf="newOffer$ | async">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>新增优惠</mat-panel-title>
+                        </mat-expansion-panel-header>
+                            <offer-editor [offer]="newOffer$ | async"
+                                          (save)="saveWithEtype('offer', $event.offer, $event.mask)"
+                                          style="width: 100%"></offer-editor>
+                    </mat-expansion-panel>
 
-                    <div accordion-heading>
-                        新增优惠 <i class="pull-right fa customize-chevron"></i>
-                    </div>
+                    <!-- list of existing offers -->
+                    <mat-expansion-panel *ngFor="let offer of (offers$ | async) let idx=index" [expanded]="offerExpanded">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>优惠 {{ idx+1 }}, 更新日期: {{ offer.updated_at }}, STATUS: {{ offer.status }}</mat-panel-title>
+                        </mat-expansion-panel-header>
 
-                    <offer-editor [offer]="newOffer$ | async"
-                                  (save)="saveWithEtype('offer', $event.offer, $event.mask)"
-                                  style="width: 100%"></offer-editor>
-                </accordion-group>
+                        <offer-editor [offer]="offer"
+                                      (save)="saveWithEtype('offer', $event.offer, $event.mask)"
+                                      (destroy)="destroyWithEtype('offer', offer.id)"
+                                      style="width: 100%"></offer-editor>
+                    </mat-expansion-panel>
+                </mat-accordion>
 
-                <!-- List of offers -->
-                <accordion-group isOpen="true"
-                                 *ngFor="let offer of (offers$ | async) let idx=index">
-                    <div accordion-heading>
-                        优惠 {{ idx+1 }}, 更新日期: {{ offer.updated_at }}, STATUS: {{ offer.status }}<i class="pull-right fa customize-chevron"></i>
-                    </div>
-
-                    <offer-editor [offer]="offer"
-                                  (save)="saveWithEtype('offer', $event.offer, $event.mask)"
-                                  (destroy)="destroyWithEtype('offer', offer.id)"
-                                  style="width: 100%"></offer-editor>
-                </accordion-group>
-            </tab>
-        </tabset>
+            </mat-tab>
+        </mat-tab-group>
     </div>
 
     <!-- Sidebar -->
@@ -183,12 +182,10 @@
             </button>
             -->
 
-            <div *ngIf="(entity$ | async)?.images" style="margin: 5px">
-                <div *ngFor="let img of (entity$ | async)?.images"
-                     style="display: inline-block; max-width: 80px; margin: 5px">
-                    <img [src]="featureImageUrl(img)" style="width: 100%; cursor: pointer"
-                         (click)="detach('images', img)">
-                </div>
+            <div *ngIf="(entity$ | async)?.images?.length" class="thumbnail-container">
+                <img  *ngFor="let img of (entity$ | async)?.images"
+                      [src]="featureImageUrl(img)" class="thumb"
+                      (click)="detach('images', img)">
             </div>
         </div>
 
@@ -227,8 +224,8 @@
 <!-- Right panel, we can trigger a seperate saving individually -->
 <right-panel [width]="'400px'" [isOpen]="openPanel"
              (toggle)="openPanel = !openPanel">
-    <tabset>
-        <tab heading="分类" [active]="tabIdx == 0">
+    <mat-tab-group [selectedIndex]="tabIdx">
+        <mat-tab label="分类">
             <div class="treeview">
                 <category-tree [parentId]="0"
                                [categories]="cmsCategories$ | async"
@@ -236,9 +233,9 @@
                                (checkEvent)="toggleAttr('categories', $event)">
                 </category-tree>
             </div>
-        </tab>
+        </mat-tab>
 
-        <tab heading="相关专题" [active]="tabIdx == 1">
+        <mat-tab label="相关专题">
             <topic-cloud [topicTypes]="cmsTopicTypes$ | async"
                          [topics]="cmsTopics$ | async"
                          [selectedTopics]="(entity$ | async)?.topics"
@@ -246,15 +243,15 @@
                          (attachTopic)="attach('topics', $event)"
                          (detachTopic)="detach('topics', $event)">
             </topic-cloud>
-        </tab>
+        </mat-tab>
 
-        <tab heading="Location" [active]="tabIdx == 2">
+        <mat-tab label="Location">
             <geo-location-cloud [locations]="geoLocations$ | async"
                                 (clickEvent)="update('location', $event)">
             </geo-location-cloud>
-        </tab>
+        </mat-tab>
 
-    </tabset>
+    </mat-tab-group>
 </right-panel>
 
 <!-- Gallery Modal -->
@@ -262,8 +259,8 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" (click)="galleryModal.hide()">
-                    <i class="fa fa-times"></i>
+                <button mat-icon-button (click)="galleryModal.hide()">
+                    <i class="fa fa-close"></i>
                 </button>
                 <h5 class="modal-title">媒体库</h5>
             </div>

@@ -1,0 +1,13 @@
+.thumbnail-container {
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  border: 1px solid #ddd;
+  flex-wrap: wrap;
+  padding: 1rem 0 0 1rem;
+}
+
+.thumb {
+  cursor: pointer;
+  margin: 0 1rem 1rem 0;
+}

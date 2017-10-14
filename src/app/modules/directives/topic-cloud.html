@@ -3,12 +3,41 @@
            [formControl]="searchControl">
 </div>
 
+<!-- Show topics grouped by topic types -->
+<mat-accordion displayMode="default" multi="true" style="display: block;">
+    <mat-expansion-panel *ngFor="let ttype of topicTypes" [expanded]="isOpen(ttype)">
+        <mat-expansion-panel-header>
+            <mat-panel-title>{{ ttype.name }}</mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <button mat-button>已选中专题：</button>
+        <mat-chip-list *ngIf="selectedTopics">
+            <mat-chip *ngFor="let topic of selectedTopicsOfTType(ttype)"
+                      removable="true" selectable="true"
+                      (remove)="detachTopic.emit(topic)">
+                {{ topic.title }} <i matChipRemove class="fa fa-close"></i>
+            </mat-chip>
+        </mat-chip-list>
+
+        <hr>
+
+        <button mat-button>搜索结果：</button>
+        <mat-chip-list *ngIf="topcis">
+            <mat-chip *ngFor="let topic of topicsOfTType(ttype)"
+                      selectable="true" (click)="attachTopic.emit(topic)">
+                {{ topic.title }}
+            </mat-chip>
+        </mat-chip-list>
+    </mat-expansion-panel>
+</mat-accordion>
+
+<!--
 <accordion>
-    <!-- Show topics grouped by topic types -->
+
     <accordion-group *ngFor="let ttype of topicTypes" [isOpen]="isOpen(ttype)">
 
         <div accordion-heading>
-            {{ ttype.text }} <i class="pull-right fa customize-chevron"></i>
+            {{ ttype.name }} <i class="pull-right fa customize-chevron"></i>
         </div>
 
         <span class="tag tag-warning-outline tag-item">已选中专题:</span>
@@ -16,7 +45,7 @@
             <li *ngFor="let topic of selectedTopicsOfTType(ttype)"
                 class="tag-item tag tag-pill tag-primary-outline"
                 (click)="detachTopic.emit(topic)">
-                {{ topic.text }} x
+                {{ topic.title }} x
             </li>
         </ul>
 
@@ -27,9 +56,10 @@
             <li *ngFor="let topic of topicsOfTType(ttype)"
                 class="tag-item tag tag-pill tag-default-outline"
                 (click)="attachTopic.emit(topic)">
-                {{ topic.text }}
+                {{ topic.title }}
             </li>
         </ul>
 
     </accordion-group>
 </accordion>
+-->

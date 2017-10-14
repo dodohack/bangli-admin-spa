@@ -39,6 +39,12 @@ export class TopicPage extends EntityPage
     offerIds$: Observable<number[]>;
     offerPager$: Observable<any>;
 
+    // If all the offer panel is expanded or not
+    offerExpanded = false;
+
+    // topic content and offers tab index
+    tabIdx = 0;
+
     constructor(public dialog: MatDialog,
                 protected route: ActivatedRoute,
                 protected location: Location,
@@ -63,9 +69,14 @@ export class TopicPage extends EntityPage
      * When offers tab is selected, we will call this function to load offers
      * belongs to this topic
      */
-    loadOffers() {
-        let params: EntityParams = { page: 1, topic: this.entity.guid };
-        this.store.dispatch(new EntityActions.LoadEntities({etype: ENTITY.OFFER, data: params}));
+    loadOffers(idx) {
+        if (idx == 1) {
+            let params: EntityParams = {page: 1, topic: this.entity.guid};
+            this.store.dispatch(new EntityActions.LoadEntities({
+                etype: ENTITY.OFFER,
+                data: params
+            }));
+        }
     }
 
     /*

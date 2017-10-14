@@ -1,77 +1,62 @@
-<div class="row">
+<mat-form-field style="width: 100%">
+    <textarea matInput name="title"
+              placeholder="优惠内容"
+              [ngModel]="offer.title"
+              (ngModelChange)="modify('title', $event)">
+    </textarea>
+</mat-form-field>
 
-    <div class="col-12">
-        <div class="form-group">
-            <label>优惠内容</label>
-            <textarea rows="2" type="text" name="title"
-                      class="form-control"
-                      [ngModel]="offer.title"
-                      (ngModelChange)="modify('title', $event)"></textarea>
-        </div>
-    </div>
+<mat-form-field style="width: 100%">
+    <input matInput name="display_url"
+           placeholder="显示链接"
+           [ngModel]="offer.display_url"
+           (ngModelChange)="modify('display_url', $event)">
+</mat-form-field>
 
-    <div class="col-12">
-        <div class="form-group">
-            <label>显示链接</label>
-            <input type="text" name="display_url" class="form-control"
-                   [ngModel]="offer.display_url"
-                   (ngModelChange)="modify('display_url', $event)">
-        </div>
-    </div>
+<mat-form-field style="width: 100%">
+    <input matInput name="tracking_url"
+           placeholder="返利链接(自动生成）"
+           [ngModel]="offer.tracking_url"
+           (ngModelChange)="modify('tracking_url', $event)">
+</mat-form-field>
 
-    <div class="col-12">
-        <div class="form-group">
-            <label>返利链接(自动根据显示链接生成)</label>
-            <input type="text" name="tracking_url" class="form-control"
-                   [ngModel]="offer.tracking_url"
-                   (ngModelChange)="modify('tracking_url', $event)">
-        </div>
-    </div>
 
-    <div class="col-3">
-        <div class="form-group">
-            <label>开始日期</label>
-            <input text="text" name="starts" class="form-control"
-                   [ngModel]="offer.starts"
-                   (ngModelChange)="modify('starts', $event)">
-        </div>
-    </div>
+<mat-form-field style="width: 25%">
+    <input matInput [matDatepicker]="startPicker" name="starts"
+           placeholder="开始日期"
+           [ngModel]="offer.starts | date: 'yyyy-MM-dd'"
+           (ngModelChange)="modify('starts', $event)">
+    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+    <mat-datepicker #startPicker></mat-datepicker>
+</mat-form-field>
 
-    <div class="col-3">
-        <div class="form-group">
-            <label>结束日期</label>
-            <input text="text" name="ends" class="form-control"
-                   [ngModel]="offer.ends"
-                   (ngModelChange)="modify('ends', $event)">
-        </div>
-    </div>
+<mat-form-field style="width: 25%">
+    <input matInput [matDatepicker]="endPicker" name="ends"
+           placeholder="结束日期"
+           [ngModel]="offer.ends | date: 'yyyy-MM-dd'"
+           (ngModelChange)="modify('ends', $event)">
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+    <mat-datepicker #endPicker></mat-datepicker>
+</mat-form-field>
 
-    <div class="col-3">
-        <div class="form-group">
-            <label>优惠码</label>
-            <input text="text" name="vouchers" class="form-control"
-                   [ngModel]="offer.vouchers"
-                   (ngModelChange)="modify('vouchers', $event)">
-        </div>
-    </div>
+<mat-form-field style="width: 25%">
+    <input matInput name="vouchers"
+           placeholder="优惠码"
+           [ngModel]="offer.vouchers"
+           (ngModelChange)="modify('vouchers', $event)">
+</mat-form-field>
 
-    <div class="col-3">
-        <div class="form-group">
-            <label>推荐优惠</label>
-            <select class="form-control custom-select" name="featured"
-            [ngModel]="offer.featured"
-            (ngModelChange)="modify('featured', $event)">
-                <option value="1">YES</option>
-                <option value="0">NO</option>
-            </select>
-        </div>
-    </div>
+<mat-checkbox style="width: 25%" [ngModel]="offer.featured"
+              (ngModelChange)="modify('featured', $event)">
+    推荐优惠
+</mat-checkbox>
 
-    <div class="col-12">
-        <button class="btn btn-danger"
-                (click)="onDestroy()" [class.hidden]="isNew">删除优惠</button>
-        <button class="btn btn-primary"
-                (click)="onSave()" [class.hidden]="!isDirty">保存优惠</button>
-    </div>
 
+<div style="display: flex; justify-content: space-between;">
+    <button mat-raised-button color="warn"
+            (click)="onDestroy()" *ngIf="!isNew">删除优惠</button>
+    <button mat-raised-button color="primary"
+            (click)="onSave()" *ngIf="isDirty">保存优惠</button>
 </div>
+
+

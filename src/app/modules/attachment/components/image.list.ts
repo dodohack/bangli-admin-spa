@@ -86,6 +86,7 @@ export class ImageList extends EntityList
     setFeatureImage() {
         for (let i = 0; i < this.indexes.length; i++)
             this.setFeatureImageEvent.emit(this.entities[i]);
+        this.cancelImage();
     }
 
     // Add image to the content of current editing entity, this is done by
@@ -99,6 +100,7 @@ export class ImageList extends EntityList
         }
 
         this.insertImageEvent.emit(ret);
+        this.cancelImage();
     }
 }
 

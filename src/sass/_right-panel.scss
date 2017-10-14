@@ -40,6 +40,19 @@
     }
   }
 
+  // Overwrite material mat-tab min-width: 160px
+  .mat-tab-label {
+    min-width: 60px !important;
+  }
+
+  .mat-expansion-panel {
+    margin: 0 5px;
+
+    &:last-child {
+      margin-bottom: 1rem;
+    }
+  }
+
   .panel-content,
   .tab-content {
     background: white;
@@ -57,7 +70,7 @@
   }
 
   .filter-wrapper {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 }
 

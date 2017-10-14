@@ -1,46 +1,31 @@
 <div class="row post-meta-row">
     <div class="col-4">
-        <div class="form-group post-meta">
-            <label>官网地址</label>
-            <input class="form-control form-control-sm"
-                   name="website" [ngModel]="website"
-                   [formControl]="webControl"/>
-        </div>
+        <mat-form-field style="width: 100%">
+            <input matInput name="website" [ngModel]="website"
+                   placeholder="官网地址" [formControl]="webControl"/>
+        </mat-form-field>
     </div>
 
     <div class="col-4">
-        <div class="form-group post-meta">
-            <label>返利链接</label>
-            <input class="form-control form-control-sm"
-                   name="affUrl" [ngModel]="affiliateUrl"
-                   [formControl]="affControl"/>
-        </div>
+        <mat-form-field style="width: 100%">
+            <input matInput name="affUrl" [ngModel]="affiliateUrl"
+                   placeholder="返利链接" [formControl]="affControl"/>
+        </mat-form-field>
     </div>
 
     <div class="col-2">
-        <div class="form-group post-meta">
-            <label>返利平台</label>
-            <select class="form-control form-control-sm custom-select"
-                    name="affPlatform" [ngModel]="affPlatform"
-                    [formControl]="affPfControl">
-                <option value="AWIN">Affiliate Window</option>
-                <option value="LINK">Linkshare</option>
-                <option value="WEBG">Webgain</option>
-            </select>
-            <!--
-            <input class="form-control form-control-sm"
-                   name="affPlatform" [ngModel]="affPlatform"
-                   [formControl]="affPfControl"/>
-            -->
-        </div>
+        <mat-form-field style="width: 100%">
+            <mat-select placeholder="返利平台" name="affPlatform"
+                        [ngModel]="affPlatform" [formControl]="affPfControl">
+                <mat-option *ngFor="let p of platforms" [value]="p.key">{{ p.name }}</mat-option>
+            </mat-select>
+        </mat-form-field>
     </div>
 
     <div class="col-2">
-        <div class="form-group post-meta">
-            <label>返利平台ID</label>
-            <input class="form-control form-control-sm"
-                   name="affId" [ngModel]="affId"
-                   [formControl]="affIdControl"/>
-        </div>
+        <mat-form-field style="width: 100%">
+            <input matInput name="affId" [ngModel]="affId"
+                   placeholder="返利平台ID" [formControl]="affIdControl"/>
+        </mat-form-field>
     </div>
 </div>
