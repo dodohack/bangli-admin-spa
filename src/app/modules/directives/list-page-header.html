@@ -7,44 +7,42 @@
         <a *ngFor="let ch of cmsChannels"
            [routerLink]="['/', slug, 'channel', ch.slug]"
            class="channel-title" routerLinkActive="active">
-            <h4>{{ ch.text }}</h4>
+            <h4>{{ ch.name }}</h4>
         </a>
     </div>
 </div>
 
 <!-- header -->
-<div class="page-header">
-    <h1 class="title">
-        <span *ngIf="curChannelSlug">{{ zh[curChannelSlug] }}频道{{ name }}</span>
-        <span *ngIf="!curChannelSlug">所有{{ name }}</span>
+<div class="row justify-content-between">
+    <div class="col-4">
+        <h1 class="title">
+            <span *ngIf="curChannelSlug">{{ zh[curChannelSlug] }}频道{{ name }}</span>
+            <span *ngIf="!curChannelSlug">所有{{ name }}</span>
+        </h1>
+    </div>
 
-        <a *ngIf="!inPageEdit"
-           class="page-title-action btn btn-sm btn-outline-info"
+    <div class="col-8">
+        <a mat-raised-button *ngIf="!inPageEdit"
            [routerLink]="['/', slug, 'new']">新建{{ name }}</a>
 
-        <a *ngIf="inPageEdit"
-           class="page-title-action btn btn-sm btn-outline-info"
+        <a mat-raised-button *ngIf="inPageEdit"
            (click)="newEntityEvent.emit()">新建{{ name }}</a>
 
-        <a *ngIf="isPageless"
-           class="page-title-action btn btn-sm btn-outline-secondary"
-           (click)="togglePagelessEvent.emit()">模式:无限加载</a>
+        <a mat-raised-button
+           (click)="togglePagelessEvent.emit()">
+            <span *ngIf="isPageless">模式:无限加载</span>
+            <span *ngIf="!isPageless">模式:分页加载</span>
+        </a>
 
-        <a *ngIf="!isPageless"
-           class="page-title-action btn btn-sm btn-outline-secondary"
-           (click)="togglePagelessEvent.emit()">模式:分页加载</a>
-
-        <a class="page-title-action btn btn-sm btn-outline-info float-right"
-           [routerLink]="['/setting']">系统设置</a>
-
-        <button class="page-title-action btn btn-sm btn-outline-info float-right">详简切换</button>
-    </h1>
+        <a mat-raised-button [routerLink]="['/setting']">系统设置</a>
+        <button mat-raised-button>详简切换</button>
+    </div>
 </div>
 
 <!-- navbar and search box, only show navbar for those has statistics loaded -->
-<nav class="navbar page-sub-menu">
+<div style="display: flex; justify-content: space-between">
+    <!-- Entity status navbar -->
     <ul class="nav navbar-nav" *ngIf="!curChannelSlug && statuses">
-        <!-- Entity status navbar -->
         <li *ngFor="let status of statuses.actual" class="nav-item">
             <a class="nav-link" [routerLink]="['/', slug, 'page', 1, 'status', status.status]"
                routerLinkActive="active">
@@ -54,4 +52,4 @@
     </ul>
 
     <search-box [slug]="slug" [loading]="loading"></search-box>
-</nav>
+</div>

@@ -42,16 +42,9 @@ export class ListFilterBar implements OnInit, OnDestroy {
     filterCat: string;
     filterBrand: string;
     filterDateType: string;
-    // MySQL date format is different from ECMA standard, we use filterDisplayDate
-    // for displaying in the HTML, and use filterDate for MySQL. This fixes
-    // the bug in Safari browser.
-    _filterDateFrom: string;
-    _filterDateTo: string;
-    _filterDisplayDateFrom: string;
-    _filterDisplayDateTo: string;
+    filterDateFrom: string;
+    filterDateTo: string;
 
-    // Datapicker of entity filtering is hidden by default
-    dpHidden = true;
 
     subParams: any;
     subQParams: any;
@@ -86,22 +79,12 @@ export class ListFilterBar implements OnInit, OnDestroy {
         this.filterBrand  = params['brand'] || '';
         this.filterDateType  = params['datetype'] || '';
         let dateFrom = params['datefrom'] || Date.now();
-        this._filterDateFrom = getMySQLDateGMT(dateFrom, true);
-        this._filterDisplayDateFrom = getDisplayDateGMT(dateFrom, true);
+        this.filterDateFrom = getMySQLDateGMT(dateFrom, true);
         let dateTo   = params['dateto'] || Date.now();
-        this._filterDateTo   = getMySQLDateGMT(dateTo, false);
-        this._filterDisplayDateTo = getDisplayDateGMT(dateTo, false);
+        this.filterDateTo   = getMySQLDateGMT(dateTo, false);
     }
 
-    get filterDateFrom() { return this._filterDateFrom; }
-    set filterDateFrom(value) { this._filterDateFrom = getMySQLDateGMT(value, true); }
-    get filterDateTo() { return this._filterDateTo; }
-    set filterDateTo(value) { this._filterDateTo = getMySQLDateGMT(value, false); }
-
-    get filterDisplayDateFrom() { return this._filterDisplayDateFrom; }
-    set filterDisplayDateFrom(value) { this._filterDisplayDateFrom = getDisplayDateGMT(value, true); }
-    get filterDisplayDateTo() { return this._filterDisplayDateTo; }
-    set filterDisplayDateTo(value) { this._filterDisplayDateTo = getDisplayDateGMT(value, false); }
+    MySQLDate(value: string, start: boolean) { return getMySQLDateGMT(value, start); }
 
     /**
      * Submit the filter

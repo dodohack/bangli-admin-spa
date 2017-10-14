@@ -77,15 +77,15 @@
             <td>
                 <!-- editor is always an author -->
                 <span *ngIf="entity.editor">
-                    编辑: {{ entity.editor.text }}
+                    编辑: {{ entity.editor.display_name }}
                 </span>
                 <div *ngIf="entity.author">
-                    作者: {{ entity.author.text }}
+                    作者: {{ entity.author.display_name }}
                 </div>
             </td>
 
             <td>
-                <span *ngFor="let cat of entity.categories">{{ cat.text }}, </span>
+                <span *ngFor="let cat of entity.categories">{{ cat.name }}, </span>
             </td>
             <td>
                 <span *ngIf="isPost">{{ entity.published_at }}</span>
