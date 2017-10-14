@@ -76,7 +76,8 @@
                             <mat-panel-title>新增优惠</mat-panel-title>
                         </mat-expansion-panel-header>
 
-                        <offer-editor [offer]="newOffer$ | async"
+                        <offer-editor *ngIf="newOffer$ | async"
+                                      [offer]="newOffer$ | async"
                                       [topicId]="id$ | async"
                                       (save)="saveWithEtype('offer', $event.offer, $event.mask)"
                                       style="width: 100%"></offer-editor>
@@ -85,7 +86,7 @@
                     <!-- list of existing offers -->
                     <mat-expansion-panel *ngFor="let offer of (offers$ | async) let idx=index" [expanded]="offerExpanded">
                         <mat-expansion-panel-header>
-                            <mat-panel-title>优惠 {{ idx+1 }}, 更新日期: {{ offer.updated_at }}, STATUS: {{ offer.status }}</mat-panel-title>
+                            <mat-panel-title>优惠 {{ idx+1 }}, 更新日期: {{ offer.updated_at }}, {{ zh[offer.status] }}</mat-panel-title>
                         </mat-expansion-panel-header>
 
                         <offer-editor [offer]="offer"

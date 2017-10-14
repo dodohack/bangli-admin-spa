@@ -197,8 +197,9 @@ export class EntityEffects {
 
         console.log("[AUTO: ", isAuto ,"] SAVING ENTITY: ", dirtyEntity);
 
-        // Change entity status from 'unsaved' to 'draft'.
-        if (this.isNewEntity(entity))  dirtyEntity.status = 'draft';
+        // Change new entity status from 'unsaved' to 'draft'
+        if (this.isNewEntity(entity) && dirtyEntity.status == 'unsaved')
+            dirtyEntity.status = 'draft';
 
         let body = JSON.stringify(dirtyEntity);
         let options = new RequestOptions({ headers: this.headers });

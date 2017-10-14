@@ -542,6 +542,7 @@ function entitiesReducer (etype: string,
 
         // Auto save entity to API server, but do not save reversions
         case entity.AUTO_SAVE:
+        // TODO: for SAVE_ENTITY, should we save a copy of entity to the store?
         case entity.SAVE_ENTITY: {
             /*
             let entity = action.payload.data;
