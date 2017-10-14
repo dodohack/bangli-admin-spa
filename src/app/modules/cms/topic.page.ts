@@ -12,6 +12,7 @@ import { Location }          from '@angular/common';
 import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from "rxjs";
+import { MatDialog }         from '@angular/material';
 
 import { EntityPage }        from '../base/entity.page';
 import { Entity }            from '../../models';
@@ -28,6 +29,7 @@ import {
     getPaginator,
     getIdsCurPage
 } from '../../reducers';
+import {ImageListDialog} from "../attachment/components/image.list";
 
 @Component({ templateUrl: './topic.page.html' })
 export class TopicPage extends EntityPage
@@ -37,7 +39,8 @@ export class TopicPage extends EntityPage
     offerIds$: Observable<number[]>;
     offerPager$: Observable<any>;
 
-    constructor(protected route: ActivatedRoute,
+    constructor(public dialog: MatDialog,
+                protected route: ActivatedRoute,
                 protected location: Location,
                 protected store: Store<AppState>,
                 protected router: Router) {
@@ -61,8 +64,21 @@ export class TopicPage extends EntityPage
      * belongs to this topic
      */
     loadOffers() {
-        let params: EntityParams = new EntityParams();
-        params.topic = this.entity.guid;
+        let params: EntityParams = { page: 1, topic: this.entity.guid };
         this.store.dispatch(new EntityActions.LoadEntities({etype: ENTITY.OFFER, data: params}));
     }
+
+    /*
+    openGalleryDialog(etype, baseResUrl, entities, selectedEntities,
+                      idsCurPage, embeddedEditor) {
+        this.dialog.open(ImageListDialog, {data: {
+            etype: etype,
+            baseResUrl: baseResUrl,
+            entities: entities,
+            selectedEntiteis: selectedEntities,
+            idsCurPage: idsCurPage,
+            embeddedEditor: embeddedEditor
+        }});
+    }
+    */
 }

@@ -1,7 +1,7 @@
 /**
  * This is the definition domain type 
  */
-export class Domain {
+export interface Domain {
     id: number;
     key: string;
     name: string;
@@ -13,7 +13,7 @@ export class Domain {
 
 
 /* Decoded JWT payload */
-export class JwtPayload {
+export interface JwtPayload {
     iss: string;
     iat: number;
     exp: number;

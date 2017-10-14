@@ -1,4 +1,4 @@
-export class Activity {
+export interface Activity {
     id: number;
     content_type: string;
     content_id: number;

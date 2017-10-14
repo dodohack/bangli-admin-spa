@@ -71,7 +71,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     params: any;
 
     // Gallery modal image list parameters
-    galleryParams: EntityParams = new EntityParams;
+    galleryParams: EntityParams;
     
     froalaModel: string; // A temp storage for all content modified by froala
     key: string;         // Index key of current editing content name
@@ -287,20 +287,20 @@ export abstract class EntityPage implements OnInit, OnDestroy
      */
     featureImageUrl(img) {
         let thumbs = JSON.parse(img.thumbnail);
-        if (thumbs.hasProperty('thumb-avatar'))
+        if (thumbs && thumbs.hasProperty('thumb-avatar'))
             return this.cache.img_server + img.thumb_path +
                 thumbs['thumb-avatar'].file;
         else
-            return null;
+            return 'http://via.placeholder.com/80x80?text=thumbs';
     }
 
     /**
      * Get featured thumbnail image with thumbnail name
      */
     thumbnailUrl(img, name: string) {
-        let $thumb = JSON.parse(img.thumbnail)
-        if ($thumb && $thumb.hasOwnProperty(name))
-            return this.cache.img_server + img.thumb_path + $thumb[name].file;
+        let thumb = JSON.parse(img.thumbnail)
+        if (thumb && thumb.hasOwnProperty(name))
+            return this.cache.img_server + img.thumb_path + thumb[name].file;
         else
             return '';
     }
@@ -404,7 +404,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
      * Popup gallery modal and dispatch an action to load images
      */
     showGallery(gallery: any) {
-        this.galleryParams.cur_page = 1;
+        this.galleryParams = { page: 1 };
         this.store.dispatch(
             new EntityActions.LoadEntitiesOnScroll(
                 {etype: ENTITY.ATTACHMENT, data: this.galleryParams}));
@@ -415,7 +415,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
      * Load next page images to the popup gallery
      */
     loadMoreImages() {
-        this.galleryParams.cur_page++;
+        this.galleryParams = { page: this.galleryParams.page + 1 };
         this.store.dispatch(
             new EntityActions.LoadEntitiesOnScroll(
                 {etype: ENTITY.ATTACHMENT, data: this.galleryParams}));

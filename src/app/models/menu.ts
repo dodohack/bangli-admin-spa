@@ -22,17 +22,17 @@ export const SIDEBAR_MENUS = [
 ];
 
 /* customized menus on sidebar/topbar */
-export class Menu {
-    constructor(public slug: string,
-                public name: string,
-                public url?: string,
-                public sort?: number,
-                public icon_style?: string,
-                public style?: string) {}
+export interface Menu {
+    slug: string;
+    name: string;
+    url?: string;
+    sort?: number;
+    icon_style?: string;
+    style?: string;
 }
 
 // Frontend menu data structure
-export class FeMenu {
+export interface FeMenu {
     id: number;
     parent_id: number; // Parent menu id, we use menu with parent_id 0 as menu
                        // selector, each type of menu has 1 menu with parent_id = 0,

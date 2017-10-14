@@ -14,7 +14,7 @@ import { zh_CN } from '../../localization';
 export class FastEditPostFormComponent implements AfterContentInit {
 
     /* An temporary post holds common part of bulk editing posts */
-    tempPost = new Post();
+    tempPost: Post;
 
     /* Post information needs to modify, optional */
     @Input()

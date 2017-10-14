@@ -19,5 +19,5 @@ export class RegisterForm
     @Output() register = new EventEmitter();
 
     /* Just a form data */
-    user = new AuthUser;
+    user: AuthUser;
 }

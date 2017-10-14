@@ -335,15 +335,15 @@ function entitiesReducer (etype: string,
         case entity.NEW_ENTITY: {
             const user = action.payload.data;
 
-            let newEntity = new Entity;
             let newUser: any = {id: user.id, text: user.display_name};
-
-            newEntity.id        = 0;
-            newEntity.status    = 'unsaved';
-            newEntity.author_id = user.id;
-            newEntity.author    = newUser;
-            newEntity.editor_id = user.id;
-            newEntity.editor    = newUser;
+            let newEntity: Entity = {
+                id: 0,
+                status: 'unsaved',
+                author_id: user.id,
+                author: newUser,
+                editor_id: user.id,
+                editor: newUser,
+            };
 
             return Object.assign({}, state, {
                 idsTotal:   [...state.idsTotal, newEntity.id],

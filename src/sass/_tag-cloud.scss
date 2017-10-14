@@ -1,8 +1,14 @@
 
 /* includes selected categories, tags and topics */
 
+.cms-tags {
+  width: 100%;
+}
+
 .cms-tag-group {
   margin-bottom: 0.5rem;
+  display: flex;
+  border-bottom: 1px solid #ddd;
 }
 
 .tag-cloud {

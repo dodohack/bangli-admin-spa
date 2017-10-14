@@ -40,7 +40,7 @@ export class LocationsPage implements OnInit, OnDestroy
     }
 
     onAdd() {
-        this.location = new GeoLocation;
+        //this.location;
         this.actionType = 'add';
         this.modalEdit.show();
     }

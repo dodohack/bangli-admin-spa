@@ -4,7 +4,7 @@
  * Huluwa domain includes: product, wiki
  */
     
-export class Channel {
+export interface Channel {
     id: number;
     text: string;  // Same as name name. for ng2-select only
     slug: string;

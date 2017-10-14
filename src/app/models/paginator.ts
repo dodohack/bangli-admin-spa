@@ -3,7 +3,7 @@
  * defined at server side
  */
 
-export class Paginator {
+export interface Paginator {
     total: number; /* Total items */
     count: number; /* Number of items of current page */
     cur_page: number;  /* Current page index */

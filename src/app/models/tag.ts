@@ -2,7 +2,7 @@
  * This is the definition of a common tag model
  */
 
-export class Tag {
+export interface Tag {
     id: number;
     channel_id: number;
     slug: string;

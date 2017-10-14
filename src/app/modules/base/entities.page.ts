@@ -190,20 +190,20 @@ export class EntitiesPage implements OnInit, OnDestroy
     setupEntityParams(params) {
         this.params = params;
 
-        this.entityParams = new EntityParams(
-            +this.params['page'],
-            this.params['channel'],
-            this.params['status'],
-            this.params['author'],
-            this.params['editor'],
-            this.params['category'],
-            this.params['topic'],
-            this.params['brand'],
-            this.params['datetype'],
-            this.params['datefrom'],
-            this.params['dateto'],
-            this.params['query']
-        );
+        this.entityParams = {
+            page: + this.params['page'],
+            channel: this.params['channel'],
+            status: this.params['status'],
+            author: this.params['author'],
+            editor: this.params['editor'],
+            category: this.params['category'],
+            topic: this.params['topic'],
+            brand: this.params['brand'],
+            datetype: this.params['datetype'],
+            datefrom: this.params['datefrom'],
+            dateto: this.params['dateto'],
+            query: this.params['query']
+        };
     }
 
     get channelId() { 

@@ -18,7 +18,7 @@
 
             <!-- category name with post/topic/offer count belongs to it -->
             <label [attr.for]="cat.id">
-                {{cat.text}} <ng-template [ngIf]="hasChild(cat)">+</ng-template>
+                {{cat.name}} <ng-template [ngIf]="hasChild(cat)">+</ng-template>
             </label>
 
             <category-tree *ngIf="hasChild(cat)"

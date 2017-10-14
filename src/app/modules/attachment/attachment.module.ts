@@ -6,17 +6,19 @@ import { SharedModule }     from '../directives/shared.module';
 
 import { routing }      from './routing';
 
-import { ImageList }      from './components/image.list';
+import { ImageList,ImageListDialog } from './components/image.list';
 import { GalleriesPage }  from './galleries.page';
 
 @NgModule({
     imports: [ SharedModule, routing ],
     declarations: [
         ImageList,
+        ImageListDialog,
         GalleriesPage
     ],
     exports: [
         ImageList,
+        ImageListDialog,
         GalleriesPage
     ]
 })

@@ -5,56 +5,52 @@
 
             <div class="cms-tags">
                 <div class="cms-tag-group">
-                    <span class="tag tag-warning-outline tag-item"
-                          (click)="toggle.emit(0)">文章分类:</span>
-                    <ul class="tag-cloud">
-                        <li *ngFor="let cat of categories"
-                            class="tag tag-pill tag-primary-outline tag-item"
-                            (click)="detachCat.emit(cat)">
-                            {{ cat.text }} x
-                        </li>
-                    </ul>
+                    <button mat-button (click)="toggle.emit(0)">文章分类:</button>
+                    <mat-chip-list>
+                        <mat-chip *ngFor="let cat of categories"
+                                  removable="true" selectable="true"
+                                  (remove)="detachCat.emit(cat)">
+                            {{ cat.name }} <i matChipRemove class="fa fa-close"></i>
+                        </mat-chip>
+                    </mat-chip-list>
                 </div>
 
                 <div class="cms-tag-group" *ngIf="!isTopic">
-                    <span class="tag tag-warning-outline tag-item"
-                          (click)="toggle.emit(1)">专题:</span>
-                    <ul class="tag-cloud">
-                        <li *ngFor="let topic of topics"
-                            class="tag tag-pill tag-primary-outline tag-item"
-                            (click)="detachTopic.emit(topic)">
-                            {{ topic.text }} x
-                        </li>
-                    </ul>
+                    <button mat-button (click)="toggle.emit(1)">专题:</button>
+                    <mat-chip-list>
+                        <mat-chip *ngFor="let topic of topics"
+                                  removable="true" selectable="true"
+                                  (remove)="detachTopic.emit(topic)">
+                            {{ topic.name}} <i matChipRemove class="fa fa-close"></i>
+                        </mat-chip>
+                    </mat-chip-list>
                 </div>
 
                 <div class="cms-tag-group">
-                    <span class="tag tag-warning-outline tag-item"
-                          (click)="toggle.emit(2)">Location:</span>
-                    <ul class="tag-cloud">
-                        <li *ngIf="location"
-                            class="tag tag-pill tag-primary-outline tag-item"
-                            (click)="updateLocation.emit(null)">
-                            {{ location.text }} x
-                        </li>
-                        <li *ngIf="!location"
-                            class="tag tag-pill tag-primary-outline tag-item">
+                    <button mat-button (click)="toggle.emit(2)">地理位置:</button>
+                    <mat-chip-list>
+                        <mat-chip *ngIf="location"
+                                  removable="true" selectable="true"
+                                  (remove)="updateLocation.emit(null)">
+                            {{ location.name }} <i matChipRemove class="fa fa-close"></i>
+                        </mat-chip>
+                        <mat-chip *ngIf="!location">
                             everywhere
-                        </li>
-                    </ul>
+                        </mat-chip>
+                    </mat-chip-list>
                 </div>
 
                 <ng-template [ngIf]="isTopic">
                     <div class="cms-tag-group" *ngFor="let tt of topicTypes">
-                        <span class="tag tag-warning-outline tag-item"
-                              (click)="toggle.emit(1)">{{ tt.text }}:</span>
-                        <ul class="tag-cloud" *ngIf="topics">
-                            <li *ngFor="let t of topicsOfType(tt)"
-                                class="tag tag-pill tag-primary-outline tag-item"
-                                (click)="detachTopic.emit(t)">
-                                {{ t.text }} x
-                            </li>
-                        </ul>
+                        <button mat-button
+                              (click)="toggle.emit(1)">{{ tt.name }}:</button>
+                        <mat-chip-list *ngIf="topics">
+                            <mat-chip *ngFor="let t of topicsOfType(tt)"
+                                      removable="true" selectable="true"
+                                      (remove)="detachTopic.emit(t)">
+                                {{ t.name }} <i matChipRemove class="fa fa-close"></i>
+                            </mat-chip>
+                        </mat-chip-list>
                     </div>
                 </ng-template>
 

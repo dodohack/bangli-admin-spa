@@ -168,23 +168,21 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field>
-            <mat-chip-list #catChipList>
-                <mat-chip *ngFor="let cat of (entity$ | async)?.categories"
-                          removable="true" selectable="true"
-                          (remove)="detach('categories', cat)">{{ cat.name }} <i matChipRemove class="fa fa-lg fa-close"></i></mat-chip>
-                <input placeholder="专题分类(max 2 levels only)"
-                       [matChipInputFor]="catChipList" [matAutocomplete]="autoChips">
-                <mat-autocomplete #autoChips="matAutocomplete" [displayWith]="displayDisplayName">
-                    <mat-option *ngFor="let e of (editors$ | async)" [value]="e">
-                        <span>{{ e.display_name }}</span>
-                    </mat-option>
-                </mat-autocomplete>
-            </mat-chip-list>
-        </mat-form-field>
-
         <div class="form-group">
-            <label>特色图片</label>
+            <button mat-raised-button color="primary" style="width: 100%"
+                    (click)="showGallery(galleryModal)">
+                设置特色图片
+            </button>
+
+            <!-- FIXME: Can't have pipe in arguments
+            <button mat-raised-button color="primary"
+                    (click)="openGalleryDialog(etypeAttachment,
+                    cache.img_server, (images$ | async),
+                    (selectedImages$ | async), (imageIds$ | async), 'true')">
+                设置特色图片
+            </button>
+            -->
+
             <div *ngIf="(entity$ | async)?.images" style="margin: 5px">
                 <div *ngFor="let img of (entity$ | async)?.images"
                      style="display: inline-block; max-width: 80px; margin: 5px">
@@ -192,15 +190,9 @@
                          (click)="detach('images', img)">
                 </div>
             </div>
-            <button type="button"
-                    class="btn btn-primary btn-block"
-                    (click)="showGallery(galleryModal)">
-                设置特色图片
-            </button>
         </div>
 
         <!-- Topic location, category, topic, topic [product/topic/post] series etc -->
-        <h2>Use material chips to replace tags</h2>
         <entity-attr-cloud [isTopic]="true"
                            [categories]="(entity$ | async)?.categories"
                            [location]="(entity$ | async)?.location"
@@ -302,8 +294,8 @@
     </div>
 </div>
 
-
 <div style="display: none">
+    FIXME, TODO:
     专题的专题需要分为几类来选择, 产品的品牌,网站,相关的产品,属于的知识类专题等,
     比如HB维他命C需要分别选择品牌专题: Holland Barrett, 产品系列专题: HB维他命系列,
     以及普通专题: 维他命, (还有网站专题: Holland Barrett网站??)

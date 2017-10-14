@@ -1,14 +1,16 @@
 /**
  * Display a table list of posts/topics/pages
  */
-import { Component }     from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { EntityList }    from '../../base/entity.list';
 
 import { zh_CN } from '../../../localization';
+import {Entity} from "../../../models/entity";
 
 @Component({
     selector: 'image-list',
@@ -99,3 +101,42 @@ export class ImageList extends EntityList
         this.insertImageEvent.emit(ret);
     }
 }
+
+
+@Component({
+    selector: 'image-list-dialog',
+    template: `
+    <h2 mat-dialog-title>媒体库</h2>
+
+    <mat-dialog-content>
+      <image-list [etype]="data.etype"
+      [baseResUrl]="data.baseResUrl"
+      [entities]="data.entities"
+      [selectedEntities]="data.selectedEntities"
+      [idsCurPage]="data.idsCurPage"
+      [embeddedEditor]="data.embeddedEditor"
+      (loadMoreImages)="loadMoreImages.emit($event)"
+      (setFeatureImageEvent)="setFeatureImageEvent.emit($event)"
+      (insertImageEvent)="insertImageEvent.emit($event)"></image-list>
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+      <button mat-raised-button color="primary" mat-dialog-close>关闭</button>
+    </mat-dialog-actions>
+  `
+})
+export class ImageListDialog {
+    //@Input() etype: string;
+    //@Input() baseRelUrl: string;
+    //@Input() entities: Entity[];
+    //@Input() selectedEntities: Entity[];
+    //@Input() idsCurPage: string[];
+    //@Input() embeddedEditor: boolean;
+    @Output() loadMoreImages = new EventEmitter();
+    @Output() setFeatureImageEvent = new EventEmitter();
+    @Output() insertImageEvent = new EventEmitter();
+
+    constructor(public dialogRef: MatDialogRef<ImageListDialog>,
+                @Inject(MAT_DIALOG_DATA) public data: any) {}
+}
+

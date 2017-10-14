@@ -41,7 +41,7 @@ export interface AuthState {
 const initialState: AuthState = {
     failure: true,
     token: undefined,
-    jwt: new JwtPayload,
+    jwt: undefined,
     key: undefined,
     img_server: undefined,
     keys: [],

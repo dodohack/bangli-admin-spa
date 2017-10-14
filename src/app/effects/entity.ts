@@ -141,6 +141,22 @@ export class EntityEffects {
         }
     }
 
+    /**
+     * Convert EntityParams object into API server query string
+     * @param params
+     * @returns {string}
+     */
+    private params2String(params: EntityParams) {
+        let s = '?';
+        for (let key in params) {
+            if (params.hasOwnProperty(key) && params[key] !== '' && params[key] !== null)
+                s += key + '=' + params[key] + '&';
+        }
+
+        // Return the string with last '&' trimmed
+        return s.substring(0, s.length - 1);
+    }
+
     //////////////////////////////////////////////////////////////////////////
     // Network functions
 
@@ -212,7 +228,7 @@ export class EntityEffects {
         if (t === ENTITY.ATTACHMENT) perPage = '60';
 
         let api = this.getApi(t, false)
-            + params.toQueryString()
+            + this.params2String(params)
             + '&etype=' + t
             + '&per_page=' + perPage
             + '&token=' + this.cache.token;

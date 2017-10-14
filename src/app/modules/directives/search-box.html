@@ -1,11 +1,9 @@
 <form class="form-inline float-xs-right">
-    <div class="input-group">
-        <input placeholder="搜索" type="text" class="form-control"
+    <mat-form-field>
+        <input matInput type="text" class="form-control"
                [value]="searchText" [formControl]="searchCtrl">
 
-            <span class="input-group-addon">
-                <i class="fa fa-search fa-fw" [class.fa-search]="!loading"
-                   [class.fa-spinner]="loading" [class.fa-spin]="loading"></i>
-            </span>
-    </div>
+        <i matSuffix class="fa fa-search fa-fw" [class.fa-search]="!loading"
+           [class.fa-spinner]="loading" [class.fa-spin]="loading"></i>
+    </mat-form-field>
 </form>

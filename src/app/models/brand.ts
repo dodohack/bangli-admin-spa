@@ -1,7 +1,7 @@
 /**
  * This is model for a product brand
  */
-export class Brand {
+export interface Brand {
     id: number;
     image_id: number;
     slug: string;

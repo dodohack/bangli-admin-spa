@@ -2,7 +2,7 @@
  * This is the definition of a common category structure
  */
 
-export class Category {
+export interface Category {
     id: number;
     parent_id: number;
     channel_id: number;
