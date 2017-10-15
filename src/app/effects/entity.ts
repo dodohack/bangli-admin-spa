@@ -75,6 +75,12 @@ export class EntityEffects {
             .catch(() => Observable.of(new entity.DeleteEntityFail()))
         );
 
+    @Effect() batchDeleteEntities$ = this.actions$.ofType(entity.BATCH_DELETE_ENTITIES)
+        .map((action: any) => action.payload)
+        .switchMap(p => this.deleteEntities(p.etype, p.data)
+            .map(ret => new entity.BatchDeleteEntitiesSuccess())
+            .catch(() => Observable.of(new entity.BatchDeleteEntitiesFail())));
+
     @Effect() autoSave$ = this.actions$.ofType(entity.AUTO_SAVE)
         .map((action: any) => action.payload)
         .switchMap(p => this.autoSaveEntity(p.etype, p.data, p.mask)
@@ -266,15 +272,16 @@ export class EntityEffects {
     }
 
     /**
-     * Delete entities, return deleted entities
+     * Delete entities, return deleted entities,
+     * delete request can't have a body, so ids are passing as parameters
+     * @param etype - entity type
+     * @param ids   - entity ids to be deleted
      */
-    protected deleteEntities(t: string, entities: any): Observable<any> {
-        let body = JSON.stringify(entities);
+    protected deleteEntities(etype: string, ids: number[]): Observable<any> {
         let options = new RequestOptions({ headers: this.headers });
-        let api = this.getApi(t, true) + '?etype=' + t;
+        let api = this.getApi(etype, true) +
+            '?etype=' + etype + '&ids=' + ids.join(',');
 
-        // TODO: http.delete can't have a body
-        console.error("Unimplemented: deletePosts");
         return this.http.delete(api, options).map(res => res.json());
     }
 

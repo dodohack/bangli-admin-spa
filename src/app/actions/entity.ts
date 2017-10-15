@@ -28,6 +28,8 @@ export const LOAD_ENTITIES_ON_SCROLL_FAIL = '[Entity] Load Entities On Scroll Fa
 export const BATCH_EDIT_ENTITIES = '[Entity] Batch Edit Entities';
 export const CANCEL_BATCH_EDIT_ENTITIES = '[Entity] Cancel Batch Edit Entities';
 export const BATCH_DELETE_ENTITIES = '[Entity] Batch Delete Entities';
+export const BATCH_DELETE_ENTITIES_SUCCESS = '[Entity] Batch Delete Entities Success';
+export const BATCH_DELETE_ENTITIES_FAIL = '[Entity] Batch Delete Entities Fail';
 export const BATCH_OFFLINE_EDIT_ENTITIES = '[Entity] Batch Offline Edit Entities';
 export const BATCH_LOCK_ENTITIES = '[Entity] Batch Lock Entities';
 export const BATCH_EDIT_PREVIOUS_ENTITY = '[Entity] Batch Edit Previous Entity';
@@ -104,6 +106,16 @@ export class BatchDeleteEntities implements Action {
     readonly type = BATCH_DELETE_ENTITIES;
     // Payload - entities' ids
     constructor(public payload: {etype: string, data: number[]}) {}
+}
+
+export class BatchDeleteEntitiesSuccess implements Action {
+    readonly type = BATCH_DELETE_ENTITIES_SUCCESS;
+    //constructor(public payload: any) {}
+}
+
+export class BatchDeleteEntitiesFail implements Action {
+    readonly type = BATCH_DELETE_ENTITIES_FAIL;
+    //constructor(public payload: any) {}
 }
 
 // DEPRECATED
@@ -248,6 +260,8 @@ export type Actions = Search
 | BatchEditEntities
 | CancelBatchEditEntities
 | BatchDeleteEntities
+| BatchDeleteEntitiesSuccess
+| BatchDeleteEntitiesFail
 | BatchOfflineEditEntities
 | BatchLockEntities
 | BatchEditPreviousEntity
