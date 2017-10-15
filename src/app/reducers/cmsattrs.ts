@@ -91,44 +91,44 @@ export function cmsReducer(state = initialState, action: attr.Actions | any): Cm
                 post_topic_cats = action.payload.post_topic_cats;
                 */
 
-            let post_statuses: PostState[] = [];
-            if (payload.post_statuses && payload.post_statuses.length > 0) {
-                let total = payload.post_statuses
-                    .map(state => state.count)
-                    .reduce((total, count) => total + count);
-                post_statuses = [...payload.post_statuses,
-                    {state: 'all', count: total}];
-            }
-
             let post_creative_types: CreativeType[] = [];
             if (payload.post_creative_types && payload.post_creative_types.length > 0)
                 post_creative_types = payload.post_creative_types;
 
-            let topic_statuses: PostState[] = [];
-            if (payload.topic_statuses && payload.topic_statuses.length > 0) {
-                let total = payload.topic_statuses
+            let post_statuses: PostState[] = [];
+            if (payload.post_status && payload.post_status.length > 0) {
+                let total = payload.post_status
                     .map(state => state.count)
                     .reduce((total, count) => total + count);
-                topic_statuses = [...payload.topic_statuses,
-                    {state: 'all', count: total}];
+                post_statuses = [...payload.post_status,
+                    {status: 'all', count: total}];
+            }
+
+            let topic_statuses: PostState[] = [];
+            if (payload.topic_status && payload.topic_status.length > 0) {
+                let total = payload.topic_status
+                    .map(state => state.count)
+                    .reduce((total, count) => total + count);
+                topic_statuses = [...payload.topic_status,
+                    {status: 'all', count: total}];
             }
 
             let page_statuses: PostState[] = [];
-            if (payload.page_statuses && payload.page_statuses.length > 0) {
-                let total = payload.page_statuses
+            if (payload.page_status && payload.page_status.length > 0) {
+                let total = payload.page_status
                     .map(state => state.count)
                     .reduce((total, count) => total + count);
-                page_statuses = [...payload.page_statuses,
-                    {state: 'all', count: total}];
+                page_statuses = [...payload.page_status,
+                    {status: 'all', count: total}];
             }
 
             let offer_statuses: PostState[] = [];
-            if (payload.offer_statuses && payload.offer_statuses.length > 0) {
-                let total = payload.offer_statuses
+            if (payload.offer_status && payload.offer_status.length > 0) {
+                let total = payload.offer_status
                     .map(state => state.count)
                     .reduce((total, count) => total + count);
-                offer_statuses = [...payload.offer_statuses,
-                    {state: 'all', count: total}];
+                offer_statuses = [...payload.offer_status,
+                    {status: 'all', count: total}];
             }
 
             return {

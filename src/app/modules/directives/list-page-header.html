@@ -42,14 +42,13 @@
 <!-- navbar and search box, only show navbar for those has statistics loaded -->
 <div style="display: flex; justify-content: space-between">
     <!-- Entity status navbar -->
-    <ul class="nav navbar-nav" *ngIf="!curChannelSlug && statuses">
-        <li *ngFor="let status of statuses.actual" class="nav-item">
-            <a class="nav-link" [routerLink]="['/', slug, 'page', 1, 'status', status.status]"
-               routerLinkActive="active">
-                {{ zh[status.status] }}<span> ({{ status.count }})</span>
-            </a>
-        </li>
-    </ul>
+    <div *ngIf="!curChannelSlug && statuses">
+        <a *ngFor="let status of statuses.actual"
+           [routerLink]="['/', slug, 'page', 1, 'status', status.status]"
+           routerLinkActive="active">
+            {{ zh[status.status] }}<span> ({{ status.count }})</span>
+        </a>
+    </div>
 
     <search-box [slug]="slug" [loading]="loading"></search-box>
 </div>
