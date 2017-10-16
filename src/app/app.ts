@@ -34,7 +34,7 @@ export class App implements OnInit, OnDestroy
     subPing: any;
     subKey: any;
     subDU: any;
-    subIsLoggedInDomain: any;
+    subLogin: any;
 
     isPingEnabled = true;
     isLoggedIn    = false;
@@ -50,7 +50,7 @@ export class App implements OnInit, OnDestroy
     fail$:         Observable<boolean>;
     latencies$:    Observable<any>;
     isDashboardUser$: Observable<boolean>; // Per domain permission from auth server
-    isLoggedInDomain$:Observable<boolean>; // Current domain user profile
+    isLoggedInDomain$: Observable<boolean>;  // If current user can login domain
 
     constructor(private viewContainerRef: ViewContainerRef,
                 private store: Store<AppState>,
@@ -68,9 +68,10 @@ export class App implements OnInit, OnDestroy
         this.isDashboardUser$  = this.store.select(isDashboardUser);
         this.isLoggedInDomain$ = this.store.select(hasCurProfile);
 
-        // FIXME: Disabled all permission checks.
+        // FIXME: Disabled all permission checks, probably we don't need much
+        // at client side if we already have them on server side.
         this.listenOnBasicPermission();
-        // FIXME: loadDomainData may return before LoginDomain data return.
+        // NOTE: loadDomainData may return before LoginDomain data return.
         this.loadDomainData();
         //this.dispatchPing();
     }
@@ -78,7 +79,7 @@ export class App implements OnInit, OnDestroy
     ngOnDestroy() {
         this.subDU.unsubscribe();
         this.subKey.unsubscribe();
-        this.subIsLoggedInDomain.unsubscribe();
+        this.subLogin.unsubscribe();
         this.subPing.unsubscribe();
     }
 
@@ -95,16 +96,18 @@ export class App implements OnInit, OnDestroy
             }
         });
 
-        // FIXME: We have fixed the domain key here!!
+        // FIXME: This LoginDomain action is fired no matter if we have a valid
+        // token or not.
+        // FIXME: We have fixed the domain key here.
         // Load domain user profile if we haven't load it
-        this.subIsLoggedInDomain = this.isLoggedInDomain$
-            .take(1).filter(b => !b)
+        this.subLogin = this.isLoggedInDomain$
+            .take(1).filter(x => !x)
             .subscribe(x => this.store.dispatch(new AuthActions.LoginDomain('bangli_uk')));
     }
 
     // Load domain data when loginDomain success
     loadDomainData() {
-        this.subKey = this.curDomainKey$.filter(key => key != undefined && key != '')
+        this.subKey = this.curDomainKey$.filter(key => key != '')
             .subscribe(key => {
                 this.store.dispatch(new SysAttrActions.LoadAll(key));
                 this.store.dispatch(new CmsAttrActions.LoadAll(key));

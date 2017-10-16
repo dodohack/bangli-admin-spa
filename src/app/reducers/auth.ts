@@ -2,8 +2,6 @@
  * Authentication related reducer
  */
 import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
-import { Action }     from '@ngrx/store';
 
 import { Domain }      from '../models';
 import { JwtPayload }  from '../models';
@@ -122,12 +120,10 @@ export function authReducer(state = initialState, action: auth.Actions | any): A
             // start
             if (action.payload)
                 return Object.assign({}, state, {
-                    failure: true,
                     key: action.payload
                 });
             else
                 return Object.assign({}, state, {
-                    failure: true,
                     key: state.keys[0]
                 });
         }
@@ -175,14 +171,14 @@ export const getDomainLatencies = (state: AuthState) => state.latencies;
 
 export const getProfiles = (state: AuthState) => state.users;
 
-export const getCurDomainKey = (state: AuthState) => state.key;
+export const getCurDomainKey = (state: AuthState) => state.failure ? '' : state.key;
 
-export const getCurDomain = (state: AuthState) => state.domains[state.key];
+export const getCurDomain = (state: AuthState) => state.key && state.domains[state.key];
 
 /**
  * If user profile of current domain is loaded(via AuthActions.loginDomain)
  */
-export const hasCurProfile = (state: AuthState) => typeof state.users[state.key] != 'undefined';
+export const hasCurProfile = (state: AuthState) => state.key && state.users.hasOwnProperty(state.key);
 
 /**
  * Get user profile of current domain
@@ -199,44 +195,11 @@ export const getMyId = (state: AuthState) => hasCurProfile(state) && state.users
  */
 export const getMyRoleName = (state: AuthState) => state.users[state.key].role.name;
 
-/**
- * Check if current user has given role in 'name'
- */
-/*
-export function hasRole(name: string) {
-    return (state$: Observable<AuthState>) => state$.select(auth => {
-
-        if (!auth.users[auth.key]) return false; // Sanity check if user logged in
-
-        if (auth.jwt.spu === 1) return true;
-        else if (name === 'super_user' && auth.jwt.spu !== 1) return false;
-
-        switch (auth.users[auth.key].role.name) {
-            case 'administrator':
-                return true; // always true
-            case 'editor':
-                return name === 'author' || name === 'editor';
-            case 'author':
-                return name === 'author';
-        }
-
-        return false;
-    });
-}
-*/
 
 /**
  * If user token is valid and can manage any domain
  */
-// FIXME: Disabled all authentications, will enable them after business logic
-// FIXME: is fixed.
-export const isDashboardUser = (state: AuthState) => true;
-export const hasAuthorRole = (state: AuthState) => true;
-export const hasEditorRole = (state: AuthState) => true;
-export const hasAdminRole = (state: AuthState) => true;
-export const hasSuperUserRole = (state: AuthState) => true;
 
-/*
 export const isDashboardUser = (state: AuthState) => {
     let now = Math.floor(Date.now()/1000);
     if (state.jwt && state.jwt.exp > now && state.key)
@@ -251,7 +214,6 @@ export const hasAuthorRole = (state: AuthState) => {
     state.users[state.key].role.name === 'editor'         ||
     state.users[state.key].role.name === 'administrator'  ||
     state.jwt.spu === 1));
-
 };
 
 export const hasEditorRole = (state: AuthState) => {
@@ -274,4 +236,4 @@ export const hasSuperUserRole = (state: AuthState) => {
     return (state.jwt && state.jwt.exp > now && state.key &&
     state.jwt.spu === 1);
 };
-*/
+

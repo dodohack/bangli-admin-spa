@@ -159,8 +159,6 @@ export const getMyId = createSelector(getAuthState, fromAuth.getMyId);
 
 export const getMyRoleName = createSelector(getAuthState, fromAuth.getMyRoleName);
 
-// FIXME: Argument to createSelector?
-//export const hasRole = (name: string) => createSelector(getAuthState, fromAuth.hasRole(name));
 
 export const isDashboardUser = createSelector(getAuthState, fromAuth.isDashboardUser);
 

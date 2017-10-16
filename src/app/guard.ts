@@ -34,9 +34,7 @@ export class UnauthGuard implements CanActivate {
         /* TODO: Check if token is valid */
         /* TODO: Reference ngrx-example-app book-exists.ts canActivate */
         /* NOTE: take(1) - only take one object from the observable stream */
-        // FIXME: Enable later!
-        /*
-        return this.auth$.take(1).map(payload => {
+          return this.auth$.take(1).map(payload => {
             if (payload.token) {
                 this.router.navigate(['/dashboard']);
                 return false;
@@ -44,9 +42,7 @@ export class UnauthGuard implements CanActivate {
                 return true;
             }
         });
-        */
-        return true;
-    }
+     }
 }
 
 
@@ -69,8 +65,6 @@ export class BaseGuard implements CanActivate {
 
         /* TODO: Reference ngrx-example-app book-exists.ts canActivate */
         /* NOTE: take(1) - must have, otherwise it doesn't work */
-        // FIXME: Enable later!
-        /*
         return this.auth$.take(1).map(user => {
             if (user.token) {
                 return true;
@@ -79,8 +73,6 @@ export class BaseGuard implements CanActivate {
                 return false;
             }
         });
-        */
-        return true;
 
         /* TODO: We could save state.url as redirect url after login */
     }
@@ -102,9 +94,7 @@ export class EditorGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        // FIXME: Enable this later!
-        //return this.store.select(hasEditorRole).take(1);
-        return true;
+        return this.store.select(hasEditorRole).take(1);
     }
 }
 
@@ -114,8 +104,7 @@ export class AdminGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return true;
-        //return this.store.select(hasAdminRole).take(1);
+        return this.store.select(hasAdminRole).take(1);
     }
 }
 
@@ -125,8 +114,7 @@ export class SuperUserGuard implements CanActivate {
     constructor(private store: Store<AppState>, private router: Router) {}
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return true;
-        //return this.store.select(hasSuperUserRole).take(1);
+        return this.store.select(hasSuperUserRole).take(1);
     }
 }
 
