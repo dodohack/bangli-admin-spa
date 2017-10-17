@@ -5,3 +5,4 @@ public
 .config.ts
 yarn.lock
 package-lock.json
+dist
