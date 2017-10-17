@@ -99,8 +99,8 @@ export class EntityEffects {
 
 
     @Effect() genThumbs$ = this.actions$.ofType(entity.GENERATE_THUMBS)
-        .map((action: any) => action.payload)
-        .switchMap(etype => this.putEntities(etype, [], 'gen-thumb'));
+        .map((action: any) => action.payload.etype)
+        .switchMap(etype => this.putEntities(etype, null, 'gen-thumb=true'));
 
     /**************************************************************************
      * Helper functions
@@ -129,7 +129,7 @@ export class EntityEffects {
                 case ENTITY.COMMENT:
                     return APIS[this.cache.key] + API_PATH.comments;
                 default:
-                    return null;
+                    return APIS[this.cache.key];
             }
         } else {
             switch (t) {
@@ -150,7 +150,7 @@ export class EntityEffects {
                 case ENTITY.COMMENT:
                     return APIS[this.cache.key] + API_PATH.comments_batch;
                 default:
-                    return null;
+                    return APIS[this.cache.key];
             }
         }
     }

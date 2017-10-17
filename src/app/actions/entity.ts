@@ -242,7 +242,7 @@ export class RefreshActivityStatus implements Action {
 }
 
 /**
- * Attachment only
+ * Attachment only: generate thumbnails
  */
 export class GenerateThumbs implements Action {
     readonly type = GENERATE_THUMBS;

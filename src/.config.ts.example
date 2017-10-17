@@ -13,6 +13,6 @@ export const APIS = {
 
 // Base url for image server
 export const IMG_SERVER = {
-    bangli_uk: 'http://localhost:5001',
-    bangli_us: 'http://localhost:5002',
+    bangli_uk: 'http://localhost:5001/',
+    bangli_us: 'http://localhost:5002/',
 };
