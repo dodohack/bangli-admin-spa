@@ -3,7 +3,7 @@
  */
 
 import { Menu } from '../models';
-import * as pref      from '../actions/preference';
+import * as pref from '../actions/preference';
 
 
 export interface PreferenceState {
@@ -14,7 +14,7 @@ export interface PreferenceState {
     menuBackgroundColor: string;
     myTopbarMenus: Menu[];
     mySidebarMenus: Menu[];
-};
+}
 
 const initialState: PreferenceState = {
     isIconSidebar: false,

@@ -19,7 +19,9 @@ export class Topbar {
     @Input() domains: any;
     @Input() curDomainKey: string;
     @Input() jwt: JwtPayload;
-    @Input() pref: PreferenceState;
+    // This is a workaround to fix angular-cli bug:
+    // https://github.com/angular/angular-cli/issues/2034
+    @Input() pref = null as PreferenceState;
     @Input() latencies: any; // App server connectivities
 
     @Output() logout      = new EventEmitter();
