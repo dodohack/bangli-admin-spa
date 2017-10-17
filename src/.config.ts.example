@@ -16,3 +16,10 @@ export const IMG_SERVER = {
     bangli_uk: 'http://localhost:5001/',
     bangli_us: 'http://localhost:5002/',
 };
+
+// A mirror of thumbnails which match the definitions in API server(filesystems.php).
+export const THUMBS = {
+    THUMB_AVATAR: 'thumb-avatar',   // 80 x 80
+    THUMB_GALLERY: 'thumb-gallery', // 160 x 160
+    THUMB_CARD_LG: 'thumb-card-lg', // 320 x 260
+};
