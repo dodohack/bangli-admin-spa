@@ -22,4 +22,5 @@ export const THUMBS = {
     THUMB_AVATAR: 'thumb-avatar',   // 80 x 80
     THUMB_GALLERY: 'thumb-gallery', // 160 x 160
     THUMB_CARD_LG: 'thumb-card-lg', // 320 x 260
+    THUMB_CARD_21: 'thumb-card-21', // 400 x 200
 };

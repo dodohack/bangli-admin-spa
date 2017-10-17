@@ -84,15 +84,17 @@ export class ImageList extends EntityList
 
     setLogoImage() {
         if (this.indexes.length == 1) {
-            let uri = this.entities[0].path + this.entities[0].filename;
+            let img = this.entities[this.indexes[0]];
+            let uri = img.path + img.filename;
             this.setLogoEvent.emit(uri);
+            this.cancelImage();
         }
     }
 
     // Set feature image[s]
     setFeatureImage() {
         for (let i = 0; i < this.indexes.length; i++)
-            this.setFeatureImageEvent.emit(this.entities[i]);
+            this.setFeatureImageEvent.emit(this.entities[this.indexes[i]]);
         this.cancelImage();
     }
 
