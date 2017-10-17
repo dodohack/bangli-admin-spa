@@ -187,7 +187,7 @@
 
             <div *ngIf="(entity$ | async)?.images?.length" class="thumbnail-container">
                 <img  *ngFor="let img of (entity$ | async)?.images"
-                      [src]="featureImageUrl(img)" class="thumb"
+                      [src]="thumbnailUrl(img, false)" class="thumb"
                       (click)="detach('images', img)">
             </div>
         </div>

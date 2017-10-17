@@ -11,6 +11,7 @@ import { EntityList }    from '../../base/entity.list';
 
 import { zh_CN } from '../../../localization';
 import {Entity} from "../../../models/entity";
+import {THUMBS} from "../../../../.config";
 
 @Component({
     selector: 'image-list',
@@ -50,10 +51,9 @@ export class ImageList extends EntityList
     }
 
     thumbUrl(entity) {
-        if (entity.thumbnail) {
-            let thumb = JSON.parse(entity.thumbnail)['thumb-avatar'];
-            if (thumb)
-                return this.baseResUrl + entity.thumb_path + thumb.file;
+        let thumbs = JSON.parse(entity.thumbnail);
+        if (thumbs && thumbs.hasOwnProperty(THUMBS.THUMB_AVATAR)) {
+            return this.baseResUrl + entity.thumb_path +thumbs[THUMBS.THUMB_AVATAR].file;
         } else {
             // TODO: Replace with a placeholder image on our server.
             return 'http://via.placeholder.com/80x80?text=thumbnail';

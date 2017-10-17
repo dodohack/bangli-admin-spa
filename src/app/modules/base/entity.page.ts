@@ -34,6 +34,8 @@ import { Domain }            from '../../models';
 
 import { GMT }               from '../../helper';
 
+import { THUMBS }            from '../../../.config';
+
 /**
  * NOTE: We use these functions to get a fine grain elements from
  * EntitiesState, so that when some elements get updated, we do not
@@ -283,26 +285,18 @@ export abstract class EntityPage implements OnInit, OnDestroy
     }
 
     /**
-     * Get featured thumbnail image, thumbnail key 'thumb-avatar'.
+     * Get featured thumbnail image
      */
-    featureImageUrl(img) {
-        let thumbs = JSON.parse(img.thumbnail);
-        if (thumbs && thumbs.hasProperty('thumb-avatar'))
-            return this.cache.img_server + img.thumb_path +
-                thumbs['thumb-avatar'].file;
+    thumbnailUrl(img, isLarge = false) {
+        // FIXME: Can we improve ChangeDetection here?
+        // console.log("This is called hundreds of times");
+        let key = THUMBS.THUMB_AVATAR;
+        if (isLarge) key = THUMBS.THUMB_CARD_LG;
+        let thumbs = JSON.parse(img.thumbnail)
+        if (thumbs && thumbs.hasOwnProperty(key))
+            return this.cache.img_server + img.thumb_path + thumbs[key].file;
         else
             return 'http://via.placeholder.com/80x80?text=thumbs';
-    }
-
-    /**
-     * Get featured thumbnail image with thumbnail name
-     */
-    thumbnailUrl(img, name: string) {
-        let thumb = JSON.parse(img.thumbnail)
-        if (thumb && thumb.hasOwnProperty(name))
-            return this.cache.img_server + img.thumb_path + thumb[name].file;
-        else
-            return '';
     }
 
     // Search topics from API server

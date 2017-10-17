@@ -156,7 +156,7 @@
         <div class="form-group">
             <label>特色图片</label>
             <div *ngIf="entity?.image" style="margin: 15px;">
-                <img [src]="thumbnailUrl(entity.image, 'thumb-card-lg')">
+                <img [src]="thumbnailUrl(entity.image, true)">
             </div>
             <button type="button"
                     class="btn btn-primary btn-block"

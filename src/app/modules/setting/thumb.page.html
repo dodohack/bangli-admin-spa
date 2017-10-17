@@ -10,6 +10,6 @@
 
 <h5>生成此站点的缩略图</h5>
 
-<button mat-raised-button color="primary" (click)="generateThumbs()">生成缩略图</button>
+<button mat-raised-button color="primary" (click)="generateThumbs()" [disabled]="isRunning$ | async">生成缩略图</button>
 
 <p><small style="color: red">*注：此操作会删除已经产生的所有缩略图</small></p>

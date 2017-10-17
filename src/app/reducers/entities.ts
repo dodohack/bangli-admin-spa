@@ -553,6 +553,15 @@ function entitiesReducer (etype: string,
             return Object.assign({}, state, {isLoading:  true});
         }
 
+        case entity.GENERATE_THUMBS: {
+            return Object.assign({}, state, {isLoading:  true});
+        }
+
+        case entity.GENERATE_THUMBS_SUCCESS:
+        case entity.GENERATE_THUMBS_FAIL: {
+            return Object.assign({}, state, {isLoading:  false});
+        }
+
         default:
             return state;
     }
