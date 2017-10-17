@@ -82,6 +82,13 @@ export class ImageList extends EntityList
     // Cancel selection
     cancelImage() { this.indexes = [];  }
 
+    setLogoImage() {
+        if (this.indexes.length == 1) {
+            let uri = this.entities[0].path + this.entities[0].filename;
+            this.setLogoEvent.emit(uri);
+        }
+    }
+
     // Set feature image[s]
     setFeatureImage() {
         for (let i = 0; i < this.indexes.length; i++)

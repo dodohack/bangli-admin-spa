@@ -169,6 +169,9 @@ export interface Entity {
 
     brands?: Brand[];
 
+    path?: string;            // Attachment only
+    filename?: string;        // Attachment only
+
     /* This is a fix to froala editor when creating a new post, post.content
      * should be immediate avaiable to it */
     //constructor() {

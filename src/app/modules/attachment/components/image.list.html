@@ -71,6 +71,9 @@
                     (click)="cancelImage()"
                     [disabled]="indexes.length == 0">取消选择</button>
             <button mat-raised-button color="primary"
+                    (click)="setLogoImage()"
+                    [disabled]="indexes.length != 1">设置为Logo</button>
+            <button mat-raised-button color="primary"
                     (click)="setFeatureImage()"
                     [disabled]="indexes.length == 0">设置为特色图片</button>
             <button mat-raised-button color="primary"

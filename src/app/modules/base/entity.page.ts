@@ -299,6 +299,18 @@ export abstract class EntityPage implements OnInit, OnDestroy
             return 'http://via.placeholder.com/80x80?text=thumbs';
     }
 
+    /**
+     * Get image full url
+     * @param uri
+     * @returns {string}
+     */
+    imageUrl(uri: string) {
+        // Do add base address to full image address.
+        if (uri[0] == 'h' && uri[1] == 't')
+            return uri;
+        return this.cache.img_server + uri;
+    }
+
     // Search topics from API server
     searchTopic(topicTypeId: number, text: string) {
         this.store.dispatch(

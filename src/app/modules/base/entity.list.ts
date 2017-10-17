@@ -51,6 +51,8 @@ export class EntityList
     @Output() batchLock = new EventEmitter();
     // Load next page image
     @Output() loadMoreImages = new EventEmitter();
+    // Set topic logo image
+    @Output() setLogoEvent = new EventEmitter();
     // Set feature image of a entity
     @Output() setFeatureImageEvent = new EventEmitter();
     // Add/remove image to/from selected image list
