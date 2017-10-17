@@ -4,3 +4,4 @@ npm-debug.log
 public
 .config.ts
 yarn.lock
+package-lock.json
