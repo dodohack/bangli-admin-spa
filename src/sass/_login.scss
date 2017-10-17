@@ -8,24 +8,12 @@
 }
 
 .login-box {
-  top: 20%;
-  border: 3px solid $light-blue;
-
-  /* Fixed width for font-awesome icon on input group */
-  .input-group-addon {
-    i {
-      width: 18px;
-    }
-
-  }
+  padding: 1rem;
 
   .login-box-row {
     padding: 0.75rem 0;
   }
 
-  /*
-  .fa {
-    margin-top: 0 !important;
-  }
-  */
+  // Make the input to be 100% width
+  mat-form-field { width: 100% }
 }

@@ -52,7 +52,7 @@ export interface User {
 
 /* This is user for Auth server */
 export interface AuthUser {
-    uuid: string;
+    uuid?: string;
     name?: string;
     display_name?: string;
     email?: string;

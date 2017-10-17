@@ -3,7 +3,7 @@
 <div class="center-block login-wrapper">
     <div class="card card-block login-box">
         <div class="login-box-row">
-            <a [routerLink]="['/login']" class="small float-right">登录</a>
+            <a routerLink="/login" class="small float-right">登录</a>
             <h4>注册</h4>
         </div>
 
@@ -26,48 +26,28 @@
         <form class="form-horizontal" role="form" (ngSubmit)="register.emit(user)"
               #registerForm="ngForm">
 
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="fa fa-user"></i>
-                    </span>
-                    <input type="text" class="form-control" required
-                           [(ngModel)]="user.name" name="name" placeholder="用户名">
-                </div>
-            </div>
+            <mat-form-field>
+                <input matInput type="text" [(ngModel)]="user.name"
+                       name="name" placeholder="用户名" required>
+            </mat-form-field>
 
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="fa fa-envelope"></i>
-                    </span>
-                    <input type="email" class="form-control" [(ngModel)]="user.email"
-                           name="email" placeholder="邮箱" required>
-                </div>
-            </div>
+            <mat-form-field>
+                <input matInput type="email" [(ngModel)]="user.email"
+                       name="email" placeholder="邮箱" required>
+            </mat-form-field>
 
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="fa fa-lock"></i>
-                    </span>
-                    <input type="password" class="form-control" [(ngModel)]="user.password"
-                           name="password" placeholder="密码" required>
-                </div>
-            </div>
+            <mat-form-field>
+                <input matInput type="password" [(ngModel)]="user.password"
+                       name="password" placeholder="密码" required>
+            </mat-form-field>
 
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="fa fa-lock"></i>
-                    </span>
-                    <input type="password" class="form-control" [(ngModel)]="user.password_confirmation"
+            <mat-form-field>
+                    <input matInput type="password" [(ngModel)]="user.password_confirmation"
                            name="password_confirmation" placeholder="确认密码" required>
-                </div>
-            </div>
+            </mat-form-field>
 
             <div class="login-box-row">
-                <button type="submit" class="btn btn-block btn-outline-warning"
+                <button mat-raised-button color="primary" type="submit"
                         [disabled]="!registerForm.form.valid">注册</button>
             </div>
 

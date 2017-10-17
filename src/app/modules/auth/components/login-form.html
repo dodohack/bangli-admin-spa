@@ -1,9 +1,11 @@
 <!-- Login page template -->
 <div class="login-wrapper">
     <div class="card card-block login-box">
+        <!--
         <div *ngIf="isLoggedIn" class="alert alert-info">
             你已处于登陆状态，点击<a routerLink="/dashboard">这里</a>进入后台
         </div>
+        -->
 
         <div class="login-box-row">
             <a routerLink="/register" class="small float-right">注册</a>
@@ -23,33 +25,22 @@
         <form class="form-horizontal" role="form" (ngSubmit)="submit()"
               #loginForm="ngForm">
 
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="fa fa-envelope"></i>
-                    </span>
-                    <input type="email" class="form-control" required
-                           [(ngModel)]="email"
-                           name="email" placeholder="邮箱">
-                </div>
-            </div>
+            <mat-form-field>
+                <input matInput type="email" required
+                       [(ngModel)]="email" name="email" placeholder="邮箱">
+            </mat-form-field>
 
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon">
-                        <i class="fa fa-lock"></i>
-                    </span>
-                    <input type="password" class="form-control" required
-                           [(ngModel)]="password" name="password" placeholder="密码">
-                </div>
-            </div>
+            <mat-form-field>
+                <input matInput type="password" required
+                       [(ngModel)]="password" name="password" placeholder="密码">
+            </mat-form-field>
 
             <div class="clearfix login-box-row">
                 <a routerLink="/reset-password" class="small float-right">忘记密码</a>
             </div>
 
             <div class="login-box-row">
-                <button type="submit" class="btn btn-block btn-outline-warning"
+                <button mat-raised-button color="primary" type="submit"
                         [disabled]="!loginForm.form.valid">登录</button>
             </div>
 
@@ -57,5 +48,4 @@
 
     </div>
 
-    <div class="alert alert-info">访问 API_SERVER/admin/migrate/user_stage1 进行第一步数据移植，移植前需要导入wordpress数据库数据以及创建新版数据库</div>
 </div>
