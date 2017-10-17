@@ -100,7 +100,10 @@ export class EntityEffects {
 
     @Effect() genThumbs$ = this.actions$.ofType(entity.GENERATE_THUMBS)
         .map((action: any) => action.payload.etype)
-        .switchMap(etype => this.putEntities(etype, null, 'gen-thumb=true'));
+        .switchMap(etype => this.putEntities(etype, null, 'gen-thumb=true')
+            .map(ret => new entity.GenerateThumbsSuccess())
+            .catch(() => Observable.of(new entity.GenerateThumbsFail()))
+        );
 
     /**************************************************************************
      * Helper functions

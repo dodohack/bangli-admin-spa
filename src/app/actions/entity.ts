@@ -51,7 +51,9 @@ export const ATTACH = '[Entity] Attach Relationship';
 export const DETACH = '[Entity] Detach Relationship';
 export const UPDATE = '[Entity] Update Attribute';
 export const REFRESH_ACTIVITY_STATUS = '[Entity] Refresh Activity Status';
-export const GENERATE_THUMBS = '[Attachment] Generate thumbs';
+export const GENERATE_THUMBS = '[Attachment] Generate Thumbs';
+export const GENERATE_THUMBS_SUCCESS = '[Attachment] Generate Thumbs Success';
+export const GENERATE_THUMBS_FAIL = '[Attachment] Generate Thumbs Fail';
 
 export class Search implements Action {
     readonly type = SEARCH;
@@ -249,6 +251,14 @@ export class GenerateThumbs implements Action {
     constructor(public payload: {etype: string}) {}
 }
 
+export class GenerateThumbsSuccess implements Action {
+    readonly type = GENERATE_THUMBS_SUCCESS;
+}
+
+export class GenerateThumbsFail implements Action {
+    readonly type = GENERATE_THUMBS_FAIL;
+}
+
 export type Actions = Search
 | SearchComplete
 | LoadEntities
@@ -283,5 +293,7 @@ export type Actions = Search
 | Detach
 | Update
 | RefreshActivityStatus
-| GenerateThumbs;
+| GenerateThumbs
+| GenerateThumbsSuccess
+| GenerateThumbsFail;
 
