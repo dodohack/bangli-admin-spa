@@ -35,6 +35,7 @@ export class App implements OnInit, OnDestroy
     subKey: any;
     subDU: any;
     subLogin: any;
+    subFail: any;
 
     isPingEnabled = true;
     isLoggedIn    = false;
@@ -68,53 +69,32 @@ export class App implements OnInit, OnDestroy
         this.isDashboardUser$  = this.store.select(isDashboardUser);
         this.isLoggedInDomain$ = this.store.select(hasCurProfile);
 
-        // FIXME: Disabled all permission checks, probably we don't need much
-        // at client side if we already have them on server side.
-        this.listenOnBasicPermission();
         // NOTE: loadDomainData may return before LoginDomain data return.
         this.loadDomainData();
+
         //this.dispatchPing();
     }
 
     ngOnDestroy() {
-        this.subDU.unsubscribe();
+        //this.subDU.unsubscribe();
         this.subKey.unsubscribe();
-        this.subLogin.unsubscribe();
-        this.subPing.unsubscribe();
+        //this.subLogin.unsubscribe();
+        //this.subPing.unsubscribe();
+        //this.subFail.unsubscribe();
     }
 
-    // Switch state between login and logout state
-    listenOnBasicPermission() {
-        this.subDU = this.isDashboardUser$.subscribe(isDU => {
-            if (isDU) {
-                console.log("Dashboard user is true!");
-                this.isLoggedIn = true;
-            } else {
-                console.log("Dashboard user is false!");
-                this.isLoggedIn = false;
-                this.logout();
-            }
-        });
-
-        // FIXME: This LoginDomain action is fired no matter if we have a valid
-        // token or not.
-        // FIXME: We have fixed the domain key here.
-        // Load domain user profile if we haven't load it
-        this.subLogin = this.isLoggedInDomain$
-            .take(1).filter(x => !x)
-            .subscribe(x => this.store.dispatch(new AuthActions.LoginDomain('bangli_uk')));
-    }
-
-    // Load domain data when loginDomain success
+    // Load domain data when authentication success
     loadDomainData() {
         this.subKey = this.curDomainKey$.filter(key => key != '')
             .subscribe(key => {
+                this.store.dispatch(new AuthActions.LoginDomain(key));
                 this.store.dispatch(new SysAttrActions.LoadAll(key));
                 this.store.dispatch(new CmsAttrActions.LoadAll(key));
             });
     }
 
     // Ping app server in every 5 seconds
+    /*
     dispatchPing() {
         this.subPing = Observable.interval(5000)
             .subscribe(() => {
@@ -122,6 +102,7 @@ export class App implements OnInit, OnDestroy
                     this.store.dispatch(new AuthActions.PingDomains());
             });
     }
+    */
 
     logout() {
         // Kick a logout action to clean app state and cache

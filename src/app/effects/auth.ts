@@ -48,13 +48,11 @@ export class AuthEffects {
     @Effect() loginDomain$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_DOMAIN)
         .switchMap((action: any) => this.loginDomain(action.payload)
             .map(res => {
-                if (this.hasDashboardUserRole(res.user)) {
-                    // Clean previous cache when login domain success
-                    this.cache.clean();
-                    return new AuthA.LoginDomainSuccess(res);
-                } else {
-                    return new AuthA.LoginDomainFailNoPermission();
-                }
+                // Clean previous cache when login domain success
+                this.cache.clean();
+                // We do not check user permission on current domain as server
+                // side will guard it.
+                return new AuthA.LoginDomainSuccess(res);
             })
             .catch(() => Observable.of(new AuthA.LoginDomainFail()))
         );
@@ -179,6 +177,7 @@ export class AuthEffects {
     /**
      * Test a domain user can use dashboard or not
      */
+    /*
     private hasDashboardUserRole(user: User) {
         switch (user.role.name) {
             case 'author':
@@ -189,4 +188,5 @@ export class AuthEffects {
                 return false;
         }
     }
+    */
 }
