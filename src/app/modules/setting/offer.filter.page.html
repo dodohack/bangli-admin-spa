@@ -1,17 +1,35 @@
 <setting-menu></setting-menu>
 
 <h2>自动优惠过滤条件</h2>
+<p>一行一组过滤条件</p>
+
+<h4>按照内容过滤举例</h4>
 <ul>
-    <li>按照内容过滤</li>
-    <li>按照优惠所属商家过滤</li>
-    <li>自动补齐优惠内容</li>
+    <li>^free delivery - 过滤掉以"free delivery"<b>打头</b>的优惠条目</li>
+    <li>free delivery - 过滤掉<b>包含</b>"free delivery"的优惠条目</li>
+    <li>free gift$ - 过滤掉以"free gift"<b>结尾</b>的优惠条目</li>
+    <li>TODO: more MySQL regexp</li>
+</ul>
+
+<h4>按照优惠所属商家过滤</h4>
+<ul>
+    <li>AWIN|1234|Merchant name  - 过滤掉Affiliate Window平台商家ID为1234的所有优惠</li>
+    <li>LINKSHARE|1234|Merchant name  - 过滤掉Linkshare平台商家ID为1234的所有优惠</li>
+    <li>WEBGAIN|1234|Merchant name  - 过滤掉Webgain平台商家ID为1234的所有优惠</li>
+</ul>
+<p color="warn">* 商家名字为可选，为后期方便维护，建议填写商家名字</p>
+
+<h4>自动补齐优惠内容</h4>
+<ul>
+    <li>^[0-9]{2}% off.$|START|全场折扣:|END|散花!  - 匹配内容仅为'15% off.'的优惠，把优惠内容变为'全场折扣：15% off.散花!'， 这里'START'后面的文字会自动添加到前部，'END'后面的文字会自动添加到后面。</li>
 </ul>
 
 <mat-tab-group>
 
-    <mat-tab *ngFor="let filter of (filters$ | async) let idx=index" [label]="filter.name" style="margin-bottom: 1rem;">
+    <mat-tab *ngFor="let filter of (filters$ | async) let idx=index"
+             [label]="filter.name" style="margin-bottom: 1rem;">
         <mat-form-field style="width: 100%">
-            <textarea matInput type="text" name="{{filter.type}}" min-rows="20"
+            <textarea matInput type="text" name="{{filter.type}}" rows="15"
                       [ngModel]="filter.content"
                       (ngModelChange)="contents[filter.type] = $event"></textarea>
         </mat-form-field>

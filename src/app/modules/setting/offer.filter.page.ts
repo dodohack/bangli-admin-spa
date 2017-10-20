@@ -46,7 +46,7 @@ export class OfferFilterPage
      * @returns {boolean}
      */
     isSaveDisabled(type: string, oldContent: string) {
-        if (!this.contents[type]) return true;
+        if (typeof this.contents[type] === 'undefined') return true;
         if (this.contents[type] == oldContent) return true;
         return false;
     }
