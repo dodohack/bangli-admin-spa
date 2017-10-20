@@ -261,7 +261,7 @@ export class EntityEffects {
      * thumbnails etc.
      * @param t        - entity type
      * @param entities - entities to be updated
-     * @param params - attachemnt entity only argument, it is 'gen-thumb' for
+     * @param params - attachment entity only argument, it is 'gen-thumb' for
      *                 regenerating all thumbnails
      */
     protected putEntities(t: string, entities: any,

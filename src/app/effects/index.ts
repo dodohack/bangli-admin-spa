@@ -5,6 +5,7 @@ import { EntityEffects }   from './entity';
 import { CmsAttrEffects }  from './cmsattr';
 import { SysAttrEffects }  from './sysattr';
 import { FeMenuEffects }     from './femenu';
+import { OfferFilterEffects } from './offer.filter';
 
 export {
     AuthEffects,
@@ -13,6 +14,7 @@ export {
     CmsAttrEffects,
     SysAttrEffects,
     FeMenuEffects,
+    OfferFilterEffects,
 };
 
 export default [
@@ -22,4 +24,5 @@ export default [
     CmsAttrEffects,
     SysAttrEffects,
     FeMenuEffects,
+    OfferFilterEffects,
 ];

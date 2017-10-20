@@ -1,0 +1,25 @@
+<setting-menu></setting-menu>
+
+<h2>自动优惠过滤条件</h2>
+<ul>
+    <li>按照内容过滤</li>
+    <li>按照优惠所属商家过滤</li>
+    <li>自动补齐优惠内容</li>
+</ul>
+
+<mat-tab-group>
+
+    <mat-tab *ngFor="let filter of (filters$ | async) let idx=index" [label]="filter.name" style="margin-bottom: 1rem;">
+        <mat-form-field style="width: 100%">
+            <textarea matInput type="text" name="{{filter.type}}" min-rows="20"
+                      [ngModel]="filter.content"
+                      (ngModelChange)="contents[filter.type] = $event"></textarea>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary"
+                [disabled]="isSaveDisabled(filter.type, filter.content)"
+                (click)="save(filter.type)">保存{{filter.name}}</button>
+    </mat-tab>
+
+</mat-tab-group>
+

@@ -12,6 +12,7 @@ import { CmsPage }         from './cms.page';
 import { BbsPage }         from './bbs.page';
 import { FeMenuPage }      from './femenu.page';
 import { ThumbPage }       from './thumb.page';
+import { OfferFilterPage } from './offer.filter.page';
 
 import { SettingMenu }     from './components/menu';
 import { CmsSettingMenu }  from './cms/menu';
@@ -33,6 +34,7 @@ import { ModalEditMenu }   from './components/modal-edit-menu';
         BbsPage,
         FeMenuPage,
         ThumbPage,
+        OfferFilterPage,
 
         CmsSettingMenu,
         CmsCategory,

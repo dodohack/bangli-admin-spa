@@ -32,3 +32,4 @@ export * from './activity';
 export * from './channel';
 export * from './location';
 export * from './keyword';
+export * from './offer.filter';

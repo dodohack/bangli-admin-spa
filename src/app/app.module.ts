@@ -31,6 +31,7 @@ import { EntityEffects }   from './effects';
 import { CmsAttrEffects }  from './effects';
 import { SysAttrEffects }  from './effects';
 import { FeMenuEffects }   from './effects';
+import { OfferFilterEffects } from './effects';
 
 import { SharedModule }    from './modules/directives/shared.module';
 import { AuthModule }      from './modules/auth/auth.module';
@@ -102,7 +103,8 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
             EntityEffects,
             CmsAttrEffects,
             SysAttrEffects,
-            FeMenuEffects
+            FeMenuEffects,
+            OfferFilterEffects
         ]),
         /*
         StoreDevtoolsModule.instrumentStore({

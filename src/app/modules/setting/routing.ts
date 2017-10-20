@@ -9,6 +9,7 @@ import { FeMenuPage }    from './femenu.page';
 import { CmsPage }       from './cms.page';
 import { BbsPage }       from './bbs.page';
 import { ThumbPage }     from './thumb.page';
+import { OfferFilterPage } from './offer.filter.page';
 
 const routes: Routes = [
     {
@@ -27,6 +28,9 @@ const routes: Routes = [
 
             /* Image and thumbnail */
             { path: 'thumb', component: ThumbPage, canActivate: [AdminGuard] },
+
+            /* Offer filters etc */
+            { path: 'offer', component: OfferFilterPage, canActivate: [AdminGuard] },
 
             /* Cms setting sub-path */
             {

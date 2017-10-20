@@ -42,6 +42,7 @@ import * as fromPref    from './preference';
 import * as fromCms     from './cmsattrs';
 import * as fromSys     from './sysattrs';
 import * as fromFeMenu  from './femenus';
+import * as fromOFilter from './offer.filters';
 
 import * as fromEntities from './entities';
 import { EntitiesState } from './entities';
@@ -71,6 +72,7 @@ export interface AppState {
     cms:      fromCms.CmsAttrsState;
     sys:      fromSys.SysAttrsState;
     femenu:   fromFeMenu.FeMenusState;
+    offerFilters: fromOFilter.OfferFiltersState;
     posts:    EntitiesState;
     pages:    EntitiesState;
     offers:    EntitiesState;
@@ -91,6 +93,7 @@ export const reducers: ActionReducerMap<AppState> = {
     cms:      fromCms.cmsReducer,
     sys:      fromSys.sysReducer,
     femenu:   fromFeMenu.feMenuReducer,
+    offerFilters: fromOFilter.offerFilterReducer,
     posts:    postsReducer,
     pages:    pagesReducer,
     offers:    offersReducer,
@@ -770,3 +773,11 @@ export const getFeDesktopMenus= createSelector(getFeMenusState, fromFeMenu.getDe
 
 export const getAlert = (state: AppState) => state.alerts;
 export const getPreference = (state: AppState) => state.pref;
+
+
+/*****************************************************************************
+ * Offer filter settings
+ *****************************************************************************/
+export const getOfferFiltersState = (state: AppState) => state.offerFilters;
+
+export const getOfferFilters = createSelector(getOfferFiltersState, fromOFilter.getOfferFilters);

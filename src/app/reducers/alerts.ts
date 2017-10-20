@@ -1,8 +1,6 @@
 /**
  * Global popup alert reducer
  */
-import { Action } from '@ngrx/store';
-
 import { Alert }     from '../models';
 import * as alert    from '../actions/alert';
 
