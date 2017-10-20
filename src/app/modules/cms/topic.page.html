@@ -90,6 +90,7 @@
                         </mat-expansion-panel-header>
 
                         <offer-editor [offer]="offer"
+                                      [topicId]="id$ | async"
                                       (save)="saveWithEtype('offer', $event.offer, $event.mask)"
                                       (destroy)="destroyWithEtype('offer', offer.id)"
                                       style="width: 100%"></offer-editor>

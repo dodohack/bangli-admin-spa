@@ -75,8 +75,7 @@ export class ImageList extends EntityList
 
     // If the image is selected or not
     isSelected(i) {
-        if (this.indexes.indexOf(i) !== -1) return true;
-        return false;
+        return this.indexes.indexOf(i) !== -1;
     }
 
     // Cancel selection

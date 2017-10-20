@@ -70,8 +70,10 @@ export class OfferEditor
     // Update the offer of save newly created offer
     onSave() {
         if (this.isDirty) {
-            // Set relationship for new offer.
+            // Set relationship for offer(both old and new).
             if (this.topicId) {
+                // FIXME: If first save fails and click on save again, bug
+                // will happen here.
                 this._offer['topics'] = [{id: this.topicId}];
                 this.dirtyMask.push('topics');
             }
