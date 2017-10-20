@@ -2,6 +2,10 @@
  * Defines basic style for html tags used by backend
  */
 
+code, kbd, pre, samp {
+    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
 body {
     background:  #eeeeee;
 }
@@ -9,6 +13,15 @@ body {
 label {
     font-size: 90%;
     color: darkgray;
+}
+
+code {
+    background: #fff;
+    padding: 0.2rem;
+    color: #bd4147;
+    border: 1px dashed #ccc;
+    font-size: 90%;
+    min-width: 160px;
 }
 
 .content {
