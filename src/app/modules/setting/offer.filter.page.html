@@ -3,11 +3,11 @@
 <h2>自动优惠过滤条件</h2>
 <p>一行一组过滤条件</p>
 
-<h4>按照内容过滤举例</h4>
+<h4>按照内容过滤</h4>
 <ul>
-    <li><code>^free delivery</code> - 过滤掉以"free delivery"<b>打头</b>的优惠条目</li>
+    <li><code>^free delivery</code> - 过滤掉以"free delivery"<b>打头</b>的优惠条目, 符号<code>^</code>用于匹配字符串开始</li>
     <li><code>free delivery</code> - 过滤掉<b>包含</b>"free delivery"的优惠条目</li>
-    <li><code>free gift$</code> - 过滤掉以"free gift"<b>结尾</b>的优惠条目</li>
+    <li><code>free gift$</code> - 过滤掉以"free gift"<b>结尾</b>的优惠条目，符号<code>$</code>用于匹配字符串结尾</li>
     <li>TODO: more MySQL regexp</li>
 </ul>
 
@@ -21,7 +21,7 @@
 
 <h4>自动补齐优惠内容</h4>
 <ul>
-    <li><code>^[0-9]&#123;2&#125;% off.$|START|全场折扣:|END|散花!</code>  - 匹配内容仅为'15% off.'的优惠，把优惠内容变为'全场折扣：15% off.散花!'， 这里'START'后面的文字会自动添加到前部，'END'后面的文字会自动添加到后面。</li>
+    <li><code>^[0-9]&#123;2&#125;% off.$|START|全场折扣:|END|散花!</code>  - 匹配类似内容仅为'15% off.'的优惠， <code>[0-9]&#123;2&#125;</code>表示匹配两位数字，把优惠内容变为'全场折扣：15% off.散花!'， 这里'START'后面的文字会自动添加到前部，'END'后面的文字会自动添加到后面。</li>
 </ul>
 
 <mat-tab-group>
