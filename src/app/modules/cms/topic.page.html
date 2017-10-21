@@ -149,9 +149,9 @@
             <div class="col-6">
                 <!-- 热度,用于显示排名 -->
                 <mat-form-field style="width: 150px !important;">
-                    <mat-select placeholder="热度" [ngModel]="(entity$ | async)?.ranking"
+                    <mat-select placeholder="热度(5分最高)" [ngModel]="(entity$ | async)?.ranking"
                                 name="rk" (ngModelChange)="update('ranking', $event)">
-                        <mat-option *ngFor="let r of rankings" [value]="r">{{r}}</mat-option>
+                        <mat-option *ngFor="let r of rankings" [value]="r">{{r/10}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
