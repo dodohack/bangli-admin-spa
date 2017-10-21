@@ -41,7 +41,7 @@ export const ENTITY_INFO = {
     'topic':     {selector: 'topics',     name: '专题',     slug: 'topic'},
     'page':      {selector: 'pages',      name: '页面',     slug: 'page'},
     'offer':     {selector: 'offers',     name: '优惠',     slug: 'offer'},
-    'advertise':     {selector: 'advertises', name: '广告',     slug: 'ads'},
+    'advertise':     {selector: 'advertises', name: '广告',     slug: 'advertise'},
     'newsletter':    {selector: 'newsletters', name: '订阅邮件',  slug: 'newsletter'},
     'attachment':    {selector: 'attachments', name: '附件',     slug: 'attachment'},
     'comment':       {selector: 'comments',    name: '用户评论',  slug: 'comment'},

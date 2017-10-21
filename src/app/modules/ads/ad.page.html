@@ -93,9 +93,10 @@
     </mat-form-field>
 
     <div style="width: 100%">
+        <h4>广告图片</h4>
         <img [src]="imageUrl(entity.image_url)" *ngIf="entity.image_url"
              (click)="showGallery(galleryModal)">
-        <button *ngIf="entity.image_url == ''" mat-raised-button
+        <button *ngIf="!entity.image_url" mat-raised-button
                 color="primary" (click)="showGallery(galleryModal)">设置广告图片</button>
     </div>
 </form>

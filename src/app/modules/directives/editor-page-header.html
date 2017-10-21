@@ -18,25 +18,25 @@
                 </a>
             </h1>
 
-            <span class="tag tag-warning-outline float-right" *ngIf="previewUrl">
+            <code class="float-right" *ngIf="previewUrl">
                 <a href="{{ previewUrl }}" target="_blank">预览: {{ entity.id }}</a>
-            </span>
+            </code>
         </div>
 
         <div class="col-12">
             <div class="float-right">
-                <span *ngIf="entity.created_at" class="tag tag-default-outline opacity-6">
+                <code *ngIf="entity.created_at">
                     创建时间：{{ entity.created_at | date: 'y-MM-dd HH:mm' }}
-                </span>
-                <span *ngIf="entity.published_at" class="tag tag-default-outline opacity-6">
+                </code>
+                <code *ngIf="entity.published_at">
                     发布时间：{{ entity.published_at | date: 'y-MM-dd HH:mm' }}
-                </span>
-                <span *ngIf="entity.updated_at" class="tag tag-default-outline opacity-6">
+                </code>
+                <code *ngIf="entity.updated_at">
                     最后更新：{{ entity.updated_at | date: 'y-MM-dd HH:mm' }}
-                </span>
-                <span class="tag tag-default-outline opacity-6">
+                </code>
+                <code>
                     状态: {{ zh[entity.status] }}
-                </span>
+                </code>
             </div>
         </div>
 

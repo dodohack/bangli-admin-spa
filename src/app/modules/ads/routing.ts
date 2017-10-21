@@ -10,7 +10,7 @@ import { AdPage }  from './ad.page';
 
 const routes: Routes = [
     {
-        path: 'ads',
+        path: 'advertise',
         children: [
             /* List of advertises */
             { path: '', pathMatch: 'full', redirectTo: 'page/1/status/all'},
