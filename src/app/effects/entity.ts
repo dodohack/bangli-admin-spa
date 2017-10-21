@@ -57,9 +57,9 @@ export class EntityEffects {
         .map((action: any) => action.payload)
         .switchMap(p => this.saveEntity(p.etype, p.data, p.mask)
             .mergeMap(ret => {
+                console.error("FIXME: Think a better way, not always deleting id 0 entity!");
                 let actions = [
                     // Delete draft(id=0) entity when save is succeed
-                    console.error("FIXME: Think a better way, not always deleting id 0 entity!");
                     new entity.DeleteEntity({etype: ret.etype, data: 0}),
                     new entity.SaveEntitySuccess({etype: ret.etype, data: ret.entity})
                 ];
