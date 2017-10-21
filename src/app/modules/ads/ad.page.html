@@ -8,7 +8,7 @@
                     (cancelEdit)="cancelSave()">
 </editor-page-header>
 
-<form (ngSubmit)="save()" *ngIf="entity">
+<form *ngIf="entity">
 
     <!-- row 1 -->
     <div>
@@ -25,10 +25,11 @@
             </mat-select>
         </mat-form-field>
 
-        <div style="width: 20%; display: inline-block">
-            <button mat-raised-button color="primary" class="float-right">
-                保存
-            </button>
+        <div style="width: 28%; display: inline-block">
+            <div class="float-right">
+                <button mat-raised-button color="primary" (click)="save()">保存</button>
+                <button mat-raised-button color="warn" (click)="destroy()">删除</button>
+            </div>
         </div>
     </div>
 

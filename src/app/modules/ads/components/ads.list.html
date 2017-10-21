@@ -23,10 +23,11 @@
             </div>
         </th>
         <th width="20%">广告图片</th>
-        <th width="16%">显示位置</th>
+        <th width="16%">展示位置</th>
         <th width="10%">显示国家</th>
-        <th width="15%">开始日期</th>
-        <th width="15%">过期日期</th>
+        <th width="10%">状态</th>
+        <th width="12%">开始日期</th>
+        <th width="12%">过期日期</th>
     </tr>
     </thead>
 
@@ -35,14 +36,17 @@
     <!-- table row of entities -->
     <ng-template ngFor let-entity [ngForOf]="entities" let-i="index">
         <!-- Enable fast editing if double click on the row -->
-        <tr (dblclick)="batchEdit.emit([entity.id])">
+        <tr>
             <th>{{i+1}}</th>
             <td><input type="checkbox" name="p[]" [ngModel]="isEditing(entity.id)"
                        (change)="updateEditList(entity.id)"></td>
 
-            <td>
-                <span class="tag tag-default-outline">{{entity.status}}</span>
-                {{ entity.title }}
+            <td (dblclick)="batchEdit.emit([entity.id])">
+                <strong><a [routerLink]="[editLink(entity.id)]">{{ entity.title }}</a></strong>
+                <div class="row-actions">
+                    <span class="trash"><a>删除</a> | </span>
+                    <span>双击快速编辑</span>
+                </div>
             </td>
 
             <td><img style="width: 80px; height: auto"
@@ -52,9 +56,11 @@
 
             <td>{{ entity.location }}</td>
 
-            <td>{{ entity.starts }}</td>
+            <td><{{entity.status}}</td>
 
-            <td>{{ entity.ends }}</td>
+            <td>{{ entity.starts | date: 'yyyy-MM-dd' }}</td>
+
+            <td>{{ entity.ends | date: 'yyyy-MM-dd' }}</td>
         </tr>
     </ng-template>
 

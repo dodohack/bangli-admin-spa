@@ -6,16 +6,14 @@ import { ViewChild }     from '@angular/core';
 import { Input, Output } from '@angular/core';
 import { EventEmitter }  from '@angular/core';
 
-import { User }          from "../../models";
 import { Entity, ENTITY, ENTITY_INFO } from '../../models';
 import { Channel }        from '../../models';
-import { AuthState }      from '../../reducers/auth';
-import { CmsAttrsState }  from "../../reducers/cmsattrs";
-import { EntitiesState }  from "../../reducers/entities";
-import {IMG_SERVER} from "../../../.config";
+import { CacheSingleton } from "../../effects/cache.singleton";
 
 export class EntityList
 {
+    cache = CacheSingleton.getInstance();
+
     // FIXME: ImageList class only, moving this to ImageList class causes
     // build error.
     @ViewChild('modalEdit') modalEdit;
@@ -170,7 +168,7 @@ export class EntityList
             // Test if uri starts with 'http'
             if (uri[0] == 'h' && uri[1] == 't') return uri;
             // Else return image url based on our image server
-            return IMG_SERVER + uri;
+            return this.cache.img_server + uri;
         } else {
             // Return placeholder image
             return 'http://via.placeholder.com/80x80?text=ads';
