@@ -49,6 +49,7 @@ import {
     getAuthors, getAuthorsObject, getEditors, getEditorsObject,
     getCmsChannels, getCmsCurChannelCategories, getLocations,
     getCmsCurChannelTopicTypes, getCmsTopics,
+    getCmsTopicTypes, getCmsCategories,
     getPostStates, getPageStates, getTopicStates,
     getIdsCurPage, getIdsEditing, getCurEntity, getCurEntityId,
     getIsLoading, getPaginator, getCurEntityChannel,
@@ -141,8 +142,10 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.authorsObj$    = this.store.select(getAuthorsObject);
         this.geoLocations$  = this.store.select(getLocations);
         this.cmsChannels$   = this.store.select(getCmsChannels);
-        this.cmsCategories$ = this.store.select(getCmsCurChannelCategories);
-        this.cmsTopicTypes$ = this.store.select(getCmsCurChannelTopicTypes);
+        //this.cmsCategories$ = this.store.select(getCmsCurChannelCategories);
+        this.cmsCategories$ = this.store.select(getCmsCategories);
+        //this.cmsTopicTypes$ = this.store.select(getCmsCurChannelTopicTypes);
+        this.cmsTopicTypes$ = this.store.select(getCmsTopicTypes);
         this.cmsTopics$     = this.store.select(getCmsTopics);
         this.paginator$     = this.store.select(getPaginator(this.etype));
         this.id$            = this.store.select(getCurEntityId(this.etype));
@@ -369,6 +372,21 @@ export abstract class EntityPage implements OnInit, OnDestroy
             new EntityActions.Update({etype: etype, key: key, value: value})
         );
     }
+
+    // FIXME: this is always triggered at initialization and dirtyMask is not
+    // modifiable.
+    // Update local copy of content and mark dirty bit.
+    /*
+    updateContent(event: string) {
+        console.error("origin content: ", this.content);
+        console.error("update content: ", event);
+        if (this.content == event || typeof this.dirtyMask === 'undefined')
+            return;
+        this.content = event;
+        if (this.dirtyMask.indexOf('content') == -1)
+            this.dirtyMask.push('content');
+    }
+    */
 
     // Create a new entity
     newEntity() {

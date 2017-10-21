@@ -49,7 +49,9 @@
 
             <!-- Content area -->
             <mat-tab label="专题内容">
-                <div [froalaEditor]="froalaOptions" [(froalaModel)]="content"></div>
+                <div [froalaEditor]="froalaOptions"
+                     [(froalaModel)]="content"></div>
+                     <!--(froalaModelChange)="updateContent($event)"></div>-->
             </mat-tab>
 
             <!-- Topic's offers -->
@@ -125,7 +127,7 @@
                      style="width: 80px; height: 80px"
                      *ngIf="(entity$ | async)?.logo"
                      (click)="showGallery(galleryModal)">
-                <button *ngIf="(entity$ | async)?.logo == ''"
+                <button *ngIf="!(entity$ | async)?.logo"
                         mat-raised-button (click)="showGallery(galleryModal)"
                         style="width: 100%">设置Logo</button>
             </div>
