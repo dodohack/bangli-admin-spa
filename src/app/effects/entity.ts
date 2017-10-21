@@ -70,7 +70,7 @@ export class EntityEffects {
 
     @Effect() deleteEntity$ = this.actions$.ofType(entity.DELETE_ENTITY)
         .map((action: any) => action.payload)
-        .filter(p => p.id) // Do not send delete action for id 0 entity
+        .filter(p => p.data) // Do not send delete action for id 0 entity
         .switchMap(p => this.deleteEntity(p.etype, p.data)
             .map(ret => new entity.DeleteEntitySuccess())
             .catch(() => Observable.of(new entity.DeleteEntityFail()))
