@@ -52,8 +52,8 @@ export class AdPage extends EntityPage
      */
     save() {
         this.dirtyMask = ['id','title', 'status', 'position', 'location',
-            /*'channel_id', */ 'image_url', 'target_url', 'starts', 'ends',
-            'description'];
+            'rank', /*'channel_id', */ 'image_url', 'target_url',
+            'starts', 'ends', 'description'];
         this.saveWithEtype(this.etype, this.entity, this.dirtyMask);
     }
 }
