@@ -78,8 +78,7 @@
 
                         <offer-editor *ngIf="newOffer$ | async"
                                       [offer]="newOffer$ | async"
-                                      [topicId]="id$ | async"
-                                      (save)="saveWithEtype('offer', $event.offer, $event.mask)"
+                                      (save)="saveWithTopicId('offer', $event.offer, $event.mask)"
                                       style="width: 100%"></offer-editor>
                     </mat-expansion-panel>
 
@@ -90,8 +89,7 @@
                         </mat-expansion-panel-header>
 
                         <offer-editor [offer]="offer"
-                                      [topicId]="id$ | async"
-                                      (save)="saveWithEtype('offer', $event.offer, $event.mask)"
+                                      (save)="saveWithTopicId('offer', $event.offer, $event.mask)"
                                       (destroy)="destroyWithEtype('offer', offer.id)"
                                       style="width: 100%"></offer-editor>
                     </mat-expansion-panel>

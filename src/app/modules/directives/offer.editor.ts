@@ -29,9 +29,6 @@ export class OfferEditor
     }
     get offer(): Entity { return this._offer; }
 
-    // When saving new offer, topic id will be attached as relationship
-    @Input() topicId: number;
-
     // Update existing offer/Save newly created offer
     @Output() save = new EventEmitter();
     // Remove existing offer from topic
@@ -70,13 +67,6 @@ export class OfferEditor
     // Update the offer of save newly created offer
     onSave() {
         if (this.isDirty) {
-            // Set relationship for offer(both old and new).
-            if (this.topicId) {
-                // FIXME: If first save fails and click on save again, bug
-                // will happen here.
-                this._offer['topics'] = [{id: this.topicId}];
-                this.dirtyMask.push('topics');
-            }
             this.save.emit({offer: this._offer, mask: this.dirtyMask});
         }
     }

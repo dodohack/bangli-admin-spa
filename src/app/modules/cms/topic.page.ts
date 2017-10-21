@@ -90,4 +90,13 @@ export class TopicPage extends EntityPage
         }});
     }
     */
+
+    // Always add topic id with the offer
+    saveWithTopicId(etype, entity, mask) {
+        if (this.entity.id) {
+            entity['topics'] = [{id: this.entity.id}];
+            mask.push('topics');
+            this.saveWithEtype(etype, entity, mask);
+        }
+    }
 }
