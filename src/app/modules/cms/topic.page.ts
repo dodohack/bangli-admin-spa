@@ -5,8 +5,6 @@
  */
 
 import { Component }         from '@angular/core';
-import { OnInit, OnDestroy } from "@angular/core";
-import { ViewChild }         from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Location }          from '@angular/common';
 import { Router }            from '@angular/router';
@@ -29,7 +27,7 @@ import {
     getPaginator,
     getIdsCurPage
 } from '../../reducers';
-import {ImageListDialog} from "../attachment/components/image.list";
+//import {ImageListDialog} from "../attachment/components/image.list";
 
 @Component({ templateUrl: './topic.page.html' })
 export class TopicPage extends EntityPage

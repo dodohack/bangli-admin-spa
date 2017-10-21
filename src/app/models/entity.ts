@@ -137,6 +137,7 @@ export interface Entity {
     author_id?: number;     // CMS post only
     image_id?: number;
     images?: any;           // image urls
+    image_url?: string;     // single image url
     type_id?: number;       // CMS topic only: Topic type id
     type?: TopicType;       // table.type entry for some entities
     status?: string;
@@ -155,8 +156,8 @@ export interface Entity {
     intro?: string;         // CMS topic introduction
     content?: string;
     published_at?: string;
-    started_at?: string;    // Advertise only
-    ended_at?: string;      // Advertise only
+    starts?: string;        // Advertise/Offer only
+    ends?: string;          // Advertise/Offer only
     created_at?: string;
     updated_at?: string;
     revisions?: Revision[];

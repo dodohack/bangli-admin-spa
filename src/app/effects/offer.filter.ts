@@ -84,7 +84,6 @@ export class OfferFilterEffects {
     private getAll() {
         let api = APIS[this.cache.key] + API_PATH.offer_filters +
             '?token=' + this.cache.token;
-        console.error("get all offer filters: ", api);
         return this.http.get(api).map(res => res.json());
     }
 

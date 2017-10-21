@@ -10,11 +10,14 @@ export interface SysAttrsState {
     roles: UserRole[];
     // Available thumbnail configurations
     thumbs: any;
+    // Available advertisement positions
+    positions: any;
 };
 
 const initState: SysAttrsState = {
     roles: [],
     thumbs: null,
+    positions: null,
 };
 
 export function sysReducer(state = initState, action: sys.Actions | any): SysAttrsState {
@@ -28,10 +31,14 @@ export function sysReducer(state = initState, action: sys.Actions | any): SysAtt
 
             let thumbs: any;
             if (payload.thumbs) thumbs = payload.thumbs;
-            
+
+            let positions: any;
+            if (payload.positions) positions = payload.positions;
+
             return {
                 roles: [...roles],
                 thumbs: [...thumbs],
+                positions: [...positions]
             };
         }
 
@@ -54,3 +61,9 @@ export const getUserRoles = (state: SysAttrsState) => state.roles;
  * Return an array of thumbnail configs
  */
 export const getThumbConfig = (state: SysAttrsState) => state.thumbs;
+
+
+/**
+ * Return an array of advertisement positions
+ */
+export const getPositions = (state: SysAttrsState) => state.positions;

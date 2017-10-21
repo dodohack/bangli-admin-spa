@@ -752,6 +752,8 @@ export const getUserRoles = createSelector(getSysState, fromSys.getUserRoles);
 
 export const getThumbConfig = createSelector(getSysState, fromSys.getThumbConfig);
 
+export const getAdPositions = createSelector(getSysState, fromSys.getPositions);
+
 /*****************************************************************************
  * Frontend menu settings
  *****************************************************************************/

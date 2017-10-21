@@ -12,6 +12,7 @@ import { Channel }        from '../../models';
 import { AuthState }      from '../../reducers/auth';
 import { CmsAttrsState }  from "../../reducers/cmsattrs";
 import { EntitiesState }  from "../../reducers/entities";
+import {IMG_SERVER} from "../../../.config";
 
 export class EntityList
 {
@@ -27,7 +28,7 @@ export class EntityList
     @Input() authorsObj: any;     // Authors object
     @Input() channelsObj: any;    // Channels object
 
-    // The entity type of the list: post, topic, page, product etc
+    // The entity type of the list: post, topic, page, attachment etc
     @Input() etype: string;
 
     // Base resource url(base url to image root)
@@ -57,6 +58,8 @@ export class EntityList
     @Output() setFeatureImageEvent = new EventEmitter();
     // Add/remove image to/from selected image list
     @Output() insertImageEvent = new EventEmitter();
+    // Set ad image
+    @Output() setAdImageEvent = new EventEmitter();
 
     batchAction: string = '';
 
@@ -158,6 +161,19 @@ export class EntityList
             // Default to cms type
             default:
                 return base + 'cms/' + ENTITY_INFO[this.etype].slug + '/' + entity.id;
+        }
+    }
+
+    // Get absolute image url from either absolute or relative url
+    imageUrl(uri: string) {
+        if (typeof uri != 'undefined' && uri != null && uri != '') {
+            // Test if uri starts with 'http'
+            if (uri[0] == 'h' && uri[1] == 't') return uri;
+            // Else return image url based on our image server
+            return IMG_SERVER + uri;
+        } else {
+            // Return placeholder image
+            return 'http://via.placeholder.com/80x80?text=ads';
         }
     }
 }

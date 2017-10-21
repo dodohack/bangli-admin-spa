@@ -81,11 +81,22 @@ export class ImageList extends EntityList
     // Cancel selection
     cancelImage() { this.indexes = [];  }
 
+    // Set topic logo
     setLogoImage() {
         if (this.indexes.length == 1) {
             let img = this.entities[this.indexes[0]];
             let uri = img.path + img.filename;
             this.setLogoEvent.emit(uri);
+            this.cancelImage();
+        }
+    }
+
+    // Set advertise image
+    setAdImageImage() {
+        if (this.indexes.length == 1) {
+            let img = this.entities[this.indexes[0]];
+            let uri = img.path + img.filename;
+            this.setAdImageEvent.emit(uri);
             this.cancelImage();
         }
     }

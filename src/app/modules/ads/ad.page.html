@@ -1,0 +1,137 @@
+<editor-page-header [slug]="'advertise'"
+                    [name]="'广告'"
+                    [zh]="zh"
+                    [previewUrl]="previewUrl"
+                    [ids]="idsCurPage$ | async"
+                    [entities]="entities$ | async"
+                    [entity]="entity$ | async"
+                    (cancelEdit)="cancelSave()">
+</editor-page-header>
+
+<form (ngSubmit)="save()" *ngIf="entity">
+
+    <!-- row 1 -->
+    <div>
+        <mat-form-field style="width: 50%">
+            <input matInput name="title" placeholder="广告标题"
+                   [(ngModel)]="entity.title" required>
+        </mat-form-field>
+
+        <mat-form-field style="width: 20%">
+            <mat-select placeholder="状态" [(ngModel)]="entity.status" name="st">
+                <mat-option *ngFor="let status of entityStates" [value]="status">
+                    {{ zh[status] }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div style="width: 20%; display: inline-block">
+            <button mat-raised-button color="primary" class="float-right">
+                保存
+            </button>
+        </div>
+    </div>
+
+    <!-- row 2 -->
+    <div>
+        <mat-form-field style="width: 40%">
+            <mat-select name="position" placeholder="展示位置"
+                        [(ngModel)]="entity.position" required>
+                <mat-option *ngFor="let pos of (positions$ | async)" [value]="pos[0]">
+                    {{pos[3]}} <span class="small">建议大小 {{pos[1]}}px x {{pos[2]}}px</span>
+                </mat-option>
+            </mat-select>
+
+        </mat-form-field>
+
+        <mat-form-field style="width: 15%">
+            <mat-select name="location" placeholder="显示国家"
+                    [(ngModel)]="entity.location" required>
+                <mat-option *ngFor="let loc of locations" [value]="loc">{{ loc }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field style="width: 20%">
+            <input matInput [matDatepicker]="startPicker" name="starts"
+                   placeholder="开始日期"
+                   [ngModel]="entity.starts | date: 'yyyy-MM-dd'"
+                   (ngModelChange)="entity.starts = modifyDate('starts', $event, true)">
+            <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+            <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field style="width: 20%">
+            <input matInput [matDatepicker]="endPicker" name="ends"
+                   placeholder="过期日期"
+                   [ngModel]="entity.ends | date: 'yyyy-MM-dd'"
+                   (ngModelChange)="entity.ends = modifyDate('ends', $event, false)">
+            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+            <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+    </div>
+
+    <!-- FIXME: Will support this later, need to figure out how to set id to null.
+    <mat-form-field style="width: 20%">
+        <mat-select placeholder="显示频道" [(ngModel)]="entity.channel_id" name="ch">
+            <mat-option value="NULL">全局</mat-option>
+            <mat-option *ngFor="let ch of (cmsChannels$ | async)"
+                        [value]="ch.id">{{ ch.name }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+    -->
+
+    <mat-form-field style="width: 100%">
+        <input matInput name="url" placeholder="目标URL"
+               [(ngModel)]="entity.target_url">
+    </mat-form-field>
+
+
+    <mat-form-field style="width: 100%">
+        <textarea matInput rows="3" name="desc" placeholder="广告描述"
+                  [(ngModel)]="entity.description"></textarea>
+    </mat-form-field>
+
+    <div style="width: 100%">
+        <img [src]="imageUrl(entity.image_url)" *ngIf="entity.image_url"
+             (click)="showGallery(galleryModal)">
+        <button *ngIf="entity.image_url == ''" mat-raised-button
+                color="primary" (click)="showGallery(galleryModal)">设置广告图片</button>
+    </div>
+</form>
+
+
+<!-- Gallery Modal -->
+<div class="modal fade" bsModal #galleryModal="bs-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button mat-icon-button (click)="galleryModal.hide()">
+                    <i class="fa fa-close"></i>
+                </button>
+                <h5 class="modal-title">媒体库</h5>
+            </div>
+
+            <div class="modal-body gallery-modal-body">
+                <tabset>
+                    <tab heading="图片列表">
+                        <image-list [etype]="etypeAttachment"
+                                    [baseResUrl]="cache.img_server"
+                                    [entities]="images$ | async"
+                                    [selectedEntities]="selectedImages$ | async"
+                                    [idsCurPage]="imageIds$ | async"
+                                    [embeddedEditor]="true"
+                                    (loadMoreImages)="loadMoreImages()"
+                                    (setAdImageEvent)="entity.image_url = $event"></image-list>
+                    </tab>
+
+                    <tab heading="上传图片">
+                        <image-uploader [isOpen]="true"
+                                        (onCompleteItem)="onImageUploaded($event)">
+                        </image-uploader>
+                    </tab>
+                </tabset>
+            </div>
+
+        </div>
+    </div>
+</div>

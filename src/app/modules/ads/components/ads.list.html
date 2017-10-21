@@ -23,8 +23,7 @@
             </div>
         </th>
         <th width="20%">广告图片</th>
-        <th width="8%">显示设备</th>
-        <th width="8%">显示位置</th>
+        <th width="16%">显示位置</th>
         <th width="10%">显示国家</th>
         <th width="15%">开始日期</th>
         <th width="15%">过期日期</th>
@@ -46,17 +45,16 @@
                 {{ entity.title }}
             </td>
 
-            <td>{{ entity.image_id }}</td>
-
-            <td>{{ entity.device }}</td>
+            <td><img style="width: 80px; height: auto"
+                     [src]="imageUrl(entity.image_url)"></td>
 
             <td>{{ entity.position }}</td>
 
             <td>{{ entity.location }}</td>
 
-            <td>{{ entity.started_at }}</td>
+            <td>{{ entity.starts }}</td>
 
-            <td>{{ entity.ended_at }}</td>
+            <td>{{ entity.ends }}</td>
         </tr>
     </ng-template>
 
