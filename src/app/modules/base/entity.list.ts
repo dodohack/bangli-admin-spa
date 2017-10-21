@@ -61,6 +61,10 @@ export class EntityList
 
     batchAction: string = '';
 
+    get isPost() { return this.etype == ENTITY.POST; }
+    get isTopic() { return this.etype == ENTITY.TOPIC; }
+    get isOffer() { return this.etype == ENTITY.OFFER; }
+
     get hasEntity() {
         return this.idsCurPage && this.idsCurPage.length > 0;
     }
