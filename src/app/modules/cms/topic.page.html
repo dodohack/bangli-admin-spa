@@ -116,9 +116,6 @@
                         <ng-template [ngIf]="isDirty && isLoading">保存中...</ng-template>
                     </button>
                 </div>
-
-                <mat-checkbox [ngModel]="(entity$ | async)?.featured"
-                              (ngModelChange)="update('featured', $event)">推荐专题</mat-checkbox>
             </div>
 
 
@@ -179,6 +176,15 @@
                 <mat-option *ngFor="let tt of (cmsTopicTypes$ | async)" [value]="tt.id">{{ tt.name }}</mat-option>
             </mat-select>
         </mat-form-field>
+
+        <div style="width: 100%">
+            <mat-radio-group [ngModel]="(entity$ | async)?.featured"
+                             (ngModelChange)="update('featured', $event)">
+                <mat-radio-button [value]="2">全局推荐</mat-radio-button>
+                <mat-radio-button [value]="1">局部推荐</mat-radio-button>
+                <mat-radio-button [value]="0">普通专题</mat-radio-button>
+            </mat-radio-group>
+        </div>
 
         <div class="form-group">
             <button mat-raised-button color="primary" style="width: 100%"
