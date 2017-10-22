@@ -21,7 +21,8 @@
 
     <!-- Shared popup modal to edit taxonomies -->
     <div *ngIf="taxType === 'category'">
-        <div class="modal fade" bsModal #modalEdit="bs-modal" tabindex="-1" role="dialog">
+        <div class="modal fade" bsModal #modalEdit="bs-modal"
+             tabindex="-1" role="dialog">
             <div class="modal-dialog modal-sm">
                 <modal-edit-tax [actionType]="actionType"
                                 [taxType]="taxType"

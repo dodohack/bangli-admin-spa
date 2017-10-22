@@ -9,52 +9,47 @@
     <br>
     <div class="modal-body">
         <form (ngSubmit)="save()" #taxForm="ngForm">
-            <div class="form-group">
-                <label>{{taxType}} 名字</label>
-                <input type="text" name="name" class="form-control"
+            <mat-form-field>
+                <input matInput type="text" name="name" placeholder="name"
                        [(ngModel)]="tax.name" required>
-            </div>
+            </mat-form-field>
 
-            <div class="form-group">
-                <label>{{taxType}} slug</label>
-                <input type="text" name="slug" class="form-control"
+            <mat-form-field>
+                <input matInput type="text" name="slug" placeholder="slug"
                        [(ngModel)]="tax.slug" required>
-            </div>
+            </mat-form-field>
 
-            <div class="form-group" *ngIf="isCategory">
-                <label>父分类</label>
-                <select class="form-control form-control-sm custom-select"
-                        name="catid" [(ngModel)]="tax.parent_id">
-                    <option [selected]="tax.parent_id == 0"
-                            value="0">无父类</option>
-                    <option *ngFor="let cat of categories"
-                            [selected]="tax.parent_id === cat.id"
-                            [value]="cat.id">{{ cat.name }}</option>
-                </select>
-            </div>
+            <mat-form-field *ngIf="isCategory">
+                <mat-select placeholder="父分类" name="catid"
+                        [(ngModel)]="tax.parent_id">
+                    <mat-option value="0">无父类</mat-option>
+                    <mat-option *ngFor="let cat of categories"
+                                [value]="cat.id">{{ cat.name }}</mat-option>
+                </mat-select>
+            </mat-form-field>
 
-            <div class="form-group">
-                <label>频道</label>
-                <select class="form-control form-control-sm custom-select"
-                        name="chid" [(ngModel)]="tax.channel_id" required>
-                    <option *ngFor="let ch of channels"
-                            [selected]="tax.channel_id === ch.id"
-                            [value]="ch.id">{{ ch.name }}</option>
-                </select>
-            </div>
+
+            <mat-form-field>
+                <mat-select placeholder="频道" name="chid"
+                            [(ngModel)]="tax.channel_id" required>
+                    <mat-option *ngFor="let ch of channels"
+                                [value]="ch.id">{{ ch.name }}</mat-option>
+                </mat-select>
+            </mat-form-field>
         </form>
-        <button type="button" class="btn btn-block btn-outline-success"
+
+        <button mat-raised-button color="primary"
                 *ngIf="actionType == 'add'"
                 [disabled]="!taxForm.form.valid"
                 (click)="add.emit(tax)">添加</button>
-        <button type="button" class="btn btn-block btn-outline-danger"
-                *ngIf="actionType == 'edit'"
-                (click)="remove.emit(tax)">删除</button>
-        <button type="button" class="btn btn-block btn-outline-success"
+        <button mat-raised-button color="primary"
                 *ngIf="actionType == 'edit'"
                 [disabled]="!taxForm.form.valid"
                 (click)="save.emit(tax)">保存</button>
-        <button type="button" class="btn btn-block btn-outline-danger"
+        <button mat-raised-button color="warn"
                 (click)="cancel.emit()">取消</button>
+        <button mat-raised-button color="warn"
+                *ngIf="actionType == 'edit'"
+                (click)="remove.emit(tax)">删除</button>
     </div>
 </div>
