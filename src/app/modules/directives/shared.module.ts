@@ -91,6 +91,7 @@ export const COMPONENTS = [
         FroalaViewModule,
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         MaterialModule,
 
         ...COMPONENTS

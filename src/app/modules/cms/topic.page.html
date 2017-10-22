@@ -50,8 +50,9 @@
             <!-- Content area -->
             <mat-tab label="专题内容">
                 <div [froalaEditor]="froalaOptions"
-                     [(froalaModel)]="content"></div>
-                     <!--(froalaModelChange)="updateContent($event)"></div>-->
+                          [formControl]="contentControl"
+                          [(froalaModel)]="content"></div>
+                <!--(froalaModelChange)="updateContent($event)"-->
             </mat-tab>
 
             <!-- Topic's offers -->

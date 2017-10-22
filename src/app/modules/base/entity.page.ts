@@ -6,6 +6,7 @@ import { OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute }    from '@angular/router';
 import { Location }          from '@angular/common';
 import { Router }            from '@angular/router';
+import { FormControl }       from '@angular/forms';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
 
@@ -63,6 +64,13 @@ import {
 export abstract class EntityPage implements OnInit, OnDestroy
 {
     cache = CacheSingleton.getInstance();
+
+    // Main content form event
+    contentControl = new FormControl();
+
+    // A flag used to mark froala editor is initialized or not, so let it
+    // ignore first time froalaModelChange.
+    isEditorInitialized: boolean = false;
 
     // Local version of entity content, updated by froala editor
     content: string;
@@ -125,6 +133,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     subAS: any;
     subID: any;
     subContent: any;
+    subCtCtrl: any;
 
     constructor(protected etype: string,
                 protected route: ActivatedRoute,
@@ -181,6 +190,13 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
         this.subContent = this.content$.subscribe(content => this.content = content);
 
+        // Update content when changed
+        this.subCtCtrl = this.contentControl.valueChanges.debounceTime(1000)
+            .subscribe(c => {
+                if (this.isEditorInitialized) this.update('content', c);
+                this.isEditorInitialized = true;
+            });
+
         // Dispatch an action to create or load an entity
         this.dispatchLoadEntity();
 
@@ -203,6 +219,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subAS.unsubscribe();
         this.subID.unsubscribe();
         this.subContent.unsubscribe();
+        this.subCtCtrl.unsubscribe();
     }
 
     /**
@@ -244,6 +261,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
                     this.store.dispatch(new EntityActions
                         .LoadEntity({etype: this.etype, data: params['id']}));
                 }
+                // Reset the flag when we edit new entity
+                this.isEditorInitialized = false;
             });
     }
 
@@ -372,21 +391,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
             new EntityActions.Update({etype: etype, key: key, value: value})
         );
     }
-
-    // FIXME: this is always triggered at initialization and dirtyMask is not
-    // modifiable.
-    // Update local copy of content and mark dirty bit.
-    /*
-    updateContent(event: string) {
-        console.error("origin content: ", this.content);
-        console.error("update content: ", event);
-        if (this.content == event || typeof this.dirtyMask === 'undefined')
-            return;
-        this.content = event;
-        if (this.dirtyMask.indexOf('content') == -1)
-            this.dirtyMask.push('content');
-    }
-    */
 
     // Create a new entity
     newEntity() {
