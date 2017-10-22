@@ -2,18 +2,23 @@
  * This file defines the options used to initialize froala editor
  */
 
-import { APIS, API_PATH }            from '../api';
-import { rehydrateApplicationState } from 'ngrx-store-localstorage';
+import { APIS, API_PATH, FROALA_KEY } from '../api';
+import { rehydrateApplicationState }  from 'ngrx-store-localstorage';
 
 export class FroalaOptions {
     
     // Static method returns froala options
     static getDefault() {
         // FIXME: 3rd parameter!
+        /*
         let auth = rehydrateApplicationState(['auth'], localStorage, (key) => key);
         let key  = sessionStorage.getItem('key');
+        */
 
         return {
+
+            key: FROALA_KEY,
+
             // Past in WYSIWYG edit in plain text
             pastePlain: true,
 
