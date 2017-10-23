@@ -29,9 +29,6 @@ export class CmsPage implements OnInit, OnDestroy
 {
     dialogRef: MatDialogRef<ModalEditTax> | null;
 
-    // Popup modal
-    @ViewChild('modalEdit')   modalEdit;
-
     // Current active cms channel
     channel$:    Observable<Channel>;
     // All cms channels
@@ -100,31 +97,48 @@ export class CmsPage implements OnInit, OnDestroy
      * Delete a taxonomy 
      */
     removeTax($event) {
-        if (this.taxType === 'tag')
-            this.store.dispatch(new CmsAttrActions.DeleteTag($event));
-        else if (this.taxType === 'category')
-            this.store.dispatch(new CmsAttrActions.DeleteCategory($event));
-
+        switch (this.taxType) {
+            case 'tag':
+                return this.store.dispatch(new CmsAttrActions.DeleteTag($event));
+            case 'category':
+                return this.store.dispatch(new CmsAttrActions.DeleteCategory($event));
+            case 'topic':
+                return this.store.dispatch(new CmsAttrActions.DeleteTopicType($event));
+            default:
+                console.error("remove unknown taxonomy");
+        }
     }
 
     /**
      * Create a new taxonomy 
      */
     newTax($event) {
-        if (this.taxType === 'tag')
-            this.store.dispatch(new CmsAttrActions.AddTag($event));
-        else if (this.taxType === 'category')
-            this.store.dispatch(new CmsAttrActions.AddCategory($event));
+        switch (this.taxType) {
+            case 'tag':
+                return this.store.dispatch(new CmsAttrActions.AddTag($event));
+            case 'category':
+                return this.store.dispatch(new CmsAttrActions.AddCategory($event));
+            case 'topic':
+                return this.store.dispatch(new CmsAttrActions.AddTopicType($event));
+            default:
+                console.error("add unknown taxonomy");
+        }
     }
 
     /**
      * Update an existing taxonomy 
      */
     saveTax($event) {
-        if (this.taxType === 'tag')
-            this.store.dispatch(new CmsAttrActions.SaveTag($event));
-        else if (this.taxType === 'category')
-            this.store.dispatch(new CmsAttrActions.SaveCategory($event));
+        switch (this.taxType) {
+            case 'tag':
+                return this.store.dispatch(new CmsAttrActions.SaveTag($event));
+            case 'category':
+                return this.store.dispatch(new CmsAttrActions.SaveCategory($event));
+            case 'topic':
+                return this.store.dispatch(new CmsAttrActions.SaveTopicType($event));
+            default:
+                console.error("save unknown taxonomy");
+        }
     }
 
     openDialog() {

@@ -10,13 +10,10 @@
 </div>
 
 <!-- Cms taxonomy setting menus -->
-<nav class="navbar page-sub-menu" *ngIf="channel">
-    <ul class="nav navbar-nav">
-        <li class="nav-item" *ngFor="let s of settings">
-            <a [routerLink]="['/setting/cms', channel.slug, s]"
-               routerLinkActive="active">
-                {{ zh[s] }}
-            </a>
-        </li>
-    </ul>
+<nav mat-tab-nav-bar *ngIf="channel">
+    <a  mat-tab-link *ngFor="let s of settings"
+        [routerLink]="['/setting/cms', channel.slug, s]"
+        routerLinkActive="active">
+        {{ zh[s] }}
+    </a>
 </nav>

@@ -19,7 +19,8 @@ export class CmsTopicType {
     @Input() channel: Channel;
     @Input() topicTypes: TopicType[];
 
+    @Output() add = new EventEmitter();
     @Output() edit = new EventEmitter();
-    @Output() remove = new EventEmitter();
-    @Output() save = new EventEmitter();
+    //@Output() remove = new EventEmitter();
+    //@Output() save = new EventEmitter();
 }

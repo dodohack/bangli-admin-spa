@@ -1,8 +1,7 @@
 <div class="page-title">
     <h5 class="title">
-        {{ channel.name }}标签
-        <button class="page-title-action btn btn-outline-info btn-sm"
-                (click)="add.emit($event)">
+        {{ channel.name }} - 标签
+        <button mat-raised-button (click)="add.emit($event)">
             <i class="fa fa-plus"></i> 新建标签
         </button>
     </h5>

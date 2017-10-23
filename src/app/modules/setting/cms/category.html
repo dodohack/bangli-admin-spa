@@ -1,9 +1,8 @@
 <!-- Title -->
 <div class="page-title">
     <h5 class="title" *ngIf="channel">
-        {{ channel.name }}分类
-        <button class="page-title-action btn btn-outline-info btn-sm"
-                (click)="add.emit($event)">
+        {{ channel.name }} - 分类
+        <button mat-raised-button (click)="add.emit($event)">
             <i class="fa fa-plus"></i> 新建分类
         </button>
     </h5>

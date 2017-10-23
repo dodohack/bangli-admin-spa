@@ -3,14 +3,15 @@
 <div class="page-title">
     <h5>
         {{ channel.name }}频道 - 专题类型
-        <button class="page-title-action btn btn-outline-info btn-sm"
-                (click)="add.emit($event)">
+        <button mat-raised-button (click)="add.emit()">
             <i class="fa fa-plus"></i> 新建专题类型
         </button>
     </h5>
 </div>
 
 
-<ul class="tag-cloud tag-setting">
-    <li *ngFor="let tt of topicTypes">{{ tt.name }}</li>
-</ul>
+<mat-nav-list style="width: 25%; border: 1px solid #ddd">
+    <mat-list-item *ngFor="let tt of topicTypes" (click)="edit.emit(tt)">
+        <span>{{ tt.name }}</span>
+    </mat-list-item>
+</mat-nav-list>
