@@ -174,7 +174,8 @@
         <mat-form-field>
             <mat-select placeholder="专题类型" [ngModel]="(topicType$ | async)?.id"
                         name="tt" (ngModelChange)="update('type_id', $event)">
-                <mat-option *ngFor="let tt of (cmsTopicTypes$ | async)" [value]="tt.id">{{ tt.name }}</mat-option>
+                <mat-option *ngFor="let tt of (cmsTopicTypes$ | async)"
+                            [value]="tt.id">{{ tt.name }}</mat-option>
             </mat-select>
         </mat-form-field>
 

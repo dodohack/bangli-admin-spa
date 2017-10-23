@@ -93,6 +93,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     profile: User;            // Current user profile
     domain: Domain;           // Current domain
     cmsTopics: Topic[];       // Filtered cms topics
+    cmsTopicTypes: TopicType[];
 
     isLoading$:   Observable<boolean>;
     dirtyMask$:   Observable<string[]>;
@@ -134,6 +135,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
     subID: any;
     subContent: any;
     subCtCtrl: any;
+    subTT: any;
 
     constructor(protected etype: string,
                 protected route: ActivatedRoute,
@@ -151,10 +153,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.authorsObj$    = this.store.select(getAuthorsObject);
         this.geoLocations$  = this.store.select(getLocations);
         this.cmsChannels$   = this.store.select(getCmsChannels);
-        //this.cmsCategories$ = this.store.select(getCmsCurChannelCategories);
-        this.cmsCategories$ = this.store.select(getCmsCategories);
-        //this.cmsTopicTypes$ = this.store.select(getCmsCurChannelTopicTypes);
-        this.cmsTopicTypes$ = this.store.select(getCmsTopicTypes);
+        this.cmsCategories$ = this.store.select(getCmsCurChannelCategories);
+        this.cmsTopicTypes$ = this.store.select(getCmsCurChannelTopicTypes);
         this.cmsTopics$     = this.store.select(getCmsTopics);
         this.paginator$     = this.store.select(getPaginator(this.etype));
         this.id$            = this.store.select(getCurEntityId(this.etype));
@@ -176,6 +176,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subPro     = this.profile$.subscribe(p => this.profile = p);
         this.subEntity  = this.entity$
             .subscribe(e => this.entity = Object.assign({}, e));
+
+        this.subTT = this.cmsTopicTypes$.subscribe(tt => this.cmsTopicTypes = tt);
 
         // Update the channel in CmsAttrStates with entity channel
         this.subCh      = this.channel$
@@ -220,6 +222,7 @@ export abstract class EntityPage implements OnInit, OnDestroy
         this.subID.unsubscribe();
         this.subContent.unsubscribe();
         this.subCtCtrl.unsubscribe();
+        this.subTT.unsubscribe();
     }
 
     /**
@@ -289,7 +292,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
     get froalaOptions() { return FroalaOptions.getDefault(); }
     get rankings() { return TOPIC_RANKINGS; }
     get etypeAttachment() { return ENTITY.ATTACHMENT; }
-    gmt(value: string) { return GMT(value); }
 
     /**
      * FIXME: Deprecated! Use tag instead.
@@ -381,6 +383,13 @@ export abstract class EntityPage implements OnInit, OnDestroy
 
     // Update hasOne/string/single attributes of entity
     update(key: string, value: any) {
+
+        // Save a copy of channel id and dispatch 'channel switch' so we will
+        // have category/topic_type availabe for given channel.
+        if (key === 'channel_id') {
+            this.store.dispatch(new CmsAttrActions.SwitchChannel(value));
+        }
+
         this.updateWithEtype(this.etype, key, value);
     }
 
