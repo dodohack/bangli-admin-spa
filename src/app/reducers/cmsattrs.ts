@@ -132,7 +132,7 @@ export function cmsReducer(state = initialState, action: attr.Actions | any): Cm
             }
 
             return {
-                curChannel: null,
+                curChannel: state.curChannel,
                 authors: [...authors],
                 editors: [...editors],
                 channels: [...channels],
