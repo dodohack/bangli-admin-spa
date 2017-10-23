@@ -1,29 +1,26 @@
 <div class="modal-content">
     <div class="modal-header">
-        <button type="button" class="close" (click)="cancel.emit()">
-            <span>&times;</span>
-        </button>
-        <h5 class="modal-title" *ngIf="actionType == 'edit'">修改{{ taxType }}: {{ tax.name }}</h5>
-        <h5 class="modal-title" *ngIf="actionType == 'add'">新建{{ taxType }}</h5>
+        <h5 class="modal-title" *ngIf="data.actionType == 'edit'">修改{{ data.taxType }}: {{ data.tax.name }}</h5>
+        <h5 class="modal-title" *ngIf="data.actionType == 'add'">新建{{ data.taxType }}</h5>
     </div>
     <br>
     <div class="modal-body">
         <form (ngSubmit)="save()" #taxForm="ngForm">
             <mat-form-field>
                 <input matInput type="text" name="name" placeholder="name"
-                       [(ngModel)]="tax.name" required>
+                       [(ngModel)]="data.tax.name" required>
             </mat-form-field>
 
             <mat-form-field>
                 <input matInput type="text" name="slug" placeholder="slug"
-                       [(ngModel)]="tax.slug" required>
+                       [(ngModel)]="data.tax.slug" required>
             </mat-form-field>
 
-            <mat-form-field *ngIf="isCategory">
+            <mat-form-field *ngIf="data.taxType === 'category'">
                 <mat-select placeholder="父分类" name="catid"
-                        [(ngModel)]="tax.parent_id">
+                        [(ngModel)]="data.tax.parent_id">
                     <mat-option value="0">无父类</mat-option>
-                    <mat-option *ngFor="let cat of categories"
+                    <mat-option *ngFor="let cat of data.categories"
                                 [value]="cat.id">{{ cat.name }}</mat-option>
                 </mat-select>
             </mat-form-field>
@@ -31,25 +28,23 @@
 
             <mat-form-field>
                 <mat-select placeholder="频道" name="chid"
-                            [(ngModel)]="tax.channel_id" required>
-                    <mat-option *ngFor="let ch of channels"
+                            [(ngModel)]="data.tax.channel_id" required>
+                    <mat-option *ngFor="let ch of data.channels"
                                 [value]="ch.id">{{ ch.name }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </form>
 
         <button mat-raised-button color="primary"
-                *ngIf="actionType == 'add'"
+                *ngIf="data.actionType == 'add'"
                 [disabled]="!taxForm.form.valid"
-                (click)="add.emit(tax)">添加</button>
+                (click)="dialogRef.close({action: 'add', data: data.tax})">添加</button>
         <button mat-raised-button color="primary"
-                *ngIf="actionType == 'edit'"
+                *ngIf="data.actionType == 'edit'"
                 [disabled]="!taxForm.form.valid"
-                (click)="save.emit(tax)">保存</button>
+                (click)="dialogRef.close({action: 'save', data: data.tax})">保存</button>
         <button mat-raised-button color="warn"
-                (click)="cancel.emit()">取消</button>
-        <button mat-raised-button color="warn"
-                *ngIf="actionType == 'edit'"
-                (click)="remove.emit(tax)">删除</button>
+                *ngIf="data.actionType == 'edit'"
+                (click)="dialogRef.close({action: 'remove', data: data.tax})">删除</button>
     </div>
 </div>

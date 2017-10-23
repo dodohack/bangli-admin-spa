@@ -84,6 +84,9 @@ export const COMPONENTS = [
         MaterialModule,
     ],
     declarations: COMPONENTS,
+    entryComponents: [
+        ModalEditTax
+    ],
     exports: [
         Ng2BootstrapModule,
         SelectModule,

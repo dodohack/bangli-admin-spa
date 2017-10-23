@@ -43,63 +43,100 @@ export class CmsAttrEffects {
 
     @Effect() saveTag$ = this.actions$.ofType(cms.SAVE_TAG)
         .switchMap((action: any) => this.putTag(action.payload)
-            .map(tag => new cms.SaveTagSuccess(tag))
+            .mergeMap(tag => Observable.from([
+                new cms.SaveTagSuccess(tag),
+                new cms.LoadAll()
+            ]))
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() saveCat$ = this.actions$.ofType(cms.SAVE_CATEGORY)
         .switchMap((action: any) => this.putCat(action.payload)
-            .map(cat => new cms.SaveCategorySuccess(cat))
+            .mergeMap(cat => Observable.from([
+                new cms.SaveCategorySuccess(cat),
+                new cms.LoadAll()
+            ]))
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() saveTType$ = this.actions$.ofType(cms.SAVE_TOPIC_TYPE)
         .switchMap((action: any) => this.putTopicType(action.payload)
-            .map(ttype => new cms.SaveTopicTypeSuccess(ttype))
+            .mergeMap(ttype => Observable.from([
+                new cms.SaveTopicTypeSuccess(ttype),
+                new cms.LoadAll()
+            ]))
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() saveGeoLoc$ = this.actions$.ofType(cms.SAVE_GEO_LOCATION)
         .switchMap((action: any) => this.putGeoLoc(action.payload)
-            .map(loc => new cms.SaveGeoLocationSuccess(loc))
+            .mergeMap(loc => Observable.from([
+                new cms.SaveGeoLocationSuccess(loc),
+                new cms.LoadAll()
+            ]))
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() addTag$ = this.actions$.ofType(cms.ADD_TAG)
         .switchMap((action: any) => this.postTag(action.payload)
-            .map(tag => new cms.AddTagSuccess(tag))
+            .mergeMap(tag => Observable.from([
+                new cms.AddTagSuccess(tag),
+                new cms.LoadAll()
+            ]))
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() addTType$ = this.actions$.ofType(cms.ADD_TOPIC_TYPE)
         .switchMap((action: any) => this.postTopicType(action.payload)
-            .map(ttype => new cms.AddTopicTypeSuccess(ttype))
+            .mergeMap(ttype => Observable.from([
+                new cms.AddTopicTypeSuccess(ttype),
+                new cms.LoadAll()
+            ]))
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() addCat$ = this.actions$.ofType(cms.ADD_CATEGORY)
         .switchMap((action: any) => this.postCat(action.payload)
-            .map(cat => new cms.AddCategorySuccess(cat))
+            .mergeMap(cat => Observable.from([
+                new cms.AddCategorySuccess(cat),
+                new cms.LoadAll()
+            ]))
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() addGeoLoc$ = this.actions$.ofType(cms.ADD_GEO_LOCATION)
         .switchMap((action: any) => this.postGeoLoc(action.payload)
-            .map(loc => new cms.AddGeoLocationSuccess(loc))
+            .mergeMap(loc => Observable.from([
+                new cms.AddGeoLocationSuccess(loc),
+                new cms.LoadAll()
+            ]))
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() deleteTag$ = this.actions$.ofType(cms.DELETE_TAG)
         .switchMap((action: any) => this.deleteTag(action.payload)
-            .map(tagId => new cms.DeleteTagSuccess(tagId))
+            .mergeMap(tagId => Observable.from([
+                new cms.DeleteTagSuccess(tagId),
+                new cms.LoadAll()
+            ]))
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() deleteCat$ = this.actions$.ofType(cms.DELETE_CATEGORY)
         .switchMap((action: any) => this.deleteCat(action.payload)
-            .map(catId => new cms.DeleteCategorySuccess(catId))
+            .mergeMap(catId => Observable.from([
+                new cms.DeleteCategorySuccess(catId),
+                new cms.LoadAll()
+            ]))
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() deleteTType$ = this.actions$.ofType(cms.DELETE_TOPIC_TYPE)
         .switchMap((action: any) => this.deleteTopicType(action.payload)
-            .map(ttypeId => new cms.DeleteTopicTypeSuccess(ttypeId))
+            .mergeMap(ttypeId => Observable.from([
+                new cms.DeleteTopicTypeSuccess(ttypeId),
+                new cms.LoadAll()
+            ]))
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() deleteGeoLoc$ = this.actions$.ofType(cms.DELETE_GEO_LOCATION)
         .switchMap((action: any) => this.deleteGeoLoc(action.payload)
-            .map(locId => new cms.DeleteGeoLocationSuccess(locId))
+            .mergeMap(locId => Observable.from([
+                new cms.DeleteGeoLocationSuccess(locId),
+                new cms.LoadAll()
+            ]))
             .catch(() => Observable.of(new cms.SaveFail())));
+
 
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
