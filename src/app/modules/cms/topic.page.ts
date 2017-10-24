@@ -69,7 +69,8 @@ export class TopicPage extends EntityPage
      * belongs to this topic
      */
     loadOffers(idx) {
-        if (idx == 1) {
+        // Only load offer when offer tab is active and entity id exists
+        if (idx == 1 && this.entity.id > 0) {
             let params: EntityParams = {page: 1, topic: this.entity.guid};
             this.store.dispatch(new EntityActions.LoadEntities({
                 etype: ENTITY.OFFER,
