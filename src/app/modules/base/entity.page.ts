@@ -195,7 +195,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
         // Update content when changed
         this.subCtCtrl = this.contentControl.valueChanges.debounceTime(1000)
             .subscribe(c => {
-                if (this.isEditorInitialized) this.update('content', c);
+                if (this.isEditorInitialized || this.isNewEntity)
+                    this.update('content', c);
                 this.isEditorInitialized = true;
             });
 
