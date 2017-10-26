@@ -94,7 +94,7 @@ export class AuthEffects {
             .catch(() => Observable.of(new AuthA.RegisterFail())));
 
     @Effect() registerSuccess$: Observable<Action> = this.actions$.ofType(AuthA.REGISTER_SUCCESS)
-        .map((action: any) => new AlertA.Success("注册成功,请联系管理员开通后台权限"));
+        .map((action: any) => new AlertA.Info("注册成功,请联系管理员开通后台权限"));
 
     @Effect() registerFail$: Observable<Action> = this.actions$.ofType(AuthA.REGISTER_FAIL)
         .map((action: any) => new AlertA.Error("注册失败"));

@@ -89,22 +89,44 @@ export class EntityEffects {
             .catch((ret) => Observable.of(new entity.SaveEntityFail({etype: ret.etype})))
         );
 
-    @Effect() autoSaveSuccess$ = this.actions$.ofType(entity.AUTO_SAVE_SUCCESS)
-        .map((action: any) => new alert.Success('自动保存成功, 此消息应该不用这么明显'));
-    
-    @Effect() saveEntitySuccess$ = this.actions$.ofType(entity.SAVE_ENTITY_SUCCESS)
-        .map((action: any) => new alert.Success('保存成功!'));
-
-    @Effect() saveEntityFail$ = this.actions$.ofType(entity.SAVE_ENTITY_FAIL)
-        .map((action: any) => new alert.Error('保存失败!'));
-
-
     @Effect() genThumbs$ = this.actions$.ofType(entity.GENERATE_THUMBS)
         .map((action: any) => action.payload)
         .switchMap(p => this.genThumbnails(p.etype, p.data)
             .map(ret => new entity.GenerateThumbsSuccess({etype: ret.etype}))
             .catch((ret) => Observable.of(new entity.GenerateThumbsFail({etype: ret.etype})))
         );
+
+
+    /*************************************************************************
+     * Popup message etc
+     *************************************************************************/
+    @Effect() autoSaveSuccess$ = this.actions$.ofType(entity.AUTO_SAVE_SUCCESS)
+        .map((action: any) => new alert.Info('自动保存成功'));
+
+    @Effect() saveEntitySuccess$ = this.actions$.ofType(entity.SAVE_ENTITY_SUCCESS)
+        .map((action: any) => new alert.Info('保存成功'));
+
+    @Effect() saveEntityFail$ = this.actions$.ofType(entity.SAVE_ENTITY_FAIL)
+        .map((action: any) => new alert.Error('保存失败'));
+
+    @Effect() deleteEntitySuccess$ = this.actions$.ofType(entity.DELETE_ENTITY_SUCCESS)
+        .map((action: any) => new alert.Info('删除成功'));
+
+    @Effect() deleteEntityFail$ = this.actions$.ofType(entity.DELETE_ENTITY_FAIL)
+        .map((action: any) => new alert.Error('删除失败'));
+
+    @Effect() deleteEntitiesSuccess$ = this.actions$.ofType(entity.BATCH_DELETE_ENTITIES_SUCCESS)
+        .map((action: any) => new alert.Info('批量删除成功'));
+
+    @Effect() deleteEntitiesFail$ = this.actions$.ofType(entity.BATCH_DELETE_ENTITIES_FAIL)
+        .map((action: any) => new alert.Error('批量删除失败'));
+
+    @Effect() genThumbsSuccess$ = this.actions$.ofType(entity.GENERATE_THUMBS_SUCCESS)
+        .map((action: any) => new alert.Error('缩略图生成成功'));
+
+    @Effect() genThumbsFail$ = this.actions$.ofType(entity.GENERATE_THUMBS_FAIL)
+        .map((action: any) => new alert.Error('缩略图生成失败'));
+
 
     /**************************************************************************
      * Helper functions

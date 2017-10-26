@@ -25,7 +25,6 @@ export * from './post';
 export * from './page';
 export * from './newsletter';
 export * from './auth';
-export * from './alert';
 export * from './preference';
 export * from './statistic';
 export * from './activity';

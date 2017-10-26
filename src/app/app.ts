@@ -8,6 +8,7 @@ import { OnInit, OnDestroy } from '@angular/core';
 import { Router }            from '@angular/router';
 import { Store }             from '@ngrx/store';
 import { Observable }        from 'rxjs/Observable';
+import { MatSnackBar }       from '@angular/material';
 
 import { AppState }          from './reducers';
 import { PreferenceState }   from './reducers/preference';
@@ -15,14 +16,13 @@ import * as CmsAttrActions   from './actions/cmsattr';
 import * as SysAttrActions   from './actions/sysattr';
 import * as AuthActions      from './actions/auth';
 import * as PreferenceActions from './actions/preference';
-import { Alert }             from './models';
 import { Domain }            from './models';
 import { User }              from './models';
 import { JwtPayload }        from './models';
 
 import { isDashboardUser, hasAuthorRole, getCurDomainKey, getAuthToken,
     getDomainLatencies, getDomains, getDomainKeys,
-    hasCurProfile, getAuthJwt, getAuthFail, getAlert, getPreference
+    hasCurProfile, getAuthJwt, getAuthFail, getAlertType, getAlertMsg, getPreference
 }   from './reducers';
 
 @Component({
@@ -36,12 +36,12 @@ export class App implements OnInit, OnDestroy
     subDU: any;
     subLogin: any;
     subFail: any;
+    subAM: any;
 
     isPingEnabled = true;
     isLoggedIn    = false;
 
-    /* TODO: This array will grow large, need to clean it periodically */
-    alerts$: Observable<Alert[]>;
+    alertMsg$: Observable<string>;
 
     curDomainKey$: Observable<string>;
     domainKeys$:   Observable<string[]>;
@@ -53,12 +53,13 @@ export class App implements OnInit, OnDestroy
     isDashboardUser$: Observable<boolean>; // Per domain permission from auth server
     isLoggedInDomain$: Observable<boolean>;  // If current user can login domain
 
-    constructor(private viewContainerRef: ViewContainerRef,
+    constructor(public snackBar: MatSnackBar,
+                private viewContainerRef: ViewContainerRef,
                 private store: Store<AppState>,
                 private router: Router) { }
 
     ngOnInit() {
-        this.alerts$       = this.store.select(getAlert);
+        this.alertMsg$       = this.store.select(getAlertMsg);
         this.curDomainKey$ = this.store.select(getCurDomainKey);
         this.domainKeys$   = this.store.select(getDomainKeys);
         this.domains$      = this.store.select(getDomains);
@@ -69,6 +70,8 @@ export class App implements OnInit, OnDestroy
         this.isDashboardUser$  = this.store.select(isDashboardUser);
         this.isLoggedInDomain$ = this.store.select(hasCurProfile);
 
+        this.showAlerts();
+
         // NOTE: loadDomainData may return before LoginDomain data return.
         this.loadDomainData();
 
@@ -78,6 +81,7 @@ export class App implements OnInit, OnDestroy
     ngOnDestroy() {
         //this.subDU.unsubscribe();
         this.subKey.unsubscribe();
+        this.subAM.unsubscribe();
         //this.subLogin.unsubscribe();
         //this.subPing.unsubscribe();
         //this.subFail.unsubscribe();
@@ -103,6 +107,11 @@ export class App implements OnInit, OnDestroy
             });
     }
     */
+
+    showAlerts() {
+        this.subAM = this.alertMsg$
+            .subscribe(msg => setTimeout(() => this.snackBar.open(msg, '', {duration: 2000}), 0));
+    }
 
     logout() {
         // Kick a logout action to clean app state and cache

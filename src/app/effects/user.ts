@@ -79,11 +79,13 @@ export class UserEffects {
             .catch(() => Observable.of(new UA.SaveAuthUserFail()))
         );
 
+    /*
     @Effect() updateUOk$ = this.actions$.ofType(UA.SAVE_USER_SUCCESS)
-        .map(() => new AA.Success("成功保存用户信息到应用服务器"));
+        .map(() => new AA.Info("成功保存用户信息到应用服务器"));
 
     @Effect() updateAUOk$ = this.actions$.ofType(UA.SAVE_AUTH_USER_SUCCESS)
-        .map(() => new AA.Success("成功保存用户信息到授权服务器"));
+        .map(() => new AA.Info("成功保存用户信息到授权服务器"));
+    */
 
     @Effect() updateUFail$ = this.actions$.ofType(
         UA.SAVE_USER_FAIL,

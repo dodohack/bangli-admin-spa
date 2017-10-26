@@ -1,31 +1,34 @@
 /**
  * Global popup alert reducer
  */
-import { Alert }     from '../models';
 import * as alert    from '../actions/alert';
 
-export type AlertsState = Alert[];
+export interface AlertsState {
+    type: string;
+    msg: string;
+}
 
-export function alertsReducer(state: AlertsState = [], action: alert.Actions): AlertsState {
+const initState: AlertsState = {
+    type: null,
+    msg: null,
+};
+
+export function alertsReducer(state: AlertsState = initState, action: alert.Actions): AlertsState {
     switch(action.type)
     {
-        case alert.SUCCESS: {
-            return [...state, { type: 'success', msg: action.payload }];
-        }
 
         case alert.INFO: {
-            return [...state, { type: 'info', msg: action.payload }];
-        }
-
-        case alert.WARNING: {
-            return [...state, { type: 'warning', msg: '注意: ' + action.payload }];
+            return { type: 'info', msg: action.payload };
         }
 
         case alert.ERROR: {
-            return [...state, { type: 'danger', msg: '错误: ' + action.payload }];
+            return { type: 'error', msg: action.payload };
         }
 
         default:
             return state;
     }
 }
+
+export const getAlertType = (state: AlertsState) => state.type;
+export const getAlertMsg  = (state: AlertsState) => state.msg;
