@@ -248,7 +248,9 @@ export class RefreshActivityStatus implements Action {
  */
 export class GenerateThumbs implements Action {
     readonly type = GENERATE_THUMBS;
-    constructor(public payload: {etype: string}) {}
+    // etype - attachment
+    // data  - start and end date for the range to generate thumbnail instead of a whole.
+    constructor(public payload: {etype: string, data: any}) {}
 }
 
 export class GenerateThumbsSuccess implements Action {

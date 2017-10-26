@@ -57,7 +57,7 @@
                 <input matInput [matDatepicker]="startPicker" name="start"
                        placeholder="开始日期"
                        [ngModel]="filterDateFrom | date: 'yyyy-MM-dd'"
-                       (ngModelChange)="filterDateFrom = MySQLDate($event, true)">
+                       (ngModelChange)="filterDateFrom = helper.MySQLDateGMT($event, true)">
                 <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
                 <mat-datepicker #startPicker></mat-datepicker>
             </mat-form-field>
@@ -66,7 +66,7 @@
                 <input matInput [matDatepicker]="endPicker" name="end"
                        placeholder="结束日期"
                        [ngModel]="filterDateTo | date: 'yyyy-MM-dd'"
-                       (ngModelChange)="filterDateTo = MySQLDate($event, false)">
+                       (ngModelChange)="filterDateTo = helper.MySQLDateGMT($event, false)">
                 <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
                 <mat-datepicker #endPicker></mat-datepicker>
             </mat-form-field>

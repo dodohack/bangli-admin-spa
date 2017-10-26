@@ -18,6 +18,8 @@ import { SuperUserGuard} from './guard';
 import { LockGuard }     from './guard';
 import { EditLockGuard } from './guard';
 
+import { Helper }        from './helper';
+
 import { routing }       from './app.routes';
 import { App }           from './app';
 import { Sidebar }       from './modules/directives/sidebar';
@@ -124,6 +126,7 @@ import { StoreDevtoolsModule }   from '@ngrx/store-devtools';
     ],
     providers: [
         Title,
+        Helper,
         UnauthGuard,
         BaseGuard,
         AuthorGuard,

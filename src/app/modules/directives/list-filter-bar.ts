@@ -11,7 +11,7 @@ import { Channel }     from '../../models';
 import { Category }    from '../../models';
 import { Brand }       from '../../models';
 import { ENTITY }      from '../../models';
-import { getMySQLDateGMT, getDisplayDateGMT } from '../../helper';
+import { Helper }      from '../../helper';
 
 @Component({
     selector: 'list-filter-bar',
@@ -49,7 +49,8 @@ export class ListFilterBar implements OnInit, OnDestroy {
     subParams: any;
     subQParams: any;
 
-    constructor(protected route: ActivatedRoute,
+    constructor(protected helper: Helper,
+                protected route: ActivatedRoute,
                 protected router: Router) { }
 
     /**
@@ -79,12 +80,10 @@ export class ListFilterBar implements OnInit, OnDestroy {
         this.filterBrand  = params['brand'] || '';
         this.filterDateType  = params['datetype'] || '';
         let dateFrom = params['datefrom'] || Date.now();
-        this.filterDateFrom = getMySQLDateGMT(dateFrom, true);
+        this.filterDateFrom = this.helper.MySQLDateGMT(dateFrom, true);
         let dateTo   = params['dateto'] || Date.now();
-        this.filterDateTo   = getMySQLDateGMT(dateTo, false);
+        this.filterDateTo   = this.helper.MySQLDateGMT(dateTo, false);
     }
-
-    MySQLDate(value: string, start: boolean) { return getMySQLDateGMT(value, start); }
 
     /**
      * Submit the filter

@@ -33,8 +33,6 @@ import { Topic }             from '../../models';
 import { User }              from '../../models';
 import { Domain }            from '../../models';
 
-import { GMT }               from '../../helper';
-
 import { THUMBS }            from '../../../.config';
 
 /**

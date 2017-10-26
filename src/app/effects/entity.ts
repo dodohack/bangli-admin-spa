@@ -100,8 +100,8 @@ export class EntityEffects {
 
 
     @Effect() genThumbs$ = this.actions$.ofType(entity.GENERATE_THUMBS)
-        .map((action: any) => action.payload.etype)
-        .switchMap(etype => this.putEntities(etype, null, 'gen-thumb=true')
+        .map((action: any) => action.payload)
+        .switchMap(p => this.genThumbnails(p.etype, p.data)
             .map(ret => new entity.GenerateThumbsSuccess())
             .catch(() => Observable.of(new entity.GenerateThumbsFail()))
         );
@@ -252,8 +252,6 @@ export class EntityEffects {
             + '&per_page=' + perPage
             + '&token=' + this.cache.token;
 
-        //console.log("LOAD ENTITIES FROM URL: ", api);
-
         return this.http.get(api).map(res => res.json());
     }
 
@@ -287,6 +285,17 @@ export class EntityEffects {
             '?etype=' + etype + '&ids=' + ids.join(',');
 
         return this.http.delete(api, options).map(res => res.json());
+    }
+
+    /**
+     * Generate thumbnails for image uploaded in a range of date
+     * @param t    - entity type
+     * @param data - start and end date
+     */
+    protected genThumbnails(t: string, data: any = null) {
+        let params =  'gen-thumb=true';
+        if (data) params += '&' + this.params2String(data);
+        return this.putEntities(t, null, params);
     }
 
     /**

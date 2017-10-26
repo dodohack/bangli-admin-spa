@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 import { Entity, ENTITY_STATES } from "../../models";
 import { zh_CN } from '../../localization';
-import { getMySQLDateGMT } from '../../helper';
+import { Helper } from '../../helper';
 
 @Component({
     selector: 'offer-editor',
@@ -37,6 +37,8 @@ export class OfferEditor
     // Add new offer and attach it to topic
     //@Output() create = new EventEmitter();
 
+    constructor(protected helper: Helper) {}
+
     // Edit attribute and mark the attribute are modified.
     modify(key: string, value: any) {
         this._offer[key] = value;
@@ -47,8 +49,8 @@ export class OfferEditor
     // Edit date attribute, convert date into MySQL date format
     modifyDate(key: string, value: any, start: boolean) {
         let date;
-        if (start) date = getMySQLDateGMT(value, true);
-        else date = getMySQLDateGMT(value, false);
+        if (start) date = this.helper.MySQLDateGMT(value, true);
+        else date = this.helper.MySQLDateGMT(value, false);
 
         this.modify(key, date);
     }

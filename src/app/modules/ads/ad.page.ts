@@ -15,7 +15,7 @@ import { ENTITY }            from '../../models';
 import * as AlertActions     from '../../actions/alert';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
-import { getMySQLDateGMT }   from '../../helper';
+import { Helper }            from '../../helper';
 
 import { getAdPositions } from '../../reducers';
 
@@ -26,7 +26,8 @@ export class AdPage extends EntityPage
 
     locations = ['LOCAL', 'CN', 'GLOBAL'];
 
-    constructor(protected route: ActivatedRoute,
+    constructor(protected helper: Helper,
+                protected route: ActivatedRoute,
                 protected location: Location,
                 protected store: Store<AppState>,
                 protected router: Router) {
@@ -38,14 +39,6 @@ export class AdPage extends EntityPage
     get zh() { return zh_CN.cms; } // Localization
 
     get previewUrl() { return null; }
-
-    // Edit date attribute, convert date into MySQL date format
-    modifyDate(key: string, value: any, start: boolean) {
-        if (start)
-            return getMySQLDateGMT(value, true);
-        else
-            return getMySQLDateGMT(value, false);
-    }
 
     /**
      * Overwrite parent::save(), simply save all entries
