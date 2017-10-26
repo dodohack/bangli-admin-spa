@@ -165,7 +165,7 @@ export class EntityEffects {
      * @returns {string}
      */
     private params2String(params: EntityParams) {
-        let s = '?';
+        let s = '';
         for (let key in params) {
             if (params.hasOwnProperty(key) && typeof params[key] !== 'undefined' && params[key] !== null)
                 s += key + '=' + params[key] + '&';
@@ -247,7 +247,7 @@ export class EntityEffects {
         if (t === ENTITY.ATTACHMENT) perPage = '60';
 
         let api = this.getApi(t, false)
-            + this.params2String(params)
+            + '?' + this.params2String(params)
             + '&etype=' + t
             + '&per_page=' + perPage
             + '&token=' + this.cache.token;
