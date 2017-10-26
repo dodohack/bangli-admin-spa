@@ -38,19 +38,19 @@ export class EntityEffects {
     @Effect() loadEntities$ = this.actions$.ofType(entity.LOAD_ENTITIES)
         .switchMap((action: any) => this.getEntities(action.payload.etype, action.payload.data)
             .map(ret => new entity.LoadEntitiesSuccess({etype: ret.etype, data: ret}))
-            .catch(() => Observable.of(new entity.LoadEntitiesFail()))
+            .catch((ret) => Observable.of(new entity.LoadEntitiesFail({etype: ret.etype})))
         );
 
     @Effect() loadEntitiesOnScroll$ = this.actions$.ofType(entity.LOAD_ENTITIES_ON_SCROLL)
         .switchMap((action: any) => this.getEntities(action.payload.etype, action.payload.data)
             .map(ret => new entity.LoadEntitiesOnScrollSuccess({etype: ret.etype, data: ret}))
-            .catch(() => Observable.of(new entity.LoadEntitiesOnScrollFail()))
+            .catch((ret) => Observable.of(new entity.LoadEntitiesOnScrollFail({etype: ret.etype})))
         );    
 
     @Effect() loadEntity$ = this.actions$.ofType(entity.LOAD_ENTITY)
         .switchMap((action: any) => this.getEntity(action.payload.etype, action.payload.data)
             .map(ret => new entity.LoadEntitySuccess({etype: ret.etype, data: ret.entity, prepend: false}))
-            .catch(() => Observable.of(new entity.LoadEntityFail()))
+            .catch((ret) => Observable.of(new entity.LoadEntityFail({etype: ret.etype})))
         );
 
     @Effect() saveEntity$ = this.actions$.ofType(entity.SAVE_ENTITY)
@@ -65,28 +65,28 @@ export class EntityEffects {
                 ];
                 return Observable.from(actions);
             })
-            .catch(() => Observable.of(new entity.SaveEntityFail()))
+            .catch((ret) => Observable.of(new entity.SaveEntityFail({etype: ret.etype})))
         );
 
     @Effect() deleteEntity$ = this.actions$.ofType(entity.DELETE_ENTITY)
         .map((action: any) => action.payload)
         .filter(p => p.data) // Do not send delete action for id 0 entity
         .switchMap(p => this.deleteEntity(p.etype, p.data)
-            .map(ret => new entity.DeleteEntitySuccess())
-            .catch(() => Observable.of(new entity.DeleteEntityFail()))
+            .map(ret => new entity.DeleteEntitySuccess({etype: ret.etype}))
+            .catch((ret) => Observable.of(new entity.DeleteEntityFail({etype: ret.etype})))
         );
 
     @Effect() batchDeleteEntities$ = this.actions$.ofType(entity.BATCH_DELETE_ENTITIES)
         .map((action: any) => action.payload)
         .switchMap(p => this.deleteEntities(p.etype, p.data)
-            .map(ret => new entity.BatchDeleteEntitiesSuccess())
-            .catch(() => Observable.of(new entity.BatchDeleteEntitiesFail())));
+            .map(ret => new entity.BatchDeleteEntitiesSuccess({etype: ret.etype}))
+            .catch((ret) => Observable.of(new entity.BatchDeleteEntitiesFail({etype: ret.etype}))));
 
     @Effect() autoSave$ = this.actions$.ofType(entity.AUTO_SAVE)
         .map((action: any) => action.payload)
         .switchMap(p => this.autoSaveEntity(p.etype, p.data, p.mask)
             .map(ret => new entity.AutoSaveSuccess({etype: ret.etype, data: ret.entity}))
-            .catch(() => Observable.of(new entity.SaveEntityFail()))
+            .catch((ret) => Observable.of(new entity.SaveEntityFail({etype: ret.etype})))
         );
 
     @Effect() autoSaveSuccess$ = this.actions$.ofType(entity.AUTO_SAVE_SUCCESS)
@@ -102,8 +102,8 @@ export class EntityEffects {
     @Effect() genThumbs$ = this.actions$.ofType(entity.GENERATE_THUMBS)
         .map((action: any) => action.payload)
         .switchMap(p => this.genThumbnails(p.etype, p.data)
-            .map(ret => new entity.GenerateThumbsSuccess())
-            .catch(() => Observable.of(new entity.GenerateThumbsFail()))
+            .map(ret => new entity.GenerateThumbsSuccess({etype: ret.etype}))
+            .catch((ret) => Observable.of(new entity.GenerateThumbsFail({etype: ret.etype})))
         );
 
     /**************************************************************************
@@ -184,7 +184,8 @@ export class EntityEffects {
     protected getEntity(t: string, id: string): Observable<any> {
         let api = this.getApi(t, false) +
             '/' + id + '?etype=' + t + '&token=' + this.cache.token;
-        return this.http.get(api).map(res => res.json());
+        return this.http.get(api).map(res => res.json())
+            .catch((err) => { throw {etype: t, err: err} });
     }
 
     /**
@@ -219,12 +220,14 @@ export class EntityEffects {
             // Create a new entity
             api += '?etype=' + t;
             if (isAuto) api = api + '&auto=true';
-            return this.http.post(api, body, options).map(res => res.json());
+            return this.http.post(api, body, options).map(res => res.json())
+                .catch((err) => { throw {etype: t, err: err} });
         } else {
             // Update an existing entity
             api += '/' + entity.id + '?etype=' + t;
             if (isAuto) api = api + '&auto=true';
-            return this.http.put(api, body, options).map(res => res.json());
+            return this.http.put(api, body, options).map(res => res.json())
+                .catch((err) => { throw {etype: t, err: err} });
         }
     }
 
@@ -235,7 +238,9 @@ export class EntityEffects {
         let options = new RequestOptions({ headers: this.headers });
 
         let api = this.getApi(t, false) + '/' + id + '?etype=' + t;
-        return this.http.delete(api, options).map(res => res.json());
+        return this.http.delete(api, options)
+            .map(res => {return {etype: t, data: res.json()};})
+            .catch((err) => { throw {etype: t, err: err} });
     }
 
     /**
@@ -252,7 +257,8 @@ export class EntityEffects {
             + '&per_page=' + perPage
             + '&token=' + this.cache.token;
 
-        return this.http.get(api).map(res => res.json());
+        return this.http.get(api).map(res => res.json())
+            .catch((err) => { throw {etype: t, err: err} });
     }
 
     /**
@@ -270,7 +276,8 @@ export class EntityEffects {
         let api     = this.getApi(t, true) + '?etype=' + t;
         if (params) api += '&' + params;
 
-        return this.http.put(api, body, options).map(res => res.json());
+        return this.http.put(api, body, options).map(res => res.json())
+            .catch((err) => { throw {etype: t, err: err} });
     }
 
     /**
@@ -284,7 +291,9 @@ export class EntityEffects {
         let api = this.getApi(etype, true) +
             '?etype=' + etype + '&ids=' + ids.join(',');
 
-        return this.http.delete(api, options).map(res => res.json());
+        return this.http.delete(api, options)
+            .map(res => {return {etype: etype, data: res.json()};})
+            .catch((err) => { throw {etype: etype, err: err} });
     }
 
     /**

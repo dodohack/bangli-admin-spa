@@ -31,7 +31,10 @@
             <mat-datepicker #endPicker></mat-datepicker>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" (click)="generateThumbs()" [disabled]="isRunning$ | async">生成缩略图</button>
+        <button mat-raised-button color="primary" (click)="generateThumbs()"
+                [disabled]="isRunning$ | async">
+            生成缩略图 <i *ngIf="isRunning$ | async" class="fa fa-spinner fa-spin"></i>
+        </button>
     </div>
 </div>
 

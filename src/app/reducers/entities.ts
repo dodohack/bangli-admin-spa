@@ -559,6 +559,7 @@ function entitiesReducer (etype: string,
 
         case entity.GENERATE_THUMBS_SUCCESS:
         case entity.GENERATE_THUMBS_FAIL: {
+            console.log("WE SHOULD HIT HERE!");
             return Object.assign({}, state, {isLoading:  false});
         }
 

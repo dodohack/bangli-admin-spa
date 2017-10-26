@@ -6,6 +6,8 @@
  * The only thing we need to do is selecting different API for those entities, as
  * we need to separate their database tables in order to get better management
  * and speed.
+ * NOTE: All actions for entity should have a payload with etype, otherwise
+ * its reducer will not work properly.
  */
 import { Action }       from '@ngrx/store';
 import { EntityParams } from '../models';
@@ -77,6 +79,7 @@ export class LoadEntitiesSuccess implements Action {
 
 export class LoadEntitiesFail implements Action {
     readonly type = LOAD_ENTITIES_FAIL;
+    constructor(public payload: {etype: string}) {}
 }
 
 export class LoadEntitiesOnScroll implements Action {
@@ -91,6 +94,7 @@ export class LoadEntitiesOnScrollSuccess implements Action {
 
 export class LoadEntitiesOnScrollFail implements Action {
     readonly type = LOAD_ENTITIES_ON_SCROLL_FAIL;
+    constructor(public payload: {etype: string}) {}
 }
 
 export class BatchEditEntities implements Action {
@@ -112,12 +116,12 @@ export class BatchDeleteEntities implements Action {
 
 export class BatchDeleteEntitiesSuccess implements Action {
     readonly type = BATCH_DELETE_ENTITIES_SUCCESS;
-    //constructor(public payload: any) {}
+    constructor(public payload: {etype: string}) {}
 }
 
 export class BatchDeleteEntitiesFail implements Action {
     readonly type = BATCH_DELETE_ENTITIES_FAIL;
-    //constructor(public payload: any) {}
+    constructor(public payload: {etype: string}) {}
 }
 
 // DEPRECATED
@@ -155,10 +159,12 @@ export class DeleteEntity implements Action {
 
 export class DeleteEntitySuccess implements Action {
     readonly type = DELETE_ENTITY_SUCCESS;
+    constructor(public payload: {etype: string}) {}
 }
 
 export class DeleteEntityFail implements Action {
     readonly type = DELETE_ENTITY_FAIL;
+    constructor(public payload: {etype: string}) {}
 }
 
 export class LoadEntity implements Action {
@@ -179,6 +185,7 @@ export class LoadEntitySuccess implements Action {
 
 export class LoadEntityFail implements Action {
     readonly type = LOAD_ENTITY_FAIL;
+    constructor(public payload: {etype: string}) {}
 }
 
 export class AutoSave implements Action {
@@ -204,6 +211,7 @@ export class AutoSaveSuccess implements Action {
 
 export class SaveEntityFail implements Action {
     readonly type = SAVE_ENTITY_FAIL;
+    constructor(public payload: {etype: string}) {}
 }
 
 export class SaveEntities implements Action {
@@ -255,10 +263,12 @@ export class GenerateThumbs implements Action {
 
 export class GenerateThumbsSuccess implements Action {
     readonly type = GENERATE_THUMBS_SUCCESS;
+    constructor(public payload: {etype: string}) {}
 }
 
 export class GenerateThumbsFail implements Action {
     readonly type = GENERATE_THUMBS_FAIL;
+    constructor(public payload: {etype: string}) {}
 }
 
 export type Actions = Search
