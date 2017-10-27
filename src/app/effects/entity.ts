@@ -49,7 +49,7 @@ export class EntityEffects {
 
     @Effect() loadEntity$ = this.actions$.ofType(entity.LOAD_ENTITY)
         .switchMap((action: any) => this.getEntity(action.payload.etype, action.payload.data)
-            .map(ret => new entity.LoadEntitySuccess({etype: ret.etype, data: ret.entity, prepend: false}))
+            .map(ret => new entity.LoadEntitySuccess({etype: ret.etype, data: ret.data, prepend: false}))
             .catch((ret) => Observable.of(new entity.LoadEntityFail({etype: ret.etype})))
         );
 
@@ -61,7 +61,7 @@ export class EntityEffects {
                 let actions = [
                     // Delete draft(id=0) entity when save is succeed
                     new entity.DeleteEntity({etype: ret.etype, data: 0}),
-                    new entity.SaveEntitySuccess({etype: ret.etype, data: ret.entity})
+                    new entity.SaveEntitySuccess({etype: ret.etype, data: ret.data})
                 ];
                 return Observable.from(actions);
             })
@@ -85,7 +85,7 @@ export class EntityEffects {
     @Effect() autoSave$ = this.actions$.ofType(entity.AUTO_SAVE)
         .map((action: any) => action.payload)
         .switchMap(p => this.autoSaveEntity(p.etype, p.data, p.mask)
-            .map(ret => new entity.AutoSaveSuccess({etype: ret.etype, data: ret.entity}))
+            .map(ret => new entity.AutoSaveSuccess({etype: ret.etype, data: ret.data}))
             .catch((ret) => Observable.of(new entity.SaveEntityFail({etype: ret.etype})))
         );
 

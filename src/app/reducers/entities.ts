@@ -183,19 +183,22 @@ function entitiesReducer (etype: string,
                 dirtyMask = state.dirtyMask;
                 // Early return if nothing is loaded
                 if (!idsCurPage.length)
-                    return Object.assign({}, state, {isLoading: false});
+                    return Object.assign({}, state, {
+                        idsEditing: [],
+                        dirtyMask: [],
+                        isLoading: false,
+                    });
 
                 // Merge idsCurPage with previously loaded ones
                 idsCurPage = [...state.idsCurPage, ...idsCurPage].filter(
                     (elem, idx, self) => idx == self.indexOf(elem));
             } else {
-                // Reset dirtyMask
-                dirtyMask = [];
                 // Early return if nothing is loaded
                 if (!idsCurPage.length)
                     return Object.assign({}, state, {
                         idsCurPage: [],
-                        dirtyMask: dirtyMask,
+                        idsEditing: [],
+                        dirtyMask: [],
                         isLoading: false,
                         paginator: action.payload.data.paginator
                     });
@@ -224,8 +227,9 @@ function entitiesReducer (etype: string,
             return Object.assign({}, state, {
                 idsTotal:   idsTotal,
                 idsCurPage: idsCurPage,
+                idsEditing: [],
                 entities:   Object.assign({}, state.entities, newEntities),
-                dirtyMask:  dirtyMask,
+                dirtyMask:  [],
                 isLoading:  false,
                 paginator:  action.payload.data.paginator
             });
@@ -559,7 +563,6 @@ function entitiesReducer (etype: string,
 
         case entity.GENERATE_THUMBS_SUCCESS:
         case entity.GENERATE_THUMBS_FAIL: {
-            console.log("WE SHOULD HIT HERE!");
             return Object.assign({}, state, {isLoading:  false});
         }
 

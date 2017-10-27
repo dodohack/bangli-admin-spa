@@ -22,7 +22,7 @@ import { JwtPayload }        from './models';
 
 import { isDashboardUser, hasAuthorRole, getCurDomainKey, getAuthToken,
     getDomainLatencies, getDomains, getDomainKeys,
-    hasCurProfile, getAuthJwt, getAuthFail, getAlertType, getAlertMsg, getPreference
+    hasCurProfile, getAuthJwt, getAuthFail, getAlert, getPreference
 }   from './reducers';
 
 @Component({
@@ -41,8 +41,7 @@ export class App implements OnInit, OnDestroy
     isPingEnabled = true;
     isLoggedIn    = false;
 
-    alertMsg$: Observable<string>;
-
+    alert$:        Observable<any>;
     curDomainKey$: Observable<string>;
     domainKeys$:   Observable<string[]>;
     domains$:      Observable<any>;
@@ -59,7 +58,7 @@ export class App implements OnInit, OnDestroy
                 private router: Router) { }
 
     ngOnInit() {
-        this.alertMsg$       = this.store.select(getAlertMsg);
+        this.alert$        = this.store.select(getAlert);
         this.curDomainKey$ = this.store.select(getCurDomainKey);
         this.domainKeys$   = this.store.select(getDomainKeys);
         this.domains$      = this.store.select(getDomains);
@@ -109,8 +108,9 @@ export class App implements OnInit, OnDestroy
     */
 
     showAlerts() {
-        this.subAM = this.alertMsg$
-            .subscribe(msg => setTimeout(() => this.snackBar.open(msg, '', {duration: 2000}), 0));
+        this.subAM = this.alert$
+            .subscribe(alert => setTimeout(
+                () => this.snackBar.open(alert.msg, '', {duration: 2000}), 0));
     }
 
     logout() {

@@ -56,7 +56,7 @@
             </mat-tab>
 
             <!-- Topic's offers, only enabled when topic id is not 0(created) -->
-            <mat-tab [label]="'优惠 (' + (entity$ | async)?.offers?.length + ')'"
+            <mat-tab [label]="'优惠 (' + (entity$ | async)?.offers_count + ')'"
                      [disabled]="(entity$|async)?.id < 1">
                 <div style="padding: 1rem; display: flex; justify-content: space-around;">
 
@@ -159,21 +159,21 @@
         </div>
 
         <mat-form-field>
-            <mat-select placeholder="编辑" [ngModel]="(editor$ | async)?.id"
+            <mat-select placeholder="编辑" [ngModel]="(entity$ | async)?.editor_id"
                         name="ed" (ngModelChange)="update('editor_id', $event)">
                 <mat-option *ngFor="let e of (editors$ | async)" [value]="e.id">{{ e.display_name }}</mat-option>
             </mat-select>
         </mat-form-field>
 
         <mat-form-field>
-            <mat-select placeholder="专题频道" [ngModel]="(channel$ | async)?.id"
+            <mat-select placeholder="专题频道" [ngModel]="(entity$ | async)?.channel_id"
                         name="ch" (ngModelChange)="update('channel_id', $event)">
                 <mat-option *ngFor="let ch of (cmsChannels$ | async)" [value]="ch.id">{{ ch.name }}</mat-option>
             </mat-select>
         </mat-form-field>
 
         <mat-form-field>
-            <mat-select placeholder="专题类型" [ngModel]="(topicType$ | async)?.id"
+            <mat-select placeholder="专题类型" [ngModel]="(entity$ | async)?.type_id"
                         name="tt" (ngModelChange)="update('type_id', $event)">
                 <mat-option *ngFor="let tt of (cmsTopicTypes$ | async)"
                             [value]="tt.id">{{ tt.name }}</mat-option>

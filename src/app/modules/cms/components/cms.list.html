@@ -46,19 +46,18 @@
             <th>{{i+1}}</th>
             <td><input type="checkbox" name="p[]" [ngModel]="isEditing(entity.id)"
                        (change)="updateEditList(entity.id)"></td>
-            <!-- Enable fast editing if double click on title column -->
-            <td (dblclick)="batchEdit.emit([entity.id])">
+            <td>
                 <!-- Badge: Locked post -->
                 <i class="fa fa-lock" style="color: red" *ngIf="entity.lock"></i>
                 <!-- Badge: Online edit lock -->
                 <span class="badge badge-secondary" *ngIf="isOnlineLocked(entity)">
                     <i class="fa fa-pencil" style="color: red"></i>
-                    {{ authorsObj[entity.activities[0].user_id].text }} 正在编辑
+                    {{ authorsObj[entity.activities[0].user_id].display_name }} 正在编辑
                 </span>
                 <!-- Badge: Offline edit lock -->
                 <span class="badge badge-secondary" *ngIf="isOfflineLocked(entity)">
                     <i class="fa fa-pencil" style="color: blue"></i>
-                    {{ authorsObj[entity.activities[0].user_id].text }} 正在离线编辑
+                    {{ authorsObj[entity.activities[0].user_id].display_name}} 正在离线编辑
                 </span>
 
                 <span *ngIf="entity.status != 'publish'" class="badge badge-danger">
@@ -72,9 +71,9 @@
                 </strong>
 
                 <div class="row-actions">
-                    <span class="trash"><a>删除</a> | </span>
+                    <span class="trash"><a (click)="deleteEntity.emit(entity.id)">删除</a> | </span>
                     <span><a href="{{ previewLink(entity) }}" target="_blank">查看</a> | </span>
-                    <span>双击快速编辑</span>
+                    <span><a (click)="batchEdit.emit([entity.id])">快速编辑</a></span>
                 </div>
             </td>
 

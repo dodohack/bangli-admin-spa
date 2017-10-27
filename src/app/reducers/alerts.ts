@@ -4,25 +4,26 @@
 import * as alert    from '../actions/alert';
 
 export interface AlertsState {
-    type: string;
-    msg: string;
+    alert: {
+        type: string,   // Type of message
+        count: number,  // Just a counter, changes every time
+        msg: string     // Alert message
+    };
 }
 
 const initState: AlertsState = {
-    type: null,
-    msg: null,
+    alert: { type: 'info', count: 0, msg: 'Welcome' }
 };
 
 export function alertsReducer(state: AlertsState = initState, action: alert.Actions): AlertsState {
     switch(action.type)
     {
-
         case alert.INFO: {
-            return { type: 'info', msg: action.payload };
+            return { alert: { type: 'info', count: state.alert.count+1, msg: action.payload }};
         }
 
         case alert.ERROR: {
-            return { type: 'error', msg: action.payload };
+            return { alert: { type: 'error', count: state.alert.count+1, msg: action.payload }};
         }
 
         default:
@@ -30,5 +31,4 @@ export function alertsReducer(state: AlertsState = initState, action: alert.Acti
     }
 }
 
-export const getAlertType = (state: AlertsState) => state.type;
-export const getAlertMsg  = (state: AlertsState) => state.msg;
+export const getAlert = (state: AlertsState) => state.alert;

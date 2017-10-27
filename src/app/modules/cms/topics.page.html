@@ -28,6 +28,7 @@
           [idsEditing]="idsEditing$ | async"
           [channelsObj]="cmsChannelsObject$ | async"
           [frontendUrl]="(domain$ | async)?.url"
+          (deleteEntity)="deleteEntity($event)"
           (batchEdit)="batchEdit($event)"
           (batchDelete)="batchDelete($event)"
           (batchOfflineEdit)="batchOfflineEdit($event)"

@@ -774,8 +774,7 @@ export const getFeMobileMenus = createSelector(getFeMenusState, fromFeMenu.getMo
 export const getFeDesktopMenus= createSelector(getFeMenusState, fromFeMenu.getDesktopMenus);
 
 export const getAlertState = (state: AppState) => state.alerts;
-export const getAlertType = createSelector(getAlertState, fromAlerts.getAlertType);
-export const getAlertMsg = createSelector(getAlertState, fromAlerts.getAlertMsg);
+export const getAlert = createSelector(getAlertState, fromAlerts.getAlert);
 
 export const getPreference = (state: AppState) => state.pref;
 

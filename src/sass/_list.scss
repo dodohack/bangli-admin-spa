@@ -30,6 +30,10 @@
     position: relative;
     left: -9999em;
 
+    span a {
+        cursor: pointer;
+    }
+    
     span.trash a {
         color: red;
     }

@@ -40,6 +40,8 @@ export class EntityList
     @Input() set idsEditing(value) { this._idsEditing = [...value]; }
     get idsEditing() { return this._idsEditing; }
 
+    // Delete single entity, move to trash or physically delete from trah
+    @Output() deleteEntity = new EventEmitter();
     // Fast edit single or multiple entities
     @Output() batchEdit = new EventEmitter();
     // Delete multiple entities
@@ -163,19 +165,6 @@ export class EntityList
             // Default to cms type
             default:
                 return base + 'cms/' + ENTITY_INFO[this.etype].slug + '/' + entity.id;
-        }
-    }
-
-    // Get absolute image url from either absolute or relative url
-    imageUrl(uri: string) {
-        if (typeof uri != 'undefined' && uri != null && uri != '') {
-            // Test if uri starts with 'http'
-            if (uri[0] == 'h' && uri[1] == 't') return uri;
-            // Else return image url based on our image server
-            return this.cache.img_server + uri;
-        } else {
-            // Return placeholder image
-            return 'http://via.placeholder.com/80x80?text=ads';
         }
     }
 }

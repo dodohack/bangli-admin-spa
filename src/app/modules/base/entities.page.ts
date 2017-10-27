@@ -266,6 +266,14 @@ export class EntitiesPage implements OnInit, OnDestroy
         this.store.dispatch(new EntityActions.BatchLockEntities({etype: this.etype, data: ids}));
     }
 
+    /**
+     * Delete a single entity by given id
+     * @param id
+     */
+    deleteEntity(id: number) {
+        this.store.dispatch(new EntityActions.DeleteEntity({etype: this.etype, data: id}));
+    }
+
     /////////////////////////////////////////////////////////////////////////
     // NOTE: Following add/remove actions are the same as single post
     // Category, tag, topic add/remove events
