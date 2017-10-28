@@ -29,25 +29,25 @@ export class OfferFilterEffects {
 
     @Effect() load$ = this.actions$.ofType(OF.LOAD)
         .switchMap((action: any) => this.get(action.payload)
-            .map(filters => new OF.LoadSuccess(filters))
+            .map(ret => new OF.LoadSuccess(ret.data))
             .catch((error) => Observable.of(new OF.LoadFail(error)))
         );
 
     @Effect() loadAll$ = this.actions$.ofType(OF.LOAD_ALL)
         .switchMap((action: any) => this.getAll()
-            .map(filters => new OF.LoadAllSuccess(filters))
+            .map(ret => new OF.LoadAllSuccess(ret.data))
             .catch((error) => Observable.of(new OF.LoadFail(error)))
         );
 
     @Effect() save$ = this.actions$.ofType(OF.SAVE)
         .switchMap((action: any) => this.put(action.payload.ftype, action.payload.data)
-            .map(filters => new OF.SaveSuccess(filters))
+            .map(ret => new OF.SaveSuccess(ret.data))
             .catch((error) => Observable.of(new OF.SaveFail(error)))
         );
 
     @Effect() new$ = this.actions$.ofType(OF.NEW)
         .switchMap((action: any) => this.post(action.payload)
-            .map(filters => new OF.SaveSuccess(filters))
+            .map(ret => new OF.SaveSuccess(ret.data))
             .catch((error) => Observable.of(new OF.SaveFail(error)))
         );
 
