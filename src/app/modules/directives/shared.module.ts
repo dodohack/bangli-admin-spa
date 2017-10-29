@@ -31,7 +31,7 @@ import { EntityAttributes }          from './entity-attributes';
 import { EntityThumbnails }          from './entity-thumbnails';
 import { EntityExcerptNote }         from './entity-excerpt-note';
 import { EntityContent }             from './entity-content';
-
+import { FastEditPostFormComponent } from './fast-edit-post-form.component';
 import { ListPageHeader }            from './list-page-header';
 import { ListFilterBar }             from './list-filter-bar';
 import { SearchBox }                 from './search-box';
@@ -62,7 +62,7 @@ export const COMPONENTS = [
 
     ModalEditTax,
     ModalEditGeoLoc,
-    //FastEditPostFormComponent,
+    FastEditPostFormComponent,
     SearchBox,
     RevisionHistory,
     DateFilterComponent,

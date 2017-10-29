@@ -1,6 +1,7 @@
 /**
  * GeoLocation: area and city
  */
+/*
 import { Component }               from '@angular/core';
 import { Input, Output }           from '@angular/core';
 import { OnChanges }               from '@angular/core';
@@ -20,3 +21,4 @@ export class GeoLocationArea
     @Output() add  = new EventEmitter();
     @Output() remove = new EventEmitter();
 }
+*/
