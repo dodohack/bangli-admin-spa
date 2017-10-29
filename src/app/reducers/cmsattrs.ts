@@ -36,6 +36,7 @@ export interface CmsAttrsState {
     topic_statuses:        {available: PostState[],    actual: PostState[]};
     page_statuses:         {available: PostState[],    actual: PostState[]};
     offer_statuses:        {available: PostState[],    actual: PostState[]};
+    ad_statuses:           {available: PostState[],    actual: PostState[]};
 };
 
 const initialState: CmsAttrsState = {
@@ -52,6 +53,7 @@ const initialState: CmsAttrsState = {
     topic_statuses: {available: POST_STATES, actual: []},
     page_statuses:  {available: POST_STATES, actual: []},
     offer_statuses: {available: POST_STATES, actual: []},
+    ad_statuses:    {available: POST_STATES, actual: []},
 };
 
 
@@ -114,6 +116,7 @@ export function cmsReducer(state = initialState, action: attr.Actions | any): Cm
             let topic_statuses = getTotalStatus(payload.topic_status);
             let page_statuses  = getTotalStatus(payload.page_status);
             let offer_statuses = getTotalStatus(payload.offer_status);
+            let ad_statuses    = getTotalStatus(payload.ad_status);
 
             return {
                 curChannel: state.curChannel,
@@ -128,7 +131,8 @@ export function cmsReducer(state = initialState, action: attr.Actions | any): Cm
                 post_statuses:  Object.assign({}, state.post_statuses, {actual: post_statuses}),
                 topic_statuses: Object.assign({}, state.topic_statuses, {actual: topic_statuses}),
                 page_statuses:  Object.assign({}, state.page_statuses, {actual: page_statuses}),
-                offer_statuses: Object.assign({}, state.offer_statuses, {actual: offer_statuses})
+                offer_statuses: Object.assign({}, state.offer_statuses, {actual: offer_statuses}),
+                ad_statuses: Object.assign({}, state.ad_statuses, {actual: ad_statuses})
             };
         }
 
@@ -164,6 +168,13 @@ export function cmsReducer(state = initialState, action: attr.Actions | any): Cm
                     return Object.assign({}, state, {
                         offer_statuses: {
                             available: state.offer_statuses.available,
+                            actual: newStatus
+                        }
+                    });
+                case ENTITY.ADVERTISE:
+                    return Object.assign({}, state, {
+                        ad_statuses: {
+                            available: state.ad_statuses.available,
                             actual: newStatus
                         }
                     });

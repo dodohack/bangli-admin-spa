@@ -41,11 +41,11 @@
             <td><input type="checkbox" name="p[]" [ngModel]="isEditing(entity.id)"
                        (change)="updateEditList(entity.id)"></td>
 
-            <td (dblclick)="batchEdit.emit([entity.id])">
+            <td>
                 <strong><a [routerLink]="[editLink(entity.id)]">{{ entity.title }}</a></strong>
                 <div class="row-actions">
-                    <span class="trash"><a>删除</a> | </span>
-                    <span>双击快速编辑</span>
+                    <span class="trash"><a (click)="deleteEntity.emit(entity.id)">删除</a> | </span>
+                    <span><a (click)="batchEdit.emit([entity.id])">快速编辑</a></span>
                 </div>
             </td>
 
