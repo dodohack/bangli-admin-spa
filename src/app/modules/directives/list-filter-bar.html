@@ -82,18 +82,15 @@
     </div>
 </div>
 
-<div class="row justify-content-end">
-    <!-- Paginator -->
-    <div class="col-4">
-        <div class="paginator" *ngIf="paginator">
-            <span>共{{ paginator.total }}条 |
-                {{ paginator.cur_page }}/{{ paginator.last_page }}页</span>
-            <a *ngFor="let p of pagers" class="btn btn-sm btn-secondary"
-               [class.disabled]="p.disabled"
-               [routerLink]="[pageUrl(p.index)]"
-               [queryParams]="queryParams">
-                <i class="fa {{ p.icon }}"></i>
-            </a>
-        </div>
+<div class="row" *ngIf="paginator">
+    <div class="col-12">
+        <!-- Paginator -->
+        <mat-paginator style="float: right"
+                       [length]="paginator.total"
+                       [pageIndex]="paginator.cur_page-1"
+                       [pageSize]="paginator.per_page"
+                       [pageSizeOptions]="[20]"
+                       (page)="pageEvent($event)">
+        </mat-paginator>
     </div>
 </div>

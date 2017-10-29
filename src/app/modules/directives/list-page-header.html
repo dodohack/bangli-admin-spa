@@ -15,40 +15,46 @@
 <!-- header -->
 <div class="row justify-content-between">
     <div class="col-4">
-        <h1 class="title">
+        <h2 class="title">
             <span *ngIf="curChannelSlug">{{ zh[curChannelSlug] }}频道{{ name }}</span>
             <span *ngIf="!curChannelSlug">所有{{ name }}</span>
-        </h1>
+        </h2>
     </div>
 
     <div class="col-8">
-        <a mat-raised-button *ngIf="!inPageEdit"
-           [routerLink]="['/', slug, 'new']">新建{{ name }}</a>
+        <div style="float: right;">
+            <a mat-raised-button *ngIf="!inPageEdit"
+               [routerLink]="['/', slug, 'new']">新建{{ name }}</a>
 
-        <a mat-raised-button *ngIf="inPageEdit"
-           (click)="newEntityEvent.emit()">新建{{ name }}</a>
+            <a mat-raised-button *ngIf="inPageEdit"
+               (click)="newEntityEvent.emit()">新建{{ name }}</a>
 
-        <a mat-raised-button
-           (click)="togglePagelessEvent.emit()">
-            <span *ngIf="isPageless">模式:无限加载</span>
-            <span *ngIf="!isPageless">模式:分页加载</span>
-        </a>
+            <a mat-raised-button
+               (click)="togglePagelessEvent.emit()">
+                <span *ngIf="isPageless">模式:无限加载</span>
+                <span *ngIf="!isPageless">模式:分页加载</span>
+            </a>
 
-        <a mat-raised-button [routerLink]="['/setting']">系统设置</a>
-        <button mat-raised-button>详简切换</button>
+            <button mat-raised-button>详简切换</button>
+        </div>
     </div>
 </div>
 
-<!-- navbar and search box, only show navbar for those has statistics loaded -->
-<div style="display: flex; justify-content: space-between">
-    <!-- Entity status navbar -->
-    <div *ngIf="!curChannelSlug && statuses">
-        <a *ngFor="let status of statuses.actual"
-           [routerLink]="['/', slug, 'page', 1, 'status', status.status]"
-           routerLinkActive="active">
-            {{ zh[status.status] }}<span> ({{ status.count }})</span>
-        </a>
+<div class="row">
+    <div class="col-9">
+        <!-- Entity status navbar -->
+        <nav mat-tab-nav-bar *ngIf="!curChannelSlug && statuses">
+            <a mat-tab-link style="min-width: 100px !important;"
+               *ngFor="let status of statuses.actual"
+               [routerLink]="['/', slug, 'page', 1, 'status', status.status]"
+               routerLinkActive="active">
+                {{ zh[status.status] }} ({{ status.count }})
+            </a>
+        </nav>
     </div>
 
-    <search-box [slug]="slug" [loading]="loading"></search-box>
+    <div class="col-3">
+        <search-box [slug]="slug" [loading]="loading"></search-box>
+    </div>
 </div>
+
