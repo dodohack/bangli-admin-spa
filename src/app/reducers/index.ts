@@ -215,6 +215,8 @@ export const getPageStates = createSelector(getCmsState, fromCms.getPageStates);
 
 export const getTopicStates = createSelector(getCmsState, fromCms.getTopicStates);
 
+export const getAdStates = createSelector(getCmsState, fromCms.getAdStates);
+
 /*****************************************************************************
  * User
  *****************************************************************************/

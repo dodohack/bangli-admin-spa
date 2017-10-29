@@ -377,3 +377,5 @@ export const getOfferStates  = (state: CmsAttrsState) => state.offer_statuses;
 export const getPageStates = (state: CmsAttrsState) => state.page_statuses;
 
 export const getTopicStates = (state: CmsAttrsState) => state.topic_statuses;
+
+export const getAdStates = (state: CmsAttrsState) => state.ad_statuses;

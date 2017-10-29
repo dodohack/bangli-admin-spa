@@ -35,13 +35,16 @@
 
     <!-- table row of entities -->
     <ng-template ngFor let-entity [ngForOf]="entities" let-i="index">
-        <!-- Enable fast editing if double click on the row -->
         <tr>
             <th>{{i+1}}</th>
             <td><input type="checkbox" name="p[]" [ngModel]="isEditing(entity.id)"
                        (change)="updateEditList(entity.id)"></td>
 
             <td>
+                <span *ngIf="entity.status != 'publish'" class="badge badge-danger">
+                    {{ zh[entity.status] }}
+                </span>
+
                 <strong><a [routerLink]="[editLink(entity.id)]">{{ entity.title }}</a></strong>
                 <div class="row-actions">
                     <span class="trash"><a (click)="deleteEntity.emit(entity.id)">删除</a> | </span>
