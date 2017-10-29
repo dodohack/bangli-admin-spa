@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { EntityList }    from '../../base/entity.list';
 
 import { zh_CN } from '../../../localization';
+import {Helper} from "../../../helper";
 
 @Component({
     selector: 'cms-list',
@@ -18,4 +19,6 @@ import { zh_CN } from '../../../localization';
 export class CmsList extends EntityList
 {
     get zh() { return zh_CN.cms; }
+
+    public constructor(helper: Helper) { super(helper); }
 }

@@ -16,6 +16,7 @@ import { ENTITY_INFO }       from '../../models';
 import * as AlertActions     from '../../actions/alert';
 import { AppState }          from '../../reducers';
 import { zh_CN }             from '../../localization';
+import {Helper} from "../../helper";
 
 @Component({ templateUrl: './post.page.html' })
 export class PostPage extends EntityPage
@@ -23,8 +24,9 @@ export class PostPage extends EntityPage
     constructor(protected route: ActivatedRoute,
                 protected location: Location,
                 protected store: Store<AppState>,
-                protected router: Router) {
-        super(ENTITY.POST, route, location, store, router);
+                protected router: Router,
+                public helper: Helper) {
+        super(ENTITY.POST, route, location, store, router, helper);
     }
 
     get zh() { return zh_CN.cms; } // Localization

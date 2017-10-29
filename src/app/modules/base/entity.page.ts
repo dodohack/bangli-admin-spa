@@ -33,7 +33,6 @@ import { Topic }             from '../../models';
 import { User }              from '../../models';
 import { Domain }            from '../../models';
 
-import { THUMBS }            from '../../../.config';
 
 /**
  * NOTE: We use these functions to get a fine grain elements from
@@ -58,6 +57,7 @@ import {
     getEntitiesCurPage,
     getCurEntityIntro, getCurEntityContent
 } from '../../reducers';
+import {Helper} from "../../helper";
 
 export abstract class EntityPage implements OnInit, OnDestroy
 {
@@ -139,7 +139,8 @@ export abstract class EntityPage implements OnInit, OnDestroy
                 protected route: ActivatedRoute,
                 protected location: Location,
                 protected store: Store<AppState>,
-                protected router: Router) {}
+                protected router: Router,
+                public helper: Helper) {}
 
     ngOnInit() {
         this.isLoading$     = this.store.select(getIsLoading(this.etype));
@@ -305,33 +306,6 @@ export abstract class EntityPage implements OnInit, OnDestroy
         } else {
             return ['请先输入标题或锚文本'];
         }
-    }
-
-    /**
-     * Get featured thumbnail image
-     */
-    thumbnailUrl(img, isLarge = false) {
-        // FIXME: Can we improve ChangeDetection here?
-        // console.log("This is called hundreds of times");
-        let key = THUMBS.THUMB_AVATAR;
-        if (isLarge) key = THUMBS.THUMB_CARD_LG;
-        let thumbs = JSON.parse(img.thumbnail)
-        if (thumbs && thumbs.hasOwnProperty(key))
-            return this.cache.img_server + img.thumb_path + thumbs[key].file;
-        else
-            return 'http://via.placeholder.com/80x80?text=thumbs';
-    }
-
-    /**
-     * Get image full url
-     * @param uri
-     * @returns {string}
-     */
-    imageUrl(uri: string) {
-        // Do add base address to full image address.
-        if (uri[0] == 'h' && uri[1] == 't')
-            return uri;
-        return this.cache.img_server + uri;
     }
 
     // Search topics from API server

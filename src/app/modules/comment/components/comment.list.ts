@@ -7,6 +7,7 @@ import { EventEmitter }  from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 import { EntityList }    from '../../base/entity.list';
+import {Helper} from "../../../helper";
 
 @Component({
     selector: 'comment-list',
@@ -15,4 +16,7 @@ import { EntityList }    from '../../base/entity.list';
 })
 export class CommentList extends EntityList
 {
+    public constructor(helper: Helper) {
+        super(helper);
+    }
 }

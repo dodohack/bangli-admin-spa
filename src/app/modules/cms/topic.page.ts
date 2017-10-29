@@ -29,6 +29,7 @@ import {
     getPaginator,
     getIdsCurPage
 } from '../../reducers';
+import {Helper} from "../../helper";
 //import {ImageListDialog} from "../attachment/components/image.list";
 
 @Component({ templateUrl: './topic.page.html' })
@@ -53,8 +54,9 @@ export class TopicPage extends EntityPage implements OnDestroy
                 protected route: ActivatedRoute,
                 protected location: Location,
                 protected store: Store<AppState>,
-                protected router: Router) {
-        super(ENTITY.TOPIC, route, location, store, router);
+                protected router: Router,
+                public helper: Helper) {
+        super(ENTITY.TOPIC, route, location, store, router, helper);
 
         this.offers$ = this.store.select(getEntitiesCurPage(ENTITY.OFFER));
         this.offerPager$ = this.store.select(getPaginator(ENTITY.OFFER));

@@ -122,7 +122,6 @@
                 <tabset>
                     <tab heading="图片列表">
                         <image-list [etype]="etypeAttachment"
-                                    [baseResUrl]="cache.img_server"
                                     [entities]="images$ | async"
                                     [selectedEntities]="selectedImages$ | async"
                                     [idsCurPage]="imageIds$ | async"

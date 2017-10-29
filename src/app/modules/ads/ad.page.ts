@@ -26,12 +26,12 @@ export class AdPage extends EntityPage
 
     locations = ['LOCAL', 'CN', 'GLOBAL'];
 
-    constructor(protected helper: Helper,
+    constructor(public helper: Helper,
                 protected route: ActivatedRoute,
                 protected location: Location,
                 protected store: Store<AppState>,
                 protected router: Router) {
-        super(ENTITY.ADVERTISE, route, location, store, router);
+        super(ENTITY.ADVERTISE, route, location, store, router, helper);
 
         this.positions$ = this.store.select(getAdPositions);
     }

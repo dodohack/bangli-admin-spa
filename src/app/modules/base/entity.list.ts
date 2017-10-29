@@ -9,6 +9,7 @@ import { EventEmitter }  from '@angular/core';
 import { Entity, ENTITY, ENTITY_INFO } from '../../models';
 import { Channel }        from '../../models';
 import { CacheSingleton } from "../../effects/cache.singleton";
+import {Helper} from "../../helper";
 
 export class EntityList
 {
@@ -28,9 +29,6 @@ export class EntityList
 
     // The entity type of the list: post, topic, page, attachment etc
     @Input() etype: string;
-
-    // Base resource url(base url to image root)
-    @Input() baseResUrl: string;
 
     // Display a popup image editor or embedded editor at right side
     // FIXME: Put this into ImageList class causes build error
@@ -62,6 +60,8 @@ export class EntityList
     @Output() setAdImageEvent = new EventEmitter();
 
     batchAction: string = '';
+
+    public constructor(public helper: Helper) {}
 
     get isPost() { return this.etype == ENTITY.POST; }
     get isTopic() { return this.etype == ENTITY.TOPIC; }

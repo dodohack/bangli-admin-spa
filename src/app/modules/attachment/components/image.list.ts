@@ -11,7 +11,7 @@ import { EntityList }    from '../../base/entity.list';
 
 import { zh_CN } from '../../../localization';
 import {Entity} from "../../../models/entity";
-import {THUMBS} from "../../../../.config";
+import {Helper} from "../../../helper";
 
 @Component({
     selector: 'image-list',
@@ -30,8 +30,12 @@ export class ImageList extends EntityList
     // Current selected image index
     indexes: number[] = [];
 
+    public constructor(public helper: Helper) {
+        super(helper);
+    }
+
     get curImageUrl() {
-        if (this.image) return this.imgUrl(this.image);
+        return this.helper.imageUrl(this.image);
     }
     
     preImage() {
@@ -45,20 +49,6 @@ export class ImageList extends EntityList
     }
 
     getEntityByIndex(i) { return this.entities[i]; }
-
-    imgUrl(entity) {
-        return this.baseResUrl + entity.path + entity.filename;
-    }
-
-    thumbUrl(entity) {
-        let thumbs = JSON.parse(entity.thumbnail);
-        if (thumbs && thumbs.hasOwnProperty(THUMBS.THUMB_AVATAR)) {
-            return this.baseResUrl + entity.thumb_path +thumbs[THUMBS.THUMB_AVATAR].file;
-        } else {
-            // TODO: Replace with a placeholder image on our server.
-            return 'http://via.placeholder.com/80x80?text=thumbnail';
-        }
-    }
 
     editImage(i, entity) {
         this.index = i;
@@ -115,7 +105,7 @@ export class ImageList extends EntityList
 
         let ret = '';
         for (let i = 0; i < this.indexes.length; i++) {
-            ret += '<img src="' + this.imgUrl(this.entities[i]) + '">\n';
+            ret += '<img src="' + this.helper.imageUrl(this.entities[i]) + '">\n';
         }
 
         this.insertImageEvent.emit(ret);
@@ -131,7 +121,6 @@ export class ImageList extends EntityList
 
     <mat-dialog-content>
       <image-list [etype]="data.etype"
-      [baseResUrl]="data.baseResUrl"
       [entities]="data.entities"
       [selectedEntities]="data.selectedEntities"
       [idsCurPage]="data.idsCurPage"

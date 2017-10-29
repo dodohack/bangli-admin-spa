@@ -121,7 +121,7 @@
 
 
             <div class="col-6">
-                <img [src]="imageUrl((entity$ | async).logo)"
+                <img [src]="helper.absUrl((entity$ | async).logo)"
                      style="width: 80px; height: 80px"
                      *ngIf="(entity$ | async)?.logo"
                      (click)="showGallery(galleryModal)">
@@ -205,7 +205,7 @@
 
             <div *ngIf="(entity$ | async)?.images?.length" class="thumbnail-container">
                 <img  *ngFor="let img of (entity$ | async)?.images"
-                      [src]="thumbnailUrl(img, false)" class="thumb"
+                      [src]="helper.thumbnailUrl(img, false)" class="thumb"
                       (click)="detach('images', img)">
             </div>
         </div>
@@ -290,7 +290,6 @@
                 <tabset>
                     <tab heading="图片列表">
                         <image-list [etype]="etypeAttachment"
-                                    [baseResUrl]="cache.img_server"
                                     [entities]="images$ | async"
                                     [selectedEntities]="selectedImages$ | async"
                                     [idsCurPage]="imageIds$ | async"

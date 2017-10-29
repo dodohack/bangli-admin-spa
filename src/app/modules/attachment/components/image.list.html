@@ -31,7 +31,7 @@
                     <div class="attachment-preview" [class.attachment-selected]="isSelected(i)">
                         <div class="thumbnail" (click)="editImage(i, entity)">
                             <div class="centered">
-                                <img [src]="thumbUrl(entity)">
+                                <img [src]="helper.thumbnailUrl(entity)">
                             </div>
                         </div>
                     </div>

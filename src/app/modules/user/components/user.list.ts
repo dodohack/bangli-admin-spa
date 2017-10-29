@@ -5,6 +5,7 @@ import { Component }     from '@angular/core';
 import { ChangeDetectionStrategy } from '@angular/core';
 
 import { EntityList } from '../../base/entity.list';
+import {Helper} from "../../../helper";
 
 @Component({
     selector: 'user-list',
@@ -13,4 +14,7 @@ import { EntityList } from '../../base/entity.list';
 })
 export class UserList extends EntityList
 {
+    public constructor(public helper: Helper) {
+        super(helper);
+    }
 }
