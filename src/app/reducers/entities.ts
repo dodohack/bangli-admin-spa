@@ -171,7 +171,8 @@ function entitiesReducer (etype: string,
         case entity.SEARCH_COMPLETE:
         case entity.LOAD_ENTITIES_SUCCESS:
         case entity.LOAD_ENTITIES_ON_SCROLL_SUCCESS: {
-            const entities = action.payload.data.entities;
+            const entities  = action.payload.data.entities;
+            const paginator = action.payload.data.paginator;
 
             let dirtyMask;
 
@@ -200,7 +201,7 @@ function entitiesReducer (etype: string,
                         idsEditing: [],
                         dirtyMask: [],
                         isLoading: false,
-                        paginator: action.payload.data.paginator
+                        paginator: paginator
                     });
             }
 
@@ -231,7 +232,7 @@ function entitiesReducer (etype: string,
                 entities:   Object.assign({}, state.entities, newEntities),
                 dirtyMask:  [],
                 isLoading:  false,
-                paginator:  action.payload.data.paginator
+                paginator:  paginator
             });
         }
 
@@ -367,37 +368,56 @@ function entitiesReducer (etype: string,
             });
         }
 
-        // Delete an entity by id
-        case entity.DELETE_ENTITY: {
-            let id = action.payload.data;
+        // Update client status when API server has deleted an entity
+        case entity.DELETE_ENTITY_SUCCESS: {
+            let id     = action.payload.data.id;
+            let status = action.payload.data.status;
 
             // Can't find the entity to delete.
             if (state.idsTotal.indexOf(id) === -1) return state;
 
-            let idx = state.idsTotal.indexOf(id);
-            let newIdsTotal = [...state.idsTotal.slice(0,idx), ...state.idsTotal.slice(idx+1)];
+            //
+            // Trash the entity or physically delete the entity
+            //
+            if (status == 'trash' ) {
+                let newEntity = Object.assign({}, state.entities[id], {status: 'trash'});
+                let newEntities = Object.assign({}, state.entities, {[id]: newEntity});
 
-            idx = state.idsCurPage.indexOf(id);
-            let newIdsCurPage = [...state.idsCurPage.slice(0, idx), ...state.idsCurPage.slice(idx+1)];
+                return Object.assign({}, state, {
+                    idsEditing: [],
+                    dirtyMask: [],
+                    isLoading: false,
+                    entities: newEntities
+                });
+            } else if (status == 'deleted') {
+                let idx = state.idsTotal.indexOf(id);
+                let newIdsTotal = [...state.idsTotal.slice(0, idx), ...state.idsTotal.slice(idx + 1)];
 
-            idx = state.idsEditing.indexOf(id);
-            let newIdsEditing = [...state.idsEditing.slice(0, idx), ...state.idsEditing.slice(idx+1)];
+                idx = state.idsCurPage.indexOf(id);
+                let newIdsCurPage = [...state.idsCurPage.slice(0, idx), ...state.idsCurPage.slice(idx + 1)];
 
-            idx = state.idsContent.indexOf(id);
-            let newIdsContent = [...state.idsContent.slice(0, idx), ...state.idsContent.slice(idx+1)];
+                //idx = state.idsEditing.indexOf(id);
+                //let newIdsEditing = [...state.idsEditing.slice(0, idx), ...state.idsEditing.slice(idx + 1)];
 
-            let newEntities = Object.assign({}, state.entities, {[id]: null});
+                idx = state.idsContent.indexOf(id);
+                let newIdsContent = [...state.idsContent.slice(0, idx), ...state.idsContent.slice(idx + 1)];
 
-            return Object.assign({}, state, {
-                idsTotal:   newIdsTotal,
-                idsCurPage: newIdsCurPage,
-                idsEditing: newIdsEditing,
-                idsContent: newIdsContent,
-                entities:   newEntities,
-                dirtyMask:  [],
-                isLoading:  false,
-                paginator:  state.paginator
-            });
+                let newEntities = Object.assign({}, state.entities, {[id]: null});
+
+                return Object.assign({}, state, {
+                    idsTotal:   newIdsTotal,
+                    idsCurPage: newIdsCurPage,
+                    idsEditing: [],
+                    idsContent: newIdsContent,
+                    entities:   newEntities,
+                    dirtyMask:  [],
+                    isLoading:  false,
+                    paginator:  state.paginator
+                });
+            } else {
+                console.error("Invalid entity status: ", status);
+                return state;
+            }
         }
 
         case entity.REFRESH_ACTIVITY_STATUS: {

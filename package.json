@@ -7,6 +7,7 @@
     "start": "ng serve --extract-css",
     "build-dev": "ng build --extract-css",
     "build": "ng build --extract-css --env=prod",
+    "build-release": "ng build --extract-css --prod --env=prod --aot --no-sourcemap",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

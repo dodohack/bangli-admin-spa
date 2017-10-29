@@ -33,11 +33,30 @@ export const API_PATH = {
      *************************************************************************/
     /* Cms attributes includes available authors, editors, categories etc */
     cms_attrs:       '/cms/attributes',
+
     /* List of posts */
-    cms_posts:       '/cms/posts',
-    cms_posts_batch: '/cms/posts/batch',
-    /* List of post statuses */
-    cms_post_statuses: '/cms/posts/statuses',
+    cms_posts:        '/cms/posts',
+    cms_posts_batch:  '/cms/posts/batch',
+    /* List of post status */
+    cms_posts_status: '/cms/posts/status',
+
+    /* Topics/Topic */
+    cms_topics:        '/cms/topics',
+    cms_topics_batch:  '/cms/topics/batch',
+    /* List of topic status */
+    cms_topics_status: '/cms/topics/status',
+
+    /* Offer */
+    cms_offers:        '/cms/offers',
+    cms_offers_batch:  '/cms/offers/batch',
+    /* List of offer status */
+    cms_offers_status: '/cms/offers/status',
+
+    /* Pages/Page */
+    cms_pages:        '/cms/pages',
+    cms_pages_batch:  '/cms/pages/batch',
+    /* List of pages status */
+    cms_pages_status: '/cms/pages/status',
 
     /* Categories/Category */
     cms_cats:       '/cms/categories',
@@ -54,29 +73,12 @@ export const API_PATH = {
     /* List of topics available for given post */
     cms_topic_cats: '/cms/topic_cats',
 
-    /* Topics/Topic */
-    cms_topics:       '/cms/topics',
-    cms_topics_batch: '/cms/topics/batch',
-
-    /* Offer */
-    cms_offers:        '/cms/offers',
-    cms_offers_batch:  '/cms/offers/batch',
-
-    /* Pages/Page */
-    cms_pages:       '/cms/pages',
-    cms_pages_batch: '/cms/pages/batch',
-
-    /* Pages statuses */
-    cms_page_statuses: '/cms/pages/statuses',
-
-    /* List of topic statuses */
-    cms_topic_statuses: '/cms/topics/statuses',
-
     /*************************************************************************
      * Advertisement
      *************************************************************************/
-    advertises:       '/advertises',
-    advertises_batch: '/advertises/batch',
+    advertises:        '/advertises',
+    advertises_batch:  '/advertises/batch',
+    advertises_status: '/advertises/status',
 
     /*************************************************************************
      * Geo locations
@@ -110,6 +112,7 @@ export const API_PATH = {
      *************************************************************************/
     comments:          '/comments',
     comments_batch:    '/comments/batch',
+    comments_status:   '/comments/status',
 
     /*************************************************************************
      * More

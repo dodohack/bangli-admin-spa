@@ -13,6 +13,7 @@ import { PostState }      from '../models';
 import { CreativeType }   from '../models';
 
 import * as attr          from '../actions/cmsattr';
+import {ENTITY} from "../models/entity";
 
 
 export interface CmsAttrsState {
@@ -32,10 +33,9 @@ export interface CmsAttrsState {
     // available - all available options for given attributes defined locally
     // actual    - attributes with number of posts retrieved from server
     post_statuses:         {available: PostState[],    actual: PostState[]};
-    post_creative_types: {available: CreativeType[], actual: CreativeType[]};
     topic_statuses:        {available: PostState[],    actual: PostState[]};
     page_statuses:         {available: PostState[],    actual: PostState[]};
-    offer_statuses:         {available: PostState[],    actual: PostState[]};
+    offer_statuses:        {available: PostState[],    actual: PostState[]};
 };
 
 const initialState: CmsAttrsState = {
@@ -48,12 +48,30 @@ const initialState: CmsAttrsState = {
     topic_types: [],
     topics: [],
     //tags: [],
-    post_statuses: {available: POST_STATES, actual: []},
-    post_creative_types: {available: CREATIVE_TYPES, actual: []},
+    post_statuses:  {available: POST_STATES, actual: []},
     topic_statuses: {available: POST_STATES, actual: []},
     page_statuses:  {available: POST_STATES, actual: []},
-    offer_statuses:  {available: POST_STATES, actual: []},
+    offer_statuses: {available: POST_STATES, actual: []},
 };
+
+
+/**
+ * Calculate all status from each count from each status
+ * @param inStatus
+ * @returns {PostState[]}
+ */
+function getTotalStatus(inStatus: PostState[])
+{
+    let newStatus: PostState[] = [];
+    if (inStatus && inStatus.length > 0) {
+        let total = inStatus.map(state => state.count)
+            .reduce((total, count) => total + count);
+        newStatus = [...inStatus, {status: 'all', count: total}];
+    }
+
+    return newStatus;
+}
+
 
 export function cmsReducer(state = initialState, action: attr.Actions | any): CmsAttrsState {
     switch (action.type)
@@ -91,45 +109,11 @@ export function cmsReducer(state = initialState, action: attr.Actions | any): Cm
                 post_topic_cats = action.payload.post_topic_cats;
                 */
 
-            let post_creative_types: CreativeType[] = [];
-            if (payload.post_creative_types && payload.post_creative_types.length > 0)
-                post_creative_types = payload.post_creative_types;
 
-            let post_statuses: PostState[] = [];
-            if (payload.post_status && payload.post_status.length > 0) {
-                let total = payload.post_status
-                    .map(state => state.count)
-                    .reduce((total, count) => total + count);
-                post_statuses = [...payload.post_status,
-                    {status: 'all', count: total}];
-            }
-
-            let topic_statuses: PostState[] = [];
-            if (payload.topic_status && payload.topic_status.length > 0) {
-                let total = payload.topic_status
-                    .map(state => state.count)
-                    .reduce((total, count) => total + count);
-                topic_statuses = [...payload.topic_status,
-                    {status: 'all', count: total}];
-            }
-
-            let page_statuses: PostState[] = [];
-            if (payload.page_status && payload.page_status.length > 0) {
-                let total = payload.page_status
-                    .map(state => state.count)
-                    .reduce((total, count) => total + count);
-                page_statuses = [...payload.page_status,
-                    {status: 'all', count: total}];
-            }
-
-            let offer_statuses: PostState[] = [];
-            if (payload.offer_status && payload.offer_status.length > 0) {
-                let total = payload.offer_status
-                    .map(state => state.count)
-                    .reduce((total, count) => total + count);
-                offer_statuses = [...payload.offer_status,
-                    {status: 'all', count: total}];
-            }
+            let post_statuses  = getTotalStatus(payload.post_status);
+            let topic_statuses = getTotalStatus(payload.topic_status);
+            let page_statuses  = getTotalStatus(payload.page_status);
+            let offer_statuses = getTotalStatus(payload.offer_status);
 
             return {
                 curChannel: state.curChannel,
@@ -141,13 +125,52 @@ export function cmsReducer(state = initialState, action: attr.Actions | any): Cm
                 topic_types: [...topic_types],
                 topics: [],
                 //tags: [...tags],
-                post_statuses: Object.assign({}, state.post_statuses, {actual: post_statuses}),
-                post_creative_types: Object.assign({}, state.post_creative_types,
-                    {actual: post_creative_types}),
+                post_statuses:  Object.assign({}, state.post_statuses, {actual: post_statuses}),
                 topic_statuses: Object.assign({}, state.topic_statuses, {actual: topic_statuses}),
-                page_statuses: Object.assign({}, state.page_statuses, {actual: page_statuses}),
+                page_statuses:  Object.assign({}, state.page_statuses, {actual: page_statuses}),
                 offer_statuses: Object.assign({}, state.offer_statuses, {actual: offer_statuses})
             };
+        }
+
+        // update individually entity status
+        case attr.LOAD_ENTITY_STATUS_SUCCESS: {
+            let etype  = action.payload.etype;
+            let status = action.payload.data;
+
+            let newStatus = getTotalStatus(status);
+            switch(etype) {
+                case ENTITY.POST:
+                    return Object.assign({}, state, {
+                        post_statuses: {
+                            available: state.post_statuses.available,
+                            actual: newStatus
+                        }
+                    });
+                case ENTITY.PAGE:
+                    return Object.assign({}, state, {
+                        page_statuses: {
+                            available: state.page_statuses.available,
+                            actual: newStatus
+                        }
+                    });
+                case ENTITY.TOPIC:
+                    return Object.assign({}, state, {
+                        topic_statuses: {
+                            available: state.topic_statuses.available,
+                            actual: newStatus
+                        }
+                    });
+                case ENTITY.OFFER:
+                    return Object.assign({}, state, {
+                        offer_statuses: {
+                            available: state.offer_statuses.available,
+                            actual: newStatus
+                        }
+                    });
+                default:
+                    console.error("Unhandled etype");
+                    return state;
+            }
         }
 
         case attr.SWITCH_CHANNEL: {

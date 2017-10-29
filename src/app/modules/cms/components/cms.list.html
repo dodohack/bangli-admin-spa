@@ -24,7 +24,7 @@
                 <span>标题</span>
             </div>
         </th>
-        <th width="16%">作者 / 编辑</th>
+        <th width="16%"><span *ngIf="isPost">作者 / </span>编辑</th>
         <th width="18%">分类</th>
         <th width="12%">
             <span *ngIf="!isOffer">发布日期</span>
@@ -79,11 +79,11 @@
 
             <td>
                 <!-- editor is always an author -->
-                <span *ngIf="entity.editor">
-                    编辑: {{ entity.editor.display_name }}
+                <span *ngIf="entity.editor_id">
+                    <span *ngIf="isPost">编辑: </span>{{ authorsObj[entity.editor_id].display_name }}
                 </span>
-                <div *ngIf="entity.author">
-                    作者: {{ entity.author.display_name }}
+                <div *ngIf="entity.author_id">
+                    作者: {{ authorsObj[entity.author_id].display_name }}
                 </div>
             </td>
 

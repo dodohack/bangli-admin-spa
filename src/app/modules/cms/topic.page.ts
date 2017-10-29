@@ -5,6 +5,7 @@
  */
 
 import { Component }         from '@angular/core';
+import { OnDestroy }         from '@angular/core';
 import { ActivatedRoute }    from '@angular/router';
 import { Location }          from '@angular/common';
 import { Router }            from '@angular/router';
@@ -31,12 +32,16 @@ import {
 //import {ImageListDialog} from "../attachment/components/image.list";
 
 @Component({ templateUrl: './topic.page.html' })
-export class TopicPage extends EntityPage
+export class TopicPage extends EntityPage implements OnDestroy
 {
     newOffer$: Observable<Entity>;
     offers$: Observable<Entity[]>;
     offerIds$: Observable<number[]>;
     offerPager$: Observable<any>;
+
+    // Offer ids
+    offerIds: number[];
+    sub1: any;
 
     // If all the offer panel is expanded or not
     offerExpanded = false;
@@ -55,6 +60,12 @@ export class TopicPage extends EntityPage
         this.offerPager$ = this.store.select(getPaginator(ENTITY.OFFER));
         this.offerIds$ = this.store.select(getIdsCurPage(ENTITY.OFFER));
         this.newOffer$ = this.store.select(getCurNewEntity(ENTITY.OFFER));
+
+        this.sub1 = this.offerIds$.subscribe(ids => this.offerIds = ids);
+    }
+
+    ngOnDestroy() {
+        this.sub1.unsubscribe();
     }
 
     get zh() { return zh_CN.cms; } // Localization
@@ -64,6 +75,12 @@ export class TopicPage extends EntityPage
             return this.domain.url + '/cms/topic/' + this.entity.guid;
     }
 
+    get offerCount() {
+        if (this.offerIds && this.offerIds.length)
+            return '(' + this.offerIds.length + ')';
+        return '';
+    }
+
     /**
      * When offers tab is selected, we will call this function to load offers
      * belongs to this topic
@@ -71,7 +88,7 @@ export class TopicPage extends EntityPage
     loadOffers(idx) {
         // Only load offer when offer tab is active and entity id exists
         if (idx == 1 && this.entity.id > 0) {
-            let params: EntityParams = {page: 1, topic: this.entity.guid};
+            let params: EntityParams = {page: 1, per_page: 100, topic: this.entity.guid};
             this.store.dispatch(new EntityActions.LoadEntities({
                 etype: ENTITY.OFFER,
                 data: params
@@ -93,12 +110,25 @@ export class TopicPage extends EntityPage
     }
     */
 
-    // Always add topic id with the offer
+    /**
+     * Save an offer.
+     * Always add topic id with the offer
+     */
     saveWithTopicId(etype, entity, mask) {
         if (this.entity.id) {
             entity['topics'] = [{id: this.entity.id}];
             mask.push('topics');
             this.saveWithEtype(etype, entity, mask);
         }
+    }
+
+    /**
+     * Move all offers into trash of physically delete them from trash
+     * @param ids
+     */
+    deleteAllOffers() {
+        if (this.offerIds && this.offerIds.length)
+            this.store.dispatch(new EntityActions.BatchDeleteEntities(
+                {etype: ENTITY.OFFER, data: this.offerIds}));
     }
 }

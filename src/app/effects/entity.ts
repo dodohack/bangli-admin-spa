@@ -13,6 +13,7 @@ import { ENTITY }          from '../models';
 import { EntityParams }    from '../models';
 
 import * as entity   from '../actions/entity';
+import * as cms      from '../actions/cmsattr';
 import * as alert    from '../actions/alert';
 
 
@@ -38,91 +39,110 @@ export class EntityEffects {
     @Effect() loadEntities$ = this.actions$.ofType(entity.LOAD_ENTITIES)
         .switchMap((action: any) => this.getEntities(action.payload.etype, action.payload.data)
             .map(ret => new entity.LoadEntitiesSuccess({etype: ret.etype, data: ret}))
-            .catch((ret) => Observable.of(new entity.LoadEntitiesFail({etype: ret.etype})))
+            .catch((ret) => Observable.of(new entity.LoadEntitiesFail({etype: ret.etype, data: ret.error})))
         );
 
     @Effect() loadEntitiesOnScroll$ = this.actions$.ofType(entity.LOAD_ENTITIES_ON_SCROLL)
         .switchMap((action: any) => this.getEntities(action.payload.etype, action.payload.data)
             .map(ret => new entity.LoadEntitiesOnScrollSuccess({etype: ret.etype, data: ret}))
-            .catch((ret) => Observable.of(new entity.LoadEntitiesOnScrollFail({etype: ret.etype})))
-        );    
+            .catch((ret) => Observable.of(new entity.LoadEntitiesOnScrollFail({etype: ret.etype, data: ret.error})))
+        );
 
     @Effect() loadEntity$ = this.actions$.ofType(entity.LOAD_ENTITY)
         .switchMap((action: any) => this.getEntity(action.payload.etype, action.payload.data)
-            .map(ret => new entity.LoadEntitySuccess({etype: ret.etype, data: ret.data, prepend: false}))
-            .catch((ret) => Observable.of(new entity.LoadEntityFail({etype: ret.etype})))
+            .map(ret => new entity.LoadEntitySuccess({etype: ret.etype, data: ret.entity, prepend: false}))
+            .catch((ret) => Observable.of(new entity.LoadEntityFail({etype: ret.etype, data: ret.error})))
         );
 
     @Effect() saveEntity$ = this.actions$.ofType(entity.SAVE_ENTITY)
         .map((action: any) => action.payload)
-        .switchMap(p => this.saveEntity(p.etype, p.data, p.mask)
-            .mergeMap(ret => {
+        .switchMap(p =>
+            this.saveEntity(p.etype, p.data, p.mask).mergeMap(ret => {
                 console.error("FIXME: Think a better way, not always deleting id 0 entity!");
-                let actions = [
+                return [
                     // Delete draft(id=0) entity when save is succeed
                     new entity.DeleteEntity({etype: ret.etype, data: 0}),
-                    new entity.SaveEntitySuccess({etype: ret.etype, data: ret.data})
+                    new entity.SaveEntitySuccess({etype: ret.etype, data: ret.entity}),
+                    new alert.Info('保存成功: ' + ret.entity.id)
                 ];
-                return Observable.from(actions);
             })
-            .catch((ret) => Observable.of(new entity.SaveEntityFail({etype: ret.etype})))
+            .catch((ret) => Observable.of(new entity.SaveEntityFail({etype: ret.etype, data: ret.error})))
         );
 
     @Effect() deleteEntity$ = this.actions$.ofType(entity.DELETE_ENTITY)
         .map((action: any) => action.payload)
         .filter(p => p.data) // Do not send delete action for id 0 entity
         .switchMap(p => this.deleteEntity(p.etype, p.data)
-            .map(ret => new entity.DeleteEntitySuccess({etype: ret.etype}))
-            .catch((ret) => Observable.of(new entity.DeleteEntityFail({etype: ret.etype})))
+            // API server response: {etype: ..., data: {id: ..., status: ...}}
+            .mergeMap(ret => {
+                return [
+                    new entity.DeleteEntitySuccess({etype: ret.etype, data: {id: ret.id, status: ret.status}}),
+                    new alert.Info('删除成功: ' + ret.id + ', status: ' + ret.status),
+                    new cms.LoadEntityStatus({etype: ret.etype})
+                ];
+            })
+            .catch((ret) => Observable.of(
+                new alert.Error('Fail to delete ' + ret.etype + ', error: ' + ret.error)))
         );
 
     @Effect() batchDeleteEntities$ = this.actions$.ofType(entity.BATCH_DELETE_ENTITIES)
         .map((action: any) => action.payload)
         .switchMap(p => this.deleteEntities(p.etype, p.data)
-            .map(ret => new entity.BatchDeleteEntitiesSuccess({etype: ret.etype}))
-            .catch((ret) => Observable.of(new entity.BatchDeleteEntitiesFail({etype: ret.etype}))));
+            .mergeMap(ret => {
+                if (Array.isArray(ret.entities)) {
+                    // Dispatch individual DELETE_ENTITY_SUCCESS actions
+                    let actions = [];
+                    for (let i = 0; i < ret.entities.length; i++) {
+                        actions.push(new entity.DeleteEntitySuccess({etype: ret.etype, data: ret.entities[i]}));
+                    }
+                    actions.push(new alert.Info('Delete ' + ret.entities.length + ' ' + ret.etype + 's success'));
+                    actions.push(new cms.LoadEntityStatus({etype: ret.etype}));
+                    return Observable.from(actions);
+                }
+            })
+            .catch((ret) => Observable.of(new alert.Error('Delete ' + ret.etype + 's fail'))));
 
     @Effect() autoSave$ = this.actions$.ofType(entity.AUTO_SAVE)
         .map((action: any) => action.payload)
         .switchMap(p => this.autoSaveEntity(p.etype, p.data, p.mask)
-            .map(ret => new entity.AutoSaveSuccess({etype: ret.etype, data: ret.data}))
-            .catch((ret) => Observable.of(new entity.SaveEntityFail({etype: ret.etype})))
+            .mergeMap(ret => {
+                return [
+                    new entity.AutoSaveSuccess({etype: ret.etype, data: ret.entity}),
+                    new alert.Info('自动保存成功: ' + ret.entity.id)
+                ];
+            })
+            .catch((ret) => Observable.of(new entity.SaveEntityFail({etype: ret.etype, data: ret.error})))
         );
 
     @Effect() genThumbs$ = this.actions$.ofType(entity.GENERATE_THUMBS)
         .map((action: any) => action.payload)
         .switchMap(p => this.genThumbnails(p.etype, p.data)
-            .map(ret => new entity.GenerateThumbsSuccess({etype: ret.etype}))
-            .catch((ret) => Observable.of(new entity.GenerateThumbsFail({etype: ret.etype})))
+            .mergeMap(ret => {
+                return [
+                    new entity.GenerateThumbsSuccess({etype: ret.etype, data: null}),
+                    new alert.Info('Thumbnail generation finished(total: '
+                        + ret.total + ', ok: ' + ret.ok
+                        + ', fail: ' + ret.fail + ')')
+                ];
+            })
+            .catch((ret) => Observable.of(new entity.GenerateThumbsFail({etype: ret.etype, data: ret.error})))
         );
 
 
     /*************************************************************************
      * Popup message etc
      *************************************************************************/
-    @Effect() autoSaveSuccess$ = this.actions$.ofType(entity.AUTO_SAVE_SUCCESS)
-        .map((action: any) => new alert.Info('自动保存成功'));
-
-    @Effect() saveEntitySuccess$ = this.actions$.ofType(entity.SAVE_ENTITY_SUCCESS)
-        .map((action: any) => new alert.Info('保存成功'));
-
     @Effect() saveEntityFail$ = this.actions$.ofType(entity.SAVE_ENTITY_FAIL)
-        .map((action: any) => new alert.Error('保存失败'));
+        .map((action: any) => new alert.Error('Fail to save ' + action.etype + ', error: ' + action.data));
 
-    @Effect() deleteEntitySuccess$ = this.actions$.ofType(entity.DELETE_ENTITY_SUCCESS)
-        .map((action: any) => new alert.Info('删除成功'));
+    @Effect() loadEntityFail$ = this.actions$.ofType(entity.LOAD_ENTITY_FAIL)
+        .map((action: any) => new alert.Error('Fail to load ' + action.etype + ', error: ' + action.data));
 
-    @Effect() deleteEntityFail$ = this.actions$.ofType(entity.DELETE_ENTITY_FAIL)
-        .map((action: any) => new alert.Error('删除失败'));
+    @Effect() loadEntitiesFail$ = this.actions$.ofType(entity.LOAD_ENTITIES_FAIL)
+        .map((action: any) => new alert.Error('Fail to load ' + action.etype + 's, error: ' + action.data));
 
-    @Effect() deleteEntitiesSuccess$ = this.actions$.ofType(entity.BATCH_DELETE_ENTITIES_SUCCESS)
-        .map((action: any) => new alert.Info('批量删除成功'));
-
-    @Effect() deleteEntitiesFail$ = this.actions$.ofType(entity.BATCH_DELETE_ENTITIES_FAIL)
-        .map((action: any) => new alert.Error('批量删除失败'));
-
-    @Effect() genThumbsSuccess$ = this.actions$.ofType(entity.GENERATE_THUMBS_SUCCESS)
-        .map((action: any) => new alert.Error('缩略图生成成功'));
+    @Effect() loadEntitiesScrollFail$ = this.actions$.ofType(entity.LOAD_ENTITIES_ON_SCROLL_FAIL)
+        .map((action: any) => new alert.Error('Fail to load(scroll) ' + action.etype + 's, error: ' + action.data));
 
     @Effect() genThumbsFail$ = this.actions$.ofType(entity.GENERATE_THUMBS_FAIL)
         .map((action: any) => new alert.Error('缩略图生成失败'));
@@ -206,8 +226,7 @@ export class EntityEffects {
     protected getEntity(t: string, id: string): Observable<any> {
         let api = this.getApi(t, false) +
             '/' + id + '?etype=' + t + '&token=' + this.cache.token;
-        return this.http.get(api).map(res => res.json())
-            .catch((err) => { throw {etype: t, err: err} });
+        return this.http.get(api).map(res => res.json());
     }
 
     /**
@@ -242,14 +261,12 @@ export class EntityEffects {
             // Create a new entity
             api += '?etype=' + t;
             if (isAuto) api = api + '&auto=true';
-            return this.http.post(api, body, options).map(res => res.json())
-                .catch((err) => { throw {etype: t, err: err} });
+            return this.http.post(api, body, options).map(res => res.json());
         } else {
             // Update an existing entity
             api += '/' + entity.id + '?etype=' + t;
             if (isAuto) api = api + '&auto=true';
-            return this.http.put(api, body, options).map(res => res.json())
-                .catch((err) => { throw {etype: t, err: err} });
+            return this.http.put(api, body, options).map(res => res.json());
         }
     }
 
@@ -260,18 +277,21 @@ export class EntityEffects {
         let options = new RequestOptions({ headers: this.headers });
 
         let api = this.getApi(t, false) + '/' + id + '?etype=' + t;
-        return this.http.delete(api, options)
-            .map(res => {return {etype: t, data: res.json()};})
-            .catch((err) => { throw {etype: t, err: err} });
+        return this.http.delete(api, options).map(res => res.json());
     }
 
     /**
      * Get entities, return any
      */
     protected getEntities(t: string, params: EntityParams): Observable<any> {
-        let perPage = '20';
-        // Attachment list uses infinite scroll
-        if (t === ENTITY.ATTACHMENT) perPage = '60';
+        // Default 20 entities per page
+        let perPage = 20;
+
+        // Default 60 images per page
+        if (t === ENTITY.ATTACHMENT) perPage = 60;
+
+        // Do not set per_page if we already have it
+        if (params.hasOwnProperty('per_page')) perPage = params.per_page;
 
         let api = this.getApi(t, false)
             + '?' + this.params2String(params)
@@ -279,8 +299,7 @@ export class EntityEffects {
             + '&per_page=' + perPage
             + '&token=' + this.cache.token;
 
-        return this.http.get(api).map(res => res.json())
-            .catch((err) => { throw {etype: t, err: err} });
+        return this.http.get(api).map(res => res.json());
     }
 
     /**
@@ -298,8 +317,7 @@ export class EntityEffects {
         let api     = this.getApi(t, true) + '?etype=' + t;
         if (params) api += '&' + params;
 
-        return this.http.put(api, body, options).map(res => res.json())
-            .catch((err) => { throw {etype: t, err: err} });
+        return this.http.put(api, body, options).map(res => res.json());
     }
 
     /**
@@ -313,9 +331,7 @@ export class EntityEffects {
         let api = this.getApi(etype, true) +
             '?etype=' + etype + '&ids=' + ids.join(',');
 
-        return this.http.delete(api, options)
-            .map(res => {return {etype: etype, data: res.json()};})
-            .catch((err) => { throw {etype: etype, err: err} });
+        return this.http.delete(api, options).map(res => res.json());
     }
 
     /**

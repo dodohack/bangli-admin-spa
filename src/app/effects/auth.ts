@@ -12,8 +12,8 @@ import { CacheSingleton }          from './cache.singleton';
 import { AUTH, APIS, API_PATH }    from '../api';
 import { AuthUser, User }          from '../models';
 
-import * as AuthA     from '../actions/auth';
-import * as AlertA    from '../actions/alert';
+import * as AuthA    from '../actions/auth';
+import * as Alert    from '../actions/alert';
 
 @Injectable()
 export class AuthEffects {
@@ -47,21 +47,24 @@ export class AuthEffects {
      */
     @Effect() loginDomain$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_DOMAIN)
         .switchMap((action: any) => this.loginDomain(action.payload)
-            .map(res => {
+            .mergeMap(ret => {
                 // Clean previous cache when login domain success
                 this.cache.clean();
                 // We do not check user permission on current domain as server
                 // side will guard it.
-                return new AuthA.LoginDomainSuccess(res);
+                return [
+                    new AuthA.LoginDomainSuccess(ret.user),
+                    new Alert.Info('API server login success')
+                ];
             })
             .catch(() => Observable.of(new AuthA.LoginDomainFail()))
         );
 
     @Effect() loginFail1$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_FAIL)
-        .map((action: any) => new AlertA.Error('登录授权服务器失败!'));
+        .map((action: any) => new Alert.Error('登录授权服务器失败!'));
 
     @Effect() loginFail2$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_FAIL_NO_DOMAIN)
-        .map((action: any) => new AlertA.Error('无权使用任何站点,请联系管理员开通权限!'));
+        .map((action: any) => new Alert.Error('无权使用任何站点,请联系管理员开通权限!'));
 
     /**
      * Clean session cache for logout 
@@ -80,10 +83,10 @@ export class AuthEffects {
 
 
     @Effect() loginDomainFail1$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_DOMAIN_FAIL)
-        .map(res => new AlertA.Error('登录应用服务器失败!'));
+        .map(res => new Alert.Error('登录应用服务器失败!'));
 
     @Effect() loginDomainFail2$: Observable<Action> = this.actions$.ofType(AuthA.LOGIN_DOMAIN_FAIL_NO_PERMISSION)
-        .map(res => new AlertA.Error('你无权管理此站点,请联系管理员开通权限!'));
+        .map(res => new Alert.Error('你无权管理此站点,请联系管理员开通权限!'));
 
     /**
      * Register a user to auth server
@@ -94,10 +97,10 @@ export class AuthEffects {
             .catch(() => Observable.of(new AuthA.RegisterFail())));
 
     @Effect() registerSuccess$: Observable<Action> = this.actions$.ofType(AuthA.REGISTER_SUCCESS)
-        .map((action: any) => new AlertA.Info("注册成功,请联系管理员开通后台权限"));
+        .map((action: any) => new Alert.Info("注册成功,请联系管理员开通后台权限"));
 
     @Effect() registerFail$: Observable<Action> = this.actions$.ofType(AuthA.REGISTER_FAIL)
-        .map((action: any) => new AlertA.Error("注册失败"));
+        .map((action: any) => new Alert.Error("注册失败"));
 
 
     //////////////////////////////////////////////////////////////////////////

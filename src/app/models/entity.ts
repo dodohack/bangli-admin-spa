@@ -80,7 +80,6 @@ export const TOPIC_RANKINGS = [ 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50 ];
 export const ENTITY_STATES = [
     'unsaved',
     'publish',
-    'featured',
     'pending',
     'draft',
     'trash',
@@ -114,6 +113,7 @@ export interface EntityStatus {
  */
 export interface EntityParams {
     page: number;
+    per_page?: number;  // number of entities per page
     channel?: string;
     status?: string;
     author?: string;

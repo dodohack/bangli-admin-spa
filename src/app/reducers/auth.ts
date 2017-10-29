@@ -129,11 +129,12 @@ export function authReducer(state = initialState, action: auth.Actions | any): A
         }
 
         case auth.LOGIN_DOMAIN_SUCCESS: {
-            const user = { [state.key]: action.payload.user };
+            const user = { [state.key]: action.payload };
             // Append domain specific user profile to state.users
             return Object.assign({}, state, {
                 failure:    false,
-                img_server: action.payload.img_server,
+                // FIXME: We don't have img_server returned from server yet
+                //img_server: action.payload.img_server,
                 users:      Object.assign({}, state.users, user)
             });
         }

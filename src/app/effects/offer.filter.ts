@@ -9,8 +9,8 @@ import { Observable }                    from 'rxjs/Observable';
 import { CacheSingleton }  from './cache.singleton';
 import { APIS, API_PATH }  from '../api';
 
-import * as OF from '../actions/offer.filter';
-
+import * as OF    from '../actions/offer.filter';
+import * as alert from '../actions/alert';
 
 @Injectable()
 export class OfferFilterEffects {
@@ -29,27 +29,36 @@ export class OfferFilterEffects {
 
     @Effect() load$ = this.actions$.ofType(OF.LOAD)
         .switchMap((action: any) => this.get(action.payload)
-            .map(ret => new OF.LoadSuccess(ret.data))
+            .map(ret => new OF.LoadSuccess(ret))
             .catch((error) => Observable.of(new OF.LoadFail(error)))
         );
 
     @Effect() loadAll$ = this.actions$.ofType(OF.LOAD_ALL)
         .switchMap((action: any) => this.getAll()
-            .map(ret => new OF.LoadAllSuccess(ret.data))
+            .map(ret => new OF.LoadAllSuccess(ret))
             .catch((error) => Observable.of(new OF.LoadFail(error)))
         );
 
     @Effect() save$ = this.actions$.ofType(OF.SAVE)
-        .switchMap((action: any) => this.put(action.payload.ftype, action.payload.data)
-            .map(ret => new OF.SaveSuccess(ret.data))
+        .switchMap((action: any) =>
+            this.put(action.payload.ftype, action.payload.data).mergeMap(ret => [
+                new OF.SaveSuccess(ret),
+                new alert.Info('Filter save success')
+            ])
             .catch((error) => Observable.of(new OF.SaveFail(error)))
         );
 
     @Effect() new$ = this.actions$.ofType(OF.NEW)
-        .switchMap((action: any) => this.post(action.payload)
-            .map(ret => new OF.SaveSuccess(ret.data))
+        .switchMap((action: any) =>
+            this.post(action.payload).mergeMap(ret => [
+                new OF.SaveSuccess(ret),
+                new alert.Info('New filter save success')
+            ])
             .catch((error) => Observable.of(new OF.SaveFail(error)))
         );
+
+    @Effect() saveFail$ = this.actions$.ofType(OF.SAVE_FAIL)
+        .map((action: any) => new alert.Error('Filter save fail'));
 
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions

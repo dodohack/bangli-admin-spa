@@ -15,6 +15,7 @@ import { GeoLocation }      from "../models";
 import { ENTITY }           from '../models';
 
 import * as cms   from '../actions/cmsattr';
+import * as alert from '../actions/alert';
 
 @Injectable()
 export class CmsAttrEffects {
@@ -31,10 +32,20 @@ export class CmsAttrEffects {
         });
     }
 
+    //
+    // FIXME: it is too heavy to trigger cms.LoadAll after every modification,
+    // Will remove LoadAll and do individually update in cmsattr reducer.
+    //
+
     @Effect() loadAll$ = this.actions$.ofType(cms.LOAD_ALL)
         .switchMap((action: any) => this.getAll(action.payload)
             .map(attrs => new cms.LoadAllSuccess(attrs))
             .catch(() => Observable.of(new cms.LoadAllFail())));
+
+    @Effect() loadPostStatus$ = this.actions$.ofType(cms.LOAD_ENTITY_STATUS)
+        .switchMap((action: any) => this.getEntityStatus(action.payload.etype)
+            .map(attrs => new cms.LoadEntityStatusSuccess({etype: attrs.etype, data: attrs.status}))
+            .catch((ret) => Observable.of(new cms.LoadEntityStatusFail(ret))));
 
     @Effect() sTopic$ = this.actions$.ofType(cms.SEARCH_TOPICS)
         .switchMap((action: any) => this.searchTopics(action.payload.ttid, action.payload.text)
@@ -43,110 +54,129 @@ export class CmsAttrEffects {
 
     @Effect() saveTag$ = this.actions$.ofType(cms.SAVE_TAG)
         .switchMap((action: any) => this.putTag(action.payload)
-            .mergeMap(tag => Observable.from([
+            .mergeMap(tag => [
                 new cms.SaveTagSuccess(tag),
                 new cms.LoadAll()
-            ]))
+            ])
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() saveCat$ = this.actions$.ofType(cms.SAVE_CATEGORY)
         .switchMap((action: any) => this.putCat(action.payload)
-            .mergeMap(cat => Observable.from([
+            .mergeMap(cat => [
                 new cms.SaveCategorySuccess(cat),
                 new cms.LoadAll()
-            ]))
+            ])
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() saveTType$ = this.actions$.ofType(cms.SAVE_TOPIC_TYPE)
         .switchMap((action: any) => this.putTopicType(action.payload)
-            .mergeMap(ttype => Observable.from([
+            .mergeMap(ttype => [
                 new cms.SaveTopicTypeSuccess(ttype),
                 new cms.LoadAll()
-            ]))
+            ])
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() saveGeoLoc$ = this.actions$.ofType(cms.SAVE_GEO_LOCATION)
         .switchMap((action: any) => this.putGeoLoc(action.payload)
-            .mergeMap(loc => Observable.from([
+            .mergeMap(loc => [
                 new cms.SaveGeoLocationSuccess(loc),
                 new cms.LoadAll()
-            ]))
+            ])
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() addTag$ = this.actions$.ofType(cms.ADD_TAG)
         .switchMap((action: any) => this.postTag(action.payload)
-            .mergeMap(tag => Observable.from([
+            .mergeMap(tag => [
                 new cms.AddTagSuccess(tag),
                 new cms.LoadAll()
-            ]))
+            ])
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() addTType$ = this.actions$.ofType(cms.ADD_TOPIC_TYPE)
         .switchMap((action: any) => this.postTopicType(action.payload)
-            .mergeMap(ttype => Observable.from([
+            .mergeMap(ttype => [
                 new cms.AddTopicTypeSuccess(ttype),
                 new cms.LoadAll()
-            ]))
+            ])
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() addCat$ = this.actions$.ofType(cms.ADD_CATEGORY)
         .switchMap((action: any) => this.postCat(action.payload)
-            .mergeMap(cat => Observable.from([
+            .mergeMap(cat => [
                 new cms.AddCategorySuccess(cat),
                 new cms.LoadAll()
-            ]))
+            ])
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() addGeoLoc$ = this.actions$.ofType(cms.ADD_GEO_LOCATION)
         .switchMap((action: any) => this.postGeoLoc(action.payload)
-            .mergeMap(loc => Observable.from([
+            .mergeMap(loc => [
                 new cms.AddGeoLocationSuccess(loc),
                 new cms.LoadAll()
-            ]))
+            ])
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() deleteTag$ = this.actions$.ofType(cms.DELETE_TAG)
         .switchMap((action: any) => this.deleteTag(action.payload)
-            .mergeMap(tagId => Observable.from([
-                new cms.DeleteTagSuccess(tagId),
+            .mergeMap(ret => [
+                new cms.DeleteTagSuccess(ret.id),
                 new cms.LoadAll()
-            ]))
+            ])
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() deleteCat$ = this.actions$.ofType(cms.DELETE_CATEGORY)
         .switchMap((action: any) => this.deleteCat(action.payload)
-            .mergeMap(catId => Observable.from([
-                new cms.DeleteCategorySuccess(catId),
+            .mergeMap(ret=> [
+                new cms.DeleteCategorySuccess(ret.id),
                 new cms.LoadAll()
-            ]))
+            ])
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() deleteTType$ = this.actions$.ofType(cms.DELETE_TOPIC_TYPE)
         .switchMap((action: any) => this.deleteTopicType(action.payload)
-            .mergeMap(ttypeId => Observable.from([
-                new cms.DeleteTopicTypeSuccess(ttypeId),
+            .mergeMap(ret => [
+                new cms.DeleteTopicTypeSuccess(ret.id),
                 new cms.LoadAll()
-            ]))
+            ])
             .catch(() => Observable.of(new cms.SaveFail())));
 
     @Effect() deleteGeoLoc$ = this.actions$.ofType(cms.DELETE_GEO_LOCATION)
         .switchMap((action: any) => this.deleteGeoLoc(action.payload)
-            .mergeMap(locId => Observable.from([
-                new cms.DeleteGeoLocationSuccess(locId),
+            .mergeMap(ret => [
+                new cms.DeleteGeoLocationSuccess(ret.id),
                 new cms.LoadAll()
-            ]))
+            ])
             .catch(() => Observable.of(new cms.SaveFail())));
+
+    @Effect() saveFail$ = this.actions$.ofType(cms.SAVE_FAIL)
+        .map((action: any) => new alert.Error('Save fail'));
 
 
     //////////////////////////////////////////////////////////////////////////
     // Private helper functions
-    
+
+    /**
+     * Get all cms attributes, a very big array of attributes
+     * @param key
+     * @returns {any}
+     */
     private getAll(key: string = undefined): Observable<CmsAttrsState> {
         // Cache the key for current session scope
         if (key) this.cache.key = key;
         
         let api = APIS[this.cache.key] + API_PATH.cms_attrs + 
             '?token=' + this.cache.token;
+        return this.http.get(api).map(res => res.json());
+    }
+
+    /**
+     * Get a summary of entity status, this is usually called when entity
+     * status changes, say, delete an entity.
+     * @param etype
+     */
+    private getEntityStatus(etype: string) {
+        let api = APIS[this.cache.key] + this.getEntityStatusPath(etype) +
+               '?etype=' + etype + '&token=' + this.cache.token;
         return this.http.get(api).map(res => res.json());
     }
 
@@ -285,5 +315,23 @@ export class CmsAttrEffects {
 
         let api = APIS[this.cache.key] + apiPath + '/' + tax.id;
         return this.http.delete(api, options).map(res => res.json());
+    }
+
+    /**
+     * Return the entity status api path
+     * @param etype
+     */
+    private getEntityStatusPath(etype: string) {
+        switch (etype) {
+            case ENTITY.POST: return API_PATH.cms_posts_status;
+            case ENTITY.PAGE: return API_PATH.cms_pages_status;
+            case ENTITY.TOPIC: return API_PATH.cms_topics_status;
+            case ENTITY.OFFER: return API_PATH.cms_offers_status;
+            case ENTITY.ADVERTISE: return API_PATH.advertises_status;
+            case ENTITY.COMMENT: return API_PATH.comments_status;
+            default:
+                console.error("undefined api path for etype: ", etype);
+                return '';
+        }
     }
 }

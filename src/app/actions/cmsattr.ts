@@ -24,6 +24,9 @@ export const LOAD_TAGS_SUCCESS = '[CmsAttr] Load Tags Success';
 export const SEARCH_TOPICS_SUCCESS = '[CmsAttr] Search Topics Success';
 export const SEARCH_TOPICS_FAIL = '[CmsAttr] Search Topics Fail';
 export const LOAD_ATTR_FAIL = '[CmsAttr] Load Attr Fail';
+export const LOAD_ENTITY_STATUS = '[CmsAttr] Load Entity Status';
+export const LOAD_ENTITY_STATUS_SUCCESS = '[CmsAttr] Load Entity Status Success';
+export const LOAD_ENTITY_STATUS_FAIL = '[CmsAttr] Load Entity Status Fail';
 export const ADD_GEO_LOCATION = '[CmsAttr] Add Geo Location';
 export const ADD_GEO_LOCATION_SUCCESS = '[CmsAttr] Add Geo Location Success';
 export const SAVE_GEO_LOCATION = '[CmsAttr] Edit Geo Location';
@@ -90,6 +93,21 @@ export class SearchTopics implements Action {
 export class LoadTopics implements Action {
     readonly type = LOAD_TOPICS;
     constructor(public payload: AuthState) {}
+}
+
+export class LoadEntityStatus implements Action {
+    readonly type = LOAD_ENTITY_STATUS;
+    constructor(public payload: { etype: string }) {}
+}
+
+export class LoadEntityStatusSuccess implements Action {
+    readonly type = LOAD_ENTITY_STATUS_SUCCESS;
+    constructor(public payload: { etype: string, data: any }) {}
+}
+
+export class LoadEntityStatusFail implements Action {
+    readonly type = LOAD_ENTITY_STATUS_FAIL;
+    constructor(public payload: { etype: string, data: any }) {}
 }
 
 export class LoadCategoriesSuccess implements Action {
@@ -251,6 +269,9 @@ export type Actions = LoadAll
 | LoadTags
 | SearchTopics
 | LoadTopics
+| LoadEntityStatus
+| LoadEntityStatusSuccess
+| LoadEntityStatusFail
 | LoadCategoriesSuccess
 | LoadTagsSuccess
 | SearchTopicsSuccess
