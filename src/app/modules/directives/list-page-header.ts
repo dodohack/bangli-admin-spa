@@ -42,4 +42,6 @@ export class ListPageHeader {
     @Output() newEntityEvent = new EventEmitter();
     
     @Output() togglePagelessEvent = new EventEmitter();
+
+    get isTopic() { return this.slug === 'topic'; }
 }

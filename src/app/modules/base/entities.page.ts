@@ -202,6 +202,7 @@ export class EntitiesPage implements OnInit, OnDestroy
             datetype: this.params['datetype'],
             datefrom: this.params['datefrom'],
             dateto: this.params['dateto'],
+            featured: this.params['featured'],
             query: this.params['query']
         };
     }

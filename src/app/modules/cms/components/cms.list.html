@@ -68,6 +68,7 @@
                 <strong>
                     <a [routerLink]="[editLink(entity.id)]">{{ entity.title }}</a>
                     <span *ngIf="entity.offers_count" class="badge badge-info">{{ entity.offers_count }}个优惠</span>
+                    <span *ngIf="entity.featured" class="badge badge-danger">L{{ entity.featured }}</span>
                 </strong>
 
                 <div class="row-actions">

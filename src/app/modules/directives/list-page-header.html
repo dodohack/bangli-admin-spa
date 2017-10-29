@@ -50,6 +50,11 @@
                routerLinkActive="active">
                 {{ zh[status.status] }} ({{ status.count }})
             </a>
+            <a mat-tab-link style="min-width: 100px !important;"
+               *ngIf="isTopic"
+               [routerLink]="['/', slug, 'page', 1, 'status', 'all']" [queryParams]="{featured: '1,2'}">
+                置顶专题
+            </a>
         </nav>
     </div>
 

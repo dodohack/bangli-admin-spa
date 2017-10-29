@@ -124,6 +124,7 @@ export interface EntityParams {
     datetype?: string ;
     datefrom?: string;
     dateto?: string;
+    featured?: string,
     query?: string;
 }
 

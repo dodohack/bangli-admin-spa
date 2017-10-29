@@ -73,6 +73,7 @@ export class ListFilterBar implements OnInit, OnDestroy {
     }
 
     initQueryParams(params: Params) {
+        console.error("queryParams: ", params);
         this.queryParams = params;
         this.filterAuthor = params['author'] || '';
         this.filterEditor = params['editor'] || '';

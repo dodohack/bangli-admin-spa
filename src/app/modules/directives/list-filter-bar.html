@@ -84,13 +84,14 @@
 
 <div class="row" *ngIf="paginator">
     <div class="col-12">
-        <!-- Paginator -->
+    <!-- Paginator -->
         <mat-paginator style="float: right"
                        [length]="paginator.total"
                        [pageIndex]="paginator.cur_page-1"
                        [pageSize]="paginator.per_page"
                        [pageSizeOptions]="[20]"
                        (page)="pageEvent($event)">
+
         </mat-paginator>
     </div>
 </div>
