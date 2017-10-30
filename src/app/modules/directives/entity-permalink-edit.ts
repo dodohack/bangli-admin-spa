@@ -32,9 +32,9 @@ export class EntityPermalinkEdit implements OnInit, OnDestroy {
     @Output() affPlatformChange   = new EventEmitter();
 
     platforms = [
-        {key: "AWIN", name: "Affiliate Window"},
-        {key: "LINK", name: "Linkshare"},
-        {key: "WEBG", name: "Webgain"}
+        {key: "AWIN",      name: "Affiliate Window"},
+        {key: "LINKSHARE", name: "Linkshare"},
+        {key: "WEBGAIN",   name: "Webgain"}
     ];
 
     ngOnInit() {
