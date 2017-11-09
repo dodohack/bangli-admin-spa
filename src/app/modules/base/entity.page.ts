@@ -432,6 +432,17 @@ export abstract class EntityPage implements OnInit, OnDestroy
     }
 
     /**
+     * Search image
+     */
+    searchImages(q: string) {
+        this.galleryParams = { page: 1, query: q };
+        this.store.dispatch(
+            new EntityActions.LoadEntities(
+                {etype: ENTITY.ATTACHMENT, data: this.galleryParams})
+        );
+    }
+
+    /**
      * Add images to the beginning of the content
      */
     insertImage($event) {

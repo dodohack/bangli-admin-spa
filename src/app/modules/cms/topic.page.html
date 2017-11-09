@@ -302,6 +302,7 @@
                                     [idsCurPage]="imageIds$ | async"
                                     [embeddedEditor]="true"
                                     (loadMoreImages)="loadMoreImages()"
+                                    (searchImages)="searchImages($event)"
                                     (setLogoEvent)="update('logo', $event)"
                                     (setFeatureImageEvent)="attach('images', $event)"
                                     (insertImageEvent)="insertImage($event)"></image-list>

@@ -18,6 +18,11 @@ export class SearchBox implements OnInit {
 
     @Input() slug: string;
     @Input() loading: boolean;
+    // Do not update url when this is set, usually this is used in image search
+    // in a popup modal.
+    @Input() noredirect: boolean;
+
+    @Output() searchImages = new EventEmitter();
 
     constructor(private route: ActivatedRoute,
                 private router: Router) {}
@@ -31,8 +36,12 @@ export class SearchBox implements OnInit {
 
         this.searchCtrl.valueChanges
             .debounceTime(500).subscribe(text => {
-            let param: NavigationExtras = { queryParams: { 'query': text }};
-            this.router.navigate(['/', this.slug], param);
+            if (this.noredirect) {
+                this.searchImages.emit(text);
+            } else {
+                let param: NavigationExtras = {queryParams: {'query': text}};
+                this.router.navigate(['/', this.slug], param);
+            }
         });
     }
 }

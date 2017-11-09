@@ -19,7 +19,9 @@
             </div>
             -->
 
-        <search-box [slug]="'attachment'" [loading]="loading"></search-box>
+        <search-box [slug]="'attachment'" [loading]="loading"
+                    [noredirect]="embeddedEditor"
+                    (searchImages)="searchImages.emit($event)"></search-box>
     </mat-toolbar>
 
     <div class="image-list-wrapper">
@@ -51,6 +53,8 @@
 
             <div *ngIf="image">
                 <div>文件名: {{ image.filename }}</div>
+                <div>图片标题: {{ image.title }}</div>
+                <div>图片描述: {{ image.desc }}</div>
                 <div>文件类型: {{ image.mime_type }}</div>
                 <div>文件大小: {{ image.size }}</div>
                 <div>分辨率: {{ image.width }} x {{ image.height }}</div>
