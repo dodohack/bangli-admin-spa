@@ -231,6 +231,7 @@
                                     [idsCurPage]="imageIds$ | async"
                                     [embeddedEditor]="true"
                                     (loadMoreImages)="loadMoreImages()"
+                                    (searchImages)="searchImages($event)"
                                     (setFeatureImageEvent)="update('image', $event)"
                                     (insertImageEvent)="insertImage($event)"></image-list>
                     </tab>

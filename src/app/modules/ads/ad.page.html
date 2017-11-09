@@ -127,6 +127,7 @@
                                     [idsCurPage]="imageIds$ | async"
                                     [embeddedEditor]="true"
                                     (loadMoreImages)="loadMoreImages()"
+                                    (searchImages)="searchImages($event)"
                                     (setAdImageEvent)="entity.image_url = $event"></image-list>
                     </tab>
 
