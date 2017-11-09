@@ -210,6 +210,13 @@
             </div>
         </div>
 
+        <mat-form-field style="width: 100%">
+            <input matInput type="number" name="imgIdx" min="1" max="100"
+                   [ngModel]="(entity$ | async)?.image_idx"
+                   (ngModelChange)="update('image_idx', $event)"
+                   placeholder="默认特色图片编号,不设置为随机显示"/>
+        </mat-form-field>
+
         <!-- Topic location, category, topic, topic [product/topic/post] series etc -->
         <entity-attr-cloud [isTopic]="true"
                            [categories]="(entity$ | async)?.categories"
